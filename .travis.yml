@@ -1,0 +1,48 @@
+language: python
+
+# Run jobs on container-based infrastructure, can be overridden per job
+dist: trusty
+
+matrix:
+  include:
+    - os: linux
+#      python: 3.6
+      env:
+        - PYTHON_VER=3.6
+    - os: linux
+#      python: 3.7
+      env:
+        - PYTHON_VER=3.7
+
+before_install:
+  - uname -a
+  - free -m
+  - df -h
+  - ulimit -a
+
+  - source .scripts/travis-ci_get_miniconda.sh
+  - conda info -a
+
+install:
+  # Build out environment
+  - conda create -n tenv python=$PYTHON_VER numpy nomkl
+  - source activate tenv
+  - conda install pytest pytest-cov codecov -c defaults -c conda-forge
+  - conda list
+
+    # Build and install package
+  - python setup.py develop --no-deps
+
+
+script:
+    # Get a bit of info first
+  - python -c "import qcelemental; print(qcelemental.__version__)"
+
+    # Run canonical tests
+  - pytest -v --cov=qcelemental/ qcelemental/tests/
+
+notifications:
+    email: false
+
+after_success:
+  - codecov
