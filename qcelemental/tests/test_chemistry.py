@@ -205,5 +205,5 @@ def test_psi4_header():
     qcelemental.periodictable.write_psi4_header()
 
 
-def test_psi4_header():
+def test_psi4_comparison():
     qcelemental.periodictable.run_comparison()
