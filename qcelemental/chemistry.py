@@ -274,7 +274,7 @@ class PeriodicTable(object):
         identifier = self._resolve_atom_to_key(atom)
         return self._el2element[self._eliso2el[identifier]]
 
-    def run_checkup(self):
+    def run_comparison(self):
         """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`."""
 
         from . import checkup_data
@@ -289,13 +289,13 @@ class PeriodicTable(object):
             BOLD = '\033[1m'
             UNDERLINE = '\033[4m'
 
-        print(bcolors.OKBLUE + '\nChecking z2element vs. Psi4 ...' + bcolors.ENDC)
-        for zz in self._z2element:
-            if zz > 107:
-                break
-            assert self._z2element[zz] == checkup_data.periodictable.z2element[
-                zz].capitalize(), 'Element {} differs from {} for Z={}'.format(
-                    z_to_element[zz], checkup_data.periodictable.z2element[zz].capitalize(), zz)
+        #print(bcolors.OKBLUE + '\nChecking z2element vs. Psi4 ...' + bcolors.ENDC)
+        #for zz in self._z2element:
+        #    if zz > 107:
+        #        break
+        #    assert self._z2element[zz] == checkup_data.periodictable.z2element[
+        #        zz].capitalize(), 'Element {} differs from {} for Z={}'.format(
+        #            z_to_element[zz], checkup_data.periodictable.z2element[zz].capitalize(), zz)
 
         print(bcolors.OKBLUE + '\nChecking z2el vs. Psi4 ...' + bcolors.ENDC)
         for zz in self._z2el:

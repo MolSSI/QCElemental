@@ -199,3 +199,11 @@ def test_to_element_6():
 
 def test_to_element_7():
     assert qcelemental.periodictable.to_element('h2') == 'Hydrogen'
+
+
+def test_psi4_header():
+    qcelemental.periodictable.write_psi4_header()
+
+
+def test_psi4_header():
+    qcelemental.periodictable.run_comparison()
