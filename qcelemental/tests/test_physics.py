@@ -61,3 +61,23 @@ def test_access_2e():
 
 def test_access_2f():
     assert qcelemental.constants.get('hARTREE energy in eV') == 27.211_386_02
+
+
+def test_access_2g():
+    ref = {'lbl': 'Hartree energy in eV', 'units': 'eV', 'data': Decimal('27.211_386_02')}
+    dqca = qcelemental.constants.get('Hartree energy in eV', return_object=True).to_dict()
+
+    for itm in ref:
+        assert ref[itm] == dqca[itm]
+
+
+def test_psi4_header():
+    qcelemental.constants.write_psi4_header()
+
+
+def test_psi4_comparison():
+    qcelemental.constants.run_comparison()
+
+
+def test_print_out():
+    qcelemental.constants.print_out()
