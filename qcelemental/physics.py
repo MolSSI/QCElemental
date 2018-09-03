@@ -100,10 +100,10 @@ class PhysicalConstants(object):
 
         Returns
         -------
-        float or Datum
-            When `return_object=False`, value of physical constant.
+        float
+            When ``return_object=False``, value of physical constant.
         qcelemental.Datum
-            When `return_object=True`, Datum object with units, description, uncertainty, and value of physical constant as Decimal.
+            When ``return_object=True``, Datum object with units, description, uncertainty, and value of physical constant as Decimal.
 
         """
         qca = self.pc[pc.lower()]

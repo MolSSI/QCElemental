@@ -52,6 +52,7 @@ def test_access_2d():
 
 def test_access_2e():
     qca = qcelemental.constants.get('Hartree energy in eV', return_object=True)
+    print(qca)
 
     assert qca.units == 'eV'
     assert qca.comment == 'uncertainty=0.000 000 17'
