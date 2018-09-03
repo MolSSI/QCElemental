@@ -18,12 +18,15 @@ class PeriodicTable(object):
         Element symbol from periodic table. "Fe" capitalization.
     EA : list of str
         Nuclide symbol in E + A form, e.g., "Li6".
-        List encompasses `E`, e.g., "Li". For hydrogen, "D" and "T" also included.
-    mass : decimal.Decimal
+        List `EA` encompasses `E`; that is, both "Li6" and "Li" present.
+        For hydrogen, "D" and "T" also included.
+    mass : list of decimal.Decimal
+        Atomic mass [u].
+    mass : list of :py:class:`decimal.Decimal`
         Atomic mass [u].
         For nuclides (e.g., "Li6"), the reported mass.
-        For stable elements (e.g., "Li"), the mass of the most abundant isotope, "Li7".
-        For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope, "Pu244".
+        For stable elements (e.g., "Li"), the mass of the most abundant isotope ("Li7").
+        For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope ("Pu244").
     name : list of str
         Element name from periodic table. "Iron" capitalization.
 
@@ -58,11 +61,13 @@ class PeriodicTable(object):
                 symbol = diso['Atomic Symbol']
                 diso['Atomic Symbol'] = newnames.get(symbol, symbol)
 
+        # element loop
         for delem in data.atomic_weights_and_isotopic_compositions_for_all_elements['data']:
             mass_of_most_common_isotope = None
             mass_number_of_most_common_isotope = None
             max_isotopic_contribution = 0.0
 
+            # isotope loop
             for diso in delem['isotopes']:
                 mobj = re.match(uncertain_value, diso['Relative Atomic Mass'])
 
@@ -120,7 +125,7 @@ class PeriodicTable(object):
             self.name.append(data.element_names[z - 1].capitalize())
 
         self._el2z = dict(zip(self.E, self.Z))
-        #        self._z2element = dict(zip(self.Z, self.name))
+        #self._z2element = dict(zip(self.Z, self.name))
         self._z2el = collections.OrderedDict(zip(self.Z, self.E))
         self._element2el = dict(zip(self.name, self.E))
         self._el2element = dict(zip(self.E, self.name))
@@ -275,7 +280,7 @@ class PeriodicTable(object):
         return self._el2element[self._eliso2el[identifier]]
 
     def run_comparison(self):
-        """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`."""
+        """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`. Specialized use."""
 
         from . import checkup_data
 
@@ -367,7 +372,7 @@ class PeriodicTable(object):
                     print('Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
     def write_psi4_header(self, filename='masses.h'):
-        """Write C header file /psi4/include/psi4/masses.h as Psi4 wants."""
+        """Write C header file ``/psi4/include/psi4/masses.h`` as Psi4 wants. Specialized use."""
 
         text = []
         text.append('#ifndef _psi_include_masses_h_')
@@ -399,7 +404,7 @@ class PeriodicTable(object):
 
         with open(filename, 'w') as handle:
             handle.write('\n'.join(text))
-        print('File written ({}). Remember to clang-format it.'.format(filename))
+        print('File written ({}). Remember to add license and clang-format it.'.format(filename))
 
 
 # H4, B6, Si44, Kr
