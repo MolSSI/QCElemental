@@ -33,3 +33,41 @@ periodic table, physical constants, molecule parsing
 A Python interface to Periodic Table and Physical Constants data from
 a reliable source (NIST srd144 and srd121, respectively) in a renewable
 manner (class around NIST-published JSON file).
+
+## Demo
+
+```python
+>>> import qcelemental as qcel
+>>> # periodic table
+>>> qcel.periodictable.to_E('KRYPTON')
+'Kr'
+>>> qcel.periodictable.to_element(36)
+'Krypton'
+>>> qcel.periodictable.to_Z('kr84')
+36
+>>> qcel.periodictable.to_A('Kr')
+84
+>>> qcel.periodictable.to_A('D')
+2
+>>> qcel.periodictable.to_mass('kr', return_decimal=True)
+Decimal('83.9114977282')
+>>> qcel.periodictable.to_mass('kr84')
+83.9114977282
+>>> qcel.periodictable.to_mass('Kr86')
+85.9106106269
+>>> # physical constants
+>>> qcel.constants.Hartree_energy_in_eV
+27.21138602
+>>> qcel.constants.get('hartree ENERGY in ev')
+27.21138602
+>>> pc = qcel.constants.get('hartree ENERGY in ev', return_tuple=True)
+>>> pc.lbl
+'Hartree energy in eV'
+>>> pc.data
+Decimal('27.21138602')
+>>> pc.units
+'eV'
+>>> pc.comment
+'uncertainty=0.000 000 17'
+```
+

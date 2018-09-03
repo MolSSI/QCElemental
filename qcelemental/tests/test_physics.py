@@ -22,7 +22,7 @@ def test_access_1d():
 
 
 def test_access_1e():
-    qca = qcelemental.constants.get('speed of light in vacuum', return_object=True)
+    qca = qcelemental.constants.get('speed of light in vacuum', return_tuple=True)
 
     assert qca.units == 'm s^{-1}'
     assert qca.comment == 'uncertainty=(exact)'
@@ -51,7 +51,7 @@ def test_access_2d():
 
 
 def test_access_2e():
-    qca = qcelemental.constants.get('Hartree energy in eV', return_object=True)
+    qca = qcelemental.constants.get('Hartree energy in eV', return_tuple=True)
     print(qca)
 
     assert qca.units == 'eV'
@@ -66,7 +66,7 @@ def test_access_2f():
 
 def test_access_2g():
     ref = {'lbl': 'Hartree energy in eV', 'units': 'eV', 'data': Decimal('27.211_386_02')}
-    dqca = qcelemental.constants.get('Hartree energy in eV', return_object=True).to_dict()
+    dqca = qcelemental.constants.get('Hartree energy in eV', return_tuple=True).to_dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]

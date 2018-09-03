@@ -74,7 +74,7 @@ class PhysicalConstants(object):
             ('kcalmol2wavenumbers',  'kcal cm mol^-1', Decimal('10') * self.pc['calorie-joule relationship'].data / self.pc['molar planck constant times c'].data,
                                                                                                                              'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor'),
             ('e0',                   'F m^-1',         self.pc['electric constant'].data,                                    'Vacuum permittivity (Fm$^{-1}$)'),
-            ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avagadro's number"),
+            ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avogadro's number"),
             ('me',                   'kg',             self.pc['electron mass'].data,                                        'Electron rest mass (in kg)'),
         ]  # yapf: disable
 
@@ -88,27 +88,27 @@ class PhysicalConstants(object):
             callname = qca.lbl.translate(self._transtable)
             setattr(self, callname, float(qca.data))
 
-    def get(self, pc, return_object=False):
+    def get(self, pc, return_tuple=False):
         """Access a physical constant, `pc`.
 
         Parameters
         ----------
         pc : str
             Case-insensitive string of physical constant with NIST name.
-        return_object : bool, optional
+        return_tuple : bool, optional
             See below.
 
         Returns
         -------
         float
-            When ``return_object=False``, value of physical constant.
+            When ``return_tuple=False``, value of physical constant.
         qcelemental.Datum
-            When ``return_object=True``, Datum object with units, description, uncertainty, and value of physical constant as Decimal.
+            When ``return_tuple=True``, Datum named tuple with units, description, uncertainty, and value of physical constant as Decimal.
 
         """
         qca = self.pc[pc.lower()]
 
-        if return_object:
+        if return_tuple:
             return qca
         else:
             return float(qca.data)
@@ -137,7 +137,7 @@ class PhysicalConstants(object):
 #       hartree2MHz               'hartree-hertz relationship'                = 6.579684E9           # Hartree to MHz conversion factor
 #       kcalmol2wavenumbers       10. / 'molar Planck constant times c'*4.184 = 349.7551             # kcal mol$^{-1}$ to cm$^{-1}$ conversion factor
 #       e0                        'electric constant'                         = 8.854187817E-12      # Vacuum permittivity (Fm$^{-1}$)
-#       na                        'Avogadro constant'                         = 6.02214179E23        # Avagadro's number
+#       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
     def print_out(self):
