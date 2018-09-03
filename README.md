@@ -36,9 +36,9 @@ manner (class around NIST-published JSON file).
 
 ## Demo
 
+### periodic table
 ```python
 >>> import qcelemental as qcel
->>> # periodic table
 >>> qcel.periodictable.to_E('KRYPTON')
 'Kr'
 >>> qcel.periodictable.to_element(36)
@@ -55,7 +55,11 @@ Decimal('83.9114977282')
 83.9114977282
 >>> qcel.periodictable.to_mass('Kr86')
 85.9106106269
->>> # physical constants
+```
+
+### physical constants ([available](https://physics.nist.gov/cuu/Constants/Table/allascii.txt))
+```python
+>>> import qcelemental as qcel
 >>> qcel.constants.Hartree_energy_in_eV
 27.21138602
 >>> qcel.constants.get('hartree ENERGY in ev')
