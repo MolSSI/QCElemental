@@ -1,8 +1,8 @@
 import collections
 from decimal import Decimal
 
-from . import datastructures
-from .datastructures import QCAspect
+from . import datum
+from .datum import Datum
 
 
 class PhysicalConstants(object):
@@ -40,10 +40,10 @@ class PhysicalConstants(object):
             if uncertainty == '(exact)':
                 value = value.replace('...', '')
 
-            self.pc[pc['Quantity '].lower()] = QCAspect(
+            self.pc[pc['Quantity '].lower()] = Datum(
                 pc['Quantity '], pc['Unit'], Decimal(value), 'uncertainty={}'.format(uncertainty), doi=doi)
 
-        self.pc['calorie-joule relationship'] = QCAspect('calorie-joule relationship', 'J', Decimal('4.184'),
+        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J', Decimal('4.184'),
                                                          'uncertainty=(exact)')
 
         aliases = [
@@ -81,7 +81,7 @@ class PhysicalConstants(object):
         # add alternate names for constants or derived values to help QC programs
         for alias in aliases:
             ident, units, value, comment = alias
-            self.pc[ident.lower()] = QCAspect(ident, units, value, comment)
+            self.pc[ident.lower()] = Datum(ident, units, value, comment)
 
         # add constants as directly callable member data
         for qca in self.pc.values():
@@ -143,7 +143,7 @@ class PhysicalConstants(object):
     def print_out(self):
         """Print name, value, and units of all physical constants."""
 
-        print(datastructures.print_variables(self.pc))
+        print(datum.print_variables(self.pc))
 
     def run_comparison(self):
         """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`. Specialized use."""

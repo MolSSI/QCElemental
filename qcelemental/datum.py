@@ -31,17 +31,17 @@ import collections
 import numpy as np
 
 
-class QCAspect(collections.namedtuple('QCAspect', 'lbl units data comment doi glossary')):
+class Datum(collections.namedtuple('Datum', 'lbl units data comment doi glossary')):
     """Facilitates the storage of quantum chemical results by labeling them with basic metadata."""
 
     def __new__(cls, lbl, units, data, comment='', doi=None, glossary=''):
-        return super(QCAspect, cls).__new__(cls, lbl, units, data, comment, doi, glossary)
+        return super(Datum, cls).__new__(cls, lbl, units, data, comment, doi, glossary)
 
     def __str__(self, label=''):
         width = 40
         text = []
         text.append('-' * width)
-        text.append('{:^{width}}'.format('QCAspect ' + self.lbl, width=width))
+        text.append('{:^{width}}'.format('Datum' + self.lbl, width=width))
         if label:
             text.append('{:^{width}}'.format(label))
         text.append('-' * width)
@@ -73,13 +73,13 @@ def print_variables(qcvars):
 
     Parameters
     ----------
-    qcvars : dict of QCAspect
-        Group of QCAspect objects to print.
+    qcvars : dict of Datum
+        Group of Datum objects to print.
 
     Returns
     -------
     str
-        Printable string representation of label, data, and unit in QCAspect-s.
+        Printable string representation of label, data, and unit in Datum-s.
 
     """
     text = []
