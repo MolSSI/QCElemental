@@ -1,3 +1,4 @@
+import os
 import setuptools
 import versioneer
 
@@ -11,7 +12,9 @@ if __name__ == "__main__":
         license='BSD-3C',
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
-        packages=setuptools.find_packages(),
+        packages=setuptools.find_packages(exclude=['*checkup*']),
+        include_package_data=True,
+        package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
         install_requires=[
             #'pyyaml',
             #'py-cpuinfo',

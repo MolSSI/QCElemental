@@ -282,7 +282,10 @@ class PeriodicTable(object):
     def run_comparison(self):
         """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`. Specialized use."""
 
-        from . import checkup_data
+        try:
+            from . import checkup_data
+        except ImportError:
+            print('Info for comparison (directory checkup_data) not installed. Run from source.')
 
         class bcolors:
             HEADER = '\033[95m'

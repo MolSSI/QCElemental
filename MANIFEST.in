@@ -1,4 +1,5 @@
-recursive-include qcelemental *.py
+recursive-include qcelemental *.py *.json *.md
+recursive-exclude qcelemental/checkup_data *.py *.md
 
 include setup.py
 include README.md
