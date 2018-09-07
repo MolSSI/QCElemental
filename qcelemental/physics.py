@@ -103,7 +103,7 @@ class PhysicalConstants(object):
         float
             When ``return_tuple=False``, value of physical constant.
         qcelemental.Datum
-            When ``return_tuple=True``, Datum named tuple with units, description, uncertainty, and value of physical constant as Decimal.
+            When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of physical constant as Decimal.
 
         """
         qca = self.pc[pc.lower()]

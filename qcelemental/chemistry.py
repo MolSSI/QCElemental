@@ -39,13 +39,16 @@ class PeriodicTable(object):
     """
 
     def __init__(self):
-        self.A = [0, 0]
+        # length number of elements
         self.Z = [0]
-        self.E = ['Gh']
-        self.EE = ['Gh', 'X']
-        self.EA = ['Gh', 'X0']
+        self.E = ['X']
+        self.name = ['Dummy']
+
+        # length number of elements plus number of isotopes
+        self.EE = ['X', 'X']
+        self.EA = ['X', 'X0']
+        self.A = [0, 0]
         self.mass = [Decimal(0), Decimal(0)]
-        self.name = ['Ghost']
 
         uncertain_value = re.compile(r"""(?P<value>[\d.]+)(?P<uncertainty>\([\d#]+\))?""")
         aliases = {'D': 'H2', 'T': 'H3'}
@@ -115,8 +118,8 @@ class PeriodicTable(object):
 
             self.EE.append(delem['Atomic Symbol'])
             self.EA.append(delem['Atomic Symbol'])
-            self.mass.append(mass_of_most_common_isotope)
             self.A.append(mass_number_of_most_common_isotope)
+            self.mass.append(mass_of_most_common_isotope)
 
             z = int(delem['Atomic Number'])
 
