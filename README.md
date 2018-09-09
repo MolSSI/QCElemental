@@ -13,7 +13,7 @@
 <!-- Supported -->
 <a href="https://opensource.org/licenses/BSD-3-Clause"> <img src="https://img.shields.io/github/license/qcdb/qcelemental.svg" /></a>
 <!--<a href="#"> <img src="https://img.shields.io/badge/Platforms-Linux%2C%20MacOS%2C%20Windows%20WSL-orange.svg" /></a>-->
-<a href="#"> <img src="https://img.shields.io/badge/python-3.6%2C%203.7-blue.svg" /></a>
+<a href="#"> <img src="https://img.shields.io/badge/python-3.5%2C%203.6%2C%203.7-blue.svg" /></a>
 <br>
 <!-- Project/Communication -->
 <!--<a href="http://psicode.org/pylibefpmanual/master/index.html"> <img src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>-->
