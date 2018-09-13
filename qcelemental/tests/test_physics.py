@@ -26,7 +26,7 @@ def test_access_1e():
 
     assert qca.units == 'm s^{-1}'
     assert qca.comment == 'uncertainty=(exact)'
-    assert qca.doi == '10.18434/T4WW24'
+    assert qca.DOI == '10.18434/T4WW24'
     assert qca.data == 299792458
 
 
@@ -56,7 +56,7 @@ def test_access_2e():
 
     assert qca.units == 'eV'
     assert qca.comment == 'uncertainty=0.000 000 17'
-    assert qca.doi == '10.18434/T4WW24'
+    assert qca.DOI == '10.18434/T4WW24'
     assert qca.data == Decimal('27.21138602')
 
 
@@ -65,7 +65,7 @@ def test_access_2f():
 
 
 def test_access_2g():
-    ref = {'lbl': 'Hartree energy in eV', 'units': 'eV', 'data': Decimal('27.21138602')}
+    ref = {'label': 'Hartree energy in eV', 'units': 'eV', 'data': Decimal('27.21138602')}
     dqca = qcelemental.constants.get('Hartree energy in eV', return_tuple=True).to_dict()
 
     for itm in ref:

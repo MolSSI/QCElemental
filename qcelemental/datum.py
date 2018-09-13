@@ -15,13 +15,13 @@ class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossa
 
     def __str__(self, label=''):
         width = 40
-        text = ['-' * width, '{:^{width}}'.format('Datum' + self.lbl, width=width)]
+        text = ['-' * width, '{:^{width}}'.format('Datum' + self.label, width=width)]
         if label:
             text.append('{:^{width}}'.format(label))
         text.append('-' * width)
         text.append('Data:     {}'.format(self.data))
         text.append('Units:    [{}]'.format(self.units))
-        text.append('DOI:      {}'.format(self.doi))
+        text.append('DOI:      {}'.format(self.DOI))
         text.append('Comment:  {}'.format(self.comment))
         text.append('Glossary: {}'.format(self.glossary))
         text.append('-' * width)
@@ -29,7 +29,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossa
 
     def to_dict(self):
         dicary = dict(self._asdict())  # dict, not OrderedDict
-        for d in ['doi', 'comment', 'glossary']:
+        for d in ['DOI', 'comment', 'glossary']:
             dicary.pop(d)
         if isinstance(self.data, (np.ndarray, np.number)):
             if self.data.dtype == np.complex:

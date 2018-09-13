@@ -2,10 +2,19 @@
 Main init for QCElemental
 """
 
-from .chemistry import periodictable
 from .datum import Datum
 from .exceptions import *
-from .physics import constants
+
+# Handle singletons
+from .periodic_table import PeriodicTable
+from .physical_constants import PhysicalConstants
+
+periodictable = PeriodicTable()
+constants = PhysicalConstants()
+
+del PeriodicTable
+del PhysicalConstants
+
 
 # Handle versioneer
 from ._version import get_versions

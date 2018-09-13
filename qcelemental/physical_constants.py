@@ -88,7 +88,7 @@ class PhysicalConstants(object):
 
         # add constants as directly callable member data
         for qca in self.pc.values():
-            callname = qca.lbl.translate(self._transtable)
+            callname = qca.label.translate(self._transtable)
             setattr(self, callname, float(qca.data))
 
     def get(self, pc, return_tuple=False):
@@ -205,9 +205,9 @@ class PhysicalConstants(object):
         ]
 
         for pc, qca in self.pc.items():
-            callname = qca.lbl.translate(self._transtable)
+            callname = qca.label.translate(self._transtable)
             noncomment = '#define pc_{} {}'.format(callname, qca.data)
-            text.append('{:80}  /*- {} [{}] {} -*/'.format(noncomment, qca.lbl, qca.units, qca.comment))
+            text.append('{:80}  /*- {} [{}] {} -*/'.format(noncomment, qca.label, qca.units, qca.comment))
         text.append('// clang-format on')
 
         text.append('/* For Cray X1 compilers */')
