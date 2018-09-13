@@ -84,7 +84,7 @@ def print_variables(qcvars):
             text.append(data)
         else:
             text.append("""  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format(
-                '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic+14, prec=12))
+                '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14, prec=12))
 
     text.append('')
     return '\n'.join(text)

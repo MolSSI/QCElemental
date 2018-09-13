@@ -340,9 +340,8 @@ class PeriodicTable(object):
                 val = checkup_data.periodictable.el2mass[ptel]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL +
-                          'Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val) +
-                          bcolors.ENDC)
+                    print(bcolors.FAIL + 'Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                        el, diff, ref, val) + bcolors.ENDC)
                 elif diff > tol:
                     print('Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
@@ -357,9 +356,8 @@ class PeriodicTable(object):
                 val = checkup_data.cfour_primary_masses[zz - 1]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL +
-                          'Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val) +
-                          bcolors.ENDC)
+                    print(bcolors.FAIL + 'Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(
+                        el, diff, ref, val) + bcolors.ENDC)
                 elif diff > tol:
                     print('Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val))
 
@@ -375,23 +373,24 @@ class PeriodicTable(object):
                 val = checkup_data.periodictable.eliso2mass[ptel]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL +
-                          'Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val) +
-                          bcolors.ENDC)
+                    print(bcolors.FAIL + 'Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                        el, diff, ref, val) + bcolors.ENDC)
                 elif diff > tol:
                     print('Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
     def write_psi4_header(self, filename='masses.h'):
         """Write C header file ``/psi4/include/psi4/masses.h`` as Psi4 wants. Specialized use."""
 
-        text = ['#ifndef _psi_include_masses_h_', '#define _psi_include_masses_h_', '',
-                'static const char *atomic_labels[]={', '"' + '","'.join(e.upper() for e in self.E) + '"', '};', '',
-                'static const double an2masses[]={', ','.join(str(self._eliso2mass[e]) for e in self.E), '};', '',
-                'static const char *mass_labels[]={',
-                '"' + '","'.join(e.upper() for e in self.EA if e not in ['Gh', 'X', 'X0']) + '"', '};', '',
-                'static const double atomic_masses[]={',
-                ','.join(str(self._eliso2mass[e]) for e in self.EA if e not in ['Gh', 'X', 'X0']), '};', '',
-                '#endif /* header guard */', '']
+        text = [
+            '#ifndef _psi_include_masses_h_', '#define _psi_include_masses_h_', '',
+            'static const char *atomic_labels[]={', '"' + '","'.join(e.upper() for e in self.E) + '"', '};', '',
+            'static const double an2masses[]={', ','.join(str(self._eliso2mass[e]) for e in self.E), '};', '',
+            'static const char *mass_labels[]={',
+            '"' + '","'.join(e.upper() for e in self.EA if e not in ['Gh', 'X', 'X0']) + '"', '};', '',
+            'static const double atomic_masses[]={',
+            ','.join(str(self._eliso2mass[e]) for e in self.EA if e not in ['Gh', 'X', 'X0']), '};', '',
+            '#endif /* header guard */', ''
+        ] # yapf: disable
 
         with open(filename, 'w') as handle:
             handle.write('\n'.join(text))

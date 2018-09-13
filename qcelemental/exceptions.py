@@ -2,6 +2,7 @@
 Exceptions for QCElemental
 """
 
+
 class NotAnElementError(Exception):
     """Error when element or nuclide can't be identified."""
 
