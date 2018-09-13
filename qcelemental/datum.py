@@ -1,57 +1,31 @@
-#
-# @BEGIN LICENSE
-#
-# Psi4: an open-source quantum chemistry software package
-#
-# Copyright (c) 2007-2018 The Psi4 Developers.
-#
-# The copyrights for code used from other parties are included in
-# the corresponding files.
-#
-# This file is part of Psi4.
-#
-# Psi4 is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, version 3.
-#
-# Psi4 is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License along
-# with Psi4; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# @END LICENSE
-#
+"""
+Contains the Datum class
+"""
 
 import collections
 
 import numpy as np
 
 
-class Datum(collections.namedtuple('Datum', 'lbl units data comment doi glossary')):
+class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossary')):
     """Facilitates the storage of quantum chemical results by labeling them with basic metadata."""
 
-    def __new__(cls, lbl, units, data, comment='', doi=None, glossary=''):
-        return super(Datum, cls).__new__(cls, lbl, units, data, comment, doi, glossary)
+    def __new__(cls, label, units, data, comment='', doi=None, glossary=''):
+        return super(Datum, cls).__new__(cls, label, units, data, comment, doi, glossary)
 
     def __str__(self, label=''):
         width = 40
-        text = []
-        text.append('-' * width)
-        text.append('{:^{width}}'.format('Datum' + self.lbl, width=width))
+        text = ['-' * width, '{:^{width}}'.format('Datum' + self.lbl, width=width)]
         if label:
             text.append('{:^{width}}'.format(label))
         text.append('-' * width)
         text.append('Data:     {}'.format(self.data))
         text.append('Units:    [{}]'.format(self.units))
-        text.append('doi:      {}'.format(self.doi))
+        text.append('DOI:      {}'.format(self.doi))
         text.append('Comment:  {}'.format(self.comment))
         text.append('Glossary: {}'.format(self.glossary))
         text.append('-' * width)
-        return ('\n'.join(text))
+        return '\n'.join(text)
 
     def to_dict(self):
         dicary = dict(self._asdict())  # dict, not OrderedDict
@@ -82,9 +56,7 @@ def print_variables(qcvars):
         Printable string representation of label, data, and unit in Datum-s.
 
     """
-    text = []
-    text.append('\n  Variable Map:')
-    text.append('  ----------------------------------------------------------------------------')
+    text = ['\n  Variable Map:', '  ----------------------------------------------------------------------------']
 
     if len(qcvars) == 0:
         text.append('  (none)')
@@ -96,7 +68,7 @@ def print_variables(qcvars):
         try:
             exp = int(str(v.data).split('E')[1])
         except IndexError:
-            pass 
+            pass
         else:
             largest_characteristic = max(exp, largest_characteristic)
 

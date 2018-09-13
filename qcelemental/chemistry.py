@@ -1,5 +1,9 @@
-import re
+"""
+Periodic table class
+"""
+
 import collections
+import re
 from decimal import Decimal
 
 from .exceptions import NotAnElementError
@@ -310,7 +314,7 @@ class PeriodicTable(object):
 
         print(bcolors.OKBLUE + '\nChecking z2el vs. Psi4 ...' + bcolors.ENDC)
         for zz in self._z2el:
-            if zz > 0 and zz < 108:
+            if 0 < zz < 108:
                 assert self._z2el[zz] == checkup_data.periodictable.z2el[
                     zz].capitalize(), 'Element {} differs from {} for Z={}'.format(
                         self._z2el[zz], checkup_data.periodictable.z2el[zz].capitalize(), zz)
@@ -380,33 +384,14 @@ class PeriodicTable(object):
     def write_psi4_header(self, filename='masses.h'):
         """Write C header file ``/psi4/include/psi4/masses.h`` as Psi4 wants. Specialized use."""
 
-        text = []
-        text.append('#ifndef _psi_include_masses_h_')
-        text.append('#define _psi_include_masses_h_')
-        text.append('')
-
-        text.append('static const char *atomic_labels[]={')
-        text.append('"' + '","'.join(e.upper() for e in self.E) + '"')
-        text.append('};')
-        text.append('')
-
-        text.append('static const double an2masses[]={')
-        text.append(','.join(str(self._eliso2mass[e]) for e in self.E))
-        text.append('};')
-        text.append('')
-
-        text.append('static const char *mass_labels[]={')
-        text.append('"' + '","'.join(e.upper() for e in self.EA if e not in ['Gh', 'X', 'X0']) + '"')
-        text.append('};')
-        text.append('')
-
-        text.append('static const double atomic_masses[]={')
-        text.append(','.join(str(self._eliso2mass[e]) for e in self.EA if e not in ['Gh', 'X', 'X0']))
-        text.append('};')
-        text.append('')
-
-        text.append('#endif /* header guard */')
-        text.append('')
+        text = ['#ifndef _psi_include_masses_h_', '#define _psi_include_masses_h_', '',
+                'static const char *atomic_labels[]={', '"' + '","'.join(e.upper() for e in self.E) + '"', '};', '',
+                'static const double an2masses[]={', ','.join(str(self._eliso2mass[e]) for e in self.E), '};', '',
+                'static const char *mass_labels[]={',
+                '"' + '","'.join(e.upper() for e in self.EA if e not in ['Gh', 'X', 'X0']) + '"', '};', '',
+                'static const double atomic_masses[]={',
+                ','.join(str(self._eliso2mass[e]) for e in self.EA if e not in ['Gh', 'X', 'X0']), '};', '',
+                '#endif /* header guard */', '']
 
         with open(filename, 'w') as handle:
             handle.write('\n'.join(text))
