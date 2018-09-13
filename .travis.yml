@@ -1,3 +1,6 @@
+# After changing this file, check it on:
+#   http://lint.travis-ci.org/
+
 language: python
 
 # Run jobs on container-based infrastructure, can be overridden per job
@@ -24,26 +27,27 @@ before_install:
   - df -h
   - ulimit -a
 
-  - source .scripts/travis-ci_get_miniconda.sh
-  - conda info -a
+  # Setup python environment
+  - source devtools/travis-ci/before_install.sh
+  - python -V
 
 install:
-  # Build out environment
-  - conda create -n tenv python=$PYTHON_VER numpy nomkl
-  - source activate tenv
-  - conda install pytest pytest-cov codecov -c defaults -c conda-forge
-  - conda list
+    # Create test environment for package
+  - conda env create -n test python=$PYTHON_VER -f devtools/conda-envs/base.yaml
 
     # Build and install package
   - python setup.py develop --no-deps
 
+before_script:
+  - python -V
+  - conda list
 
 script:
     # Get a bit of info first
   - python -c "import qcelemental; print(qcelemental.__version__)"
 
     # Run canonical tests
-  - pytest -v --cov=qcelemental/ qcelemental/tests/
+  - pytest -v --cov=qcelemental/ qcelemental/
 
 notifications:
     email: false

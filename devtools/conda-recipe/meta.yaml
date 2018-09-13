@@ -1,0 +1,28 @@
+package:
+  name: qcelemental
+  version: "0.0.0"
+
+source:
+  path: ../..
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - python
+    - numpy
+
+test:
+  requires:
+    - pytest
+  imports:
+    - qcfractal
+
+about:
+  home: https://github.com/MolSSI/QCElemental
+  license: BSD-3-Clause License

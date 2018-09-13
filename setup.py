@@ -8,7 +8,7 @@ if __name__ == "__main__":
         description='Essentials for Quantum Chemistry.',
         author='Lori A. Burns',
         author_email='lori.burns@gmail.com',
-        url="https://github.com/qcdb/qcelemental",
+        url="https://github.com/MolSSI/qcelemental",
         license='BSD-3C',
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
