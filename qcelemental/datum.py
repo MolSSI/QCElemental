@@ -7,7 +7,7 @@ import collections
 import numpy as np
 
 
-class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossary')):
+class Datum(collections.namedtuple('Datum', 'label units data comment doi glossary')):
     """Facilitates the storage of quantum chemical results by labeling them with basic metadata."""
 
     def __new__(cls, label, units, data, comment='', doi=None, glossary=''):
@@ -21,7 +21,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossa
         text.append('-' * width)
         text.append('Data:     {}'.format(self.data))
         text.append('Units:    [{}]'.format(self.units))
-        text.append('DOI:      {}'.format(self.DOI))
+        text.append('doi:      {}'.format(self.doi))
         text.append('Comment:  {}'.format(self.comment))
         text.append('Glossary: {}'.format(self.glossary))
         text.append('-' * width)
@@ -29,7 +29,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment DOI glossa
 
     def to_dict(self):
         dicary = dict(self._asdict())  # dict, not OrderedDict
-        for d in ['DOI', 'comment', 'glossary']:
+        for d in ['doi', 'comment', 'glossary']:
             dicary.pop(d)
         if isinstance(self.data, (np.ndarray, np.number)):
             if self.data.dtype == np.complex:
