@@ -9,7 +9,7 @@ from decimal import Decimal
 from .exceptions import NotAnElementError
 
 
-class PeriodicTable(object):
+class PeriodicTable:
     """Nuclear and mass data about chemical elements from NIST.
 
     Attributes
@@ -44,14 +44,14 @@ class PeriodicTable(object):
 
     def __init__(self):
         # length number of elements
-        self.Z = [0]
-        self.E = ['X']
+        self.Z = [0] # Atom number per element
+        self.E = ['X'] # Symbol per element
         self.name = ['Dummy']
 
         # length number of elements plus number of isotopes
-        self.EE = ['X', 'X']
-        self.EA = ['X', 'X0']
-        self.A = [0, 0]
+        self.EE = ['X', 'X'] # Isotope symbol
+        self.EA = ['X', 'X0'] # Isotope mass number
+        self.A = [0, 0] # Isotope mass number
         self.mass = [Decimal(0), Decimal(0)]
 
         uncertain_value = re.compile(r"""(?P<value>[\d.]+)(?P<uncertainty>\([\d#]+\))?""")

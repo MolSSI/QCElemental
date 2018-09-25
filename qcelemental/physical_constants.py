@@ -8,7 +8,7 @@ from decimal import Decimal
 from . import datum
 
 
-class PhysicalConstants(object):
+class PhysicalConstants:
     """CODATA 2014 physical constants set from NIST.
 
     Attributes

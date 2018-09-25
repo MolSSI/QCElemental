@@ -3,7 +3,7 @@ Main init for QCElemental
 """
 
 from .datum import Datum
-from .exceptions import *
+from .exceptions import NotAnElementError
 
 # Handle singletons
 from .periodic_table import PeriodicTable
