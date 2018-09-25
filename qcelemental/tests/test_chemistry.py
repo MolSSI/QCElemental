@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 import pytest
+import os
 
 import qcelemental
 
@@ -202,7 +203,8 @@ def test_to_element_7():
 
 
 def test_psi4_header():
-    qcelemental.periodictable.write_psi4_header()
+    qcelemental.periodictable.write_psi4_header("header.h")
+    os.remove("header.h")
 
 
 def test_psi4_comparison():

@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 import pytest
+import os
 
 import qcelemental
 
@@ -73,7 +74,8 @@ def test_access_2g():
 
 
 def test_psi4_header():
-    qcelemental.constants.write_psi4_header()
+    qcelemental.constants.write_psi4_header("header.h")
+    os.remove("header.h")
 
 
 def test_psi4_comparison():
