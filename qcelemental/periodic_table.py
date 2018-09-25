@@ -24,8 +24,6 @@ class PeriodicTable:
         Nuclide symbol in E + A form, e.g., "Li6".
         List `EA` encompasses `E`; that is, both "Li6" and "Li" present.
         For hydrogen, "D" and "T" also included.
-    mass : list of decimal.Decimal
-        Atomic mass [u].
     mass : list of :py:class:`decimal.Decimal`
         Atomic mass [u].
         For nuclides (e.g., "Li6"), the reported mass.
@@ -44,15 +42,15 @@ class PeriodicTable:
 
     def __init__(self):
         # length number of elements
-        self.Z = [0] # Atom number per element
-        self.E = ['X'] # Symbol per element
-        self.name = ['Dummy']
+        self.Z = [0]  # , 1, 2, ...
+        self.E = ['X']  # , H, He, ...
+        self.name = ['Dummy']  # , Hydrogen, Helium, ...
 
         # length number of elements plus number of isotopes
-        self.EE = ['X', 'X'] # Isotope symbol
-        self.EA = ['X', 'X0'] # Isotope mass number
-        self.A = [0, 0] # Isotope mass number
-        self.mass = [Decimal(0), Decimal(0)]
+        self.EE = ['X', 'X']  # , H, H, H, ..., He, He, He, ...
+        self.EA = ['X', 'X0']  # , H, H1, H2, ..., He, He3, He4, ...
+        self.A = [0, 0]  # , 1, 1, 2, ..., 4, 3, 4, ...
+        self.mass = [Decimal(0), Decimal(0)]  # , 1.0078, 1.0078, 2.014, ..., 4.0026, 3.016, 4.0026, ...
 
         uncertain_value = re.compile(r"""(?P<value>[\d.]+)(?P<uncertainty>\([\d#]+\))?""")
         aliases = {'D': 'H2', 'T': 'H3'}
@@ -285,6 +283,11 @@ class PeriodicTable:
         """
         identifier = self._resolve_atom_to_key(atom)
         return self._el2element[self._eliso2el[identifier]]
+
+    to_mass_number = to_A
+    to_atomic_number = to_Z
+    to_symbol = to_E
+    to_name = to_element
 
     def run_comparison(self):
         """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`. Specialized use."""

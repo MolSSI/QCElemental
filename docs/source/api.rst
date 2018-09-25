@@ -3,9 +3,9 @@ QCElemental API
 ===============
 
 .. automodapi:: qcelemental
-..   :include-all-objects:
+   :include-all-objects:
 
-.. automodapi:: qcelemental.chemistry
+.. automodapi:: qcelemental.periodic_table
 
-.. automodapi:: qcelemental.physics
+.. automodapi:: qcelemental.physical_constants
 
