@@ -73,8 +73,8 @@ def test_access_2g():
         assert ref[itm] == dqca[itm]
 
 
-def test_psi4_header():
-    qcelemental.constants.write_psi4_header("header.h")
+def test_c_header():
+    qcelemental.constants.write_c_header("header.h")
     os.remove("header.h")
 
 

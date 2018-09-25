@@ -202,8 +202,8 @@ def test_to_element_7():
     assert qcelemental.periodictable.to_element('h2') == 'Hydrogen'
 
 
-def test_psi4_header():
-    qcelemental.periodictable.write_psi4_header("header.h")
+def test_c_header():
+    qcelemental.periodictable.write_c_header("header.h")
     os.remove("header.h")
 
 
