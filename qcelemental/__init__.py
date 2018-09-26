@@ -4,6 +4,7 @@ Main init for QCElemental
 
 from .datum import Datum
 from .exceptions import NotAnElementError
+from . import units
 
 # Handle singletons
 from .periodic_table import PeriodicTable
