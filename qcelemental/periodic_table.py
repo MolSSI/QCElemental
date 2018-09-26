@@ -39,98 +39,24 @@ class PeriodicTable:
     """
 
     def __init__(self):
-        # length number of elements
-        self.Z = [0]  # , 1, 2, ...
-        self.E = ['X']  # , H, He, ...
-        self.name = ['Dummy']  # , Hydrogen, Helium, ...
-
-        # length number of elements plus number of isotopes
-        self._EE = ['X', 'X']  # , H, H, H, ..., He, He, He, ...
-        self.EA = ['X', 'X0']  # , H, H1, H2, ..., He, He3, He4, ...
-        self.A = [0, 0]  # , 1, 1, 2, ..., 4, 3, 4, ...
-        self.mass = [Decimal(0), Decimal(0)]  # , 1.0078, 1.0078, 2.014, ..., 4.0026, 3.016, 4.0026, ...
-
-        uncertain_value = re.compile(r"""(?P<value>[\d.]+)(?P<uncertainty>\([\d#]+\))?""")
-        aliases = {'D': 'H2', 'T': 'H3'}
 
         from . import data
 
-        # harmless patching
-        newnames = {'Uut': 'Nh', 'Uup': 'Mc', 'Uus': 'Ts'}
-        for delem in data.atomic_weights_and_isotopic_compositions_for_all_elements['data']:
-            symbol = delem['Atomic Symbol']
-            delem['Atomic Symbol'] = newnames.get(symbol, symbol)
-            for diso in delem['isotopes']:
-                symbol = diso['Atomic Symbol']
-                diso['Atomic Symbol'] = newnames.get(symbol, symbol)
-
-        # element loop
-        for delem in data.atomic_weights_and_isotopic_compositions_for_all_elements['data']:
-            mass_of_most_common_isotope = None
-            mass_number_of_most_common_isotope = None
-            max_isotopic_contribution = 0.0
-
-            # isotope loop
-            for diso in delem['isotopes']:
-                mobj = re.match(uncertain_value, diso['Relative Atomic Mass'])
-
-                if mobj:
-                    mass = Decimal(mobj.group('value'))
-                else:
-                    raise ValueError('Trouble parsing mass string ({}) for element ({})'.format(
-                        diso['Relative Atomic Mass'], diso['Atomic Symbol']))
-
-                a = int(diso['Mass Number'])
-
-                if diso['Atomic Symbol'] in aliases:
-                    self._EE.append('H')
-                    self.EA.append(aliases[diso['Atomic Symbol']])
-                    self.A.append(a)
-                    self.mass.append(mass)
-
-                    self._EE.append('H')
-                    self.EA.append(diso['Atomic Symbol'])
-                    self.A.append(a)
-                    self.mass.append(mass)
-
-                else:
-                    self._EE.append(diso['Atomic Symbol'])
-                    self.EA.append(diso['Atomic Symbol'] + diso['Mass Number'])
-                    self.A.append(a)
-                    self.mass.append(mass)
-
-                if 'Isotopic Composition' in diso:
-                    mobj = re.match(uncertain_value, diso['Isotopic Composition'])
-
-                    if mobj:
-                        if float(mobj.group('value')) > max_isotopic_contribution:
-                            mass_of_most_common_isotope = mass
-                            mass_number_of_most_common_isotope = a
-                            max_isotopic_contribution = float(mobj.group('value'))
-
-            # Source atomic_weights_and_isotopic_compositions_for_all_elements deals with isotopic composition of
-            #   stable elements. For unstable elements, need another source for the longest-lived isotope.
-            if mass_of_most_common_isotope is None:
-                mass_number_of_most_common_isotope = data.longest_lived_isotope_for_unstable_elements[diso[
-                    'Atomic Symbol']]
-                eliso = delem['Atomic Symbol'] + str(mass_number_of_most_common_isotope)
-                mass_of_most_common_isotope = self.mass[self.EA.index(eliso)]
-
-            self._EE.append(delem['Atomic Symbol'])
-            self.EA.append(delem['Atomic Symbol'])
-            self.A.append(mass_number_of_most_common_isotope)
-            self.mass.append(mass_of_most_common_isotope)
-
-            z = int(delem['Atomic Number'])
-
-            self.Z.append(z)
-            self.E.append(delem['Atomic Symbol'])
-            self.name.append(data.element_names[z - 1].capitalize())
+        # Of length number of elements
+        self.Z = data.nist_2011_atomic_weights["Z"]
+        self.E = data.nist_2011_atomic_weights["E"]
+        self.name = data.nist_2011_atomic_weights["name"]
 
         self._el2z = dict(zip(self.E, self.Z))
         self._z2el = collections.OrderedDict(zip(self.Z, self.E))
         self._element2el = dict(zip(self.name, self.E))
         self._el2element = dict(zip(self.E, self.name))
+
+        # Of length number of isotopes
+        self._EE = data.nist_2011_atomic_weights["_EE"]
+        self.EA = data.nist_2011_atomic_weights["EA"]
+        self.A = data.nist_2011_atomic_weights["A"]
+        self.mass = data.nist_2011_atomic_weights["mass"]
 
         self._eliso2mass = dict(zip(self.EA, self.mass))
         self._eliso2el = dict(zip(self.EA, self._EE))
@@ -186,7 +112,7 @@ class PeriodicTable:
         mass = self._eliso2mass[identifier]
 
         if return_decimal:
-            return mass
+            return Decimal(mass)
         else:
             return float(mass)
 
@@ -269,7 +195,7 @@ class PeriodicTable:
         """Get element name of `atom`.
 
         Functions :py:func:`to_element` and :py:func:`to_name` are aliases.
-        
+
         Parameters
         ----------
         atom : int or str
