@@ -33,19 +33,13 @@ class PhysicalConstants:
 
         from . import data
 
-        doi = data.nist_codata_2014_metadata['distribution'][-1]['accessURL'].strip('https://dx.doi.org/')
+        doi = data.nist_2014_codata["doi"]
 
         # physical constant loop
-        # * yes, there's an extra space at the end of the Quantity key
-        for pc in data.nist_codata_2014['constant']:
-            value = pc['Value'].replace(' ', '')
-            uncertainty = pc['Uncertainty']
-            if uncertainty == '(exact)':
-                value = value.replace('...', '')
+        for k, v in data.nist_codata_2014['constant'].items():
+            self.pc[k] = datum.Datum(v["quantity"], v["unit"], v["value"], 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
 
-            self.pc[pc['Quantity '].lower()] = datum.Datum(
-                pc['Quantity '], pc['Unit'], Decimal(value), 'uncertainty={}'.format(uncertainty), doi=doi)
-
+        # Extra relationships
         self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J', Decimal('4.184'),
                                                             'uncertainty=(exact)')
 

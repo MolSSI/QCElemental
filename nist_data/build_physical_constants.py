@@ -51,16 +51,16 @@ for pc in constants['constant']:
     if uncertainty == '(exact)':
         value = value.replace('...', '')
 
-    constants_json[pc["Quantity "].lower()] = {
+    constants_json["constants"][pc["Quantity "].lower()] = {
         "quantity": pc["Quantity "],
         "unit": pc["Unit"],
         "value": value,
         'uncertainty': uncertainty
         }
-output += "nist_{}_constants = {}".format(year, constants_json)
+output += "nist_{}_codata = {}".format(year, constants_json)
 
 output = FormatCode(output)
 
-fn = "nist_{}_constants.py".format(year)
+fn = "nist_{}_codata.py".format(year)
 with open(fn, "w") as handle:
     handle.write(output[0])
