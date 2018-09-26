@@ -106,3 +106,6 @@ venv.bak/
 # project
 masses.h
 physconst.h
+
+# nist_data
+nist_data/nist_*
