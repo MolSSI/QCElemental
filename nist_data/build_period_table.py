@@ -299,7 +299,7 @@ atomic_weights_json["_EE"] = _EE
 atomic_weights_json["EA"] = EA
 atomic_weights_json["A"] = A
 atomic_weights_json["mass"] = masses
-output += "nist_{}_atomic_weights = {}".format(year, json.dumps(atomic_weights_json, indent=2))
+output += "nist_{}_atomic_weights = {}".format(year, json.dumps(atomic_weights_json))
 
 # output = FormatCode(output)[0]
 

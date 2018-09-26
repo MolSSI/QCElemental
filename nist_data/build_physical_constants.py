@@ -54,7 +54,7 @@ for pc in constants['constant']:
     constants_json["constants"][pc["Quantity "].lower()] = {
         "quantity": pc["Quantity "],
         "unit": pc["Unit"],
-        "value": value,
+        "value": value.replace(" ", ""),
         'uncertainty': uncertainty
         }
 output += "nist_{}_codata = {}".format(year, constants_json)
