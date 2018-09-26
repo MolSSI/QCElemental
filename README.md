@@ -1,7 +1,7 @@
 <p align="center">
 <br>
 <!-- Commit -->
-<a href="https://travis-ci.org/qcdb/qcelemental"><img src="https://travis-ci.org/qcdb/qcelemental.svg?branch=master"></a>
+<a href="https://travis-ci.org/qcdb/QCElemental"><img src="https://travis-ci.org/qcdb/QCElemental.svg?branch=master"></a>  
 <a href="https://codecov.io/gh/qcdb/qcelemental"> <img src="https://codecov.io/gh/qcdb/qcelemental/branch/master/graph/badge.svg" /></a>
 <br>
 <!-- Release & PR Activity -->
@@ -17,7 +17,7 @@
 <br>
 <!-- Project/Communication -->
 <!--<a href="http://psicode.org/pylibefpmanual/master/index.html"> <img src="https://img.shields.io/badge/docs-latest-5077AB.svg" /></a>-->
-<a href="https://join.slack.com/t/qcdb/shared_invite/enQtNDIzNTQ2OTExODk0LWM3OTgxN2ExYTlkMTlkZjA0OTExZDlmNGRlY2M4NWJlNDlkZGQyYWUxOTJmMzc3M2VlYzZjMjgxMDRkYzFmOTE"> <img src="https://img.shields.io/badge/chat-on_slack-808493.svg" /></a>
+<a href="https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LWM3OTgxN2ExYTlkMTlkZjA0OTExZDlmNGRlY2M4NWJlNDlkZGQyYWUxOTJmMzc3M2VlYzZjMjgxMDRkYzFmOTE"> <img src="https://img.shields.io/badge/chat-on_slack-808493.svg" /></a>
 <br>
 <!-- Obtain -->
 <!--<a href="https://anaconda.org/psi4/pylibefp"> <img src="https://anaconda.org/psi4/pylibefp/badges/installer/conda.svg" /></a>
