@@ -1,1 +1,61 @@
-{"@type": "dcat:Dataset", "accessLevel": "public", "accrualPeriodicity": "irregular", "bureauCode": ["006:55"], "contactPoint": {"fn": "Peter Mohr", "hasEmail": "mailto:mohr@nist.gov"}, "description": "This site, developed in the Physics Laboratory at NIST, addresses three topics: fundamental physical constants, the International System of Units (SI), which is the modern metric system, and expressing the uncertainty of measurement results.", "distribution": [{"description": "CODATA Internationally recommended 2014 values of the Fundamental Physical Constants expressed in JSON.", "downloadURL": "http://www.nist.gov/srd/srd_data/srd121_allascii_2014.json", "mediaType": "application/json"}, {"description": "CODATA Internationally recommended 2014 values of the Fundamental Physical Constants expressed in ascii text.", "downloadURL": "http://physics.nist.gov/cuu/Constants/Table/allascii.txt", "mediaType": "text/plain"}, {"accessURL": "https://dx.doi.org/10.18434/T4WW24", "mediaType": "text/html"}], "identifier": "FDB5909746705200E043065706813E54120", "keyword": ["CODATA", "Josephson effects", "adopted values", "constants", "conversion factors", "data analysis", "electrical units", "energies", "fundamental constants", "fundamental physical", "fundamental physical constants", "fundamentals", "least squares adjustments", "masses", "nuclear", "physical constants", "quantum electrodynamics"], "landingPage": "https://physics.nist.gov/cuu/Constants/index.html", "language": ["en"], "license": "https://www.nist.gov/open/license", "modified": "2014-01-01", "programCode": ["006:052"], "publisher": {"@type": "org:Organization", "name": "National Institute of Standards and Technology"}, "references": ["http://physics.nist.gov/cuu/Reference/contents.html", "http://physics.nist.gov/cuu/Reference/about.html"], "theme": ["Physics: Magnetics", "Physics: Nuclear physics", "Standards: Reference data", "Physics: Atomic, molecular, and quantum", "Physics: Electron physics"], "title": "NIST-CODATA Internationally Recommended 2014 Values of the Fundamental Physical Constants - SRD 121"}
+{
+    "@type":
+    "dcat:Dataset",
+    "accessLevel":
+    "public",
+    "accrualPeriodicity":
+    "irregular",
+    "bureauCode": ["006:55"],
+    "contactPoint": {
+        "fn": "Peter Mohr",
+        "hasEmail": "mailto:mohr@nist.gov"
+    },
+    "description":
+    "This site, developed in the Physics Laboratory at NIST, addresses three topics: fundamental physical constants, the International System of Units (SI), which is the modern metric system, and expressing the uncertainty of measurement results.",
+    "distribution": [{
+        "description":
+        "CODATA Internationally recommended 2014 values of the Fundamental Physical Constants expressed in JSON.",
+        "downloadURL":
+        "http://www.nist.gov/srd/srd_data/srd121_allascii_2014.json",
+        "mediaType":
+        "application/json"
+    }, {
+        "description":
+        "CODATA Internationally recommended 2014 values of the Fundamental Physical Constants expressed in ascii text.",
+        "downloadURL":
+        "http://physics.nist.gov/cuu/Constants/Table/allascii.txt",
+        "mediaType":
+        "text/plain"
+    }, {
+        "accessURL": "https://dx.doi.org/10.18434/T4WW24",
+        "mediaType": "text/html"
+    }],
+    "identifier":
+    "FDB5909746705200E043065706813E54120",
+    "keyword": [
+        "CODATA", "Josephson effects", "adopted values", "constants", "conversion factors", "data analysis",
+        "electrical units", "energies", "fundamental constants", "fundamental physical",
+        "fundamental physical constants", "fundamentals", "least squares adjustments", "masses", "nuclear",
+        "physical constants", "quantum electrodynamics"
+    ],
+    "landingPage":
+    "https://physics.nist.gov/cuu/Constants/index.html",
+    "language": ["en"],
+    "license":
+    "https://www.nist.gov/open/license",
+    "modified":
+    "2014-01-01",
+    "programCode": ["006:052"],
+    "publisher": {
+        "@type": "org:Organization",
+        "name": "National Institute of Standards and Technology"
+    },
+    "references":
+    ["http://physics.nist.gov/cuu/Reference/contents.html", "http://physics.nist.gov/cuu/Reference/about.html"],
+    "theme": [
+        "Physics: Magnetics", "Physics: Nuclear physics", "Standards: Reference data",
+        "Physics: Atomic, molecular, and quantum", "Physics: Electron physics"
+    ],
+    "title":
+    "NIST-CODATA Internationally Recommended 2014 Values of the Fundamental Physical Constants - SRD 121"
+}
