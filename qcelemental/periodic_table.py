@@ -15,14 +15,14 @@ class PeriodicTable:
     Attributes
     ----------
     A : list of int
-        Mass number, number of protons and neutrons.
+        Mass number, number of protons and neutrons, starting with 0 for dummies.
     Z : list of int
-        Atomic number, number of protons.
+        Atomic number, number of protons, starting with 0 for dummies.
     E : list of str
-        Element symbol from periodic table. "Fe" capitalization.
+        Element symbol from periodic table, starting with "X" for dummies. "Fe" capitalization.
     EA : list of str
         Nuclide symbol in E + A form, e.g., "Li6".
-        List `EA` encompasses `E`; that is, both "Li6" and "Li" present.
+        List `EA` is a superset of `E`; that is, both "Li6" and "Li" present.
         For hydrogen, "D" and "T" also included.
     mass : list of :py:class:`decimal.Decimal`
         Atomic mass [u].
@@ -30,9 +30,7 @@ class PeriodicTable:
         For stable elements (e.g., "Li"), the mass of the most abundant isotope ("Li7").
         For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope ("Pu244").
     name : list of str
-        Element name from periodic table. "Iron" capitalization.
-
-# TODO ghost
+        Element name from periodic table, starting with "Dummy". "Iron" capitalization.
 
     Parameters
     ----------
@@ -47,7 +45,7 @@ class PeriodicTable:
         self.name = ['Dummy']  # , Hydrogen, Helium, ...
 
         # length number of elements plus number of isotopes
-        self.EE = ['X', 'X']  # , H, H, H, ..., He, He, He, ...
+        self._EE = ['X', 'X']  # , H, H, H, ..., He, He, He, ...
         self.EA = ['X', 'X0']  # , H, H1, H2, ..., He, He3, He4, ...
         self.A = [0, 0]  # , 1, 1, 2, ..., 4, 3, 4, ...
         self.mass = [Decimal(0), Decimal(0)]  # , 1.0078, 1.0078, 2.014, ..., 4.0026, 3.016, 4.0026, ...
@@ -85,18 +83,18 @@ class PeriodicTable:
                 a = int(diso['Mass Number'])
 
                 if diso['Atomic Symbol'] in aliases:
-                    self.EE.append('H')
+                    self._EE.append('H')
                     self.EA.append(aliases[diso['Atomic Symbol']])
                     self.A.append(a)
                     self.mass.append(mass)
 
-                    self.EE.append('H')
+                    self._EE.append('H')
                     self.EA.append(diso['Atomic Symbol'])
                     self.A.append(a)
                     self.mass.append(mass)
 
                 else:
-                    self.EE.append(diso['Atomic Symbol'])
+                    self._EE.append(diso['Atomic Symbol'])
                     self.EA.append(diso['Atomic Symbol'] + diso['Mass Number'])
                     self.A.append(a)
                     self.mass.append(mass)
@@ -118,7 +116,7 @@ class PeriodicTable:
                 eliso = delem['Atomic Symbol'] + str(mass_number_of_most_common_isotope)
                 mass_of_most_common_isotope = self.mass[self.EA.index(eliso)]
 
-            self.EE.append(delem['Atomic Symbol'])
+            self._EE.append(delem['Atomic Symbol'])
             self.EA.append(delem['Atomic Symbol'])
             self.A.append(mass_number_of_most_common_isotope)
             self.mass.append(mass_of_most_common_isotope)
@@ -130,13 +128,12 @@ class PeriodicTable:
             self.name.append(data.element_names[z - 1].capitalize())
 
         self._el2z = dict(zip(self.E, self.Z))
-        #self._z2element = dict(zip(self.Z, self.name))
         self._z2el = collections.OrderedDict(zip(self.Z, self.E))
         self._element2el = dict(zip(self.name, self.E))
         self._el2element = dict(zip(self.E, self.name))
 
         self._eliso2mass = dict(zip(self.EA, self.mass))
-        self._eliso2el = dict(zip(self.EA, self.EE))
+        self._eliso2el = dict(zip(self.EA, self._EE))
         self._eliso2a = dict(zip(self.EA, self.A))
 
     def _resolve_atom_to_key(self, atom):
@@ -196,6 +193,8 @@ class PeriodicTable:
     def to_A(self, atom):
         """Get mass number of `atom`.
 
+        Functions :py:func:`to_A` and :py:func:`to_mass_number` are aliases.
+
         Parameters
         ----------
         atom : int or str
@@ -221,6 +220,8 @@ class PeriodicTable:
     def to_Z(self, atom):
         """Get atomic number of `atom`.
 
+        Functions :py:func:`to_Z` and :py:func:`to_atomic_number` are aliases.
+
         Parameters
         ----------
         atom : int or str
@@ -242,6 +243,8 @@ class PeriodicTable:
 
     def to_E(self, atom):
         """Get element symbol of `atom`.
+
+        Functions :py:func:`to_E` and :py:func:`to_symbol` are aliases.
 
         Parameters
         ----------
@@ -265,6 +268,8 @@ class PeriodicTable:
     def to_element(self, atom):
         """Get element name of `atom`.
 
+        Functions :py:func:`to_element` and :py:func:`to_name` are aliases.
+        
         Parameters
         ----------
         atom : int or str
@@ -343,8 +348,9 @@ class PeriodicTable:
                 val = checkup_data.periodictable.el2mass[ptel]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL + 'Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(
-                        el, diff, ref, val) + bcolors.ENDC)
+                    print(bcolors.FAIL +
+                          'Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val) +
+                          bcolors.ENDC)
                 elif diff > tol:
                     print('Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
@@ -359,8 +365,9 @@ class PeriodicTable:
                 val = checkup_data.cfour_primary_masses[zz - 1]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL + 'Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(
-                        el, diff, ref, val) + bcolors.ENDC)
+                    print(bcolors.FAIL +
+                          'Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val) +
+                          bcolors.ENDC)
                 elif diff > tol:
                     print('Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val))
 
@@ -376,13 +383,14 @@ class PeriodicTable:
                 val = checkup_data.periodictable.eliso2mass[ptel]
                 diff = abs(float(ref) - val)
                 if diff > 1.e-2:
-                    print(bcolors.FAIL + 'Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(
-                        el, diff, ref, val) + bcolors.ENDC)
+                    print(bcolors.FAIL +
+                          'Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val) +
+                          bcolors.ENDC)
                 elif diff > tol:
                     print('Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
     def write_c_header(self, filename='masses.h'):
-        """Write C header file defining lists of mass and element information."""
+        """Write C header file defining arrays of mass and element information."""
 
         text = [
             '#ifndef _qcelemental_masses_h_', '#define _qcelemental_masses_h_', '',

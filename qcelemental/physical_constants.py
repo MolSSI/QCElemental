@@ -116,6 +116,7 @@ class PhysicalConstants:
         else:
             return float(qca.data)
 
+
 #       h                         'hertz-joule relationship'                  = 6.62606896E-34       # The Planck constant (Js)
 #       c                         'inverse meter-hertz relationship'          = 2.99792458E8         # Speed of light (ms$^{-1}$)
 #       kb                        'kelvin-joule relationship'                 = 1.3806504E-23        # The Boltzmann constant (JK$^{-1}$)
