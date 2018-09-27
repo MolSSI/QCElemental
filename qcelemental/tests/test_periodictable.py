@@ -137,5 +137,5 @@ def test_c_header():
     os.remove("header.h")
 
 
-def test_priodic_table_comparison():
+def test_periodic_table_comparison():
     qcelemental.periodictable.run_comparison()

@@ -78,7 +78,7 @@ def test_c_header():
     os.remove("header.h")
 
 
-def test_psi4_comparison():
+def test_constants_comparison():
     qcelemental.constants.run_comparison()
 
 

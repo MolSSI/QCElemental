@@ -8,7 +8,7 @@ from ..util import unnp
 from ..exceptions import *
 from .to_string import formula_generator
 
-def to_schema(molrec, dtype, units='Angstrom', return_type='json'):
+def to_schema(molrec, dtype, units='Bohr', np_out=False):
     """Translate Psi4 json Molecule spec into json from other schemas.
 
     Parameters
@@ -17,16 +17,19 @@ def to_schema(molrec, dtype, units='Angstrom', return_type='json'):
         Psi4 json Molecule spec.
     dtype : {'psi4', 1}
         Molecule schema format.
-    units : {'Angstrom', 'Bohr'}
+    units : {'Bohr', 'Angstrom'}
         Units in which to write string. There is not an option to write in
         intrinsic/input units. Some `dtype` may not allow all units.
-    return_type : {'json', 'yaml'}
-        Serialization format string to return.
+    np_out : bool, optional
+        When `True`, fields originating from geom, elea, elez, elem, mass, real, elbl will be ndarray.
+        Use `False` to get a json-able version.
+    #return_type : {'json', 'yaml'}
+    #    Serialization format string to return.
 
     Returns
     -------
-    qcschema : str
-        String of the `return_type` repr of `molrec`.
+    qcschema : dict
+        Dictionary of the `dtype` repr of `molrec`.
 
     """
     qcschema = {}
@@ -69,8 +72,8 @@ def to_schema(molrec, dtype, units='Angstrom', return_type='json'):
         qcschema['real'] = np.array(molrec['real'])
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
         qcschema['fragments'] = [fr.tolist() for fr in fidx]
-        qcschema['fragment_charges'] = np.array(molrec['fragment_charges'])
-        qcschema['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities'])
+        qcschema['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
+        qcschema['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
         qcschema['fix_com'] = molrec['fix_com']
         qcschema['fix_orientation'] = molrec['fix_orientation']
     else:
@@ -79,12 +82,15 @@ def to_schema(molrec, dtype, units='Angstrom', return_type='json'):
         # hmm, psi4/qcdb for provenance or does psi molrec need a passthrough field to preserve?
         #qcschema['provenance'] creator, version, routine
 
-    qcschema = unnp(qcschema)
+    if not np_out:
+        qcschema = unnp(qcschema)
 
-    if return_type == 'json':
-        return json.dumps(qcschema)
-    elif return_type == 'yaml':
-        import yaml
-        return yaml.dump(qcschema)
-    else:
-        raise ValidationError("""Return type ({}) not recognized.""".format(return_type))
+    return qcschema
+
+    #if return_type == 'json':
+    #    return json.dumps(qcschema)
+    #elif return_type == 'yaml':
+    #    import yaml
+    #    return yaml.dump(qcschema)
+    #else:
+    #    raise ValidationError("""Return type ({}) not recognized.""".format(return_type))
