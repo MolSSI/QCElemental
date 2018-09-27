@@ -10,202 +10,78 @@ co60ghost = (60, 27, 'Co', 59.93381630, False, '')
 co_unspecified = (-1, 27, 'Co', 60.6, True, '')
 
 
-def test_reconcile_nucleus_1():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(E='co')
+@pytest.mark.parametrize("inp,expected", [
+    ({'E': 'co'}, co_dominant),
+    ({'Z': 27}, co_dominant),
+    ({'A': 59, 'Z': 27}, co_dominant),
+    ({'E': 'cO', 'mass': 58.93319429}, co_dominant),
+    ({'A': 59, 'Z': 27, 'E': 'CO'}, co_dominant),
+    ({'A': 59, 'E': 'cO', 'mass': 58.93319429}, co_dominant),
+    ({'label': 'co'}, co_dominant),
+    ({'label': '59co'}, co_dominant),
+    ({'label': 'co@58.93319429'}, co_dominant),
+    ({'A': 59, 'Z': 27, 'E': 'cO', 'mass': 58.93319429, 'label': 'co@58.93319429'}, co_dominant),
+    ({'A': 59, 'Z': 27, 'E': 'cO', 'mass': 58.93319429, 'label': '27@58.93319429'}, co_dominant),
+    ({'label': '27'}, co_dominant),
+    ({'label': 'co_miNe'}, co_dominant_mine),
+    ({'label': 'co_mIne@58.93319429'}, co_dominant_mine),
+    ({'E': 'cO', 'mass': 58.933}, co_dominant_shortmass),
+    ({'label': 'cO@58.933'}, co_dominant_shortmass),
+    ({'E': 'Co', 'A': 60}, co60),
+    ({'Z': 27, 'A': 60, 'real': True}, co60),
+    ({'E': 'Co', 'A': 60}, co60),
+    ({'Z': 27, 'mass': 59.93381630}, co60),
+    ({'A': 60, 'Z': 27, 'mass': 59.93381630}, co60),
+    ({'label': '60Co' }, co60),
+    ({'label': '27', 'mass': 59.93381630}, co60),
+    ({'label': 'Co', 'mass': 59.93381630}, co60),
+    ({'A': 60, 'label': 'Co'}, co60),
+    ({'mass': 60.6, 'Z': 27}, co_unspecified),
+    ({'mass': 60.6, 'E': 'Co'}, co_unspecified),
+    ({'mass': 60.6, 'label': '27'}, co_unspecified),
+    ({'label': 'Co@60.6'}, co_unspecified),
+    ({'E': 'Co', 'A': 60, 'real': False}, co60ghost),
+    ({'A': 60, 'Z': 27, 'mass': 59.93381630, 'real': 0}, co60ghost),
+    ({'label': '@60Co'}, co60ghost),
+    ({'label': 'Gh(27)', 'mass': 59.93381630}, co60ghost),
+    ({'label': '@Co', 'mass': 59.93381630}, co60ghost),
+    ({'A': 60, 'label': 'Gh(Co)'}, co60ghost),
+])  # yapf: disable
+def test_reconcile_nucleus(inp, expected):
+    assert expected == qcelemental.molparse.reconcile_nucleus(**inp)
 
 
-def test_reconcile_nucleus_2():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(Z=27)
-
-
-def test_reconcile_nucleus_3():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(A=59, Z=27)
-
-
-def test_reconcile_nucleus_4():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(E='cO', mass=58.93319429)
-
-
-def test_reconcile_nucleus_5():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(A=59, Z=27, E='CO')
-
-
-def test_reconcile_nucleus_6():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(A=59, E='cO', mass=58.93319429)
-
-
-def test_reconcile_nucleus_7():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(label='co')
-
-
-def test_reconcile_nucleus_8():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(label='59co')
-
-
-def test_reconcile_nucleus_9():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(label='co@58.93319429')
-
-
-def test_reconcile_nucleus_10():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(
-        A=59, Z=27, E='cO', mass=58.93319429, label='co@58.93319429')
-
-
-def test_reconcile_nucleus_11():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(
-        A=59, Z=27, E='cO', mass=58.93319429, label='27@58.93319429')
-
-
-def test_reconcile_nucleus_12():
-    assert co_dominant == qcelemental.molparse.reconcile_nucleus(label='27')
-
-
-def test_reconcile_nucleus_13():
-    assert co_dominant_mine == qcelemental.molparse.reconcile_nucleus(label='co_miNe')
-
-
-def test_reconcile_nucleus_14():
-    assert co_dominant_mine == qcelemental.molparse.reconcile_nucleus(label='co_mIne@58.93319429')
-
-
-def test_reconcile_nucleus_15():
-    assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(E='cO', mass=58.933)
-
-
-def test_reconcile_nucleus_16():
-    assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(label='cO@58.933')
-
-
-def test_reconcile_nucleus_17():
+@pytest.mark.parametrize("inp", [
+    {'E': 'cO', 'mass': 58.933, 'mtol': 1.e-4},
+    {'label': '27@58.933', 'mtol': 1.e-4},
+])  # yapf: disable
+def test_reconcile_nucleus_assertionerror(inp):
     with pytest.raises(AssertionError):
-        assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(E='cO', mass=58.933, mtol=1.e-4)
+        assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(**inp)
 
 
-def test_reconcile_nucleus_18():
-    with pytest.raises(AssertionError):
-        assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(label='27@58.933', mtol=1.e-4)
-
-
-def test_reconcile_nucleus_19():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(E='Co', A=60)
-
-
-def test_reconcile_nucleus_20():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(Z=27, A=60, real=True)
-
-
-def test_reconcile_nucleus_21():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(E='Co', A=60)
-
-
-def test_reconcile_nucleus_22():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(Z=27, mass=59.93381630)
-
-
-def test_reconcile_nucleus_23():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(A=60, Z=27, mass=59.93381630)
-
-
-def test_reconcile_nucleus_24():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(label='60Co')
-
-
-def test_reconcile_nucleus_25():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(label='27', mass=59.93381630)
-
-
-def test_reconcile_nucleus_26():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(label='Co', mass=59.93381630)
-
-
-def test_reconcile_nucleus_27():
-    assert co60 == qcelemental.molparse.reconcile_nucleus(A=60, label='Co')
-
-
-def test_reconcile_nucleus_28():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(E='Co', A=60, real=False)
-
-
-def test_reconcile_nucleus_29():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(A=60, Z=27, mass=59.93381630, real=0)
-
-
-def test_reconcile_nucleus_30():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(label='@60Co')
-
-
-def test_reconcile_nucleus_31():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(label='Gh(27)', mass=59.93381630)
-
-
-def test_reconcile_nucleus_32():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(label='@Co', mass=59.93381630)
-
-
-def test_reconcile_nucleus_33():
-    assert co60ghost == qcelemental.molparse.reconcile_nucleus(A=60, label='Gh(Co)')
-
-
-def test_reconcile_nucleus_34():
-    assert co_unspecified == qcelemental.molparse.reconcile_nucleus(mass=60.6, Z=27)
-
-
-def test_reconcile_nucleus_35():
-    assert co_unspecified == qcelemental.molparse.reconcile_nucleus(mass=60.6, E='Co')
-
-
-def test_reconcile_nucleus_36():
-    assert co_unspecified == qcelemental.molparse.reconcile_nucleus(mass=60.6, label='27')
-
-
-def test_reconcile_nucleus_37():
-    assert co_unspecified == qcelemental.molparse.reconcile_nucleus(label='Co@60.6')
-
-
-def test_reconcile_nucleus_38():
-    with pytest.raises(qcelemental.ValidationError):
-        assert co_unspecified == qcelemental.molparse.reconcile_nucleus(mass=60.6, Z=27, A=61)
-
-
-def test_reconcile_nucleus_39():
+@pytest.mark.parametrize("inp", [
+    {'A': 80, 'Z': 27 },
+    {'Z': -27, 'mass': 200, 'nonphysical': True},
+])  # yapf: disable
+def test_reconcile_nucleus_notanelementerror(inp):
     with pytest.raises(qcelemental.NotAnElementError):
-        qcelemental.molparse.reconcile_nucleus(A=80, Z=27)
-
-
-def test_reconcile_nucleus_40():
-    with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(Z=27, mass=200)
+        qcelemental.molparse.reconcile_nucleus(**inp)
 
 
 def test_reconcile_nucleus_41():
     qcelemental.molparse.reconcile_nucleus(Z=27, mass=200, nonphysical=True)
 
 
-def test_reconcile_nucleus_42():
+@pytest.mark.parametrize("inp", [
+    {'mass': 60.6, 'Z': 27, 'A': 61},
+    {'Z': 27, 'mass': 200 },
+    {'Z': 27, 'mass': -200, 'nonphysical': True},
+    {'Z': 1, 'label': 'he'},
+    {'A': 4, 'label': '3he'},
+    {'label': '@U', 'real': True},
+    {'label': 'U', 'real': False},
+])  # yapf: disable
+def test_reconcile_nucleus_validationerror(inp):
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(Z=27, mass=-200, nonphysical=True)
-
-
-def test_reconcile_nucleus_43():
-    with pytest.raises(qcelemental.NotAnElementError):
-        qcelemental.molparse.reconcile_nucleus(Z=-27, mass=200, nonphysical=True)
-
-
-def test_reconcile_nucleus_44():
-    with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(Z=1, label='he')
-
-
-def test_reconcile_nucleus_45():
-    with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(A=4, label='3he')
-
-
-def test_reconcile_nucleus_46():
-    with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(label='@U', real=True)
-
-
-def test_reconcile_nucleus_47():
-    with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.reconcile_nucleus(label='U', real=False)
+        qcelemental.molparse.reconcile_nucleus(**inp)

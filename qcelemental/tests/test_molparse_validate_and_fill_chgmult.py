@@ -5,286 +5,101 @@ import numpy as np
 
 import qcelemental
 
-# system-shorthand   tot-chg, frag-chg, tot-mult, frag-mult         expected final tot/frag chg/mult
+# (system-shorthand, tot-chg, frag-chg, tot-mult, frag-mult), (expected_final_tot-chg, frag-chg, tot-mult, frag-mult)
 
 
-def test_validate_and_fill_chgmult_1():
-    chgmult_tester(['He', 0, [0], 1, [1], (0, [0], 1, [1])])
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        (('He', 0, [0], 1, [1]), (0, [0], 1, [1])),  # 1
+        (('He', None, [None], None, [None]), (0, [0], 1, [1])),  # 2
+        (('He/He', None, [None, None], None, [None, None]), (0, [0, 0], 1, [1, 1])),  # 3
+        (('He/He', 2, [None, None], None, [None, None]), (2, [2, 0], 1, [1, 1])),  # 4
+        (('He/He', None, [2, None], None, [None, None]), (2, [2, 0], 1, [1, 1])),  # 5
+        (('He/He', 0, [2, None], None, [None, None]), (0, [2, -2], 1, [1, 1])),  # 6
+        (('Ne/He/He', -2, [None, 2, None], None, [None, None, None]), (-2, [-4, 2, 0], 1, [1, 1, 1])),  # 7
+        (('Ne/He/He', 2, [None, -2, None], None, [None, None, None]), (2, [4, -2, 0], 1, [1, 1, 1])),  # 8
+        (('He/He/Ne', 2, [None, -2, None], None, [None, None, None]), (2, [0, -2, 4], 1, [1, 1, 1])),  # 9
+        (('He/He/Ne', 2, [2, -2, None], None, [None, None, None]), (2, [2, -2, 2], 1, [1, 1, 1])),  # 11
+        (('He/He', None, [-2, 2], None, [None, None]), (0, [-2, 2], 1, [1, 1])),  # 12
+        (('He/He', None, [None, -2], None, [None, None]), (-2, [0, -2], 1, [1, 1])),  # 13
+        (('Ne/Ne', 0, [None, 4], None, [None, None]), (0, [-4, 4], 1, [1, 1])),  # 14
+        (('He/He/He', 4, [2, None, None], None, [None, None, None]), (4, [2, 2, 0], 1, [1, 1, 1])),  # 15
+        (('He/He', 0, [-2, 2], None, [None, None]), (0, [-2, 2], 1, [1, 1])),  # 16
+        (('He', None, [None], None, [1]), (0, [0], 1, [1])),  # 19
+        (('He', None, [None], None, [3]), (0, [0], 3, [3])),  # 21
+        (('He', None, [-1], None, [2]), (-1, [-1], 2, [2])),  # 23
+        (('He/He', None, [None, None], None, [1, 1]), (0, [0, 0], 1, [1, 1])),  # 25
+        (('He/He', None, [None, None], None, [3, 1]), (0, [0, 0], 3, [3, 1])),  # 26
+        (('He/He', None, [None, None], None, [1, 3]), (0, [0, 0], 3, [1, 3])),  # 27
+        (('He/He', None, [None, None], None, [3, 3]), (0, [0, 0], 5, [3, 3])),  # 28
+        (('He/He', None, [None, None], 3, [3, 3]), (0, [0, 0], 3, [3, 3])),  # 29
+        (('H', None, [None], None, [None]), (0, [0], 2, [2])),  # 31
+        (('H', 1, [None], None, [None]), (1, [1], 1, [1])),  # 32
+        (('H', None, [-1], None, [None]), (-1, [-1], 1, [1])),  # 33
+        (('funnyH', None, [None], None, [None]), (0, [0], 1, [1])),  # 34
+        (('H/H', None, [None, None], None, [None, None]), (0, [0, 0], 3, [2, 2])),  # 36
+        (('H/He', None, [None, None], None, [None, None]), (0, [0, 0], 2, [2, 1])),  # 37
+        (('H/He', None, [1, 1], None, [None, None]), (2, [1, 1], 2, [1, 2])),  # 38
+        (('H/He', -2, [-1, None], None, [None, None]), (-2, [-1, -1], 2, [1, 2])),  # 39
+        (('H/He/Na/Ne', None, [1, None, 1, None], None, [None, None, None, None]),
+         (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 40
+        (('H/He/Na/Ne', None, [-1, None, 1, None], None, [None, None, None, None]),
+         (0, [-1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 41
+        (('H/He/Na/Ne', 2, [None, None, 1, None], None, [None, None, None, None]),
+         (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 42
+        (('H/He/Na/Ne', 3, [None, None, 1, None], None, [None, None, None, None]),
+         (3, [0, 2, 1, 0], 2, [2, 1, 1, 1])),  # 43
+        (('H/He/Na/Ne', None, [None, 1, 0, 1], None, [None, None, None, None]),
+         (2, [0, 1, 0, 1], 5, [2, 2, 2, 2])),  # 47
+        (('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, None, None]),
+         (1, [0, 1, 0, 0], 4, [2, 2, 2, 1])),  # 48
+        (('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, 4, None]),
+         (1, [0, 1, 0, 0], 6, [2, 2, 4, 1])),  # 49
+        (('He/He/He', 0, [None, None, 1], None, [1, None, 2]), (0, [0, -1, 1], 3, [1, 2, 2])),  # 50
+        (('N/N/N', None, [1, 1, 1], 3, [None, 3, None]), (3, [1, 1, 1], 3, [1, 3, 1])),  # 51
+        (('N/N/N', None, [1, 1, 1], 3, [None, None, None]), (3, [1, 1, 1], 3, [3, 1, 1])),  # 52
+        (('N/N/N', 1, [None, -1, None], 3, [None, None, 2]), (1, [2, -1, 0], 3, [2, 1, 2])),  # 54
+        (('N/Ne/N', 1, [None, None, None], 4, [None, 3, None]), (1, [1, 0, 0], 4, [1, 3, 2])),  # 55
+        (('N/Ne/N', None, [None, None, 1], 4, [None, 3, None]), (1, [0, 0, 1], 4, [2, 3, 1])),  # 56
+        (('He/He', None, [-1, 1], None, [None, None]), (0, [-1, 1], 3, [2, 2])),  # 57
+        (('He/Gh', None, [2, None], None, [None, None]), (2, [2, 0], 1, [1, 1])),  # 61
+        (('Gh/He/Ne', 2, [None, -2, None], None, [None, None, None]), (2, [0, -2, 4], 1, [1, 1, 1])),  # 63
+        (('Gh/He/Gh', 1, [None, None, None], None, [None, None, None]), (1, [0, 1, 0], 2, [1, 2, 1])),  # 64
+    ])
+def test_validate_and_fill_chgmult(inp, expected):
+    system = _systemtranslator[inp[0]]
+    ans = qcelemental.molparse.validate_and_fill_chgmult(
+        system[0], system[1], inp[1], inp[2], inp[3], inp[4], verbose=0)
+    assert compare_integers(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(
+        *inp, expected))
 
 
-def test_validate_and_fill_chgmult_2():
-    chgmult_tester(['He', None, [None], None, [None], (0, [0], 1, [1])])
+@pytest.mark.parametrize(
+    "inp",
+    [
+        ('He/He/Ne', 2, [None, -2, 0], None, [None, None, None]),  # 10
+        ('He/He', 0, [-2, -2], None, [None, None]),  # 17
+        ('He', None, [None], 0, [None]),  # 18
+        ('He', None, [None], None, [2]),  # 20
+        ('He', None, [None], None, [5]),  # 22
+        ('He', None, [-2], None, [2]),  # 24
+        ('He/He', None, [None, None], 2, [3, 3]),  # 30
+        ('funnierH', None, [None], None, [None]),  # 35
+        ('H/He', None, [1, None], None, [2, None]),  # 44
+        ('H/He', None, [None, 0], None, [None, 2]),  # 45
+        ('H/He', None, [None, -1], None, [None, 3]),  # 46
+        ('N/N/N', None, [None, None, None], 3, [None, None, 2]),  # 53
+        ('Gh', 1, [None], None, [None]),  # 58
+        ('Gh', -1, [None], None, [None]),  # 59
+        ('Gh', None, [None], 3, [None]),  # 60
+        ('Gh/He', None, [2, None], None, [None, None]),  # 62
+    ])
+def test_validate_and_fill_chgmult_irreconcilable(inp):
+    system = _systemtranslator[inp[0]]
 
-
-def test_validate_and_fill_chgmult_3():
-    chgmult_tester(['He/He', None, [None, None], None, [None, None], (0, [0, 0], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_4():
-    chgmult_tester(['He/He', 2, [None, None], None, [None, None], (2, [2, 0], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_5():
-    chgmult_tester(['He/He', None, [2, None], None, [None, None], (2, [2, 0], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_6():
-    chgmult_tester(['He/He', 0, [2, None], None, [None, None], (0, [2, -2], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_7():
-    chgmult_tester(['Ne/He/He', -2, [None, 2, None], None, [None, None, None], (-2, [-4, 2, 0], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_8():
-    chgmult_tester(['Ne/He/He', 2, [None, -2, None], None, [None, None, None], (2, [4, -2, 0], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_9():
-    chgmult_tester(['He/He/Ne', 2, [None, -2, None], None, [None, None, None], (2, [0, -2, 4], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_10():
     with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He/He/Ne', 2, [None, -2, 0], None, [None, None, None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_11():
-    chgmult_tester(['He/He/Ne', 2, [2, -2, None], None, [None, None, None], (2, [2, -2, 2], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_12():
-    chgmult_tester(['He/He', None, [-2, 2], None, [None, None], (0, [-2, 2], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_13():
-    chgmult_tester(['He/He', None, [None, -2], None, [None, None], (-2, [0, -2], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_14():
-    chgmult_tester(['Ne/Ne', 0, [None, 4], None, [None, None], (0, [-4, 4], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_15():
-    chgmult_tester(['He/He/He', 4, [2, None, None], None, [None, None, None], (4, [2, 2, 0], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_16():
-    chgmult_tester(['He/He', 0, [-2, 2], None, [None, None], (0, [-2, 2], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_17():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He/He', 0, [-2, -2], None, [None, None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_18():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He', None, [None], 0, [None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_19():
-    chgmult_tester(['He', None, [None], None, [1], (0, [0], 1, [1])])
-
-
-def test_validate_and_fill_chgmult_20():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He', None, [None], None, [2], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_21():
-    chgmult_tester(['He', None, [None], None, [3], (0, [0], 3, [3])])
-
-
-def test_validate_and_fill_chgmult_22():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He', None, [None], None, [5], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_23():
-    chgmult_tester(['He', None, [-1], None, [2], (-1, [-1], 2, [2])])
-
-
-def test_validate_and_fill_chgmult_24():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He', None, [-2], None, [2], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_25():
-    chgmult_tester(['He/He', None, [None, None], None, [1, 1], (0, [0, 0], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_26():
-    chgmult_tester(['He/He', None, [None, None], None, [3, 1], (0, [0, 0], 3, [3, 1])])
-
-
-def test_validate_and_fill_chgmult_27():
-    chgmult_tester(['He/He', None, [None, None], None, [1, 3], (0, [0, 0], 3, [1, 3])])
-
-
-def test_validate_and_fill_chgmult_28():
-    chgmult_tester(['He/He', None, [None, None], None, [3, 3], (0, [0, 0], 5, [3, 3])])
-
-
-def test_validate_and_fill_chgmult_29():
-    chgmult_tester(['He/He', None, [None, None], 3, [3, 3], (0, [0, 0], 3, [3, 3])])
-
-
-def test_validate_and_fill_chgmult_30():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['He/He', None, [None, None], 2, [3, 3], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_31():
-    chgmult_tester(['H', None, [None], None, [None], (0, [0], 2, [2])])
-
-
-def test_validate_and_fill_chgmult_32():
-    chgmult_tester(['H', 1, [None], None, [None], (1, [1], 1, [1])])
-
-
-def test_validate_and_fill_chgmult_33():
-    chgmult_tester(['H', None, [-1], None, [None], (-1, [-1], 1, [1])])
-
-
-def test_validate_and_fill_chgmult_34():
-    chgmult_tester(['funnyH', None, [None], None, [None], (0, [0], 1, [1])])
-
-
-def test_validate_and_fill_chgmult_35():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['funnierH', None, [None], None, [None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_36():
-    chgmult_tester(['H/H', None, [None, None], None, [None, None], (0, [0, 0], 3, [2, 2])])
-
-
-def test_validate_and_fill_chgmult_37():
-    chgmult_tester(['H/He', None, [None, None], None, [None, None], (0, [0, 0], 2, [2, 1])])
-
-
-def test_validate_and_fill_chgmult_38():
-    chgmult_tester(['H/He', None, [1, 1], None, [None, None], (2, [1, 1], 2, [1, 2])])
-
-
-def test_validate_and_fill_chgmult_39():
-    chgmult_tester(['H/He', -2, [-1, None], None, [None, None], (-2, [-1, -1], 2, [1, 2])])
-
-
-def test_validate_and_fill_chgmult_40():
-    chgmult_tester(
-        ['H/He/Na/Ne', None, [1, None, 1, None], None, [None, None, None, None], (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_41():
-    chgmult_tester(
-        ['H/He/Na/Ne', None, [-1, None, 1, None], None, [None, None, None, None], (0, [-1, 0, 1, 0], 1, [1, 1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_42():
-    chgmult_tester(
-        ['H/He/Na/Ne', 2, [None, None, 1, None], None, [None, None, None, None], (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_43():
-    chgmult_tester(
-        ['H/He/Na/Ne', 3, [None, None, 1, None], None, [None, None, None, None], (3, [0, 2, 1, 0], 2, [2, 1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_44():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['H/He', None, [1, None], None, [2, None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_45():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['H/He', None, [None, 0], None, [None, 2], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_46():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['H/He', None, [None, -1], None, [None, 3], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_47():
-    chgmult_tester(
-        ['H/He/Na/Ne', None, [None, 1, 0, 1], None, [None, None, None, None], (2, [0, 1, 0, 1], 5, [2, 2, 2, 2])])
-
-
-def test_validate_and_fill_chgmult_48():
-    chgmult_tester(
-        ['H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, None, None], (1, [0, 1, 0, 0], 4, [2, 2, 2, 1])])
-
-
-def test_validate_and_fill_chgmult_49():
-    chgmult_tester(
-        ['H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, 4, None], (1, [0, 1, 0, 0], 6, [2, 2, 4, 1])])
-
-
-def test_validate_and_fill_chgmult_50():
-    chgmult_tester(['He/He/He', 0, [None, None, 1], None, [1, None, 2], (0, [0, -1, 1], 3, [1, 2, 2])])
-
-
-def test_validate_and_fill_chgmult_51():
-    chgmult_tester(['N/N/N', None, [1, 1, 1], 3, [None, 3, None], (3, [1, 1, 1], 3, [1, 3, 1])])
-
-
-def test_validate_and_fill_chgmult_52():
-    chgmult_tester(['N/N/N', None, [1, 1, 1], 3, [None, None, None], (3, [1, 1, 1], 3, [3, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_53():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['N/N/N', None, [None, None, None], 3, [None, None, 2], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_54():
-    chgmult_tester(['N/N/N', 1, [None, -1, None], 3, [None, None, 2], (1, [2, -1, 0], 3, [2, 1, 2])])
-
-
-def test_validate_and_fill_chgmult_55():
-    chgmult_tester(['N/Ne/N', 1, [None, None, None], 4, [None, 3, None], (1, [1, 0, 0], 4, [1, 3, 2])])
-
-
-def test_validate_and_fill_chgmult_56():
-    chgmult_tester(['N/Ne/N', None, [None, None, 1], 4, [None, 3, None], (1, [0, 0, 1], 4, [2, 3, 1])])
-
-
-def test_validate_and_fill_chgmult_57():
-    chgmult_tester(['He/He', None, [-1, 1], None, [None, None], (0, [-1, 1], 3, [2, 2])])
-
-
-def test_validate_and_fill_chgmult_58():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['Gh', 1, [None], None, [None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_59():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['Gh', -1, [None], None, [None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_60():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['Gh', None, [None], 3, [None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_61():
-    chgmult_tester(['He/Gh', None, [2, None], None, [None, None], (2, [2, 0], 1, [1, 1])])
-
-
-def test_validate_and_fill_chgmult_62():
-    with pytest.raises(qcelemental.ValidationError):
-        chgmult_tester(['Gh/He', None, [2, None], None, [None, None], 'Irreconcilable'])
-
-
-def test_validate_and_fill_chgmult_63():
-    chgmult_tester(['Gh/He/Ne', 2, [None, -2, None], None, [None, None, None], (2, [0, -2, 4], 1, [1, 1, 1])])
-
-
-def test_validate_and_fill_chgmult_64():
-    chgmult_tester(['Gh/He/Gh', 1, [None, None, None], None, [None, None, None], (1, [0, 1, 0], 2, [1, 2, 1])])
+        qcelemental.molparse.validate_and_fill_chgmult(system[0], system[1], inp[1], inp[2], inp[3], inp[4], verbose=0)
 
 
 # Notes
@@ -320,10 +135,3 @@ _systemtranslator = {
     'Gh/He/Ne': (np.array([0, 0, 2, 10]), np.array([2, 3])),
     'Gh/He/Gh': (np.array([0, 2, 0]), np.array([1, 2])),
 }
-
-
-def chgmult_tester(test):
-    system = _systemtranslator[test[0]]
-    ans = qcelemental.molparse.validate_and_fill_chgmult(
-        system[0], system[1], test[1], test[2], test[3], test[4], verbose=0)
-    assert compare_integers(1, ans == dict(zip(_keys, test[5])), """{}: {}, {}, {}, {} --> {}""".format(*test))
