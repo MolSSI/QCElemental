@@ -3,8 +3,9 @@ Main init for QCElemental
 """
 
 from .datum import Datum
-from .exceptions import NotAnElementError
+from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError)
 from . import units
+from . import molparse
 
 # Handle singletons
 from .periodic_table import PeriodicTable
@@ -15,7 +16,6 @@ constants = PhysicalConstants()
 
 del PeriodicTable
 del PhysicalConstants
-
 
 # Handle versioneer
 from ._version import get_versions
