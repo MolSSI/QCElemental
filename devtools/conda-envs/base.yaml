@@ -1,12 +1,10 @@
 name: test
 channels:
   - default
-  - conda-forge
 dependencies:
     # Base depends
   - numpy
   - nomkl
-  - pint
 
     # Testing
   - pytest
@@ -15,3 +13,4 @@ dependencies:
     # Pip depends
   - pip:
     - codecov
+    - pint
