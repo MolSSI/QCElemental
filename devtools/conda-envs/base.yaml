@@ -1,6 +1,7 @@
 name: test
 channels:
   - default
+  - conda-forge
 dependencies:
     # Base depends
   - numpy
