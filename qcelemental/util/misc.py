@@ -4,11 +4,10 @@ import math
 
 import numpy as np
 
-import qcelemental as qcel
+from ..units import conversion_factor
 
 if sys.version_info >= (3, 0):
     basestring = str
-
 
 def distance_matrix(a, b):
     """Euclidean distance matrix between rows of arrays `a` and `b`. Equivalent to
@@ -70,7 +69,7 @@ def standardize_efp_angles_units(units, geom_hints):
             return radang
 
     if units == 'Angstrom':
-        iutau = 1. / qcel.constants.bohr2angstroms
+        iutau = conversion_factor('angstroms', 'bohr')
     else:
         iutau = 1.
 
