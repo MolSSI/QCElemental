@@ -28,6 +28,18 @@ class ValidationError(Exception):
         self.message = 'Input Error: {}'.format(msg)
 
 
+class ChoicesError(Exception):
+    """Error called for problems with syntax input file. Prints
+    error message *msg* to standard output stream. Also attaches
+    `choices` dictionary with options to proceed.
+
+    """
+
+    def __init__(self, msg, choices=None):
+        self.message = 'Input Error: {}'.format(msg)
+        self.choices = {} if choices is None else choices
+
+
 class FeatureNotImplemented(Exception):
     """Error called for functions defined but not yet implemented.
     Also for functions defined that will never be implemented.

@@ -24,11 +24,12 @@ from ..exceptions import *
 
 
 class PubChemObj():
-    def __init__(self, cid, mf, iupac):
+    def __init__(self, cid, mf, iupac, charge):
         self.url = 'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi'
         self.cid = cid
         self.mf = mf
         self.iupac = iupac
+        self.molecular_charge = charge
         self.natom = 0
         self.dataSDF = ''
 
@@ -116,12 +117,25 @@ class PubChemObj():
 
 def get_pubchem_results(name):
     """Function to query the PubChem database for molecules matching the
-    input string. Builds a PubChem object if found.
+    input string. Builds a PubChemObj object if found.
 
     """
-    print("\tSearching PubChem database for %s" % (name))
-    url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/%s/property/IUPACName,MolecularFormula/JSON' % quote(
-        name)
+    if name.isdigit():
+        print("\tSearching PubChem database for CID {}".format(name))
+        url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/property/IUPACName,MolecularFormula,Charge/JSON'.format(
+            name)
+
+    else:
+        if name.endswith('*'):
+            name = name[:-1]
+            loose = True
+        else:
+            loose = False
+        print("\tSearching PubChem database for {} ({} returned)".format(
+            name, 'all matches' if loose else 'single best match'))
+        url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{}/property/IUPACName,MolecularFormula,Charge/JSON?name_type={}'.format(
+            quote(name), 'word' if loose else 'complete')
+
     try:
         response = urlopen(url)
     except URLError as e:
@@ -131,7 +145,9 @@ def get_pubchem_results(name):
     data = json.loads(response.read().decode('utf-8'))
     results = []
     for d in data['PropertyTable']['Properties']:
-        pubobj = PubChemObj(d['CID'], d['IUPACName'], d['IUPACName'])
+        if 'IUPACName' not in d:
+            continue
+        pubobj = PubChemObj(d['CID'], d['IUPACName'], d['IUPACName'], d['Charge'])
         results.append(pubobj)
 
     print("\tFound {} result(s)".format(len(results)))
@@ -141,12 +157,15 @@ def get_pubchem_results(name):
 if __name__ == "__main__":
     # * comment "..exceptions" line above
     # * sulfonate below has no 3D structure available
+    # * XYZ printing for tropolone* suppressed b/c too many and some have no 3D
 
     for inp in [
-            "1-methoxy-4-[(E)-prop-1-enyl]benzene", "4-[bis(4-hydroxyphenyl)methyl]phenol", "sodium benzenesulfonate"
+            "1-methoxy-4-[(E)-prop-1-enyl]benzene", "4-[bis(4-hydroxyphenyl)methyl]phenol", "tropolone", "tropolone*",
+            "sodium benzenesulfonate"
     ]:  # pragma: no cover
         obj = get_pubchem_results(inp)
 
         for r in obj:
-            print(r)
-            print(r.get_molecule_string())
+            print(r, end='')
+            if inp != 'tropolone*':
+                print(r.get_molecule_string())

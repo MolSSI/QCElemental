@@ -252,13 +252,16 @@ ans4 = {
     'elbl': ['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H'],
     'units':
     'Angstrom',
+    'molecular_charge':
+    0.0,
     'fragment_separators': [],
     'fragment_charges': [None],
     'fragment_multiplicities': [None],
     'fragment_files': [],
     'geom_hints': [],
     'hint_types': [],
-    'name': 'IUPAC benzene',
+    'name':
+    'IUPAC benzene'
 }
 
 fullans4 = {
@@ -296,7 +299,8 @@ fullans4 = {
     1,
     'fragment_charges': [0.],
     'fragment_multiplicities': [1],
-    'name': 'IUPAC benzene',
+    'name':
+    'IUPAC benzene'
 }
 
 
@@ -353,6 +357,82 @@ def test_psi4_pubchem_4f():
 
     with pytest.raises(qcelemental.ValidationError):
         qcelemental.molparse.from_string(subject, return_processed=True)
+
+
+def test_psi4_pubchem_4g():
+    subject = """
+    #pubchem: gobbledegook
+    #pubchem: c6h12o
+    #pubchem: formaldehyde*
+    pubchem: tropolone*
+"""
+
+    with pytest.raises(qcelemental.ChoicesError):
+        qcelemental.molparse.from_string(subject, return_processed=True)
+
+    try:
+        qcelemental.molparse.from_string(subject, return_processed=True)
+    except qcelemental.ChoicesError as e:
+        assert e.choices[10789] == '2-hydroxycyclohepta-2,4,6-trien-1-one'
+        assert e.choices[100993904] == '5-deuterio-2-hydroxycyclohepta-2,4,6-trien-1-one'
+
+
+subject13 = """pubchem :ammonium\n"""
+
+ans13 = {
+    'name':
+    'IUPAC azanium',
+    'molecular_charge':
+    1.0,
+    'units':
+    'Angstrom',
+    'fragment_files': [],
+    'hint_types': [],
+    'geom_hints': [],
+    'elbl': ['N', 'H', 'H', 'H', 'H'],
+    'fragment_separators': [],
+    'fragment_charges': [None],
+    'fragment_multiplicities': [None],
+    'geom': [
+        0.0, 0.0, 0.0, 0.9645, 0.2796, 0.2138, 0.0075, -0.886, -0.5188, -0.5235, -0.1202, 0.8751, -0.4486, 0.7266,
+        -0.5701
+    ]
+}
+
+fullans13 = {
+    'name': 'IUPAC azanium',
+    'units': 'Angstrom',
+    'geom': np.array([0., 0., 0., 0.9645, 0.2796, 0.2138, 0.0075, -0.886, -0.5188, -0.5235, -0.1202, 0.8751, -0.4486, 0.7266, -0.5701]),
+    'elea': np.array([14, 1, 1, 1, 1]),
+    'elez': np.array([7, 1, 1, 1, 1]),
+    'elem': np.array(['N', 'H', 'H', 'H', 'H']),
+    'mass': np.array([14.003074, 1.00782503, 1.00782503, 1.00782503, 1.00782503]),
+    'real': np.array([True, True, True, True, True]),
+    'elbl': np.array(['', '', '', '', '']),
+    'fragment_separators': [],
+    'molecular_charge': 1.0,
+    'fragment_charges': [1.0],
+    'molecular_multiplicity': 1,
+    'fragment_multiplicities': [1],
+    'fix_com': False,
+    'fix_orientation': False
+}  # yapf: disable
+
+
+def test_pubchem_13h():
+    subject = subject13
+
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+
+
+def test_pubchem_13i():
+    subject = "PubChem:223"
+
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
 subject5 = """
@@ -668,6 +748,14 @@ def test_xyzp_qm_7d():
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_dicts(ans, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
     assert compare_molrecs(fullans, final['qm'], 4, sys._getframe().f_code.co_name + ': full qm')
+
+
+def test_xyzp_qm_7e():
+    subject = subject7.replace('5', '5 ang')
+
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
+    assert compare_dicts(ans7, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    assert compare_molrecs(fullans7, final['qm'], 4, sys._getframe().f_code.co_name + ': full qm')
 
 
 subject8 = """\
@@ -1120,7 +1208,7 @@ def test_qmol_11e():
 
 def test_qmol_11g():
     tnm = sys._getframe().f_code.co_name
-    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True)
+    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, verbose=2)
     assert compare_molrecs(fullans1a, asdf, 4, tnm)
 
 

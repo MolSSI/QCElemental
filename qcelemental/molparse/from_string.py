@@ -123,6 +123,16 @@ def from_string(molstr,
                          fragment_charges, fragment_multiplicities, molecular_charge, molecular_multiplicity
             Inaccessible: name, input_units_to_au
 
+                PubChem
+                -------
+                pubchem : <cid|name|formula> [*]
+
+                A string like the above searches the PubChem database and substitutes the below. Adding the wildcard
+                searches for multiple matches and raises ChoicesError with matches for further consideration attached.
+
+                Specifiable: geom, elem/elez (element identity), units (fixed [A]), molecular_charge,
+                             molecular_multiplicity (fixed singlet), name
+
             EFP Domain
             ----------
             Specifiable: units, fix_com/orientation/symmetry, fragment_files, hint_types, geom_hints
@@ -266,46 +276,34 @@ def _filter_pubchem(string):
     def process_pubchem(matchobj):
         pubsearch = matchobj.group('pubsearch')
 
-        if pubsearch.isdigit():
-            # just a number - must be a CID
-            pcobj = pubchem.PubChemObj(int(pubsearch), '', '')
-            xyz = pcobj.get_molecule_string()
-            processed['name'] = 'CID {}'.format(pubsearch)
+        # search pubchem for the provided string
+        try:
+            results = pubchem.get_pubchem_results(pubsearch)
+        except Exception as e:
+            raise ValidationError(e.message)
+
+        if pubsearch.endswith('*'):
+            pubsearch = pubsearch[:-1]
+        if len(results) == 1:
+            # There's only 1 result - use it
+            xyz = results[0].get_molecule_string()
+            processed['name'] = 'IUPAC {}'.format(results[0].name())
+            processed['molecular_charge'] = float(results[0].molecular_charge)
             if 'Input Error' in xyz:
                 raise ValidationError(xyz)
         else:
-            # search pubchem for the provided string
-            try:
-                results = pubchem.get_pubchem_results(pubsearch)
-            except Exception as e:
-                raise ValidationError(e.message)
-
-            if not results:
-                # Nothing!
-                raise ValidationError(
-                    """PubchemError: No results were found when searching PubChem for {}.""".format(pubsearch))
-            elif len(results) == 1:
-                # There's only 1 result - use it
-                xyz = results[0].get_molecule_string()
-                processed['name'] = 'IUPAC {}'.format(results[0].name())
-                if 'Input Error' in xyz:
-                    raise ValidationError(xyz)
-            else:
-                # There are multiple results
-                for result in results:
-                    if result.name().lower() == pubsearch.lower():
-                        # We've found an exact match!
-                        xyz = result.get_molecule_string()
-                        processed['name'] = 'IUPAC {}'.format(result.name())
-                else:
-                    # There are multiple results and none exact. Print and exit
-                    msg = "\tPubchemError\n"
-                    msg += "\tMultiple pubchem results were found. Replace\n\n\t\tpubchem:%s\n\n" % (pubsearch)
-                    msg += "\twith the Chemical ID number or exact name from one of the following and re-run.\n\n"
-                    msg += "\t Chemical ID     IUPAC Name\n\n"
-                    for result in results:
-                        msg += "%s" % (result)
-                    raise ValidationErrror(msg)
+            # There are multiple results -- print and exit
+            # * formerly, this checked for (then used) any exact match, but now (LAB; Sep 2018), disabling that
+            #   since user explicitly added '*' char & "best match" (not available formerly) returned w/o '*'
+            msg = "\tPubchemError\n"
+            msg += "\tMultiple pubchem results were found. Replace\n\n\t\tpubchem:%s\n\n" % (pubsearch)
+            msg += "\twith the Chemical ID number or exact name from one of the following and re-run.\n\n"
+            msg += "\t Chemical ID     IUPAC Name\n\n"
+            ematches = {}
+            for result in results:
+                msg += "%s" % (result)
+                ematches[result.cid] = result.iupac
+            raise ChoicesError(msg, ematches)
 
         # remove PubchemInput first line and assert [A]
         xyz = xyz.replace('PubchemInput', 'units ang')
@@ -415,7 +413,7 @@ def _filter_libefp(string):
         processed['hint_types'].append('xyzabc')
         processed['geom_hints'].append([
             float(matchobj.group('x')), float(matchobj.group('y')), float(matchobj.group('z')),
-            float(matchobj.group('a')), float(matchobj.group('b')), float(matchobj.group('c'))])  # yapf.disable
+            float(matchobj.group('a')), float(matchobj.group('b')), float(matchobj.group('c'))])  # yapf: disable
         return ''
 
     def process_efppoints(matchobj):

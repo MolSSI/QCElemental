@@ -3,7 +3,7 @@ Main init for QCElemental
 """
 
 from .datum import Datum
-from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError)
+from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError, ChoicesError)
 from . import units
 from . import molparse
 
