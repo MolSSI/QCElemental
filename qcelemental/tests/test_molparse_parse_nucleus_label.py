@@ -28,3 +28,11 @@ def test_parse_nucleus_label(inp, expected):
     assert compare_strings(expected['E'], lbl_E, inp + " symbol")
     assert compare_strings(expected['user'], lbl_user, inp + " user")
     assert compare_values(expected['mass'], lbl_mass, 6, inp + " mass", passnone=True)
+
+
+@pytest.mark.parametrize("inp", [
+    '1L1A1B1',
+])
+def test_parse_nucleus_label_error(inp):
+    with pytest.raises(qcelemental.ValidationError):
+        ans = qcelemental.molparse.nucleus.parse_nucleus_label(inp)

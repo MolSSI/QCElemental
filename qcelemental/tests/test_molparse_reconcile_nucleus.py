@@ -6,6 +6,7 @@ co_dominant = (59, 27, 'Co', 58.93319429, True, '')
 co_dominant_mine = (59, 27, 'Co', 58.93319429, True, '_mine')
 co_dominant_shortmass = (59, 27, 'Co', 58.933, True, '')
 co60 = (60, 27, 'Co', 59.93381630, True, '')
+co60_mine = (60, 27, 'Co', 59.93381630, True, '_mine')
 co60ghost = (60, 27, 'Co', 59.93381630, False, '')
 co_unspecified = (-1, 27, 'Co', 60.6, True, '')
 
@@ -17,7 +18,7 @@ co_unspecified = (-1, 27, 'Co', 60.6, True, '')
     ({'E': 'cO', 'mass': 58.93319429}, co_dominant),
     ({'A': 59, 'Z': 27, 'E': 'CO'}, co_dominant),
     ({'A': 59, 'E': 'cO', 'mass': 58.93319429}, co_dominant),
-    ({'label': 'co'}, co_dominant),
+    ({'label': 'co', 'verbose': 2}, co_dominant),
     ({'label': '59co'}, co_dominant),
     ({'label': 'co@58.93319429'}, co_dominant),
     ({'A': 59, 'Z': 27, 'E': 'cO', 'mass': 58.93319429, 'label': 'co@58.93319429'}, co_dominant),
@@ -46,6 +47,8 @@ co_unspecified = (-1, 27, 'Co', 60.6, True, '')
     ({'label': 'Gh(27)', 'mass': 59.93381630}, co60ghost),
     ({'label': '@Co', 'mass': 59.93381630}, co60ghost),
     ({'A': 60, 'label': 'Gh(Co)'}, co60ghost),
+    ({'label': '60co_miNe'}, co60_mine),
+    ({'label': '_miNe', 'A': 59, 'E': 'Co', 'speclabel': False}, co_dominant_mine),
 ])  # yapf: disable
 def test_reconcile_nucleus(inp, expected):
     assert expected == qcelemental.molparse.reconcile_nucleus(**inp)
@@ -81,6 +84,7 @@ def test_reconcile_nucleus_41():
     {'A': 4, 'label': '3he'},
     {'label': '@U', 'real': True},
     {'label': 'U', 'real': False},
+    {'label': '_miNe', 'A': 59, 'E': 'Co', 'speclabel': True},
 ])  # yapf: disable
 def test_reconcile_nucleus_validationerror(inp):
     with pytest.raises(qcelemental.ValidationError):

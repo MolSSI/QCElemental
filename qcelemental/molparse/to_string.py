@@ -156,8 +156,3 @@ def formula_generator(elem):
     """
     counted = collections.Counter(elem)
     return ''.join((el if cnt == 1 else (el + str(cnt))) for el, cnt in sorted(counted.items()))
-
-
-if __name__ == '__main__':
-    formula_generator(['C', 'Ca', 'O', 'O', 'Ag'])
-
