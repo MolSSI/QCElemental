@@ -204,19 +204,19 @@ def from_string(molstr,
             dtype = 'psi4'
         except MoleculeFormatError as err:
             try:
-                molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
-                dtype = 'xyz+'
+                molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
+                dtype = 'xyz'
             except MoleculeFormatError as err:
                 try:
-                    molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
-                    dtype = 'xyz'
+                    molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
+                    dtype = 'xyz+'
                 except MoleculeFormatError as err:
                     try:
                         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
                         dtype = 'psi4+'
                     except MoleculeFormatError as err:
                         raise MoleculeFormatError(
-                            """Unprocessable Molecule remanents under [psi4, xyz+, xyz, psi4+]:\n{}""".format(molstr))
+                            """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr))
     else:
         raise KeyError("Molecule: dtype of %s not recognized.")
 
@@ -269,11 +269,10 @@ def _filter_pubchem(string):
         if pubsearch.isdigit():
             # just a number - must be a CID
             pcobj = pubchem.PubChemObj(int(pubsearch), '', '')
-            try:
-                xyz = pcobj.get_molecule_string()
-                processed['name'] = 'CID {}'.format(pubsearch)
-            except Exception as e:
-                raise ValidationError(e.message)
+            xyz = pcobj.get_molecule_string()
+            processed['name'] = 'CID {}'.format(pubsearch)
+            if 'Input Error' in xyz:
+                raise ValidationError(xyz)
         else:
             # search pubchem for the provided string
             try:
@@ -332,7 +331,7 @@ def _filter_kwargs(name, fix_com, fix_orientation, fix_symmetry):
     if fix_orientation is not None:
         processed['fix_orientation'] = fix_orientation
     if fix_symmetry is not None:
-        processed[' fix_symmetry'] = fix_symmetry
+        processed['fix_symmetry'] = fix_symmetry
 
     return processed
 

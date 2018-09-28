@@ -321,7 +321,7 @@ def test_psi4_pubchem_4c():
 pubchem  : 241
 """
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='IUPAC benzene')
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='IUPAC benzene', verbose=2)
     assert compare_molrecs(ans4, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
     assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
@@ -344,6 +344,15 @@ pubchem : sodium benzenesulfonate
 
     with pytest.raises(qcelemental.ValidationError):
         qcelemental.molparse.from_string(subject)
+
+
+def test_psi4_pubchem_4f():
+    subject = """
+    pubchem: 100000000000000
+"""
+
+    with pytest.raises(qcelemental.ValidationError):
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 subject5 = """
@@ -1139,6 +1148,11 @@ def test_qmol_11p():
     assert compare_molrecs(fullans1a, asdf, 4, tnm)
 
 
+def test_qmol_11q():
+    with pytest.raises(KeyError):
+        qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True, dtype='psi3')
+
+
 #QCELdef test_qmol_12():
 #QCEL    asdf = qcdb.Molecule(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
 #QCEL    assess_mol_11(asdf, 'qcdb.Molecule(geom, elez)')
@@ -1149,3 +1163,53 @@ def test_qmol_11p():
 #QCEL
 #QCEL    asdf2 = qcdb.Molecule(dmol)
 #QCEL    assess_mol_11(asdf, 'qcdb.Molecule(jsondict)')
+
+subject12 = """
+ 0 1 
+ 1  
+ 8 1 0.95
+ O 2 1.40 1 A
+ H 3 0.95 2 A 1 120.0  
+
+A = 105.0
+"""
+
+fullans12 = {
+    'elbl': np.array(['', '', '', '']),
+    'elea': np.array([1, 16, 16, 1]),
+    'elem': np.array(['H', 'O', 'O', 'H']),
+    'elez': np.array([1, 8, 8, 1]),
+    'fix_com': False,
+    'fix_orientation': False,
+    'fragment_charges': [0.0],
+    'fragment_multiplicities': [1],
+    'fragment_separators': [],
+    'geom_unsettled': [[], ['1', '0.95'], ['2', '1.40', '1', 'A'], ['3', '0.95', '2', 'A', '1', '120.0']],
+    'mass': np.array([1.00782503, 15.99491462, 15.99491462, 1.00782503]),
+    'molecular_charge': 0.0,
+    'molecular_multiplicity': 1,
+    'real': np.array([True, True, True, True]),
+    'units': 'Angstrom',
+    'variables': [['A', 105.0]],
+    'fix_symmetry': 'c1'
+}
+ans12 = {
+    'elbl': ['1', '8', 'O', 'H'],
+    'fragment_charges': [0.0],
+    'fragment_files': [],
+    'fragment_multiplicities': [1],
+    'fragment_separators': [],
+    'geom_hints': [],
+    'geom_unsettled': [[], ['1', '0.95'], ['2', '1.40', '1', 'A'], ['3', '0.95', '2', 'A', '1', '120.0']],
+    'hint_types': [],
+    'variables': [('A', '105.0')],
+    'fix_symmetry': 'c1'
+}
+
+
+def test_psi4_qm_12a():
+    subject = subject12
+
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, fix_symmetry='c1')
+    assert compare_dicts(ans12, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    assert compare_molrecs(fullans12, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
