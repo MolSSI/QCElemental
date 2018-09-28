@@ -14,3 +14,4 @@ dependencies:
   - pip:
     - codecov
     - pint
+    - deepdiff
