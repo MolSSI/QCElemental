@@ -63,14 +63,18 @@ import qcelemental
         (('N/Ne/N', 1, [None, None, None], 4, [None, 3, None]), (1, [1, 0, 0], 4, [1, 3, 2])),  # 55
         (('N/Ne/N', None, [None, None, 1], 4, [None, 3, None]), (1, [0, 0, 1], 4, [2, 3, 1])),  # 56
         (('He/He', None, [-1, 1], None, [None, None]), (0, [-1, 1], 3, [2, 2])),  # 57
-        (('He/Gh', None, [2, None], None, [None, None]), (2, [2, 0], 1, [1, 1])),  # 61
+        (('He/Gh', None, [2, None], None, [None, None], {'verbose': 2}), (2, [2, 0], 1, [1, 1])),  # 61
         (('Gh/He/Ne', 2, [None, -2, None], None, [None, None, None]), (2, [0, -2, 4], 1, [1, 1, 1])),  # 63
         (('Gh/He/Gh', 1, [None, None, None], None, [None, None, None]), (1, [0, 1, 0], 2, [1, 2, 1])),  # 64
+        (('Ne/Ne', 2, [-2, None], None, [None, None]), (2, [-2, 4], 1, [1, 1])),  # 65a
+        (('Gh/Ne', 2, [-2, None], None, [None, None], {'zero_ghost_fragments': True}), (0, [0, 0], 1, [1, 1])),  # 65c
     ])
 def test_validate_and_fill_chgmult(inp, expected):
     system = _systemtranslator[inp[0]]
+    kwargs = inp[5] if len(inp) > 5 else {}
+
     ans = qcelemental.molparse.validate_and_fill_chgmult(
-        system[0], system[1], inp[1], inp[2], inp[3], inp[4], verbose=0)
+        system[0], system[1], inp[1], inp[2], inp[3], inp[4], **kwargs)
     assert compare_integers(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(
         *inp, expected))
 
@@ -94,6 +98,7 @@ def test_validate_and_fill_chgmult(inp, expected):
         ('Gh', -1, [None], None, [None]),  # 59
         ('Gh', None, [None], 3, [None]),  # 60
         ('Gh/He', None, [2, None], None, [None, None]),  # 62
+        ('Gh/Ne', 2, [-2, None], None, [None, None]),  # 65b
     ])
 def test_validate_and_fill_chgmult_irreconcilable(inp):
     system = _systemtranslator[inp[0]]
@@ -112,6 +117,7 @@ def test_validate_and_fill_chgmult_irreconcilable(inp):
 # 30 - bad parity btwn mult and total # electrons
 # 35 - insufficient electrons
 # 55 - both (1, (1, 0.0, 0.0), 4, (1, 3, 2)) and (1, (0.0, 0.0, 1), 4, (2, 3, 1)) plausible
+# 65 - non-0/1 on Gh fragment errors normally but reset by zero_ghost_fragments
 
 _keys = ['molecular_charge', 'fragment_charges', 'molecular_multiplicity', 'fragment_multiplicities']
 _systemtranslator = {
@@ -134,4 +140,5 @@ _systemtranslator = {
     'Gh': (np.array([0, 0]), np.array([])),
     'Gh/He/Ne': (np.array([0, 0, 2, 10]), np.array([2, 3])),
     'Gh/He/Gh': (np.array([0, 2, 0]), np.array([1, 2])),
+    'Gh/Ne': (np.array([0, 10]), np.array([1])),
 }

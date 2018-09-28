@@ -6,8 +6,6 @@ import numpy as np
 
 from ..units import conversion_factor
 
-if sys.version_info >= (3, 0):
-    basestring = str
 
 def distance_matrix(a, b):
     """Euclidean distance matrix between rows of arrays `a` and `b`. Equivalent to
@@ -39,9 +37,9 @@ def update_with_error(a, b, path=None):
             elif a[key] is None:
                 a[key] = b[key]
             elif (isinstance(a[key], (list, tuple)) and
-                  not isinstance(a[key], basestring) and
+                  not isinstance(a[key], str) and
                   isinstance(b[key], (list, tuple)) and
-                  not isinstance(b[key], basestring) and
+                  not isinstance(b[key], str) and
                   len(a[key]) == len(b[key]) and
                   all((av is None or av == bv) for av, bv in zip(a[key], b[key]))):  # yapf: disable
                 a[key] = b[key]

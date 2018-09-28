@@ -9,11 +9,6 @@ from ..exceptions import *
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
 
-try:
-    long(1)
-except NameError:
-    long = int
-
 
 def from_input_arrays(
         enable_qm=True,
@@ -271,8 +266,8 @@ def from_arrays(geom=None,
     # <<  domain sorting  >>
     available_domains = ['qm', 'efp', 'qmvz']
     if domain not in available_domains:
-        raise ValidationError(
-            'Topology domain {} not available for processing. Choose among {}'.format(domain, available_domains))
+        raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
+            domain, available_domains))
 
     if domain == 'qm' and geom is None or geom == []:
         if missing_enabled_return == 'none':
@@ -298,14 +293,14 @@ def from_arrays(geom=None,
         name=name,
         units=units,
         input_units_to_au=input_units_to_au,
-        always_return_iutau=False)
+        always_return_iutau=False)  # yapf: disable
     update_with_error(molinit, processed)
 
     if domain == 'efp':
         processed = validate_and_fill_efp(
             fragment_files=fragment_files,
             hint_types=hint_types,
-            geom_hints=geom_hints)
+            geom_hints=geom_hints)  # yapf: disable
         update_with_error(molinit, processed)
         extern = bool(len(molinit['geom_hints']))
 
@@ -313,14 +308,14 @@ def from_arrays(geom=None,
         if domain == 'qmvz':
             processed = validate_and_fill_unsettled_geometry(
                 geom_unsettled=geom_unsettled,
-                variables=variables)
+                variables=variables)  # yapf: disable
             update_with_error(molinit, processed)
             nat = len(molinit['geom_unsettled'])
 
         else:
             processed = validate_and_fill_geometry(
                 geom=geom,
-                tooclose=tooclose)
+                tooclose=tooclose)  # yapf: disable
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
 
@@ -365,7 +360,7 @@ def from_arrays(geom=None,
         extern=extern,
         fix_com=fix_com,
         fix_orientation=fix_orientation,
-        fix_symmetry=fix_symmetry)
+        fix_symmetry=fix_symmetry)  # yapf: disable
     update_with_error(molinit, processed)
 
     if verbose >= 2:
@@ -398,8 +393,8 @@ def validate_and_fill_units(name=None, units='Angstrom', input_units_to_au=None,
         if abs(input_units_to_au - iutau) < 0.05:
             iutau = input_units_to_au
         else:
-            raise ValidationError(
-                """No big perturbations to physical constants! {} !~= {}""".format(iutau, input_units_to_au))
+            raise ValidationError("""No big perturbations to physical constants! {} !~= {}""".format(
+                iutau, input_units_to_au))
 
     if always_return_iutau or input_units_to_au is not None:
         molinit['input_units_to_au'] = iutau
@@ -506,8 +501,8 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1):
     tooclosem = np.where(dm < tooclose)
 
     if tooclosem[0].shape[0]:
-        raise ValidationError(
-            """Following atoms are too close: {}""".format([(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
+        raise ValidationError("""Following atoms are too close: {}""".format(
+            [(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
 
     return {'geom': npgeom.reshape((-1))}
 
@@ -560,11 +555,11 @@ def validate_and_fill_nuclei(
 
     if not ((nat, ) == elea.shape == elez.shape == elem.shape == mass.shape == real.shape == elbl.shape):
         raise ValidationError(
-            """Dimension mismatch ({}) among A ({}), Z ({}), E ({}), mass ({}), real ({}), and elbl({})""".format((
-                nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
+            """Dimension mismatch ({}) among A ({}), Z ({}), E ({}), mass ({}), real ({}), and elbl({})""".format(
+                (nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
 
     if nat:
-        A, Z, E, mass, real, label = zip(* [
+        A, Z, E, mass, real, label = zip(*[
             reconcile_nucleus(
                 A=elea[at],
                 Z=elez[at],
@@ -645,7 +640,7 @@ def validate_and_fill_fragments(nat,
 
         if fragment_multiplicities is None:
             frm = [None] * nfr
-        elif all(f is None or (isinstance(f, (int, np.int64, long)) and f >= 1) for f in fragment_multiplicities):
+        elif all(f is None or (isinstance(f, (int, np.int64)) and f >= 1) for f in fragment_multiplicities):
             frm = fragment_multiplicities
         else:
             raise ValidationError(

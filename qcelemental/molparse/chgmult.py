@@ -5,25 +5,7 @@ import itertools
 import numpy as np
 
 from ..exceptions import *
-
-
-def _unique_everseen(iterable, key=None):
-    "List unique elements, preserving order. Remember all elements ever seen."
-    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
-    # unique_everseen('ABBCcAD', str.lower) --> A B C D
-    # straight from the docs, https://docs.python.org/3/library/itertools.html#itertools-recipes
-    seen = set()
-    seen_add = seen.add
-    if key is None:
-        for element in itertools.filterfalse(seen.__contains__, iterable):
-            seen_add(element)
-            yield element
-    else:
-        for element in iterable:
-            k = key(element)
-            if k not in seen:
-                seen_add(k)
-                yield element
+from ..util import unique_everseen
 
 
 def _apply_default(llist, default):
@@ -320,15 +302,16 @@ def validate_and_fill_chgmult(zeff,
         molecular_charge = None
         fragment_charges = [(fr if real_fragments[ifr] else 0.0) for ifr, fr in enumerate(fragment_charges)]
         molecular_multiplicity = None
-        fragment_multiplicities = [(fr if real_fragments[ifr] else 1) for ifr, fr in enumerate(fragment_multiplicities)]
+        fragment_multiplicities = [(fr if real_fragments[ifr] else 1)
+                                   for ifr, fr in enumerate(fragment_multiplicities)]
 
     # <<< assert broad physical requirements
 
     #   * (R1) require all chg & mult exist
-    cgmp_range.append(lambda c, fc, m, fm: c is not None and
+    cgmp_range.append(lambda c, fc, m, fm:     c is not None and
                                            all(f is not None for f in fc) and
-                                           m is not None and
-                                           all(f is not None for f in fm))
+                                               m is not None and
+                                           all(f is not None for f in fm))  # yapf: disable
     cgmp_rules.append('1')
 
     #   * (R2) require total charge to be the sum of fragment charges
@@ -443,10 +426,10 @@ def validate_and_fill_chgmult(zeff,
         """Returns a member from all combinations of `exact` that passes all tests in cgmp_range, else raises error."""
 
         # remove duplicates
-        uniq_c = _unique_everseen(exact_c)
-        uniq_fc = [_unique_everseen(f) for f in exact_fc]
-        uniq_m = _unique_everseen(exact_m)
-        uniq_fm = [_unique_everseen(f) for f in exact_fm]
+        uniq_c = unique_everseen(exact_c)
+        uniq_fc = [unique_everseen(f) for f in exact_fc]
+        uniq_m = unique_everseen(exact_m)
+        uniq_fm = [unique_everseen(f) for f in exact_fm]
         text.append('c: {}'.format(list(exact_c)))
         for f in exact_fc:
             text.append('fc:'.format(list(f)))
@@ -459,8 +442,8 @@ def validate_and_fill_chgmult(zeff,
                                              uniq_m, itertools.product(*uniq_fm)]):  # yapf: disable
             cc, cfc, cm, cfm = candidate
             if header:
-                text.append(
-                    """Assess candidate {}: {}""".format(candidate, ' '.join(('{:3}'.format(r) for r in cgmp_rules))))
+                text.append("""Assess candidate {}: {}""".format(candidate, ' '.join(
+                    ('{:3}'.format(r) for r in cgmp_rules))))
                 header = False
             assessment = [fn(cc, cfc, cm, cfm) for fn in cgmp_range]
             sass = ['{:3}'.format('T' if b else '') for b in assessment]
@@ -500,8 +483,9 @@ def validate_and_fill_chgmult(zeff,
         been_defaulted.append('multiplicity')
 
     if been_defaulted:
-        brief.append('    Note: Default values have been applied for {}. Specify intentions in molecule input block'.
-                     format(' and '.join(been_defaulted)))
+        brief.append(
+            '    Note: Default values have been applied for {}. Specify intentions in molecule input block'.format(
+                ' and '.join(been_defaulted)))
 
     if m_final != _high_spin_sum(fm_final):
         brief.append(
@@ -515,7 +499,9 @@ def validate_and_fill_chgmult(zeff,
         #print('\n'.join(brief))
         pass
 
-    return {'molecular_charge': float(c_final),
-            'fragment_charges': [float(f) for f in fc_final],
-            'molecular_multiplicity': m_final,
-            'fragment_multiplicities': list(fm_final)}
+    return {
+        'molecular_charge': float(c_final),
+        'fragment_charges': [float(f) for f in fc_final],
+        'molecular_multiplicity': m_final,
+        'fragment_multiplicities': list(fm_final)
+    }
