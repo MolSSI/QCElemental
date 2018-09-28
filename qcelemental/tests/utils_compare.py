@@ -4,8 +4,6 @@ import math
 import pprint
 import collections
 
-#import numpy as np
-
 
 class _TestComparisonError(Exception):
     """Error when element or nuclide can't be identified."""
@@ -230,30 +228,3 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
 #        raise _TestComparisonError(message)
 #    if verbose >= 1:
 #        _success(label)
-
-
-def true_false_decorator(compare_fn, *args, **kwargs):
-    """Turns `compare_fn` that returns `None` on success and raises
-    `_TestComparisonError` on failure into a function that returns
-    True/False, suitable for assertions in pytest.
-
-    """
-
-    def true_false_wrapper(*args, **kwargs):
-        try:
-            compare_fn(*args, **kwargs)
-        except _TestComparisonError as err:
-            return False
-        else:
-            return True
-
-    return true_false_wrapper
-
-
-compare_values = true_false_decorator(compare_values)
-compare_strings = true_false_decorator(compare_strings)
-compare_integers = true_false_decorator(compare_integers)
-#compare_matrices = true_false_decorator(compare_matrices)
-#compare_arrays = true_false_decorator(compare_arrays)
-compare_dicts = true_false_decorator(compare_dicts)
-compare_molrecs = true_false_decorator(compare_molrecs)

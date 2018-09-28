@@ -94,6 +94,7 @@ def filter_comments(string):
 
 def unnp(dicary):
     """Return `dicary` with any ndarray values replaced by lists."""
+    # TODO handle complex numbers/arrays
 
     ndicary = {}
     for k, v in dicary.items():

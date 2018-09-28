@@ -1,6 +1,6 @@
 import pytest
 
-from utils_compare import *
+from utils import *
 
 import qcelemental
 

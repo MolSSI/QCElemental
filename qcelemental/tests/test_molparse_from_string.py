@@ -1,16 +1,12 @@
 import sys
 import copy
-#import pprint
 
 import pytest
 import numpy as np
 
-from utils_compare import *
-#from addons import *
+from utils import *
 
 import qcelemental
-
-#import qcdb
 
 subject1 = """O 0 0   0
 no_com
@@ -53,8 +49,6 @@ fullans1c.update({
     'molecular_charge': 1.,
     'molecular_multiplicity': 1
 })
-fullans1xz = copy.deepcopy(fullans1a)
-fullans1xz['geom'] = np.array([0., 0., 0., 0., 0., 1.]),
 
 
 def test_psi4_qm_1a():
@@ -136,20 +130,35 @@ fullans2 = {
     'fix_orientation': True,
     'fragment_separators': [2, 3],
 }
+fullans2_unnp = copy.deepcopy(fullans2)
+fullans2_unnp.update({
+    'geom': [0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.],
+    'elea': [6, 2, 20, 1, 4],
+    'elez': [3, 1, 10, 1, 2],
+    'elem': ['Li', 'H', 'Ne', 'H', 'He'],
+    'mass': [6.015122794, 2.014101, 19.99244017542, 1.00782503, 4.00260325415],
+    'real': [True, True, False, True, False],
+    'elbl': ['', '_special', '', '', '3'],
+})
 
 
 def test_psi4_qm_2a():
     subject = '\n--\n'.join(subject2)
     fullans = copy.deepcopy(fullans2)
-    fullans.update({
+    fullans_unnp = copy.deepcopy(fullans2_unnp)
+    ud = {
         'molecular_charge': 0.,
         'molecular_multiplicity': 2,
         'fragment_charges': [0., 0., 0.],
         'fragment_multiplicities': [1, 1, 2]
-    })
+    }
+    fullans.update(ud)
+    fullans_unnp.update(ud)
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans2, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    final_unnp = qcelemental.util.unnp(final['qm'])
+    assert compare_molrecs(fullans_unnp, final_unnp, 4, sys._getframe().f_code.co_name + ': full unnp')
     assert compare_molrecs(fullans, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
@@ -433,7 +442,7 @@ subject6 = """
     H3    0.753299, 0.0, -0.474880
     
     --
-    efp h2O -2.12417561  1.22597097 -0.95332054 -2.902133 1.734999 -1.953647
+    efp h2O -2.12417561  1.22597097 -0.95332054 -2.902133 -4.5481863 -1.953647  # second to last equiv to 1.734999
  --
 efp ammoniA
      0.98792    1.87681    2.85174
@@ -453,7 +462,7 @@ ans6 = {
     'fragment_multiplicities': [1],
     'fragment_separators': [],
     'fragment_files': ['h2O', 'ammoniA'],
-    'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, 1.734999, -1.953647],
+    'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
                    [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
     'hint_types': ['xyzabc', 'points'],
 }
@@ -479,7 +488,7 @@ fullans6 = {
     },
     'efp': {
         'fragment_files': ['h2o', 'ammonia'],
-        'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, 1.734999, -1.953647],
+        'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
         'hint_types': ['xyzabc', 'points'],
         'units':
@@ -496,11 +505,18 @@ fullans6 = {
 
 def test_psi4_qmefp_6a():
     subject = subject6
+    fullans = copy.deepcopy(fullans6)
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans6, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans6['efp'], final['efp'], 4, sys._getframe().f_code.co_name + ': full efp')
-    assert compare_molrecs(fullans6['qm'], final['qm'], 4, sys._getframe().f_code.co_name + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, sys._getframe().f_code.co_name + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, sys._getframe().f_code.co_name + ': full qm')
+
+    hintsstd = qcelemental.util.standardize_efp_angles_units('Bohr', final['efp']['geom_hints'])
+    final['efp']['geom_hints'] = hintsstd
+    fullans['efp']['geom_hints'][0][4] = 1.734999
+    assert compare_molrecs(fullans['efp'], final['efp'], 4,
+                           sys._getframe().f_code.co_name + ': final efp standardized')
 
 
 def test_psi4_qmefp_6b():
@@ -1069,49 +1085,56 @@ def test_strings_10t():
 def test_qmol_11c():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4')
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11d():
     tnm = sys._getframe().f_code.co_name
+    fullans = copy.deepcopy(fullans1a)
+    fullans.update({
+        'variables': [],
+        'geom_unsettled': [['0', '0', '0'], ['1', '0', '0']],
+    })
+    fullans.pop('geom')
+
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4+')
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11e():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, dtype='xyz', fix_com=True)
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11g():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True)
-    assert compare_molrecs(fullans1xz, asdf, 4, tnm)
+    assert compare_molrecs(fullans1a, asdf, 4, tnm)
 
 
 def test_qmol_11h():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11i():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11j():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
-    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm)
 
 
 def test_qmol_11p():
     tnm = sys._getframe().f_code.co_name
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, units='AngSTRom')
-    assert compare_molrecs(fullans1xz, asdf, 4, tnm)
+    assert compare_molrecs(fullans1a, asdf, 4, tnm)
 
 
 #QCELdef test_qmol_12():

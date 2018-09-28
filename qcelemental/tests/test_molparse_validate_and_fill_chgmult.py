@@ -1,5 +1,5 @@
 import pytest
-from utils_compare import *
+from utils import *
 
 import numpy as np
 
