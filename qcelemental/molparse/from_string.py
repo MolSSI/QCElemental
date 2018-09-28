@@ -271,6 +271,7 @@ def _filter_pubchem(string):
             pcobj = pubchem.PubChemObj(int(pubsearch), '', '')
             try:
                 xyz = pcobj.get_molecule_string()
+                processed['name'] = 'CID {}'.format(pubsearch)
             except Exception as e:
                 raise ValidationError(e.message)
         else:
@@ -287,6 +288,7 @@ def _filter_pubchem(string):
             elif len(results) == 1:
                 # There's only 1 result - use it
                 xyz = results[0].get_molecule_string()
+                processed['name'] = 'IUPAC {}'.format(results[0].name())
                 if 'Input Error' in xyz:
                     raise ValidationError(xyz)
             else:
@@ -295,6 +297,7 @@ def _filter_pubchem(string):
                     if result.name().lower() == pubsearch.lower():
                         # We've found an exact match!
                         xyz = result.get_molecule_string()
+                        processed['name'] = 'IUPAC {}'.format(result.name())
                 else:
                     # There are multiple results and none exact. Print and exit
                     msg = "\tPubchemError\n"

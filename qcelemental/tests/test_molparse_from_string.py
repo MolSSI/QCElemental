@@ -258,6 +258,7 @@ ans4 = {
     'fragment_files': [],
     'geom_hints': [],
     'hint_types': [],
+    'name': 'IUPAC benzene',
 }
 
 fullans4 = {
@@ -295,6 +296,7 @@ fullans4 = {
     1,
     'fragment_charges': [0.],
     'fragment_multiplicities': [1],
+    'name': 'IUPAC benzene',
 }
 
 
@@ -319,7 +321,7 @@ def test_psi4_pubchem_4c():
 pubchem  : 241
 """
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='IUPAC benzene')
     assert compare_molrecs(ans4, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
     assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 

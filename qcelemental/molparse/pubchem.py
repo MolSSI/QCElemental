@@ -38,19 +38,6 @@ class PubChemObj():
     def get_sdf(self):
         """Function to return the SDF (structure-data file) of the PubChem object."""
         if (len(self.dataSDF) == 0):
-
-            def extract_xml_keyval(xml, key):
-                """ A useful helper function for parsing a single key from XML. """
-                matches = list(xml.iter(key))
-
-                if len(matches) == 0:
-                    return None
-                elif len(matches) == 1:
-                    return matches[0].text
-                else:
-                    print(matches)
-                    raise ValidationError("""PubChem: too many matches found %d""" % (len(matches)))
-
             url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/%d/SDF?record_type=3d' % self.cid
             req = Request(url, headers={'Accept': 'chemical/x-mdl-sdfile'})
             try:
