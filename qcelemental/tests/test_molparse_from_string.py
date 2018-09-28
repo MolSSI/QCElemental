@@ -53,6 +53,8 @@ fullans1c.update({
     'molecular_charge': 1.,
     'molecular_multiplicity': 1
 })
+fullans1xz = copy.deepcopy(fullans1a)
+fullans1xz['geom'] = np.array([0., 0., 0., 0., 0., 1.]),
 
 
 def test_psi4_qm_1a():
@@ -1044,86 +1046,54 @@ def test_strings_10t():
             missing_enabled_return_efp='error')
 
 
-def assess_mol_11(mol, label):
-    dmol = mol.to_dict()
-    assert compare_molrecs(fullans1a, dmol, 4, label, relative_geoms='align')
-    assert compare_integers(2, mol.natom(), label)
+def test_qmol_11c():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4')
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
 
 
-#QCELdef test_qmol_11a():
-#QCEL    asdf = qcdb.Molecule(fullans1a)
-#QCEL    assess_mol_11(asdf, '[1] qcdb.Molecule(dict)')
-#QCEL
-#QCELdef test_qmol_11b():
-#QCEL    asdf = qcdb.Molecule(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
-#QCEL    assess_mol_11(asdf, '[2] qcdb.Molecule(geom, elez)')
-#QCEL
-#QCELdef test_qmol_11c():
-#QCEL    asdf = qcdb.Molecule("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4')
-#QCEL    assess_mol_11(asdf, '[3] qcdb.Molecule(str, dtype="psi4")')
-#QCEL
-#QCELdef test_qmol_11d():
-#QCEL    asdf = qcdb.Molecule("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4+')
-#QCEL    assess_mol_11(asdf, '[4] qcdb.Molecule(str, dtype="psi4+")')
-#QCEL
-#QCELdef test_qmol_11e():
-#QCEL    asdf = qcdb.Molecule("""2\n\nO 0 0 0 \n1 1 0 0 """, dtype='xyz', fix_com=True)
-#QCEL    assess_mol_11(asdf, '[5] qcdb.Molecule(str, dtype="xyz")')
-#QCEL
-#QCELdef test_qmol_11f():
-#QCEL    asdf = qcdb.Molecule.from_dict(fullans1a)
-#QCEL    assess_mol_11(asdf, '[6] qcdb.Molecule.from_dict(dict)')
-#QCEL
-#QCELdef test_qmol_11g():
-#QCEL    asdf = qcdb.Molecule.from_arrays(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
-#QCEL    assess_mol_11(asdf, '[7] qcdb.Molecule.from_arrays(geom, elez)')
-#QCEL
-#QCELdef test_qmol_11h():
-#QCEL    asdf = qcdb.Molecule.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-#QCEL    assess_mol_11(asdf, '[8] qcdb.Molecule.from_string(str, dtype="psi4")')
-#QCEL
-#QCELdef test_qmol_11i():
-#QCEL    asdf = qcdb.Molecule.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-#QCEL    assess_mol_11(asdf, '[9] qcdb.Molecule.from_string(str, dtype="psi4+")')
-#QCEL
-#QCELdef test_qmol_11j():
-#QCEL    asdf = qcdb.Molecule.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
-#QCEL    assess_mol_11(asdf, '[10] qcdb.Molecule.from_string(str, dtype="xyz")')
+def test_qmol_11d():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4+')
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
 
-#QCEL@using_psi4_molrec
-#QCELdef test_pmol_11k():
-#QCEL    import psi4
-#QCEL    asdf = psi4.core.Molecule.from_dict(fullans1a)
-#QCEL    assess_mol_11(asdf, '[16] psi4.core.Molecule.from_dict(dict)')
-#QCEL
-#QCEL@using_psi4_molrec
-#QCELdef test_pmol_11l():
-#QCEL    import psi4
-#QCEL    asdf = psi4.core.Molecule.from_arrays(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
-#QCEL    assess_mol_11(asdf, '[17] psi4.core.Molecule.from_arrays(geom, elez)')
-#QCEL
-#QCEL@using_psi4_molrec
-#QCELdef test_pmol_11m():
-#QCEL    import psi4
-#QCEL    asdf = psi4.core.Molecule.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-#QCEL    assess_mol_11(asdf, '[18] psi4.core.Molecule.from_string(str, dtype="psi4")')
-#QCEL
-#QCEL@using_psi4_molrec
-#QCELdef test_pmol_11n():
-#QCEL    import psi4
-#QCEL    asdf = psi4.core.Molecule.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-#QCEL    assess_mol_11(asdf, '[19] psi4.core.Molecule.from_string(str, dtype="psi4+")')
-#QCEL
-#QCEL@using_psi4_molrec
-#QCELdef test_pmol_11o():
-#QCEL    import psi4
-#QCEL    asdf = psi4.core.Molecule.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
-#QCEL    assess_mol_11(asdf, '[20] psi4.core.Molecule.from_string(str, dtype="xyz")')
 
-#QCELdef test_qmol_11p():
-#QCEL    asdf = qcdb.Molecule.from_arrays(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True, units='AngSTRom')
-#QCEL    assess_mol_11(asdf, '[7] qcdb.Molecule.from_arrays(geom, elez)')
-#QCEL
+def test_qmol_11e():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, dtype='xyz', fix_com=True)
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+
+
+def test_qmol_11g():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True)
+    assert compare_molrecs(fullans1xz, asdf, 4, tnm)
+
+
+def test_qmol_11h():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+
+
+def test_qmol_11i():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+
+
+def test_qmol_11j():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
+    assert compare_molrecs(fullans1xz, asdf['qm'], 4, tnm)
+
+
+def test_qmol_11p():
+    tnm = sys._getframe().f_code.co_name
+    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, units='AngSTRom')
+    assert compare_molrecs(fullans1xz, asdf, 4, tnm)
+
+
 #QCELdef test_qmol_12():
 #QCEL    asdf = qcdb.Molecule(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
 #QCEL    assess_mol_11(asdf, 'qcdb.Molecule(geom, elez)')
