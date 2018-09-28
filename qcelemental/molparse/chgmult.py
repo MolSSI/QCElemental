@@ -7,17 +7,6 @@ import numpy as np
 from ..exceptions import *
 
 
-try:
-    long(1)
-except NameError:
-    long = int
-
-try:
-    from itertools import ifilterfalse as filterfalse  # py2
-except ImportError:
-    from itertools import filterfalse  # py3
-
-
 def _unique_everseen(iterable, key=None):
     "List unique elements, preserving order. Remember all elements ever seen."
     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
@@ -26,7 +15,7 @@ def _unique_everseen(iterable, key=None):
     seen = set()
     seen_add = seen.add
     if key is None:
-        for element in filterfalse(seen.__contains__, iterable):
+        for element in itertools.filterfalse(seen.__contains__, iterable):
             seen_add(element)
             yield element
     else:
@@ -49,7 +38,7 @@ def _high_spin_sum(mult_list):
 
 
 def _mult_ok(m):
-    return isinstance(m, (int, np.int64, long)) and m >= 1
+    return isinstance(m, (int, np.int64)) and m >= 1
 
 
 def _sufficient_electrons_for_mult(z, c, m):
@@ -62,10 +51,10 @@ def _parity_ok(z, c, m):
     return (m % 2) != ((z - c) % 2)
 
 
-def _alpha_beta_allocator(z, c, m):
-    nbeta = (z - c - m + 1) // 2
-    nalpha = nbeta + m - 1
-    return nalpha, nbeta
+#def _alpha_beta_allocator(z, c, m):
+#    nbeta = (z - c - m + 1) // 2
+#    nalpha = nbeta + m - 1
+#    return nalpha, nbeta
 
 
 def validate_and_fill_chgmult(zeff,
