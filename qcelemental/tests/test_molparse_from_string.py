@@ -315,6 +315,26 @@ pubchem  : 241
     assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
+def test_psi4_pubchem_4d():
+    subject = """
+    pubchem:-55
+"""
+
+    with pytest.raises(qcelemental.ValidationError):
+        qcelemental.molparse.from_string(subject, return_processed=True)
+
+
+def test_psi4_pubchem_4e():
+    # no 3D structure available
+    subject = """
+pubchem : sodium benzenesulfonate
+
+"""
+
+    with pytest.raises(qcelemental.ValidationError):
+        qcelemental.molparse.from_string(subject)
+
+
 subject5 = """
 efp C6H6 -0.30448173 -2.24210052 -0.29383131 -0.642499 7.817407 -0.568147  # second to last equiv to 1.534222
 --

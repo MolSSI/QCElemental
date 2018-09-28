@@ -262,7 +262,7 @@ def _filter_pubchem(string):
     Author: @andysim
 
     """
-    pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(\S+))\Z', re.IGNORECASE)
+    pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(([\S ]+)))\Z', re.IGNORECASE)
 
     def process_pubchem(matchobj):
         pubsearch = matchobj.group('pubsearch')
@@ -271,13 +271,13 @@ def _filter_pubchem(string):
             # just a number - must be a CID
             pcobj = pubchem.PubChemObj(int(pubsearch), '', '')
             try:
-                xyz = pcobj.getMoleculeString()
+                xyz = pcobj.get_molecule_string()
             except Exception as e:
                 raise ValidationError(e.message)
         else:
             # search pubchem for the provided string
             try:
-                results = pubchem.getPubChemResults(pubsearch)
+                results = pubchem.get_pubchem_results(pubsearch)
             except Exception as e:
                 raise ValidationError(e.message)
 
@@ -287,13 +287,15 @@ def _filter_pubchem(string):
                     """PubchemError: No results were found when searching PubChem for {}.""".format(pubsearch))
             elif len(results) == 1:
                 # There's only 1 result - use it
-                xyz = results[0].getMoleculeString()
+                xyz = results[0].get_molecule_string()
+                if 'Input Error' in xyz:
+                    raise ValidationError(xyz)
             else:
                 # There are multiple results
                 for result in results:
                     if result.name().lower() == pubsearch.lower():
                         # We've found an exact match!
-                        xyz = result.getMoleculeString()
+                        xyz = result.get_molecule_string()
                 else:
                     # There are multiple results and none exact. Print and exit
                     msg = "\tPubchemError\n"

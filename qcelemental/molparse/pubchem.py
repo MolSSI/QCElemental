@@ -1,4 +1,3 @@
-from __future__ import print_function, absolute_import
 """Queries the PubChem database using a compound name (i.e. 1,3,5-hexatriene)
    to obtain a molecule string that can be passed to Molecule. ::
 
@@ -10,29 +9,21 @@ from __future__ import print_function, absolute_import
            entry["IUPAC"]       => IUPAC name for the resulting compound
            entry["PubChemObj"]  => instance of PubChemObj for this compound
 
-           entry["PubChemObj"].getMoleculeString()   => returns a string compatible
+           entry["PubChemObj"].get_molecule_string()   => returns a string compatible
                                                         with Psi4's Molecule creation
 
 """
 
-try:
-    # Python 2 syntax
-    from urllib2 import urlopen, Request
-    from urllib2 import quote
-    from urllib2 import URLError
-except ImportError:
-    # Python 3 syntax
-    from urllib.request import urlopen, Request
-    from urllib.parse import quote
-    from urllib.error import URLError
 import re
 import json
-import xml.etree.ElementTree as ET
+from urllib.request import urlopen, Request
+from urllib.parse import quote
+from urllib.error import URLError
 
 from ..exceptions import *
 
 
-class PubChemObj(object):
+class PubChemObj():
     def __init__(self, cid, mf, iupac):
         self.url = 'http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi'
         self.cid = cid
@@ -44,18 +35,14 @@ class PubChemObj(object):
     def __str__(self):
         return "%17d   %s\n" % (self.cid, self.iupac)
 
-    def getSDF(self):
+    def get_sdf(self):
         """Function to return the SDF (structure-data file) of the PubChem object."""
         if (len(self.dataSDF) == 0):
 
             def extract_xml_keyval(xml, key):
                 """ A useful helper function for parsing a single key from XML. """
-                try:
-                    # Python 2.6 (ElementTree 1.2 API)
-                    matches = xml.getiterator(key)
-                except:
-                    # Python 2.7 (ElementTree 1.3 API)
-                    matches = list(xml.iter(key))
+                matches = list(xml.iter(key))
+
                 if len(matches) == 0:
                     return None
                 elif len(matches) == 1:
@@ -79,20 +66,20 @@ class PubChemObj(object):
         """Function to return the IUPAC name of the PubChem object."""
         return self.iupac
 
-    def getCartesian(self):
+    def get_cartesian(self):
         """Function to return a string of the atom symbol and XYZ
         coordinates of the PubChem object.
 
         """
         try:
-            sdfText = self.getSDF()
+            sdf_text = self.get_sdf()
         except Exception as e:
-            raise e
+            raise ValidationError(e.message)
 
         # Find
         # NA NB                        CONSTANT
         # 14 13  0     0  0  0  0  0  0999 V2000
-        m = re.search(r'^\s*(\d+)\s+(?:\d+\s+){8}V2000$', sdfText, re.MULTILINE)
+        m = re.search(r'^\s*(\d+)\s+(?:\d+\s+){8}V2000$', sdf_text, re.MULTILINE)
         self.natom = 0
         if (m):
             self.natom = int(m.group(1))
@@ -101,7 +88,7 @@ class PubChemObj(object):
             raise ValidationError("PubChem: Cannot find the number of atoms.  3D data doesn't appear\n" +
                                   "to be available for %s.\n" % self.iupac)
 
-        lines = re.split('\n', sdfText)
+        lines = re.split('\n', sdf_text)
 
         #  3.7320   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
         NUMBER = "((?:[-+]?\\d*\\.\\d+(?:[DdEe][-+]?\\d+)?)|(?:[-+]?\\d+\\.\\d*(?:[DdEe][-+]?\\d+)?))"
@@ -130,29 +117,17 @@ class PubChemObj(object):
 
         return molecule_string
 
-    def getXYZFile(self):
-        """Function to obtain preferentially a molecule string
-        through getCartesian() or a query string otherwise.
-
-        """
-        try:
-            temp = self.getCartesian()
-        except Exception as e:
-            raise
-        molstr = "%d\n%s\n%s" % (self.natom, self.iupac, temp)
-        return molstr
-
-    def getMoleculeString(self):
+    def get_molecule_string(self):
         """Function to obtain a molecule string through
-        getCartesian() or fail.
+        get_cartesian() or fail.
         """
         try:
-            return self.getCartesian()
+            return self.get_cartesian()
         except Exception as e:
             return e.message
 
 
-def getPubChemResults(name):
+def get_pubchem_results(name):
     """Function to query the PubChem database for molecules matching the
     input string. Builds a PubChem object if found.
 
@@ -172,18 +147,19 @@ def getPubChemResults(name):
         pubobj = PubChemObj(d['CID'], d['IUPACName'], d['IUPACName'])
         results.append(pubobj)
 
-    print("\tFound %d result%s" % (len(results), "" if len(results) == 1 else "s"))
+    print("\tFound {} result(s)".format(len(results)))
     return results
 
 
 if __name__ == "__main__":
-    try:
-        #obj = getPubChemResults("1-methoxy-4-[(E)-prop-1-enyl]benzene")
-        #obj = getPubChemResults("sodium benzenesulfonate")
-        obj = getPubChemResults("4-[bis(4-hydroxyphenyl)methyl]phenol")
-    except Exception as e:
-        print(e.message)
+    # * comment "..exceptions" line above
+    # * sulfonate below has no 3D structure available
 
-    for r in obj:
-        print(r)
-        print(r.getMoleculeString())
+    for inp in [
+            "1-methoxy-4-[(E)-prop-1-enyl]benzene", "4-[bis(4-hydroxyphenyl)methyl]phenol", "sodium benzenesulfonate"
+    ]:  # pragma: no cover
+        obj = get_pubchem_results(inp)
+
+        for r in obj:
+            print(r)
+            print(r.get_molecule_string())
