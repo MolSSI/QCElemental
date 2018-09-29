@@ -28,11 +28,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         return '\n'.join(text)
 
     def to_dict(self):
-        #dicary = dict(self._asdict())  # dict, not OrderedDict
-        dicary = self._asdict()  # dict, not OrderedDict
-        print('A', self)
-        print('B', self._asdict())
-        print('C', dicary)
+        dicary = dict(self._asdict())  # dict, not OrderedDict
         for d in ['doi', 'comment', 'glossary']:
             dicary.pop(d)
         if isinstance(self.data, (np.ndarray, np.number)):
