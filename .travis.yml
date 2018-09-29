@@ -33,7 +33,7 @@ before_install:
 
 install:
     # Create test environment for package
-  - sed 's/python/python $PYTHON_VER/g' devtools/conda-envs/base.yaml > tmp_base.yaml && conda env create -n test -f tmp_base.yaml && rm tmp_base.yaml
+  - sed "s/python/python $PYTHON_VER/g" devtools/conda-envs/base.yaml > tmp_base.yaml && conda env create -n test -f tmp_base.yaml && rm tmp_base.yaml
   - source activate test
 
     # Build and install package
