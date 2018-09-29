@@ -10,16 +10,17 @@ matrix:
   include:
     - os: linux
       python: 3.5
-      #env:
-      #  - PYTHON_VER=3.5
+      env:
+        - PYTHON_VERSION=3.5
     - os: linux
       python: 3.6
-      #env:
-      #  - PYTHON_VER=3.6
+      env:
+        - PYTHON_VERSION=3.6
     - os: linux
       #python: 3.7
       env:
         - TRAVIS_PYTHON_VERSION=3.7
+        - PYTHON_VERSION=3.7
 
 before_install:
   - uname -a
@@ -32,10 +33,11 @@ before_install:
   - python -V
   - echo $PYTHON_VER
   - echo $TRAVIS_PYTHON_VERSION
+  - echo $PYTHON_VERSION
 
 install:
     # Create test environment for package
-  - sed "s/python/python $PYTHON_VER/g" devtools/conda-envs/base.yaml > tmp_base.yaml && conda env create -n test -f tmp_base.yaml && rm tmp_base.yaml
+  - sed "s/python/python $PYTHON_VERSION*/g" devtools/conda-envs/base.yaml > tmp_base.yaml && conda env create -n test -f tmp_base.yaml && rm tmp_base.yaml
   - source activate test
 
     # Build and install package
