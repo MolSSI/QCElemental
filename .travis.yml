@@ -30,6 +30,8 @@ before_install:
   # Setup python environment
   - source devtools/travis-ci/before_install.sh
   - python -V
+  - echo $PYTHON_VER
+  - echo $TRAVIS_PYTHON_VERSION
 
 install:
     # Create test environment for package
