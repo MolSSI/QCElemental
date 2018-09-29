@@ -304,7 +304,7 @@ fullans4 = {
 }
 
 
-def test_psi4_pubchem_4a():
+def test_pubchem_4a():
     subject = subject4
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
@@ -312,7 +312,7 @@ def test_psi4_pubchem_4a():
     assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
-def test_psi4_pubchem_4b():
+def test_pubchem_4b():
     """user units potentially contradicting pubchem units"""
     subject = subject4 + '\nunits au'
 
@@ -320,7 +320,7 @@ def test_psi4_pubchem_4b():
         final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
 
 
-def test_psi4_pubchem_4c():
+def test_pubchem_4c():
     subject = """
 pubchem  : 241
 """
@@ -330,7 +330,7 @@ pubchem  : 241
     assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
-def test_psi4_pubchem_4d():
+def test_pubchem_error_d():
     subject = """
     pubchem:-55
 """
@@ -339,7 +339,7 @@ def test_psi4_pubchem_4d():
         qcelemental.molparse.from_string(subject, return_processed=True)
 
 
-def test_psi4_pubchem_4e():
+def test_pubchem_error_e():
     # no 3D structure available
     subject = """
 pubchem : sodium benzenesulfonate
@@ -350,7 +350,7 @@ pubchem : sodium benzenesulfonate
         qcelemental.molparse.from_string(subject)
 
 
-def test_psi4_pubchem_4f():
+def test_pubchem_error_f():
     subject = """
     pubchem: 100000000000000
 """
@@ -359,7 +359,7 @@ def test_psi4_pubchem_4f():
         qcelemental.molparse.from_string(subject, return_processed=True)
 
 
-def test_psi4_pubchem_4g():
+def test_pubchem_multiout_g():
     subject = """
     #pubchem: gobbledegook
     #pubchem: c6h12o
