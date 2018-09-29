@@ -5,6 +5,7 @@ dependencies:
     # Base depends
   - numpy
   - nomkl
+  - python
 
     # Testing
   - pytest
