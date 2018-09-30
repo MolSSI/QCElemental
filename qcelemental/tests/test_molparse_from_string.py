@@ -1114,7 +1114,7 @@ def test_tooclose_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-        assert 'too close' in e.message
+    assert 'too close' in str(e)
 
 
 def test_cartbeforezmat_error():
@@ -1123,7 +1123,7 @@ def test_cartbeforezmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-        assert 'Mixing Cartesian and Zmat' in e.message
+    assert 'Mixing Cartesian and Zmat' in str(e)
 
 
 def test_jumbledzmat_error():
@@ -1132,7 +1132,7 @@ def test_jumbledzmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-        assert 'aim for lower triangular' in e.message
+    assert 'aim for lower triangular' in str(e)
 
 
 def test_steepzmat_error():
@@ -1141,7 +1141,7 @@ def test_steepzmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-        assert 'aim for atom (0), then R' in e.message
+    assert 'aim for lower triangular' in str(e)
 
 
 def test_zmatvar_error():
@@ -1153,7 +1153,7 @@ def test_zmatvar_error():
             variables=[['bond', 2.0, 'badextra']],
             geom_unsettled=[[], ['1', 'bond']])
 
-        assert 'Variables should come in pairs' in e.message
+    assert 'Variables should come in pairs' in str(e)
 
 
 def test_toomanyfrag_error():
@@ -1170,7 +1170,7 @@ def test_toomanyfrag_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-        assert 'zero-length fragment' in e.message
+    assert 'zero-length fragment' in str(e)
 
 
 def test_fragsep_error():
@@ -1187,18 +1187,80 @@ def test_fragsep_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-        assert 'unable to perform trial np.split on geometry' in e.message
+    assert 'unable to perform trial np.split on geometry' in str(e)
 
 
 #def test_nogeom_error():
 #    qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1)
 
 
+def test_cartzmatcart():
+    subject = """1 1
+# This part is just a normal Cartesian geometry specification for benzene
+C          0.710500000000    -0.794637665924    -1.230622098778
+C          1.421000000000    -0.794637665924     0.000000000000
+C          0.710500000000    -0.794637665924     1.230622098778
+C         -0.710500000000    -0.794637665924     1.230622098778
+H          1.254500000000    -0.794637665924    -2.172857738095
+H         -1.254500000000    -0.794637665924     2.172857738095
+C         -0.710500000000    -0.794637665924    -1.230622098778
+C         -1.421000000000    -0.794637665924     0.000000000000
+H          2.509000000000    -0.794637665924     0.000000000000
+H          1.254500000000    -0.794637665924     2.172857738095
+H         -1.254500000000    -0.794637665924    -2.172857738095
+H         -2.509000000000    -0.794637665924     0.000000000000
+# And the hydronium part is specified using a zmatrix, referencing the benzene coordinates
+X  1  CC  3  30   2  A2
+O  13 R   1  90   2  90
+H  14 OH  13 TDA  1  0
+H  14 OH  15 TDA  13 A1
+H  14 OH  15 TDA  13 -A1
+He         3.710500000000    -0.794637665924    -1.230622098778
+
+CC    = 1.421
+CH    = 1.088
+A1    = 120.0
+A2    = 180.0
+OH    = 1.05
+R     = 4.0
+"""
+
+    qcelemental.molparse.from_string(subject)
+
+
+def test_fixcom_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], fix_com='thanks!')
+
+    assert 'Invalid fix_com' in str(e)
+
+
+def test_fixori_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], fix_orientation=-1)
+
+    assert 'Invalid fix_orientation' in str(e)
+
+
+def test_units_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], units='furlong')
+
+    assert 'Invalid molecule geometry units' in str(e)
+
+
 def test_domain_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(domain='kitten')
 
-        assert 'Topology domain kitten not available' in e.message
+    assert 'Topology domain kitten not available' in str(e)
+
+
+def test_natom_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(elem=['C'], elea=[12, 13], geom=[0, 0, 0])
+
+    assert 'Dimension mismatch natom' in str(e)
 
 
 def test_incompletefrag_error():
@@ -1214,7 +1276,7 @@ def test_incompletefrag_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-        assert 'Fragment quantities given without separation info' in e.message
+    assert 'Fragment quantities given without separation info' in str(e)
 
 
 def test_badmult_error():
@@ -1231,7 +1293,7 @@ def test_badmult_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-        assert 'fragment_multiplicities not among None or positive integer' in e.message
+    assert 'fragment_multiplicities not among None or positive integer' in str(e)
 
 
 def test_fraglen_error():
@@ -1248,21 +1310,7 @@ def test_fraglen_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-        assert 'mismatch among fragment quantities' in e.message
-
-
-def hide_test_zmatfrag3():
-
-    qcelemental.molparse.from_arrays(
-        domain='qmvz',
-        speclabel=True,
-        elbl=['na', 'cl'],
-        fragment_charges=[1, -1],
-        fragment_separators=np.array([1]),
-        geom_unsettled=[[], ['1', 'bond']],
-        hint_types=[],
-        units='Bohr',
-        variables=[('bond', '3')])
+    assert 'mismatch among fragment quantities' in str(e)
 
 
 def test_zmatfragarr_14a():
@@ -1289,13 +1337,41 @@ def test_zmatfragarr_14b():
         domain='qmvz',
         speclabel=False,
         elez=[18, 18],
-        elea=[40, 42],
+        elea=np.array([40, 42]),
         real=[True, True],
         fragment_multiplicities=[3, 3],
         fragment_separators=[1],
         geom_unsettled=[[], ['1', 'bond']],
         hint_types=[],
         units='Bohr',
+        variables=[('bond', '3')])
+
+    assert compare_molrecs(fullans, final, 4, sys._getframe().f_code.co_name + ': full')
+
+
+def test_zmatfragarr_14c():
+    fullans = copy.deepcopy(fullans14)
+    fullans['elbl'] = ['', '']
+    fullans['fix_com'] = True
+    fullans['fix_orientation'] = True
+    fullans['mass'] = fullans['mass'].tolist()  # other np vs. list diffs are hidden by compare_molrecs
+    fullans['real'] = fullans['real'].tolist()
+
+    final = qcelemental.molparse.from_arrays(
+        np_out=False,
+        domain='qmvz',
+        speclabel=False,
+        elez=[18, 18],
+        elea=[40, None],
+        mass=[None, 41.96304574],
+        real=[True, True],
+        fragment_multiplicities=[3, 3],
+        fragment_separators=[1],
+        geom_unsettled=[[], ['1', 'bond']],
+        hint_types=[],
+        units='Bohr',
+        fix_com=True,
+        fix_orientation=True,
         variables=[('bond', '3')])
 
     assert compare_molrecs(fullans, final, 4, sys._getframe().f_code.co_name + ': full')
@@ -1331,7 +1407,7 @@ fullans14 = {
 }
 
 
-def test_zmatfragstr_14c():
+def test_zmatfragstr_14d():
     subject = subject14
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)

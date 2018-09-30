@@ -555,8 +555,8 @@ def validate_and_fill_nuclei(
 
     if not ((nat, ) == elea.shape == elez.shape == elem.shape == mass.shape == real.shape == elbl.shape):
         raise ValidationError(
-            """Dimension mismatch ({}) among A ({}), Z ({}), E ({}), mass ({}), real ({}), and elbl({})""".format(
-                (nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
+            """Dimension mismatch natom ({}) among A ({}), Z ({}), E ({}), mass ({}), real ({}), and elbl({})""".
+            format((nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
 
     if nat:
         A, Z, E, mass, real, label = zip(*[
@@ -652,14 +652,13 @@ def validate_and_fill_unsettled_geometry(geom_unsettled, variables):
         raise ValidationError(
             """Mixing Cartesian and Zmat formats must occur in just that order once absolute frame established.""")
 
+    allowed_to_follow = {0: [2], 2: [4], 3: [3, 6], 4: [6], 6: [3, 6]}
+
     for il in range(len(lgeom) - 1):
-        if (lgeom[il + 1] < lgeom[il]) and (lgeom[il + 1] != 3):
-            raise ValidationError("""This is not how a Zmat works - aim for lower triangular: {} < {}""".format(
-                lgeom[il + 1], lgeom[il]))
-        if (lgeom[il + 1] - lgeom[il] != 2) and (lgeom[il + 1] != 3):
+        if lgeom[il + 1] not in allowed_to_follow[lgeom[il]]:
             raise ValidationError(
-                """This is not how a Zmat works - aim for atom (0), then R (2), then RA (4), then RAD (6): {} - {} != 2""".
-                format(lgeom[il + 1], lgeom[il]))
+                """This is not how a Zmat works - aim for lower triangular. Line len ({}) may be followed by line len ({}), not ({}).""".
+                format(lgeom[il], allowed_to_follow[lgeom[il]], lgeom[il + 1]))
 
     if not all(len(v) == 2 for v in variables):
         raise ValidationError("""Variables should come in pairs: {}""".format(variables))

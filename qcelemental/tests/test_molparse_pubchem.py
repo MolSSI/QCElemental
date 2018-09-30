@@ -125,6 +125,9 @@ def test_pubchem_multiout_g():
     with pytest.raises(qcelemental.ChoicesError) as e:
         qcelemental.molparse.from_string(subject, return_processed=True)
 
+    try:
+        qcelemental.molparse.from_string(subject, return_processed=True)
+    except qcelemental.ChoicesError as e:
         assert e.choices[10789] == '2-hydroxycyclohepta-2,4,6-trien-1-one'
         assert e.choices[100993904] == '5-deuterio-2-hydroxycyclohepta-2,4,6-trien-1-one'
 
