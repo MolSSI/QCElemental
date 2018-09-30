@@ -84,7 +84,7 @@ def test_to_mass_number(inp, expected):
         # Kr 86
         ("kr86", 36),
 
-        # Helium
+        # Deuterium
         ("D", 1),
         ("h2", 1),
     ])
@@ -104,7 +104,7 @@ def test_to_atomic_number(inp, expected):
         # Kr 86
         ("kr86", "Kr"),
 
-        # Helium
+        # Deuterium
         ("D", "H"),
         ("h2", "H"),
     ])
@@ -121,10 +121,10 @@ def test_to_symbol(inp, expected):
         ("kr84", "Krypton"),
         (36, "Krypton"),
 
-        # Kryptonypton 86
+        # Kr 86
         ("kr86", "Krypton"),
 
-        # Helium
+        # Deuterium
         ("D", "Hydrogen"),
         ("h2", "Hydrogen"),
     ])

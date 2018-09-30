@@ -269,14 +269,14 @@ def from_arrays(geom=None,
         raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
             domain, available_domains))
 
-    if domain == 'qm' and geom is None or geom == []:
+    if domain == 'qm' and (geom is None or geom == []):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == 'efp' and geom_hints is None or geom_hints == []:
+    if domain == 'efp' and (geom_hints is None or geom_hints == []):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
@@ -584,26 +584,21 @@ def validate_and_fill_nuclei(
     }
 
 
-def validate_and_fill_fragments(nat,
-                                fragment_separators=None,
-                                fragment_types=None,
-                                fragment_charges=None,
-                                fragment_multiplicities=None):
+def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=None, fragment_multiplicities=None):
     """Check consistency of fragment specifiers wrt type and length. For
     charge & multiplicity, scientific defaults are not computed or applied;
     rather, missing slots are filled with `None` for later processing.
 
     """
     if fragment_separators is None:
-        if fragment_types is None and fragment_charges is None and fragment_multiplicities is None:
+        if fragment_charges is None and fragment_multiplicities is None:
             frs = []  #np.array([], dtype=np.int)  # if empty, needs to be both ndarray and int
-            frt = ['Real']
             frc = [None]
             frm = [None]
         else:
             raise ValidationError(
-                """Fragment quantities given without separation info: sep ({}), types ({}), chg ({}), and mult ({})""".
-                format(fragment_separators, fragment_types, fragment_charges, fragment_multiplicities))
+                """Fragment quantities given without separation info: sep ({}), chg ({}), and mult ({})""".format(
+                    fragment_separators, fragment_charges, fragment_multiplicities))
     else:
         trial_geom = np.zeros((nat, 3))
         try:
@@ -623,13 +618,6 @@ def validate_and_fill_fragments(nat,
         frs = fragment_separators
         nfr = len(split_geom)
 
-        if fragment_types is None:
-            frt = ['Real'] * nfr
-        elif all(f in ['Real', 'Ghost', 'Absent'] for f in fragment_types):
-            frt = fragment_types
-        else:
-            raise ValidationError("""fragment_types not among 'Real', 'Ghost', 'Absent': {}""".format(fragment_types))
-
         if fragment_charges is None:
             frc = [None] * nfr
         else:
@@ -646,10 +634,10 @@ def validate_and_fill_fragments(nat,
             raise ValidationError(
                 """fragment_multiplicities not among None or positive integer: {}""".format(fragment_multiplicities))
 
-    if not (len(frt) == len(frc) == len(frm) == len(frs) + 1):
+    if not (len(frc) == len(frm) == len(frs) + 1):
         raise ValidationError(
-            """Dimension mismatch among fragment quantities: sep + 1 ({}), types ({}), chg ({}), and mult({})""".
-            format(len(frs) + 1, len(frt), len(frc), len(frm)))
+            """Dimension mismatch among fragment quantities: sep + 1 ({}), chg ({}), and mult({})""".format(
+                len(frs) + 1, len(frc), len(frm)))
 
     return {'fragment_separators': list(frs), 'fragment_charges': frc, 'fragment_multiplicities': frm}
 
@@ -668,6 +656,10 @@ def validate_and_fill_unsettled_geometry(geom_unsettled, variables):
         if (lgeom[il + 1] < lgeom[il]) and (lgeom[il + 1] != 3):
             raise ValidationError("""This is not how a Zmat works - aim for lower triangular: {} < {}""".format(
                 lgeom[il + 1], lgeom[il]))
+        if (lgeom[il + 1] - lgeom[il] != 2) and (lgeom[il + 1] != 3):
+            raise ValidationError(
+                """This is not how a Zmat works - aim for atom (0), then R (2), then RA (4), then RAD (6): {} - {} != 2""".
+                format(lgeom[il + 1], lgeom[il]))
 
     if not all(len(v) == 2 for v in variables):
         raise ValidationError("""Variables should come in pairs: {}""".format(variables))
