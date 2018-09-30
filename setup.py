@@ -16,23 +16,24 @@ if __name__ == "__main__":
         include_package_data=True,
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
         install_requires=[
-            #'pyyaml',
-            #'py-cpuinfo',
-            #'psutil',
+            'numpy',
+            'pint',
         ],
         extras_require={
             'docs': [
+                'numpydoc',
                 'sphinx',  # autodoc was broken in 1.3.1
                 'sphinxcontrib-napoleon',
                 'sphinx_rtd_theme',
-                'numpydoc',
             ],
             'tests': [
+                'deepdiff',
                 'pytest',
                 'pytest-cov',
             ],
         },
         tests_require=[
+            'deepdiff',
             'pytest',
             'pytest-cov',
         ],

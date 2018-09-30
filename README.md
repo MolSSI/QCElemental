@@ -31,7 +31,7 @@
 
 A Python interface to Periodic Table and Physical Constants data from
 a reliable source (NIST srd144 and srd121, respectively;
-[details](qcelemental/data/README.md)) in a renewable
+[details](qcelemental/nist_data/README.md)) in a renewable
 manner (class around NIST-published JSON file).
 
 ## Demo

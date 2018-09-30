@@ -13,6 +13,9 @@ dependencies:
 
     # Pip depends
   - pip:
-    - codecov
+      # Base depends
     - pint
+
+      # Testing
+    - codecov
     - deepdiff
