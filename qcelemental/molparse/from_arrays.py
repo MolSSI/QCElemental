@@ -141,11 +141,9 @@ def from_arrays(geom=None,
                 geom_hints=None,
                 geom_unsettled=None,
                 variables=None,
-
                 domain='qm',
                 missing_enabled_return='error',
                 np_out=True,
-
                 speclabel=True,
                 tooclose=0.1,
                 zero_ghost_fragments=False,
@@ -475,7 +473,7 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
     for ifr, fr in enumerate(geom_hints):
         try:
             hint = [float(f) for f in fr]
-        except ValueError:
+        except (ValueError, TypeError):
             raise ValidationError("""Un float-able elements in geom_hints[{}]: {}""".format(ifr, fr))
 
         htype = hint_types[ifr]

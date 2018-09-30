@@ -1,4 +1,5 @@
-import json
+import copy
+#import json
 
 import numpy as np
 
@@ -77,7 +78,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['fix_com'] = molrec['fix_com']
         qcschema['fix_orientation'] = molrec['fix_orientation']
     else:
-        raise TypeError("dtype not understood, valid options are {'psi4', 1}. Found {}.".format(dtype))
+        raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))
 
         # hmm, psi4/qcdb for provenance or does psi molrec need a passthrough field to preserve?
         #qcschema['provenance'] creator, version, routine

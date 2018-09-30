@@ -95,6 +95,54 @@ def test_psi4_qm_1e():
         final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
 
 
+def test_psi4_qm_1f():
+
+    final = qcelemental.molparse.from_arrays(
+        geom=np.array([0., 0., 0., 1., 0., 0.]),
+        elez=np.array([8, 1]),
+        units='Angstrom',
+        fix_com=True,
+        fix_orientation=False)
+
+
+def test_psi4_qm_iutautoobig_error_1g():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=np.array([0., 0., 0., 1., 0., 0.]),
+            elez=np.array([8, 1]),
+            input_units_to_au=1.1 / 0.52917721067,
+            units='Angstrom',
+            fix_com=True,
+            fix_orientation=False)
+
+    assert 'No big perturbations to physical constants' in str(e)
+
+
+def test_psi4_qm_iutau_1h():
+    fullans = copy.deepcopy(fullans1a)
+    iutau = 1.01 / 0.52917721067
+    fullans['input_units_to_au'] = iutau
+
+    final = qcelemental.molparse.from_arrays(
+        geom=np.array([0., 0., 0., 1., 0., 0.]),
+        elez=np.array([8, 1]),
+        input_units_to_au=iutau,
+        units='Angstrom',
+        fix_com=True,
+        fix_orientation=False)
+
+    assert compare_molrecs(fullans, final, 4, sys._getframe().f_code.co_name + ': full')
+
+    smol = qcelemental.molparse.to_string(final, dtype='xyz', units='Bohr')
+    rsmol = """2 au
+HO
+O                     0.000000000000     0.000000000000     0.000000000000
+H                     1.908623386712     0.000000000000     0.000000000000
+"""
+    assert compare_strings(rsmol, smol, sys._getframe().f_code.co_name + ': str')
+
+
 subject2 = [
     """
 6Li 0.0 0.0 0.0 
@@ -438,6 +486,128 @@ def test_psi4_qmefp_6c():
 
     with pytest.raises(qcelemental.MoleculeFormatError):
         final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+
+
+def test_qmefp_array_6d():
+
+    final = qcelemental.molparse.from_input_arrays(
+        units='Bohr',
+        geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+        elbl=['O1', 'h2', 'H3'],
+        fragment_files=['h2O', 'ammoniA'],
+        geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                    [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+        hint_types=['xyzabc', 'points'])
+
+    assert compare_molrecs(fullans6['efp'], final['efp'], 4, sys._getframe().f_code.co_name + ': full efp')
+    assert compare_molrecs(fullans6['qm'], final['qm'], 4, sys._getframe().f_code.co_name + ': full qm')
+
+
+def test_qmefp_badhint_error_6e():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'efp1'])
+
+    assert "hint_types not among 'xyzabc', 'points', 'rotmat'" in str(e)
+
+
+def test_qmefp_badefpgeom_error_6f():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        final = qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, None, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'points'])
+
+    assert "Un float-able elements in geom_hints" in str(e)
+
+
+def test_qmefp_badhintgeom_error_6g():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['points', 'xyzabc'])
+
+    assert 'EFP hint type points not 9 elements' in str(e)
+
+
+def test_qmefp_badfragfile_error_6h():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 5],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'points'])
+
+    assert 'fragment_files not strings' in str(e)
+
+
+def test_qmefp_hintlen_error_6i():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'points', 'points'])
+
+    assert 'Missing or inconsistent length among efp quantities' in str(e)
+
+
+def test_qmefp_fixcom_error_6j():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            fix_com=False,
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'points'])
+
+    assert 'Invalid fix_com (False) with extern (True)' in str(e)
+
+
+def test_qmefp_fixori_error_6k():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_input_arrays(
+            units='Bohr',
+            fix_orientation=False,
+            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            elbl=['O1', 'h2', 'H3'],
+            fragment_files=['h2O', 'ammoniA'],
+            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+            hint_types=['xyzabc', 'points'])
+
+    assert 'Invalid fix_orientation (False) with extern (True)' in str(e)
 
 
 #QCEL@using_pylibefp
@@ -1294,6 +1464,23 @@ def test_badmult_error():
             variables=[('bond', '3')])
 
     assert 'fragment_multiplicities not among None or positive integer' in str(e)
+
+
+def test_badchg_error():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_charges=[[], {}],
+            fragment_separators=np.array([1]),
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')])
+
+    assert 'fragment_charges not among None or float' in str(e)
 
 
 def test_fraglen_error():
