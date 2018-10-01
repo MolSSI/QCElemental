@@ -39,7 +39,8 @@ class PubChemObj():
     def get_sdf(self):
         """Function to return the SDF (structure-data file) of the PubChem object."""
         if (len(self.dataSDF) == 0):
-            url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/SDF?record_type=3d'.format(quote(str(self.cid)))
+            url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/SDF?record_type=3d'.format(
+                quote(str(self.cid)))
             req = Request(url, headers={'Accept': 'chemical/x-mdl-sdfile'})
             try:
                 self.dataSDF = urlopen(req).read().decode('utf-8')
@@ -139,8 +140,10 @@ def get_pubchem_results(name):
     try:
         response = urlopen(url)
     except URLError as e:
-# travis urllib.error.HTTPError: HTTP Error 503: Service Unavailable
-        raise ValidationError("""\tPubchemError\n%s\n\treceived when trying to open\n\t%s\n\tCheck your internet connection, and the above URL, and try again.\n""" % (str(e), url)) from e
+        # travis urllib.error.HTTPError: HTTP Error 503: Service Unavailable
+        raise ValidationError(
+            """\tPubchemError\n%s\n\treceived when trying to open\n\t%s\n\tCheck your internet connection, and the above URL, and try again.\n"""
+            % (str(e), url)) from e
     data = json.loads(response.read().decode('utf-8'))
     results = []
     for d in data['PropertyTable']['Properties']:

@@ -143,8 +143,8 @@ def reconcile_nucleus(A=None,
 
         for candidate in exact:
             assessment = [fn(candidate) for fn in tests]
-            text.append(
-                """Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment, all(assessment)))
+            text.append("""Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment,
+                                                                       all(assessment)))
             if all(assessment):
                 return candidate
         else:
@@ -168,7 +168,10 @@ def reconcile_nucleus(A=None,
         z_symbol = qcel.periodictable.to_E(z)
         z_mass = qcel.periodictable.to_mass(z)
         re_eliso = re.compile(z_symbol + '[0-9]{1,3}')  # lone symbol (val equals most common isotope) will not match
-        z_a2mass = {int(k[len(z_symbol):]): float(v) for k, v in qcel.periodictable._eliso2mass.items() if re_eliso.match(k)}
+        z_a2mass = {
+            int(k[len(z_symbol):]): float(v)
+            for k, v in qcel.periodictable._eliso2mass.items() if re_eliso.match(k)
+        }
         z_a2mass_min = min(z_a2mass.keys())
         z_a2mass_max = max(z_a2mass.keys())
         z_mass2a = {v: k for k, v in z_a2mass.items()}
@@ -185,8 +188,9 @@ def reconcile_nucleus(A=None,
             text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
         else:
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
-            text.append("""For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".
-                        format(z, z_a2mass_min, z_a2mass_max))
+            text.append(
+                """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".format(
+                    z, z_a2mass_min, z_a2mass_max))
 
         m_exact.append(z_mass)
         if nonphysical:
@@ -194,8 +198,9 @@ def reconcile_nucleus(A=None,
             text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
         else:
             m_range.append(lambda x, mmin=z_mass2a_min, mmax=z_mass2a_max: x >= mmin - mmtol and x <= mmax + mmtol)
-            text.append("""For mass, input Z: {} requires {} < mass < {} +/-{}, the known mass range for element""".
-                        format(z, z_mass2a_min, z_mass2a_max, mmtol))
+            text.append(
+                """For mass, input Z: {} requires {} < mass < {} +/-{}, the known mass range for element""".format(
+                    z, z_mass2a_min, z_mass2a_max, mmtol))
 
     def offer_mass_number(z, a):
         """Given a mass number and element, what can be suggested and asserted about A, mass?"""

@@ -48,7 +48,6 @@ def from_input_arrays(
         nonphysical=False,
         mtol=1.e-3,
         verbose=1):
-
     """Compose a Molecule dict from unvalidated arrays and variables
     in multiple domains.
 

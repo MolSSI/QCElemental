@@ -122,11 +122,13 @@ def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp):
     atoms = []
     for iat in range(nat):
         atom = []
-        atominfo = {'elea': '' if molrec['elea'][iat] == -1 else molrec['elea'][iat],
-                    'elez': molrec['elez'][iat],
-                    'elem': molrec['elem'][iat],
-                    'mass': molrec['mass'][iat],
-                    'elbl': molrec['elbl'][iat]}
+        atominfo = {
+            'elea': '' if molrec['elea'][iat] == -1 else molrec['elea'][iat],
+            'elez': molrec['elez'][iat],
+            'elem': molrec['elem'][iat],
+            'mass': molrec['mass'][iat],
+            'elbl': molrec['elbl'][iat]
+        }
 
         if molrec['real'][iat]:
             nuc = """{:{width}}""".format(atom_format.format(**atominfo), width=width)

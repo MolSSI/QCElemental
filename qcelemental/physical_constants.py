@@ -37,7 +37,8 @@ class PhysicalConstants:
 
         # physical constant loop
         for k, v in data.nist_2014_codata['constants'].items():
-            self.pc[k] = datum.Datum(v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
+            self.pc[k] = datum.Datum(
+                v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
 
         # Extra relationships
         self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J', Decimal('4.184'),
