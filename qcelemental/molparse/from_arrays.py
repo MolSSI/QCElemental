@@ -267,7 +267,7 @@ def from_arrays(geom=None,
         raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
             domain, available_domains))
 
-    if domain == 'qm' and (geom is None or geom == []):
+    if domain == 'qm' and (geom is None or np.array(geom).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
