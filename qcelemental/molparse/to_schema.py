@@ -1,5 +1,4 @@
 import copy
-#import json
 
 import numpy as np
 
@@ -10,7 +9,7 @@ from ..exceptions import *
 from .to_string import formula_generator
 
 def to_schema(molrec, dtype, units='Bohr', np_out=False):
-    """Translate Psi4 json Molecule spec into json from other schemas.
+    """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
     ----------
@@ -24,8 +23,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
     np_out : bool, optional
         When `True`, fields originating from geom, elea, elez, elem, mass, real, elbl will be ndarray.
         Use `False` to get a json-able version.
-    #return_type : {'json', 'yaml'}
-    #    Serialization format string to return.
+    #return_type : {'json', 'yaml'} Serialization format string to return.
 
     Returns
     -------

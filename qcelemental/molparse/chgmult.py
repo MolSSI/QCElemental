@@ -47,10 +47,9 @@ def validate_and_fill_chgmult(zeff,
                               fragment_multiplicities,
                               zero_ghost_fragments=False,
                               verbose=1):
-    """
-    Applies physical constraints and sensible defaults to reconciling and
-    completing the molecular and fragment charge and multiplicity
-    specification.
+    """Forms molecular and fragment charge and multiplicity specification
+    by completing and reconciling information from argument, supplemented
+    by physical constraints and sensible defaults.
 
     Parameters
     ----------
@@ -64,16 +63,16 @@ def validate_and_fill_chgmult(zeff,
         Total charge for molecular system.
     fragment_charges : list of float or None
         (nfr,) known fragment charges with `None` as placeholder for
-        unknown. Expected pre-defaulted so even if nothing known if
+        unknown. Expected pre-defaulted so even if nothing known, if
         `fragment_separators` breaks `zeff` into `nfr=2` fragments, input
-        value should be `fragment_charges=[None, None]`.
+        value should be ``fragment_charges=[None, None]``.
     molecular_multiplicity : int or None
         Total multiplicity for molecular system.
     fragment_multiplicity : list of int or None
         (nfr,) known fragment charges with `None` as placeholder for
-        unknown. Expected pre-defaulted so even if nothing known if
+        unknown. Expected pre-defaulted so even if nothing known, if
         `fragment_separators` breaks `zeff` into `nfr=2` fragments, input
-        value should be `fragment_multiplicities=[None, None]`.
+        value should be ``fragment_multiplicities=[None, None]``.
     zero_ghost_fragments : bool, optional
         Fragments composed entirely of ghost atoms (Zeff=0) are required to have
         chgmult `0 1`. When `False`, violations of this will cause a
@@ -86,37 +85,54 @@ def validate_and_fill_chgmult(zeff,
     verbose : int, optional
         Amount of printing.
 
+    Returns
+    -------
+    molecular_charge : float
+        Total charge for molecular system.
+    fragment_charges : list of float
+        (nfr,) Charge on each fragment.
+    molecular_multiplicity : int
+        Total multiplicity for molecular system.
+    fragment_multiplicities : list of int
+        (nfr,) Multiplicity for each fragment.
+
+    Raises
+    ------
+    qcelemental.ValidationError
+        When no solution to input arguments subject to the constraints below can be found.
+
     Notes
     -----
     Returns combination of total & fragment charge & multiplicity among
     values of S1-7 that fulfill rules R1-9. A few derived implications in I1-3.
 
     * Constraints
-    R1 * require all chg & mult exist
-    R2 * require total charge to be the sum of frag chg
-    R3 * require mult is positive int
-    R4 * require sufficient tot electrons for mult: mult - 1 <= neut_el - chg
-    R5 * require total parity consistent among tot electrons and mult: (mult % 2) != ((neut_el - chg) % 2)
-    R6 * require chg match input argument values
-    R7 * require mult match input argument values
-    R8 * require that tot = sum(frag) mult follow high spin addition unless tot & frag mult fully specified
-    R9 * require that ghost fragments (zeff all 0) be neutral singlet
+
+      * R1 require all chg & mult exist
+      * R2 require total charge to be the sum of frag chg
+      * R3 require mult is positive int
+      * R4 require sufficient tot electrons for mult: mult - 1 <= neut_el - chg
+      * R5 require total parity consistent among tot electrons and mult: (mult % 2) != ((neut_el - chg) % 2)
+      * R6 require chg match input argument values
+      * R7 require mult match input argument values
+      * R8 require that tot = sum(frag) mult follow high spin addition unless tot & frag mult fully specified
+      * R9 require that ghost fragments (zeff all 0) be neutral singlet
 
     * Allowed values
-    S1 * suggest input argument values for tot chg, frag chg, tot mult or frag mult
-    S2 * suggest sum frag chg for tot chg, allowing for indiv frag chg defaulting to 0
-    S3 * suggest distributing unallocated chg onto frag chg
-    S4 * suggest 0 default for frag chg
-    S5 * suggest range of high-spin sum frag mult for tot mult, allowing for indiv frag mult defaulting to 1 or 2
-    S6 * suggest range of unallocated mult = tot - high_spin_sum(frag - 1), allowing for all indiv but self defaulting to 1 or 2.
-    S7 * suggest 1 or 2 default for frag mult
+
+      * S1 suggest input argument values for tot chg, frag chg, tot mult or frag mult
+      * S2 suggest sum frag chg for tot chg, allowing for indiv frag chg defaulting to 0
+      * S3 suggest distributing unallocated chg onto frag chg
+      * S4 suggest 0 default for frag chg
+      * S5 suggest range of high-spin sum frag mult for tot mult, allowing for indiv frag mult defaulting to 1 or 2
+      * S6 suggest range of unallocated mult = tot - high_spin_sum(frag - 1), allowing for all indiv but self defaulting to 1 or 2.
+      * S7 suggest 1 or 2 default for frag mult
 
     * Implications
-    I1 * won't form an ion just to be closed shell (would require choosing +1 vs. -1)
-    I2 * unallocated chg or mult lands on the first unspecified fragment able to
-         bear it (enforced by returning first match encountered; subsequent
-         matches distribute charge to later frags)
-    I3 * missing chg or mult from tot - frags will always be allocated as a block, not distributed
+
+      * I1 won't form an ion just to be closed shell (would require choosing +1 vs. -1)
+      * I2 unallocated chg or mult lands on the first unspecified fragment able to bear it (enforced by returning first match encountered; subsequent matches distribute charge to later frags)
+      * I3 missing chg or mult from tot - frags will always be allocated as a block, not distributed
 
     Examples
     --------

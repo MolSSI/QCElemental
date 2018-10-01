@@ -4,45 +4,42 @@ import numpy as np
 
 import qcelemental as qcel
 
-def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12): #, return_options=False):
+
+def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12):
     """Format a string representation of QM molecule.
 
     Parameters
     ----------
     molrec : dict
         Psi4 json Molecule spec.
-    dtype : {'xyz'}
+    dtype : {'xyz', 'cfour', 'nwchem'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
-        and mass in nucleus label with 'xyz').
+        and mass in nucleus label with ``'xyz'``).
         'cfour' forces nucleus label, ignorming atom_format, ghost_format
     units : {'Angstrom', 'Bohr'}
         Units in which to write string. There is not an option to write in
-        intrinsic/input units. For `dtype='xyz', units='Bohr'` where the
+        intrinsic/input units. For ``dtype='xyz', units='Bohr'`` where the
         format doesn't have a slot to specify units, "au" is added so that
-        readable as 'xyz+'.
+        readable as ``dtype='xyz+'``.
     atom_format : str, optional
-        General format is '{elem}'. A format string that may contain fields
+        General format is ``'{elem}'``. A format string that may contain fields
         'elea' (-1 will be ''), 'elez', 'elem', 'mass', 'elbl' in any
-        arrangement. For example if a format naturally uses element symbol
+        arrangement. For example, if a format naturally uses element symbol
         and you want atomic number instead with mass info, too, pass
-        '{elez}@{mass}'. See `ghost_format` for handling field 'real'.
+        ``'{elez}@{mass}'``. See `ghost_format` for handling field 'real'.
     ghost_format : str, optional
-        General format is '@{elem}'. Like `atom_format`, but this formatter
+        General format is ``'@{elem}'``. Like `atom_format`, but this formatter
         is used when `real=False`. To suppress ghost atoms, use `ghost_format=''`.
     width : int, optional
         Field width for formatting coordinate float.
     prec : int, optional
         Number of decimal places for formatting coordinate float.
-#    return_options : bool, optional
-#        Some dtypes (cfour) can also return options knowable from `molrec`
 
     Returns
     -------
-    smol : str
+    str
         String representation of the molecule.
-#    opts : dict
-#        Only when `return_options=True`Some formats (cfour) can also return options
 
     """
 

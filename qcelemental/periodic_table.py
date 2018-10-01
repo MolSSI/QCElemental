@@ -92,7 +92,7 @@ class PeriodicTable:
         atom : int or str
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
         return_decimal : bool, optional
-            Whether to preserve significant figures information by returning as Decimal or to convert to float.
+            Whether to preserve significant figures information by returning as Decimal (`True`) or to convert to float (`False`).
 
         Returns
         -------

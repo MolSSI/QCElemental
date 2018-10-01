@@ -18,10 +18,10 @@ def reconcile_nucleus(A=None,
                       nonphysical=False,
                       mtol=1.e-3,
                       verbose=1):
-    """Considers all nuclear identity information available from
-    arguments, supplemented by the periodic table. At the least, must
-    provide element identity somehow. Returns consistent set of nucleus
-    descriptors, defaulting to most-abundant isotope.
+    """Forms consistent set of nucleus descriptors from all information
+    from arguments, supplemented by the periodic table. At the least,
+    must provide element identity somehow. Defaults to most-abundant
+    isotope.
 
     Parameters
     ----------
@@ -36,15 +36,15 @@ def reconcile_nucleus(A=None,
     real : bool, optional
         Whether real or ghost/absent.
     label : str, optional
-        Atom label according to :py:attribute:`qcdb.molparse.NUCLEUS`.
+        Atom label according to :py:data:`qcelemental.molparse.regex.NUCLEUS`.
     speclabel : bool, optional
         If `True`, interpret `label` as potentially full nucleus spec including
-        ghosting, isotope, mass, tagging information, e.g., `@13C_mine` or
-        `He4@4.01`. If `False`, interpret `label` as only the user/tagging
-        extension to nucleus label, e.g. `_mine` or `4` in the previous examples.
+        ghosting, isotope, mass, tagging information, e.g., ``@13C_mine`` or
+        ``He4@4.01``. If `False`, interpret `label` as only the user/tagging
+        extension to nucleus label, e.g. ``_mine`` or ``4`` in the previous examples.
     nonphysical : bool, optional
         When `True`, turns off sanity checking that prevents periodic table
-        violations (e.g, light uranium: 1U@1.007).
+        violations (e.g, light uranium: ``1U@1.007``).
     mtol : float, optional
         How different `mass` can be from a known nuclide mass and still
         merit the mass number assignment. Note that for elements dominated
@@ -63,6 +63,11 @@ def reconcile_nucleus(A=None,
         mass value [u].
         real/ghost.
         user portion of `label` if present, else ''.
+
+    Raises
+    ------
+    qcelemental.NotAnElementError
+    qcelemental.ValidationError
 
     Examples
     --------
@@ -314,13 +319,13 @@ def reconcile_nucleus(A=None,
 
 
 def parse_nucleus_label(label):
-    """Separate the contents of molecule nucleus string into fields.
+    """Separate molecule nucleus string into fields.
 
     Parameters
     ----------
     label : str
         Conveys at least element and ghostedness and possibly isotope, mass, and
-        user info in accordance with :py:attribute:`qcdb.molparse.NUCLEUS`.
+        user info in accordance with :py:data:`qcdb.molparse.regex.NUCLEUS`.
 
     Returns
     -------
@@ -329,7 +334,7 @@ def parse_nucleus_label(label):
 
     Raises
     ------
-    ValidationError
+    qcelemental.ValidationError
         If `label` does not match NUCLEUS.
 
     Examples

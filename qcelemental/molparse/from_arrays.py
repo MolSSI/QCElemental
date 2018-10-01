@@ -49,6 +49,14 @@ def from_input_arrays(
         mtol=1.e-3,
         verbose=1):
 
+    """Compose a Molecule dict from unvalidated arrays and variables
+    in multiple domains.
+
+    Drives :py:func:`qcelemental.molparse.from_arrays` for sucessive
+    domains and hooks them together (e.g., impose `fix_com` on "qm"
+    when "efp" present.
+
+    """
     molinit = {}
     if enable_qm:
         molinit['qm'] = {}
@@ -152,23 +160,20 @@ def from_arrays(geom=None,
                 verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
-    minimum is geom and one of elem, elez, elbl
-
+    See fields of Return molrec below. Required parameters (for QM XYZ)
+    are `geom` and one of `elem`, `elez`, `elbl` (`speclabel=True`)
 
     Parameters
     ----------
-    See fields of return  molrec below. Required parameters are `geom` and one of `elem`, `elez`, `elbl` (`speclabel=True`)
     geom : array-like
         (nat, 3) or (3 * nat, ) ndarray or list o'lists of Cartesian coordinates.
     fragment_separators : array-like of int, optional
         (nfr - 1, ) list of atom indices at which to split `geom` into fragments.
     elbl : ndarray of str
         (nat, ) Label extending `elem` symbol, possibly conveying ghosting, isotope, mass, tagging information.
-
     tooclose : float, optional
         Interatom distance (native `geom` units) nearer than which atoms not allowed.
     nonphysical : bool, optional
-
     speclabel : bool, optional
         If `True`, interpret `elbl` as potentially full nucleus spec including
         ghosting, isotope, mass, tagging information, e.g., `@13C_mine` or
@@ -184,17 +189,22 @@ def from_arrays(geom=None,
     Returns
     -------
     molrec : dict
-        Molecule dictionary spec follows. Its principles are (1)
-        contents are fully validated and defaulted - no error checking
-        necessary, (2) contents may be mildly redundant - atomic
-        numbers and element symbols present, (3) big system,
-        nat-length single-type arrays, not small system, nat-number
-        heterogeneous objects, (4) some fields are optional (e.g.,
-        symmetry) but largely self-describing so units or fix_com must
-        be present.
+        Molecule dictionary spec follows. Its principles are 
+
+        (1) contents are fully validated and defaulted - no error
+        checking necessary,
+
+        (2) contents may be mildly redundant - atomic numbers and
+        element symbols present,
+
+        (3) big system, nat-length single-type arrays, not small system,
+        nat-number heterogeneous objects,
+
+        (4) some fields are optional (e.g., symmetry) but largely
+        self-describing so units or fix_com must be present.
 
         (5) apart from some mild optional fields, _all_ fields will
-        be present (correlary of "fully validated and defaulted") - no
+        be present (corollary of "fully validated and defaulted") - no
         need to check for every key. in some cases like efp, keys will
         appear in blocks, so pre-handshake there will be a few hint keys
         and post-handshake they will be joined by full qm-like molrec.
@@ -260,6 +270,11 @@ def from_arrays(geom=None,
     variables : list of pairs
         (nvar, 2) pairs of variables (str) and values (float). May be incomplete.
 
+    Raises
+    ------
+    qcelemental.ValidationError
+        For most anything wrong.
+
     """
     # <<  domain sorting  >>
     available_domains = ['qm', 'efp', 'qmvz']
@@ -274,7 +289,7 @@ def from_arrays(geom=None,
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == 'efp' and (geom_hints is None or geom_hints == []):
+    if domain == 'efp' and (geom_hints is None or np.array(geom_hints).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':

@@ -36,7 +36,7 @@ def from_string(molstr,
         Consider quantum mechanical domain in processing the string constants
         into the returned molrec.
     enable_efp: bool, optional
-        Consider effective fragment potential domain the processing the string
+        Consider effective fragment potential domain in processing the string
         contents into the returned molrec. Only relevant if `dtype` supports EFP.
     missing_enabled_return_qm : {'minimal', 'none', 'error'}
         If `enable_qm=True`, what to do if it has no atoms/fragments?
@@ -46,11 +46,22 @@ def from_string(molstr,
         If `enable_efp=True`, what to do if it has no atoms/fragments?
         Respectively, return a fully valid but empty molrec, return empty
         dictionary, or throw error.
-    name
-    fix_com
-    fix_orientation
-    fix_symmetry
-        Very limitied number of fields where arguments can trump `molstr`. Provided for convenience, since the alternative would be collect the resulting molrec (discarding the Mol if called from class), editing it, then remakeing the Mol.
+    name : str, optional
+        Override `molstr` information for label for molecule; should
+        be valid Python identifier. One of a very limited number of
+        fields (three others follow) for trumping `molstr`. Provided
+        for convenience, since the alternative would be collect the
+        resulting molrec (discarding the Mol if called from class),
+        editing it, then remaking the Mol.
+    fix_com : bool, optional
+        Override `molstr` information for whether translation of `geom`
+        is allowed or disallowed.
+    fix_orientation : bool, optional
+        Override `molstr` information for whether rotation of `geom`
+        is allowed or disallowed.
+    fix_symmetry : str, optional
+        Override `molstr` information for maximal point group symmetry
+        which geometry should be treated.
 
     Returns
     -------
@@ -64,12 +75,14 @@ def from_string(molstr,
 
     Raises
     ------
-    MoleculeFormatError
+    qcelemental.MoleculeFormatError
         After processing of `molstr`, only an empty string should remain.
         Anything left is a syntax error.
 
     Notes
     -----
+    Several formats are interpretable ::
+
         xyz - Strict XYZ format
         -----------------------
 

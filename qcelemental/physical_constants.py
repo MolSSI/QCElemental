@@ -186,7 +186,7 @@ class PhysicalConstants:
             return Decimal('3.14159265358979323846264338327950288')
 
     def write_c_header(self, filename='physconst.h'):
-        """Write C header file defining physical constants and pi, all with 'pc_' prefix."""
+        """Write C header file defining physical constants and pi, all with ``pc_`` prefix."""
 
         pi = self._get_pi(from_scratch=False)
         tau = 2 * pi
