@@ -5,7 +5,7 @@ import numpy as np
 import qcelemental as qcel
 
 from ..util import unnp
-from ..exceptions import *
+from ..exceptions import ValidationError
 from .to_string import formula_generator
 
 

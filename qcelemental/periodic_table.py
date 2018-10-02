@@ -3,7 +3,6 @@ Periodic table class
 """
 
 import collections
-import re
 from decimal import Decimal
 
 from .exceptions import NotAnElementError

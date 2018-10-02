@@ -1,10 +1,8 @@
 import re
 
-import numpy as np
-
 import qcelemental as qcel
 
-from ..exceptions import *
+from ..exceptions import ValidationError, NotAnElementError
 from . import regex
 
 
@@ -147,12 +145,12 @@ def reconcile_nucleus(A=None,
                                                                        all(assessment)))
             if all(assessment):
                 return candidate
-        else:
-            err = """Inconsistent or unspecified {}: A: {}, Z: {}, E: {}, mass: {}, real: {}, label: {}""".format(
-                feature, A, Z, E, mass, real, label)
-            if verbose > -1:
-                print('\n\n' + '\n'.join(text))
-            raise ValidationError(err)
+
+        err = """Inconsistent or unspecified {}: A: {}, Z: {}, E: {}, mass: {}, real: {}, label: {}""".format(
+            feature, A, Z, E, mass, real, label)
+        if verbose > -1:
+            print('\n\n' + '\n'.join(text))
+        raise ValidationError(err)
 
     def offer_element_symbol(e):
         """Given an element, what can be suggested and asserted about Z, A, mass?"""

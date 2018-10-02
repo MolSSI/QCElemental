@@ -5,7 +5,7 @@ import numpy as np
 import qcelemental as qcel
 
 from ..util import distance_matrix, update_with_error, unnp
-from ..exceptions import *
+from ..exceptions import ValidationError
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
 

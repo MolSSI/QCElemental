@@ -1,12 +1,10 @@
 import re
 import pprint
 
-import numpy as np
-
-from ..util import update_with_error, filter_comments
-from ..exceptions import *
+from ..util import filter_comments
+from ..exceptions import ValidationError, ChoicesError, MoleculeFormatError
 from .from_arrays import from_input_arrays
-from .regex import *
+from .regex import NUCLEUS, NUMBER, SEP, ENDL, CHGMULT, CARTXYZ
 from . import pubchem
 
 
@@ -670,7 +668,7 @@ def _filter_xyz(string, strict):
         processed['geom'].append(float(matchobj.group('z')))
         return ''
 
-    nat = 0
+    #nat = 0
     reconstitute = []
     processed = {}
     processed['geom'] = []

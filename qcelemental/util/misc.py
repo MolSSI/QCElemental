@@ -1,5 +1,4 @@
 import re
-import sys
 import math
 
 import numpy as np

@@ -20,7 +20,7 @@ from urllib.request import urlopen, Request
 from urllib.parse import quote
 from urllib.error import URLError
 
-from ..exceptions import *
+from ..exceptions import ValidationError
 
 
 class PubChemObj():

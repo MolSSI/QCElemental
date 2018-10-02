@@ -1,5 +1,3 @@
-import re
-
 NUCLEUS = r"""(?:
    (?P<gh1>@)|(?P<gh2>Gh\())?                # optional ghost: @stuff or Gh(stuff) ...
         (                                    # mandatory element: AEuser or Zuser

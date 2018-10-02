@@ -1,10 +1,8 @@
-import re
-import sys
 import itertools
 
 import numpy as np
 
-from ..exceptions import *
+from ..exceptions import ValidationError
 from ..util import unique_everseen
 
 
@@ -466,12 +464,12 @@ def validate_and_fill_chgmult(zeff,
             text.append("""Assess candidate {:}: {} --> {}""".format(candidate, ' '.join(sass), all(assessment)))
             if all(assessment):
                 return candidate
-        else:
-            err = """Inconsistent or unspecified chg/mult: sys chg: {}, frag chg: {}, sys mult: {}, frag mult: {}""".format(
-                molecular_charge, fragment_charges, molecular_multiplicity, fragment_multiplicities)
-            if verbose > -1:
-                print('\n\n' + '\n'.join(text))
-            raise ValidationError(err)
+
+        err = """Inconsistent or unspecified chg/mult: sys chg: {}, frag chg: {}, sys mult: {}, frag mult: {}""".format(
+            molecular_charge, fragment_charges, molecular_multiplicity, fragment_multiplicities)
+        if verbose > -1:
+            print('\n\n' + '\n'.join(text))
+        raise ValidationError(err)
 
     def stringify(start, final):
         fcgmp = '{:^4}'
