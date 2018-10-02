@@ -78,7 +78,7 @@ for k, v in phys_const.items():
 
     definition = "{}_to_{} = {} {} {}".format(left_unit, right_unit, v["value"], ratio1, ratio2)
     ureg.define(definition)
-    print(definition)
+    # print(definition)
 
 # Add contexts
 
@@ -87,7 +87,8 @@ def _find_nist_unit(unit):
     """Converts pint datatypes to NIST datatypes
     """
     for value in unit.to_tuple()[1]:
-        if (value[0] in _nist_units) and (value[1] > 0):
+        if value[1] < 1: continue
+        if any(x in value[0] for x in _nist_units):
             return value[0]
 
     for value in unit.to_tuple()[1]:
@@ -122,18 +123,28 @@ def build_transformer(right_unit, default):
 
 # Allows hartree <-> frequency
 c1 = pint.Context("energy_frequency")
-c1.add_transformation("[energy]", "[frequency]", build_transformer("hertz", "1 / plancks_consant"))
-c1.add_transformation("[frequency]", "[energy]", build_transformer("hartree", "plancks_consant"))
+c1.add_transformation("[energy]", "[frequency]", build_transformer("hertz", "1 / plancks_constant"))
+c1.add_transformation("[frequency]", "[energy]", build_transformer("hartree", "plancks_constant"))
 
-# Allows hartree <-> length
-c2 = pint.Context("energy_length")
+# Allows hartree <-> inverse_length
+c2 = pint.Context("energy_inverse_length")
 c2.add_transformation("[energy]", "1 / [length]", build_transformer("inverse_meter", "hartree_to_inverse_meter"))
 c2.add_transformation("1 / [length]", "[energy]", build_transformer("hartree", "inverse_meter_to_hartree"))
 
+# Allows hartree <-> mass
+c3 = pint.Context("energy_mass")
+c3.add_transformation("[energy]", "[mass]", build_transformer("kilogram", "hartree_to_kilogram"))
+c3.add_transformation("[mass]", "[energy]", build_transformer("hartree", "kilogram_to_hartree"))
+
+# Allows hartree <-> temperature
+c4 = pint.Context("energy_temperature")
+c4.add_transformation("[energy]", "[temperature]", build_transformer("kelvin", "hartree_to_kelvin"))
+c4.add_transformation("[temperature]", "[energy]", build_transformer("hartree", "kelvin_to_hartree"))
+
 # Allows energy <-> energy / mol
-c3 = pint.Context("substance_relation")
-c3.add_transformation("[energy]", "[energy] / [substance]", lambda ureg, val: val * ureg.N_A)
-c3.add_transformation("[energy] / [substance]", "[energy]", lambda ureg, val: val / ureg.N_A)
+c5 = pint.Context("substance_relation")
+c5.add_transformation("[energy]", "[energy] / [substance]", lambda ureg, val: val * ureg.N_A)
+c5.add_transformation("[energy] / [substance]", "[energy]", lambda ureg, val: val / ureg.N_A)
 
 # Add the context
-ureg.enable_contexts(c1, c2, c3)
+ureg.enable_contexts(c1, c2, c3, c4, c5)
