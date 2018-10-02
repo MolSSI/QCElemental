@@ -1,17 +1,17 @@
 <p align="center">
 <br>
 <!-- Commit -->
-<a href="https://travis-ci.org/qcdb/QCElemental"><img src="https://travis-ci.org/qcdb/QCElemental.svg?branch=master"></a>  
-<a href="https://codecov.io/gh/qcdb/qcelemental"> <img src="https://codecov.io/gh/qcdb/qcelemental/branch/master/graph/badge.svg" /></a>
+<a href="https://travis-ci.org/MolSSI/QCElemental"><img src="https://travis-ci.org/MolSSI/QCElemental.svg?branch=master"></a>
+<a href="https://codecov.io/gh/MolSSI/QCElemental"> <img src="https://codecov.io/gh/MolSSI/QCElemental/branch/master/graph/badge.svg" /></a>
 <br>
 <!-- Release & PR Activity -->
-<a href="https://github.com/qcdb/qcelemental/releases"> <img src="https://img.shields.io/github/release/qcdb/qcelemental.svg" /></a>
-<a href="https://github.com/qcdb/qcelemental/releases"> <img src="https://img.shields.io/github/release-date/qcdb/qcelemental.svg" /></a>
-<a href="https://github.com/qcdb/qcelemental/releases"> <img src="https://img.shields.io/github/commits-since/qcdb/qcelemental/latest.svg" /></a>
-<a href="https://github.com/qcdb/qcelemental/graphs/contributors"> <img src="https://img.shields.io/github/commit-activity/y/qcdb/qcelemental.svg" /></a>
+<a href="https://github.com/MolSSI/QCElemental/releases"> <img src="https://img.shields.io/github/release/MolSSI/QCElemental.svg" /></a>
+<a href="https://github.com/MolSSI/QCElemental/releases"> <img src="https://img.shields.io/github/release-date/MolSSI/QCElemental.svg" /></a>
+<a href="https://github.com/MolSSI/QCElemental/releases"> <img src="https://img.shields.io/github/commits-since/MolSSI/QCElemental/latest.svg" /></a>
+<a href="https://github.com/MolSSI/QCElemental/graphs/contributors"> <img src="https://img.shields.io/github/commit-activity/y/MolSSI/QCElemental.svg" /></a>
 <br>
 <!-- Supported -->
-<a href="https://opensource.org/licenses/BSD-3-Clause"> <img src="https://img.shields.io/github/license/qcdb/qcelemental.svg" /></a>
+<a href="https://opensource.org/licenses/BSD-3-Clause"> <img src="https://img.shields.io/github/license/MolSSI/QCElemental.svg" /></a>
 <!--<a href="#"> <img src="https://img.shields.io/badge/Platforms-Linux%2C%20MacOS%2C%20Windows%20WSL-orange.svg" /></a>-->
 <a href="#"> <img src="https://img.shields.io/badge/python-3.5%2C%203.6%2C%203.7-blue.svg" /></a>
 <br>
@@ -31,7 +31,7 @@
 
 A Python interface to Periodic Table and Physical Constants data from
 a reliable source (NIST srd144 and srd121, respectively;
-[details](qcelemental/nist_data/README.md)) in a renewable
+[details](nist_data/README.md)) in a renewable
 manner (class around NIST-published JSON file).
 
 ## Demo

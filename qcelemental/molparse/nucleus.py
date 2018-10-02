@@ -330,7 +330,7 @@ def parse_nucleus_label(label):
     ----------
     label : str
         Conveys at least element and ghostedness and possibly isotope, mass, and
-        user info in accordance with :py:data:`qcdb.molparse.regex.NUCLEUS`.
+        user info in accordance with :py:data:`qcelemental.molparse.regex.NUCLEUS`.
 
     Returns
     -------

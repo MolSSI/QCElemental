@@ -376,7 +376,7 @@ def from_arrays(geom=None,
     update_with_error(molinit, processed)
 
     if verbose >= 2:
-        print('RETURN FROM qcdb.molparse.from_arrays(domain={})'.format(domain.upper()))
+        print('RETURN FROM qcel.molparse.from_arrays(domain={})'.format(domain.upper()))
         pprint.pprint(molinit)
 
     if not np_out:
