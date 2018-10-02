@@ -8,20 +8,23 @@ import qcelemental
 
 # 2014 CODATA values
 @pytest.mark.parametrize("from_unit, to_unit, expected", [
-    ("hartree", "kcal/mol", "627.509474"),
+
+    # First satisfy the 7 canonical conversions
+    ("hartree", "Hz", "6.579683920711e15"),
+    ("hartree", "amu", "2.9212623197e-8"),
+    ("hartree", "kilogram", "4.850870129e-35"),
     ("hartree", "J/mol", "2625499.638"),
-    ("hartree", "kJ/mol", "2625.499638"),
     ("hartree", "eV", "27.21138602"),
+    ("hartree", "wavenumber", "2.194746313702e5"),
+    ("hartree", "kelvin", "3.1577513e5"),
+
+    ("hartree", "kcal/mol", "627.509474"),
+    ("hartree", "kJ/mol", "2625.499638"),
     ("bohr", "angstrom", "0.52917721067"),
     ("bohr", "nanometer", "5.2917721067e-2"),
     ("bohr", "cm", "5.2917721067e-9"),
     ("amu", "kg", "1.660539040e-27"),
     ("amu", "g", "1.660539040e-24"),
-    ("hartree", "wavenumber", "2.194746313702e5"),
-
-    # Precision is truncated due to uncertainty issues
-    # ("hartree", "Hz", "6.579683920711e15"),
-    ("hartree", "Hz", "6.5796839208e15"),
 ])
 def test_unit_conversion(from_unit, to_unit, expected):
 

@@ -47,6 +47,8 @@ _const_rename = {
     "electron volt": "electron_volt"
 }
 
+_nist_units = set()
+
 for k, v in phys_const.items():
 
     # Automatically builds the following:
@@ -57,31 +59,76 @@ for k, v in phys_const.items():
     # Rename where needed
     left_unit, right_unit = k.split('-')
     left_unit = _const_rename.get(left_unit, left_unit)
+    _nist_units.add(left_unit)
 
     right_unit = right_unit.replace(" relationship", "")
     right_unit = _const_rename.get(right_unit, right_unit)
 
     # Inverse is a special case
-    if "inverse_meter" in k:
-        ratio = "/ meter"
-    else:
-        ratio = "* " + right_unit
 
-    definition = "{}_to_{} = {} / {} {}".format(left_unit, right_unit, v["value"], left_unit, ratio)
+    if "inverse_meter" == left_unit:
+        ratio1 = "* meter"
+    else:
+        ratio1 = "/ " + left_unit
+
+    if "inverse_meter" == right_unit:
+        ratio2 = "/ meter"
+    else:
+        ratio2 = "* " + right_unit
+
+    definition = "{}_to_{} = {} {} {}".format(left_unit, right_unit, v["value"], ratio1, ratio2)
     ureg.define(definition)
+    print(definition)
 
 # Add contexts
-c1 = pint.Context("quantum_chemistry")
+
+
+def _find_nist_unit(unit):
+    """Converts pint datatypes to NIST datatypes
+    """
+    for value in unit.to_tuple()[1]:
+        if (value[0] in _nist_units) and (value[1] > 0):
+            return value[0]
+
+    for value in unit.to_tuple()[1]:
+        if (value[0] == "meter") and (value[1] == -1):
+            return "inverse_meter"
+
+    return None
+
+
+def build_transformer(right_unit, default):
+    """Builds a transformer that attempts first to use the NIST values exactly and then falls back
+    on to canonical Pint tech. The NIST values are not "exact" and will
+    fail the triangle rule due to the inherent uncertainties of the values.
+
+    Parameters
+    ----------
+    right_unit : str
+        The NIST value to convert to
+    default : str
+        A fall back conversion rule to apply
+    """
+    def transformer(ureg, val):
+
+        left_unit = _find_nist_unit(val)
+        if left_unit is None:
+            return val * ureg.parse_expression(default)
+        else:
+            return val * ureg.parse_expression("{}_to_{}".format(left_unit, right_unit))
+
+    return transformer
+
 
 # Allows hartree <-> frequency
 c1 = pint.Context("energy_frequency")
-c1.add_transformation("[energy]", "[frequency]", lambda ureg, val: val / ureg.plancks_constant)
-c1.add_transformation("[frequency]", "[energy]", lambda ureg, val: val * ureg.plancks_constant)
+c1.add_transformation("[energy]", "[frequency]", build_transformer("hertz", "1 / plancks_consant"))
+c1.add_transformation("[frequency]", "[energy]", build_transformer("hartree", "plancks_consant"))
 
 # Allows hartree <-> length
 c2 = pint.Context("energy_length")
-c2.add_transformation("[energy]", "1 / [length]", lambda ureg, val: val * ureg.hartree_inverse_meter)
-c2.add_transformation("1 / [length]", "[energy]", lambda ureg, val: val / ureg.hartree_inverse_meter)
+c2.add_transformation("[energy]", "1 / [length]", build_transformer("inverse_meter", "hartree_to_inverse_meter"))
+c2.add_transformation("1 / [length]", "[energy]", build_transformer("hartree", "inverse_meter_to_hartree"))
 
 # Allows energy <-> energy / mol
 c3 = pint.Context("substance_relation")
