@@ -3,6 +3,7 @@
 <!-- Commit -->
 <a href="https://travis-ci.org/MolSSI/QCElemental"><img src="https://travis-ci.org/MolSSI/QCElemental.svg?branch=master"></a>
 <a href="https://codecov.io/gh/MolSSI/QCElemental"> <img src="https://codecov.io/gh/MolSSI/QCElemental/branch/master/graph/badge.svg" /></a>
+<a href="https://lgtm.com/projects/g/MolSSI/QCElemental/context:python"> <img src="https://img.shields.io/lgtm/grade/python/g/MolSSI/QCEngine.svg?logo=lgtm&logoWidth=18" /></a>
 <br>
 <!-- Release & PR Activity -->
 <a href="https://github.com/MolSSI/QCElemental/releases"> <img src="https://img.shields.io/github/release/MolSSI/QCElemental.svg" /></a>
