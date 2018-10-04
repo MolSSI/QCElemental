@@ -3,6 +3,7 @@ import collections
 import numpy as np
 
 import qcelemental as qcel
+from ..units import conversion_factor
 
 
 def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12):
@@ -17,8 +18,9 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
         'cfour' forces nucleus label, ignorming atom_format, ghost_format
-    units : {'Angstrom', 'Bohr'}
-        Units in which to write string. There is not an option to write in
+    units : str, optional
+        Units in which to write string. Usually ``Angstrom`` or ``Bohr``
+        but may be any length unit.  There is not an option to write in
         intrinsic/input units. For ``dtype='xyz', units='Bohr'`` where the
         format doesn't have a slot to specify units, "au" is added so that
         readable as ``dtype='xyz+'``.
@@ -46,19 +48,19 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
     #funits, fiutau = process_units(molrec)
     #molrec = self.to_dict(force_units=units, np_out=True)
 
-    if molrec['units'] == 'Angstrom' and units == 'Angstrom':
+    if molrec['units'] == 'Angstrom' and units.capitalize() == 'Angstrom':
         factor = 1.
-    elif molrec['units'] == 'Angstrom' and units == 'Bohr':
+    elif molrec['units'] == 'Angstrom' and units.capitalize() == 'Bohr':
         if 'input_units_to_au' in molrec:
             factor = molrec['input_units_to_au']
         else:
             factor = 1. / qcel.constants.bohr2angstroms
-    elif molrec['units'] == 'Bohr' and units == 'Angstrom':
+    elif molrec['units'] == 'Bohr' and units.capitalize() == 'Angstrom':
         factor = qcel.constants.bohr2angstroms
-    elif molrec['units'] == 'Bohr' and units == 'Bohr':
+    elif molrec['units'] == 'Bohr' and units.capitalize() == 'Bohr':
         factor = 1.
     else:
-        raise ValidationError("""units must be 'Angstrom'/'Bohr', not {}""".format(units))
+        factor = conversion_factor(molrec['units'].lower(), units)
     geom = np.array(molrec['geom']).reshape((-1, 3)) * factor
 
     name = molrec.get('name', formula_generator(molrec['elem']))

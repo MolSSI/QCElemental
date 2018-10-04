@@ -59,6 +59,19 @@ def test_psi4_qm_1a():
     assert compare_molrecs(fullans1a, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
 
 
+def test_psi4_qm_1ab():
+    subject = subject1
+    ans = copy.deepcopy(ans1)
+    ans['fix_orientation'] = False
+    ans['fix_com'] = False
+    fullans = copy.deepcopy(fullans1a)
+    fullans['fix_com'] = False
+
+    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, fix_orientation=False, fix_com=False)
+    assert compare_dicts(ans, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+
+
 def test_psi4_qm_1b():
     subject = '\n' + '\t' + subject1 + '\n\n'
 

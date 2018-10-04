@@ -1,5 +1,6 @@
 import sys
 
+import pint
 import pytest
 from utils import *
 
@@ -32,6 +33,13 @@ CoH2
 59Co                      0.00000000         0.00000000         0.00000000
 1H                        1.05835442         0.00000000         0.00000000
 1H_other                 -1.05835442         0.00000000         0.00000000
+"""
+
+ans1c_nm = """3
+CoH2
+59Co                      0.00000000         0.00000000         0.00000000
+1H                        0.10583544         0.00000000         0.00000000
+1H_other                 -0.10583544         0.00000000         0.00000000
 """
 
 subject2 = """
@@ -83,12 +91,24 @@ end
     ((subject1, {'dtype': 'xyz', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), ans1c_ang),
     ((subject2, {'dtype': 'xyz', 'units': 'Bohr'}), ans2_au),
     ((subject2, {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': 'Gh({elez})'}), ans2_ang),
-    ((subject2, {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': ''}), ans2c_ang),
+    ((subject2, {'dtype': 'xyz', 'units': 'angstrom', 'ghost_format': ''}), ans2c_ang),
     ((subject2, {'dtype': 'cfour'}), ans2_cfour_ang),
     ((subject2, {'dtype': 'nwchem'}), ans2_nwchem_ang),
+    ((subject1, {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), ans1c_nm),
+    #((subject1, {'dtype': 'xyz', 'units': 'NM', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), ans1c_nm),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(inp[0])
     smol = qcelemental.molparse.to_string(molrec['qm'], **inp[1])
 
     assert compare_strings(expected, smol, sys._getframe().f_code.co_name)
+
+
+@pytest.mark.parametrize("inp", [
+    (subject1, {'dtype': 'xyz', 'units': 'kg', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}),
+])
+def test_to_string_error(inp):
+    molrec = qcelemental.molparse.from_string(inp[0])
+
+    with pytest.raises(pint.errors.DimensionalityError):
+        qcelemental.molparse.to_string(molrec['qm'], **inp[1])

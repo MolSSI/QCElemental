@@ -5,7 +5,7 @@ A file for unit helpers
 import pint
 from .ureg import ureg
 
-__all__ = ["conversion_dict", "conversion_factor", "convert_contexts"]
+__all__ = ["conversion_factor"]  # "conversion_dict", "convert_contexts"]
 
 def conversion_factor(base_unit, conv_unit):
     """

@@ -73,3 +73,24 @@ def test_to_dict(dataset):
 
     dicary = dataset['ndarray'].to_dict()
     assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)
+
+
+def test_complex_scalar():
+    datum1 = qcel.Datum('complex scalar', '', complex(1, 2))
+    ans = {'label': 'complex scalar', 'units': '', 'data': [1.0, 2.0]}
+
+    assert datum1.label == 'complex scalar'
+    assert datum1.units == ''
+    assert datum1.data.real == 1
+    assert datum1.data.imag == 2
+
+    dicary = datum1.to_dict()
+    assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)
+
+
+def test_complex_array():
+    datum1 = qcel.Datum('complex array', '', np.arange(3, dtype=np.complex_) + 1j)
+    ans = {'label': 'complex array', 'units': '', 'data': [[0.0, 1.0, 2.0], [1.0, 1.0, 1.0]]}
+
+    dicary = datum1.to_dict()
+    assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)

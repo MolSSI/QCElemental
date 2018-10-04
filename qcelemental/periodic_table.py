@@ -224,7 +224,7 @@ class PeriodicTable:
 
         try:
             from . import checkup_data
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print('Info for comparison (directory checkup_data) not installed. Run from source.')
 
         class bcolors:

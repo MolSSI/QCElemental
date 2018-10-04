@@ -38,13 +38,3 @@ class ChoicesError(Exception):
     def __init__(self, msg, choices=None):
         self.message = 'Input Error: {}'.format(msg)
         self.choices = {} if choices is None else choices
-
-
-class FeatureNotImplemented(Exception):
-    """Error called for functions defined but not yet implemented.
-    Also for functions defined that will never be implemented.
-
-    """
-
-    def __init__(self, msg):
-        self.message = 'Feature not implemented: {}'.format(msg)

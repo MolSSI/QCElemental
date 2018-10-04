@@ -149,7 +149,7 @@ class PhysicalConstants:
 
         try:
             from . import checkup_data
-        except ImportError:
+        except ImportError:  # pragma: no cover
             print('Info for comparison (directory checkup_data) not installed. Run from source.')
 
         class bcolors:
@@ -179,7 +179,7 @@ class PhysicalConstants:
     def _get_pi(self, from_scratch=False):
         """Get pi to 36 digits (or more with mpmath)."""
 
-        if from_scratch:
+        if from_scratch:  # pragma: no cover
             from mpmath import mp
             mp.dps = 36
             return mp.pi

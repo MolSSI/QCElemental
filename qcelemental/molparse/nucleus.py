@@ -226,7 +226,7 @@ def reconcile_nucleus(A=None,
             if abs(qcel.periodictable.to_mass(m_eliso) - m) > mtol:
                 # only offer A if known nuclide. C@12.4 != 12C
                 m_a = -1
-        except qcel.NotAnElementError:
+        except NotAnElementError:
             m_a = -1
 
         A_exact.append(m_a)

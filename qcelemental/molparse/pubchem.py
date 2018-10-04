@@ -87,8 +87,6 @@ class PubChemObj():
 
         atom_count = 0
         for line in lines:
-            if (not line or line.isspace()):
-                continue
 
             atom_match = atom_re.match(line)
             if atom_match:

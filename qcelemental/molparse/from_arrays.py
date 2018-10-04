@@ -502,9 +502,6 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
 def validate_and_fill_geometry(geom=None, tooclose=0.1):
     """Check `geom` for overlapping atoms. Return flattened"""
 
-    if geom is None:
-        raise ValidationError("""Geometry must be provided.""")
-
     npgeom = np.array(geom, dtype=np.float).reshape((-1, 3))
     dm = distance_matrix(npgeom, npgeom)
 

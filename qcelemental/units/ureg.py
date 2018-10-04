@@ -3,7 +3,6 @@ A wrapper for the pint ureg data
 """
 
 import pint
-import os
 
 from ..data import nist_2014_codata
 phys_const = nist_2014_codata["constants"]
