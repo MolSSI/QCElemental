@@ -5,17 +5,34 @@ Contains the Datum class
 import collections
 
 import numpy as np
+from decimal import Decimal
 
 
 class Datum(collections.namedtuple('Datum', 'label units data comment doi glossary')):
-    """Facilitates the storage of quantum chemical results by labeling them with basic metadata."""
+    """Facilitates the storage of quantum chemical results by labeling them with basic metadata.
 
+    Attributes
+    ----------
+    label : str
+        Official label for `data`, often qcvar. May contain spaces.
+    units : str
+        ASCII, LaTeX-like representation of units, without square brackets.
+    data : float or Decimal or or :py:class:`numpy.ndarray`
+        Value for `label`.
+    comment : str, optional
+        Additional notes.
+    doi : str, optional
+        Literature citation or definition DOI link.
+    glossary : str, optional
+        Extended description or definition.
+
+    """
     def __new__(cls, label, units, data, comment='', doi=None, glossary=''):
         return super(Datum, cls).__new__(cls, label, units, data, comment, doi, glossary)
 
     def __str__(self, label=''):
         width = 40
-        text = ['-' * width, '{:^{width}}'.format('Datum' + self.label, width=width)]
+        text = ['-' * width, '{:^{width}}'.format('Datum ' + self.label, width=width)]
         if label:
             text.append('{:^{width}}'.format(label, width=width))
         text.append('-' * width)
@@ -80,8 +97,11 @@ def print_variables(qcvars):
             data = np.array_str(qca.data, max_line_width=120, precision=8, suppress_small=True)
             data = '\n'.join('        ' + ln for ln in data.splitlines())
             text.append("""  {:{keywidth}} => {:{width}} [{}]""".format(
-                '"' + k + '"', '', qca.units, keywidth=largest_key, width=20))
+                '"' + k + '"', '', qca.units, keywidth=largest_key, width=largest_characteristic + 14))
             text.append(data)
+        elif isinstance(qca.data, Decimal):
+            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format(
+                '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14))
         else:
             text.append("""  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format(
                 '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14, prec=12))

@@ -649,7 +649,7 @@ def _filter_xyz(string, strict):
                                 re.IGNORECASE | re.VERBOSE)
 
     def process_bohrang(matchobj):
-        nat = matchobj.group('nat')
+        nat = matchobj.group('nat')  # lgtm[py/unused-local-variable]
         if matchobj.group('uang'):
             processed['units'] = 'Angstrom'
         elif matchobj.group('ubohr'):
