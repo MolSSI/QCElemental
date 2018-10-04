@@ -17,7 +17,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         width = 40
         text = ['-' * width, '{:^{width}}'.format('Datum' + self.label, width=width)]
         if label:
-            text.append('{:^{width}}'.format(label), width=width)
+            text.append('{:^{width}}'.format(label, width=width))
         text.append('-' * width)
         text.append('Data:     {}'.format(self.data))
         text.append('Units:    [{}]'.format(self.units))
