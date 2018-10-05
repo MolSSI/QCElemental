@@ -217,3 +217,6 @@ class PhysicalConstants:
         with open(filename, 'w') as handle:
             handle.write('\n'.join(text))
         print('File written ({}). Remember to add license and clang-format it.'.format(filename))
+
+# singleton
+constants = PhysicalConstants()

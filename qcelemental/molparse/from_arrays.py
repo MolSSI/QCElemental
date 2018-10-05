@@ -2,9 +2,8 @@ import pprint
 
 import numpy as np
 
-import qcelemental as qcel
-
 from ..util import distance_matrix, update_with_error, unnp
+from ..physical_constants import constants
 from ..exceptions import ValidationError
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
@@ -399,7 +398,7 @@ def validate_and_fill_units(name=None, units='Angstrom', input_units_to_au=None,
     if molinit['units'] == 'Bohr':
         iutau = 1.
     elif molinit['units'] == 'Angstrom':
-        iutau = 1. / qcel.constants.bohr2angstroms
+        iutau = 1. / constants.bohr2angstroms
 
     if input_units_to_au is not None:
         if abs(input_units_to_au - iutau) < 0.05:

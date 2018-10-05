@@ -7,15 +7,11 @@ from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError
 from . import units
 from . import molparse
 
-# Handle singletons
-from .periodic_table import PeriodicTable
-from .physical_constants import PhysicalConstants
-
-periodictable = PeriodicTable()
-constants = PhysicalConstants()
-
-del PeriodicTable
-del PhysicalConstants
+# Handle singletons, not their classes or modules
+from .periodic_table import periodictable
+from .physical_constants import constants
+del periodic_table
+del physical_constants
 
 # Handle versioneer
 from ._version import get_versions

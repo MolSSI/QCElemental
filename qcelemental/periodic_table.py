@@ -338,3 +338,6 @@ class PeriodicTable:
 #eliso2mass["GH"] = 0.  # note that ghost atoms in Cfour have mass 100.  # encompasses el2mass
 #eliso2mass["X0"] = 0.  # probably needed, just checking
 #el2z["GH"] = 0
+
+# singleton
+periodictable = PeriodicTable()

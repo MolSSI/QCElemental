@@ -3,7 +3,7 @@ import math
 
 import numpy as np
 
-from ..units import conversion_factor
+from ..physical_constants import constants
 
 
 def distance_matrix(a, b):
@@ -66,7 +66,7 @@ def standardize_efp_angles_units(units, geom_hints):
             return radang
 
     if units == 'Angstrom':
-        iutau = conversion_factor('angstroms', 'bohr')
+        iutau = 1. / constants.bohr2angstroms
     else:
         iutau = 1.
 

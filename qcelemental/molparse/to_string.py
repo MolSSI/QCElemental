@@ -2,8 +2,8 @@ import collections
 
 import numpy as np
 
-import qcelemental as qcel
 from ..units import conversion_factor
+from ..physical_constants import constants
 
 
 def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12):
@@ -56,9 +56,9 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         if 'input_units_to_au' in molrec:
             factor = molrec['input_units_to_au']
         else:
-            factor = 1. / qcel.constants.bohr2angstroms
+            factor = 1. / constants.bohr2angstroms
     elif molrec['units'] == 'Bohr' and units.capitalize() == 'Angstrom':
-        factor = qcel.constants.bohr2angstroms
+        factor = constants.bohr2angstroms
     elif molrec['units'] == 'Bohr' and units.capitalize() == 'Bohr':
         factor = 1.
     else:

@@ -2,8 +2,6 @@ import copy
 
 import numpy as np
 
-import qcelemental as qcel
-
 from ..util import unnp
 from ..units import conversion_factor
 from ..exceptions import ValidationError
