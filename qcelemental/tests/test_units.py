@@ -46,6 +46,8 @@ def test_unit_conversion_nist(from_unit, to_unit, expected):
     ("bohr", "miles", "3.288154743E-14"),
     ("amu", "kg", "1.660539040e-27"),
     ("amu", "g", "1.660539040e-24"),
+    ("Bohr", "bohr", "1.0"),
+    ("Angstrom", "Angstrom", "1.0"),
 ]) # yapf: disable
 def test_unit_conversion_other(from_unit, to_unit, expected):
 

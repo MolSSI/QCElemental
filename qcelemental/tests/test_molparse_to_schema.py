@@ -55,7 +55,7 @@ def test_1_ang_14b():
 
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
-        kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1, units='Angstrom')
+        qcelemental.molparse.to_schema(final['qm'], dtype=1, units='Angstrom')
 
     assert "QC_JSON_Schema 1 allows only 'Bohr' coordinates" in str(e)
 
@@ -74,3 +74,12 @@ def test_dtype_d():
         qcelemental.molparse.to_schema(final['qm'], dtype='xkcd927')
 
     assert "Schema dtype not understood" in str(e)
+
+
+def test_psi4_nm_14e():
+
+    final = qcelemental.molparse.from_string(subject14)
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.to_schema(final['qm'], dtype='psi4', units='nm')
+
+    assert "Psi4 Schema psi4 allows only 'Bohr'/'Angstrom' coordinates, not nm" in str(e)

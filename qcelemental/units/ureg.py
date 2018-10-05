@@ -32,8 +32,9 @@ ureg.define("elementary_charge = {} * coulomb = e".format(phys_const["elementary
 ureg.define("plancks_constant = {} * joule * s".format(phys_const["planck constant"]["value"]))
 
 # Distance
-ureg.define("bohr = {} * meter = bohr_radius".format(phys_const["bohr radius"]["value"]))
+ureg.define("bohr = {} * meter = bohr_radius = Bohr".format(phys_const["bohr radius"]["value"]))
 ureg.define("wavenumber = 1 / centimeter")
+ureg.define("Angstrom = angstrom")
 
 # Masses
 ureg.define(

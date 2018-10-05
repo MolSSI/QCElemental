@@ -35,7 +35,7 @@ CoH2
 1H_other                 -1.05835442         0.00000000         0.00000000
 """
 
-ans1c_nm = """3
+ans1c_nm = """3 nm
 CoH2
 59Co                      0.00000000         0.00000000         0.00000000
 1H                        0.10583544         0.00000000         0.00000000
@@ -95,7 +95,6 @@ end
     ((subject2, {'dtype': 'cfour'}), ans2_cfour_ang),
     ((subject2, {'dtype': 'nwchem'}), ans2_nwchem_ang),
     ((subject1, {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), ans1c_nm),
-    #((subject1, {'dtype': 'xyz', 'units': 'NM', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), ans1c_nm),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(inp[0])
