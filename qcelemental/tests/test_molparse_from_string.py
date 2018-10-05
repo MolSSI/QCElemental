@@ -156,6 +156,40 @@ H                     1.908623386712     0.000000000000     0.000000000000
     assert compare_strings(rsmol, smol, sys._getframe().f_code.co_name + ': str')
 
 
+def test_psi4_qm_iutau_1i():
+    fullans = copy.deepcopy(fullans1a)
+    iutau = 1.01 / 0.52917721067
+    fullans['input_units_to_au'] = iutau
+
+    final = qcelemental.molparse.from_arrays(
+        geom=np.array([0., 0., 0., 1., 0., 0.]),
+        elez=np.array([8, 1]),
+        input_units_to_au=iutau,
+        units='Angstrom',
+        fix_com=True,
+        fix_orientation=False)
+
+    assert compare_molrecs(fullans, final, 4, sys._getframe().f_code.co_name + ': full')
+
+    kmol = qcelemental.molparse.to_schema(final, dtype=1, units='Bohr')
+    schema14_1_iutau = {
+    "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
+    "symbols": ["O", "H"],
+    'fragments': [[0, 1]],
+    'fragment_charges': [0.0],
+    'fragment_multiplicities': [2],
+    'masses': [15.99491462, 1.00782503],
+    'name': 'HO',
+    'fix_com': True,
+    'fix_orientation': False,
+    'molecular_charge': 0.0,
+    "molecular_multiplicity": 2,
+    "real": [True, True]
+    }
+
+    assert compare_molrecs(schema14_1_iutau, kmol, 8, sys._getframe().f_code.co_name + ': sch')
+
+
 subject2 = [
     """
 6Li 0.0 0.0 0.0 
