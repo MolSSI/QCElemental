@@ -50,6 +50,7 @@ extensions = [
     'sphinx.ext.graphviz',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
+    'sphinx.ext.graphviz',
     # from Astropy
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.automodsumm',
