@@ -310,6 +310,8 @@ def validate_and_fill_chgmult(zeff,
     real_fragments = np.array([not all(f == 0 for f in felez[ifr]) for ifr in range(nfr)])
     all_fc_known = all(f is not None for f in fragment_charges)
     all_fm_known = all(f is not None for f in fragment_multiplicities)
+    text.append('all_fc_known: {}'.format(all_fc_known))
+    text.append('all_fm_known: {}'.format(all_fm_known))
 
     if zero_ghost_fragments and not all(real_fragments):
         print('possibly adjusting charges')

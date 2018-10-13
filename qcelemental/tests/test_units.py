@@ -29,6 +29,7 @@ import qcelemental
     ("millihartree", "J/mol", "2625.499638"),
     ("hartree", "kJ/mol", "2625.499638"),
     ("hartree", "J", "4.359744650e-18"),
+    ("1/m", "hartree", "4.556335e-8"),
 ]) # yapf: disable
 def test_unit_conversion_nist(from_unit, to_unit, expected):
 

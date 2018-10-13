@@ -2,7 +2,12 @@
 A wrapper for the pint ureg data
 """
 
-import pint
+try:
+    import pint
+except ImportError:  # pragma: no cover
+    raise ImportError(
+        """Python module pint not found. Solve by installing it: `conda install pint -c conda-forge` or `pip install pint`"""
+    )
 
 from ..data import nist_2014_codata
 phys_const = nist_2014_codata["constants"]
@@ -19,8 +24,8 @@ Quantity = ureg.Quantity
 ureg.define("avogadro_constant = {} / mol = N_A".format(phys_const["avogadro constant"]["value"]))
 ureg.define("boltzmann_constant = {} * joule / kelvin".format(phys_const["boltzmann constant"]["value"]))
 ureg.define("speed_of_light = {} * meter / second".format(phys_const["speed of light in vacuum"]["value"]))
-ureg.define(
-    "hartree_inverse_meter = {} / hartree / m".format(phys_const["hartree-inverse meter relationship"]["value"]))
+ureg.define("hartree_inverse_meter = {} / hartree / m".format(
+    phys_const["hartree-inverse meter relationship"]["value"]))
 
 # Energy
 ureg.define("hartree = {} * joule = E_h = hartree_energy".format(phys_const["hartree energy"]["value"]))
@@ -37,8 +42,8 @@ ureg.define("wavenumber = 1 / centimeter")
 ureg.define("Angstrom = angstrom")
 
 # Masses
-ureg.define(
-    "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"]))
+ureg.define("atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(
+    phys_const["atomic mass constant"]["value"]))
 
 # Define relationships
 _const_rename = {
@@ -110,6 +115,7 @@ def build_transformer(right_unit, default):
     default : str
         A fall back conversion rule to apply
     """
+
     def transformer(ureg, val):
 
         left_unit = _find_nist_unit(val)

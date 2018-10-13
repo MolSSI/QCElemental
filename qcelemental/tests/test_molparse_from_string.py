@@ -1407,10 +1407,6 @@ def test_fragsep_error():
     assert 'unable to perform trial np.split on geometry' in str(e)
 
 
-#def test_nogeom_error():
-#    qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1)
-
-
 def test_cartzmatcart():
     subject = """1 1
 # This part is just a normal Cartesian geometry specification for benzene
