@@ -8,41 +8,47 @@ from decimal import Decimal
 from . import datum
 
 
-class PhysicalConstants:
+class PhysicalConstantsContext:
     """CODATA 2014 physical constants set from NIST.
 
     Attributes
     ----------
+    name : str
+        The name of the context ('CODATA2014')
     pc : dict of Datum
         Each physical constant is an entry in `pc`, where key is the
         lowercased string of the NIST name (or any alias) and the
         value is a Datum object with `lbl` the exact NIST name string,
         `units`, `data` value as Decimal object, and any uncertainty
         in the `comment` field.
-
-    Parameters
-    ----------
-    None
+    year : int
+        The year the context was created.
 
     """
 
     _transtable = str.maketrans(' -/{', '__p_', '.,()}')
 
-    def __init__(self):
+    def __init__(self, context="CODATA2014"):
         self.pc = collections.OrderedDict()
 
         from . import data
 
-        doi = data.nist_2014_codata["doi"]
+        if context == "CODATA2014":
+            doi = data.nist_2014_codata["doi"]
 
-        # physical constant loop
-        for k, v in data.nist_2014_codata['constants'].items():
-            self.pc[k] = datum.Datum(
-                v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
+            # physical constant loop
+            for k, v in data.nist_2014_codata['constants'].items():
+                self.pc[k] = datum.Datum(
+                    v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
+        else:
+            raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
+
+        self.name = context
+        self.year = int(context.replace("CODATA", ""))
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J', Decimal('4.184'),
-                                                            'uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J',
+                                                            Decimal('4.184'), 'uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -86,12 +92,15 @@ class PhysicalConstants:
             callname = qca.label.translate(self._transtable)
             setattr(self, callname, float(qca.data))
 
-    def get(self, pc, return_tuple=False):
-        """Access a physical constant, `pc`.
+    def __str__(self):
+        return "PhysicalConstantsContext(context='{}')".format(self.name)
+
+    def get(self, physical_constant, return_tuple=False):
+        """Access a physical constant, `physical_constant`.
 
         Parameters
         ----------
-        pc : str
+        physical_constant : str
             Case-insensitive string of physical constant with NIST name.
         return_tuple : bool, optional
             See below.
@@ -104,13 +113,12 @@ class PhysicalConstants:
             When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of physical constant as Decimal.
 
         """
-        qca = self.pc[pc.lower()]
+        qca = self.pc[physical_constant.lower()]
 
         if return_tuple:
             return qca
         else:
             return float(qca.data)
-
 
 #       h                         'hertz-joule relationship'                  = 6.62606896E-34       # The Planck constant (Js)
 #       c                         'inverse meter-hertz relationship'          = 2.99792458E8         # Speed of light (ms$^{-1}$)
@@ -119,7 +127,6 @@ class PhysicalConstants:
 #       bohr2angstroms            'Bohr radius' * 1.E10                       = 0.52917720859        # Bohr to Angstroms conversion factor
 #       bohr2m                    'Bohr radius'                               = 0.52917720859E-10    # Bohr to meters conversion factor
 #       bohr2cm                   'Bohr radius' * 100                         = 0.52917720859E-8     # Bohr to centimeters conversion factor
-#       amu2g                     'atomic mass constant' * 1000               = 1.660538782E-24      # Atomic mass units to grams conversion factor
 #       amu2kg                    'atomic mass constant'                      = 1.660538782E-27      # Atomic mass units to kg conversion factor
 #       au2amu                    'electron mass in u'                        = 5.485799097E-4       # Atomic units (m$@@e$) to atomic mass units conversion factor
 #       hartree2J                 'Hartree energy'                            = 4.359744E-18         # Hartree to joule conversion factor
@@ -139,10 +146,10 @@ class PhysicalConstants:
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def print_out(self):
+    def string_representation(self):
         """Print name, value, and units of all physical constants."""
 
-        print(datum.print_variables(self.pc))
+        return datum.print_variables(self.pc)
 
     def run_comparison(self):
         """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`. Specialized use."""
@@ -218,5 +225,6 @@ class PhysicalConstants:
             handle.write('\n'.join(text))
         print('File written ({}). Remember to add license and clang-format it.'.format(filename))
 
+
 # singleton
-constants = PhysicalConstants()
+constants = PhysicalConstantsContext("CODATA2014")

@@ -82,5 +82,9 @@ def test_constants_comparison():
     qcelemental.constants.run_comparison()
 
 
-def test_print_out():
-    qcelemental.constants.print_out()
+def test_representation():
+    qcelemental.constants.string_representation()
+
+
+def test_str():
+    assert "PhysicalConstantsContext(" in str(qcelemental.constants)

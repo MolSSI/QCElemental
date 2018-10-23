@@ -9,7 +9,7 @@ from . import molparse
 
 # Handle singletons, not their classes or modules
 from .periodic_table import periodictable
-from .physical_constants import constants
+from .physical_constants import constants, PhysicalConstantsContext
 del periodic_table
 del physical_constants
 
