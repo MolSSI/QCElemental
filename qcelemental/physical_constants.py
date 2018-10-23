@@ -9,7 +9,13 @@ from . import datum
 
 
 class PhysicalConstantsContext:
-    """CODATA 2014 physical constants set from NIST.
+    """Physical constants dataset.
+
+    Parameters
+    ----------
+    context : {'CODATA2014'}, optional
+        Which revision of physical constants to load.
+        Default is CODATA 2014 from NIST SRD 121.
 
     Parameters
     ----------
