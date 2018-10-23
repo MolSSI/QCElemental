@@ -35,7 +35,7 @@ def test_unit_conversion_nist(from_unit, to_unit, expected):
 
     # Build values and quantize to the tolerance
     expected = Decimal(expected)
-    from_to_value = Decimal(qcelemental.units.conversion_factor(from_unit, to_unit)).quantize(expected)
+    from_to_value = Decimal(qcelemental.constants.conversion_factor(from_unit, to_unit)).quantize(expected)
     assert from_to_value == expected
 
 @pytest.mark.parametrize("from_unit, to_unit, expected", [
@@ -54,12 +54,12 @@ def test_unit_conversion_other(from_unit, to_unit, expected):
 
     # Build values and quantize to the tolerance
     expected = Decimal(expected)
-    from_to_value = Decimal(qcelemental.units.conversion_factor(from_unit, to_unit)).quantize(expected)
+    from_to_value = Decimal(qcelemental.constants.conversion_factor(from_unit, to_unit)).quantize(expected)
     assert from_to_value == expected
 
     # Build inverse
     inv_expected = 1 / Decimal(expected)
-    to_from_value = Decimal(qcelemental.units.conversion_factor(to_unit, from_unit))
+    to_from_value = Decimal(qcelemental.constants.conversion_factor(to_unit, from_unit))
 
     # Expected to a relative tolerance as the number of digits plus two for rounding
     # Using float comparisons as we are taking an (1 / float) inverse in the conversion code

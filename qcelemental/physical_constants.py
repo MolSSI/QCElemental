@@ -11,8 +11,10 @@ from . import datum
 class PhysicalConstantsContext:
     """CODATA 2014 physical constants set from NIST.
 
-    Attributes
+    Parameters
     ----------
+    doi : dict
+        A DOI object
     name : str
         The name of the context ('CODATA2014')
     pc : dict of Datum
@@ -21,6 +23,8 @@ class PhysicalConstantsContext:
         value is a Datum object with `lbl` the exact NIST name string,
         `units`, `data` value as Decimal object, and any uncertainty
         in the `comment` field.
+    raw_codata : dict
+        The raw NIST CODATA dictionary
     year : int
         The year the context was created.
 
@@ -34,14 +38,16 @@ class PhysicalConstantsContext:
         from . import data
 
         if context == "CODATA2014":
-            doi = data.nist_2014_codata["doi"]
+            self.doi = data.nist_2014_codata["doi"]
+            self.raw_codata = data.nist_2014_codata['constants']
 
-            # physical constant loop
-            for k, v in data.nist_2014_codata['constants'].items():
-                self.pc[k] = datum.Datum(
-                    v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
+
+        # physical constant loop
+        for k, v in self.raw_codata.items():
+            self.pc[k] = datum.Datum(
+                v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=self.doi)
 
         self.name = context
         self.year = int(context.replace("CODATA", ""))

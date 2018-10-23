@@ -2,7 +2,6 @@ import collections
 
 import numpy as np
 
-from ..units import conversion_factor
 from ..physical_constants import constants
 
 
@@ -62,7 +61,7 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
     elif molrec['units'] == 'Bohr' and units.capitalize() == 'Bohr':
         factor = 1.
     else:
-        factor = conversion_factor(molrec['units'], units)
+        factor = constants.conversion_factor(molrec['units'], units)
     geom = np.array(molrec['geom']).reshape((-1, 3)) * factor
 
     name = molrec.get('name', formula_generator(molrec['elem']))

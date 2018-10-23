@@ -3,7 +3,7 @@ import copy
 import numpy as np
 
 from ..util import unnp
-from ..units import conversion_factor
+from ..physical_constants import constants
 from ..exceptions import ValidationError
 from .to_string import formula_generator
 
@@ -36,7 +36,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
     if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
         factor = molrec['input_units_to_au']
     else:
-        factor = conversion_factor(molrec['units'], units)
+        factor = constants.conversion_factor(molrec['units'], units)
     geom = np.array(molrec['geom']) * factor
     nat = geom.shape[0] // 3
 
