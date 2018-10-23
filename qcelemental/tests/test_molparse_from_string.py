@@ -160,12 +160,14 @@ def test_psi4_qm_iutau_1i():
     fullans = copy.deepcopy(fullans1a)
     iutau = 1.01 / 0.52917721067
     fullans['input_units_to_au'] = iutau
+    fullans['fix_symmetry'] = 'cs'
 
     final = qcelemental.molparse.from_arrays(
         geom=np.array([0., 0., 0., 1., 0., 0.]),
         elez=np.array([8, 1]),
         input_units_to_au=iutau,
         units='Angstrom',
+        fix_symmetry="CS",
         fix_com=True,
         fix_orientation=False)
 
@@ -175,6 +177,9 @@ def test_psi4_qm_iutau_1i():
     schema14_1_iutau = {
     "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
     "symbols": ["O", "H"],
+    "atomic_numbers": [8, 1],
+    "mass_numbers": [16, 1],
+    "atom_labels": ["", ""],
     'fragments': [[0, 1]],
     'fragment_charges': [0.0],
     'fragment_multiplicities': [2],
@@ -182,6 +187,7 @@ def test_psi4_qm_iutau_1i():
     'name': 'HO',
     'fix_com': True,
     'fix_orientation': False,
+    'fix_symmetry': 'cs',
     'molecular_charge': 0.0,
     "molecular_multiplicity": 2,
     "real": [True, True]

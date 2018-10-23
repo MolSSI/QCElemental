@@ -17,6 +17,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         Psi4 json Molecule spec.
     dtype : {'psi4', 1}
         Molecule schema format.
+        ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44
     units : {'Bohr', 'Angstrom'}
         Units in which to write string. There is not an option to write in
         intrinsic/input units. Some `dtype` may not allow all units.
@@ -58,16 +59,25 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['symbols'] = np.array(molrec['elem'])
         qcschema['geometry'] = geom
         qcschema['masses'] = np.array(molrec['mass'])
+        qcschema['atomic_numbers'] = np.array(molrec['elez'])
+        qcschema['mass_numbers'] = np.array(molrec['elea'])
+        qcschema['atom_labels'] = np.array(molrec['elbl'])
         qcschema['name'] = name
+        #qcschema['comment'] =
         qcschema['molecular_charge'] = molrec['molecular_charge']
         qcschema['molecular_multiplicity'] = molrec['molecular_multiplicity']
         qcschema['real'] = np.array(molrec['real'])
+        #qcschema['connectivity'] =
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
         qcschema['fragments'] = [fr.tolist() for fr in fidx]
         qcschema['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
         qcschema['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
         qcschema['fix_com'] = molrec['fix_com']
         qcschema['fix_orientation'] = molrec['fix_orientation']
+        if 'fix_symmetry' in molrec:
+            qcschema['fix_symmetry'] = molrec['fix_symmetry']
+        #qcschema['provenance'] =
+
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))
 
