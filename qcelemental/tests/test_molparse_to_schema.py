@@ -12,6 +12,9 @@ subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 schema14_1 = {
     "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
     "symbols": ["He", "He"],
+    "atomic_numbers": [2, 2],
+    "mass_numbers": [4, 4],
+    "atom_labels": ['', ''],
     'fragments': [[0], [1]],
     'fragment_charges': [0.0, 0.0],
     'fragment_multiplicities': [3, 1],

@@ -11,6 +11,9 @@ a reliable source (NIST srd144 and srd121, respectively;
 [details](nist_data/README.md)) in a renewable
 manner (class around NIST-published JSON file).
 
+A generator, validator, and translator for [Molecule
+QCSchema](https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html).
+
 ## Demo
 
 ### periodic table

@@ -11,6 +11,10 @@ from .exceptions import NotAnElementError
 class PeriodicTable:
     """Nuclear and mass data about chemical elements from NIST.
 
+    Parameters
+    ----------
+    None
+
     Attributes
     ----------
     A : list of int
@@ -30,10 +34,6 @@ class PeriodicTable:
         For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope ("Pu244").
     name : list of str
         Element name from periodic table, starting with "Dummy". "Iron" capitalization.
-
-    Parameters
-    ----------
-    None
 
     """
 

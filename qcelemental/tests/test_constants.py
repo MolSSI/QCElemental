@@ -88,3 +88,10 @@ def test_representation():
 
 def test_str():
     assert "PhysicalConstantsContext(" in str(qcelemental.constants)
+
+
+def test_codata2018():
+    with pytest.raises(KeyError) as e:
+        qcelemental.PhysicalConstantsContext("CODATA2018")
+
+    assert "only contexts {'CODATA2014', } are currently supported" in str(e)
