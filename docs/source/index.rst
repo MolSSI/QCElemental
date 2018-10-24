@@ -13,14 +13,14 @@ constants and periodic table data from NIST and molecule handlers.*
 Physical Constants
 ------------------
 
-Physical constants can be aquired directly from the NIST CODATA:
+Physical constants can be acquired directly from the NIST CODATA:
 
 .. code-block:: python
 
     >>> qcel.constants.get("hartree energy in ev")
     27.21138602
 
-Alternatively, with the use of the Pint unit conversion package arbitrary
+Alternatively, with the use of the Pint unit conversion package, arbitrary
 conversion factors can be obtained:
 
 .. code-block:: python
