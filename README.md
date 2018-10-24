@@ -10,7 +10,7 @@ QCElemental is a resource module for quantum chemistry containing physical
 constants and periodic table data from NIST and molecule handlers.
 
 Periodic Table and Physical Constants data are pulled from NIST srd144 and
-srd121, respectively; [details](nist_data/README.md) in a renewable manner
+srd121, respectively ([details](nist_data/README.md)) in a renewable manner
 (class around NIST-published JSON file).
 
 This project also contains a generator, validator, and translator for [Molecule
@@ -42,7 +42,7 @@ Decimal('83.9114977282')
 
 ### Physical Constants
 
-Physical constants can be aquired directly from the [NIST CODATA](https://physics.nist.gov/cuu/Constants/Table/allascii.txt):
+Physical constants can be acquired directly from the [NIST CODATA](https://physics.nist.gov/cuu/Constants/Table/allascii.txt):
 
 ```python
 >>> import qcelemental as qcel
@@ -61,7 +61,7 @@ Decimal('27.21138602')
 'uncertainty=0.000 000 17'
 ```
 
-Alternatively, with the use of the Pint unit conversion package arbitrary
+Alternatively, with the use of the [Pint unit conversion package](https://pint.readthedocs.io/en/latest/), arbitrary
 conversion factors can be obtained:
 
 ```python
