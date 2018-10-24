@@ -6,17 +6,20 @@
 [![Documentation Status](https://readthedocs.org/projects/qcelemental/badge/?version=latest)](https://qcelemental.readthedocs.io/en/latest/?badge=latest)
 [![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcdb/shared_invite/enQtNDIzNTQ2OTExODk0LWM3OTgxN2ExYTlkMTlkZjA0OTExZDlmNGRlY2M4NWJlNDlkZGQyYWUxOTJmMzc3M2VlYzZjMjgxMDRkYzFmOTE)
 
-A Python interface to Periodic Table and Physical Constants data from
-a reliable source (NIST srd144 and srd121, respectively;
-[details](nist_data/README.md)) in a renewable
-manner (class around NIST-published JSON file).
+QCElemental is a resource module for quantum chemistry containing physical
+constants and periodic table data from NIST and molecule handlers.
 
-A generator, validator, and translator for [Molecule
+Periodic Table and Physical Constants data are pulled from NIST srd144 and
+srd121, respectively; [details](nist_data/README.md) in a renewable manner
+(class around NIST-published JSON file).
+
+This project also contains a generator, validator, and translator for [Molecule
 QCSchema](https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html).
 
-## Demo
+### Periodic Table
 
-### periodic table
+A variety of periodic table quantities are available using virtually any alias:
+
 ```python
 >>> import qcelemental as qcel
 >>> qcel.periodictable.to_E('KRYPTON')
@@ -37,7 +40,10 @@ Decimal('83.9114977282')
 85.9106106269
 ```
 
-### physical constants ([available](https://physics.nist.gov/cuu/Constants/Table/allascii.txt))
+### Physical Constants
+
+Physical constants can be aquired directly from the [NIST CODATA](https://physics.nist.gov/cuu/Constants/Table/allascii.txt):
+
 ```python
 >>> import qcelemental as qcel
 >>> qcel.constants.Hartree_energy_in_eV
@@ -53,5 +59,13 @@ Decimal('27.21138602')
 'eV'
 >>> pc.comment
 'uncertainty=0.000 000 17'
+```
+
+Alternatively, with the use of the Pint unit conversion package arbitrary
+conversion factors can be obtained:
+
+```python
+>>> qcel.constants.conversion_factor("bohr", "miles")
+3.2881547429884475e-14
 ```
 
