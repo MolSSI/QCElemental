@@ -1,3 +1,5 @@
+import sys
+
 import utils_compare
 
 
@@ -26,3 +28,9 @@ compare_integers = true_false_decorator(utils_compare.compare_integers)
 #compare_arrays = true_false_decorator(utils_compare.compare_arrays)
 compare_dicts = true_false_decorator(utils_compare.compare_dicts)
 compare_molrecs = true_false_decorator(utils_compare.compare_molrecs)
+
+
+def tnm():
+    """Returns the name of the calling function, usually name of test case."""
+
+    return sys._getframe().f_back.f_code.co_name

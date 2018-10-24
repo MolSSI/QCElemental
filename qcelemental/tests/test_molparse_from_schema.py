@@ -40,7 +40,7 @@ def test_contiguize_from_fragment_pattern(inp, expected):
     ans = qcel.molparse.contiguize_from_fragment_pattern(**inp)
 
     # compare_molrecs instead of compare_dicts handles some fragment_separators types issues
-    assert compare_molrecs(expected, ans, 6, sys._getframe().f_code.co_name)
+    assert compare_molrecs(expected, ans, 6, tnm())
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -109,7 +109,7 @@ def test_from_schema_1_14e():
     schema = {"schema_name": "qc_schema", "schema_version": 1, "molecule": copy.deepcopy(schema14_1)}
 
     ans = qcel.molparse.from_schema(schema)
-    assert compare_molrecs(schema14_psi4_np, ans, 4, sys._getframe().f_code.co_name)
+    assert compare_molrecs(schema14_psi4_np, ans, 4, tnm())
 
 
 def test_from_schema_error_f():

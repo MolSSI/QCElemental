@@ -24,7 +24,7 @@ def test_unique_everseen(inp, expected):
 def test_updatewitherror(inp, expected):
     print('ans', qcelemental.util.update_with_error(inp[0], inp[1]))
     print('exp', expected)
-    assert compare_dicts(expected, qcelemental.util.update_with_error(inp[0], inp[1]), 4, sys._getframe().f_code.co_name)
+    assert compare_dicts(expected, qcelemental.util.update_with_error(inp[0], inp[1]), 4, tnm())
 
 @pytest.mark.parametrize("inp", [
 ({1:{"a":"A"},2:{"b":"B"}}, {1:{"a":"A"},2:{"b":"C"}}),

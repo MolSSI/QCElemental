@@ -72,7 +72,7 @@ def test_to_dict(dataset):
     ans = {'label': 'an array', 'units': 'cm^-1', 'data': listans}
 
     dicary = dataset['ndarray'].to_dict()
-    assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)
+    assert compare_dicts(ans, dicary, 9, tnm())
 
 
 def test_complex_scalar():
@@ -85,7 +85,7 @@ def test_complex_scalar():
     assert datum1.data.imag == 2
 
     dicary = datum1.to_dict()
-    assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)
+    assert compare_dicts(ans, dicary, 9, tnm())
 
 
 def test_complex_array():
@@ -93,4 +93,4 @@ def test_complex_array():
     ans = {'label': 'complex array', 'units': '', 'data': [[0.0, 1.0, 2.0], [1.0, 1.0, 1.0]]}
 
     dicary = datum1.to_dict()
-    assert compare_dicts(ans, dicary, 9, sys._getframe().f_code.co_name)
+    assert compare_dicts(ans, dicary, 9, tnm())

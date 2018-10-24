@@ -59,8 +59,8 @@ def test_pubchem_4a():
     subject = subject4
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans4, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans4, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans4, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_4b():
@@ -81,8 +81,8 @@ pubchem  : 241
     fullans['name'] = 'benzene'
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='benzene', verbose=2)
-    assert compare_molrecs(ans, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_error_d():
@@ -175,13 +175,13 @@ def test_pubchem_13h():
     subject = subject13
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans13, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_13i():
     subject = "PubChem:223"
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans13, final['qm'], 4, tnm() + ': full')

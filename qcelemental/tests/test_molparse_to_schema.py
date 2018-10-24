@@ -51,7 +51,7 @@ def test_1_14a():
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_dicts(schema14_1, kmol, 4, sys._getframe().f_code.co_name)
+    assert compare_dicts(schema14_1, kmol, 4, tnm())
 
 
 def test_1_ang_14b():
@@ -67,7 +67,7 @@ def test_psi4_14c():
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4')
-    assert compare_dicts(schema14_psi4, kmol, 4, sys._getframe().f_code.co_name)
+    assert compare_dicts(schema14_psi4, kmol, 4, tnm())
 
 
 def test_dtype_d():
