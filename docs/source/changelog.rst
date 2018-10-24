@@ -21,7 +21,7 @@ This is the first alpha release of QCElemental containing the primary three comp
 New Features
 ++++++++++++
 
-- `:pr:6` Updated molparse to write new Molecule QCSchema fields in keeping with GH:MolSSI/QCSchema#44
+- (:pr:`6`) Updated molparse to write new Molecule QCSchema fields in keeping with GH:MolSSI/QCSchema#44
 - Periodic Table data from NIST SRD144 (c. pre-2015?) collected into `qcelemental.periodictable` instance,
   with accessors `to_Z`, `to_element`, `to_E`, `to_mass`, `to_A` (and redundant accessors `to_mass_number`,
   `to_atomic_number`, to_symbol`, `to_name`) in `float` and `Decimal` formats. Also includes functionality
@@ -34,7 +34,7 @@ New Features
   (if necessary) and validate molecule topology inputs from the QC and EFP domains into a QCSchema-like
   data structure. Current deficiencies from QCSchema are non-contiguous fragments and "provenance" fields.
   Accessors `to_string` and `to_schema` are highly customizable.
-- A [pint](https://pint.readthedocs.io/en/latest/) context has been built around the NIST physical constants
+- A `pint <https://pint.readthedocs.io/en/latest/>`_ context has been built around the NIST physical constants
   data so that `qcelemental.constants.conversion_factor(from_unit, to_unit)` uses the QCElemental values
   in its conversions. Resulting `float` is within uncertainty range of NIST constants but won't be exact
   for conversions involving multiple fundamental dimensions or ``wavelength -> energy != 1 / (energy -> wavelength)``.

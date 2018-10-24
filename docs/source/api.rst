@@ -10,7 +10,6 @@ QCElemental API
    :skip: Decimal
 
 .. automodapi:: qcelemental.physical_constants
-   :skip: Decimal
 
 .. automodapi:: qcelemental.molparse
 

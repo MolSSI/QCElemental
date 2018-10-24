@@ -6,8 +6,8 @@ You can install qcelemental with ``conda``, with ``pip``, or by installing from 
 Conda
 -----
 
-... note:: 
-    Not yet complete.
+.. note:: 
+    Work in progress.
 
 You can update qcelemental using `conda <https://www.anaconda.com/download/>`_::
 
