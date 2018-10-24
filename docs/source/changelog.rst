@@ -4,19 +4,24 @@ Changelog
 X.Y.0 / 2018-MM-DD
 -------------------
 
-#### New Features
+New Features
+++++++++++++
 
-#### Enhancements
+Enhancements
+++++++++++++
 
-#### Bug Fixes
+Bug Fixes
++++++++++
 
-0.3 / 2018-10-DD
+0.1.0a / 2018-10-24
 -------------------
 
 This is the first alpha release of QCElemental containing the primary three components.
 
-#### New Features
+New Features
+++++++++++++
 
+- `:pr:6` Updated molparse to write new Molecule QCSchema fields in keeping with GH:MolSSI/QCSchema#44
 - Periodic Table data from NIST SRD144 (c. pre-2015?) collected into `qcelemental.periodictable` instance,
   with accessors `to_Z`, `to_element`, `to_E`, `to_mass`, `to_A` (and redundant accessors `to_mass_number`,
   `to_atomic_number`, to_symbol`, `to_name`) in `float` and `Decimal` formats. Also includes functionality

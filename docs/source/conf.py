@@ -14,19 +14,21 @@
 #
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('../../'))
+import qcelemental
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'qcelemental'
-copyright = '2018, Lori A. Burns'
-author = 'Lori A. Burns'
+copyright = '2018, The Molecular Sciences Software Institute'
+author = 'The Molecular Sciences Software Institute'
 
 # The short X.Y version
-version = ''
+version = qcelemental.__version__
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = qcelemental.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -177,6 +179,12 @@ texinfo_documents = [
 
 
 # -- Extension configuration -------------------------------------------------
+
+extlinks = {
+    'issue': ('https://github.com/MolSSI/QCElemental/issues/%s', 'GH#'),
+    'pr': ('https://github.com/MolSSI/QCElemental/pull/%s', 'GH#')
+}
+
 
 # -- Options for intersphinx extension ---------------------------------------
 
