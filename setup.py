@@ -2,6 +2,15 @@ import os
 import setuptools
 import versioneer
 
+short_description = "QCElemental is a resource module for quantum chemistry containing physical"
+"constants and periodic table data from NIST and molecule handlers."
+
+try:
+    with open("README.md", "r") as handle:
+        long_description = handle.read()
+except:
+    long_description = short_description
+
 if __name__ == "__main__":
     setuptools.setup(
         name='qcelemental',
@@ -43,5 +52,6 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3',
         ],
         zip_safe=False,
-        long_description="""
-""")
+        long_description=long_description,
+        long_description_content_type="text/markdown"
+)
