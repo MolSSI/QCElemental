@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 
 from utils import *
 
@@ -32,3 +33,12 @@ def test_updatewitherror(inp, expected):
 def test_updatewitherror_error(inp):
     with pytest.raises(KeyError):
         qcelemental.util.update_with_error(inp[0], inp[1])
+
+@pytest.mark.parametrize("inp,expected", [
+    ({"a":"A", "b":"B"}, {"a":"A", "b":"B"}),
+    ({"a":np.arange(2), "b":[1, 2]}, {"a":[0, 1], "b":[1, 2]}),
+    ({"c":{"a":np.arange(2), "b":[1, 2]}}, {"c":{"a":[0, 1], "b":[1, 2]}}),
+    ({"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2,3))}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[[0, 1, 2], [3, 4, 5]]}),
+])
+def test_unnp(inp, expected):
+    assert compare_dicts(expected, qcelemental.util.unnp(inp), 4, tnm())

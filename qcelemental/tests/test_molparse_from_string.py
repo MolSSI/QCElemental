@@ -189,6 +189,9 @@ def test_psi4_qm_iutau_1i():
 
     kmol = qcelemental.molparse.to_schema(final, dtype=1, units='Bohr')
     schema14_1_iutau = {
+        "schema_name": "qc_schema_input",
+        "schema_version": 1,
+        "molecule": {
         "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
         "symbols": ["O", "H"],
         "atomic_numbers": [8, 1],
@@ -206,9 +209,9 @@ def test_psi4_qm_iutau_1i():
         "molecular_multiplicity": 2,
         "real": [True, True],
         "provenance": [_arrays_prov_stamp]
-    }
+    }}
 
-    assert compare_molrecs(schema14_1_iutau, kmol, 8, tnm() + ': sch')
+    assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], 8, tnm() + ': sch')
 
 
 subject2 = [

@@ -12,6 +12,9 @@ _string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qc
 subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 
 schema14_1 = {
+    "schema_name": "qc_schema_input",
+    "schema_version": 1,
+    "molecule" : {
     "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
     "symbols": ["He", "He"],
     "atomic_numbers": [2, 2],
@@ -27,7 +30,7 @@ schema14_1 = {
     'molecular_charge': 0.0,
     "molecular_multiplicity": 3,
     "real": [True, False]
-}
+}}
 
 schema14_psi4 = {
     "geom": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
@@ -51,11 +54,11 @@ schema14_psi4 = {
 
 def test_1_14a():
     fullans = copy.deepcopy(schema14_1)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['molecule']['provenance'] = [_string_prov_stamp]
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_molrecs(fullans, kmol, 4, tnm())
+    assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4, tnm())
 
 
 def test_1_ang_14b():

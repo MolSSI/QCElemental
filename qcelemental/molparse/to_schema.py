@@ -57,28 +57,32 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         if units != 'Bohr':
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
-        qcschema['symbols'] = np.array(molrec['elem'])
-        qcschema['geometry'] = geom
-        qcschema['masses'] = np.array(molrec['mass'])
-        qcschema['atomic_numbers'] = np.array(molrec['elez'])
-        qcschema['mass_numbers'] = np.array(molrec['elea'])
-        qcschema['atom_labels'] = np.array(molrec['elbl'])
-        qcschema['name'] = name
+        qcschema = {'schema_name': 'qc_schema_input',
+                    'schema_version': 1,
+                    'molecule': {}}
+
+        qcschema['molecule']['symbols'] = np.array(molrec['elem'])
+        qcschema['molecule']['geometry'] = geom
+        qcschema['molecule']['masses'] = np.array(molrec['mass'])
+        qcschema['molecule']['atomic_numbers'] = np.array(molrec['elez'])
+        qcschema['molecule']['mass_numbers'] = np.array(molrec['elea'])
+        qcschema['molecule']['atom_labels'] = np.array(molrec['elbl'])
+        qcschema['molecule']['name'] = name
         if 'comment' in molrec:
-            qcschema['comment'] = molrec['comment']
-        qcschema['molecular_charge'] = molrec['molecular_charge']
-        qcschema['molecular_multiplicity'] = molrec['molecular_multiplicity']
-        qcschema['real'] = np.array(molrec['real'])
-        #qcschema['connectivity'] =
+            qcschema['molecule']['comment'] = molrec['comment']
+        qcschema['molecule']['molecular_charge'] = molrec['molecular_charge']
+        qcschema['molecule']['molecular_multiplicity'] = molrec['molecular_multiplicity']
+        qcschema['molecule']['real'] = np.array(molrec['real'])
+        #qcschema['molecule']['connectivity'] =
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
-        qcschema['fragments'] = [fr.tolist() for fr in fidx]
-        qcschema['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
-        qcschema['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
-        qcschema['fix_com'] = molrec['fix_com']
-        qcschema['fix_orientation'] = molrec['fix_orientation']
+        qcschema['molecule']['fragments'] = [fr.tolist() for fr in fidx]
+        qcschema['molecule']['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
+        qcschema['molecule']['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
+        qcschema['molecule']['fix_com'] = molrec['fix_com']
+        qcschema['molecule']['fix_orientation'] = molrec['fix_orientation']
         if 'fix_symmetry' in molrec:
-            qcschema['fix_symmetry'] = molrec['fix_symmetry']
-        qcschema['provenance'] = copy.deepcopy(molrec['provenance'])
+            qcschema['molecule']['fix_symmetry'] = molrec['fix_symmetry']
+        qcschema['molecule']['provenance'] = copy.deepcopy(molrec['provenance'])
 
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))
