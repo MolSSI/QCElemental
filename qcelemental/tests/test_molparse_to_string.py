@@ -1,5 +1,3 @@
-import sys
-
 import pint
 import pytest
 from utils import *

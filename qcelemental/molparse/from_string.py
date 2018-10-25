@@ -1,7 +1,7 @@
 import re
 import pprint
 
-from ..util import filter_comments
+from ..util import filter_comments, provenance_stamp
 from ..exceptions import ValidationError, ChoicesError, MoleculeFormatError
 from .from_arrays import from_input_arrays
 from .regex import NUCLEUS, NUMBER, SEP, ENDL, CHGMULT, CARTXYZ
@@ -258,6 +258,12 @@ def from_string(molstr,
         missing_enabled_return_qm=missing_enabled_return_qm,
         missing_enabled_return_efp=missing_enabled_return_efp,
         **molinit)
+
+    # replace from_arrays stamp with from_string stamp
+    if 'qm' in molrec and molrec['qm']:
+        molrec['qm']['provenance'][-1] = provenance_stamp(__name__)
+    if 'efp' in molrec and molrec['efp']:
+        molrec['efp']['provenance'][-1] = provenance_stamp(__name__)
 
     if verbose >= 2:
         print('\nFROM_STRING MOLREC <<<', molrec, '>>>\n')

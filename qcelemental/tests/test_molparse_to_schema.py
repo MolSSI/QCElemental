@@ -1,4 +1,4 @@
-import sys
+import copy
 
 import numpy as np
 import pytest
@@ -6,6 +6,8 @@ import pytest
 from utils import *
 
 import qcelemental
+
+_string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
 
 subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 
@@ -48,10 +50,12 @@ schema14_psi4 = {
 
 
 def test_1_14a():
+    fullans = copy.deepcopy(schema14_1)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_dicts(schema14_1, kmol, 4, tnm())
+    assert compare_molrecs(fullans, kmol, 4, tnm())
 
 
 def test_1_ang_14b():
@@ -64,10 +68,12 @@ def test_1_ang_14b():
 
 
 def test_psi4_14c():
+    fullans = copy.deepcopy(schema14_psi4)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4')
-    assert compare_dicts(schema14_psi4, kmol, 4, tnm())
+    assert compare_molrecs(fullans, kmol, 4, tnm())
 
 
 def test_dtype_d():

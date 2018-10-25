@@ -1,4 +1,3 @@
-import sys
 import copy
 
 import numpy as np
@@ -7,6 +6,8 @@ import pytest
 from utils import *
 
 import qcelemental as qcel
+
+_schema_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_schema'}
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -101,7 +102,8 @@ schema14_psi4_np = {
     'units': 'Bohr',
     'fragment_separators': [1],
     'elbl': np.array(['', '']),
-    "real": np.array([True, False])
+    "real": np.array([True, False]),
+    "provenance": [_schema_prov_stamp],
 }
 
 

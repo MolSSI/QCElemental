@@ -17,7 +17,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         Psi4 json Molecule spec.
     dtype : {'psi4', 1}
         Molecule schema format.
-        ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44
+        ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44 + #53
     units : {'Bohr', 'Angstrom'}
         Units in which to write string. There is not an option to write in
         intrinsic/input units. Some `dtype` may not allow all units.
@@ -46,7 +46,8 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
 
     if dtype == 'psi4':
         if units not in ['Angstrom', 'Bohr']:
-            raise ValidationError("""Psi4 Schema {} allows only 'Bohr'/'Angstrom' coordinates, not {}.""".format(dtype, units))
+            raise ValidationError("""Psi4 Schema {} allows only 'Bohr'/'Angstrom' coordinates, not {}.""".format(
+                dtype, units))
         qcschema = copy.deepcopy(molrec)
         qcschema['geom'] = geom
         qcschema['units'] = units
@@ -63,7 +64,8 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['mass_numbers'] = np.array(molrec['elea'])
         qcschema['atom_labels'] = np.array(molrec['elbl'])
         qcschema['name'] = name
-        #qcschema['comment'] =
+        if 'comment' in molrec:
+            qcschema['comment'] = molrec['comment']
         qcschema['molecular_charge'] = molrec['molecular_charge']
         qcschema['molecular_multiplicity'] = molrec['molecular_multiplicity']
         qcschema['real'] = np.array(molrec['real'])
@@ -76,7 +78,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['fix_orientation'] = molrec['fix_orientation']
         if 'fix_symmetry' in molrec:
             qcschema['fix_symmetry'] = molrec['fix_symmetry']
-        #qcschema['provenance'] =
+        qcschema['provenance'] = copy.deepcopy(molrec['provenance'])
 
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))

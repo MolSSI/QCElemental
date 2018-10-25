@@ -1,4 +1,3 @@
-import sys
 import copy
 
 import pytest
@@ -7,6 +6,9 @@ import numpy as np
 from utils import *
 
 import qcelemental
+
+_arrays_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_arrays'}
+_string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
 
 subject1 = """O 0 0   0
 no_com
@@ -53,10 +55,12 @@ fullans1c.update({
 
 def test_psi4_qm_1a():
     subject = subject1
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans1, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans1a, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1ab():
@@ -66,38 +70,46 @@ def test_psi4_qm_1ab():
     ans['fix_com'] = False
     fullans = copy.deepcopy(fullans1a)
     fullans['fix_com'] = False
+    fullans['provenance'] = [_string_prov_stamp]
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, fix_orientation=False, fix_com=False)
+    final, intermed = qcelemental.molparse.from_string(
+        subject, return_processed=True, fix_orientation=False, fix_com=False)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
     assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1b():
     subject = '\n' + '\t' + subject1 + '\n\n'
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans1, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans1a, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1c():
     subject = '1 1\n  -- \n' + subject1
     ans = copy.deepcopy(ans1)
     ans.update({'molecular_charge': 1., 'molecular_multiplicity': 1})
+    fullans = copy.deepcopy(fullans1c)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans1c, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1d():
     subject = subject1 + '\n1 1'
     ans = copy.deepcopy(ans1)
     ans.update({'fragment_charges': [1.], 'fragment_multiplicities': [1]})
+    fullans = copy.deepcopy(fullans1c)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans1c, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1e():
@@ -136,6 +148,7 @@ def test_psi4_qm_iutau_1h():
     fullans = copy.deepcopy(fullans1a)
     iutau = 1.01 / 0.52917721067
     fullans['input_units_to_au'] = iutau
+    fullans['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_arrays(
         geom=np.array([0., 0., 0., 1., 0., 0.]),
@@ -161,6 +174,7 @@ def test_psi4_qm_iutau_1i():
     iutau = 1.01 / 0.52917721067
     fullans['input_units_to_au'] = iutau
     fullans['fix_symmetry'] = 'cs'
+    fullans['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_arrays(
         geom=np.array([0., 0., 0., 1., 0., 0.]),
@@ -175,22 +189,23 @@ def test_psi4_qm_iutau_1i():
 
     kmol = qcelemental.molparse.to_schema(final, dtype=1, units='Bohr')
     schema14_1_iutau = {
-    "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
-    "symbols": ["O", "H"],
-    "atomic_numbers": [8, 1],
-    "mass_numbers": [16, 1],
-    "atom_labels": ["", ""],
-    'fragments': [[0, 1]],
-    'fragment_charges': [0.0],
-    'fragment_multiplicities': [2],
-    'masses': [15.99491462, 1.00782503],
-    'name': 'HO',
-    'fix_com': True,
-    'fix_orientation': False,
-    'fix_symmetry': 'cs',
-    'molecular_charge': 0.0,
-    "molecular_multiplicity": 2,
-    "real": [True, True]
+        "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
+        "symbols": ["O", "H"],
+        "atomic_numbers": [8, 1],
+        "mass_numbers": [16, 1],
+        "atom_labels": ["", ""],
+        'fragments': [[0, 1]],
+        'fragment_charges': [0.0],
+        'fragment_multiplicities': [2],
+        'masses': [15.99491462, 1.00782503],
+        'name': 'HO',
+        'fix_com': True,
+        'fix_orientation': False,
+        'fix_symmetry': 'cs',
+        'molecular_charge': 0.0,
+        "molecular_multiplicity": 2,
+        "real": [True, True],
+        "provenance": [_arrays_prov_stamp]
     }
 
     assert compare_molrecs(schema14_1_iutau, kmol, 8, tnm() + ': sch')
@@ -255,6 +270,8 @@ def test_psi4_qm_2a():
     }
     fullans.update(ud)
     fullans_unnp.update(ud)
+    fullans['provenance'] = [_string_prov_stamp]
+    fullans_unnp['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans2, intermed, 4, tnm() + ': intermediate')
@@ -276,6 +293,7 @@ def test_psi4_qm_2b():
         'fragment_charges': [1., 0., 0.],
         'fragment_multiplicities': [2, 1, 2]
     })
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
@@ -378,6 +396,7 @@ def test_psi4_efp_5a():
     hintsans[0][4] = 1.534222
     fullans = copy.deepcopy(fullans5b)
     fullans['efp']['units'] = 'Angstrom'
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans5, intermed, 4, tnm() + ': intermediate')
@@ -386,8 +405,7 @@ def test_psi4_efp_5a():
     hintsstd = qcelemental.util.standardize_efp_angles_units('Angstrom', final['efp']['geom_hints'])
     final['efp']['geom_hints'] = hintsstd
     fullans['efp']['geom_hints'] = hintsans
-    assert compare_molrecs(fullans['efp'], final['efp'], 4,
-                           tnm() + ': final efp standardized')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp standardized')
 
 
 def test_psi4_efp_5b():
@@ -395,10 +413,12 @@ def test_psi4_efp_5b():
 
     ans = copy.deepcopy(ans5)
     ans['units'] = 'Bohr'
+    fullans = copy.deepcopy(fullans5b)
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans5b['efp'], final['efp'], 4, tnm() + ': final efp')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp')
 
 
 def test_psi4_efp_5c():
@@ -417,10 +437,12 @@ def test_psi4_efp_5d():
     ans['fix_com'] = True
     ans['fix_orientation'] = True
     ans['fix_symmetry'] = 'c1'
+    fullans = copy.deepcopy(fullans5b)
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans5b['efp'], final['efp'], 4, tnm() + ': final')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final')
 
 
 def test_psi4_efp_5e():
@@ -503,6 +525,8 @@ fullans6 = {
 def test_psi4_qmefp_6a():
     subject = subject6
     fullans = copy.deepcopy(fullans6)
+    fullans['qm']['provenance'] = [_string_prov_stamp]
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans6, intermed, 4, tnm() + ': intermediate')
@@ -512,8 +536,7 @@ def test_psi4_qmefp_6a():
     hintsstd = qcelemental.util.standardize_efp_angles_units('Bohr', final['efp']['geom_hints'])
     final['efp']['geom_hints'] = hintsstd
     fullans['efp']['geom_hints'][0][4] = 1.734999
-    assert compare_molrecs(fullans['efp'], final['efp'], 4,
-                           tnm() + ': final efp standardized')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp standardized')
 
 
 def test_psi4_qmefp_6b():
@@ -525,6 +548,8 @@ def test_psi4_qmefp_6b():
     fullans = copy.deepcopy(fullans6)
     fullans['qm']['units'] = 'Angstrom'
     fullans['efp']['units'] = 'Angstrom'
+    fullans['qm']['provenance'] = [_string_prov_stamp]
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
@@ -532,7 +557,7 @@ def test_psi4_qmefp_6b():
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
 
 
-def test_psi4_qmefp_6c():
+def test_psi4_qmefpformat_error_6c():
     """try to give chgmult to an efp"""
 
     subject = subject6.replace('    efp h2O', '0 1\n    efp h2O')
@@ -543,6 +568,10 @@ def test_psi4_qmefp_6c():
 
 def test_qmefp_array_6d():
 
+    fullans = copy.deepcopy(fullans6)
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
+
     final = qcelemental.molparse.from_input_arrays(
         units='Bohr',
         geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
@@ -552,8 +581,8 @@ def test_qmefp_array_6d():
                     [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
         hint_types=['xyzabc', 'points'])
 
-    assert compare_molrecs(fullans6['efp'], final['efp'], 4, tnm() + ': full efp')
-    assert compare_molrecs(fullans6['qm'], final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
 
 
 def test_qmefp_badhint_error_6e():
@@ -751,10 +780,12 @@ def test_xyzp_qm_7b():
 
 def test_xyzp_qm_7c():
     subject = subject7
+    fullans = copy.deepcopy(fullans7)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_dicts(ans7, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans7, final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 def test_xyzp_qm_7d():
@@ -772,6 +803,7 @@ def test_xyzp_qm_7d():
     fullans['fragment_multiplicities'] = [3]
     fullans['molecular_charge'] = -1.
     fullans['molecular_multiplicity'] = 3
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_dicts(ans, intermed, 4, tnm() + ': intermediate')
@@ -780,10 +812,12 @@ def test_xyzp_qm_7d():
 
 def test_xyzp_qm_7e():
     subject = subject7.replace('5', '5 ang')
+    fullans = copy.deepcopy(fullans7)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_dicts(ans7, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans7, final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 subject8 = """\
@@ -824,10 +858,12 @@ fullans8 = {
 
 def test_xyzp_qm_8a():
     subject = subject8
+    fullans = copy.deepcopy(fullans8)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_dicts(ans8, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans8, final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 fullans10qm = {
@@ -899,6 +935,8 @@ def test_arrays_10a():
     fullans['qm']['fix_com'] = True
     fullans['qm']['fix_orientation'] = True
     fullans['qm']['fix_symmetry'] = 'c1'
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -917,6 +955,7 @@ def test_arrays_10b():
     }
 
     fullans = {'efp': fullans10efp}
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
@@ -936,6 +975,7 @@ def test_arrays_10c():
     }
 
     fullans = {'qm': fullans10qm}
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -953,6 +993,7 @@ def test_arrays_10d():
     }
 
     fullans = {'qm': fullans10qm}
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -970,6 +1011,8 @@ def test_arrays_10e():
     }
 
     fullans = {'qm': fullans10qm, 'efp': blankefp}
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -1017,6 +1060,7 @@ def test_arrays_10h():
     }
 
     fullans = {'efp': blankefp}
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
@@ -1041,6 +1085,7 @@ def test_arrays_10j():
     subject = {'geom': [0, 0, 0], 'elem': ['C'], 'enable_qm': True, 'enable_efp': False}
 
     fullans = {'qm': fullans10qm}
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -1059,6 +1104,7 @@ def test_arrays_10k():
     }
 
     fullans = {'efp': fullans10efp}
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
@@ -1080,6 +1126,8 @@ def test_arrays_10l():
     fullans['qm']['fix_com'] = True
     fullans['qm']['fix_orientation'] = True
     fullans['qm']['fix_symmetry'] = 'c1'
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -1110,6 +1158,7 @@ def test_arrays_10n():
     }
 
     fullans = {'efp': fullans10efp}
+    fullans['efp']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
@@ -1147,6 +1196,7 @@ def test_arrays_10p():
     }
 
     fullans = {'qm': blankqm}
+    fullans['qm']['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
@@ -1192,6 +1242,8 @@ def test_strings_10s():
         missing_enabled_return_efp='minimal')
 
     fullans = {'qm': blankqm, 'efp': blankefp}
+    fullans['qm']['provenance'] = [_string_prov_stamp]
+    fullans['efp']['provenance'] = [_string_prov_stamp]
 
     assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
     assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
@@ -1210,8 +1262,11 @@ def test_strings_10t():
 
 
 def test_qmol_11c():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
+
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4')
-    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11d():
@@ -1221,39 +1276,58 @@ def test_qmol_11d():
         'geom_unsettled': [['0', '0', '0'], ['1', '0', '0']],
     })
     fullans.pop('geom')
+    fullans['provenance'] = [_string_prov_stamp]
 
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4+')
     assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11e():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
+
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, dtype='xyz', fix_com=True)
-    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11g():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_arrays_prov_stamp]
+
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, verbose=2)
-    assert compare_molrecs(fullans1a, asdf, 4, tnm())
+    assert compare_molrecs(fullans, asdf, 4, tnm())
 
 
 def test_qmol_11h():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
+
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11i():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
+
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11j():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_string_prov_stamp]
+
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
-    assert compare_molrecs(fullans1a, asdf['qm'], 4, tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4, tnm())
 
 
 def test_qmol_11p():
+    fullans = copy.deepcopy(fullans1a)
+    fullans['provenance'] = [_arrays_prov_stamp]
+
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, units='AngSTRom')
-    assert compare_molrecs(fullans1a, asdf, 4, tnm())
+    assert compare_molrecs(fullans, asdf, 4, tnm())
 
 
 def test_qmol_11q():
@@ -1317,10 +1391,12 @@ ans12 = {
 
 def test_psi4_qm_12a():
     subject = subject12
+    fullans = copy.deepcopy(fullans12)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, fix_symmetry='c1')
     assert compare_dicts(ans12, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans12, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_tooclose_error():
@@ -1542,6 +1618,8 @@ def test_fraglen_error():
 
 
 def test_zmatfragarr_14a():
+    fullans = copy.deepcopy(fullans14)
+    fullans['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_arrays(
         domain='qmvz',
@@ -1554,12 +1632,13 @@ def test_zmatfragarr_14a():
         units='Bohr',
         variables=[('bond', '3')])
 
-    assert compare_molrecs(fullans14, final, 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 def test_zmatfragarr_14b():
     fullans = copy.deepcopy(fullans14)
     fullans['elbl'] = ['', '']
+    fullans['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_arrays(
         domain='qmvz',
@@ -1584,6 +1663,7 @@ def test_zmatfragarr_14c():
     fullans['fix_orientation'] = True
     fullans['mass'] = fullans['mass'].tolist()  # other np vs. list diffs are hidden by compare_molrecs
     fullans['real'] = fullans['real'].tolist()
+    fullans['provenance'] = [_arrays_prov_stamp]
 
     final = qcelemental.molparse.from_arrays(
         np_out=False,
@@ -1637,9 +1717,11 @@ fullans14 = {
 
 def test_zmatfragstr_14d():
     subject = subject14
+    fullans = copy.deepcopy(fullans14)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)
-    assert compare_molrecs(fullans14, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 #'geom_unsettled': [[], ['1', '2.'], ['1', '2.', '2', '100.', '3', '35.']],
