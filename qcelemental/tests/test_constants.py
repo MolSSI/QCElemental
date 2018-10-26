@@ -78,6 +78,7 @@ def test_c_header():
     os.remove("header.h")
 
 
+@pytest.mark.xfail(True, reason='comparison data not available for installed repository', run=True, strict=False)
 def test_constants_comparison():
     qcelemental.constants.run_comparison()
 
