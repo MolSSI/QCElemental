@@ -64,6 +64,7 @@ def from_schema(molschema, verbose=1):
             provenance=ms.get('provenance', None),
             domain='qm',
             #missing_enabled_return=missing_enabled_return,
+            speclabel=False,
             #tooclose=tooclose,
             #zero_ghost_fragments=zero_ghost_fragments,
             #nonphysical=nonphysical,

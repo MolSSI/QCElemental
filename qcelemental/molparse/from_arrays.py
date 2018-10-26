@@ -127,40 +127,42 @@ def from_input_arrays(
     return molinit
 
 
-def from_arrays(geom=None,
-                elea=None,
-                elez=None,
-                elem=None,
-                mass=None,
-                real=None,
-                elbl=None,
-                name=None,
-                units='Angstrom',
-                input_units_to_au=None,
-                fix_com=None,
-                fix_orientation=None,
-                fix_symmetry=None,
-                fragment_separators=None,
-                fragment_charges=None,
-                fragment_multiplicities=None,
-                molecular_charge=None,
-                molecular_multiplicity=None,
-                comment=None,
-                provenance=None,
-                fragment_files=None,
-                hint_types=None,
-                geom_hints=None,
-                geom_unsettled=None,
-                variables=None,
-                domain='qm',
-                missing_enabled_return='error',
-                np_out=True,
-                speclabel=True,
-                tooclose=0.1,
-                zero_ghost_fragments=False,
-                nonphysical=False,
-                mtol=1.e-3,
-                verbose=1):
+def from_arrays(
+        geom=None,
+        elea=None,
+        elez=None,
+        elem=None,
+        mass=None,
+        real=None,
+        elbl=None,
+        name=None,
+        units='Angstrom',
+        input_units_to_au=None,
+        fix_com=None,
+        fix_orientation=None,
+        fix_symmetry=None,
+        fragment_separators=None,
+        fragment_charges=None,
+        fragment_multiplicities=None,
+        molecular_charge=None,
+        molecular_multiplicity=None,
+        comment=None,
+        provenance=None,
+        #connectivity=None,
+        fragment_files=None,
+        hint_types=None,
+        geom_hints=None,
+        geom_unsettled=None,
+        variables=None,
+        domain='qm',
+        missing_enabled_return='error',
+        np_out=True,
+        speclabel=True,
+        tooclose=0.1,
+        zero_ghost_fragments=False,
+        nonphysical=False,
+        mtol=1.e-3,
+        verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
     See fields of Return molrec below. Required parameters (for QM XYZ)
@@ -413,13 +415,18 @@ def validate_and_fill_units(name=None,
         molinit['comment'] = comment
 
     def validate_provenance(dicary):
-        prov_keys = ['creator', 'routine', 'version']
-        if sorted(dicary.keys()) == prov_keys:
+        expected_prov_keys = ['creator', 'routine', 'version']
+        try:
+            prov_keys = sorted(dicary.keys())
+        except AttributeError:
+            raise ValidationError("Provenance entry is not dictionary: {}".format(dicary))
+
+        if prov_keys == expected_prov_keys:
             if not isinstance(dicary['creator'], str):
                 raise ValidationError(
                     """Provenance key 'creator' should be string of creating program's name: {}""".format(
                         dicary['creator']))
-            if not re.fullmatch(VERSION_PATTERN, dicary['version']):
+            if not re.fullmatch(VERSION_PATTERN, dicary['version'], re.VERBOSE):
                 raise ValidationError("""Provenance key 'version' should be a valid PEP 440 string: {}""".format(
                     dicary['version']))
             if not isinstance(dicary['routine'], str):
@@ -428,7 +435,7 @@ def validate_and_fill_units(name=None,
                         dicary['routine']))
             return True
         else:
-            raise ValidationError('Provenance keys ({}) incorrect: {}'.format(prov_keys, provenance.keys()))
+            raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
 
     if provenance is None:
         molinit['provenance'] = []

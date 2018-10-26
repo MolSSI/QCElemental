@@ -192,24 +192,25 @@ def test_psi4_qm_iutau_1i():
         "schema_name": "qc_schema_input",
         "schema_version": 1,
         "molecule": {
-        "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
-        "symbols": ["O", "H"],
-        "atomic_numbers": [8, 1],
-        "mass_numbers": [16, 1],
-        "atom_labels": ["", ""],
-        'fragments': [[0, 1]],
-        'fragment_charges': [0.0],
-        'fragment_multiplicities': [2],
-        'masses': [15.99491462, 1.00782503],
-        'name': 'HO',
-        'fix_com': True,
-        'fix_orientation': False,
-        'fix_symmetry': 'cs',
-        'molecular_charge': 0.0,
-        "molecular_multiplicity": 2,
-        "real": [True, True],
-        "provenance": [_arrays_prov_stamp]
-    }}
+            "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
+            "symbols": ["O", "H"],
+            "atomic_numbers": [8, 1],
+            "mass_numbers": [16, 1],
+            "atom_labels": ["", ""],
+            'fragments': [[0, 1]],
+            'fragment_charges': [0.0],
+            'fragment_multiplicities': [2],
+            'masses': [15.99491462, 1.00782503],
+            'name': 'HO',
+            'fix_com': True,
+            'fix_orientation': False,
+            'fix_symmetry': 'cs',
+            'molecular_charge': 0.0,
+            "molecular_multiplicity": 2,
+            "real": [True, True],
+            "provenance": [_arrays_prov_stamp]
+        }
+    }
 
     assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], 8, tnm() + ': sch')
 
@@ -1725,6 +1726,63 @@ def test_zmatfragstr_14d():
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)
     assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
+
+
+def test_badprov0_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(geom=[1, 2, 3], elez=[4], provenance='mine')
+
+    assert 'Provenance entry is not dictionary' in str(e)
+
+
+def test_badprov1_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={
+                'creator': ('psi', 'tuple'),
+                'routine': 'buggy',
+                'version': '0.1b'
+            })
+
+    assert """Provenance key 'creator' should be string of creating program's name:""" in str(e)
+
+
+def test_badprov2_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3],
+            elez=[4],
+            provenance={
+                'creator': '',
+                'routine': 'buggy',
+                'version': 'my.vanity.version.13'
+            })
+
+    assert """Provenance key 'version' should be a valid PEP 440 string:""" in str(e)
+
+
+def test_badprov3_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={
+                'creator': '',
+                'routine': 5,
+                'version': '0.1b'
+            })
+
+    assert """Provenance key 'routine' should be string of creating function's name:""" in str(e)
+
+
+def test_badprov4_error():
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={
+                'creators': '',
+                'routine': 'buggy',
+                'version': '0.1b'
+            })
+
+    assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e)
 
 
 #'geom_unsettled': [[], ['1', '2.'], ['1', '2.', '2', '100.', '3', '35.']],
