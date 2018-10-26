@@ -169,6 +169,10 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
                                                  for m in dicary['fragment_multiplicities']]
         if 'fragment_separators' in dicary:
             dicary['fragment_separators'] = [(s if s is None else int(s)) for s in dicary['fragment_separators']]
+        # forgive generator version changes
+        if 'provenance' in dicary:
+            for prov in dicary['provenance']:
+                prov.pop('version')
         return dicary
 
     xptd = massage_dicts(xptd)

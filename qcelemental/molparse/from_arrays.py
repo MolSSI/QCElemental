@@ -1,10 +1,13 @@
+import re
 import pprint
+import keyword
 
 import numpy as np
 
-from ..util import distance_matrix, update_with_error, unnp
+from ..util import distance_matrix, update_with_error, unnp, provenance_stamp
 from ..physical_constants import constants
 from ..exceptions import ValidationError
+from .regex import VERSION_PATTERN
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
 
@@ -124,38 +127,42 @@ def from_input_arrays(
     return molinit
 
 
-def from_arrays(geom=None,
-                elea=None,
-                elez=None,
-                elem=None,
-                mass=None,
-                real=None,
-                elbl=None,
-                name=None,
-                units='Angstrom',
-                input_units_to_au=None,
-                fix_com=None,
-                fix_orientation=None,
-                fix_symmetry=None,
-                fragment_separators=None,
-                fragment_charges=None,
-                fragment_multiplicities=None,
-                molecular_charge=None,
-                molecular_multiplicity=None,
-                fragment_files=None,
-                hint_types=None,
-                geom_hints=None,
-                geom_unsettled=None,
-                variables=None,
-                domain='qm',
-                missing_enabled_return='error',
-                np_out=True,
-                speclabel=True,
-                tooclose=0.1,
-                zero_ghost_fragments=False,
-                nonphysical=False,
-                mtol=1.e-3,
-                verbose=1):
+def from_arrays(
+        geom=None,
+        elea=None,
+        elez=None,
+        elem=None,
+        mass=None,
+        real=None,
+        elbl=None,
+        name=None,
+        units='Angstrom',
+        input_units_to_au=None,
+        fix_com=None,
+        fix_orientation=None,
+        fix_symmetry=None,
+        fragment_separators=None,
+        fragment_charges=None,
+        fragment_multiplicities=None,
+        molecular_charge=None,
+        molecular_multiplicity=None,
+        comment=None,
+        provenance=None,
+        #connectivity=None,
+        fragment_files=None,
+        hint_types=None,
+        geom_hints=None,
+        geom_unsettled=None,
+        variables=None,
+        domain='qm',
+        missing_enabled_return='error',
+        np_out=True,
+        speclabel=True,
+        tooclose=0.1,
+        zero_ghost_fragments=False,
+        nonphysical=False,
+        mtol=1.e-3,
+        verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
     See fields of Return molrec below. Required parameters (for QM XYZ)
@@ -187,7 +194,7 @@ def from_arrays(geom=None,
     Returns
     -------
     molrec : dict
-        Molecule dictionary spec follows. Its principles are 
+        Molecule dictionary spec follows. Its principles are
 
         (1) contents are fully validated and defaulted - no error
         checking necessary,
@@ -198,7 +205,7 @@ def from_arrays(geom=None,
         (3) big system, nat-length single-type arrays, not small system,
         nat-number heterogeneous objects,
 
-        (4) some fields are optional (e.g., symmetry) but largely
+        (4) some fields are optional (e.g., fix_symmetry) but largely
         self-describing so units or fix_com must be present.
 
         (5) apart from some mild optional fields, _all_ fields will
@@ -208,7 +215,7 @@ def from_arrays(geom=None,
         and post-handshake they will be joined by full qm-like molrec.
 
         (6) molrec should be idempotent through this function (equiv to
-        schema validator) but are not idempostent throughout its life. if
+        schema validator) but are not idempotent throughout its life. if
         fields permit, frame may be changed. Future? if fields permit,
         mol may be symmetrized. Coordinates and angles may change units
         or range if program returns them in only one form.
@@ -249,6 +256,12 @@ def from_arrays(geom=None,
         total charge on system.
     molecular_multiplicity : int
         total multiplicity on system.
+    comment : str, optional
+        Additional comment for molecule.
+    provenance : list of dict of str
+        Accumulated history of molecule, with fields "creator", "version", "routine".
+    connectivity : list of tuples of int, optional
+        (nbond, 3) list of (0-indexed) (atomA, atomB, bond_order) tuples
 
     EFP extension (this + units is minimal)
 
@@ -304,7 +317,10 @@ def from_arrays(geom=None,
         name=name,
         units=units,
         input_units_to_au=input_units_to_au,
+        comment=comment,
+        provenance=provenance,
         always_return_iutau=False)  # yapf: disable
+    processed['provenance'].append(provenance_stamp(__name__))
     update_with_error(molinit, processed)
 
     if domain == 'efp':
@@ -384,11 +400,54 @@ def from_arrays(geom=None,
     return molinit
 
 
-def validate_and_fill_units(name=None, units='Angstrom', input_units_to_au=None, always_return_iutau=False):
+def validate_and_fill_units(name=None,
+                            units='Angstrom',
+                            input_units_to_au=None,
+                            comment=None,
+                            provenance=None,
+                            always_return_iutau=False):
     molinit = {}
 
     if name is not None:
         molinit['name'] = name
+
+    if comment is not None:
+        molinit['comment'] = comment
+
+    def validate_provenance(dicary):
+        expected_prov_keys = ['creator', 'routine', 'version']
+        try:
+            prov_keys = sorted(dicary.keys())
+        except AttributeError:
+            raise ValidationError("Provenance entry is not dictionary: {}".format(dicary))
+
+        if prov_keys == expected_prov_keys:
+            if not isinstance(dicary['creator'], str):
+                raise ValidationError(
+                    """Provenance key 'creator' should be string of creating program's name: {}""".format(
+                        dicary['creator']))
+            if not re.fullmatch(VERSION_PATTERN, dicary['version'], re.VERBOSE):
+                raise ValidationError("""Provenance key 'version' should be a valid PEP 440 string: {}""".format(
+                    dicary['version']))
+            if not isinstance(dicary['routine'], str):
+                raise ValidationError(
+                    """Provenance key 'routine' should be string of creating function's name: {}""".format(
+                        dicary['routine']))
+            return True
+        else:
+            raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
+
+    if provenance is None:
+        molinit['provenance'] = []
+    else:
+        if isinstance(provenance, dict):
+            if validate_provenance(provenance):
+                molinit['provenance'] = [provenance]
+        else:
+            for prov in provenance:
+                if validate_provenance(prov):
+                    pass
+            molinit['provenance'] = provenance
 
     if units.capitalize() in ['Angstrom', 'Bohr']:
         molinit['units'] = units.capitalize()
@@ -467,8 +526,8 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
             or not (len(fragment_files) == len(hint_types) == len(geom_hints))):
 
         raise ValidationError(
-            """Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})""".
-            format(fragment_files, hint_types, geom_hints))
+            """Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})"""
+            .format(fragment_files, hint_types, geom_hints))
 
     # NOTE: imposing case on file
     try:
@@ -621,8 +680,8 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
                     format(split_geom))
         if sum(len(f) for f in split_geom) != nat:
             raise ValidationError(
-                """fragment_separators ({}) yields overlapping fragment(s) after trial np.split on geometry, possibly unsorted.""".
-                format(split_geom))
+                """fragment_separators ({}) yields overlapping fragment(s) after trial np.split on geometry, possibly unsorted."""
+                .format(split_geom))
         frs = fragment_separators
         nfr = len(split_geom)
 
@@ -665,8 +724,8 @@ def validate_and_fill_unsettled_geometry(geom_unsettled, variables):
     for il in range(len(lgeom) - 1):
         if lgeom[il + 1] not in allowed_to_follow[lgeom[il]]:
             raise ValidationError(
-                """This is not how a Zmat works - aim for lower triangular. Line len ({}) may be followed by line len ({}), not ({}).""".
-                format(lgeom[il], allowed_to_follow[lgeom[il]], lgeom[il + 1]))
+                """This is not how a Zmat works - aim for lower triangular. Line len ({}) may be followed by line len ({}), not ({})."""
+                .format(lgeom[il], allowed_to_follow[lgeom[il]], lgeom[il + 1]))
 
     if not all(len(v) == 2 for v in variables):
         raise ValidationError("""Variables should come in pairs: {}""".format(variables))

@@ -1,4 +1,4 @@
-import sys
+import copy
 
 import numpy as np
 import pytest
@@ -7,9 +7,15 @@ from utils import *
 
 import qcelemental
 
+_string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
+_schema_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_schema'}
+
 subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 
 schema14_1 = {
+    "schema_name": "qc_schema_input",
+    "schema_version": 1,
+    "molecule" : {
     "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
     "symbols": ["He", "He"],
     "atomic_numbers": [2, 2],
@@ -25,7 +31,7 @@ schema14_1 = {
     'molecular_charge': 0.0,
     "molecular_multiplicity": 3,
     "real": [True, False]
-}
+}}
 
 schema14_psi4 = {
     "geom": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
@@ -48,10 +54,19 @@ schema14_psi4 = {
 
 
 def test_1_14a():
+    fullans = copy.deepcopy(schema14_1)
+    fullans['molecule']['provenance'] = [_string_prov_stamp]
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_dicts(schema14_1, kmol, 4, sys._getframe().f_code.co_name)
+    assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4, tnm())
+
+    fullans = copy.deepcopy(schema14_psi4)
+    fullans['provenance'] = [_string_prov_stamp, _schema_prov_stamp]
+
+    molrec = qcelemental.molparse.from_schema(kmol)
+    molrec = qcelemental.util.unnp(molrec)
+    assert compare_molrecs(fullans, molrec, 4, tnm())
 
 
 def test_1_ang_14b():
@@ -64,10 +79,12 @@ def test_1_ang_14b():
 
 
 def test_psi4_14c():
+    fullans = copy.deepcopy(schema14_psi4)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4')
-    assert compare_dicts(schema14_psi4, kmol, 4, sys._getframe().f_code.co_name)
+    assert compare_molrecs(fullans, kmol, 4, tnm())
 
 
 def test_dtype_d():
@@ -86,3 +103,163 @@ def test_psi4_nm_14e():
         qcelemental.molparse.to_schema(final['qm'], dtype='psi4', units='nm')
 
     assert "Psi4 Schema psi4 allows only 'Bohr'/'Angstrom' coordinates, not nm" in str(e)
+
+
+twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")
+subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(twobohrinang=twobohrinang)
+
+schema15_1 = {
+    "schema_name": "qc_schema_input",
+    "schema_version": 1,
+    "molecule" : {
+    "geometry": [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0],
+    "symbols": ["H", "O", "H"],
+    "atomic_numbers": [1, 8, 1],
+    "mass_numbers": [1, 16, 2],
+    "atom_labels": ['', '', '_deut'],
+    'fragments': [[0, 1, 2]],
+    'fragment_charges': [0.0],
+    'fragment_multiplicities': [1],
+    'masses': [1.00782503223, 15.99491461957, 2.01410177812],
+    'name': 'H2O',
+    'comment': 'I has a comment',
+    'fix_com': True,
+    'fix_orientation': True,
+    'fix_symmetry': 'cs',
+    'molecular_charge': 0.0,
+    "molecular_multiplicity": 1,
+    "real": [True, True, True]
+}}
+
+schema15_psi4 = {
+    "geom": [0.0, 0.0, twobohrinang, 0.0, 0.0, 0.0, twobohrinang, 0.0, 0.0],
+    "elem": ["H", "O", "H"],
+    "elez": [1, 8, 1],
+    "elea": [1, 16, 2],
+    "elbl": ['', '', '_deut'],
+    'fragment_charges': [0.0],
+    'fragment_multiplicities': [1],
+    'mass': [1.00782503223, 15.99491461957, 2.01410177812],
+    'name': 'H2O',
+    'comment': 'I has a comment',
+    'fix_com': True,
+    'fix_orientation': True,
+    'fix_symmetry': 'cs',
+    'molecular_charge': 0.0,
+    "molecular_multiplicity": 1,
+    'units': 'Angstrom',
+    'fragment_separators': [],
+    'elbl': ['', '', '_deut'],
+    "real": [True, True, True]
+}
+
+
+def test_1_15a():
+    fullans = copy.deepcopy(schema15_1)
+    fullans['molecule']['provenance'] = [_string_prov_stamp]
+
+    final = qcelemental.molparse.from_string(subject15)
+    final['qm']['comment'] = 'I has a comment'
+    kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
+    assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4, tnm())
+
+    fullans = copy.deepcopy(schema15_psi4)
+    fullans['units'] = 'Bohr'
+    fullans['geom'] = [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0]
+    fullans['provenance'] = [_string_prov_stamp, _schema_prov_stamp]
+
+    molrec = qcelemental.molparse.from_schema(kmol)
+    molrec = qcelemental.util.unnp(molrec)
+    assert compare_molrecs(fullans, molrec, 4, tnm())
+
+
+def test_psi4_15c():
+    fullans = copy.deepcopy(schema15_psi4)
+    fullans['provenance'] = [_string_prov_stamp]
+
+    final = qcelemental.molparse.from_string(subject15)
+    final['qm']['comment'] = 'I has a comment'
+    kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4', units='Angstrom')
+    assert compare_molrecs(fullans, kmol, 4, tnm())
+
+
+schema16_1 = {
+        'schema_name': 'qc_schema_input',
+        'schema_version': 1,
+        'molecule': {
+            'geometry': [2., 2., 3.],
+            'symbols': ['C'],
+            'masses': [12.0],
+            'atom_labels': [''],
+            'atomic_numbers': [6],
+            'mass_numbers': [12],
+            'real': [True],
+            'name': 'C',
+            'molecular_charge': 0.,
+            'molecular_multiplicity': 1,
+            'fragments': [[0]],
+            'fragment_charges': [0.],
+            'fragment_multiplicities': [1],
+            'fix_com': False,
+            'fix_orientation': False,
+            'provenance': [{
+                'creator': 'Mystery Program',
+                'version': '2018.3',
+                'routine': 'molecule builder',
+            }],
+        },
+    }
+
+schema16_psi4 = {
+            'units': 'Bohr',
+            'geom': np.array([2., 2., 3.]),
+            'elem': np.array(['C']),
+            'mass': np.array([12.0]),
+            'elbl': np.array(['']),
+            'elez': np.array([6]),
+            'elea': np.array([12]),
+            'real': np.array([True]),
+            'name': 'C',
+            'molecular_charge': 0.,
+            'molecular_multiplicity': 1,
+            'fragment_separators': [],
+            'fragment_charges': [0.],
+            'fragment_multiplicities': [1],
+            'fix_com': False,
+            'fix_orientation': False,
+            'provenance': [{
+                'creator': 'Mystery Program',
+                'version': '2018.3',
+                'routine': 'molecule builder',
+            }],
+    }
+
+def test_froto_16a():
+    basic = {
+        'schema_name': 'qc_schema_output',
+        'schema_version': 1,
+        'molecule': {
+            'geometry': [2, 2, 3],
+            'symbols': ['C'],
+            'provenance': {
+                'creator': 'Mystery Program',
+                'version': '2018.3',
+                'routine': 'molecule builder',
+            },
+        },
+    }
+
+    fullans = copy.deepcopy(schema16_1)
+    fullans['molecule']['provenance'].append(_schema_prov_stamp)
+
+    roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=1)
+    assert compare_molrecs(fullans['molecule'], roundtrip['molecule'], 4, tnm())
+
+
+def test_tofro_16b():
+
+    fullans = copy.deepcopy(schema16_psi4)
+    fullans['provenance'].append(_schema_prov_stamp)
+
+    roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=1))
+    assert compare_molrecs(fullans, roundtrip, 4, tnm())

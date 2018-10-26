@@ -1,4 +1,3 @@
-import sys
 import copy
 
 import pytest
@@ -7,6 +6,8 @@ import numpy as np
 from utils import *
 
 import qcelemental
+
+_string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
 
 subject4 = """pubchem:benzene"""
 
@@ -57,10 +58,12 @@ fullans4 = {
 
 def test_pubchem_4a():
     subject = subject4
+    fullans = copy.deepcopy(fullans4)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans4, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans4, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans4, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_4b():
@@ -79,10 +82,11 @@ pubchem  : 241
     ans['name'] = 'benzene'
     fullans = copy.deepcopy(fullans4)
     fullans['name'] = 'benzene'
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='benzene', verbose=2)
-    assert compare_molrecs(ans, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_error_d():
@@ -173,15 +177,19 @@ fullans13 = {
 
 def test_pubchem_13h():
     subject = subject13
+    fullans = copy.deepcopy(fullans13)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_pubchem_13i():
     subject = "PubChem:223"
+    fullans = copy.deepcopy(fullans13)
+    fullans['provenance'] = [_string_prov_stamp]
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, sys._getframe().f_code.co_name + ': intermediate')
-    assert compare_molrecs(fullans13, final['qm'], 4, sys._getframe().f_code.co_name + ': full')
+    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')

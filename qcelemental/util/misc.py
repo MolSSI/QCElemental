@@ -91,16 +91,22 @@ def filter_comments(string):
     return string
 
 
-def unnp(dicary):
+def unnp(dicary, path=None):
     """Return `dicary` with any ndarray values replaced by lists."""
     # TODO handle complex numbers/arrays
 
+    if path is None:
+        path = []
+
     ndicary = {}
     for k, v in dicary.items():
-        try:
-            v.shape
-        except AttributeError:
-            ndicary[k] = v
+        if isinstance(v, dict):
+            ndicary[k] = unnp(v, path + [str(k)])
         else:
-            ndicary[k] = v.tolist()
+            try:
+                v.shape
+            except AttributeError:
+                ndicary[k] = v
+            else:
+                ndicary[k] = v.tolist()
     return ndicary

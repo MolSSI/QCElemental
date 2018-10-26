@@ -1,5 +1,6 @@
 import numpy as np
 
+from ..util import provenance_stamp
 from ..exceptions import ValidationError
 from .from_arrays import from_arrays
 
@@ -22,10 +23,6 @@ def from_schema(molschema, verbose=1):
     """
 
     if (molschema.get('schema_name', '').startswith('qc_schema') and (molschema.get('schema_version', '') == 1)):
-        # Lost Fields
-        # -----------
-        # * 'comment'
-        # * 'provenance'
         ms = molschema['molecule']
 
         if 'fragments' in ms:
@@ -63,13 +60,19 @@ def from_schema(molschema, verbose=1):
             fragment_multiplicities=ms.get('fragment_multiplicities', None),
             molecular_charge=ms.get('molecular_charge', None),
             molecular_multiplicity=ms.get('molecular_multiplicity', None),
+            comment=ms.get('comment', None),
+            provenance=ms.get('provenance', None),
             domain='qm',
             #missing_enabled_return=missing_enabled_return,
+            speclabel=False,
             #tooclose=tooclose,
             #zero_ghost_fragments=zero_ghost_fragments,
             #nonphysical=nonphysical,
             #mtol=mtol,
             verbose=verbose)
+
+        # replace from_arrays stamp with from_schema stamp
+        molrec['provenance'][-1] = provenance_stamp(__name__)
 
     else:
         raise ValidationError("""Schema not recognized, schema_name/schema_version: {}/{} """.format(
