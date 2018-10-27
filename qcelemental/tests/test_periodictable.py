@@ -137,5 +137,6 @@ def test_c_header():
     os.remove("header.h")
 
 
+@pytest.mark.xfail(True, reason='comparison data not available for installed repository', run=True, strict=False)
 def test_periodic_table_comparison():
     qcelemental.periodictable.run_comparison()
