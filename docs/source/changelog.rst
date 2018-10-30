@@ -13,6 +13,25 @@ Enhancements
 Bug Fixes
 +++++++++
 
+0.1.1 / 2018-10-30
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`7`, :pr:`9`) Adds "comment" and "provenance" fields to internal repr to better match QCSchema.
+- (:pr:`7`) Adds provenance stamp to from_string, from_arrays, from_schema functions.
+
+Enhancements
+++++++++++++
+
+- (:pr:`7`) Adds outer schema_name/schema_version to ``to_schema(..., dtype=1)`` output so is inverse to ``from_schema``.
+
+Bug Fixes
++++++++++
+
+- (:pr:`8`) Tests pass for installed module now that comparison tests are xfail.
+
 0.1.0a / 2018-10-24
 -------------------
 
