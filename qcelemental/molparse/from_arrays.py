@@ -1,4 +1,5 @@
 import re
+import copy
 import pprint
 import keyword
 
@@ -442,12 +443,12 @@ def validate_and_fill_units(name=None,
     else:
         if isinstance(provenance, dict):
             if validate_provenance(provenance):
-                molinit['provenance'] = [provenance]
+                molinit['provenance'] = [copy.deepcopy(provenance)]
         else:
             for prov in provenance:
                 if validate_provenance(prov):
                     pass
-            molinit['provenance'] = provenance
+            molinit['provenance'] = copy.deepcopy(provenance)
 
     if units.capitalize() in ['Angstrom', 'Bohr']:
         molinit['units'] = units.capitalize()

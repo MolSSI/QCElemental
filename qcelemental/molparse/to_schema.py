@@ -87,9 +87,6 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))
 
-        # hmm, psi4/qcdb for provenance or does psi molrec need a passthrough field to preserve?
-        #qcschema['provenance'] creator, version, routine
-
     if not np_out:
         qcschema = unnp(qcschema)
 
