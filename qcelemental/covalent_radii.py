@@ -67,7 +67,7 @@ class CovalentRadii:
     def __str__(self):
         return "CovalentRadii(context='{}')".format(self.name)
 
-    def get(self, atom, return_tuple=False, units=None):
+    def get(self, atom, return_tuple=False, units='bohr'):
         """Access a covalent radius for species `atom`.
 
         Parameters
@@ -77,7 +77,7 @@ class CovalentRadii:
             In general, one value recommended for each element; however, certain other exact labels may be available.
             ALVAREZ2008: C_sp3, C_sp2, C_sp, Mn_lowspin, Mn_highspin, Fe_lowspin, Fe_highspin, Co_lowspin, Co_highspin
         units : str, optional
-            Units of returned value. `None` returns native units (ALVAREZ2008: angstrom).
+            Units of returned value. To return in native unit (ALVAREZ2008: angstrom), pass it explicitly.
             Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
         return_tuple : bool, optional
             See below.
@@ -119,9 +119,18 @@ class CovalentRadii:
 
         return datum.print_variables(self.cr)
 
-    def write_c_header(self, filename='covrad.h'):
-        """Write C header file defining covalent radii array."""
+    def write_c_header(self, filename='covrad.h', missing=2.0):
+        """Write C header file defining covalent radii array.
 
+        Parameters
+        ----------
+        filename : str, optional
+            File name for header. Note that changing this won't change the header guard.
+        missing : float, optional
+            In order that the C array be atomic-number indexable and that it span the
+            periodic table, this value is used anywhere data is missing.
+
+        """
         text = [
             '#ifndef _qcelemental_covrad_h_',
             '#define _qcelemental_covrad_h_',
@@ -131,9 +140,12 @@ class CovalentRadii:
             'const double covalent_radii[] = {',
         ]
 
-        for el in periodictable.E[1:50]:
-            qca = self.cr[el]
-            text.append('{},  /*- [{}] {} {} -*/'.format(qca.data, qca.units, qca.label, qca.comment))
+        for el in periodictable.E:
+            try:
+                qca = self.cr[el]
+                text.append('{},  /*- [{}] {} {} -*/'.format(qca.data, qca.units, qca.label, qca.comment))
+            except KeyError:
+                text.append('{:.2f},  /*- [{}] {} {} -*/'.format(missing, self.native_units, el, 'Default value for missing data'))
 
         text.append('};')
         text.append('#endif /* header guard */')

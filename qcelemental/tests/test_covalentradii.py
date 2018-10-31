@@ -41,8 +41,8 @@ a2b = 1. / qcelemental.constants.bohr2angstroms
         ("h2", 0.31),
     ])
 def test_get(inp, expected):
-    assert qcelemental.covalentradii.get(inp) == pytest.approx(expected, 1.e-9)
-    assert qcelemental.covalentradii.get(inp, units='bohr') == pytest.approx(a2b * expected, 1.e-9)
+    assert qcelemental.covalentradii.get(inp, units='angstrom') == pytest.approx(expected, 1.e-9)
+    assert qcelemental.covalentradii.get(inp) == pytest.approx(a2b * expected, 1.e-9)
 
 
 def test_get_tuple():
