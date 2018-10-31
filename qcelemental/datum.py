@@ -27,6 +27,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         Extended description or definition.
 
     """
+
     def __new__(cls, label, units, data, comment='', doi=None, glossary=''):
         return super(Datum, cls).__new__(cls, label, units, data, comment, doi, glossary)
 
@@ -57,6 +58,18 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
             dicary['data'] = [self.data.real, self.data.imag]
 
         return dicary
+
+    def to_units(self, units=None):
+        from .physical_constants import constants
+
+        to_unit = self.units if units is None else units
+        factor = constants.conversion_factor(self.units, to_unit)
+
+        if isinstance(self.data, decimal.Decimal):
+            return factor * float(self.data)
+        else:
+            pass
+            # TODO arrays
 
 
 def print_variables(qcvars):

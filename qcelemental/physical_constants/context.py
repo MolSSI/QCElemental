@@ -13,6 +13,11 @@ from . import ureg
 class PhysicalConstantsContext:
     """CODATA 2014 physical constants set from NIST.
 
+    Parameters
+    ----------
+    context : {'CODATA2014'}
+        Origin of loaded data.
+
     Attributes
     ----------
     name : str
