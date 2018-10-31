@@ -9,8 +9,10 @@ from . import molparse
 # Handle singletons, not their classes or modules
 from .periodic_table import periodictable
 from .physical_constants import constants, PhysicalConstantsContext
+from .covalent_radii import covalentradii, CovalentRadii
 del periodic_table
 del physical_constants
+del covalent_radii
 
 # Handle versioneer
 from ._version import get_versions

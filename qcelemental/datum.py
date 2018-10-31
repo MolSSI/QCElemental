@@ -65,7 +65,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         to_unit = self.units if units is None else units
         factor = constants.conversion_factor(self.units, to_unit)
 
-        if isinstance(self.data, decimal.Decimal):
+        if isinstance(self.data, Decimal):
             return factor * float(self.data)
         else:
             pass
