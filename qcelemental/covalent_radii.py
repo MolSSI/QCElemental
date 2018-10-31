@@ -8,7 +8,7 @@ from decimal import Decimal
 from . import datum
 from .periodic_table import periodictable
 
-from .exceptions import NotAnElementError
+from .exceptions import NotAnElementError, DataUnavailableError
 
 
 class CovalentRadii:
@@ -41,7 +41,6 @@ class CovalentRadii:
 
         if context == "ALVAREZ2008":
             self.doi = alvarez_2008_covalent_radii["doi"]
-            #self.raw_covrad = alvarez_2008_covalent_radii["covalent_radii"]
             self.native_units = alvarez_2008_covalent_radii["units"]
 
             for cr in alvarez_2008_covalent_radii["covalent_radii"]:
@@ -65,16 +64,11 @@ class CovalentRadii:
             ident, units, value, comment = alias
             self.cr[ident.capitalize()] = datum.Datum(ident, units, value, comment)
 
-#        # add constants as directly callable member data
-#        for qca in self.pc.values():
-#            callname = qca.label.translate(self._transtable)
-#            setattr(self, callname, float(qca.data))
-#
-#    def __str__(self):
-#        return "PhysicalConstantsContext(context='{}')".format(self.name)
+    def __str__(self):
+        return "CovalentRadii(context='{}')".format(self.name)
 
     def get(self, atom, return_tuple=False, units=None):
-        """Access a covalent radius, `atom`.
+        """Access a covalent radius for species `atom`.
 
         Parameters
         ----------
@@ -83,23 +77,25 @@ class CovalentRadii:
             In general, one value recommended for each element; however, certain other exact labels may be available.
             ALVAREZ2008: C_sp3, C_sp2, C_sp, Mn_lowspin, Mn_highspin, Fe_lowspin, Fe_highspin, Co_lowspin, Co_highspin
         units : str, optional
-            units irrel to tuple
-
+            Units of returned value. `None` returns native units (ALVAREZ2008: angstrom).
+            Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
         return_tuple : bool, optional
             See below.
 
         Returns
         -------
         float
-            When ``return_tuple=False``, value of covalent radius. If multiple defined for element, returns largest. If element undefined, ???.
+            When ``return_tuple=False``, value of covalent radius. If multiple defined for element, returns largest.
         qcelemental.Datum
             When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).
-            If multiple defined for element, returns largest. If element undefined, ???.
+            If multiple defined for element, returns largest.
 
         Raises
         ------
         NotAnElementError
             If `atom` cannot be resolved into an element or nuclide or label.
+        DataUnavailableError
+            If `atom` is a valid element or nuclide but not one for which a covalent radius is available.
 
         """
         if atom in self.cr.keys():
@@ -108,7 +104,10 @@ class CovalentRadii:
         else:
             identifier = periodictable.to_E(atom)
 
-        qca = self.cr[identifier]
+        try:
+            qca = self.cr[identifier]
+        except KeyError as e:
+            raise DataUnavailableError('covalent radius', identifier) from e
 
         if return_tuple:
             return qca

@@ -27,14 +27,14 @@ def test_creation(dataset):
     assert datum1.data == Decimal('4.4')
 
 
-def test_units(dataset):
-    datum1 = dataset['decimal']
-
-    assert datum1.units == 'mdyn/angstrom'
-    assert datum1.data == Decimal('4.4')
-    assert datum1.to_units() == pytest.approx(4.4, 1.e-9)
-    assert datum1.to_units('N/m') == pytest.approx(440, 1.e-9)
-    assert datum1.to_units('hartree/bohr/bohr') == pytest.approx(0.28261, 1.e-4)
+@pytest.mark.parametrize("inp,expected", [
+    (('decimal', None), 4.4),
+    (('decimal', 'N/m'), 440),
+    (('decimal', 'hartree/bohr/bohr'), 0.282614141011),
+    (('ndarray', '1/m'), np.arange(4, dtype=np.float) * 400 / 3),
+])
+def test_units(dataset, inp, expected):
+    assert dataset[inp[0]].to_units(inp[1]) == pytest.approx(expected, 1.e-9)
 
 
 def test_printing(dataset):

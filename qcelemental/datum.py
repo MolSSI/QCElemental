@@ -68,8 +68,7 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         if isinstance(self.data, Decimal):
             return factor * float(self.data)
         else:
-            pass
-            # TODO arrays
+            return factor * self.data
 
 
 def print_variables(qcvars):
