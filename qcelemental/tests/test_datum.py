@@ -10,7 +10,7 @@ import qcelemental as qcel
 @pytest.fixture
 def dataset():
     datums = {
-        'decimal': qcel.Datum('a label', 'mDyne/A', Decimal('4.4'), 'force constant', '10.1000/182'),
+        'decimal': qcel.Datum('a label', 'mdyn/angstrom', Decimal('4.4'), 'force constant', '10.1000/182'),
         'ndarray': qcel.Datum('an array', 'cm^-1',
                               np.arange(4, dtype=np.float) * 4 / 3, 'freqs'),
         'float': qcel.Datum('a float', 'kg', 4.4, doi='10.1000/182'),
@@ -23,8 +23,18 @@ def test_creation(dataset):
     datum1 = dataset['decimal']
 
     assert datum1.label == 'a label'
-    assert datum1.units == 'mDyne/A'
+    assert datum1.units == 'mdyn/angstrom'
     assert datum1.data == Decimal('4.4')
+
+
+@pytest.mark.parametrize("inp,expected", [
+    (('decimal', None), 4.4),
+    (('decimal', 'N/m'), 440),
+    (('decimal', 'hartree/bohr/bohr'), 0.282614141011),
+    (('ndarray', '1/m'), np.arange(4, dtype=np.float) * 400 / 3),
+])
+def test_units(dataset, inp, expected):
+    assert dataset[inp[0]].to_units(inp[1]) == pytest.approx(expected, 1.e-9)
 
 
 def test_printing(dataset):
@@ -34,7 +44,7 @@ def test_printing(dataset):
                  Pytest                 
 ----------------------------------------
 Data:     4.4
-Units:    [mDyne/A]
+Units:    [mdyn/angstrom]
 doi:      10.1000/182
 Comment:  force constant
 Glossary: 
@@ -56,7 +66,7 @@ def test_mass_printing(dataset):
     str1 = """
   Variable Map:
   ----------------------------------------------------------------------------
-  "decimal" =>                    4.4 [mDyne/A]
+  "decimal" =>                    4.4 [mdyn/angstrom]
   "float"   =>         4.400000000000 [kg]
   "ndarray" =>                        [cm^-1]
         [0.         1.33333333 2.66666667 4.        ]

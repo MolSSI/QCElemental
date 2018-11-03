@@ -132,6 +132,41 @@ def test_to_element(inp, expected):
     assert qcelemental.periodictable.to_element(inp) == expected
 
 
+@pytest.mark.parametrize("inp,expected", [('HE', 1), ('carbon', 2), ('cl35', 3), (36, 4), (37.0, 5), ('mercury', 6),
+                                          ('Ts', 7)])
+def test_to_period(inp, expected):
+    assert qcelemental.periodictable.to_period(inp) == expected
+
+
+@pytest.mark.parametrize("inp,expected", [
+    ('D', 1),
+    ('Ba', 2),
+    ('yttrium', 3),
+    ('hf179', 4),
+    (23, 5),
+    ('w', 6),
+    (43.0, 7),
+    (26.0, 8),
+    ('meitnerium', 9),
+    ('pt', 10),
+    ('gold', 11),
+    ('cd', 12),
+    (5.0, 13),
+    (14, 14),
+    ('phosphorus', 15),
+    ('SE', 16),
+    ('i', 17),
+    (54, 18),
+    ('La', None),
+    (89.0, None),
+    ('lutetium', None),
+    (103.0, None),
+    ('u238', None),
+])
+def test_to_group(inp, expected):
+    assert qcelemental.periodictable.to_group(inp) == expected
+
+
 def test_c_header():
     qcelemental.periodictable.write_c_header("header.h")
     os.remove("header.h")

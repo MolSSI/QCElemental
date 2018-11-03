@@ -69,3 +69,21 @@ conversion factors can be obtained:
 3.2881547429884475e-14
 ```
 
+### Covalent Radii
+
+Covalent radii are accessible for most of the periodic table from [Alvarez, Dalton Transactions (2008) doi:10.1039/b801115j](https://doi.org/10.1039/b801115j).
+```python
+>>> import qcelemental as qcel
+>>> qcel.covalentradii.get('I')
+2.626719314386381
+>>> qcel.covalentradii.get('I', units='angstrom')
+1.39
+>>> qcel.covalentradii.get(116)
+Traceback (most recent call last):
+...
+qcelemental.exceptions.DataUnavailableError: ('covalent radius', 'Lv')
+>>> qcel.covalentradii.get(116, missing=4.0)
+4.0
+>>> qcel.covalentradii.get('iodine', return_tuple=True).to_dict()
+{'label': 'I', 'units': 'angstrom', 'data': Decimal('1.39')}
+```

@@ -219,6 +219,106 @@ class PeriodicTable:
     to_symbol = to_E
     to_name = to_element
 
+    def to_period(self, atom):
+        """Get period (horizontal row in periodic table) of `atom`.
+
+        Parameters
+        ----------
+        atom : int or str
+            Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+
+        Returns
+        -------
+        int
+            Period between 1 (e.g., `He`) and 7 (e.g., `U238`).
+
+        Raises
+        ------
+        NotAnElementError
+            If `atom` cannot be resolved into an element or nuclide.
+
+        """
+        Z = self.to_Z(atom)
+
+        if Z <= 2:
+            return 1
+        elif Z <= 10:
+            return 2
+        elif Z <= 18:
+            return 3
+        elif Z <= 36:
+            return 4
+        elif Z <= 54:
+            return 5
+        elif Z <= 86:
+            return 6
+        elif Z <= 118:
+            return 7
+
+    def to_group(self, atom):
+        """Get group (vertical column in periodic table) of `atom`.
+
+        Parameters
+        ----------
+        atom : int or str
+            Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+
+        Returns
+        -------
+        int
+            Group between 1 (e.g., `Li`) and 18 (e.g., `KR84`).
+        None
+            If one of the 30 Lanthanides (Z=57-71) or Actinides (Z=89-103).
+
+        Raises
+        ------
+        NotAnElementError
+            If `atom` cannot be resolved into an element or nuclide.
+
+        """
+        Z = self.to_Z(atom)
+
+        # yapf: disable
+        if Z in    [1, 3, 11, 19, 37, 55, 87]:
+            return 1
+        elif Z in     [4, 12, 20, 38, 56, 88]:
+            return 2
+        elif Z in            [21, 39]:
+            return 3
+        elif Z in            [22, 40, 72, 104]:
+            return 4
+        elif Z in            [23, 41, 73, 105]:
+            return 5
+        elif Z in            [24, 42, 74, 106]:
+            return 6
+        elif Z in            [25, 43, 75, 107]:
+            return 7
+        elif Z in            [26, 44, 76, 108]:
+            return 8
+        elif Z in            [27, 45, 77, 109]:
+            return 9
+        elif Z in            [28, 46, 78, 110]:
+            return 10
+        elif Z in            [29, 47, 79, 111]:
+            return 11
+        elif Z in            [30, 48, 80, 112]:
+            return 12
+        elif Z in     [5, 13, 31, 49, 81, 113]:
+            return 13
+        elif Z in     [6, 14, 32, 50, 82, 114]:
+            return 14
+        elif Z in     [7, 15, 33, 51, 83, 115]:
+            return 15
+        elif Z in     [8, 16, 34, 52, 84, 116]:
+            return 16
+        elif Z in     [9, 17, 35, 53, 85, 117]:
+            return 17
+        elif Z in [2, 10, 18, 36, 54, 86, 118]:
+            return 18
+        else:
+            return None
+        # yapf: enable
+
     def run_comparison(self):
         """Compare the existing element information for Psi4 and Cfour (in checkup_data folder) to `self`. Specialized use."""
 
@@ -248,18 +348,18 @@ class PeriodicTable:
         print(bcolors.OKBLUE + '\nChecking z2el vs. Psi4 ...' + bcolors.ENDC)
         for zz in self._z2el:
             if 0 < zz < 108:
-                assert self._z2el[zz] == checkup_data.periodictable.z2el[
-                    zz].capitalize(), 'Element {} differs from {} for Z={}'.format(
-                        self._z2el[zz], checkup_data.periodictable.z2el[zz].capitalize(), zz)
+                assert self._z2el[zz] == checkup_data.periodictable.z2el[zz].capitalize(
+                ), 'Element {} differs from {} for Z={}'.format(self._z2el[zz],
+                                                                checkup_data.periodictable.z2el[zz].capitalize(), zz)
 
         print(bcolors.OKBLUE + '\nChecking el2z vs. Psi4 ...' + bcolors.ENDC)
         for el in self._el2z:
             if self._el2z[el] > 107:
                 break
             if el not in ['X', 'Gh']:
-                assert self._el2z[
-                    el] == checkup_data.periodictable.el2z[el.upper()], 'Element {} differs from {}'.format(
-                        self._el2z[el], checkup_data.periodictable.el2z[el.upper()])
+                assert self._el2z[el] == checkup_data.periodictable.el2z[
+                    el.upper()], 'Element {} differs from {}'.format(self._el2z[el],
+                                                                     checkup_data.periodictable.el2z[el.upper()])
 
         translate = {'UUB': 'Cn', 'UUT': 'Nh', 'UUQ': 'Fl', 'UUP': 'Mc', 'UUH': 'Lv', 'UUS': 'Ts', 'UUO': 'Og'}
         translate = {v: k for k, v in translate.items()}
