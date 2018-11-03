@@ -67,7 +67,7 @@ class CovalentRadii:
     def __str__(self):
         return "CovalentRadii(context='{}')".format(self.name)
 
-    def get(self, atom, return_tuple=False, units='bohr'):
+    def get(self, atom, return_tuple=False, units='bohr', missing=None):
         """Access a covalent radius for species `atom`.
 
         Parameters
@@ -79,6 +79,12 @@ class CovalentRadii:
         units : str, optional
             Units of returned value. To return in native unit (ALVAREZ2008: angstrom), pass it explicitly.
             Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
+        missing : float or None, optional
+            How to handle when `atom` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
+            When a float, returns that float, so supply in `units` units. Supplying a float is a more compact assurance
+            that a call will work over all the periodic table than the equivalent
+            ``try:\n\trad = qcel.covalentradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
+            Only relevant for ``return_tuple=False``.
         return_tuple : bool, optional
             See below.
 
@@ -95,7 +101,7 @@ class CovalentRadii:
         NotAnElementError
             If `atom` cannot be resolved into an element or nuclide or label.
         DataUnavailableError
-            If `atom` is a valid element or nuclide but not one for which a covalent radius is available.
+            If `atom` is a valid element or nuclide but not one for which a covalent radius is available and `missing=None`.
 
         """
         if atom in self.cr.keys():
@@ -107,7 +113,10 @@ class CovalentRadii:
         try:
             qca = self.cr[identifier]
         except KeyError as e:
-            raise DataUnavailableError('covalent radius', identifier) from e
+            if missing is not None and return_tuple is False:
+                return missing
+            else:
+                raise DataUnavailableError('covalent radius', identifier) from e
 
         if return_tuple:
             return qca

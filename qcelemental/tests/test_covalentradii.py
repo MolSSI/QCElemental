@@ -15,8 +15,15 @@ def test_id_resolution_error(inp):
 @pytest.mark.parametrize("inp", ['X', 'Bk', 100])
 def test_id_resolution_error(inp):
     with pytest.raises(qcelemental.DataUnavailableError):
-        ans = qcelemental.covalentradii.get(inp)
+        qcelemental.covalentradii.get(inp)
 
+    with pytest.raises(qcelemental.DataUnavailableError):
+        qcelemental.covalentradii.get(inp, return_tuple=True)
+
+    with pytest.raises(qcelemental.DataUnavailableError):
+        qcelemental.covalentradii.get(inp, return_tuple=True, missing=3.0)
+
+    assert qcelemental.covalentradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.e-9)
 
 a2b = 1. / qcelemental.constants.bohr2angstroms
 
