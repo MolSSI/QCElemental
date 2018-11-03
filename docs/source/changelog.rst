@@ -1,17 +1,30 @@
 Changelog
 =========
 
-X.Y.0 / 2018-MM-DD
--------------------
+.. X.Y.0 / 2018-MM-DD
+.. -------------------
+..
+.. New Features
+.. ++++++++++++
+..
+.. Enhancements
+.. ++++++++++++
+..
+.. Bug Fixes
+.. +++++++++
+..
+.. Changelog
+.. =========
+
+0.1.2 / 2018-11-2
+-----------------
 
 New Features
 ++++++++++++
 
-Enhancements
-++++++++++++
-
-Bug Fixes
-+++++++++
+- (:pr:`10`) Adds covalent radii data available through ``covalentradii.get(atom)`` function.
+- (:pr:`10`) Adds ``to_units(unit)`` to ``Datum`` class to access the data in non-native units.
+- (:pr:`10`) Adds ``periodictable.to_period(atom)`` and ``to_group(atom)`` functions to address periodic table.
 
 0.1.1 / 2018-10-30
 ------------------
@@ -20,7 +33,7 @@ New Features
 ++++++++++++
 
 - (:pr:`7`, :pr:`9`) Adds "comment" and "provenance" fields to internal repr to better match QCSchema.
-- (:pr:`7`) Adds provenance stamp to from_string, from_arrays, from_schema functions.
+- (:pr:`7`) Adds provenance stamp to ``from_string``, ``from_arrays``, ``from_schema`` functions.
 
 Enhancements
 ++++++++++++
