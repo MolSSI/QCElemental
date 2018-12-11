@@ -62,6 +62,7 @@ def from_schema(molschema, verbose=1):
             molecular_multiplicity=ms.get('molecular_multiplicity', None),
             comment=ms.get('comment', None),
             provenance=ms.get('provenance', None),
+            connectivity=ms.get('connectivity', None),
             domain='qm',
             #missing_enabled_return=missing_enabled_return,
             speclabel=False,
@@ -72,7 +73,8 @@ def from_schema(molschema, verbose=1):
             verbose=verbose)
 
         # replace from_arrays stamp with from_schema stamp
-        molrec['provenance'][-1] = provenance_stamp(__name__)
+        #molrec['provenance'][-1] = provenance_stamp(__name__)
+        molrec['provenance'] = provenance_stamp(__name__)
 
     else:
         raise ValidationError("""Schema not recognized, schema_name/schema_version: {}/{} """.format(

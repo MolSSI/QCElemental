@@ -261,9 +261,11 @@ def from_string(molstr,
 
     # replace from_arrays stamp with from_string stamp
     if 'qm' in molrec and molrec['qm']:
-        molrec['qm']['provenance'][-1] = provenance_stamp(__name__)
+        #molrec['qm']['provenance'][-1] = provenance_stamp(__name__)
+        molrec['qm']['provenance'] = provenance_stamp(__name__)
     if 'efp' in molrec and molrec['efp']:
-        molrec['efp']['provenance'][-1] = provenance_stamp(__name__)
+        #molrec['efp']['provenance'][-1] = provenance_stamp(__name__)
+        molrec['efp']['provenance'] = provenance_stamp(__name__)
 
     if verbose >= 2:
         print('\nFROM_STRING MOLREC <<<', molrec, '>>>\n')
