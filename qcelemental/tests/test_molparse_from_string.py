@@ -1784,6 +1784,119 @@ def test_badprov4_error():
 
     assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e)
 
+fullans17 = {
+    'geom': np.array([0., 1., 2., 3., 4., 5., 6., 7., 8.]),
+    'elea': np.array([1, 32, 1]),
+    'elez': np.array([1, 16, 1]),
+    'elem': np.array(['H', 'S', 'H']),
+    'mass': np.array([1.00782503, 31.9720711744, 1.00782503]),
+    'real': np.array([False, True, True]),
+    'elbl': np.array(['', '', '']),
+    'units': 'Bohr',
+    'fix_com': False,
+    'fix_orientation': False,
+    'fragment_separators': [],
+    'fragment_charges': [-1.0],
+    'fragment_multiplicities': [1],
+    'molecular_charge': -1.0,
+    'molecular_multiplicity': 1,
+    'connectivity': [
+        (0, 1, 1.0),
+        (1, 2, 1.0),
+    ],
+}
+
+def test_connectivity_17a():
+    fullans = copy.deepcopy(fullans17)
+    fullans['provenance'] = _arrays_prov_stamp
+
+    final = qcelemental.molparse.from_arrays(
+        geom=np.arange(9),
+        units='Bohr',
+        elez=[1, 16, 1],
+        molecular_charge=-1,
+        real=[False, True, True],
+        connectivity=[(0, 1, 1), (1, 2, 1)],
+    )
+
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
+
+
+def test_connectivity_17b():
+    fullans = copy.deepcopy(fullans17)
+    fullans['provenance'] = _arrays_prov_stamp
+
+    final = qcelemental.molparse.from_arrays(
+        geom=np.arange(9),
+        units='Bohr',
+        elez=[1, 16, 1],
+        molecular_charge=-1,
+        real=[False, True, True],
+        connectivity=[(2.0, 1, 1), (1, 0, 1)],
+    )
+
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
+
+
+def test_connectivity_atindex_error():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=np.arange(9),
+            units='Bohr',
+            elez=[1, 16, 1],
+            molecular_charge=-1,
+            real=[False, True, True],
+            connectivity=[(2.1, 1, 1), (1, 0, 1)],
+        )
+
+    assert "Connectivity first atom should be int" in str(e)
+
+
+def test_connectivity_atrange_error():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=np.arange(9),
+            units='Bohr',
+            elez=[1, 16, 1],
+            molecular_charge=-1,
+            real=[False, True, True],
+            connectivity=[(2, 1, 1), (1, -1, 1)],
+        )
+
+    assert "Connectivity second atom should be int" in str(e)
+
+
+def test_connectivity_bondorder_error():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=np.arange(9),
+            units='Bohr',
+            elez=[1, 16, 1],
+            molecular_charge=-1,
+            real=[False, True, True],
+            connectivity=[(2, 1, 1), (1, 0, 6)],
+        )
+
+    assert "Connectivity bond order should be float" in str(e)
+
+
+def test_connectivity_type_error():
+
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.from_arrays(
+            geom=np.arange(9),
+            units='Bohr',
+            elez=[1, 16, 1],
+            molecular_charge=-1,
+            real=[False, True, True],
+            connectivity='wire',
+        )
+
+    assert "Connectivity entry is not of form" in str(e)
+
 
 #'geom_unsettled': [[], ['1', '2.'], ['1', '2.', '2', '100.', '3', '35.']],
 

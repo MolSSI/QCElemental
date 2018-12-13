@@ -73,7 +73,6 @@ def from_schema(molschema, verbose=1):
             verbose=verbose)
 
         # replace from_arrays stamp with from_schema stamp
-        #molrec['provenance'][-1] = provenance_stamp(__name__)
         molrec['provenance'] = provenance_stamp(__name__)
 
     else:

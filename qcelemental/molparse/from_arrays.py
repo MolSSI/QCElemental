@@ -447,14 +447,20 @@ def validate_and_fill_units(name=None,
             molinit['provenance'] = copy.deepcopy(provenance)
 
     if connectivity is not None:
-        for (at1, at2, bondorder) in connectivity:
-            if not isinstance(at1, int) or at1 < 0: # or at1 >= nat:
-                raise ValidationError("""Connectivity first atom should be int [0, nat): {}""".format(at1))
-            if not isinstance(at2, int) or at2 < 0: # or at2 >= nat:
-                raise ValidationError("""Connectivity second atom should be int [0, nat): {}""".format(at2))
-            if bondorder < 0 or bondorder > 5:
-                raise ValidationError("""Connectivity bond order should be float [0, 5]: {}""".format(bondorder))
-        molinit['connectivity'] = copy.deepcopy(connectivity) #(int(at1), int(at2), float(bondorder)))
+        conn = []
+        try:
+            for (at1, at2, bondorder) in connectivity:
+                if not (float(at1)).is_integer() or at1 < 0: # or at1 >= nat:
+                    raise ValidationError("""Connectivity first atom should be int [0, nat): {}""".format(at1))
+                if not (float(at2)).is_integer() or at2 < 0: # or at2 >= nat:
+                    raise ValidationError("""Connectivity second atom should be int [0, nat): {}""".format(at2))
+                if bondorder < 0 or bondorder > 5:
+                    raise ValidationError("""Connectivity bond order should be float [0, 5]: {}""".format(bondorder))
+                conn.append((int(min(at1, at2)), int(max(at1, at2)), float(bondorder)))
+            conn.sort(key=lambda tup: tup[0])
+            molinit['connectivity'] = conn
+        except ValueError:
+            raise ValidationError("Connectivity entry is not of form [(at1, at2, bondorder), ...]: {}".format(connectivity))
 
     if units.capitalize() in ['Angstrom', 'Bohr']:
         molinit['units'] = units.capitalize()

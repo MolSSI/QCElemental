@@ -172,6 +172,12 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
         # forgive generator version changes
         if 'provenance' in dicary:
             dicary['provenance'].pop('version')
+        # regularize connectivity ordering
+        if 'connectivity' in dicary:
+            conn = [(min(at1, at2), max(at1, at2), bo) for (at1, at2, bo) in dicary['connectivity']]
+            conn.sort(key=lambda tup: tup[0])
+            dicary['connectivity'] = conn
+
         return dicary
 
     xptd = massage_dicts(xptd)

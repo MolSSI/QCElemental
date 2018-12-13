@@ -207,6 +207,7 @@ schema16_1 = {
                 'version': '2018.3',
                 'routine': 'molecule builder',
             },
+            'connectivity': [(0, 0, 0.0)],
         },
     }
 
@@ -232,6 +233,7 @@ schema16_psi4 = {
                 'version': '2018.3',
                 'routine': 'molecule builder',
             },
+            'connectivity': [(0, 0, 0.0)],
     }
 
 def test_froto_16a():
@@ -241,6 +243,7 @@ def test_froto_16a():
         'molecule': {
             'geometry': [2, 2, 3],
             'symbols': ['C'],
+            'connectivity': [(0.0, -0.0, 0)],
             'provenance': {
                 'creator': 'Mystery Program',
                 'version': '2018.3',
