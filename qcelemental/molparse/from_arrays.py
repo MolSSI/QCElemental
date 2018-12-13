@@ -441,22 +441,12 @@ def validate_and_fill_units(name=None,
             raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
 
     if provenance is None:
-        #molinit['provenance'] = []
         molinit['provenance'] = {}
     else:
-        if isinstance(provenance, dict):
-            if validate_provenance(provenance):
-                molinit['provenance'] = copy.deepcopy(provenance)
-                #molinit['provenance'] = [copy.deepcopy(provenance)]
-        #else:
-        #    for prov in provenance:
-        #        if validate_provenance(prov):
-        #            pass
-        #    molinit['provenance'] = copy.deepcopy(provenance)
+        if validate_provenance(provenance):
+            molinit['provenance'] = copy.deepcopy(provenance)
 
-    if connectivity is None:
-        molinit['connectivity'] = []
-    else:
+    if connectivity is not None:
         for (at1, at2, bondorder) in connectivity:
             if not isinstance(at1, int) or at1 < 0: # or at1 >= nat:
                 raise ValidationError("""Connectivity first atom should be int [0, nat): {}""".format(at1))

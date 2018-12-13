@@ -82,7 +82,8 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         if 'fix_symmetry' in molrec:
             qcschema['molecule']['fix_symmetry'] = molrec['fix_symmetry']
         qcschema['molecule']['provenance'] = copy.deepcopy(molrec['provenance'])
-        qcschema['molecule']['connectivity'] = copy.deepcopy(molrec['connectivity'])
+        if 'connectivity' in molrec:
+            qcschema['molecule']['connectivity'] = copy.deepcopy(molrec['connectivity'])
 
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))

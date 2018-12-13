@@ -172,8 +172,6 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
         # forgive generator version changes
         if 'provenance' in dicary:
             dicary['provenance'].pop('version')
-            #for prov in dicary['provenance']:
-            #    prov.pop('version')
         return dicary
 
     xptd = massage_dicts(xptd)
