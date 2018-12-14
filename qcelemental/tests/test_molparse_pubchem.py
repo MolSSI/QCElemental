@@ -59,7 +59,7 @@ fullans4 = {
 def test_pubchem_4a():
     subject = subject4
     fullans = copy.deepcopy(fullans4)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans4, intermed, 4, tnm() + ': intermediate')
@@ -82,7 +82,7 @@ pubchem  : 241
     ans['name'] = 'benzene'
     fullans = copy.deepcopy(fullans4)
     fullans['name'] = 'benzene'
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='benzene', verbose=2)
     assert compare_molrecs(ans, intermed, 4, tnm() + ': intermediate')
@@ -178,7 +178,7 @@ fullans13 = {
 def test_pubchem_13h():
     subject = subject13
     fullans = copy.deepcopy(fullans13)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
@@ -188,7 +188,7 @@ def test_pubchem_13h():
 def test_pubchem_13i():
     subject = "PubChem:223"
     fullans = copy.deepcopy(fullans13)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')

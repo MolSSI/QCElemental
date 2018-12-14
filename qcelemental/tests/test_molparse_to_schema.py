@@ -55,14 +55,14 @@ schema14_psi4 = {
 
 def test_1_14a():
     fullans = copy.deepcopy(schema14_1)
-    fullans['molecule']['provenance'] = [_string_prov_stamp]
+    fullans['molecule']['provenance'] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
     assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4, tnm())
 
     fullans = copy.deepcopy(schema14_psi4)
-    fullans['provenance'] = [_string_prov_stamp, _schema_prov_stamp]
+    fullans['provenance'] = _schema_prov_stamp
 
     molrec = qcelemental.molparse.from_schema(kmol)
     molrec = qcelemental.util.unnp(molrec)
@@ -80,7 +80,7 @@ def test_1_ang_14b():
 
 def test_psi4_14c():
     fullans = copy.deepcopy(schema14_psi4)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4')
@@ -156,7 +156,7 @@ schema15_psi4 = {
 
 def test_1_15a():
     fullans = copy.deepcopy(schema15_1)
-    fullans['molecule']['provenance'] = [_string_prov_stamp]
+    fullans['molecule']['provenance'] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject15)
     final['qm']['comment'] = 'I has a comment'
@@ -166,7 +166,7 @@ def test_1_15a():
     fullans = copy.deepcopy(schema15_psi4)
     fullans['units'] = 'Bohr'
     fullans['geom'] = [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0]
-    fullans['provenance'] = [_string_prov_stamp, _schema_prov_stamp]
+    fullans['provenance'] = _schema_prov_stamp
 
     molrec = qcelemental.molparse.from_schema(kmol)
     molrec = qcelemental.util.unnp(molrec)
@@ -175,7 +175,7 @@ def test_1_15a():
 
 def test_psi4_15c():
     fullans = copy.deepcopy(schema15_psi4)
-    fullans['provenance'] = [_string_prov_stamp]
+    fullans['provenance'] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject15)
     final['qm']['comment'] = 'I has a comment'
@@ -202,11 +202,12 @@ schema16_1 = {
             'fragment_multiplicities': [1],
             'fix_com': False,
             'fix_orientation': False,
-            'provenance': [{
+            'provenance': {
                 'creator': 'Mystery Program',
                 'version': '2018.3',
                 'routine': 'molecule builder',
-            }],
+            },
+            'connectivity': [(0, 0, 0.0)],
         },
     }
 
@@ -227,11 +228,12 @@ schema16_psi4 = {
             'fragment_multiplicities': [1],
             'fix_com': False,
             'fix_orientation': False,
-            'provenance': [{
+            'provenance': {
                 'creator': 'Mystery Program',
                 'version': '2018.3',
                 'routine': 'molecule builder',
-            }],
+            },
+            'connectivity': [(0, 0, 0.0)],
     }
 
 def test_froto_16a():
@@ -241,6 +243,7 @@ def test_froto_16a():
         'molecule': {
             'geometry': [2, 2, 3],
             'symbols': ['C'],
+            'connectivity': [(0.0, -0.0, 0)],
             'provenance': {
                 'creator': 'Mystery Program',
                 'version': '2018.3',
@@ -250,7 +253,7 @@ def test_froto_16a():
     }
 
     fullans = copy.deepcopy(schema16_1)
-    fullans['molecule']['provenance'].append(_schema_prov_stamp)
+    fullans['molecule']['provenance'] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=1)
     assert compare_molrecs(fullans['molecule'], roundtrip['molecule'], 4, tnm())
@@ -259,7 +262,7 @@ def test_froto_16a():
 def test_tofro_16b():
 
     fullans = copy.deepcopy(schema16_psi4)
-    fullans['provenance'].append(_schema_prov_stamp)
+    fullans['provenance'] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=1))
     assert compare_molrecs(fullans, roundtrip, 4, tnm())

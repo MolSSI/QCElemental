@@ -103,7 +103,7 @@ schema14_psi4_np = {
     'fragment_separators': [1],
     'elbl': np.array(['', '']),
     "real": np.array([True, False]),
-    "provenance": [_schema_prov_stamp],
+    "provenance": _schema_prov_stamp,
 }
 
 

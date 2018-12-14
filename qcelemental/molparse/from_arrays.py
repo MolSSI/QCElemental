@@ -149,7 +149,7 @@ def from_arrays(
         molecular_multiplicity=None,
         comment=None,
         provenance=None,
-        #connectivity=None,
+        connectivity=None,
         fragment_files=None,
         hint_types=None,
         geom_hints=None,
@@ -259,10 +259,10 @@ def from_arrays(
         total multiplicity on system.
     comment : str, optional
         Additional comment for molecule.
-    provenance : list of dict of str
+    provenance : dict of str
         Accumulated history of molecule, with fields "creator", "version", "routine".
     connectivity : list of tuples of int, optional
-        (nbond, 3) list of (0-indexed) (atomA, atomB, bond_order) tuples
+        (nbond, 3) list of (0-indexed) (atomA, atomB, bond_order) (int, int, double) tuples
 
     EFP extension (this + units is minimal)
 
@@ -320,8 +320,9 @@ def from_arrays(
         input_units_to_au=input_units_to_au,
         comment=comment,
         provenance=provenance,
+        connectivity=connectivity,
         always_return_iutau=False)  # yapf: disable
-    processed['provenance'].append(provenance_stamp(__name__))
+    processed['provenance'] = provenance_stamp(__name__)
     update_with_error(molinit, processed)
 
     if domain == 'efp':
@@ -406,6 +407,7 @@ def validate_and_fill_units(name=None,
                             input_units_to_au=None,
                             comment=None,
                             provenance=None,
+                            connectivity=None,
                             always_return_iutau=False):
     molinit = {}
 
@@ -439,16 +441,26 @@ def validate_and_fill_units(name=None,
             raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
 
     if provenance is None:
-        molinit['provenance'] = []
+        molinit['provenance'] = {}
     else:
-        if isinstance(provenance, dict):
-            if validate_provenance(provenance):
-                molinit['provenance'] = [copy.deepcopy(provenance)]
-        else:
-            for prov in provenance:
-                if validate_provenance(prov):
-                    pass
+        if validate_provenance(provenance):
             molinit['provenance'] = copy.deepcopy(provenance)
+
+    if connectivity is not None:
+        conn = []
+        try:
+            for (at1, at2, bondorder) in connectivity:
+                if not (float(at1)).is_integer() or at1 < 0: # or at1 >= nat:
+                    raise ValidationError("""Connectivity first atom should be int [0, nat): {}""".format(at1))
+                if not (float(at2)).is_integer() or at2 < 0: # or at2 >= nat:
+                    raise ValidationError("""Connectivity second atom should be int [0, nat): {}""".format(at2))
+                if bondorder < 0 or bondorder > 5:
+                    raise ValidationError("""Connectivity bond order should be float [0, 5]: {}""".format(bondorder))
+                conn.append((int(min(at1, at2)), int(max(at1, at2)), float(bondorder)))
+            conn.sort(key=lambda tup: tup[0])
+            molinit['connectivity'] = conn
+        except ValueError:
+            raise ValidationError("Connectivity entry is not of form [(at1, at2, bondorder), ...]: {}".format(connectivity))
 
     if units.capitalize() in ['Angstrom', 'Bohr']:
         molinit['units'] = units.capitalize()

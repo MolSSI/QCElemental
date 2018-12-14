@@ -73,7 +73,6 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['molecule']['molecular_charge'] = molrec['molecular_charge']
         qcschema['molecule']['molecular_multiplicity'] = molrec['molecular_multiplicity']
         qcschema['molecule']['real'] = np.array(molrec['real'])
-        #qcschema['molecule']['connectivity'] =
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
         qcschema['molecule']['fragments'] = [fr.tolist() for fr in fidx]
         qcschema['molecule']['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
@@ -83,6 +82,8 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         if 'fix_symmetry' in molrec:
             qcschema['molecule']['fix_symmetry'] = molrec['fix_symmetry']
         qcschema['molecule']['provenance'] = copy.deepcopy(molrec['provenance'])
+        if 'connectivity' in molrec:
+            qcschema['molecule']['connectivity'] = copy.deepcopy(molrec['connectivity'])
 
     else:
         raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))

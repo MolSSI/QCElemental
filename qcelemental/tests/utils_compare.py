@@ -171,8 +171,13 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
             dicary['fragment_separators'] = [(s if s is None else int(s)) for s in dicary['fragment_separators']]
         # forgive generator version changes
         if 'provenance' in dicary:
-            for prov in dicary['provenance']:
-                prov.pop('version')
+            dicary['provenance'].pop('version')
+        # regularize connectivity ordering
+        if 'connectivity' in dicary:
+            conn = [(min(at1, at2), max(at1, at2), bo) for (at1, at2, bo) in dicary['connectivity']]
+            conn.sort(key=lambda tup: tup[0])
+            dicary['connectivity'] = conn
+
         return dicary
 
     xptd = massage_dicts(xptd)
