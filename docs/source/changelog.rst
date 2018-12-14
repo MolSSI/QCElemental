@@ -12,9 +12,19 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
-..
-.. Changelog
-.. =========
+
+0.1.3 / 2018-12-14
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`12`) Adds "connectivity" validation and storage consistent with QCSchema.
+
+Enhancements
+++++++++++++
+
+- (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py#L23-L41>`_ rather than previous list o'dicts.
 
 0.1.2 / 2018-11-3
 -----------------
