@@ -8,7 +8,7 @@ short_description = "QCElemental is a resource module for quantum chemistry cont
 try:
     with open("README.md", "r") as handle:
         long_description = handle.read()
-except:
+except FileNotFoundError:
     long_description = short_description
 
 if __name__ == "__main__":

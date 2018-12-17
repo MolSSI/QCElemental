@@ -8,7 +8,7 @@ from decimal import Decimal
 from . import datum
 from .periodic_table import periodictable
 
-from .exceptions import NotAnElementError, DataUnavailableError
+from .exceptions import DataUnavailableError
 
 
 class CovalentRadii:

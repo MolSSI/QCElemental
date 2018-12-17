@@ -1,7 +1,6 @@
 import re
 import copy
 import pprint
-import keyword
 
 import numpy as np
 
