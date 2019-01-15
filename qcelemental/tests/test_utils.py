@@ -35,10 +35,18 @@ def test_updatewitherror_error(inp):
         qcelemental.util.update_with_error(inp[0], inp[1])
 
 @pytest.mark.parametrize("inp,expected", [
-    ({"a":"A", "b":"B"}, {"a":"A", "b":"B"}),
-    ({"a":np.arange(2), "b":[1, 2]}, {"a":[0, 1], "b":[1, 2]}),
-    ({"c":{"a":np.arange(2), "b":[1, 2]}}, {"c":{"a":[0, 1], "b":[1, 2]}}),
-    ({"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2,3))}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[[0, 1, 2], [3, 4, 5]]}),
+    ({'dicary': {"a":"A", "b":"B"}}, {"a":"A", "b":"B"}),
+    ({'dicary': {"a":np.arange(2), "b":[1, 2]}}, {"a":[0, 1], "b":[1, 2]}),
+    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}}}, {"c":{"a":[0, 1], "b":[1, 2]}}),
+    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}}, 'flat': True}, {"c":{"a":[0, 1], "b":[1, 2]}}),
+    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2, 3))}}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[[0, 1, 2], [3, 4, 5]]}),
+    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2, 3))}, 'flat': True}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[0, 1, 2, 3, 4, 5]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}}, {"a": [0, 1], "e": ["mouse", [[0, 1], [2, 3]]]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}}, {"a": [0, 1], "e": ["mouse", {"f": [[0, 1], [2, 3]]}]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}}, {"a": [0, 1], "e": ["mouse", [[[0, 1], [2, 3]], {"f": [[0, 1, 2], [3, 4, 5]], "g": [[11], [12]]}]]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [0, 1, 2, 3]]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", {"f": [0, 1, 2, 3]}]}),
+    ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]}),
 ])
 def test_unnp(inp, expected):
-    assert compare_dicts(expected, qcelemental.util.unnp(inp), 4, tnm())
+    assert compare_dicts(expected, qcelemental.util.unnp(**inp), 4, tnm())
