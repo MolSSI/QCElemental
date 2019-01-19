@@ -2,12 +2,15 @@
 Contains relevant physical constants
 """
 
-import collections
-import pint
 from decimal import Decimal
+import collections
+
+try:
+    import pint
+except ImportError:
+    raise ImportError("""Python module pint not found. Solve by installing it: `conda install pint -c conda-forge` or `pip install pint`""")
 
 from .. import datum
-
 from . import ureg
 
 class PhysicalConstantsContext:
