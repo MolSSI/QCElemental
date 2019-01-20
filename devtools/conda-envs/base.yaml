@@ -1,11 +1,13 @@
 name: test
 channels:
-  - default
+  - defaults
+  - conda-forge
 dependencies:
     # Base depends
   - numpy
   - nomkl
   - python
+  - pydantic
 
     # Testing
   - pytest
