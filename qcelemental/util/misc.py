@@ -91,22 +91,42 @@ def filter_comments(string):
     return string
 
 
-def unnp(dicary, path=None):
-    """Return `dicary` with any ndarray values replaced by lists."""
-    # TODO handle complex numbers/arrays
+def unnp(dicary, flat=False, _path=None):
+    """Return `dicary` with any ndarray values replaced by lists.
 
-    if path is None:
-        path = []
+    Parameters
+    ----------
+    dicary: dict
+        Dictionary where any internal iterables are dict or list.
+    flat : bool, optional
+        Whether the returned lists are flat or nested.
+
+    Returns
+    -------
+    dict
+        Input with any ndarray values replaced by lists.
+
+    """
+    if _path is None:
+        _path = []
 
     ndicary = {}
     for k, v in dicary.items():
         if isinstance(v, dict):
-            ndicary[k] = unnp(v, path + [str(k)])
+            ndicary[k] = unnp(v, flat, _path + [str(k)])
+        elif isinstance(v, list):
+            # relying on Py3.6+ ordered dict here
+            fakedict = {kk: vv for kk, vv in enumerate(v)}
+            tolisted = unnp(fakedict, flat, _path + [str(k)])
+            ndicary[k] = list(tolisted.values())
         else:
             try:
                 v.shape
             except AttributeError:
                 ndicary[k] = v
             else:
-                ndicary[k] = v.tolist()
+                if flat:
+                    ndicary[k] = v.ravel().tolist()
+                else:
+                    ndicary[k] = v.tolist()
     return ndicary

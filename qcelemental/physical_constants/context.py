@@ -2,12 +2,12 @@
 Contains relevant physical constants
 """
 
-import collections
-import pint
 from decimal import Decimal
+import collections
+
+import pint
 
 from .. import datum
-
 from . import ureg
 
 class PhysicalConstantsContext:
