@@ -5,10 +5,7 @@ Contains relevant physical constants
 from decimal import Decimal
 import collections
 
-try:
-    import pint
-except ImportError:
-    raise ImportError("""Python module pint not found. Solve by installing it: `conda install pint -c conda-forge` or `pip install pint`""")
+import pint
 
 from .. import datum
 from . import ureg
