@@ -87,7 +87,7 @@ class Molecule(BaseModel):
     molecular_charge: float = 0.0
     molecular_multiplicity: int = 1
     real: List[bool] = None
-    connectivity: List[Tuple[float, float, float]] = []
+    connectivity: List[Tuple[int, int, float]] = []
     fragments: List[List[int]] = None
     fragment_charges: List[float] = None
     fragment_multiplicities: List[int] = None
@@ -102,9 +102,14 @@ class Molecule(BaseModel):
         allow_mutation = False
         ignore_extra = False
 
+    # Internal values as a mutable
+    class _Internals:
+        provided_fields = set()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.Config.allow_mutation = True  # Set this to set some immutability config
+        self._Internals.provided_fields = set(kwargs.keys())
         self.symbols = [s.title() for s in self.symbols]  # Title case
         periodic_masses = [periodictable.to_mass(x) for x in self.symbols]
         if self.masses is None:  # Setup masses before fixing the orientation
@@ -184,6 +189,17 @@ class Molecule(BaseModel):
     def hash_fields(self):
         return ["symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
                 "fragment_charges", "fragment_multiplicities", "connectivity"]
+
+    def dict(self, *args, **kwargs):
+        if "include" not in kwargs:
+            kwargs["include"] = self._Internals.provided_fields
+        return super().dict(*args, **kwargs)
+
+    def json(self, *args, **kwargs):
+        if "include" not in kwargs:
+            kwargs["include"] = self._Internals.provided_fields
+        return super().json(*args, **kwargs)
+
     # ==========================
     # Non-Pydantic API functions
     # ==========================
@@ -201,11 +217,6 @@ class Molecule(BaseModel):
         new_dict = self.dict()
         new_dict['fix_orientation'] = False  # Instancing a new object with this set will orient
         return Molecule(**new_dict)
-
-    def validate(self, value):
-        warnings.warn("This function is now redundant since validation is handled by "
-                      "class instantiation.")
-        return True
 
     def compare(self, other, bench=None):
         """
@@ -356,7 +367,7 @@ class Molecule(BaseModel):
         m = hashlib.sha1()
         concat = ""
 
-        tmp_dict = self.dict()
+        tmp_dict = super().dict()
 
         np.set_printoptions(precision=16)
         for field in self.hash_fields:
