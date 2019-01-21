@@ -1,6 +1,4 @@
-from qcelemental.models import Molecule
-
-mol = {
+{
   "name": "butuane",
   "identifiers": {
     "inchikey": "IJDNQMDRQITEOD-UHFFFAOYSA-N",
@@ -32,13 +30,3 @@ mol = {
   "connectivity": [[0, 2, 1], [0, 4, 1], [0, 5, 1], [0, 6, 1], [1, 3, 1], [1, 7, 1], [1, 8, 1],
                    [1, 9, 1], [2, 3, 1], [2, 10, 1], [2, 11, 1], [3, 12, 1], [3, 13, 1]]
 }
-
-
-def test_molecule():
-    molecule = Molecule(**mol)
-    assert molecule.geometry.flatten().tolist() == mol['geometry']
-    for con_mol, con_raw in zip(molecule.connectivity, mol['connectivity']):
-        assert list(con_mol) == list(con_raw)
-    assert molecule.symbols == mol['symbols']
-    assert all(Molecule.parse_raw(molecule.json()).geometry == molecule.geometry)
-

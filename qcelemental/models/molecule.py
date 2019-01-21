@@ -14,6 +14,7 @@ from typing import List, Tuple
 from ..physical_constants import constants
 from ..periodic_table import periodictable, NotAnElementError
 from .common_models import Provenance
+from ..util import provenance_stamp
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -21,9 +22,29 @@ MASS_NOISE = 6
 CHARGE_NOISE = 4
 
 
+def float_prep(array, around):
+    """
+    Rounds floats to a common value and build positive zero's to prevent hash conflicts.
+    """
+    if isinstance(array, (list, np.ndarray)):
+        # Round array
+        array = np.around(array, around)
+        # Flip zeros
+        array[np.abs(array) < 5**(-(around + 1))] = 0
+
+    elif isinstance(array, (float, int)):
+        array = round(array, around)
+        if array == -0.0:
+            array = 0.0
+    else:
+        raise TypeError("Type '{}' not recognized".format(type(array).__name__))
+
+    return array
+
+
 class NPArray(np.ndarray):
     @classmethod
-    def get_validators(cls):
+    def __get_validators__(cls):
         yield cls.validate
 
     @classmethod
@@ -58,9 +79,9 @@ class Identifiers(BaseModel):
 class Molecule(BaseModel):
     id: str = None
     symbols: List[str]
-    geometry: NPArray = ...
+    geometry: NPArray
     masses: List[float] = None
-    name: str = None
+    name: str = ""
     identifiers: Identifiers = None
     comment: str = None
     molecular_charge: float = 0.0
@@ -72,13 +93,28 @@ class Molecule(BaseModel):
     fragment_multiplicities: List[int] = None
     fix_com: bool = False
     fix_orientation: bool = False
-    provenance: Provenance = {}
+    provenance: Provenance = provenance_stamp(__name__)
+
+    class Config:
+        json_encoders = {
+            np.ndarray: lambda v: v.flatten().tolist(),
+        }
+        allow_mutation = False
+        ignore_extra = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.Config.allow_mutation = True  # Set this to set some immutability config
-        if self.fix_orientation:  # I might have reversed the logic here
-            self.geometry = self._orient_molecule_internal()
+        self.symbols = [s.title() for s in self.symbols]  # Title case
+        periodic_masses = [periodictable.to_mass(x) for x in self.symbols]
+        if self.masses is None:  # Setup masses before fixing the orientation
+            self.masses = periodic_masses
+        elif np.allclose(self.masses, periodic_masses, atol=10**(-MASS_NOISE)):
+            self.masses = periodic_masses
+        if self.real is None:
+            self.real = [True for _ in self.symbols]
+        if not self.fix_orientation:
+            self.geometry = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
         if not self.fragments:
             natoms = self.geometry.shape[0]
@@ -97,12 +133,10 @@ class Molecule(BaseModel):
                     self.fragment_multiplicities = [1 for _ in self.fragments]
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
-        if self.masses is None:
-            self.masses = [periodictable.to_mass(x) for x in self.symbols]
 
         self.Config.allow_mutation = False  # Reset mutation
 
-    @validator('geometry', pre=True)
+    @validator('geometry')
     def must_be_3n(cls, v, values, **kwargs):
         n = len(values['symbols'])
         try:
@@ -111,9 +145,9 @@ class Molecule(BaseModel):
                 raise ValueError()
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
-        return v
+        return float_prep(v, GEOMETRY_NOISE)
 
-    @validator('masses', 'real')
+    @validator('masses', 'real', whole=True)
     def must_be_n(cls, v, values, **kwargs):
         n = len(values['symbols'])
         if len(v) != n:
@@ -122,15 +156,16 @@ class Molecule(BaseModel):
 
     @validator('real', whole=True)
     def populate_real(cls, v, values, **kwargs):
-        n = values["geometry"].shape[0]
+        # Can't use geometry here since its already been validated and not in values
+        n = len(values['symbols'])
         if len(v) == 0:
             v = [True for _ in range(n)]
         return v
 
-    @validator('fragment_charges', 'fragment_multiplicities')
+    @validator('fragment_charges', 'fragment_multiplicities', whole=True)
     def must_be_n_frag(cls, v, values, **kwargs):
         if 'fragments' in values:
-            n = values['fragments']
+            n = len(values['fragments'])
             if len(v) != n:
                 raise ValueError("Fragment Charges and Fragment Multiplicities"
                                  " must be same number of entries as Fragments")
@@ -149,13 +184,6 @@ class Molecule(BaseModel):
     def hash_fields(self):
         return ["symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
                 "fragment_charges", "fragment_multiplicities", "connectivity"]
-
-    class Config:
-        json_encoders = {
-            np.ndarray: lambda v: v.flatten().tolist(),
-        }
-        allow_mutation = False
-
     # ==========================
     # Non-Pydantic API functions
     # ==========================
@@ -166,26 +194,12 @@ class Molecule(BaseModel):
                       DeprecationWarning)
         return self.orient_molecule()
 
-    @property
-    def charge(self):
-        warnings.warn("This property is being depreciated in favor of `molecular_charge` "
-                      "to match the schema. They are currently identical in function",
-                      DeprecationWarning)
-        return self.molecular_charge
-
-    @property
-    def multiplicity(self):
-        warnings.warn("This property is being depreciated in favor of `molecular_multiplicity` "
-                      "to match the schema. They are currently identical in function",
-                      DeprecationWarning)
-        return self.molecular_charge
-
     def orient_molecule(self):
         """
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
         new_dict = self.dict()
-        new_dict['fix_orientation'] = True  # Instancing a new object with this set will orient
+        new_dict['fix_orientation'] = False  # Instancing a new object with this set will orient
         return Molecule(**new_dict)
 
     def validate(self, value):
@@ -201,7 +215,7 @@ class Molecule(BaseModel):
         """
 
         if isinstance(other, dict):
-            other = Molecule.from_json(other, orient=False)
+            other = Molecule(**other)
         elif isinstance(other, Molecule):
             pass
         else:
@@ -285,8 +299,7 @@ class Molecule(BaseModel):
             for idx in self.fragments[frag]:
                 symbols.append(self.symbols[idx])
                 real_atoms.append(True)
-                if self._custom_masses:
-                    masses.append(self.masses[idx])
+                masses.append(self.masses[idx])
 
             fragments.append(list(range(frag_start, frag_start + frag_size)))
             frag_start += frag_size
@@ -321,7 +334,7 @@ class Molecule(BaseModel):
         constructor_dict["masses"] = masses
 
         if orient:
-            constructor_dict["fix_orientation"] = True
+            constructor_dict["fix_orientation"] = False
 
         return Molecule(**constructor_dict)
 
@@ -343,23 +356,24 @@ class Molecule(BaseModel):
         m = hashlib.sha1()
         concat = ""
 
-        tmp_json = self.to_json()
+        tmp_dict = self.dict()
+
+        np.set_printoptions(precision=16)
         for field in self.hash_fields:
-            if field not in tmp_json:
-                continue
-            concat += json.dumps(tmp_json[field])
+            data = tmp_dict[field]
+            if field == "geometry":
+                tmp_dict[field] = float_prep(data, GEOMETRY_NOISE).ravel().tolist()
+            elif field == "fragment_charges":
+                tmp_dict[field] = float_prep(data, CHARGE_NOISE).tolist()
+            elif field == "molecular_charge":
+                tmp_dict[field] = float_prep(data, CHARGE_NOISE)
+            elif field == "masses":
+                tmp_dict[field] = float_prep(data, MASS_NOISE).tolist()
+
+            concat += json.dumps(tmp_dict[field])  # This should only be operating on Python types now
 
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
-
-    def to_json(self):
-        """
-        Returns a JSON form of the Molecule object.
-        """
-        np.set_printoptions(precision=16)
-        # Because this is expecting a dict of JSON-like objects (not Python),
-        # first cast to the JSON string, then load the json object
-        return json.load(self.json())
 
     def get_molecular_formula(self):
         """
@@ -403,6 +417,45 @@ class Molecule(BaseModel):
     # ============
     # Constructors
     # ============
+    @classmethod
+    def from_data(cls, data, dtype, orient=False, **kwargs):
+        """
+        Constructs a molecule object from a data structure.
+
+        Parameters
+        ----------
+        data : Object
+            Data to construct Molecule from. This is likely what would be loaded from a file
+        dtype : {"psi4", "numpy", "json", "dict"}
+            The type of data to interpret,
+            no attempt to infer what type of data is done here, it must be provided
+        orient: bool, optional
+            Orientates the molecule to a standard frame or not.
+        kwargs
+            Any additional keywords to pass to the constructor
+
+        Returns
+        -------
+        Molecule
+            A constructed molecule class.
+        """
+
+        if dtype == "psi4":
+            input_dict = cls._molecule_from_string_psi4(data)
+        elif dtype == "numpy":
+            input_dict = cls._molecule_from_numpy(data,
+                                                  frags=kwargs.pop("frags", []),
+                                                  units=kwargs.pop("units", "angstrom"))
+        elif dtype == "json":
+            input_dict = json.loads(data)
+        elif dtype == "dict":
+            input_dict = data
+        else:
+            raise KeyError("Dtype not understood '{}'.".format(dtype))
+
+        input_dict["fix_orientation"] = not orient
+
+        return cls(**input_dict)
 
     @classmethod
     def from_file(cls, filename, dtype=None, orient=False, **kwargs):
@@ -437,36 +490,21 @@ class Molecule(BaseModel):
                 dtype = "json"
             else:
                 raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
+            print("Inferring data type to be {} from file extension".format(dtype))
 
         if dtype == "psi4":
             with open(filename, "r") as infile:
                 data = infile.read()
-                input_dict = cls._molecule_from_string_psi4(data)
         elif dtype == "numpy":
             data = np.load(filename)
-            input_dict = cls._molecule_from_numpy(data,
-                                                  frags=kwargs.pop("frags", []),
-                                                  units=kwargs.pop("units", "angstrom"))
         elif dtype == "json":
             with open(filename, "r") as infile:
-                input_dict = json.load(infile)
+                data = json.load(infile)
+            dtype = "dict"
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
-        input_dict["fix_orientation"] = orient
-
-        return cls(**input_dict)
-
-    @classmethod
-    def from_json(cls, data, orient=False):
-        # Need to determine how to handle the JSON here
-        if isinstance(data, str):
-            obj = cls.parse_raw(data)
-        else:
-            data['fix_orientation'] = True
-            obj = cls(**data)
-        return obj
-
+        return cls.from_data(data, dtype, orient=orient, **kwargs)
 
     # =======
     # Parsers
@@ -608,10 +646,12 @@ class Molecule(BaseModel):
             output_dict["fragment_multiplicities"].append(1)
 
         # Now go through the rest of the lines looking for fragment markers
+        # There are several lines which are comment'd out as they appear to have no effect.
+        # Leaving the lines in because this seems like a bug
         ifrag = 0
         iatom = 0
         tempfrag = []
-        atomSym = ""
+        # atomSym = ""
         geometry = []
         tmpMass = []
         symbols = []
@@ -631,14 +671,13 @@ class Molecule(BaseModel):
             # handle atom markers
             else:
                 entries = re.split(r'\s+|\s*,\s*', line.strip())
-                atomm = atom.match(line.split()[0].strip().upper())
+                atomm = atom.match(line.split()[0].strip().title())
                 atomSym = atomm.group('symbol')
 
                 # We don't know whether the @C or Gh(C) notation matched. Do a quick check.
-                ghostAtom = False if (atomm.group('gh1') is None and atomm.group('gh2') is None) else True
+                # ghostAtom = False if (atomm.group('gh1') is None and atomm.group('gh2') is None) else True
 
                 # Check that the atom symbol is valid
-                periodictable.to_Z()
                 try:
                     periodictable.to_Z(atomSym)
                 except NotAnElementError:
@@ -646,7 +685,7 @@ class Molecule(BaseModel):
                         'Molecule:create_molecule_from_string: '
                         'Illegal atom symbol in geometry specification: {}'.format(atomSym))
                 symbols.append(atomSym)
-                zVal = periodictable.to_Z(atomSym)
+                # zVal = periodictable.to_Z(atomSym)
                 if atomm.group('mass') is None:
                     atomMass = periodictable.to_mass(atomSym)
                 else:
@@ -654,10 +693,10 @@ class Molecule(BaseModel):
                     atomMass = float(atomm.group('mass'))
                 tmpMass.append(atomMass)
 
-                charge = float(zVal)
-                if ghostAtom:
-                    zVal = 0
-                    charge = 0.0
+                # charge = float(zVal)
+                # if ghostAtom:
+                #     zVal = 0
+                #     charge = 0.0
 
                 # handle cartesians
                 if len(entries) == 4:
@@ -694,7 +733,7 @@ class Molecule(BaseModel):
         output_dict["symbols"] = symbols
         output_dict["geometry"] = np.array(geometry) * unit_conversion
         output_dict["fragments"].append(list(range(tempfrag[0], tempfrag[-1] + 1)))
-        output_dict["real"].extend([True for x in range(tempfrag[0], tempfrag[-1] + 1)])
+        output_dict["real"].extend([True for _ in range(tempfrag[0], tempfrag[-1] + 1)])
 
         return output_dict
 
@@ -711,10 +750,7 @@ class Molecule(BaseModel):
         new_geometry = self.geometry.copy()  # Ensure we get a copy
         # Get the mass as an array
         # Masses are needed for orientation
-        if self._custom_masses is False:
-            np_mass = np.array([periodictable.to_mass(x) for x in self.symbols])
-        else:
-            np_mass = np.array(self.masses)
+        np_mass = np.array(self.masses)
 
         # Center on Mass
         new_geometry -= np.average(new_geometry, axis=0, weights=np_mass)
