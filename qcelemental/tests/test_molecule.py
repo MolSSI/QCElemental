@@ -170,12 +170,8 @@ def test_molecule_repeated_hashing():
     h1 = mol.get_hash()
     assert mol.get_molecular_formula() == "H2O2"
 
-    mol_dict = mol.dict()
-    mol_dict["fix_orientation"] = True
-    mol2 = Molecule(**mol_dict)
+    mol2 = Molecule(orient=False, **mol.dict())
     assert h1 == mol2.get_hash()
 
-    mol2_dict = mol2.dict()
-    mol2_dict["fix_orientation"] = True
-    mol3 = Molecule(**mol2_dict)
+    mol3 = Molecule(orient=False, **mol2.dict())
     assert h1 == mol3.get_hash()

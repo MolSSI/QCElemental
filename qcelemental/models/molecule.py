@@ -102,24 +102,23 @@ class Molecule(BaseModel):
         allow_mutation = False
         ignore_extra = False
 
-    # Internal values as a mutable
+    # Internal values as a mutable object we can manipulate
     class _Internals:
         provided_fields = set()
 
-    def __init__(self, **kwargs):
+    def __init__(self, orient=False, **kwargs):
         super().__init__(**kwargs)
         self.Config.allow_mutation = True  # Set this to set some immutability config
         self._Internals.provided_fields = set(kwargs.keys())
         self.symbols = [s.title() for s in self.symbols]  # Title case
-        periodic_masses = [periodictable.to_mass(x) for x in self.symbols]
+
         if self.masses is None:  # Setup masses before fixing the orientation
-            self.masses = periodic_masses
-        elif np.allclose(self.masses, periodic_masses, atol=10**(-MASS_NOISE)):
-            self.masses = periodic_masses
+            self.masses = [periodictable.to_mass(x) for x in self.symbols]
+
         if self.real is None:
             self.real = [True for _ in self.symbols]
 
-        if not self.fix_orientation:
+        if orient:
             self.geometry = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
         else:
             self.geometry = float_prep(self.geometry, GEOMETRY_NOISE)
@@ -204,9 +203,7 @@ class Molecule(BaseModel):
             kwargs["include"] = self._Internals.provided_fields
         return super().json(*args, **kwargs)
 
-    # ==========================
-    # Non-Pydantic API functions
-    # ==========================
+    ### Non-Pydantic API functions
 
     def orient(self):
         warnings.warn("This function is being depreciated in favor of `orient_molecule` "
@@ -218,9 +215,7 @@ class Molecule(BaseModel):
         """
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
-        new_dict = self.dict()
-        new_dict['fix_orientation'] = False  # Instancing a new object with this set will orient
-        return Molecule(**new_dict)
+        return Molecule(orient=True, **self.dict())
 
     def compare(self, other, bench=None):
         """
@@ -230,7 +225,7 @@ class Molecule(BaseModel):
         """
 
         if isinstance(other, dict):
-            other = Molecule(**other)
+            other = Molecule(orient=False, **other)
         elif isinstance(other, Molecule):
             pass
         else:
@@ -348,10 +343,7 @@ class Molecule(BaseModel):
         constructor_dict["real"] = real_atoms
         constructor_dict["masses"] = masses
 
-        if orient:
-            constructor_dict["fix_orientation"] = False
-
-        return Molecule(**constructor_dict)
+        return Molecule(orient=orient, **constructor_dict)
 
     def to_string(self, dtype="psi4"):
         """Returns a string that can be used by a variety of programs.
@@ -429,9 +421,8 @@ class Molecule(BaseModel):
 
         return "".join(ret)
 
-    # ============
-    # Constructors
-    # ============
+    ### Constructors
+
     @classmethod
     def from_data(cls, data, dtype, orient=False, **kwargs):
         """
@@ -468,9 +459,7 @@ class Molecule(BaseModel):
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
-        input_dict["fix_orientation"] = not orient
-
-        return cls(**input_dict)
+        return cls(orient=orient, **input_dict)
 
     @classmethod
     def from_file(cls, filename, dtype=None, orient=False, **kwargs):
@@ -521,9 +510,7 @@ class Molecule(BaseModel):
 
         return cls.from_data(data, dtype, orient=orient, **kwargs)
 
-    # =======
-    # Parsers
-    # =======
+    ### Parsers
 
     @staticmethod
     def _molecule_from_numpy(arr, frags, units="angstrom"):
@@ -752,9 +739,7 @@ class Molecule(BaseModel):
 
         return output_dict
 
-    # ===============================
-    # Non-Pydantic internal functions
-    # ===============================
+    ### Non-Pydantic internal functions
 
     def _orient_molecule_internal(self):
         """
