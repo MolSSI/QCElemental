@@ -205,12 +205,6 @@ class Molecule(BaseModel):
 
     ### Non-Pydantic API functions
 
-    def orient(self):
-        warnings.warn("This function is being depreciated in favor of `orient_molecule` "
-                      "to match the schema. They are currently identical in function",
-                      DeprecationWarning)
-        return self.orient_molecule()
-
     def orient_molecule(self):
         """
         Centers the molecule and orients via inertia tensor before returning a new Molecule
