@@ -1,0 +1,12 @@
+{
+    "name": "default",
+    "program": "psi4",
+    "e_convergence": 8,
+    "d_convergence": 8,
+    "dft_spherical_points": 302,
+    "dft_radial_points": 100,
+    "maxiter": 100,
+    "scf_type": "df",
+    "mp2_type": "df",
+    "freeze_core": "true"
+}

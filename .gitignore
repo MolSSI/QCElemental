@@ -110,3 +110,11 @@ physconst.h
 
 # nist_data
 nist_data/nist_*
+
+# Parsl
+ipengine.*
+parsl_scripts/*
+runinfo/*
+
+# Pycharm
+.idea/

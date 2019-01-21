@@ -1,6 +1,7 @@
 name: test
 channels:
-  - default
+  - defaults
+  - conda-forge
 dependencies:
     # Base depends
   - numpy
@@ -19,3 +20,4 @@ dependencies:
       # Testing
     - codecov
     - deepdiff
+    - pydantic  # Will eventually be from conda-forge when we get that working
