@@ -50,7 +50,7 @@ class NPArray(np.ndarray):
     @classmethod
     def validate(cls, v):
         try:
-            v = np.array(v)
+            v = np.array(v, dtype=np.double)
         except:
             raise RuntimeError("Could not cast {} to NumPy Array!".format(v))
         return v
@@ -118,8 +118,12 @@ class Molecule(BaseModel):
             self.masses = periodic_masses
         if self.real is None:
             self.real = [True for _ in self.symbols]
+
         if not self.fix_orientation:
             self.geometry = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
+        else:
+            self.geometry = float_prep(self.geometry, GEOMETRY_NOISE)
+
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
         if not self.fragments:
             natoms = self.geometry.shape[0]
@@ -150,7 +154,7 @@ class Molecule(BaseModel):
                 raise ValueError()
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
-        return float_prep(v, GEOMETRY_NOISE)
+        return v
 
     @validator('masses', 'real', whole=True)
     def must_be_n(cls, v, values, **kwargs):
