@@ -1,6 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel, constr
-from typing import List, Union
+from typing import List, Union, Dict
 from .molecule import Molecule
 from .common_models import Provenance
 from ..util import provenance_stamp
@@ -42,7 +42,7 @@ class Properties(BaseModel):
     return_energy: float = None
 
     class Config:
-        allow_extra = False
+        allow_extra = True  # Not yet fully validated, but will accept extra for now
 
 
 class ErrorEnum(str, Enum):
@@ -53,7 +53,7 @@ class ErrorEnum(str, Enum):
 
 class Error(BaseModel):
     """The type of error message raised"""
-    error_type: ErrorEnum
+    error_type: Dict[str, str]  # Error enumeration not yet strict
     error_message: str
 
     class Config:
@@ -82,3 +82,7 @@ class Results(ResultsInput):
     success: bool
     error: Error = None
     return_result: Union[float, List[float]]
+
+    class Config(ResultsInput.Config):
+        # Will carry the allow_mutation flag
+        allow_extra = True  # Permits arbitrary fields
