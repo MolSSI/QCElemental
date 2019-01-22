@@ -5,6 +5,7 @@ Main init for QCElemental
 from .datum import Datum
 from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError, ChoicesError, DataUnavailableError)
 from . import molparse
+from . import models
 
 # Handle singletons, not their classes or modules
 from .periodic_table import periodictable

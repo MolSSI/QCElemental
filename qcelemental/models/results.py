@@ -62,7 +62,7 @@ class Error(BaseModel):
 
 ### Primary models
 
-class ResultsInput(BaseModel):
+class ResultInput(BaseModel):
     """The MolSSI Quantum Chemistry Schema"""
     id: str = None
     molecule: Molecule
@@ -77,12 +77,12 @@ class ResultsInput(BaseModel):
         allow_mutation = False
 
 
-class Results(ResultsInput):
+class Result(ResultInput):
     properties: Properties
     success: bool
     error: Error = None
     return_result: Union[float, List[float]]
 
-    class Config(ResultsInput.Config):
+    class Config(ResultInput.Config):
         # Will carry the allow_mutation flag
         allow_extra = True  # Permits arbitrary fields
