@@ -19,33 +19,33 @@ class Model(BaseModel):
 
 
 class Properties(BaseModel):
-    scf_one_electron_energy: float
-    scf_two_electron_energy: float
-    nuclear_repulsion_energy: float
-    scf_vv10_energy: float
-    scf_xc_energy: float
-    scf_dispersion_correction_energy: float
-    scf_dipole_moment: List[float]
-    scf_total_energy: float
-    scf_iterations: int
-    mp2_same_spin_correlation_energy: float
-    mp2_opposite_spin_correlation_energy: float
-    mp2_singles_energy: float
-    mp2_doubles_energy: float
-    mp2_total_correlation_energy: float
-    mp2_total_energy: float
-    calcinfo_nbasis: int
-    calcinfo_nmo: int
-    calcinfo_nalpha: int
-    calcinfo_nbeta: int
-    calcinfo_natom: int
-    return_energy: float
+    scf_one_electron_energy: float = None
+    scf_two_electron_energy: float = None
+    nuclear_repulsion_energy: float = None
+    scf_vv10_energy: float = None
+    scf_xc_energy: float = None
+    scf_dispersion_correction_energy: float = None
+    scf_dipole_moment: List[float] = None
+    scf_total_energy: float = None
+    scf_iterations: int = None
+    mp2_same_spin_correlation_energy: float = None
+    mp2_opposite_spin_correlation_energy: float = None
+    mp2_singles_energy: float = None
+    mp2_doubles_energy: float = None
+    mp2_total_correlation_energy: float = None
+    mp2_total_energy: float = None
+    calcinfo_nbasis: int = None
+    calcinfo_nmo: int = None
+    calcinfo_nalpha: int = None
+    calcinfo_nbeta: int = None
+    calcinfo_natom: int = None
+    return_energy: float = None
 
     class Config:
         allow_extra = False
 
 
-class ErrorType(str, Enum):
+class ErrorEnum(str, Enum):
     convergence_error = "convergence_error"
     file_error = "file_error"
     memory_error = "memory_error"
@@ -53,7 +53,7 @@ class ErrorType(str, Enum):
 
 class Error(BaseModel):
     """The type of error message raised"""
-    error_type: ErrorType
+    error_type: ErrorEnum
     error_message: str
 
     class Config:
@@ -72,6 +72,9 @@ class ResultsInput(BaseModel):
     schema_version: int = 1
     keywords: dict = {}
     provenance: Provenance = provenance_stamp(__name__)
+
+    class Config:
+        allow_mutation = False
 
 
 class Results(ResultsInput):
