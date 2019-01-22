@@ -64,6 +64,7 @@ class Error(BaseModel):
 
 class ResultsInput(BaseModel):
     """The MolSSI Quantum Chemistry Schema"""
+    id: str = None
     molecule: Molecule
     driver: DriverEnum
     model: Model
