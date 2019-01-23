@@ -7,17 +7,14 @@ dependencies:
   - numpy
   - nomkl
   - python
+  - pint
 
     # Testing
   - pytest
   - pytest-cov
+  - codecov
 
     # Pip depends
   - pip:
-      # Base depends
-    - pint
-
-      # Testing
-    - codecov
-    - deepdiff
-    - pydantic  # Will eventually be from conda-forge when we get that working
+    - pydantic # Conda-forge still in progress
+    - deepdiff # Only used for testing some areas
