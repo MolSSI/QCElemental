@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from enum import Enum
 
 
 class Provenance(BaseModel):
@@ -8,3 +9,34 @@ class Provenance(BaseModel):
 
     class Config:
         allow_extra = True
+
+
+class Model(BaseModel):
+    method: str
+    basis: str = None
+    # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
+
+    class Config:
+        allow_mutation = False
+        allow_extra = True
+
+
+class DriverEnum(str, Enum):
+    energy = 'energy'
+    gradient = 'gradient'
+    hessian = 'hessian'
+
+
+class QCEngineError(BaseModel):
+    """The type of error message raised"""
+    error_type: str  # Error enumeration not yet strict
+    error_message: str
+
+    class Config:
+        allow_extra = False
+
+
+qcschema_input_default = "qcschema_input"
+qcschema_output_default = "qcschema_output"
+qcschema_optimization_input_default = "qcschema_optimization_input"
+qcschema_optimization_output_default = "qcschema_optimization_output"

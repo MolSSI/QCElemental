@@ -1,21 +1,9 @@
 from enum import Enum
-from pydantic import BaseModel, constr
-from typing import List, Union, Dict
+from pydantic import BaseModel, constr, validator, ValidationError
+from typing import List, Union, Dict, Any
 from .molecule import Molecule
-from .common_models import Provenance
+from .common_models import Provenance, Model, DriverEnum, QCEngineError, qcschema_input_default, qcschema_output_default
 from ..util import provenance_stamp
-
-
-class DriverEnum(str, Enum):
-    energy = 'energy'
-    gradient = 'gradient'
-    hessian = 'hessian'
-
-
-class Model(BaseModel):
-    method: str
-    basis: str = None
-    # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
 
 class Properties(BaseModel):
@@ -51,15 +39,6 @@ class ErrorEnum(str, Enum):
     memory_error = "memory_error"
 
 
-class Error(BaseModel):
-    """The type of error message raised"""
-    error_type: Dict[str, str]  # Error enumeration not yet strict
-    error_message: str
-
-    class Config:
-        allow_extra = False
-
-
 ### Primary models
 
 class ResultInput(BaseModel):
@@ -68,21 +47,64 @@ class ResultInput(BaseModel):
     molecule: Molecule
     driver: DriverEnum
     model: Model
-    schema_name: constr(strip_whitespace=True, regex='qc_schema_input') = "qc_schema_input"  # IDEs complain, its fine
+    schema_name: constr(strip_whitespace=True,
+                        regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
     keywords: dict = {}
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
         allow_mutation = False
+        allow_extra = True
 
 
-class Result(ResultInput):
-    properties: Properties
+class FailedResult(ResultInput):
+    """
+    Helper class to handle failed result parsing for any reason by doing minimal typing on objects which may
+    be corrupt
+    """
+    id: Any = None
+    molecule: Any = None
+    driver: Any = None
+    model: Any = None
+    schema_name: Any = None
+    schema_version: int = 1
+    # Mandates only success and error
+    success: bool = False
+    error: QCEngineError
+
+    class Config:
+        allow_mutation = False
+        allow_extra = True
+
+
+class Result(FailedResult):
+    schema_name: constr(strip_whitespace=True,
+                        regex=qcschema_output_default) = qcschema_output_default
+    properties: Properties = Properties()
     success: bool
-    error: Error = None
-    return_result: Union[float, List[float]]
+    error: QCEngineError = None
+    return_result: Union[float, List[float], Dict[str, Any]]
 
     class Config(ResultInput.Config):
-        # Will carry the allow_mutation flag
-        allow_extra = True  # Permits arbitrary fields
+        # Will carry other properties
+        pass
+
+    @validator("schema_name", pre=True)
+    def input_to_output(cls, v):
+        """If qcschema_input is passed in, cast it to output, otherwise no"""
+        if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
+            return qcschema_output_default
+        raise ValueError("Only {0} or {1} is allowed for schema_name, "
+                         "which will be converted to {0}".format(qcschema_output_default,
+                                                                 qcschema_input_default))
+
+
+def build_result(**kwargs):
+    try:
+        return Result(**kwargs)
+    except ValidationError as e:
+        return FailedResult(**{**kwargs, **QCEngineError(error_type="validation_error",
+                                                         error_message=e.json()
+                                                         ).dict()})
+
