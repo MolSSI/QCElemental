@@ -1,5 +1,5 @@
 conda:
-    file: docs/requirements.yml
+    file: devtools/conda-envs/base.yaml
 python:
     version: 3
     setup_py_install: true
