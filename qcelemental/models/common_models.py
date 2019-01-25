@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
+from typing import Any
 
 
 class Provenance(BaseModel):
@@ -27,13 +28,24 @@ class DriverEnum(str, Enum):
     hessian = 'hessian'
 
 
-class QCEngineError(BaseModel):
+class ComputeError(BaseModel):
     """The type of error message raised"""
     error_type: str  # Error enumeration not yet strict
     error_message: str
 
     class Config:
         allow_extra = False
+
+
+class FailedOperation(BaseModel):
+    id: str = None
+    input_data: Any = None
+    success: bool = False
+    error: ComputeError
+
+    class Config:
+        allow_extra = True
+        allow_mutation = False
 
 
 qcschema_input_default = "qcschema_input"

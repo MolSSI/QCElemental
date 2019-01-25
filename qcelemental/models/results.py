@@ -2,7 +2,7 @@ from enum import Enum
 from pydantic import BaseModel, constr, validator, ValidationError
 from typing import List, Union, Dict, Any
 from .molecule import Molecule
-from .common_models import Provenance, Model, DriverEnum, QCEngineError, qcschema_input_default, qcschema_output_default
+from .common_models import Provenance, Model, DriverEnum, ComputeError, qcschema_input_default, qcschema_output_default
 from ..util import provenance_stamp
 
 
@@ -71,7 +71,7 @@ class FailedResult(ResultInput):
     schema_version: int = 1
     # Mandates only success and error
     success: bool = False
-    error: QCEngineError
+    error: ComputeError
 
     class Config:
         allow_mutation = False
@@ -83,7 +83,7 @@ class Result(FailedResult):
                         regex=qcschema_output_default) = qcschema_output_default
     properties: Properties = Properties()
     success: bool
-    error: QCEngineError = None
+    error: ComputeError = None
     return_result: Union[float, List[float], Dict[str, Any]]
 
     class Config(ResultInput.Config):
@@ -104,7 +104,7 @@ def build_result(**kwargs):
     try:
         return Result(**kwargs)
     except ValidationError as e:
-        return FailedResult(**{**kwargs, **QCEngineError(error_type="validation_error",
-                                                         error_message=e.json()
-                                                         ).dict()})
+        return FailedResult(**{**kwargs, **ComputeError(error_type="validation_error",
+                                                        error_message=e.json()
+                                                        ).dict()})
 
