@@ -5,6 +5,6 @@ except ImportError:
                       "`conda install pydantic -c conda-forge` or `pip install pydantic`")
 
 from .molecule import Molecule
-from .results import Result, ResultInput, build_result
+from .results import Result, ResultInput
 from .procedures import OptimizationInput, Optimization
 from .common_models import Provenance, ComputeError, FailedOperation

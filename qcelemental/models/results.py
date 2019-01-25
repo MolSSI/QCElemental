@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, constr, validator, ValidationError
+from pydantic import BaseModel, constr, validator
 from typing import List, Union, Dict, Any
 from .molecule import Molecule
 from .common_models import Provenance, Model, DriverEnum, ComputeError, qcschema_input_default, qcschema_output_default
@@ -58,27 +58,7 @@ class ResultInput(BaseModel):
         allow_extra = True
 
 
-class FailedResult(ResultInput):
-    """
-    Helper class to handle failed result parsing for any reason by doing minimal typing on objects which may
-    be corrupt
-    """
-    id: Any = None
-    molecule: Any = None
-    driver: Any = None
-    model: Any = None
-    schema_name: Any = None
-    schema_version: int = 1
-    # Mandates only success and error
-    success: bool = False
-    error: ComputeError
-
-    class Config:
-        allow_mutation = False
-        allow_extra = True
-
-
-class Result(FailedResult):
+class Result(ResultInput):
     schema_name: constr(strip_whitespace=True,
                         regex=qcschema_output_default) = qcschema_output_default
     properties: Properties = Properties()
@@ -98,13 +78,3 @@ class Result(FailedResult):
         raise ValueError("Only {0} or {1} is allowed for schema_name, "
                          "which will be converted to {0}".format(qcschema_output_default,
                                                                  qcschema_input_default))
-
-
-def build_result(**kwargs):
-    try:
-        return Result(**kwargs)
-    except ValidationError as e:
-        return FailedResult(**{**kwargs, **ComputeError(error_type="validation_error",
-                                                        error_message=e.json()
-                                                        ).dict()})
-

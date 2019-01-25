@@ -2,8 +2,8 @@ from pydantic import BaseModel, constr
 from .common_models import (Model, DriverEnum, ComputeError, qcschema_input_default,
                             qcschema_optimization_input_default, qcschema_optimization_output_default)
 from .molecule import Molecule
-from .results import Result, FailedResult
-from typing import List, Union, Any
+from .results import Result
+from typing import List
 
 
 class InputSpecification(BaseModel):
@@ -34,16 +34,7 @@ class OptimizationInput(BaseModel):
         allow_mutation = False
 
 
-class FailedOptimization(OptimizationInput):
-    schema_name: Any = None
-    final_molecule: Any = None
-    trajectory: Union[List[FailedResult], Any] = None
-    energies: Any = None
-    success: bool = False
-    error: ComputeError
-
-
-class Optimization(FailedOptimization):
+class Optimization(OptimizationInput):
     schema_name: constr(strip_whitespace=True,
                         regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
     final_molecule: Molecule
