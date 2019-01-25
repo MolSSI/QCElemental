@@ -9,3 +9,5 @@ dependencies:
     - sphinx_rtd_theme
     - sphinx-automodapi
     - graphviz
+    - pip:
+      - pydantic
