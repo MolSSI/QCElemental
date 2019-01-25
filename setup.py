@@ -27,6 +27,7 @@ if __name__ == "__main__":
         install_requires=[
             'numpy',
             'pint',
+            'pydantic'
         ],
         extras_require={
             'docs': [
