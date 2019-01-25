@@ -6,4 +6,5 @@ except ImportError:
 
 from .molecule import Molecule
 from .results import Result, ResultInput
-from .common_models import Provenance
+from .procedures import OptimizationInput, Optimization
+from .common_models import Provenance, ComputeError, FailedOperation
