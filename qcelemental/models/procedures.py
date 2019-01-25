@@ -3,17 +3,16 @@ from .common_models import (Model, DriverEnum, ComputeError, qcschema_input_defa
                             qcschema_optimization_input_default, qcschema_optimization_output_default)
 from .molecule import Molecule
 from .results import Result
-from typing import List
+from typing import Any, Dict, List
 
 
 class InputSpecification(BaseModel):
-    id: str = None
     driver: DriverEnum
     schema_name: constr(strip_whitespace=True,
                         regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
-    model: Model = None
-    keywords: dict = {}
+    model: Model
+    keywords: Dict[str, Any] = {}
 
     class Config:
         allow_extra = True
@@ -21,11 +20,10 @@ class InputSpecification(BaseModel):
 
 
 class OptimizationInput(BaseModel):
-    id: str = None
     schema_name: constr(strip_whitespace=True,
                         regex=qcschema_optimization_input_default) = qcschema_optimization_input_default
     schema_version: int = 1
-    keywords: dict = {}
+    keywords: Dict[str, Any] = {}
     input_specification: InputSpecification
     initial_molecule: Molecule
 
@@ -35,6 +33,7 @@ class OptimizationInput(BaseModel):
 
 
 class Optimization(OptimizationInput):
+    id: str = None
     schema_name: constr(strip_whitespace=True,
                         regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
     final_molecule: Molecule
