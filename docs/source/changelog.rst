@@ -13,18 +13,21 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-0.1.4 / 2018-01-25
+0.2.0 / 2019-01-25
 ------------------
+
+- now requires Python 3.6+
+- now requires Pydantic
 
 New Features
 ++++++++++++
 
-- (:pr:`14`, :pr:`16`, :pr:`17`) Added new Pydantic models for Molecules, Results, and Optimizations to make common objects used in the QCArchivie project all exist in one central, always imported module
+- (:pr:`14`, :pr:`16`, :pr:`17`) Added new Pydantic models for Molecules, Results, and Optimizations to make common objects used in the QCArchive project all exist in one central, always imported module.
 
-Enhancments
-+++++++++++
+Enhancements
+++++++++++++
 
-- (:pr:`13`) Made Unnp Function more robust to recursion
+- (:pr:`13`) Function `util.unnp` that recursively list-ifies ndarray in a dict now handles lists and flattens.
 
 0.1.3 / 2018-12-14
 ------------------
