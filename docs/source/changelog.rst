@@ -13,6 +13,11 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.2.1 / 2019-01-27
+------------------
+
+- (:pr:`20`) Moves several Molecule parsing functions to the molparse module.
+
 0.2.0 / 2019-01-25
 ------------------
 
