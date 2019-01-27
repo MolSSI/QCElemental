@@ -15,6 +15,8 @@ from ..periodic_table import periodictable, NotAnElementError
 from .common_models import Provenance
 from ..util import provenance_stamp
 
+from ..molparse import to_string, from_string, from_arrays, to_schema
+
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
 MASS_NOISE = 6
@@ -76,23 +78,38 @@ class Identifiers(BaseModel):
 
 
 class Molecule(BaseModel):
-    id: str = None
+
+    # Required data
     symbols: List[str]
     geometry: NPArray
-    masses: List[float] = None
+
+    # Molecule data
     name: str = ""
     identifiers: Identifiers = None
     comment: str = None
     molecular_charge: float = 0.0
     molecular_multiplicity: int = 1
+
+    # Atom data
+    masses: List[float] = None
     real: List[bool] = None
+    atom_labels: List[str] = None
+    atomic_numbers: List[int] = None
+    mass_numbers: List[int] = None
+
+    # Fragment and connection data
     connectivity: List[Tuple[int, int, float]] = []
     fragments: List[List[int]] = None
     fragment_charges: List[float] = None
     fragment_multiplicities: List[int] = None
+
+    # Orientation
     fix_com: bool = False
     fix_orientation: bool = False
+
+    # Extra
     provenance: Provenance = provenance_stamp(__name__)
+    id: str = None
 
     class Config:
         json_encoders = {
@@ -177,8 +194,7 @@ class Molecule(BaseModel):
                 raise ValueError("Fragment Charges and Fragment Multiplicities"
                                  " must be same number of entries as Fragments")
         else:
-            raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities "
-                             "without Fragments")
+            raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities " "without Fragments")
         return v
 
     @validator('connectivity')
@@ -189,8 +205,10 @@ class Molecule(BaseModel):
 
     @property
     def hash_fields(self):
-        return ["symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
-                "fragment_charges", "fragment_multiplicities", "connectivity"]
+        return [
+            "symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
+            "fragment_charges", "fragment_multiplicities", "connectivity"
+        ]
 
     def dict(self, *args, **kwargs):
         if "include" not in kwargs:
@@ -202,7 +220,7 @@ class Molecule(BaseModel):
             kwargs["include"] = self._Internals.provided_fields
         return super().json(*args, **kwargs)
 
-    ### Non-Pydantic API functions
+### Non-Pydantic API functions
 
     def orient_molecule(self):
         """
@@ -255,8 +273,8 @@ class Molecule(BaseModel):
         for i in range(len(self.geometry)):
             text += """    {0:8s}{1:4s} """.format(self.symbols[i], "" if self.real[i] else "(Gh)")
             for j in range(3):
-                text += """  {0:17.12f}""".format(self.geometry[i][j] *
-                                                  constants.conversion_factor("bohr", "angstroms"))
+                text += """  {0:17.12f}""".format(
+                    self.geometry[i][j] * constants.conversion_factor("bohr", "angstroms"))
             text += "\n"
         text += "\n"
 
@@ -282,8 +300,8 @@ class Molecule(BaseModel):
         # ret = Molecule(None, name=ret_name)
 
         if len(set(real) & set(ghost)):
-            raise TypeError(
-                "Molecule:get_fragment: real and ghost sets are overlapping! ({0}, {1}).".format(str(real), str(ghost)))
+            raise TypeError("Molecule:get_fragment: real and ghost sets are overlapping! ({0}, {1}).".format(
+                str(real), str(ghost)))
 
         geom_blocks = []
         symbols = []
@@ -417,7 +435,7 @@ class Molecule(BaseModel):
     ### Constructors
 
     @classmethod
-    def from_data(cls, data, dtype, orient=False, **kwargs):
+    def from_data(cls, data, dtype=None, *, orient=False, **kwargs):
         """
         Constructs a molecule object from a data structure.
 
@@ -425,7 +443,7 @@ class Molecule(BaseModel):
         ----------
         data : Object
             Data to construct Molecule from. This is likely what would be loaded from a file
-        dtype : {"psi4", "numpy", "json", "dict"}
+        dtype : {"string", "numpy", "json", "dict"}
             The type of data to interpret,
             no attempt to infer what type of data is done here, it must be provided
         orient: bool, optional
@@ -438,13 +456,17 @@ class Molecule(BaseModel):
         Molecule
             A constructed molecule class.
         """
+        if dtype is None:
+            if isinstance(data, str):
+                dtype = "string"
+            else:
+                raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
-        if dtype == "psi4":
-            input_dict = cls._molecule_from_string_psi4(data)
+        if dtype in ["string", "psi4"]:
+            input_dict = to_schema(from_string(data)["qm"], 1)["molecule"]
         elif dtype == "numpy":
-            input_dict = cls._molecule_from_numpy(data,
-                                                  frags=kwargs.pop("frags", []),
-                                                  units=kwargs.pop("units", "angstrom"))
+            input_dict = cls._molecule_from_numpy(
+                data, frags=kwargs.pop("frags", []), units=kwargs.pop("units", "angstrom"))
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":
@@ -543,13 +565,14 @@ class Molecule(BaseModel):
             fragment_multiplicities.append(1)
             start = fsplit
 
-        return {"geometry": geometry,
-                "real": real,
-                "symbols": symbols,
-                "fragments": fragments,
-                "fragment_charges": fragment_charges,
-                "fragment_multiplicities": fragment_multiplicities
-                }
+        return {
+            "geometry": geometry,
+            "real": real,
+            "symbols": symbols,
+            "fragments": fragments,
+            "fragment_charges": fragment_charges,
+            "fragment_multiplicities": fragment_multiplicities
+        }
 
     @staticmethod
     def _molecule_from_string_psi4(text):
@@ -579,10 +602,7 @@ class Molecule(BaseModel):
         # Assume angstrom, we want bohr
         unit_conversion = 1 / constants.conversion_factor("bohr", "angstrom")
 
-        output_dict = {"real": [],
-                       "fragments": [],
-                       "fragment_charges": [],
-                       "fragment_multiplicities": []}
+        output_dict = {"real": [], "fragments": [], "fragment_charges": [], "fragment_multiplicities": []}
 
         for line in lines:
 
@@ -629,9 +649,8 @@ class Molecule(BaseModel):
             elif atom.match(line.split()[0].strip()):
                 glines.append(line)
             else:
-                raise TypeError(
-                    'Molecule:create_molecule_from_string: '
-                    'Unidentifiable line in geometry specification: {}'.format(line))
+                raise TypeError('Molecule:create_molecule_from_string: '
+                                'Unidentifiable line in geometry specification: {}'.format(line))
 
         # catch last default fragment cgmp
         try:
@@ -676,9 +695,8 @@ class Molecule(BaseModel):
                 try:
                     periodictable.to_Z(atomSym)
                 except NotAnElementError:
-                    raise TypeError(
-                        'Molecule:create_molecule_from_string: '
-                        'Illegal atom symbol in geometry specification: {}'.format(atomSym))
+                    raise TypeError('Molecule:create_molecule_from_string: '
+                                    'Illegal atom symbol in geometry specification: {}'.format(atomSym))
                 symbols.append(atomSym)
                 # zVal = periodictable.to_Z(atomSym)
                 if atomm.group('mass') is None:
@@ -716,9 +734,8 @@ class Molecule(BaseModel):
 
                     geometry.append([xval, yval, zval])
                 else:
-                    raise TypeError(
-                        'Molecule::create_molecule_from_string: Illegal geometry specification line : {}.'
-                        'You should provide either Z-Matrix or Cartesian input'.format(line))
+                    raise TypeError('Molecule::create_molecule_from_string: Illegal geometry specification line : {}.'
+                                    'You should provide either Z-Matrix or Cartesian input'.format(line))
 
                 iatom += 1
 
@@ -818,7 +835,8 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
+                                                              int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:
