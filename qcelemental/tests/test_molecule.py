@@ -6,7 +6,6 @@ import numpy as np
 import pytest
 from pydantic import ValidationError
 
-import test_helpers
 from qcelemental.models import Molecule
 import qcelemental as qcel
 
@@ -69,17 +68,6 @@ def test_molecule_np_constructors():
     neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
     assert neon_from_psi.compare(neon_from_psi, neon_from_json)
     assert neon_from_json.get_molecular_formula() == "Ne4"
-
-
-def test_molecule_file_constructors():
-
-    mol_psi = test_helpers.get_molecule("helium_dimer.psimol")
-    mol_json = test_helpers.get_molecule("helium_dimer.json")
-    mol_np = test_helpers.get_molecule("helium_dimer.npy")
-
-    assert mol_psi.compare(mol_json)
-    assert mol_psi.compare(mol_np)
-    assert mol_psi.get_molecular_formula() == "He2"
 
 
 def test_water_minima_data():
