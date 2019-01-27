@@ -3,7 +3,6 @@ Molecule Object Model
 """
 
 import os
-import re
 import json
 import hashlib
 import collections
@@ -11,11 +10,11 @@ import numpy as np
 from pydantic import BaseModel, validator
 from typing import List, Tuple
 from ..physical_constants import constants
-from ..periodic_table import periodictable, NotAnElementError
+from ..periodic_table import periodictable
 from .common_models import Provenance
 from ..util import provenance_stamp
 
-from ..molparse import to_string, from_string, from_arrays, to_schema
+from ..molparse import from_string, from_arrays, to_schema
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -466,8 +465,8 @@ class Molecule(BaseModel):
             else:
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
-        if dtype in ["string", "psi4"]:
-            input_dict = to_schema(from_string(data)["qm"], 1)["molecule"]
+        if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
+            input_dict = to_schema(from_string(data)["qm"], dtype=1)["molecule"]
         elif dtype == "numpy":
             data = {
                 "geom": data[:, 1:],
@@ -475,7 +474,7 @@ class Molecule(BaseModel):
                 "units": kwargs.pop("units", "Angstrom"),
                 "fragment_separators": kwargs.pop("frags", [])
             }
-            input_dict = to_schema(from_arrays(**data), 1)["molecule"]
+            input_dict = to_schema(from_arrays(**data), dtype=1)["molecule"]
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":

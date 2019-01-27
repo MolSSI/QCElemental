@@ -127,10 +127,19 @@ def test_to_string():
     assert isinstance(mol.to_string(), str)
 
 
+def test_from_file(tmp_path):
+
+    p = tmp_path / "water.psimol"
+    p.write_text(water_dimer_minima.to_string())
+
+    mol = Molecule.from_file(p)
+
+    assert mol.compare(water_dimer_minima)
+
+
 def test_water_orient():
     # These are identical molecules, should find the correct results
-    mol = Molecule.from_data(
-        """
+    mol = Molecule.from_data("""
         O  -1.551007  -0.114520   0.000000
         H  -1.934259   0.762503   0.000000
         H  -0.599677   0.040712   0.000000
@@ -138,8 +147,7 @@ def test_water_orient():
         O  -0.114520  -1.551007  10.000000
         H   0.762503  -1.934259  10.000000
         H   0.040712  -0.599677  10.000000
-        """,
-        dtype="psi4")
+        """)
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
