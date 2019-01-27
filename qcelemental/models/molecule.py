@@ -459,14 +459,23 @@ class Molecule(BaseModel):
         if dtype is None:
             if isinstance(data, str):
                 dtype = "string"
+            elif isinstance(dat, np.array):
+                dtype = "numpy"
+            elif isinstance(data, dict):
+                dtype = "dict"
             else:
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
         if dtype in ["string", "psi4"]:
             input_dict = to_schema(from_string(data)["qm"], 1)["molecule"]
         elif dtype == "numpy":
-            input_dict = cls._molecule_from_numpy(
-                data, frags=kwargs.pop("frags", []), units=kwargs.pop("units", "angstrom"))
+            data = {
+                "geom": data[:, 1:],
+                "elez": data[:, 0],
+                "units": kwargs.pop("units", "Angstrom"),
+                "fragment_separators": kwargs.pop("frags", [])
+            }
+            input_dict = to_schema(from_arrays(**data), 1)["molecule"]
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":
@@ -524,230 +533,6 @@ class Molecule(BaseModel):
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
         return cls.from_data(data, dtype, orient=orient, **kwargs)
-
-    ### Parsers
-
-    @staticmethod
-    def _molecule_from_numpy(arr, frags, units="angstrom"):
-        """
-        Given a NumPy array of shape (N, 4) where each row is (Z_nuclear, X, Y, Z).
-
-        Frags represents the splitting pattern for molecular fragments. Geometry must be in
-        Angstroms.
-        """
-
-        arr = np.array(arr, dtype=np.double)
-
-        if (len(arr.shape) != 2) or (arr.shape[1] != 4):
-            raise AttributeError("Molecule: Molecule should be shape (N, 4) not {}.".format(arr.shape))
-
-        if units == "bohr":
-            const = 1
-        elif units in ["angstrom", "angstroms"]:
-            const = 1 / constants.conversion_factor("bohr", "angstroms")
-        else:
-            raise KeyError("Unit '{}' not understood".format(units))
-
-        geometry = arr[:, 1:].copy() * const
-        real = [True for _ in arr[:, 0]]
-        symbols = [periodictable.to_E(x) for x in arr[:, 0]]
-
-        if len(frags) and (frags[-1] != arr.shape[0]):
-            frags.append(arr.shape[0])
-
-        start = 0
-        fragments = []
-        fragment_charges = []
-        fragment_multiplicities = []
-        for fsplit in frags:
-            fragments.append(list(range(start, fsplit)))
-            fragment_charges.append(0.0)
-            fragment_multiplicities.append(1)
-            start = fsplit
-
-        return {
-            "geometry": geometry,
-            "real": real,
-            "symbols": symbols,
-            "fragments": fragments,
-            "fragment_charges": fragment_charges,
-            "fragment_multiplicities": fragment_multiplicities
-        }
-
-    @staticmethod
-    def _molecule_from_string_psi4(text):
-        """Given a string *text* of psi4-style geometry specification
-        (including newlines to separate lines), builds a new molecule.
-        Called from constructor.
-
-        """
-
-        # Setup re expressions
-        comment = re.compile(r'^\s*#')
-        blank = re.compile(r'^\s*$')
-        bohr = re.compile(r'^\s*units?[\s=]+(bohr|au|a.u.)\s*$', re.IGNORECASE)
-        ang = re.compile(r'^\s*units?[\s=]+(ang|angstrom)\s*$', re.IGNORECASE)
-        atom = re.compile(
-            r'^(?:(?P<gh1>@)|(?P<gh2>Gh\())?(?P<label>(?P<symbol>[A-Z]{1,3})(?:(_\w+)|(\d+))?)(?(gh2)\))(?:@(?P<mass>\d+\.\d+))?$',
-            re.IGNORECASE)
-        cgmp = re.compile(r'^\s*(-?\d+)\s+(\d+)\s*$')
-        frag = re.compile(r'^\s*--\s*$')
-        # ghost = re.compile(r'@(.*)|Gh\((.*)\)', re.IGNORECASE)
-        realNumber = re.compile(r"""[-+]?(?:(?:\d*\.\d+)|(?:\d+\.?))(?:[Ee][+-]?\d+)?""", re.VERBOSE)
-
-        lines = re.split('\n', text)
-        glines = []
-        ifrag = 0
-
-        # Assume angstrom, we want bohr
-        unit_conversion = 1 / constants.conversion_factor("bohr", "angstrom")
-
-        output_dict = {"real": [], "fragments": [], "fragment_charges": [], "fragment_multiplicities": []}
-
-        for line in lines:
-
-            # handle comments
-            if comment.match(line) or blank.match(line):
-                pass
-
-            # handle units
-            elif bohr.match(line):
-                unit_conversion = 1.0
-
-            elif ang.match(line):
-                pass
-
-            # Handle com
-            elif line.lower().strip() in ["no_com", "nocom"]:
-                output_dict["fix_com"] = True
-
-            # handle orient
-            elif line.lower().strip() in ["no_reorient", "noreorient"]:
-                output_dict["fix_orientation"] = True
-
-            # handle charge and multiplicity
-            elif cgmp.match(line):
-                tempCharge = int(cgmp.match(line).group(1))
-                tempMultiplicity = int(cgmp.match(line).group(2))
-
-                if ifrag == 0:
-                    output_dict["molecular_charge"] = float(tempCharge)
-                    output_dict["molecular_multiplicity"] = tempMultiplicity
-                output_dict["fragment_charges"].append(float(tempCharge))
-                output_dict["fragment_multiplicities"].append(tempMultiplicity)
-
-            # handle fragment markers and default fragment cgmp
-            elif frag.match(line):
-                try:
-                    output_dict["fragment_charges"][ifrag]
-                except IndexError:
-                    output_dict["fragment_charges"].append(0.0)
-                    output_dict["fragment_multiplicities"].append(1)
-                ifrag += 1
-                glines.append(line)
-
-            elif atom.match(line.split()[0].strip()):
-                glines.append(line)
-            else:
-                raise TypeError('Molecule:create_molecule_from_string: '
-                                'Unidentifiable line in geometry specification: {}'.format(line))
-
-        # catch last default fragment cgmp
-        try:
-            output_dict["fragment_charges"][ifrag]
-        except IndexError:
-            output_dict["fragment_charges"].append(0.0)
-            output_dict["fragment_multiplicities"].append(1)
-
-        # Now go through the rest of the lines looking for fragment markers
-        # There are several lines which are comment'd out as they appear to have no effect.
-        # Leaving the lines in because this seems like a bug
-        ifrag = 0
-        iatom = 0
-        tempfrag = []
-        # atomSym = ""
-        geometry = []
-        tmpMass = []
-        symbols = []
-        custom_mass = False
-
-        # handle number values
-
-        for line in glines:
-
-            # handle fragment markers
-            if frag.match(line):
-                ifrag += 1
-                output_dict["fragments"].append(list(range(tempfrag[0], tempfrag[-1] + 1)))
-                output_dict["real"].extend([True for _ in range(tempfrag[0], tempfrag[-1] + 1)])
-                tempfrag = []
-
-            # handle atom markers
-            else:
-                entries = re.split(r'\s+|\s*,\s*', line.strip())
-                atomm = atom.match(line.split()[0].strip().title())
-                atomSym = atomm.group('symbol')
-
-                # We don't know whether the @C or Gh(C) notation matched. Do a quick check.
-                # ghostAtom = False if (atomm.group('gh1') is None and atomm.group('gh2') is None) else True
-
-                # Check that the atom symbol is valid
-                try:
-                    periodictable.to_Z(atomSym)
-                except NotAnElementError:
-                    raise TypeError('Molecule:create_molecule_from_string: '
-                                    'Illegal atom symbol in geometry specification: {}'.format(atomSym))
-                symbols.append(atomSym)
-                # zVal = periodictable.to_Z(atomSym)
-                if atomm.group('mass') is None:
-                    atomMass = periodictable.to_mass(atomSym)
-                else:
-                    custom_mass = True
-                    atomMass = float(atomm.group('mass'))
-                tmpMass.append(atomMass)
-
-                # charge = float(zVal)
-                # if ghostAtom:
-                #     zVal = 0
-                #     charge = 0.0
-
-                # handle cartesians
-                if len(entries) == 4:
-                    tempfrag.append(iatom)
-                    if realNumber.match(entries[1]):
-                        xval = float(entries[1])
-                    else:
-                        raise TypeError("Molecule::create_molecule_from_string: "
-                                        "Unidentifiable entry: {}.".format(entries[1]))
-
-                    if realNumber.match(entries[2]):
-                        yval = float(entries[2])
-                    else:
-                        raise TypeError("Molecule::create_molecule_from_string: "
-                                        "Unidentifiable entry {}.".format(entries[2]))
-
-                    if realNumber.match(entries[3]):
-                        zval = float(entries[3])
-                    else:
-                        raise TypeError("Molecule::create_molecule_from_string: "
-                                        "Unidentifiable entry {}.".format(entries[3]))
-
-                    geometry.append([xval, yval, zval])
-                else:
-                    raise TypeError('Molecule::create_molecule_from_string: Illegal geometry specification line : {}.'
-                                    'You should provide either Z-Matrix or Cartesian input'.format(line))
-
-                iatom += 1
-
-        if custom_mass:
-            output_dict["masses"] = tmpMass
-
-        output_dict["symbols"] = symbols
-        output_dict["geometry"] = np.array(geometry) * unit_conversion
-        output_dict["fragments"].append(list(range(tempfrag[0], tempfrag[-1] + 1)))
-        output_dict["real"].extend([True for _ in range(tempfrag[0], tempfrag[-1] + 1)])
-
-        return output_dict
 
     ### Non-Pydantic internal functions
 
