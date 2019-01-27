@@ -8,12 +8,27 @@ from pydantic import ValidationError
 
 import test_helpers
 from qcelemental.models import Molecule
+import qcelemental as qcel
+
+water_dimer_minima = Molecule.from_data(
+    """
+    0 1
+    O  -1.551007  -0.114520   0.000000
+    H  -1.934259   0.762503   0.000000
+    H  -0.599677   0.040712   0.000000
+    --
+    O   1.350625   0.111469   0.000000
+    H   1.680398  -0.373741  -0.758561
+    H   1.680398  -0.373741   0.758561
+    """,
+    dtype="psi4",
+    orient=True)
 
 
-def test_molecule_constructors():
+def test_molecule_data_constructors():
 
     ### Water Dimer
-    water_psi = test_helpers.get_molecule("water_dimer_minima.psimol")
+    water_psi = water_dimer_minima.copy()
     ele = np.array([8, 1, 1, 8, 1, 1]).reshape(-1, 1)
     npwater = np.hstack((ele, water_psi.geometry))
 
@@ -25,9 +40,25 @@ def test_molecule_constructors():
     # Check the JSON construct/deconstruct
     water_from_json = Molecule.from_data(water_psi.json(), "json")
     assert water_psi.compare(water_psi, water_from_json)
+    assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
 
+
+def test_molecule_np_constructors():
+    """
+    Neon tetramer fun
+    """
     ### Neon Tetramer
-    neon_from_psi = test_helpers.get_molecule("neon_tetramer.psimol")
+    neon_from_psi = Molecule.from_data(
+        """
+        Ne 0.000000 0.000000 0.000000
+        --
+        Ne 3.100000 0.000000 0.000000
+        --
+        Ne 0.000000 3.200000 0.000000
+        --
+        Ne 0.000000 0.000000 3.300000
+        units bohr""",
+        dtype="psi4")
     ele = np.array([10, 10, 10, 10]).reshape(-1, 1)
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
@@ -38,8 +69,6 @@ def test_molecule_constructors():
     neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
     assert neon_from_psi.compare(neon_from_psi, neon_from_json)
     assert neon_from_json.get_molecular_formula() == "Ne4"
-
-    assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
 
 
 def test_molecule_file_constructors():
@@ -54,13 +83,10 @@ def test_molecule_file_constructors():
 
 
 def test_water_minima_data():
-    mol = test_helpers.get_molecule("water_dimer_minima.psimol")
     # Give it a name
-    mol_dict = mol.dict()
+    mol_dict = water_dimer_minima.dict()
     mol_dict['name'] = "water dimer"
-    # Block orientation change
-    mol_dict["fix_orientation"] = True
-    mol = Molecule(**mol_dict)
+    mol = Molecule(orient=True, **mol_dict)
 
     assert len(str(mol)) == 662
     assert len(mol.to_string()) == 442
@@ -74,17 +100,15 @@ def test_water_minima_data():
     assert np.allclose(mol.fragment_charges, [0, 0])
     assert np.allclose(mol.fragment_multiplicities, [1, 1])
     assert hasattr(mol, "provenance")
-    assert np.allclose(
-        mol.geometry,
-        [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.], [1.00578203, -0.1092573, 0.],
-         [-2.6821528, -0.12325075, 0.], [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
+    assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
+                                      [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
+                                      [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
     assert mol.get_hash() == "b41f1e38bc4be5482fcd1d4dd53ca7c65146ab91"
 
 
 def test_water_minima_fragment():
 
-    mol = test_helpers.get_molecule("water_dimer_minima.psimol")
-
+    mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
     assert frag_0.get_hash() == "6d253a5a66eb68b611ab6bb0f15b55bbd3f6fe91"
@@ -105,20 +129,30 @@ def test_water_minima_fragment():
 
 def test_pretty_print():
 
-    mol = test_helpers.get_molecule("water_dimer_minima.psimol")
+    mol = water_dimer_minima.copy()
     assert isinstance(mol.pretty_print(), str)
 
 
 def test_to_string():
 
-    mol = test_helpers.get_molecule("water_dimer_minima.psimol")
+    mol = water_dimer_minima.copy()
     assert isinstance(mol.to_string(), str)
 
 
 def test_water_orient():
     # These are identical molecules, should find the correct results
+    mol = Molecule.from_data(
+        """
+        O  -1.551007  -0.114520   0.000000
+        H  -1.934259   0.762503   0.000000
+        H  -0.599677   0.040712   0.000000
+        --
+        O  -0.114520  -1.551007  10.000000
+        H   0.762503  -1.934259  10.000000
+        H   0.040712  -0.599677  10.000000
+        """,
+        dtype="psi4")
 
-    mol = test_helpers.get_molecule("water_dimer_stretch.psimol")
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
 
@@ -131,7 +165,20 @@ def test_water_orient():
 
     assert frag_0_1.get_hash() == frag_1_0.get_hash()
 
-    mol = test_helpers.get_molecule("water_dimer_stretch2.psimol")
+    # These are identical molecules, but should be different with ghost
+    mol = Molecule.from_data(
+        """
+        O  -1.551007  -0.114520   0.000000
+        H  -1.934259   0.762503   0.000000
+        H  -0.599677   0.040712   0.000000
+        --
+        O  -11.551007  -0.114520   0.000000
+        H  -11.934259   0.762503   0.000000
+        H  -10.599677   0.040712   0.000000
+        """,
+        dtype="psi4",
+        orient=True)
+
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
 
@@ -149,9 +196,7 @@ def test_water_orient():
 
 
 def test_molecule_errors():
-    mol = test_helpers.get_molecule("water_dimer_stretch.psimol")
-
-    data = mol.dict()
+    data = water_dimer_minima.dict()
     data["whatever"] = 5
     with pytest.raises(ValidationError):
         Molecule(**data)

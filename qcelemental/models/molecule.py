@@ -798,14 +798,9 @@ class Molecule(BaseModel):
 
         # I(alpha, beta)
         # Off diagonal
-        tensor[0][1] = -1.0 * np.sum(weight * geom[:, 0] * geom[:, 1])
-        tensor[0][2] = -1.0 * np.sum(weight * geom[:, 0] * geom[:, 2])
-        tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
-
-        # Other half
-        tensor[1][0] = tensor[0][1]
-        tensor[2][0] = tensor[0][2]
-        tensor[2][1] = tensor[1][2]
+        tensor[1][0] = tensor[0][1] = -1.0 * np.sum(weight * geom[:, 0] * geom[:, 1])
+        tensor[2][0] = tensor[0][2] = -1.0 * np.sum(weight * geom[:, 0] * geom[:, 2])
+        tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
 
     def _to_psi4_string(self):
