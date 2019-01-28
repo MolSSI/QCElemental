@@ -2,7 +2,8 @@ from enum import Enum
 from pydantic import BaseModel, constr, validator
 from typing import List, Union, Dict, Any
 from .molecule import Molecule
-from .common_models import Provenance, Model, DriverEnum, ComputeError, qcschema_input_default, qcschema_output_default
+from .common_models import (Provenance, Model, DriverEnum, ComputeError, qcschema_input_default,
+                            qcschema_output_default, ndarray_encoder)
 from ..util import provenance_stamp
 
 
@@ -56,6 +57,9 @@ class ResultInput(BaseModel):
     class Config:
         allow_mutation = False
         allow_extra = True
+        json_encoders = {
+            **ndarray_encoder
+        }
 
 
 class Result(ResultInput):

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, constr
 from .common_models import (Model, DriverEnum, ComputeError, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default)
+                            qcschema_optimization_input_default, qcschema_optimization_output_default, ndarray_encoder)
 from .molecule import Molecule
 from .results import Result
 from typing import Any, Dict, List
@@ -30,6 +30,9 @@ class OptimizationInput(BaseModel):
     class Config:
         allow_extra = True
         allow_mutation = False
+        json_encoders = {
+            **ndarray_encoder
+        }
 
 
 class Optimization(OptimizationInput):
@@ -41,3 +44,5 @@ class Optimization(OptimizationInput):
     energies: List[float] = None
     success: bool
     error: ComputeError = None
+
+    # Config carries from the Input

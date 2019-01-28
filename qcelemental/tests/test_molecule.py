@@ -7,7 +7,6 @@ import pytest
 from pydantic import ValidationError
 
 from qcelemental.models import Molecule
-import qcelemental as qcel
 
 water_dimer_minima = Molecule.from_data(
     """
@@ -196,6 +195,10 @@ def test_molecule_errors():
     data["whatever"] = 5
     with pytest.raises(ValidationError):
         Molecule(**data)
+
+
+def test_molecule_serialization():
+    assert isinstance(water_dimer_minima.json(), str)
 
 
 def test_molecule_repeated_hashing():

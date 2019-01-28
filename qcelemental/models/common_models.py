@@ -1,6 +1,9 @@
 from pydantic import BaseModel
 from enum import Enum
 from typing import Any
+import numpy as np
+
+ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
 class Provenance(BaseModel):
@@ -46,6 +49,9 @@ class FailedOperation(BaseModel):
     class Config:
         allow_extra = True
         allow_mutation = False
+        json_encoders = {
+            **ndarray_encoder
+        }
 
 
 qcschema_input_default = "qcschema_input"

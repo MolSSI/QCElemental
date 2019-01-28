@@ -11,7 +11,7 @@ from pydantic import BaseModel, validator
 from typing import List, Tuple
 from ..physical_constants import constants
 from ..periodic_table import periodictable
-from .common_models import Provenance
+from .common_models import Provenance, ndarray_encoder
 from ..util import provenance_stamp
 
 from ..molparse import from_string, from_arrays, to_schema
@@ -112,7 +112,7 @@ class Molecule(BaseModel):
 
     class Config:
         json_encoders = {
-            np.ndarray: lambda v: v.flatten().tolist(),
+            **ndarray_encoder
         }
         allow_mutation = False
         ignore_extra = False
