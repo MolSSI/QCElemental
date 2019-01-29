@@ -210,8 +210,10 @@ class Molecule(BaseModel):
         ]
 
     def dict(self, *args, **kwargs):
-        if "include" not in kwargs:
+        if ("include" not in kwargs) or (("include" in kwargs) and (kwargs["include"] is None)):
             kwargs["include"] = self._Internals.provided_fields
+            if self.id is None:
+                kwargs["include"] -= {"id"}
 
         return super().dict(*args, **kwargs)
 

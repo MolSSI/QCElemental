@@ -67,7 +67,6 @@ class ResultInput(BaseModel):
             elif isinstance(excl, set):
                 excl |= {"id"}
 
-
         return super().dict(*args, **kwargs)
 
 
