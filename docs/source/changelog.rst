@@ -13,6 +13,15 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.2.2 / 2019-01-28
+------------------
+
+Bug Fixes
++++++++++
+
+- (:pr:`21`) Molparse's ``from_schema`` method not correctly parses the new ``qcschema_X`` strings for schema names.
+- (:pr:`23`) Pydantic model serializations now correctly handle Numpy Array objects in nested ``BaseModels``. Model serialization testing added to catch these in the future.
+
 0.2.1 / 2019-01-27
 ------------------
 
