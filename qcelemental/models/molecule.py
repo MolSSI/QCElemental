@@ -58,16 +58,17 @@ class NPArray(np.ndarray):
 
 class Identifiers(BaseModel):
     """Canonical chemical identifiers"""
-    molecule_hash: str = None
-    molecular_formula: str = None
-    smiles: str = None
-    inchi: str = None
-    inchikey: str = None
-    canonical_explicit_hydrogen_smiles: str = None
-    canonical_isomeric_explicit_hydrogen_mapped_smiles: str = None
-    canonical_isomeric_explicit_hydrogen_smiles: str = None
-    canonical_isomeric_smiles: str = None
-    canonical_smiles: str = None
+
+    # molecule_hash: str = None
+    # molecular_formula: str = None
+    # smiles: str = None
+    # inchi: str = None
+    # inchikey: str = None
+    # canonical_explicit_hydrogen_smiles: str = None
+    # canonical_isomeric_explicit_hydrogen_mapped_smiles: str = None
+    # canonical_isomeric_explicit_hydrogen_smiles: str = None
+    # canonical_isomeric_smiles: str = None
+    # canonical_smiles: str = None
 
     class Config:
         allow_extra = True
@@ -80,6 +81,7 @@ class Molecule(BaseModel):
 
     # Required data
     symbols: List[str]
+    # geometry: List[float]
     geometry: NPArray
 
     # Molecule data
@@ -111,9 +113,7 @@ class Molecule(BaseModel):
     id: str = None
 
     class Config:
-        json_encoders = {
-            **ndarray_encoder
-        }
+        json_encoders = {**ndarray_encoder}
         allow_mutation = False
         ignore_extra = False
 
@@ -212,12 +212,17 @@ class Molecule(BaseModel):
     def dict(self, *args, **kwargs):
         if "include" not in kwargs:
             kwargs["include"] = self._Internals.provided_fields
+
         return super().dict(*args, **kwargs)
 
     def json(self, *args, **kwargs):
-        if "include" not in kwargs:
-            kwargs["include"] = self._Internals.provided_fields
-        return super().json(*args, **kwargs)
+        as_dict = kwargs.pop("as_dict", False)
+
+        ret = super().json(*args, **kwargs)
+        if as_dict:
+            return json.loads(ret)
+        else:
+            return ret
 
 ### Non-Pydantic API functions
 
@@ -468,6 +473,7 @@ class Molecule(BaseModel):
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
             input_dict = to_schema(from_string(data)["qm"], dtype=1)["molecule"]
         elif dtype == "numpy":
+            data = np.asarray(data)
             data = {
                 "geom": data[:, 1:],
                 "elez": data[:, 0],
@@ -517,7 +523,7 @@ class Molecule(BaseModel):
                 dtype = "json"
             else:
                 raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
-            print("Inferring data type to be {} from file extension".format(dtype))
+            # print("Inferring data type to be {} from file extension".format(dtype))
 
         if dtype == "psi4":
             with open(filename, "r") as infile:

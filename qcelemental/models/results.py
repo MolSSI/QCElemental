@@ -42,14 +42,14 @@ class ErrorEnum(str, Enum):
 
 ### Primary models
 
+
 class ResultInput(BaseModel):
     """The MolSSI Quantum Chemistry Schema"""
     id: str = None
     molecule: Molecule
     driver: DriverEnum
     model: Model
-    schema_name: constr(strip_whitespace=True,
-                        regex=qcschema_input_default) = qcschema_input_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
     keywords: dict = {}
     provenance: Provenance = provenance_stamp(__name__)
@@ -57,14 +57,22 @@ class ResultInput(BaseModel):
     class Config:
         allow_mutation = False
         allow_extra = True
-        json_encoders = {
-            **ndarray_encoder
-        }
+        json_encoders = {**ndarray_encoder}
+
+    def dict(self, *args, **kwargs):
+        if self.id is None:
+            excl = kwargs.setdefault("exclude", [])
+            if isinstance(excl, list):
+                excl.append("id")
+            elif isinstance(excl, set):
+                excl |= {"id"}
+
+
+        return super().dict(*args, **kwargs)
 
 
 class Result(ResultInput):
-    schema_name: constr(strip_whitespace=True,
-                        regex=qcschema_output_default) = qcschema_output_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
     properties: Properties = Properties()
     success: bool
     error: ComputeError = None
@@ -80,5 +88,4 @@ class Result(ResultInput):
         if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
             return qcschema_output_default
         raise ValueError("Only {0} or {1} is allowed for schema_name, "
-                         "which will be converted to {0}".format(qcschema_output_default,
-                                                                 qcschema_input_default))
+                         "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default))
