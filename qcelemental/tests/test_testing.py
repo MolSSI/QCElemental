@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import numpy as np
 
-from testing import *
+import qcelemental as qcel
 
 _arrs = {
     'a1234_14': np.arange(4),
@@ -62,10 +62,9 @@ _pass_message = '\t{:.<66}PASSED'
         """test_compare_float: computed value (nan) does not match (nan) to 4 digits by difference (nan).""")),
 ])  # yapf: disable
 def test_compare_float(ref, cpd, tol, kw, boool, msg):
-    res, mstr = compare_floats(ref, cpd, tol, **kw, return_message=True)
+    res, mstr = qcel.testing.compare_float(ref, cpd, tol, **kw, return_message=True)
     assert res is boool
     assert mstr.strip() == msg[1].strip()
-
 
 
 @pytest.mark.parametrize("ref,cpd,kw,boool,msg", [
@@ -83,7 +82,6 @@ def test_compare_float(ref, cpd, tol, kw, boool, msg):
         _pass_message.format('test_compare'))),
     (None, None, {}, True, (None,
         _pass_message.format('test_compare'))),
-
     (True, None, {}, False, (None,
         'test_compare: computed value (None) does not match (True) by difference ((n/a)).')),
     (True, False, {}, False, (None,
@@ -127,6 +125,6 @@ def test_compare_float(ref, cpd, tol, kw, boool, msg):
         """test_compare: computed shape ((4,)) does not match ((2, 2)).""")),
 ])  # yapf: disable
 def test_compare(ref, cpd, kw, boool, msg):
-    res, mstr = compare(ref, cpd, **kw, return_message=True)
+    res, mstr = qcel.testing.compare(ref, cpd, **kw, return_message=True)
     assert res is boool
     assert mstr.strip() == msg[1].strip()

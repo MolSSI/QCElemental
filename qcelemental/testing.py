@@ -21,16 +21,16 @@ def _success(label):
     sys.stdout.flush()
 
 
-def compare_floats(expected,
-                   computed,
-                   digits,
-                   label=None,
-                   *,
-                   rtol=1.e-16,
-                   equal_nan=False,
-                   passnone=False,
-                   return_message=False,
-                   verbose=1):
+def compare_float(expected,
+                  computed,
+                  digits,
+                  label=None,
+                  *,
+                  rtol=1.e-16,
+                  equal_nan=False,
+                  passnone=False,
+                  return_message=False,
+                  verbose=1):
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -172,7 +172,6 @@ def compare(expected, computed, label=None, *, return_message=False, verbose=1):
 
     isclose = np.asarray(xptd == cptd)
     allclose = bool(isclose.all())
-    print(xptd, cptd, isclose, allclose)
 
     if allclose:
         message = pass_message
