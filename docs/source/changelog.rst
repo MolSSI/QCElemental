@@ -13,6 +13,16 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.2.3 / 2019-01-29
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`24`) Update models to be compatible with QCFractal and MongoDB objects in the QCArchive Ecosystem.
+  Also enhances the ``Molecule`` model's ``json`` function to accept ``as_dict`` keyword, permitting a return as a
+  dictionary of Pydantic-serialized python (primitive) objects, instead of a string.
+
 0.2.2 / 2019-01-28
 ------------------
 
