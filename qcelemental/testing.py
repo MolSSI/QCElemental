@@ -330,3 +330,57 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
         #cptd['geom'] = ageom.reshape((-1))
 
     compare_dicts(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)
+                          
+def _compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8, _prefix=False):
+
+    errors = []
+    name = _prefix or "root"
+    prefix = name + "."
+
+    if isinstance(expected, (str, int, bool)):
+        if expected != computed:
+            errors.append((name, "Value {} did not match {}.".format(expected, computed)))
+
+    elif isinstance(expected, (list, tuple)):
+        if len(expected) != len(computed):
+            errors.append((name, "Iterable lengths did not match"))
+        else:
+            for i, item1, item2 in zip(range(len(expected)), expected, computed):
+                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i)))
+
+    elif isinstance(expected, dict):
+
+        expected_extra = computed.keys() - expected.keys()
+        computed_extra = expected.keys() - computed.keys()
+        if len(expected_extra):
+            errors.append((name, "Found extra keys {}".format(expected_extra)))
+        if len(computed_extra):
+            errors.append((name, "Missing keys {}".format(computed_extra)))
+
+        for k in expected.keys() & computed.keys():
+            name = prefix + str(k)
+            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name))
+    elif isinstance(expected, (np.ndarray, float)):
+        if np.allclose(expected, computed, atol=atol, rtol=rtol) is False:
+            errors.append((name, "Arrays are not close."))
+    elif isinstance(expected, type(None)):
+        if expected is not computed:
+            errors.append((name, "'None' does not match."))
+
+    else:
+        errors.append((name, "Type {} not understood stopping recursive compare.".format(type(expected))))
+
+    return errors
+
+def compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8):
+
+    errors = _compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8)
+
+    label = []
+    for e in errors:
+        label.append(e[0])
+        label.append("    " + e[1])
+
+    print("\n".join(label))
+
+    return len(label) == 0
