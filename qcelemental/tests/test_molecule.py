@@ -206,10 +206,12 @@ def test_molecule_repeated_hashing():
     mol = Molecule(**{
         'symbols': ['H', 'O', 'O', 'H'],
         'geometry': [
-            1.73178198, 1.29095807, 1.03716028, 1.31566305, -0.007440200000000001, -0.28074722, -1.3143081, 0.00849608,
-            -0.27416914, -1.7241109, -1.30793432, 1.02770172
+             1.7317,  1.2909,  1.037100000000001,
+             1.3156, -0.0074, -0.2807,
+            -1.3143,  0.0084, -0.2741,
+            -1.7241, -1.3079,  1.0277
         ]
-    })
+    }) # yapf: disable
 
     h1 = mol.get_hash()
     assert mol.get_molecular_formula() == "H2O2"
@@ -219,3 +221,24 @@ def test_molecule_repeated_hashing():
 
     mol3 = Molecule(orient=False, **mol2.dict())
     assert h1 == mol3.get_hash()
+
+@pytest.mark.parametrize("measure,result", [
+    ([0, 1], 1.8086677572537304),
+    ([0, 1, 2], 37.98890673587713),
+    ([0, 1, 2, 3], 180.0),
+    ([[0, 1, 2, 3]], [180.0]),
+    ([[1, 3], [3, 1], [1, 2, 3]], [6.3282716, 6.3282716, 149.51606694803903]),
+    ])
+def test_measurements(measure, result):
+
+    mol = Molecule(**{
+        'symbols': ['H', 'O', 'O', 'H'],
+        'geometry': [
+             1.7317,  1.2909,  1.0371,
+             1.3156, -0.0074, -0.2807,
+            -1.3143,  0.0084, -0.2741,
+            -1.7241, -1.3079,  1.0277
+        ]
+    }) # yapf: disable
+
+    assert pytest.approx(water_dimer_minima.measure(measure)) == result

@@ -140,6 +140,44 @@ def _norm(points):
     tmp = np.atleast_2d(points)
     return np.sqrt(np.einsum("ij,ij->i", tmp, tmp))
 
+def measure_coordinates(coordinates, measurements, degrees=False):
+    """
+    Measures a geometry array based on 0-based indices provided, automatically detects distance, angle,
+    and dihedral based on length of measurement input.
+    """
+
+    coordinates = np.atleast_2d(coordinates)
+    num_coords = coordinates.shape[0]
+
+    single = False
+    if isinstance(measurements[0], int):
+        measurements = [measurements]
+        single = True
+
+    ret = []
+    for num, m in enumerate(measurements):
+        if any(x >= num_coords for x in m):
+            raise ValueError("An index of measurement {} is out of bounds.".format(num))
+
+        kwargs = {}
+        if len(m) == 2:
+            func = compute_distance
+        elif len(m) == 3:
+            func = compute_angle
+            kwargs = {"degrees": degrees}
+        elif len(m) == 4:
+            func = compute_dihedral
+            kwargs = {"degrees": degrees}
+        else:
+            raise KeyError("Unrecognized number of arguements for measurement {}, found {}, expected 2-4.".format(num, len(m)))
+
+        val = func(*[coordinates[x] for x in m], **kwargs)
+        ret.append(float(val))
+
+    if single:
+        return ret[0]
+    else:
+        return ret
 
 def compute_distance(points1, points2):
     """
@@ -181,7 +219,7 @@ def compute_angle(points1, points2, points3, degrees=False):
     points3 : np.ndarray
         The third list of points, can be 1D or 2D
     degrees : bool, options
-        Returns the angle in degress rather than radians if True
+        Returns the angle in degrees rather than radians if True
 
     Returns
     -------
@@ -226,7 +264,7 @@ def compute_dihedral(points1, points2, points3, points4, degrees=False):
     points4 : np.ndarray
         The third list of points, can be 1D or 2D
     degrees : bool, options
-        Returns the dihedral angle in degress rather than radians if True
+        Returns the dihedral angle in degrees rather than radians if True
 
     Returns
     -------

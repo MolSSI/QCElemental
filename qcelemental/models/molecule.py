@@ -12,7 +12,7 @@ from typing import List, Tuple
 from ..physical_constants import constants
 from ..periodic_table import periodictable
 from .common_models import Provenance, ndarray_encoder
-from ..util import provenance_stamp
+from ..util import provenance_stamp, measure_coordinates
 
 from ..molparse import from_string, from_arrays, to_schema
 
@@ -227,6 +227,13 @@ class Molecule(BaseModel):
             return ret
 
 ### Non-Pydantic API functions
+
+    def measure(self, measurements, degrees=True):
+        """
+        Takes a measurement of the moleucle from the indicies provided.
+        """
+
+        return measure_coordinates(self.geometry, measurements, degrees=degrees)
 
     def orient_molecule(self):
         """
