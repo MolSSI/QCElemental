@@ -3,8 +3,14 @@ import copy
 import math
 import pprint
 import collections
+import logging
 
 import numpy as np
+
+_logger = logging.Logger("TestLogger")
+
+def get_logger():
+    return _logger
 
 
 class _TestComparisonError(Exception):
@@ -330,7 +336,7 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
         #cptd['geom'] = ageom.reshape((-1))
 
     compare_dicts(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)
-                          
+
 def _compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8, _prefix=False):
 
     errors = []

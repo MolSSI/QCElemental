@@ -1,4 +1,4 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, constr, Extra
 from .common_models import (Model, DriverEnum, ComputeError, qcschema_input_default,
                             qcschema_optimization_input_default, qcschema_optimization_output_default, ndarray_encoder)
 from .molecule import Molecule
@@ -14,7 +14,7 @@ class InputSpecification(BaseModel):
     keywords: Dict[str, Any] = {}
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
         allow_mutation = False
 
 
@@ -27,7 +27,7 @@ class OptimizationInput(BaseModel):
     initial_molecule: Molecule
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
         allow_mutation = False
         json_encoders = {**ndarray_encoder}
 

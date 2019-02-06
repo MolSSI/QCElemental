@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 from enum import Enum
 from typing import Any
 import numpy as np
@@ -12,7 +12,7 @@ class Provenance(BaseModel):
     routine: str = None
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
 
 
 class Model(BaseModel):
@@ -22,7 +22,7 @@ class Model(BaseModel):
 
     class Config:
         allow_mutation = False
-        allow_extra = True
+        extra = Extra.allow
 
 
 class DriverEnum(str, Enum):
@@ -37,7 +37,7 @@ class ComputeError(BaseModel):
     error_message: str
 
     class Config:
-        allow_extra = False
+        extra = Extra.forbid
 
 
 class FailedOperation(BaseModel):
@@ -47,7 +47,7 @@ class FailedOperation(BaseModel):
     error: ComputeError
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
         allow_mutation = False
         json_encoders = {
             **ndarray_encoder
