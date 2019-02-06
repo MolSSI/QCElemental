@@ -252,7 +252,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5, return_message=False):
+def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5, forgive=None, return_message=False):
 
     label = label or sys._getframe().f_back.f_code.co_name
 
@@ -268,13 +268,13 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5,
     return _handle_return(len(message) == 0, label, message, return_message)
 
 
-def compare_molrecs(expected, computed, label, *, tolforgive=None, verbose=1, relative_geoms='exact'):
+def compare_molrecs(expected, computed, label, *, forgive=None, verbose=1, atol=1.e-4, relative_geoms='exact'):
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
 
     """
-    thresh = 10**-tol if tol >= 1 else tol
+    # thresh = 10**-tol if tol >= 1 else tol
 
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
@@ -347,4 +347,4 @@ def compare_molrecs(expected, computed, label, *, tolforgive=None, verbose=1, re
         #ageom = mill.align_coordinates(cgeom)
         #cptd['geom'] = ageom.reshape((-1))
 
-    compare_recursive(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)
+    return compare_recursive(xptd, cptd, label, atol=atol, forgive=forgive)
