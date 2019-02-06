@@ -14,7 +14,3 @@ dependencies:
   - pytest
   - pytest-cov
   - codecov
-
-    # Pip depends
-  - pip:
-    - deepdiff # Only used for testing some areas
