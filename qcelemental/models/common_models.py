@@ -18,6 +18,7 @@ class Provenance(BaseModel):
 class Model(BaseModel):
     method: str
     basis: str = None
+
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
     class Config:
@@ -49,9 +50,7 @@ class FailedOperation(BaseModel):
     class Config:
         extra = Extra.allow
         allow_mutation = False
-        json_encoders = {
-            **ndarray_encoder
-        }
+        json_encoders = {**ndarray_encoder}
 
 
 qcschema_input_default = "qcschema_input"

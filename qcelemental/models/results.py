@@ -57,9 +57,7 @@ class ResultInput(BaseModel):
     class Config:
         allow_mutation = False
         extra = Extra.allow  # Not yet fully validated, but will accept extra for now
-        json_encoders = {
-            **ndarray_encoder
-        }
+        json_encoders = {**ndarray_encoder}
 
     def dict(self, *args, **kwargs):
         if self.id is None:

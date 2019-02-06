@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 
 import qcelemental
-from qcelemental.testing import compare_recursive
+from qcelemental.testing import compare_recursive, compare_values
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -53,7 +53,7 @@ def test_unnp(inp, expected):
 def test_distance():
     def _test_distance(p1, p2, value):
         tmp = qcelemental.util.compute_distance(p1, p2)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     _test_distance([0, 0, 0], [0, 0, 1], 1.0)
     _test_distance([0, 0, 0], [0, 0, 0], 0.0)
@@ -68,7 +68,7 @@ def test_distance():
 def test_angle():
     def _test_angle(p1, p2, p3, value, degrees=True):
         tmp = qcelemental.util.compute_angle(p1, p2, p3, degrees=degrees)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     # Check all 90 degree domains
     p1 = [5, 0, 0]
@@ -102,7 +102,7 @@ def test_angle():
 def test_dihedral():
     def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
         tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     p1 = [0, 0, 0]
     p2 = [0, 2, 0]
