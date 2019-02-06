@@ -9,34 +9,38 @@ import numpy as np
 
 _logger = logging.Logger("TestLogger")
 
+
 def get_logger():
+    """
+    Obtains the testing logger
+    """
     return _logger
 
 
-class _TestComparisonError(Exception):
-    """Error when element or nuclide can't be identified."""
+def _handle_return(passfail, label, message, return_message):
+    """Function to print a '*label*...PASSED' line to log."""
 
-    def __init__(self, msg):
-        self.message = '\nTestComparisonError: {}\n\n'.format(msg)
+    if passfail:
+        _logger.info(f'    {label:.<66}PASSED')
+    else:
+        _logger.info(f'    {label:.<66}FAILED')
+        _logger.info(f'    {message:.<66}')
+
+    if return_message:
+        return (passfail, return_message)
+    else:
+        return passfail
 
 
-def _success(label):
-    """Function to print a '*label*...PASSED' line to screen."""
-
-    print(f'\t{label:.<66}PASSED')
-    sys.stdout.flush()
-
-
-def compare_float(expected,
-                  computed,
-                  digits,
-                  label=None,
-                  *,
-                  rtol=1.e-16,
-                  equal_nan=False,
-                  passnone=False,
-                  return_message=False,
-                  verbose=1):
+def compare_values(expected,
+                   computed,
+                   label=None,
+                   *,
+                   atol=1.e-8,
+                   rtol=1.e-5,
+                   equal_nan=False,
+                   passnone=False,
+                   return_message=False):
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -57,8 +61,6 @@ def compare_float(expected,
         Passed to np.isclose.
     passnone : bool, optional
         Return True when both expected and computed are None.
-    verbose : int, optional
-        Print passed message when >=1.
 
     Returns
     -------
@@ -79,33 +81,26 @@ def compare_float(expected,
 
     if passnone:
         if expected is None and computed is None:
-            if verbose >= 1: _success(label)
-            return (True, pass_message) if return_message else True
+            return _handle_return(False, label, pass_message, return_message)
 
     try:
         xptd, cptd = np.array(expected, dtype=np.float), np.array(computed, dtype=np.float)
     except Exception:
-        return (False, f"""\t{label}: inputs not cast-able to ndarray of np.float.""") if return_message else False
+        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray of np.float.""",
+                              return_message)
 
     if xptd.shape != cptd.shape:
-        return (False, f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape})."""
-                ) if return_message else False
+        return _handle_return(False, label,
+                              f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
+                              return_message)
 
-    if digits >= 1.0:  # formerly, >
-        atol = 10.**-digits
-        digits1 = digits + 1
-        digits_str = f'to {digits} digits'
-    else:
-        atol = digits
-        digits1 = round(-math.log10(digits)) + 2
-        digits_str = f'to {digits}'
+    digits_str = f'to atol={atol} and rtol={rtol}'
 
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
     allclose = bool(np.all(isclose))
 
     if allclose:
         message = pass_message
-        if verbose >= 1: _success(label)
 
     else:
         if xptd.shape == ():
@@ -132,13 +127,10 @@ def compare_float(expected,
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
                 label, digits_str, xptd_str, cptd_str, diff_str)
 
-    if return_message:
-        return (allclose, message)
-    else:
-        return allclose
+    return _handle_return(allclose, label, message, return_message)
 
 
-def compare(expected, computed, label=None, *, return_message=False, verbose=1):
+def compare(expected, computed, label=None, *, return_message=False):
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -149,8 +141,6 @@ def compare(expected, computed, label=None, *, return_message=False, verbose=1):
         Input value to compare against `expected`.
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
-    verbose : int, optional
-        Print passed message when >=1.
 
     Returns
     -------
@@ -170,18 +160,18 @@ def compare(expected, computed, label=None, *, return_message=False, verbose=1):
     try:
         xptd, cptd = np.array(expected), np.array(computed)
     except Exception:
-        return (False, f"""\t{label}: inputs not cast-able to ndarray.""") if return_message else False
+        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message)
 
     if xptd.shape != cptd.shape:
-        return (False, f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape})."""
-                ) if return_message else False
+        return _handle_return(False, label,
+                              f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
+                              return_message)
 
     isclose = np.asarray(xptd == cptd)
     allclose = bool(isclose.all())
 
     if allclose:
         message = pass_message
-        if verbose >= 1: _success(label)
 
     else:
         if xptd.shape == ():
@@ -214,49 +204,68 @@ def compare(expected, computed, label=None, *, return_message=False, verbose=1):
             message = """\t{}: computed value does not match.\n  Expected:\n{}\n  Observed:\n{}\n  Difference:\n{}\n""".format(
                 label, xptd_str, cptd_str, diff_str)
 
-    if return_message:
-        return (allclose, message)
+    return _handle_return(allclose, label, message, return_message)
+
+
+def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
+
+    errors = []
+    name = _prefix or "root"
+    prefix = name + "."
+
+    if isinstance(expected, (str, int, bool)):
+        if expected != computed:
+            errors.append((name, "Value {} did not match {}.".format(expected, computed)))
+
+    elif isinstance(expected, (list, tuple)):
+        if len(expected) != len(computed):
+            errors.append((name, "Iterable lengths did not match"))
+        else:
+            for i, item1, item2 in zip(range(len(expected)), expected, computed):
+                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i)))
+
+    elif isinstance(expected, dict):
+
+        expected_extra = computed.keys() - expected.keys()
+        computed_extra = expected.keys() - computed.keys()
+        if len(expected_extra):
+            errors.append((name, "Found extra keys {}".format(expected_extra)))
+        if len(computed_extra):
+            errors.append((name, "Missing keys {}".format(computed_extra)))
+
+        for k in expected.keys() & computed.keys():
+            name = prefix + str(k)
+            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name))
+    elif isinstance(expected, (np.ndarray, float)):
+        if np.allclose(expected, computed, atol=atol, rtol=rtol) is False:
+            errors.append((name, "Arrays are not close."))
+    elif isinstance(expected, type(None)):
+        if expected is not computed:
+            errors.append((name, "'None' does not match."))
+
     else:
-        return allclose
+        errors.append((name, "Type {} not understood stopping recursive compare.".format(type(expected))))
+
+    return errors
 
 
-def compare_dicts(expected, computed, tol, label, forgive=None, verbose=1):
-    """Compares dictionaries `computed` to `expected` using DeepDiff Float
-    comparisons made to `tol` significant decimal places. Note that a clean
-    DeepDiff returns {}, which evaluates to False, hence the compare_integers.
-    Keys in `forgive` may change between `expected` and `computed` without
-    triggering failure.
+def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5, return_message=False):
 
-    """
-    try:
-        import deepdiff
-    except ImportError:
-        raise ImportError("""Install deepdiff. `conda install deepdiff -c conda-forge` or `pip install deepdiff`""")
+    label = label or sys._getframe().f_back.f_code.co_name
 
-    if forgive is None:
-        forgive = []
-    forgiven = collections.defaultdict(dict)
+    errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
 
-    ans = deepdiff.DeepDiff(expected, computed, significant_digits=tol, verbose_level=2)
+    label = []
+    for e in errors:
+        label.append(e[0])
+        label.append("    " + e[1])
 
-    for category in list(ans):
-        for key in list(ans[category]):
-            for fg in forgive:
-                fgsig = "root['" + fg + "']"
-                if key.startswith(fgsig):
-                    forgiven[category][key] = ans[category].pop(key)
-        if not ans[category]:
-            del ans[category]
+    message = "\n".join(label)
 
-    clean = not bool(ans)
-    if not clean:
-        pprint.pprint(ans)
-    if verbose >= 2:
-        pprint.pprint(forgiven)
-    return compare_integers(True, clean, label, verbose=verbose)
+    return _handle_return(len(label) == 0, label, message, return_message)
 
 
-def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, relative_geoms='exact'):
+def compare_molrecs(expected, computed, label, *, tolforgive=None, verbose=1, relative_geoms='exact'):
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
@@ -336,57 +345,3 @@ def compare_molrecs(expected, computed, tol, label, forgive=None, verbose=1, rel
         #cptd['geom'] = ageom.reshape((-1))
 
     compare_dicts(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)
-
-def _compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8, _prefix=False):
-
-    errors = []
-    name = _prefix or "root"
-    prefix = name + "."
-
-    if isinstance(expected, (str, int, bool)):
-        if expected != computed:
-            errors.append((name, "Value {} did not match {}.".format(expected, computed)))
-
-    elif isinstance(expected, (list, tuple)):
-        if len(expected) != len(computed):
-            errors.append((name, "Iterable lengths did not match"))
-        else:
-            for i, item1, item2 in zip(range(len(expected)), expected, computed):
-                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i)))
-
-    elif isinstance(expected, dict):
-
-        expected_extra = computed.keys() - expected.keys()
-        computed_extra = expected.keys() - computed.keys()
-        if len(expected_extra):
-            errors.append((name, "Found extra keys {}".format(expected_extra)))
-        if len(computed_extra):
-            errors.append((name, "Missing keys {}".format(computed_extra)))
-
-        for k in expected.keys() & computed.keys():
-            name = prefix + str(k)
-            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name))
-    elif isinstance(expected, (np.ndarray, float)):
-        if np.allclose(expected, computed, atol=atol, rtol=rtol) is False:
-            errors.append((name, "Arrays are not close."))
-    elif isinstance(expected, type(None)):
-        if expected is not computed:
-            errors.append((name, "'None' does not match."))
-
-    else:
-        errors.append((name, "Type {} not understood stopping recursive compare.".format(type(expected))))
-
-    return errors
-
-def compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8):
-
-    errors = _compare_recursive(expected, computed, atol=1.e-5, rtol=1.e-8)
-
-    label = []
-    for e in errors:
-        label.append(e[0])
-        label.append("    " + e[1])
-
-    print("\n".join(label))
-
-    return len(label) == 0
