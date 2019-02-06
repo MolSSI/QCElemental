@@ -27,7 +27,7 @@ def _handle_return(passfail, label, message, return_message):
         _logger.info(f'    {message:.<66}')
 
     if return_message:
-        return (passfail, return_message)
+        return (passfail, message)
     else:
         return passfail
 
@@ -37,7 +37,7 @@ def compare_values(expected,
                    label=None,
                    *,
                    atol=1.e-8,
-                   rtol=1.e-5,
+                   rtol=1.e-16,
                    equal_nan=False,
                    passnone=False,
                    return_message=False):
@@ -81,7 +81,7 @@ def compare_values(expected,
 
     if passnone:
         if expected is None and computed is None:
-            return _handle_return(False, label, pass_message, return_message)
+            return _handle_return(True, label, pass_message, return_message)
 
     try:
         xptd, cptd = np.array(expected, dtype=np.float), np.array(computed, dtype=np.float)
@@ -94,7 +94,10 @@ def compare_values(expected,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
                               return_message)
 
-    digits_str = f'to atol={atol} and rtol={rtol}'
+    # digits_str = f'to atol={atol} and rtol={rtol}'
+    digits1 = abs(int(np.log10(atol)))
+    digits_str = f"to {digits1} digits"
+    digits1 += 1
 
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
     allclose = bool(np.all(isclose))
@@ -222,7 +225,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             errors.append((name, "Iterable lengths did not match"))
         else:
             for i, item1, item2 in zip(range(len(expected)), expected, computed):
-                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i)))
+                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol))
 
     elif isinstance(expected, dict):
 
@@ -235,7 +238,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
 
         for k in expected.keys() & computed.keys():
             name = prefix + str(k)
-            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name))
+            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
     elif isinstance(expected, (np.ndarray, float)):
         if np.allclose(expected, computed, atol=atol, rtol=rtol) is False:
             errors.append((name, "Arrays are not close."))
@@ -255,14 +258,14 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5,
 
     errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
 
-    label = []
+    message = []
     for e in errors:
-        label.append(e[0])
-        label.append("    " + e[1])
+        message.append(e[0])
+        message.append("    " + e[1])
 
-    message = "\n".join(label)
+    message = "\n".join(message)
 
-    return _handle_return(len(label) == 0, label, message, return_message)
+    return _handle_return(len(message) == 0, label, message, return_message)
 
 
 def compare_molrecs(expected, computed, label, *, tolforgive=None, verbose=1, relative_geoms='exact'):
@@ -344,4 +347,4 @@ def compare_molrecs(expected, computed, label, *, tolforgive=None, verbose=1, re
         #ageom = mill.align_coordinates(cgeom)
         #cptd['geom'] = ageom.reshape((-1))
 
-    compare_dicts(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)
+    compare_recursive(xptd, cptd, tol, label, forgive=forgive, verbose=verbose)

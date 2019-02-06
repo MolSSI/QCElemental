@@ -19,32 +19,32 @@ _pass_message = '\t{:.<66}PASSED'
 
 
 @pytest.mark.parametrize("ref,cpd,tol,kw,boool,msg", [
-    (2., 2.02, 1, {'label': 'asdf'}, True, (None,
+    (2., 2.02, 1.e-1, {'label': 'asdf'}, True, (None,
         _pass_message.format('asdf'))),
-    (2., 2.02, 2, {'label': 'asdf'}, False, (None,
+    (2., 2.02, 1.e-2, {'label': 'asdf'}, False, (None,
         'asdf: computed value (2.020) does not match (2.000) to 2 digits by difference (0.020).')),
-    (2., Decimal("2.02"), 1, {'label': 'asdf'}, True, (None,
+    (2., Decimal("2.02"), 1.e-1, {'label': 'asdf'}, True, (None,
         _pass_message.format('asdf'))),
-    (2., Decimal("2.02"), 2, {'label': 'asdf'}, False, (None,
+    (2., Decimal("2.02"), 1.e-2, {'label': 'asdf'}, False, (None,
         'asdf: computed value (2.020) does not match (2.000) to 2 digits by difference (0.020).')),
-    (2., 2.000000002, 10, {}, False, (None,
-        'test_compare_float: computed value (2.00000000200) does not match (2.00000000000) to 10 digits by difference (0.00000000200).')),
-    (2., 2.05, 0.02, {}, False, (None,
-        'test_compare_float: computed value (2.0500) does not match (2.0000) to 0.02 by difference (0.0500).')),
-    (_arrs['a1234_14'], _arrs['blip14'], 1, {}, True, (None,
-        _pass_message.format('test_compare_float'))),
-    (_arrs['a1234_14'], _arrs['blip14'], 2, {}, False, (None,
-        """test_compare_float: computed value does not match to 2 digits.
+    (2., 2.000000002, 1.e-10, {}, False, (None,
+        'test_compare_values: computed value (2.00000000200) does not match (2.00000000000) to 10 digits by difference (0.00000000200).')),
+    (2., 2.05, 1.e-3, {}, False, (None,
+        'test_compare_values: computed value (2.0500) does not match (2.0000) to 3 digits by difference (0.0500).')),
+    (_arrs['a1234_14'], _arrs['blip14'], 1.e-1, {}, True, (None,
+        _pass_message.format('test_compare_values'))),
+    (_arrs['a1234_14'], _arrs['blip14'], 1.e-2, {}, False, (None,
+        """test_compare_values: computed value does not match to 2 digits.
   Expected:
     [0. 1. 2. 3.]
   Observed:
     [0.    1.02  2.005 3.02 ]
   Difference (passed elements are zeroed):
     [0.   0.02 0.   0.02]""")),
-    (_arrs['a1234_22'], _arrs['blip22'], 1, {}, True, (None,
-        _pass_message.format('test_compare_float'))),
-    (_arrs['a1234_22'], _arrs['blip22'], 2, {}, False, (None,
-        """test_compare_float: computed value does not match to 2 digits.
+    (_arrs['a1234_22'], _arrs['blip22'], 1.e-1, {}, True, (None,
+        _pass_message.format('test_compare_values'))),
+    (_arrs['a1234_22'], _arrs['blip22'], 1.e-2, {}, False, (None,
+        """test_compare_values: computed value does not match to 2 digits.
   Expected:
     [[0. 1.]
      [2. 3.]]
@@ -54,15 +54,16 @@ _pass_message = '\t{:.<66}PASSED'
   Difference (passed elements are zeroed):
     [[0.   0.02]
      [0.   0.02]]""")),
-    (_arrs['a1234_22'], _arrs['blip14'], 2, {}, False, (None,
-        """test_compare_float: computed shape ((4,)) does not match ((2, 2)).""")),
-    (None, None, 4, {'passnone': True}, True, (None,
-        _pass_message.format('test_compare_float'))),
-    (None, None, 4, {}, False, (None,
-        """test_compare_float: computed value (nan) does not match (nan) to 4 digits by difference (nan).""")),
+    (_arrs['a1234_22'], _arrs['blip14'], 1.e-2, {}, False, (None,
+        """test_compare_values: computed shape ((4,)) does not match ((2, 2)).""")),
+    (None, None, 1.e-4, {'passnone': True}, True, (None,
+        _pass_message.format('test_compare_values'))),
+    (None, None, 1.e-4, {}, False, (None,
+        """test_compare_values: computed value (nan) does not match (nan) to 4 digits by difference (nan).""")),
 ])  # yapf: disable
-def test_compare_float(ref, cpd, tol, kw, boool, msg):
-    res, mstr = qcel.testing.compare_float(ref, cpd, tol, **kw, return_message=True)
+def test_compare_values(ref, cpd, tol, kw, boool, msg):
+    res, mstr = qcel.testing.compare_values(ref, cpd, **kw, atol=tol, return_message=True)
+    print(res, mstr)
     assert res is boool
     assert mstr.strip() == msg[1].strip()
 

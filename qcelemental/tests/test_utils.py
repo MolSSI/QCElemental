@@ -4,6 +4,7 @@ import numpy as np
 from utils import *
 
 import qcelemental
+from qcelemental.testing import compare_recursive
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -22,7 +23,7 @@ def test_unique_everseen(inp, expected):
 def test_updatewitherror(inp, expected):
     print('ans', qcelemental.util.update_with_error(inp[0], inp[1]))
     print('exp', expected)
-    assert compare_dicts(expected, qcelemental.util.update_with_error(inp[0], inp[1]), 4, tnm())
+    assert compare_recursive(expected, qcelemental.util.update_with_error(inp[0], inp[1]))
 
 @pytest.mark.parametrize("inp", [
     ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": "C"}}),
@@ -48,7 +49,7 @@ def test_updatewitherror_error(inp):
     ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]}),
 ]) # yapf: disable
 def test_unnp(inp, expected):
-    assert compare_dicts(expected, qcelemental.util.unnp(**inp), 4, tnm())
+    assert compare_recursive(expected, qcelemental.util.unnp(**inp), atol=1.e-4)
 
 
 def test_distance():
