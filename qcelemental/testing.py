@@ -7,29 +7,26 @@ import logging
 
 import numpy as np
 
-_logger = logging.Logger("TestLogger")
-
-
-def get_logger():
-    """
-    Obtains the testing logger
-    """
-    return _logger
-
 
 def _handle_return(passfail, label, message, return_message):
     """Function to print a '*label*...PASSED' line to log."""
 
     if passfail:
-        _logger.info(f'    {label:.<66}PASSED')
+        logging.info(f'    {label:.<53}PASSED')
     else:
-        _logger.info(f'    {label:.<66}FAILED')
-        _logger.info(f'    {message:.<66}')
+        logging.error(f'    {label:.<53}FAILED')
+        logging.error(f'    {message:.<53}')
 
     if return_message:
         return (passfail, message)
     else:
         return passfail
+
+
+def tnm():
+    """Returns the name of the calling function, usually name of test case."""
+
+    return sys._getframe().f_back.f_code.co_name
 
 
 def compare_values(expected,
@@ -268,7 +265,7 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5,
     return _handle_return(len(message) == 0, label, message, return_message)
 
 
-def compare_molrecs(expected, computed, label, *, forgive=None, verbose=1, atol=1.e-4, relative_geoms='exact'):
+def compare_molrecs(expected, computed, label=None, *, forgive=None, verbose=1, atol=1.e-4, relative_geoms='exact'):
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).

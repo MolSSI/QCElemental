@@ -5,12 +5,8 @@ import pytest
 import numpy as np
 
 import qcelemental
-from qcelemental.testing import compare, compare_recursive, compare_molrecs
+from qcelemental.testing import compare, compare_recursive, compare_molrecs, tnm
 
-def tnm():
-    """Returns the name of the calling function, usually name of test case."""
-
-    return sys._getframe().f_back.f_code.co_name
 
 _arrays_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_arrays'}
 _string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}

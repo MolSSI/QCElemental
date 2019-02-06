@@ -1,8 +1,6 @@
 import pytest
 import numpy as np
 
-from utils import *
-
 import qcelemental
 from qcelemental.testing import compare_recursive
 

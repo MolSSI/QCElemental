@@ -1,9 +1,9 @@
 import pytest
-from utils import *
 
 import numpy as np
 
 import qcelemental
+from qcelemental.testing import compare
 
 # (system-shorthand, tot-chg, frag-chg, tot-mult, frag-mult), (expected_final_tot-chg, frag-chg, tot-mult, frag-mult)
 
@@ -75,7 +75,7 @@ def test_validate_and_fill_chgmult(inp, expected):
 
     ans = qcelemental.molparse.validate_and_fill_chgmult(
         system[0], system[1], inp[1], inp[2], inp[3], inp[4], **kwargs)
-    assert compare_integers(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(
+    assert compare(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(
         *inp, expected))
 
 

@@ -1,8 +1,8 @@
 import pint
 import pytest
-from utils import *
 
 import qcelemental
+from qcelemental.testing import compare
 
 _results = {
 "subject1": """
@@ -100,7 +100,7 @@ def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(_results[inp[0]])
     smol = qcelemental.molparse.to_string(molrec['qm'], **inp[1])
 
-    assert compare_strings(_results[expected], smol, tnm())
+    assert compare(_results[expected], smol)
 
 
 @pytest.mark.parametrize("inp", [
