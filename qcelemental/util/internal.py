@@ -1,4 +1,4 @@
-from .._version import get_versions
+from qcelemental.extras import get_information
 
 
 def provenance_stamp(routine):
@@ -8,4 +8,4 @@ def provenance_stamp(routine):
     generating routine's name is passed in through `routine`.
 
     """
-    return {'creator': 'QCElemental', 'version': get_versions()['version'], 'routine': routine}
+    return {'creator': 'QCElemental', 'version': get_information('version'), 'routine': routine}

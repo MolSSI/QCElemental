@@ -2,8 +2,6 @@
 A wrapper for the pint ureg data
 """
 
-import pint
-
 # We only want the ureg builder exposed
 __all__ = ["build_units_registry"]
 
@@ -16,6 +14,8 @@ def build_units_registry(context):
     context : PhysicalConstantsContext
         The context to use for the values.
     """
+    import pint
+
     phys_const = context.raw_codata
     ureg = pint.UnitRegistry(on_redefinition="ignore")
 
