@@ -13,7 +13,7 @@ __info = {"version": versions['version'], "git_revision": versions['full-revisio
 
 def get_information(key):
     """
-    Obtains a variety of runtime information about QCFractal.
+    Obtains a variety of runtime information about QCElemental.
     """
     key = key.lower()
     if key not in __info:

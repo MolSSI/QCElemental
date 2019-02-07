@@ -16,9 +16,6 @@
 
 import re
 import json
-from urllib.request import urlopen, Request
-from urllib.parse import quote
-from urllib.error import URLError
 
 from ..exceptions import ValidationError
 
@@ -38,6 +35,9 @@ class PubChemObj():
 
     def get_sdf(self):
         """Function to return the SDF (structure-data file) of the PubChem object."""
+        from urllib.request import urlopen, Request
+        from urllib.parse import quote
+        from urllib.error import URLError
         if (len(self.dataSDF) == 0):
             url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/SDF?record_type=3d'.format(
                 quote(str(self.cid)))
@@ -119,6 +119,9 @@ def get_pubchem_results(name):
     input string. Builds a PubChemObj object if found.
 
     """
+    from urllib.request import urlopen
+    from urllib.parse import quote
+    from urllib.error import URLError
     if name.isdigit():
         print("\tSearching PubChem database for CID {}".format(name))
         url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/property/IUPACName,MolecularFormula,Charge/JSON'.format(
