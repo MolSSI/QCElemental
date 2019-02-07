@@ -5,10 +5,9 @@ Contains relevant physical constants
 from decimal import Decimal
 import collections
 
-import pint
-
 from .. import datum
 from . import ureg
+
 
 class PhysicalConstantsContext:
     """CODATA 2014 physical constants set from NIST.
@@ -47,13 +46,17 @@ class PhysicalConstantsContext:
             # physical constant loop
             for k, v in self.raw_codata.items():
                 self.pc[k] = datum.Datum(
-                    v["quantity"], v["unit"], Decimal(v["value"]), 'uncertainty={}'.format(v["uncertainty"]), doi=self.doi)
+                    v["quantity"],
+                    v["unit"],
+                    Decimal(v["value"]),
+                    'uncertainty={}'.format(v["uncertainty"]),
+                    doi=self.doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
 
         self.name = context
         self.year = int(context.replace("CODATA", ""))
-        self.ureg = ureg.build_units_registry(self)
+        self._ureg = None
 
         # Extra relationships
         self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J',
@@ -103,6 +106,13 @@ class PhysicalConstantsContext:
 
     def __str__(self):
         return "PhysicalConstantsContext(context='{}')".format(self.name)
+
+    @property
+    def ureg(self):
+        if self._ureg is None:
+            self._ureg = ureg.build_units_registry(self)
+
+        return self._ureg
 
     def get(self, physical_constant, return_tuple=False):
         """Access a physical constant, `physical_constant`.
@@ -155,7 +165,6 @@ class PhysicalConstantsContext:
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-
     def conversion_factor(self, base_unit, conv_unit):
         """
         Provides the conversion factor from one unit to another using the current NIST 2014CODATA.
@@ -188,6 +197,7 @@ class PhysicalConstantsContext:
         """
 
         # Add a little magic incase the incoming values have scalars
+        import pint
 
         factor = 1.0
 

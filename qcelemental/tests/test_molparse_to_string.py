@@ -1,4 +1,3 @@
-import pint
 import pytest
 from utils import *
 
@@ -107,6 +106,7 @@ def test_to_string_xyz(inp, expected):
     ("subject1", {'dtype': 'xyz', 'units': 'kg', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}),
 ])  # yapf: disable
 def test_to_string_error(inp):
+    import pint
     molrec = qcelemental.molparse.from_string(_results[inp[0]])
 
     with pytest.raises(pint.errors.DimensionalityError):
