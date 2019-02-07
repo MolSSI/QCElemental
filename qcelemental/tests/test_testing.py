@@ -22,19 +22,19 @@ _pass_message = '\t{:.<66}PASSED'
     (2., 2.02, 1.e-1, {'label': 'asdf'}, True, (None,
         _pass_message.format('asdf'))),
     (2., 2.02, 1.e-2, {'label': 'asdf'}, False, (None,
-        'asdf: computed value (2.020) does not match (2.000) to 2 digits by difference (0.020).')),
+        'asdf: computed value (2.0200) does not match (2.0000) to atol=0.01 by difference (0.0200).')),
     (2., Decimal("2.02"), 1.e-1, {'label': 'asdf'}, True, (None,
         _pass_message.format('asdf'))),
     (2., Decimal("2.02"), 1.e-2, {'label': 'asdf'}, False, (None,
-        'asdf: computed value (2.020) does not match (2.000) to 2 digits by difference (0.020).')),
-    (2., 2.000000002, 1.e-10, {}, False, (None,
-        'test_compare_values: computed value (2.00000000200) does not match (2.00000000000) to 10 digits by difference (0.00000000200).')),
+        'asdf: computed value (2.0200) does not match (2.0000) to atol=0.01 by difference (0.0200).')),
+    (2., 2.000000002, 1.e-9, {}, False, (None,
+        'test_compare_values: computed value (2.00000000200) does not match (2.00000000000) to atol=1e-09 by difference (0.00000000200).')),
     (2., 2.05, 1.e-3, {}, False, (None,
-        'test_compare_values: computed value (2.0500) does not match (2.0000) to 3 digits by difference (0.0500).')),
+        'test_compare_values: computed value (2.05000) does not match (2.00000) to atol=0.001 by difference (0.05000).')),
     (_arrs['a1234_14'], _arrs['blip14'], 1.e-1, {}, True, (None,
         _pass_message.format('test_compare_values'))),
     (_arrs['a1234_14'], _arrs['blip14'], 1.e-2, {}, False, (None,
-        """test_compare_values: computed value does not match to 2 digits.
+        """test_compare_values: computed value does not match to atol=0.01.
   Expected:
     [0. 1. 2. 3.]
   Observed:
@@ -44,7 +44,7 @@ _pass_message = '\t{:.<66}PASSED'
     (_arrs['a1234_22'], _arrs['blip22'], 1.e-1, {}, True, (None,
         _pass_message.format('test_compare_values'))),
     (_arrs['a1234_22'], _arrs['blip22'], 1.e-2, {}, False, (None,
-        """test_compare_values: computed value does not match to 2 digits.
+        """test_compare_values: computed value does not match to atol=0.01.
   Expected:
     [[0. 1.]
      [2. 3.]]
@@ -59,7 +59,7 @@ _pass_message = '\t{:.<66}PASSED'
     (None, None, 1.e-4, {'passnone': True}, True, (None,
         _pass_message.format('test_compare_values'))),
     (None, None, 1.e-4, {}, False, (None,
-        """test_compare_values: computed value (nan) does not match (nan) to 4 digits by difference (nan).""")),
+        """test_compare_values: computed value (nan) does not match (nan) to atol=0.0001 by difference (nan).""")),
 ])  # yapf: disable
 def test_compare_values(ref, cpd, tol, kw, boool, msg):
     res, mstr = qcel.testing.compare_values(ref, cpd, **kw, atol=tol, return_message=True)
@@ -124,6 +124,12 @@ def test_compare_values(ref, cpd, tol, kw, boool, msg):
      [0 1]]""")),
     (_arrs['a1234_22'], _arrs['iblip14'], {}, False, (None,
         """test_compare: computed shape ((4,)) does not match ((2, 2)).""")),
+    (1, np.ones(1), {}, False, (None,
+        """test_compare: computed shape ((1,)) does not match (()).""")),
+    (1, np.array(1), {}, True, (None,
+        _pass_message.format('test_compare'))),
+    (1, np.array([1]), {}, False, (None,
+        """test_compare: computed shape ((1,)) does not match (()).""")),
 ])  # yapf: disable
 def test_compare(ref, cpd, kw, boool, msg):
     res, mstr = qcel.testing.compare(ref, cpd, **kw, return_message=True)

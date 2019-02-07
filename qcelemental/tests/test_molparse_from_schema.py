@@ -110,7 +110,7 @@ def test_from_schema_1_14e():
     schema = {"schema_name": "qc_schema", "schema_version": 1, "molecule": copy.deepcopy(schema14_1)}
 
     ans = qcel.molparse.from_schema(schema)
-    assert compare_molrecs(schema14_psi4_np, ans)
+    assert compare_molrecs(schema14_psi4_np, ans, 4)
 
 
 def test_from_schema_error_f():

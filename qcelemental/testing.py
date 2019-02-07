@@ -8,14 +8,15 @@ import logging
 import numpy as np
 
 
-def _handle_return(passfail, label, message, return_message):
+def _handle_return(passfail, label, message, return_message, quiet=False):
     """Function to print a '*label*...PASSED' line to log."""
 
-    if passfail:
-        logging.info(f'    {label:.<53}PASSED')
-    else:
-        logging.error(f'    {label:.<53}FAILED')
-        logging.error(f'    {message:.<53}')
+    if not quiet:
+        if passfail:
+            logging.info(f'    {label:.<53}PASSED')
+        else:
+            logging.error(f'    {label:.<53}FAILED')
+            logging.error(f'    {message:.<53}')
 
     if return_message:
         return (passfail, message)
@@ -31,12 +32,13 @@ def tnm():
 
 def compare_values(expected,
                    computed,
+                   atol=1.e-8,
                    label=None,
                    *,
-                   atol=1.e-8,
                    rtol=1.e-16,
                    equal_nan=False,
                    passnone=False,
+                   quiet=False,
                    return_message=False):
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
@@ -46,18 +48,22 @@ def compare_values(expected,
         Reference value against which `computed` is compared.
     computed : float or float array-like
         Input value to compare against `expected`.
-    digits : int or float
-        Absolute tolerance (see formula below), expressed as decimal digits for comparison.
-        Values less than one are taken literally rather than as power.
+    atol : int or float, optional
+        Absolute tolerance (see formula below).
+        Values less than one are taken literally; one or greater taken as decimal digits for comparison.
         So `1` means `atol=0.1` and `2` means `atol=0.01` but `0.04` means `atol=0.04`
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
-        Relative tolerance (see formula below). By default set to zero so `digits` dominates.
-    equal_nan : bool, optional
-        Passed to np.isclose.
+        Relative tolerance (see formula below). By default set to zero so `atol` dominates.
+#    equal_nan : bool, optional
+#        Passed to np.isclose.
     passnone : bool, optional
         Return True when both expected and computed are None.
+    quiet : bool, optional
+        Whether to log the return message.
+    return_message : bool, optional
+        Whether to return tuple. See below.
 
     Returns
     -------
@@ -78,23 +84,27 @@ def compare_values(expected,
 
     if passnone:
         if expected is None and computed is None:
-            return _handle_return(True, label, pass_message, return_message)
+            return _handle_return(True, label, pass_message, return_message, quiet)
 
     try:
         xptd, cptd = np.array(expected, dtype=np.float), np.array(computed, dtype=np.float)
     except Exception:
         return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray of np.float.""",
-                              return_message)
+                              return_message, quiet)
 
     if xptd.shape != cptd.shape:
         return _handle_return(False, label,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
-                              return_message)
+                              return_message, quiet)
 
-    # digits_str = f'to atol={atol} and rtol={rtol}'
-    digits1 = abs(int(np.log10(atol)))
-    digits_str = f"to {digits1} digits"
-    digits1 += 1
+    if atol >= 1.0:
+        atol = 10.**-atol
+        digits1 = atol + 1
+    else:
+        digits1 = abs(int(np.log10(atol))) + 2
+    digits_str = f'to atol={atol}'
+    if rtol > 1.e-12:
+        digits_str += f', rtol={rtol}'
 
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
     allclose = bool(np.all(isclose))
@@ -127,17 +137,17 @@ def compare_values(expected,
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
                 label, digits_str, xptd_str, cptd_str, diff_str)
 
-    return _handle_return(allclose, label, message, return_message)
+    return _handle_return(allclose, label, message, return_message, quiet)
 
 
-def compare(expected, computed, label=None, *, return_message=False):
-    """Returns True if two floats or float arrays are element-wise equal within a tolerance.
+def compare(expected, computed, label=None, *, quiet=False, return_message=False):
+    """Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
 
     Parameters
     ----------
-    expected : float or float array-like
+    expected : int, bool, str or int array-like
         Reference value against which `computed` is compared.
-    computed : float or float array-like
+    computed : int, bool, str or int array-like
         Input value to compare against `expected`.
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
@@ -160,12 +170,12 @@ def compare(expected, computed, label=None, *, return_message=False):
     try:
         xptd, cptd = np.array(expected), np.array(computed)
     except Exception:
-        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message)
+        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message, quiet)
 
     if xptd.shape != cptd.shape:
         return _handle_return(False, label,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
-                              return_message)
+                              return_message, quiet)
 
     isclose = np.asarray(xptd == cptd)
     allclose = bool(isclose.all())
@@ -204,7 +214,7 @@ def compare(expected, computed, label=None, *, return_message=False):
             message = """\t{}: computed value does not match.\n  Expected:\n{}\n  Observed:\n{}\n  Difference:\n{}\n""".format(
                 label, xptd_str, cptd_str, diff_str)
 
-    return _handle_return(allclose, label, message, return_message)
+    return _handle_return(allclose, label, message, return_message, quiet)
 
 
 def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
@@ -237,21 +247,53 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             name = prefix + str(k)
             errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
     elif isinstance(expected, (np.ndarray, float)):
-        if np.allclose(expected, computed, atol=atol, rtol=rtol) is False:
-            errors.append((name, "Arrays are not close."))
+        passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
+        print(expected, computed, passfail)
+        if not passfail:
+            errors.append((name, "Arrays differ." + msg))
     elif isinstance(expected, type(None)):
         if expected is not computed:
             errors.append((name, "'None' does not match."))
 
     else:
-        errors.append((name, "Type {} not understood stopping recursive compare.".format(type(expected))))
+        errors.append((name, f"Type {type(expected)} not understood -- stopping recursive compare."))
 
     return errors
 
 
-def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5, forgive=None, return_message=False):
+def compare_recursive(expected, computed, atol=1.e-8, label=None, *, rtol=1.e-5, forgive=None, return_message=False):
+    """
 
+    Parameters
+    ----------
+    expected : dict
+        Reference value against which `computed` is compared.
+        Dict may be of any depth but should contain Plain Old Data.
+    computed : int, bool, str or int array-like
+        Input value to compare against `expected`.
+        Dict may be of any depth but should contain Plain Old Data.
+    atol : int or float, optional
+        Absolute tolerance (see formula below).
+        Values less than one are taken literally; one or greater taken as decimal digits for comparison.
+        So `1` means `atol=0.1` and `2` means `atol=0.01` but `0.04` means `atol=0.04`
+    label : str, optional
+        Label for passed and error messages. Defaults to calling function name.
+    rtol : float, optional
+        Relative tolerance (see formula below). By default set to zero so `atol` dominates.
+    forgive : list, optional
+        Keys in top level which may change between `expected` and `computed` without triggering failure.
+
+    Returns
+    -------
+    allclose : bool
+        Returns True if `expected` and `computed` are equal within tolerance; False otherwise.
+    message : str, optional
+        When return_message=True, also return passed or error message.
+
+    """
     label = label or sys._getframe().f_back.f_code.co_name
+    if atol >= 1:
+        atol = 10**-atol
 
     errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
 
@@ -265,13 +307,14 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-8, rtol=1.e-5,
     return _handle_return(len(message) == 0, label, message, return_message)
 
 
-def compare_molrecs(expected, computed, label=None, *, forgive=None, verbose=1, atol=1.e-4, relative_geoms='exact'):
+def compare_molrecs(expected, computed, atol=1.e-8, label=None, *, forgive=None, verbose=1, relative_geoms='exact'):
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
 
     """
-    # thresh = 10**-tol if tol >= 1 else tol
+    if atol >= 1:
+        atol = 10**-atol
 
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
@@ -338,10 +381,10 @@ def compare_molrecs(expected, computed, label=None, *, forgive=None, verbose=1, 
         #                  run_mirror=False,
         #                  verbose=0)
         #if cptd['fix_com']:
-        #    compare_integers(1, np.allclose(np.zeros((3)), mill.shift, atol=thresh), 'null shift', verbose=verbose)
+        #    compare_integers(1, np.allclose(np.zeros((3)), mill.shift, atol=atol), 'null shift', verbose=verbose)
         #if cptd['fix_orientation']:
-        #    compare_integers(1, np.allclose(np.identity(3), mill.rotation, atol=thresh), 'null rotation', verbose=verbose)
+        #    compare_integers(1, np.allclose(np.identity(3), mill.rotation, atol=atol), 'null rotation', verbose=verbose)
         #ageom = mill.align_coordinates(cgeom)
         #cptd['geom'] = ageom.reshape((-1))
 
-    return compare_recursive(xptd, cptd, label, atol=atol, forgive=forgive)
+    return compare_recursive(xptd, cptd, atol=atol, label=label, forgive=forgive)

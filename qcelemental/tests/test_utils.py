@@ -19,8 +19,6 @@ def test_unique_everseen(inp, expected):
     (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}})
 ]) # yapf: disable
 def test_updatewitherror(inp, expected):
-    print('ans', qcelemental.util.update_with_error(inp[0], inp[1]))
-    print('exp', expected)
     assert compare_recursive(expected, qcelemental.util.update_with_error(inp[0], inp[1]))
 
 @pytest.mark.parametrize("inp", [

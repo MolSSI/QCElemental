@@ -26,7 +26,7 @@ def test_parse_nucleus_label(inp, expected):
     assert compare(expected['Z'], lbl_Z, inp + " Z")
     assert compare(expected['E'], lbl_E, inp + " symbol")
     assert compare(expected['user'], lbl_user, inp + " user")
-    assert compare_values(expected['mass'], lbl_mass, inp + " mass", passnone=True, atol=1.e-6)
+    assert compare_values(expected['mass'], lbl_mass, 6, inp + " mass", passnone=True)
 
 
 @pytest.mark.parametrize("inp", [

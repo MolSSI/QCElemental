@@ -61,7 +61,7 @@ def test_psi4_qm_1a():
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_recursive(ans1, intermed, atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1ab():
@@ -75,8 +75,8 @@ def test_psi4_qm_1ab():
 
     final, intermed = qcelemental.molparse.from_string(
         subject, return_processed=True, fix_orientation=False, fix_com=False)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans, intermed, 1.e-4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1b():
@@ -85,8 +85,8 @@ def test_psi4_qm_1b():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans1, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans1, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1c():
@@ -97,8 +97,8 @@ def test_psi4_qm_1c():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1d():
@@ -109,8 +109,8 @@ def test_psi4_qm_1d():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_1e():
@@ -159,7 +159,7 @@ def test_psi4_qm_iutau_1h():
         fix_com=True,
         fix_orientation=False)
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
     smol = qcelemental.molparse.to_string(final, dtype='xyz', units='Bohr')
     rsmol = """2 au
@@ -186,7 +186,7 @@ def test_psi4_qm_iutau_1i():
         fix_com=True,
         fix_orientation=False)
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
     kmol = qcelemental.molparse.to_schema(final, dtype=1, units='Bohr')
     schema14_1_iutau = {
@@ -213,7 +213,7 @@ def test_psi4_qm_iutau_1i():
         }
     }
 
-    assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], tnm() + ': sch', atol=1.e-8)
+    assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], 8, tnm() + ': sch')
 
 
 subject2 = [
@@ -279,10 +279,10 @@ def test_psi4_qm_2a():
     fullans_unnp['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans2, intermed, tnm() + ': intermediate', atol=1.e-4)
+    assert compare_recursive(ans2, intermed, 4, tnm() + ': intermediate')
     final_unnp = qcelemental.util.unnp(final['qm'])
-    assert compare_molrecs(fullans_unnp, final_unnp, tnm() + ': full unnp')
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_molrecs(fullans_unnp, final_unnp, 4, tnm() + ': full unnp')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_2b():
@@ -301,8 +301,8 @@ def test_psi4_qm_2b():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_psi4_qm_2c():
@@ -404,13 +404,13 @@ def test_psi4_efp_5a():
     fullans['efp']['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans5, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': final efp')
+    assert compare_recursive(ans5, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp')
 
     hintsstd = qcelemental.util.standardize_efp_angles_units('Angstrom', final['efp']['geom_hints'])
     final['efp']['geom_hints'] = hintsstd
     fullans['efp']['geom_hints'] = hintsans
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': final efp standardized')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp standardized')
 
 
 def test_psi4_efp_5b():
@@ -422,8 +422,8 @@ def test_psi4_efp_5b():
     fullans['efp']['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': final efp')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp')
 
 
 def test_psi4_efp_5c():
@@ -446,8 +446,8 @@ def test_psi4_efp_5d():
     fullans['efp']['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': final')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final')
 
 
 def test_psi4_efp_5e():
@@ -534,14 +534,14 @@ def test_psi4_qmefp_6a():
     fullans['efp']['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans6, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans6, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
 
     hintsstd = qcelemental.util.standardize_efp_angles_units('Bohr', final['efp']['geom_hints'])
     final['efp']['geom_hints'] = hintsstd
     fullans['efp']['geom_hints'][0][4] = 1.734999
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': final efp standardized')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': final efp standardized')
 
 
 def test_psi4_qmefp_6b():
@@ -557,9 +557,9 @@ def test_psi4_qmefp_6b():
     fullans['efp']['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
 
 
 def test_psi4_qmefpformat_error_6c():
@@ -586,8 +586,8 @@ def test_qmefp_array_6d():
                     [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
         hint_types=['xyzabc', 'points'])
 
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
 
 
 def test_qmefp_badhint_error_6e():
@@ -789,8 +789,8 @@ def test_xyzp_qm_7c():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
-    assert compare_recursive(ans7, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans7, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 def test_xyzp_qm_7d():
@@ -811,8 +811,8 @@ def test_xyzp_qm_7d():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
-    assert compare_recursive(ans, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 def test_xyzp_qm_7e():
@@ -821,8 +821,8 @@ def test_xyzp_qm_7e():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
-    assert compare_recursive(ans7, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans7, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 subject8 = """\
@@ -867,8 +867,8 @@ def test_xyzp_qm_8a():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
-    assert compare_recursive(ans8, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm')
+    assert compare_recursive(ans8, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full qm')
 
 
 fullans10qm = {
@@ -944,8 +944,8 @@ def test_arrays_10a():
     fullans['efp']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10b():
@@ -965,7 +965,7 @@ def test_arrays_10b():
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
         final['qm']
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10c():
@@ -983,7 +983,7 @@ def test_arrays_10c():
     fullans['qm']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
     with pytest.raises(KeyError):
         final['efp']
 
@@ -1001,7 +1001,7 @@ def test_arrays_10d():
     fullans['qm']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
     with pytest.raises(KeyError):
         final['efp']
 
@@ -1020,8 +1020,8 @@ def test_arrays_10e():
     fullans['efp']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10f():
@@ -1070,7 +1070,7 @@ def test_arrays_10h():
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
         final['qm']
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10i():
@@ -1093,7 +1093,7 @@ def test_arrays_10j():
     fullans['qm']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
     with pytest.raises(KeyError):
         final['efp']
 
@@ -1114,7 +1114,7 @@ def test_arrays_10k():
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
         final['qm']
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10l():
@@ -1135,8 +1135,8 @@ def test_arrays_10l():
     fullans['efp']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10m():
@@ -1168,7 +1168,7 @@ def test_arrays_10n():
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
         final['qm']
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_arrays_10o():
@@ -1204,7 +1204,7 @@ def test_arrays_10p():
     fullans['qm']['provenance'] = _arrays_prov_stamp
 
     final = qcelemental.molparse.from_input_arrays(**subject)
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
     with pytest.raises(KeyError):
         final['efp']
 
@@ -1250,8 +1250,8 @@ def test_strings_10s():
     fullans['qm']['provenance'] = _string_prov_stamp
     fullans['efp']['provenance'] = _string_prov_stamp
 
-    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
-    assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
+    assert compare_molrecs(fullans['qm'], final['qm'], 4, tnm() + ': full qm')
+    assert compare_molrecs(fullans['efp'], final['efp'], 4, tnm() + ': full efp')
 
 
 def test_strings_10t():
@@ -1271,7 +1271,7 @@ def test_qmol_11c():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4')
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11d():
@@ -1284,7 +1284,7 @@ def test_qmol_11d():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""", dtype='psi4+')
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11e():
@@ -1292,7 +1292,7 @@ def test_qmol_11e():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, dtype='xyz', fix_com=True)
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11g():
@@ -1300,7 +1300,7 @@ def test_qmol_11g():
     fullans['provenance'] = _arrays_prov_stamp
 
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, verbose=2)
-    assert compare_molrecs(fullans, asdf, tnm())
+    assert compare_molrecs(fullans, asdf, 4)
 
 
 def test_qmol_11h():
@@ -1308,7 +1308,7 @@ def test_qmol_11h():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11i():
@@ -1316,7 +1316,7 @@ def test_qmol_11i():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""nocom\n8 0 0 0\n1 1 0 0""")
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11j():
@@ -1324,7 +1324,7 @@ def test_qmol_11j():
     fullans['provenance'] = _string_prov_stamp
 
     asdf = qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True)
-    assert compare_molrecs(fullans, asdf['qm'], tnm())
+    assert compare_molrecs(fullans, asdf['qm'], 4)
 
 
 def test_qmol_11p():
@@ -1332,7 +1332,7 @@ def test_qmol_11p():
     fullans['provenance'] = _arrays_prov_stamp
 
     asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, units='AngSTRom')
-    assert compare_molrecs(fullans, asdf, tnm())
+    assert compare_molrecs(fullans, asdf, 4)
 
 
 def test_qmol_11q():
@@ -1400,8 +1400,8 @@ def test_psi4_qm_12a():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, fix_symmetry='c1')
-    assert compare_recursive(ans12, intermed, tnm() + ': intermediate', atol=1.e-4)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_recursive(ans12, intermed, 4, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_tooclose_error():
@@ -1637,7 +1637,7 @@ def test_zmatfragarr_14a():
         units='Bohr',
         variables=[('bond', '3')])
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 def test_zmatfragarr_14b():
@@ -1658,7 +1658,7 @@ def test_zmatfragarr_14b():
         units='Bohr',
         variables=[('bond', '3')])
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 def test_zmatfragarr_14c():
@@ -1687,7 +1687,7 @@ def test_zmatfragarr_14c():
         fix_orientation=True,
         variables=[('bond', '3')])
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 subject14 = """
@@ -1726,7 +1726,7 @@ def test_zmatfragstr_14d():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
+    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
 
 
 def test_badprov0_error():
@@ -1820,7 +1820,7 @@ def test_connectivity_17a():
         connectivity=[(0, 1, 1), (1, 2, 1)],
     )
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 def test_connectivity_17b():
@@ -1836,7 +1836,7 @@ def test_connectivity_17b():
         connectivity=[(2.0, 1, 1), (1, 0, 1)],
     )
 
-    assert compare_molrecs(fullans, final, tnm() + ': full')
+    assert compare_molrecs(fullans, final, 4, tnm() + ': full')
 
 
 def test_connectivity_atindex_error():
