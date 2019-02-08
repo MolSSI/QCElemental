@@ -9,7 +9,8 @@ import numpy as np
 
 
 def _handle_return(passfail, label, message, return_message, quiet=False):
-    """Function to print a '*label*...PASSED' line to log."""
+    """Function to print a '*label*...PASSED' line to log.
+    """
 
     if not quiet:
         if passfail:
@@ -25,7 +26,8 @@ def _handle_return(passfail, label, message, return_message, quiet=False):
 
 
 def tnm():
-    """Returns the name of the calling function, usually name of test case."""
+    """Returns the name of the calling function, usually name of test case.
+    """
 
     return sys._getframe().f_back.f_code.co_name
 
@@ -54,8 +56,8 @@ def compare_values(expected,
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
-#    equal_nan : bool, optional
-#        Passed to np.isclose.
+    equal_nan : bool, optional
+        Passed to np.isclose.
     passnone : bool, optional
         Return True when both expected and computed are None.
     quiet : bool, optional
@@ -74,6 +76,9 @@ def compare_values(expected,
     -----
     Akin to np.allclose.
     Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:
+
+    .. code-block:: python
+
         absolute(computed - expected) <= (atol + rtol * absolute(expected))
 
     """
@@ -261,8 +266,9 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-5, forgive=None, return_message=False):
+def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16, forgive=None, return_message=False):
     """
+    Recursively compares nexted structures such as dictionaries and lists.
 
     Parameters
     ----------
