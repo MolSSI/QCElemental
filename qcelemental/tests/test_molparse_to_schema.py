@@ -58,14 +58,14 @@ def test_1_14a():
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4)
+    assert compare_molrecs(fullans['molecule'], kmol['molecule'])
 
     fullans = copy.deepcopy(schema14_psi4)
     fullans['provenance'] = _schema_prov_stamp
 
     molrec = qcelemental.molparse.from_schema(kmol)
     molrec = qcelemental.util.unnp(molrec)
-    assert compare_molrecs(fullans, molrec, 4)
+    assert compare_molrecs(fullans, molrec)
 
 
 def test_1_ang_14b():
@@ -83,7 +83,7 @@ def test_psi4_14c():
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4')
-    assert compare_molrecs(fullans, kmol, 4)
+    assert compare_molrecs(fullans, kmol)
 
 
 def test_dtype_d():
@@ -160,7 +160,7 @@ def test_1_15a():
     final = qcelemental.molparse.from_string(subject15)
     final['qm']['comment'] = 'I has a comment'
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
-    assert compare_molrecs(fullans['molecule'], kmol['molecule'], 4)
+    assert compare_molrecs(fullans['molecule'], kmol['molecule'])
 
     fullans = copy.deepcopy(schema15_psi4)
     fullans['units'] = 'Bohr'
@@ -169,7 +169,7 @@ def test_1_15a():
 
     molrec = qcelemental.molparse.from_schema(kmol)
     molrec = qcelemental.util.unnp(molrec)
-    assert compare_molrecs(fullans, molrec, 4)
+    assert compare_molrecs(fullans, molrec)
 
 
 def test_psi4_15c():
@@ -179,7 +179,7 @@ def test_psi4_15c():
     final = qcelemental.molparse.from_string(subject15)
     final['qm']['comment'] = 'I has a comment'
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype='psi4', units='Angstrom')
-    assert compare_molrecs(fullans, kmol, 4)
+    assert compare_molrecs(fullans, kmol)
 
 
 schema16_1 = {
@@ -255,7 +255,7 @@ def test_froto_16a():
     fullans['molecule']['provenance'] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=1)
-    assert compare_molrecs(fullans['molecule'], roundtrip['molecule'], 4)
+    assert compare_molrecs(fullans['molecule'], roundtrip['molecule'])
 
 
 def test_tofro_16b():
@@ -264,4 +264,4 @@ def test_tofro_16b():
     fullans['provenance'] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=1))
-    assert compare_molrecs(fullans, roundtrip, 4)
+    assert compare_molrecs(fullans, roundtrip)

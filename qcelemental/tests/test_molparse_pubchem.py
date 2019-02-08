@@ -61,8 +61,8 @@ def test_pubchem_4a():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans4, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(ans4, intermed, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
 def test_pubchem_4b():
@@ -84,8 +84,8 @@ pubchem  : 241
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name='benzene', verbose=2)
-    assert compare_molrecs(ans, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(ans, intermed, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
 def test_pubchem_error_d():
@@ -180,8 +180,8 @@ def test_pubchem_13h():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(ans13, intermed, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
 def test_pubchem_13i():
@@ -190,5 +190,5 @@ def test_pubchem_13i():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_molrecs(ans13, intermed, 4, tnm() + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], 4, tnm() + ': full')
+    assert compare_molrecs(ans13, intermed, tnm() + ': intermediate')
+    assert compare_molrecs(fullans, final['qm'], tnm() + ': full')

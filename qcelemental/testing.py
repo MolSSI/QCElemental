@@ -32,9 +32,9 @@ def tnm():
 
 def compare_values(expected,
                    computed,
-                   atol=1.e-8,
                    label=None,
                    *,
+                   atol=1.e-6,
                    rtol=1.e-16,
                    equal_nan=False,
                    passnone=False,
@@ -50,8 +50,6 @@ def compare_values(expected,
         Input value to compare against `expected`.
     atol : int or float, optional
         Absolute tolerance (see formula below).
-        Values less than one are taken literally; one or greater taken as decimal digits for comparison.
-        So `1` means `atol=0.1` and `2` means `atol=0.01` but `0.04` means `atol=0.04`
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
@@ -97,11 +95,7 @@ def compare_values(expected,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
                               return_message, quiet)
 
-    if atol >= 1.0:
-        atol = 10.**-atol
-        digits1 = atol + 1
-    else:
-        digits1 = abs(int(np.log10(atol))) + 2
+    digits1 = abs(int(np.log10(atol))) + 2
     digits_str = f'to atol={atol}'
     if rtol > 1.e-12:
         digits_str += f', rtol={rtol}'
@@ -246,9 +240,15 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
         for k in expected.keys() & computed.keys():
             name = prefix + str(k)
             errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
-    elif isinstance(expected, (np.ndarray, float)):
+    elif isinstance(expected, float):
         passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
-        print(expected, computed, passfail)
+        if not passfail:
+            errors.append((name, "Arrays differ." + msg))
+    elif isinstance(expected, np.ndarray):
+        if np.issubdtype(expected.dtype, np.floating):
+            passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
+        else:
+            passfail, msg = compare(expected, computed, return_message=True, quiet=True)
         if not passfail:
             errors.append((name, "Arrays differ." + msg))
     elif isinstance(expected, type(None)):
@@ -261,7 +261,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected, computed, atol=1.e-8, label=None, *, rtol=1.e-5, forgive=None, return_message=False):
+def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-5, forgive=None, return_message=False):
     """
 
     Parameters
@@ -307,43 +307,38 @@ def compare_recursive(expected, computed, atol=1.e-8, label=None, *, rtol=1.e-5,
     return _handle_return(len(message) == 0, label, message, return_message)
 
 
-def compare_molrecs(expected, computed, atol=1.e-8, label=None, *, forgive=None, verbose=1, relative_geoms='exact'):
+def compare_molrecs(expected,
+                    computed,
+                    label=None,
+                    *,
+                    atol=1.e-6,
+                    rtol=1.e-16,
+                    forgive=None,
+                    verbose=1,
+                    relative_geoms='exact'):
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
 
     """
-    if atol >= 1:
-        atol = 10**-atol
 
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
     cptd = copy.deepcopy(computed)
 
     def massage_dicts(dicary):
-        # deepdiff can't cope with np.int type
-        #   https://github.com/seperman/deepdiff/issues/97
-        if 'elez' in dicary:
-            dicary['elez'] = [int(z) for z in dicary['elez']]
-        if 'elea' in dicary:
-            dicary['elea'] = [int(a) for a in dicary['elea']]
-        # deepdiff w/py27 complains about unicode type and val errors
-        if 'elem' in dicary:
-            dicary['elem'] = [str(e) for e in dicary['elem']]
-        if 'elbl' in dicary:
-            dicary['elbl'] = [str(l) for l in dicary['elbl']]
-        if 'fix_symmetry' in dicary:
-            dicary['fix_symmetry'] = str(dicary['fix_symmetry'])
-        if 'units' in dicary:
-            dicary['units'] = str(dicary['units'])
+        # if 'fix_symmetry' in dicary:
+        #     dicary['fix_symmetry'] = str(dicary['fix_symmetry'])
+        # if 'units' in dicary:
+        #     dicary['units'] = str(dicary['units'])
         if 'fragment_files' in dicary:
             dicary['fragment_files'] = [str(f) for f in dicary['fragment_files']]
         # and about int vs long errors
-        if 'molecular_multiplicity' in dicary:
-            dicary['molecular_multiplicity'] = int(dicary['molecular_multiplicity'])
-        if 'fragment_multiplicities' in dicary:
-            dicary['fragment_multiplicities'] = [(m if m is None else int(m))
-                                                 for m in dicary['fragment_multiplicities']]
+        # if 'molecular_multiplicity' in dicary:
+        #     dicary['molecular_multiplicity'] = int(dicary['molecular_multiplicity'])
+        # if 'fragment_multiplicities' in dicary:
+        #     dicary['fragment_multiplicities'] = [(m if m is None else int(m))
+        #                                          for m in dicary['fragment_multiplicities']]
         if 'fragment_separators' in dicary:
             dicary['fragment_separators'] = [(s if s is None else int(s)) for s in dicary['fragment_separators']]
         # forgive generator version changes
@@ -387,4 +382,4 @@ def compare_molrecs(expected, computed, atol=1.e-8, label=None, *, forgive=None,
         #ageom = mill.align_coordinates(cgeom)
         #cptd['geom'] = ageom.reshape((-1))
 
-    return compare_recursive(xptd, cptd, atol=atol, label=label, forgive=forgive)
+    return compare_recursive(xptd, cptd, atol=atol, rtol=rtol, label=label, forgive=forgive)
