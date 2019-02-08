@@ -3,9 +3,8 @@ import copy
 import numpy as np
 import pytest
 
-from utils import *
-
 import qcelemental as qcel
+from qcelemental.testing import compare_molrecs
 
 _schema_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_schema'}
 
@@ -41,7 +40,7 @@ def test_contiguize_from_fragment_pattern(inp, expected):
     ans = qcel.molparse.contiguize_from_fragment_pattern(**inp)
 
     # compare_molrecs instead of compare_dicts handles some fragment_separators types issues
-    assert compare_molrecs(expected, ans, 6, tnm())
+    assert compare_molrecs(expected, ans, atol=1.e-6)
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -111,7 +110,7 @@ def test_from_schema_1_14e():
     schema = {"schema_name": "qc_schema", "schema_version": 1, "molecule": copy.deepcopy(schema14_1)}
 
     ans = qcel.molparse.from_schema(schema)
-    assert compare_molrecs(schema14_psi4_np, ans, 4, tnm())
+    assert compare_molrecs(schema14_psi4_np, ans, 4)
 
 
 def test_from_schema_error_f():

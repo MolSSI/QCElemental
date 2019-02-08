@@ -7,7 +7,7 @@ import json
 import hashlib
 import collections
 import numpy as np
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, Extra
 from typing import List, Tuple
 from ..physical_constants import constants
 from ..periodic_table import periodictable
@@ -71,7 +71,7 @@ class Identifiers(BaseModel):
     # canonical_smiles: str = None
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
 
 
 # Cleanup un-initialized variables
@@ -115,7 +115,7 @@ class Molecule(BaseModel):
     class Config:
         json_encoders = {**ndarray_encoder}
         allow_mutation = False
-        ignore_extra = False
+        extra = Extra.forbid
 
     # Internal values as a mutable object we can manipulate
     class _Internals:
@@ -225,6 +225,9 @@ class Molecule(BaseModel):
             return json.loads(ret)
         else:
             return ret
+
+    def json_dict(self, *args, **kwargs):
+        return json.loads(self.json(*args, **kwargs))
 
 ### Non-Pydantic API functions
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, constr, validator
+from pydantic import BaseModel, constr, validator, Extra
 from typing import List, Union, Dict, Any
 from .molecule import Molecule
 from .common_models import (Provenance, Model, DriverEnum, ComputeError, qcschema_input_default,
@@ -31,7 +31,7 @@ class Properties(BaseModel):
     return_energy: float = None
 
     class Config:
-        allow_extra = True  # Not yet fully validated, but will accept extra for now
+        extra = Extra.allow  # Not yet fully validated, but will accept extra for now
 
 
 class ErrorEnum(str, Enum):
@@ -55,8 +55,9 @@ class ResultInput(BaseModel):
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
+        extra = Extra.allow
         allow_mutation = False
-        allow_extra = True
+        extra = Extra.allow  # Not yet fully validated, but will accept extra for now
         json_encoders = {**ndarray_encoder}
 
     def dict(self, *args, **kwargs):
@@ -68,6 +69,9 @@ class ResultInput(BaseModel):
                 excl |= {"id"}
 
         return super().dict(*args, **kwargs)
+
+    def json_dict(self, *args, **kwargs):
+        return json.loads(self.json(*args, **kwargs))
 
 
 class Result(ResultInput):

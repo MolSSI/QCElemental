@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Extra
 from enum import Enum
 from typing import Any
 import numpy as np
@@ -12,17 +12,18 @@ class Provenance(BaseModel):
     routine: str = None
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
 
 
 class Model(BaseModel):
     method: str
     basis: str = None
+
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
     class Config:
         allow_mutation = False
-        allow_extra = True
+        extra = Extra.allow
 
 
 class DriverEnum(str, Enum):
@@ -37,7 +38,7 @@ class ComputeError(BaseModel):
     error_message: str
 
     class Config:
-        allow_extra = False
+        extra = Extra.forbid
 
 
 class FailedOperation(BaseModel):
@@ -47,11 +48,9 @@ class FailedOperation(BaseModel):
     error: ComputeError
 
     class Config:
-        allow_extra = True
+        extra = Extra.allow
         allow_mutation = False
-        json_encoders = {
-            **ndarray_encoder
-        }
+        json_encoders = {**ndarray_encoder}
 
 
 qcschema_input_default = "qcschema_input"

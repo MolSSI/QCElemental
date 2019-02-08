@@ -8,13 +8,9 @@ dependencies:
   - nomkl
   - python
   - pint
+  - pydantic
 
     # Testing
   - pytest
   - pytest-cov
   - codecov
-
-    # Pip depends
-  - pip:
-    - pydantic # Conda-forge still in progress
-    - deepdiff # Only used for testing some areas

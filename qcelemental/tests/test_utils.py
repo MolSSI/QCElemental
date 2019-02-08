@@ -1,9 +1,8 @@
 import pytest
 import numpy as np
 
-from utils import *
-
 import qcelemental
+from qcelemental.testing import compare_recursive, compare_values
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -20,9 +19,7 @@ def test_unique_everseen(inp, expected):
     (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}})
 ]) # yapf: disable
 def test_updatewitherror(inp, expected):
-    print('ans', qcelemental.util.update_with_error(inp[0], inp[1]))
-    print('exp', expected)
-    assert compare_dicts(expected, qcelemental.util.update_with_error(inp[0], inp[1]), 4, tnm())
+    assert compare_recursive(expected, qcelemental.util.update_with_error(inp[0], inp[1]))
 
 @pytest.mark.parametrize("inp", [
     ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": "C"}}),
@@ -48,13 +45,13 @@ def test_updatewitherror_error(inp):
     ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]}),
 ]) # yapf: disable
 def test_unnp(inp, expected):
-    assert compare_dicts(expected, qcelemental.util.unnp(**inp), 4, tnm())
+    assert compare_recursive(expected, qcelemental.util.unnp(**inp), atol=1.e-4)
 
 
 def test_distance():
     def _test_distance(p1, p2, value):
         tmp = qcelemental.util.compute_distance(p1, p2)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     _test_distance([0, 0, 0], [0, 0, 1], 1.0)
     _test_distance([0, 0, 0], [0, 0, 0], 0.0)
@@ -69,7 +66,7 @@ def test_distance():
 def test_angle():
     def _test_angle(p1, p2, p3, value, degrees=True):
         tmp = qcelemental.util.compute_angle(p1, p2, p3, degrees=degrees)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     # Check all 90 degree domains
     p1 = [5, 0, 0]
@@ -103,7 +100,7 @@ def test_angle():
 def test_dihedral():
     def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
         tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
-        assert pytest.approx(value) == tmp
+        assert compare_values(value, float(tmp))
 
     p1 = [0, 0, 0]
     p2 = [0, 2, 0]
