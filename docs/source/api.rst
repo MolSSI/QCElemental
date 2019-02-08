@@ -4,6 +4,7 @@ QCElemental API
 
 .. automodapi:: qcelemental
    :include-all-objects:
+   :skip: covalentradii 
 
 .. automodapi:: qcelemental.periodic_table
    :skip: NotAnElementError
@@ -12,4 +13,6 @@ QCElemental API
 .. automodapi:: qcelemental.physical_constants
 
 .. automodapi:: qcelemental.molparse
+
+.. automodapi:: qcelemental.testing
 

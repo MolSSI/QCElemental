@@ -6,9 +6,6 @@ You can install qcelemental with ``conda``, with ``pip``, or by installing from 
 Conda
 -----
 
-.. note:: 
-    Work in progress.
-
 You can update qcelemental using `conda <https://www.anaconda.com/download/>`_::
 
     conda install qcelemental -c conda-forge
@@ -45,7 +42,7 @@ or use ``pip`` for a local install::
 Test
 ----
 
-Test QCElemental with ``py.test``::
+Test QCElemental with ``pytest``::
 
     cd QCElemental
-    py.test
+    pytest

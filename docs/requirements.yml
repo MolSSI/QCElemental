@@ -5,9 +5,10 @@ channels:
 dependencies:
     - python=3
     - numpy
+    - pydantic
+    - pint
+
     - sphinx
     - sphinx_rtd_theme
     - sphinx-automodapi
     - graphviz
-    - pip:
-      - pydantic
