@@ -1,8 +1,8 @@
 Changelog
 =========
 
-.. X.Y.0 / 2018-MM-DD
-.. -------------------
+.. X.Y.0 / 2019-MM-DD
+.. ------------------
 ..
 .. New Features
 .. ++++++++++++
@@ -12,6 +12,21 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
+
+0.2.4 / 2019-02-08
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`27`) Adds a new ``measure`` feature to Molecule for distances, angles, and dihedrals.
+- (:pr:`25`) Adds a new ``testing`` module which contains testing routines for arrays, dictionaries, and molecules.
+
+Enhancements
+++++++++++++
+
+- (:pr:`28`) Reduces loading time from ~1 second to 200 ms by delaying ``pint`` import and ensuring git tags are only computed once.
+
 
 0.2.3 / 2019-01-29
 ------------------
