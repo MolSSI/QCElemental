@@ -200,6 +200,8 @@ def test_molecule_errors():
 def test_molecule_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
+    assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
+
 
 def test_molecule_repeated_hashing():
 

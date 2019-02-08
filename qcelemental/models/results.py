@@ -55,6 +55,7 @@ class ResultInput(BaseModel):
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
+        extra = Extra.allow
         allow_mutation = False
         extra = Extra.allow  # Not yet fully validated, but will accept extra for now
         json_encoders = {**ndarray_encoder}
@@ -68,6 +69,9 @@ class ResultInput(BaseModel):
                 excl |= {"id"}
 
         return super().dict(*args, **kwargs)
+
+    def json_dict(self, *args, **kwargs):
+        return json.loads(self.json(*args, **kwargs))
 
 
 class Result(ResultInput):

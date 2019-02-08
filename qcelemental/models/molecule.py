@@ -226,6 +226,9 @@ class Molecule(BaseModel):
         else:
             return ret
 
+    def json_dict(self, *args, **kwargs):
+        return json.loads(self.json(*args, **kwargs))
+
 ### Non-Pydantic API functions
 
     def measure(self, measurements, degrees=True):
