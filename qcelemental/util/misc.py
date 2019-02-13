@@ -288,9 +288,9 @@ def compute_dihedral(points1, points2, points3, points4, degrees=False):
     v2 = points3 - points2
     v3 = points4 - points3
 
+    # Normalize the central vector
     v2 = v2 / _norm(v2)
 
-    # vector rejections
     # v = projection of b0 onto plane perpendicular to b1
     #   = b0 minus component that aligns with b1
     # w = projection of b2 onto plane perpendicular to b1

@@ -26,15 +26,12 @@ def water():
 
 @pytest.fixture
 def result_input():
-    return {"id": "12345a",
-            "driver": "gradient",
-            "model": {"method": "filler"}}
+    return {"id": "12345a", "driver": "gradient", "model": {"method": "filler"}}
 
 
 @pytest.fixture
 def res_success():
-    return {"success": True,
-            "return_result": 536.2}
+    return {"success": True, "return_result": 536.2}
 
 
 @pytest.fixture
@@ -49,19 +46,13 @@ def res_failure(res_success):
 
 @pytest.fixture
 def opti_input():
-    return {"input_specification": {
-        "driver": "gradient",
-        "model": {"method": "filler"}
-    }}
+    return {"input_specification": {"driver": "gradient", "model": {"method": "filler"}}}
 
 
 @pytest.fixture
 def opti_success(water, result_input, res_success):
     res = Result(molecule=water, **result_input, **res_success)
-    return {"success": True,
-            "trajectory": [res]*3,
-            "final_molecule": water,
-            "energies": [1.0, 2.0, 3.0]}
+    return {"success": True, "trajectory": [res] * 3, "final_molecule": water, "energies": [1.0, 2.0, 3.0]}
 
 
 @pytest.fixture
@@ -77,15 +68,19 @@ def opti_failure(opti_success):
 def test_molecule_serialization(water):
     assert isinstance(water.dict(), dict)
     assert isinstance(water.json(), str)
+    assert isinstance(water.json_dict(), dict)
 
 
 def test_result_pass_serialization(water, result_input, res_success):
     res_in = ResultInput(molecule=water, **result_input)
     assert isinstance(res_in.dict(), dict)
     assert isinstance(res_in.json(), str)
+    assert isinstance(res_in.json_dict(), dict)
+
     res_out = Result(molecule=water, **result_input, **res_success)
     assert isinstance(res_out.dict(), dict)
     assert isinstance(res_out.json(), str)
+    assert isinstance(res_out.json_dict(), dict)
 
 
 def test_result_wrong_serialization(water, result_input, res_failure):
@@ -101,9 +96,12 @@ def test_optimization_pass_serialization(water, opti_input, opti_success):
     opti_in = OptimizationInput(initial_molecule=water, **opti_input)
     assert isinstance(opti_in.dict(), dict)
     assert isinstance(opti_in.json(), str)
+    assert isinstance(opti_in.json_dict(), dict)
+
     opti_out = Optimization(initial_molecule=water, **opti_input, **opti_success)
     assert isinstance(opti_out.dict(), dict)
     assert isinstance(opti_out.json(), str)
+    assert isinstance(opti_out.json_dict(), dict)
 
 
 def test_optimization_wrong_serialization(water, opti_input, opti_failure):
