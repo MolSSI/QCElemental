@@ -1,3 +1,5 @@
+
+import json
 from enum import Enum
 from pydantic import BaseModel, constr, validator, Extra
 from typing import List, Union, Dict, Any
@@ -55,7 +57,6 @@ class ResultInput(BaseModel):
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
-        extra = Extra.allow
         allow_mutation = False
         extra = Extra.allow  # Not yet fully validated, but will accept extra for now
         json_encoders = {**ndarray_encoder}
