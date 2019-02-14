@@ -2033,4 +2033,4 @@ nist_2014_codata = {
             'uncertainty': '0.000 0017 e-3'
         }
     }
-} # yapf: disable
+}  # yapf: disable
