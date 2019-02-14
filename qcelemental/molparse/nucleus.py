@@ -1,8 +1,8 @@
 import re
 
-from ..exceptions import ValidationError, NotAnElementError
-from ..periodic_table import periodictable
 from . import regex
+from ..exceptions import NotAnElementError, ValidationError
+from ..periodic_table import periodictable
 
 
 def reconcile_nucleus(A=None,

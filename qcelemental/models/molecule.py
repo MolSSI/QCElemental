@@ -2,19 +2,20 @@
 Molecule Object Model
 """
 
-import os
-import json
-import hashlib
 import collections
-import numpy as np
-from pydantic import BaseModel, validator, Extra
+import hashlib
+import json
+import os
 from typing import List, Tuple
-from ..physical_constants import constants
-from ..periodic_table import periodictable
-from .common_models import Provenance, ndarray_encoder
-from ..util import provenance_stamp, measure_coordinates
 
-from ..molparse import from_string, from_arrays, to_schema
+import numpy as np
+from pydantic import BaseModel, Extra, validator
+
+from ..molparse import from_arrays, from_string, to_schema
+from ..periodic_table import periodictable
+from ..physical_constants import constants
+from ..util import measure_coordinates, provenance_stamp
+from .common_models import Provenance, ndarray_encoder
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -164,8 +165,6 @@ class Molecule(BaseModel):
         n = len(values['symbols'])
         try:
             v = v.reshape(n, 3)
-            if v.shape != (n, 3):
-                raise ValueError()
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
@@ -228,6 +227,7 @@ class Molecule(BaseModel):
 
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
+
 
 ### Non-Pydantic API functions
 
@@ -475,7 +475,7 @@ class Molecule(BaseModel):
         if dtype is None:
             if isinstance(data, str):
                 dtype = "string"
-            elif isinstance(dat, np.array):
+            elif isinstance(data, np.ndarray):
                 dtype = "numpy"
             elif isinstance(data, dict):
                 dtype = "dict"
@@ -637,8 +637,7 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
-                                                              int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:

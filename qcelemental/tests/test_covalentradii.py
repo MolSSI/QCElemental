@@ -1,8 +1,7 @@
+import os
 from decimal import Decimal
 
 import pytest
-import os
-
 import qcelemental
 
 
@@ -24,6 +23,7 @@ def test_id_resolution_error(inp):
         qcelemental.covalentradii.get(inp, return_tuple=True, missing=3.0)
 
     assert qcelemental.covalentradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.e-9)
+
 
 a2b = 1. / qcelemental.constants.bohr2angstroms
 

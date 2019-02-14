@@ -25,8 +25,8 @@ def build_units_registry(context):
     ureg.define("avogadro_constant = {} / mol = N_A".format(phys_const["avogadro constant"]["value"]))
     ureg.define("boltzmann_constant = {} * joule / kelvin".format(phys_const["boltzmann constant"]["value"]))
     ureg.define("speed_of_light = {} * meter / second".format(phys_const["speed of light in vacuum"]["value"]))
-    ureg.define(
-        "hartree_inverse_meter = {} / hartree / m".format(phys_const["hartree-inverse meter relationship"]["value"]))
+    ureg.define("hartree_inverse_meter = {} / hartree / m".format(
+        phys_const["hartree-inverse meter relationship"]["value"]))
 
     # Energy
     ureg.define("hartree = {} * joule = E_h = hartree_energy".format(phys_const["hartree energy"]["value"]))
@@ -43,8 +43,8 @@ def build_units_registry(context):
     ureg.define("Angstrom = angstrom")
 
     # Masses
-    ureg.define(
-        "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"]))
+    ureg.define("atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(
+        phys_const["atomic mass constant"]["value"]))
 
     # Define relationships
     _const_rename = {

@@ -1,8 +1,7 @@
 import copy
 
-import pytest
 import numpy as np
-
+import pytest
 import qcelemental
 from qcelemental.testing import compare_molrecs, tnm
 

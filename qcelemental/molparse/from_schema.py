@@ -1,7 +1,7 @@
 import numpy as np
 
-from ..util import provenance_stamp
 from ..exceptions import ValidationError
+from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
@@ -22,7 +22,8 @@ def from_schema(molschema, verbose=1):
 
     """
 
-    if ((molschema.get('schema_name', '').startswith('qc_schema') or molschema.get('schema_name', '').startswith('qcschema')) and (molschema.get('schema_version', '') == 1)):
+    if ((molschema.get('schema_name', '').startswith('qc_schema')
+         or molschema.get('schema_name', '').startswith('qcschema')) and (molschema.get('schema_version', '') == 1)):
         ms = molschema['molecule']
 
         if 'fragments' in ms:

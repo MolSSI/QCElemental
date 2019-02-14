@@ -14,8 +14,8 @@
 
 """
 
-import re
 import json
+import re
 
 from ..exceptions import ValidationError
 

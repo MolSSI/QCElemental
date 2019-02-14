@@ -1,15 +1,15 @@
-import re
 import copy
 import pprint
+import re
 
 import numpy as np
 
-from ..util import distance_matrix, update_with_error, unnp, provenance_stamp
-from ..physical_constants import constants
 from ..exceptions import ValidationError
-from .regex import VERSION_PATTERN
+from ..physical_constants import constants
+from ..util import distance_matrix, provenance_stamp, unnp, update_with_error
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
+from .regex import VERSION_PATTERN
 
 
 def from_input_arrays(
@@ -289,8 +289,8 @@ def from_arrays(geom=None,
     # <<  domain sorting  >>
     available_domains = ['qm', 'efp', 'qmvz']
     if domain not in available_domains:
-        raise ValidationError(
-            'Topology domain {} not available for processing. Choose among {}'.format(domain, available_domains))
+        raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
+            domain, available_domains))
 
     if domain == 'qm' and (geom is None or np.array(geom).size == 0):
         if missing_enabled_return == 'none':
@@ -424,14 +424,16 @@ def validate_and_fill_units(name=None,
 
         if prov_keys == expected_prov_keys:
             if not isinstance(dicary['creator'], str):
-                raise ValidationError("""Provenance key 'creator' should be string of creating program's name: {}""".
-                                      format(dicary['creator']))
-            if not re.fullmatch(VERSION_PATTERN, dicary['version'], re.VERBOSE):
                 raise ValidationError(
-                    """Provenance key 'version' should be a valid PEP 440 string: {}""".format(dicary['version']))
+                    """Provenance key 'creator' should be string of creating program's name: {}""".format(
+                        dicary['creator']))
+            if not re.fullmatch(VERSION_PATTERN, dicary['version'], re.VERBOSE):
+                raise ValidationError("""Provenance key 'version' should be a valid PEP 440 string: {}""".format(
+                    dicary['version']))
             if not isinstance(dicary['routine'], str):
-                raise ValidationError("""Provenance key 'routine' should be string of creating function's name: {}""".
-                                      format(dicary['routine']))
+                raise ValidationError(
+                    """Provenance key 'routine' should be string of creating function's name: {}""".format(
+                        dicary['routine']))
             return True
         else:
             raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
@@ -473,8 +475,8 @@ def validate_and_fill_units(name=None,
         if abs(input_units_to_au - iutau) < 0.05:
             iutau = input_units_to_au
         else:
-            raise ValidationError(
-                """No big perturbations to physical constants! {} !~= {}""".format(iutau, input_units_to_au))
+            raise ValidationError("""No big perturbations to physical constants! {} !~= {}""".format(
+                iutau, input_units_to_au))
 
     if always_return_iutau or input_units_to_au is not None:
         molinit['input_units_to_au'] = iutau
@@ -531,9 +533,9 @@ def validate_and_fill_frame(extern, fix_com=None, fix_orientation=None, fix_symm
 
 def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None):
 
-    if (fragment_files is None or hint_types is None or geom_hints is None or fragment_files == [None] or
-            hint_types == [None] or geom_hints == [None] or
-            not (len(fragment_files) == len(hint_types) == len(geom_hints))):
+    if (fragment_files is None or hint_types is None or geom_hints is None or fragment_files == [None]
+            or hint_types == [None] or geom_hints == [None]
+            or not (len(fragment_files) == len(hint_types) == len(geom_hints))):
 
         raise ValidationError(
             """Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})"""
@@ -578,8 +580,8 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1):
     tooclosem = np.where(dm < tooclose)
 
     if tooclosem[0].shape[0]:
-        raise ValidationError(
-            """Following atoms are too close: {}""".format([(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
+        raise ValidationError("""Following atoms are too close: {}""".format(
+            [(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
 
     return {'geom': npgeom.reshape((-1))}
 
@@ -636,7 +638,7 @@ def validate_and_fill_nuclei(
             format((nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
 
     if nat:
-        A, Z, E, mass, real, label = zip(* [
+        A, Z, E, mass, real, label = zip(*[
             reconcile_nucleus(
                 A=elea[at],
                 Z=elez[at],
@@ -712,8 +714,9 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
                 """fragment_multiplicities not among None or positive integer: {}""".format(fragment_multiplicities))
 
     if not (len(frc) == len(frm) == len(frs) + 1):
-        raise ValidationError("""Dimension mismatch among fragment quantities: sep + 1 ({}), chg ({}), and mult({})""".
-                              format(len(frs) + 1, len(frc), len(frm)))
+        raise ValidationError(
+            """Dimension mismatch among fragment quantities: sep + 1 ({}), chg ({}), and mult({})""".format(
+                len(frs) + 1, len(frc), len(frm)))
 
     return {'fragment_separators': list(frs), 'fragment_charges': frc, 'fragment_multiplicities': frm}
 

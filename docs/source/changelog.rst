@@ -13,6 +13,19 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.2.5 / 2019-02-13
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`31`) Lints the code base preparing for a release and minor test improvements.
+
+Bug Fixes
++++++++++
+
+- (:pr:`30`) Fixes ``dihedral`` measurement code for incorrect phase in certain quadrants.
+
 0.2.4 / 2019-02-08
 ------------------
 

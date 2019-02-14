@@ -2,11 +2,11 @@
 Contains relevant physical constants
 """
 
-from decimal import Decimal
 import collections
+from decimal import Decimal
 
-from .. import datum
-from . import ureg
+from ..datum import Datum, print_variables
+from .ureg import build_units_registry
 
 
 class PhysicalConstantsContext:
@@ -45,7 +45,7 @@ class PhysicalConstantsContext:
 
             # physical constant loop
             for k, v in self.raw_codata.items():
-                self.pc[k] = datum.Datum(
+                self.pc[k] = Datum(
                     v["quantity"],
                     v["unit"],
                     Decimal(v["value"]),
@@ -59,8 +59,8 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = datum.Datum('calorie-joule relationship', 'J',
-                                                            Decimal('4.184'), 'uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J', Decimal('4.184'),
+                                                      'uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -97,7 +97,7 @@ class PhysicalConstantsContext:
         # add alternate names for constants or derived values to help QC programs
         for alias in aliases:
             ident, units, value, comment = alias
-            self.pc[ident.lower()] = datum.Datum(ident, units, value, comment)
+            self.pc[ident.lower()] = Datum(ident, units, value, comment)
 
         # add constants as directly callable member data
         for qca in self.pc.values():
@@ -110,7 +110,7 @@ class PhysicalConstantsContext:
     @property
     def ureg(self):
         if self._ureg is None:
-            self._ureg = ureg.build_units_registry(self)
+            self._ureg = build_units_registry(self)
 
         return self._ureg
 
@@ -222,7 +222,7 @@ class PhysicalConstantsContext:
     def string_representation(self):
         """Print name, value, and units of all physical constants."""
 
-        return datum.print_variables(self.pc)
+        return print_variables(self.pc)
 
     def run_comparison(self):
         """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`. Specialized use."""

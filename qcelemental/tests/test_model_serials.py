@@ -1,9 +1,8 @@
 import numpy as np
 import pytest
 from pydantic import ValidationError
-
-from qcelemental.models import (Molecule, ResultInput, Result, OptimizationInput, Optimization, ComputeError,
-                                FailedOperation)
+from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
+                                ResultInput)
 
 
 @pytest.fixture
@@ -36,12 +35,13 @@ def res_success():
 
 @pytest.fixture
 def res_failure(res_success):
-    return {**res_success,
-            "success": False,
-            "error": {
-                "error_type": "expected_testing_error",
-                "error_message": "If you see this, its all good"
-            }}
+    return {
+        **res_success, "success": False,
+        "error": {
+            "error_type": "expected_testing_error",
+            "error_message": "If you see this, its all good"
+        }
+    }
 
 
 @pytest.fixture
@@ -57,12 +57,13 @@ def opti_success(water, result_input, res_success):
 
 @pytest.fixture
 def opti_failure(opti_success):
-    return {**opti_success,
-            "success": False,
-            "error": {
-                "error_type": "expected_testing_error",
-                "error_message": "If you see this, its all good"
-            }}
+    return {
+        **opti_success, "success": False,
+        "error": {
+            "error_type": "expected_testing_error",
+            "error_message": "If you see this, its all good"
+        }
+    }
 
 
 def test_molecule_serialization(water):

@@ -1,9 +1,9 @@
-import sys
+import collections
 import copy
+import logging
 import math
 import pprint
-import collections
-import logging
+import sys
 
 import numpy as np
 
