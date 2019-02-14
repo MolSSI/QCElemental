@@ -13,23 +13,24 @@ subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 schema14_1 = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
-    "molecule" : {
-    "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
-    "symbols": ["He", "He"],
-    "atomic_numbers": [2, 2],
-    "mass_numbers": [4, 4],
-    "atom_labels": ['', ''],
-    'fragments': [[0], [1]],
-    'fragment_charges': [0.0, 0.0],
-    'fragment_multiplicities': [3, 1],
-    'masses': [4.00260325413, 4.00260325413],
-    'name': 'He2',
-    'fix_com': False,
-    'fix_orientation': False,
-    'molecular_charge': 0.0,
-    "molecular_multiplicity": 3,
-    "real": [True, False]
-}}
+    "molecule": {
+        "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
+        "symbols": ["He", "He"],
+        "atomic_numbers": [2, 2],
+        "mass_numbers": [4, 4],
+        "atom_labels": ['', ''],
+        'fragments': [[0], [1]],
+        'fragment_charges': [0.0, 0.0],
+        'fragment_multiplicities': [3, 1],
+        'masses': [4.00260325413, 4.00260325413],
+        'name': 'He2',
+        'fix_com': False,
+        'fix_orientation': False,
+        'molecular_charge': 0.0,
+        "molecular_multiplicity": 3,
+        "real": [True, False]
+    }
+}
 
 schema14_psi4 = {
     "geom": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
@@ -104,30 +105,32 @@ def test_psi4_nm_14e():
 
 
 twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")
-subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(twobohrinang=twobohrinang)
+subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(
+    twobohrinang=twobohrinang)
 
 schema15_1 = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
-    "molecule" : {
-    "geometry": [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0],
-    "symbols": ["H", "O", "H"],
-    "atomic_numbers": [1, 8, 1],
-    "mass_numbers": [1, 16, 2],
-    "atom_labels": ['', '', '_deut'],
-    'fragments': [[0, 1, 2]],
-    'fragment_charges': [0.0],
-    'fragment_multiplicities': [1],
-    'masses': [1.00782503223, 15.99491461957, 2.01410177812],
-    'name': 'H2O',
-    'comment': 'I has a comment',
-    'fix_com': True,
-    'fix_orientation': True,
-    'fix_symmetry': 'cs',
-    'molecular_charge': 0.0,
-    "molecular_multiplicity": 1,
-    "real": [True, True, True]
-}}
+    "molecule": {
+        "geometry": [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0],
+        "symbols": ["H", "O", "H"],
+        "atomic_numbers": [1, 8, 1],
+        "mass_numbers": [1, 16, 2],
+        "atom_labels": ['', '', '_deut'],
+        'fragments': [[0, 1, 2]],
+        'fragment_charges': [0.0],
+        'fragment_multiplicities': [1],
+        'masses': [1.00782503223, 15.99491461957, 2.01410177812],
+        'name': 'H2O',
+        'comment': 'I has a comment',
+        'fix_com': True,
+        'fix_orientation': True,
+        'fix_symmetry': 'cs',
+        'molecular_charge': 0.0,
+        "molecular_multiplicity": 1,
+        "real": [True, True, True]
+    }
+}
 
 schema15_psi4 = {
     "geom": [0.0, 0.0, twobohrinang, 0.0, 0.0, 0.0, twobohrinang, 0.0, 0.0],
@@ -182,57 +185,58 @@ def test_psi4_15c():
 
 
 schema16_1 = {
-        'schema_name': 'qc_schema_input',
-        'schema_version': 1,
-        'molecule': {
-            'geometry': [2., 2., 3.],
-            'symbols': ['C'],
-            'masses': [12.0],
-            'atom_labels': [''],
-            'atomic_numbers': [6],
-            'mass_numbers': [12],
-            'real': [True],
-            'name': 'C',
-            'molecular_charge': 0.,
-            'molecular_multiplicity': 1,
-            'fragments': [[0]],
-            'fragment_charges': [0.],
-            'fragment_multiplicities': [1],
-            'fix_com': False,
-            'fix_orientation': False,
-            'provenance': {
-                'creator': 'Mystery Program',
-                'version': '2018.3',
-                'routine': 'molecule builder',
-            },
-            'connectivity': [(0, 0, 0.0)],
+    'schema_name': 'qc_schema_input',
+    'schema_version': 1,
+    'molecule': {
+        'geometry': [2., 2., 3.],
+        'symbols': ['C'],
+        'masses': [12.0],
+        'atom_labels': [''],
+        'atomic_numbers': [6],
+        'mass_numbers': [12],
+        'real': [True],
+        'name': 'C',
+        'molecular_charge': 0.,
+        'molecular_multiplicity': 1,
+        'fragments': [[0]],
+        'fragment_charges': [0.],
+        'fragment_multiplicities': [1],
+        'fix_com': False,
+        'fix_orientation': False,
+        'provenance': {
+            'creator': 'Mystery Program',
+            'version': '2018.3',
+            'routine': 'molecule builder',
         },
-    }
+        'connectivity': [(0, 0, 0.0)],
+    },
+}
 
 schema16_psi4 = {
-            'units': 'Bohr',
-            'geom': np.array([2., 2., 3.]),
-            'elem': np.array(['C']),
-            'mass': np.array([12.0]),
-            'elbl': np.array(['']),
-            'elez': np.array([6]),
-            'elea': np.array([12]),
-            'real': np.array([True]),
-            'name': 'C',
-            'molecular_charge': 0.,
-            'molecular_multiplicity': 1,
-            'fragment_separators': [],
-            'fragment_charges': [0.],
-            'fragment_multiplicities': [1],
-            'fix_com': False,
-            'fix_orientation': False,
-            'provenance': {
-                'creator': 'Mystery Program',
-                'version': '2018.3',
-                'routine': 'molecule builder',
-            },
-            'connectivity': [(0, 0, 0.0)],
-    }
+    'units': 'Bohr',
+    'geom': np.array([2., 2., 3.]),
+    'elem': np.array(['C']),
+    'mass': np.array([12.0]),
+    'elbl': np.array(['']),
+    'elez': np.array([6]),
+    'elea': np.array([12]),
+    'real': np.array([True]),
+    'name': 'C',
+    'molecular_charge': 0.,
+    'molecular_multiplicity': 1,
+    'fragment_separators': [],
+    'fragment_charges': [0.],
+    'fragment_multiplicities': [1],
+    'fix_com': False,
+    'fix_orientation': False,
+    'provenance': {
+        'creator': 'Mystery Program',
+        'version': '2018.3',
+        'routine': 'molecule builder',
+    },
+    'connectivity': [(0, 0, 0.0)],
+}
+
 
 def test_froto_16a():
     basic = {

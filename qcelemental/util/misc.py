@@ -140,6 +140,7 @@ def _norm(points):
     tmp = np.atleast_2d(points)
     return np.sqrt(np.einsum("ij,ij->i", tmp, tmp))
 
+
 def measure_coordinates(coordinates, measurements, degrees=False):
     """
     Measures a geometry array based on 0-based indices provided, automatically detects distance, angle,
@@ -169,7 +170,8 @@ def measure_coordinates(coordinates, measurements, degrees=False):
             func = compute_dihedral
             kwargs = {"degrees": degrees}
         else:
-            raise KeyError("Unrecognized number of arguements for measurement {}, found {}, expected 2-4.".format(num, len(m)))
+            raise KeyError("Unrecognized number of arguements for measurement {}, found {}, expected 2-4.".format(
+                num, len(m)))
 
         val = func(*[coordinates[x] for x in m], **kwargs)
         ret.append(float(val))
@@ -178,6 +180,7 @@ def measure_coordinates(coordinates, measurements, degrees=False):
         return ret[0]
     else:
         return ret
+
 
 def compute_distance(points1, points2):
     """
@@ -295,8 +298,8 @@ def compute_dihedral(points1, points2, points3, points4, degrees=False):
     #   = b0 minus component that aligns with b1
     # w = projection of b2 onto plane perpendicular to b1
     #   = b2 minus component that aligns with b1
-    v = v1 - np.einsum("ij,ij->i", v1, v1)*v2
-    w = v3 - np.einsum("ij,ij->i", v3, v2)*v2
+    v = v1 - np.einsum("ij,ij->i", v1, v1) * v2
+    w = v3 - np.einsum("ij,ij->i", v3, v2) * v2
 
     # angle between v and w in a plane is the torsion angle
     # v and w may not be normalized but that's fine since tan is y/x

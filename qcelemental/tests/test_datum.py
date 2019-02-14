@@ -10,7 +10,8 @@ from qcelemental.testing import compare_recursive
 def dataset():
     datums = {
         'decimal': qcel.Datum('a label', 'mdyn/angstrom', Decimal('4.4'), 'force constant', '10.1000/182'),
-        'ndarray': qcel.Datum('an array', 'cm^-1', np.arange(4, dtype=np.float) * 4 / 3, 'freqs'),
+        'ndarray': qcel.Datum('an array', 'cm^-1',
+                              np.arange(4, dtype=np.float) * 4 / 3, 'freqs'),
         'float': qcel.Datum('a float', 'kg', 4.4, doi='10.1000/182'),
     }
 

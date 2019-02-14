@@ -57,9 +57,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         if units != 'Bohr':
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
-        qcschema = {'schema_name': 'qc_schema_input',
-                    'schema_version': 1,
-                    'molecule': {}}
+        qcschema = {'schema_name': 'qc_schema_input', 'schema_version': 1, 'molecule': {}}
 
         qcschema['molecule']['symbols'] = np.array(molrec['elem'])
         qcschema['molecule']['geometry'] = geom

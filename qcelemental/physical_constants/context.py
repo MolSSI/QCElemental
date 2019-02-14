@@ -59,8 +59,8 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J',
-                                                            Decimal('4.184'), 'uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J', Decimal('4.184'),
+                                                      'uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),

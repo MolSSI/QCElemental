@@ -1783,6 +1783,7 @@ def test_badprov4_error():
 
     assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e)
 
+
 fullans17 = {
     'geom': np.array([0., 1., 2., 3., 4., 5., 6., 7., 8.]),
     'elea': np.array([1, 32, 1]),
@@ -1804,6 +1805,7 @@ fullans17 = {
         (1, 2, 1.0),
     ],
 }
+
 
 def test_connectivity_17a():
     fullans = copy.deepcopy(fullans17)

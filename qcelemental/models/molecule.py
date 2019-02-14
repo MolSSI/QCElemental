@@ -228,6 +228,7 @@ class Molecule(BaseModel):
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
 
+
 ### Non-Pydantic API functions
 
     def measure(self, measurements, degrees=True):
@@ -636,8 +637,7 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
-                                                              int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:

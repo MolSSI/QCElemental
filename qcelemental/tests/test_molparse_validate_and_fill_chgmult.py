@@ -66,15 +66,14 @@ from qcelemental.testing import compare
         (('Gh/He/Gh', 1, [None, None, None], None, [None, None, None]), (1, [0, 1, 0], 2, [1, 2, 1])),  # 64
         (('Ne/Ne', 2, [-2, None], None, [None, None]), (2, [-2, 4], 1, [1, 1])),  # 65a
         (('Gh/Ne', 2, [-2, None], None, [None, None], {'zero_ghost_fragments': True}), (0, [0, 0], 1, [1, 1])),  # 65c
-    ])
+    ]) # yapf: disable
 def test_validate_and_fill_chgmult(inp, expected):
     system = _systemtranslator[inp[0]]
     kwargs = inp[5] if len(inp) > 5 else {}
 
-    ans = qcelemental.molparse.validate_and_fill_chgmult(
-        system[0], system[1], inp[1], inp[2], inp[3], inp[4], **kwargs)
-    assert compare(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(
-        *inp, expected))
+    ans = qcelemental.molparse.validate_and_fill_chgmult(system[0], system[1], inp[1], inp[2], inp[3], inp[4],
+                                                         **kwargs)
+    assert compare(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(*inp, expected))
 
 
 @pytest.mark.parametrize(
@@ -97,7 +96,7 @@ def test_validate_and_fill_chgmult(inp, expected):
         ('Gh', None, [None], 3, [None]),  # 60
         ('Gh/He', None, [2, None], None, [None, None]),  # 62
         ('Gh/Ne', 2, [-2, None], None, [None, None]),  # 65b
-    ])
+    ]) # yapf: disable
 def test_validate_and_fill_chgmult_irreconcilable(inp):
     system = _systemtranslator[inp[0]]
 
