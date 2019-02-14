@@ -1,9 +1,8 @@
 import numpy as np
 import pytest
 from pydantic import ValidationError
-
-from qcelemental.models import (Molecule, ResultInput, Result, OptimizationInput, Optimization, ComputeError,
-                                FailedOperation)
+from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
+                                ResultInput)
 
 
 @pytest.fixture

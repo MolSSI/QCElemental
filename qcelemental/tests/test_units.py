@@ -1,8 +1,7 @@
+import os
 from decimal import Decimal
 
 import pytest
-import os
-
 import qcelemental
 
 

@@ -5,7 +5,6 @@ Tests the imports and exports of the Molecule object.
 import numpy as np
 import pytest
 from pydantic import ValidationError
-
 from qcelemental.models import Molecule
 
 water_molecule = Molecule.from_data("""

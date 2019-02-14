@@ -1,9 +1,10 @@
-import numpy as np
-import pytest
 from decimal import Decimal
 
+import numpy as np
+import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive
+
 
 @pytest.fixture
 def dataset():

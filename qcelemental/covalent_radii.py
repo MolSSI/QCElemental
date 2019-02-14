@@ -153,7 +153,8 @@ class CovalentRadii:
                 qca = self.cr[el]
                 text.append('{},  /*- [{}] {} {} -*/'.format(qca.data, qca.units, qca.label, qca.comment))
             except KeyError:
-                text.append('{:.2f},  /*- [{}] {} {} -*/'.format(missing, self.native_units, el, 'Default value for missing data'))
+                text.append('{:.2f},  /*- [{}] {} {} -*/'.format(missing, self.native_units, el,
+                                                                 'Default value for missing data'))
 
         text.append('};')
         text.append('#endif /* header guard */')

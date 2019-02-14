@@ -1,12 +1,10 @@
 import copy
 import sys
 
-import pytest
 import numpy as np
-
+import pytest
 import qcelemental
-from qcelemental.testing import compare, compare_recursive, compare_molrecs, tnm
-
+from qcelemental.testing import compare, compare_molrecs, compare_recursive, tnm
 
 _arrays_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_arrays'}
 _string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}

@@ -1,5 +1,4 @@
 import pytest
-
 import qcelemental
 from qcelemental.testing import compare, compare_values
 
