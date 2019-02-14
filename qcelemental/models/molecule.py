@@ -164,8 +164,6 @@ class Molecule(BaseModel):
         n = len(values['symbols'])
         try:
             v = v.reshape(n, 3)
-            if v.shape != (n, 3):
-                raise ValueError()
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
@@ -475,7 +473,7 @@ class Molecule(BaseModel):
         if dtype is None:
             if isinstance(data, str):
                 dtype = "string"
-            elif isinstance(dat, np.array):
+            elif isinstance(data, np.ndarray):
                 dtype = "numpy"
             elif isinstance(data, dict):
                 dtype = "dict"

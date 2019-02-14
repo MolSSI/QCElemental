@@ -8,6 +8,13 @@ from pydantic import ValidationError
 
 from qcelemental.models import Molecule
 
+water_molecule = Molecule.from_data("""
+    0 1
+    O  -1.551007  -0.114520   0.000000
+    H  -1.934259   0.762503   0.000000
+    H  -0.599677   0.040712   0.000000
+    """)
+
 water_dimer_minima = Molecule.from_data(
     """
     0 1
@@ -23,22 +30,37 @@ water_dimer_minima = Molecule.from_data(
     orient=True)
 
 
-def test_molecule_data_constructors():
-
-    ### Water Dimer
+def test_molecule_data_constructor_numpy():
     water_psi = water_dimer_minima.copy()
-    ele = np.array([8, 1, 1, 8, 1, 1]).reshape(-1, 1)
+    ele = np.array(water_psi.atomic_numbers).reshape(-1, 1)
     npwater = np.hstack((ele, water_psi.geometry))
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", dtype="numpy", frags=[3])
+    assert water_psi.compare(water_psi, water_from_np)
 
+    water_from_np = Molecule.from_data(npwater, name="water dimer", frags=[3])
     assert water_psi.compare(water_psi, water_from_np)
     assert water_psi.get_molecular_formula() == "H4O2"
 
+
+def test_molecule_data_constructor_dict():
+    water_psi = water_dimer_minima.copy()
+
     # Check the JSON construct/deconstruct
+    water_from_json = Molecule.from_data(water_psi.dict())
+    assert water_psi.compare(water_psi, water_from_json)
+
     water_from_json = Molecule.from_data(water_psi.json(), "json")
     assert water_psi.compare(water_psi, water_from_json)
     assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
+
+
+def test_molecule_data_constructor_error():
+    with pytest.raises(TypeError):
+        Molecule.from_data([])
+
+    with pytest.raises(KeyError):
+        Molecule.from_data({}, dtype="bad")
 
 
 def test_molecule_np_constructors():
@@ -126,7 +148,7 @@ def test_to_string():
     assert isinstance(mol.to_string(), str)
 
 
-def test_from_file(tmp_path):
+def test_from_file_string(tmp_path):
 
     p = tmp_path / "water.psimol"
     p.write_text(water_dimer_minima.to_string())
@@ -134,6 +156,29 @@ def test_from_file(tmp_path):
     mol = Molecule.from_file(p)
 
     assert mol.compare(water_dimer_minima)
+    assert mol.compare(water_dimer_minima.dict())
+
+
+def test_from_file_json(tmp_path):
+
+    p = tmp_path / "water.json"
+    p.write_text(water_dimer_minima.json())
+
+    mol = Molecule.from_file(p)
+    assert mol.compare(water_dimer_minima)
+
+
+def test_from_file_numpy(tmp_path):
+
+    ele = np.array(water_molecule.atomic_numbers).reshape(-1, 1)
+    npwater = np.hstack((ele, water_molecule.geometry))
+
+    # Try npy
+    p = tmp_path / "water.npy"
+    np.save(p, npwater)
+    mol = Molecule.from_file(p)
+
+    assert mol.compare(water_molecule)
 
 
 def test_water_orient():
@@ -190,9 +235,23 @@ def test_water_orient():
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
 
 
-def test_molecule_errors():
+def test_molecule_errors_extra():
     data = water_dimer_minima.dict()
     data["whatever"] = 5
+    with pytest.raises(ValidationError):
+        Molecule(**data)
+
+
+def test_molecule_errors_connectivity():
+    data = water_molecule.dict()
+    data["connectivity"] = [(-1, 5, 5)]
+    with pytest.raises(ValidationError):
+        Molecule(**data)
+
+
+def test_molecule_errors_shape():
+    data = water_molecule.dict()
+    data["geometry"] = list(range(8))
     with pytest.raises(ValidationError):
         Molecule(**data)
 
@@ -224,13 +283,14 @@ def test_molecule_repeated_hashing():
     mol3 = Molecule(orient=False, **mol2.dict())
     assert h1 == mol3.get_hash()
 
+
 @pytest.mark.parametrize("measure,result", [
     ([0, 1], 1.8086677572537304),
     ([0, 1, 2], 37.98890673587713),
     ([0, 1, 2, 3], 180.0),
     ([[0, 1, 2, 3]], [180.0]),
     ([[1, 3], [3, 1], [1, 2, 3]], [6.3282716, 6.3282716, 149.51606694803903]),
-    ])
+])
 def test_measurements(measure, result):
 
     mol = Molecule(**{
