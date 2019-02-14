@@ -6,9 +6,8 @@ import collections
 from decimal import Decimal
 
 from . import datum
-from .periodic_table import periodictable
-
 from .exceptions import DataUnavailableError
+from .periodic_table import periodictable
 
 
 class CovalentRadii:

@@ -1,11 +1,11 @@
-import re
 import pprint
+import re
 
-from ..util import filter_comments, provenance_stamp
-from ..exceptions import ValidationError, ChoicesError, MoleculeFormatError
-from .from_arrays import from_input_arrays
-from .regex import NUCLEUS, NUMBER, SEP, ENDL, CHGMULT, CARTXYZ
 from . import pubchem
+from ..exceptions import ChoicesError, MoleculeFormatError, ValidationError
+from ..util import filter_comments, provenance_stamp
+from .from_arrays import from_input_arrays
+from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 
 
 def from_string(molstr,

@@ -2,9 +2,9 @@ import copy
 
 import numpy as np
 
-from ..util import unnp
-from ..physical_constants import constants
 from ..exceptions import ValidationError
+from ..physical_constants import constants
+from ..util import unnp
 from .to_string import formula_generator
 
 

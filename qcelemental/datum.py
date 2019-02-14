@@ -3,9 +3,9 @@ Contains the Datum class
 """
 
 import collections
+from decimal import Decimal
 
 import numpy as np
-from decimal import Decimal
 
 
 class Datum(collections.namedtuple('Datum', 'label units data comment doi glossary')):

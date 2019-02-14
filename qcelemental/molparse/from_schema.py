@@ -1,7 +1,7 @@
 import numpy as np
 
-from ..util import provenance_stamp
 from ..exceptions import ValidationError
+from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 

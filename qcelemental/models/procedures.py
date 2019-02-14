@@ -2,9 +2,10 @@
 import json
 from typing import Any, Dict, List
 
-from pydantic import BaseModel, constr, Extra
-from .common_models import (Model, DriverEnum, ComputeError, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default, ndarray_encoder)
+from pydantic import BaseModel, Extra, constr
+
+from .common_models import (ComputeError, DriverEnum, Model, ndarray_encoder, qcschema_input_default,
+                            qcschema_optimization_input_default, qcschema_optimization_output_default)
 from .molecule import Molecule
 from .results import Result
 

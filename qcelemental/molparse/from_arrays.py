@@ -1,15 +1,15 @@
-import re
 import copy
 import pprint
+import re
 
 import numpy as np
 
-from ..util import distance_matrix, update_with_error, unnp, provenance_stamp
-from ..physical_constants import constants
 from ..exceptions import ValidationError
-from .regex import VERSION_PATTERN
+from ..physical_constants import constants
+from ..util import distance_matrix, provenance_stamp, unnp, update_with_error
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
+from .regex import VERSION_PATTERN
 
 
 def from_input_arrays(

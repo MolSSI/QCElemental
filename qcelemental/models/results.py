@@ -1,12 +1,14 @@
 
 import json
 from enum import Enum
-from pydantic import BaseModel, constr, validator, Extra
-from typing import List, Union, Dict, Any
-from .molecule import Molecule
-from .common_models import (Provenance, Model, DriverEnum, ComputeError, qcschema_input_default,
-                            qcschema_output_default, ndarray_encoder)
+from typing import Any, Dict, List, Union
+
+from pydantic import BaseModel, Extra, constr, validator
+
 from ..util import provenance_stamp
+from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray_encoder, qcschema_input_default,
+                            qcschema_output_default)
+from .molecule import Molecule
 
 
 class Properties(BaseModel):

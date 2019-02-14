@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Extra
 from enum import Enum
 from typing import Any
+
 import numpy as np
+from pydantic import BaseModel, Extra
 
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
