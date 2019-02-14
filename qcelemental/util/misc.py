@@ -251,7 +251,7 @@ def compute_angle(points1, points2, points3, degrees=False):
 
 def compute_dihedral(points1, points2, points3, points4, degrees=False):
     """
-    Computes the dihedral angle (p1, p2, p3, p4) between the provided points on a per-row basis.
+    Computes the dihedral angle (p1, p2, p3, p4) between the provided points on a per-row basis using the Praxeolitic formula.
 
     Parameters
     ----------
@@ -276,25 +276,33 @@ def compute_dihedral(points1, points2, points3, points4, degrees=False):
     Units are not considered inside these expressions, please preconvert to the same units before using.
     """
 
+    # FROM: https://stackoverflow.com/questions/20305272/
+
     points1 = np.atleast_2d(points1)
     points2 = np.atleast_2d(points2)
     points3 = np.atleast_2d(points3)
     points4 = np.atleast_2d(points4)
 
     # Build the three vectors
-    v12 = points1 - points2
-    v23 = points2 - points3
-    v34 = points3 - points4
+    v1 = -1.0 * (points2 - points1)
+    v2 = points3 - points2
+    v3 = points4 - points3
 
-    # Build vectors normal to the two planes
-    n123 = np.cross(v12, v23)
-    n234 = np.cross(v23, v34)
-    n1234 = np.cross(n123, n234)
+    # Normalize the central vector
+    v2 = v2 / _norm(v2)
 
-    left = np.einsum("ij,ij->i", n1234, v23) / _norm(v23)
-    right = np.einsum("ij,ij->i", n123, n234)
+    # v = projection of b0 onto plane perpendicular to b1
+    #   = b0 minus component that aligns with b1
+    # w = projection of b2 onto plane perpendicular to b1
+    #   = b2 minus component that aligns with b1
+    v = v1 - np.einsum("ij,ij->i", v1, v1)*v2
+    w = v3 - np.einsum("ij,ij->i", v3, v2)*v2
 
-    angle = np.arctan2(left, right)
+    # angle between v and w in a plane is the torsion angle
+    # v and w may not be normalized but that's fine since tan is y/x
+    x = np.einsum("ij,ij->i", v, w)
+    y = np.einsum("ij,ij->i", np.cross(v2, v), w)
+    angle = np.arctan2(y, x)
 
     if degrees:
         return np.degrees(angle)

@@ -97,10 +97,10 @@ def test_angle():
     _test_angle(p1, p2, p7, np.pi, degrees=False)
 
 
-def test_dihedral():
+def test_dihedral1():
     def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
         tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
-        assert compare_values(value, float(tmp))
+        assert compare_values(value, float(tmp), label="test_dihedral1")
 
     p1 = [0, 0, 0]
     p2 = [0, 2, 0]
@@ -117,16 +117,38 @@ def test_dihedral():
     # 90 phase checks
     p6 = [2, 2, -2]
     p7 = [2, 2, 2]
-    _test_dihedral(p1, p2, p3, p6, -90)
-    _test_dihedral(p1, p2, p3, p7, 90)
+    _test_dihedral(p1, p2, p3, p6, 90)
+    _test_dihedral(p1, p2, p3, p7, -90)
 
     p8 = [0, 4, 0]
-    _test_dihedral(p8, p2, p3, p6, 90)
-    _test_dihedral(p8, p2, p3, p7, -90)
+    _test_dihedral(p8, p2, p3, p6, -90)
+    _test_dihedral(p8, p2, p3, p7, 90)
 
     # Linear checks
     _test_dihedral(p1, p2, p3, [3, 2, 0], 0)
     _test_dihedral(p1, p2, p3, [3, 2 + 1.e-14, 0], 180)
     _test_dihedral(p1, p2, p3, [3, 2 - 1.e-14, 0], 0)
-    _test_dihedral(p1, p2, p3, [3, 2, 0 + 1.e-14], 90)
-    _test_dihedral(p1, p2, p3, [3, 2, 0 - 1.e-14], -90)
+    _test_dihedral(p1, p2, p3, [3, 2, 0 + 1.e-14], -90)
+    _test_dihedral(p1, p2, p3, [3, 2, 0 - 1.e-14], 90)
+
+
+def test_dihedral2():
+    # FROM: https://stackoverflow.com/questions/20305272/
+
+    def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
+        tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
+        assert compare_values(value, float(tmp), label="test_dihedral1")
+
+    p0 = [24.969, 13.428, 30.692]
+    p1 = [24.044, 12.661, 29.808]
+    p2 = [22.785, 13.482, 29.543]
+    p3 = [21.951, 13.670, 30.431]
+    p4 = [23.672, 11.328, 30.466]
+    p5 = [22.881, 10.326, 29.620]
+    p6 = [23.691, 9.935, 28.389]
+    p7 = [22.557, 9.096, 30.459]
+
+    _test_dihedral(p0, p1, p2, p3, -71.21515114671394)
+    _test_dihedral(p0, p1, p4, p5, -171.94319947953642)
+    _test_dihedral(p1, p4, p5, p6, 60.82226735264638)
+    _test_dihedral(p1, p4, p5, p7, -177.63641151521261)
