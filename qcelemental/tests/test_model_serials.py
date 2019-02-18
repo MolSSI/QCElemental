@@ -25,7 +25,16 @@ def water():
 
 @pytest.fixture
 def result_input():
-    return {"id": "12345a", "driver": "gradient", "model": {"method": "filler"}}
+    return {
+        "id": "12345a",
+        "driver": "gradient",
+        "model": {
+            "method": "filler"
+        },
+        "properties": {
+            "scf_one_electron_energy": 5
+        }
+    }
 
 
 @pytest.fixture
@@ -72,6 +81,16 @@ def test_molecule_serialization(water):
     assert isinstance(water.json_dict(), dict)
 
 
+def test_molecule_sparsity():
+    m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0]})
+    assert set(m.dict().keys()) == {"symbols", "geometry"}
+
+    m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0], "identifiers": {"molecular_formula": "He"}})
+    assert set(m.dict().keys()) == {"symbols", "geometry", "identifiers"}
+    assert set(m.dict()["identifiers"].keys()) == {"molecular_formula"}
+    assert set(m.identifiers.dict().keys()) == {"molecular_formula"}
+
+
 def test_result_pass_serialization(water, result_input, res_success):
     res_in = ResultInput(molecule=water, **result_input)
     assert isinstance(res_in.dict(), dict)
@@ -82,6 +101,11 @@ def test_result_pass_serialization(water, result_input, res_success):
     assert isinstance(res_out.dict(), dict)
     assert isinstance(res_out.json(), str)
     assert isinstance(res_out.json_dict(), dict)
+
+
+def test_result_sparsity(water, result_input, res_success):
+    res_in = ResultInput(molecule=water, **result_input)
+    assert set(res_in.dict()["properties"].keys()) == {"scf_one_electron_energy"}
 
 
 def test_result_wrong_serialization(water, result_input, res_failure):

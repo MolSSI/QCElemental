@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Extra, constr
 
@@ -42,7 +42,7 @@ class Optimization(OptimizationInput):
     id: str = None
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
-    final_molecule: Molecule
+    final_molecule: Optional[Molecule]
     trajectory: List[Result] = None
     energies: List[float] = None
     success: bool
@@ -50,13 +50,3 @@ class Optimization(OptimizationInput):
 
     class Config(OptimizationInput.Config):
         pass
-
-    def dict(self, *args, **kwargs):
-        if self.id is None:
-            excl = kwargs.setdefault("exclude", [])
-            if isinstance(excl, list):
-                excl.append("id")
-            elif isinstance(excl, set):
-                excl |= {"id"}
-
-        return super().dict(*args, **kwargs)

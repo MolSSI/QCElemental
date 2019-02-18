@@ -11,30 +11,42 @@ from .molecule import Molecule
 
 
 class Properties(BaseModel):
+
+    # Calcinfo
+    calcinfo_nbasis: int = None
+    calcinfo_nmo: int = None
+    calcinfo_nalpha: int = None
+    calcinfo_nbeta: int = None
+    calcinfo_natom: int = None
+
+    # Canonical
+    nuclear_repulsion_energy: float = None
+    return_energy: float = None
+
+    # SCF Keywords
     scf_one_electron_energy: float = None
     scf_two_electron_energy: float = None
-    nuclear_repulsion_energy: float = None
     scf_vv10_energy: float = None
     scf_xc_energy: float = None
     scf_dispersion_correction_energy: float = None
     scf_dipole_moment: List[float] = None
     scf_total_energy: float = None
     scf_iterations: int = None
+
+    # MP2 Keywords
     mp2_same_spin_correlation_energy: float = None
     mp2_opposite_spin_correlation_energy: float = None
     mp2_singles_energy: float = None
     mp2_doubles_energy: float = None
     mp2_total_correlation_energy: float = None
     mp2_total_energy: float = None
-    calcinfo_nbasis: int = None
-    calcinfo_nmo: int = None
-    calcinfo_nalpha: int = None
-    calcinfo_nbeta: int = None
-    calcinfo_natom: int = None
-    return_energy: float = None
 
     class Config:
-        extra = Extra.allow  # Not yet fully validated, but will accept extra for now
+        allow_mutation = False
+        extra = Extra.forbid
+
+    def dict(self, *args, **kwargs):
+        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
 
 
 class ErrorEnum(str, Enum):
@@ -54,23 +66,13 @@ class ResultInput(BaseModel):
     model: Model
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
-    keywords: dict = {}
+    keywords: Dict[str, Any] = {}
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
         allow_mutation = False
         extra = Extra.allow  # Not yet fully validated, but will accept extra for now
         json_encoders = {**ndarray_encoder}
-
-    def dict(self, *args, **kwargs):
-        if self.id is None:
-            excl = kwargs.setdefault("exclude", [])
-            if isinstance(excl, list):
-                excl.append("id")
-            elif isinstance(excl, set):
-                excl |= {"id"}
-
-        return super().dict(*args, **kwargs)
 
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))

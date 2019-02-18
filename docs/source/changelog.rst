@@ -13,6 +13,15 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.2.6 / 2019-02-18
+------------------
+
+Bug Fixes
++++++++++
+
+- (:pr:`32`) Updates compliance with Pydantic v0.20.
+
+
 0.2.5 / 2019-02-13
 ------------------
 
