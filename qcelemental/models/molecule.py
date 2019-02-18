@@ -6,7 +6,7 @@ import collections
 import hashlib
 import json
 import os
-from typing import List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 from pydantic import BaseModel, Extra, validator
@@ -60,22 +60,23 @@ class NPArray(np.ndarray):
 class Identifiers(BaseModel):
     """Canonical chemical identifiers"""
 
-    # molecule_hash: str = None
-    # molecular_formula: str = None
-    # smiles: str = None
-    # inchi: str = None
-    # inchikey: str = None
-    # canonical_explicit_hydrogen_smiles: str = None
-    # canonical_isomeric_explicit_hydrogen_mapped_smiles: str = None
-    # canonical_isomeric_explicit_hydrogen_smiles: str = None
-    # canonical_isomeric_smiles: str = None
-    # canonical_smiles: str = None
+    molecule_hash: str = None
+    molecular_formula: str = None
+    smiles: str = None
+    inchi: str = None
+    inchikey: str = None
+    canonical_explicit_hydrogen_smiles: str = None
+    canonical_isomeric_explicit_hydrogen_mapped_smiles: str = None
+    canonical_isomeric_explicit_hydrogen_smiles: str = None
+    canonical_isomeric_smiles: str = None
+    canonical_smiles: str = None
 
     class Config:
-        extra = Extra.allow
+        allow_mutation = False
+        extra = Extra.forbid
 
-
-# Cleanup un-initialized variables
+    def dict(self, *args, **kwargs):
+        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
 
 
 class Molecule(BaseModel):
@@ -112,53 +113,51 @@ class Molecule(BaseModel):
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
     id: str = None
+    extra: Dict[str, Any] = None
 
     class Config:
         json_encoders = {**ndarray_encoder}
         allow_mutation = False
         extra = Extra.forbid
 
-    # Internal values as a mutable object we can manipulate
-    class _Internals:
-        provided_fields = set()
-
     def __init__(self, orient=False, **kwargs):
         super().__init__(**kwargs)
-        self.Config.allow_mutation = True  # Set this to set some immutability config
-        self._Internals.provided_fields = set(kwargs.keys())
-        self.symbols = [s.title() for s in self.symbols]  # Title case
 
-        if self.masses is None:  # Setup masses before fixing the orientation
-            self.masses = [periodictable.to_mass(x) for x in self.symbols]
+        # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected
+        # All attributes set bellow are equivalent to the default set.
+        values = self.__values__
 
-        if self.real is None:
-            self.real = [True for _ in self.symbols]
+        values["symbols"] = [s.title() for s in self.symbols]  # Title case
+
+        if values["masses"] is None:  # Setup masses before fixing the orientation
+            values["masses"] = [periodictable.to_mass(x) for x in values["symbols"]]
+
+        if values["real"] is None:
+            values["real"] = [True for _ in values["symbols"]]
 
         if orient:
-            self.geometry = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
+            values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
         else:
-            self.geometry = float_prep(self.geometry, GEOMETRY_NOISE)
+            values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-        if not self.fragments:
-            natoms = self.geometry.shape[0]
-            self.fragments = [list(range(natoms))]
-            self.fragment_charges = [self.molecular_charge]
-            self.fragment_multiplicities = [self.molecular_multiplicity]
+        if not values["fragments"]:
+            natoms = values["geometry"].shape[0]
+            values["fragments"] = [list(range(natoms))]
+            values["fragment_charges"] = [values["molecular_charge"]]
+            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
         else:
-            if not self.fragment_charges:
-                if np.isclose(self.molecular_charge, 0.0):
-                    self.fragment_charges = [0 for _ in self.fragments]
+            if not values["fragment_charges"]:
+                if np.isclose(values["molecular_charge"], 0.0):
+                    values["fragment_charges"] = [0 for _ in values["fragments"]]
                 else:
                     raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
 
-            if not self.fragment_multiplicities:
-                if self.molecular_multiplicity == 1:
-                    self.fragment_multiplicities = [1 for _ in self.fragments]
+            if not values["fragment_multiplicities"]:
+                if values["molecular_multiplicity"] == 1:
+                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
-
-        self.Config.allow_mutation = False  # Reset mutation
 
     @validator('geometry')
     def must_be_3n(cls, v, values, **kwargs):
@@ -209,19 +208,7 @@ class Molecule(BaseModel):
         ]
 
     def dict(self, *args, **kwargs):
-        if ("include" not in kwargs) or (("include" in kwargs) and (kwargs["include"] is None)):
-            kwargs["include"] = self._Internals.provided_fields
-
-        return super().dict(*args, **kwargs)
-
-    def json(self, *args, **kwargs):
-        as_dict = kwargs.pop("as_dict", False)
-
-        ret = super().json(*args, **kwargs)
-        if as_dict:
-            return json.loads(ret)
-        else:
-            return ret
+        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
 
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
