@@ -62,16 +62,6 @@ class ResultInput(BaseModel):
         extra = Extra.allow  # Not yet fully validated, but will accept extra for now
         json_encoders = {**ndarray_encoder}
 
-    def dict(self, *args, **kwargs):
-        if self.id is None:
-            excl = kwargs.setdefault("exclude", [])
-            if isinstance(excl, list):
-                excl.append("id")
-            elif isinstance(excl, set):
-                excl |= {"id"}
-
-        return super().dict(*args, **kwargs)
-
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
 

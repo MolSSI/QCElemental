@@ -211,8 +211,6 @@ class Molecule(BaseModel):
     def dict(self, *args, **kwargs):
         if ("include" not in kwargs) or (("include" in kwargs) and (kwargs["include"] is None)):
             kwargs["include"] = self._Internals.provided_fields
-            if self.id is None:
-                kwargs["include"] -= {"id"}
 
         return super().dict(*args, **kwargs)
 
@@ -227,7 +225,6 @@ class Molecule(BaseModel):
 
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
-
 
 ### Non-Pydantic API functions
 
@@ -637,7 +634,8 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
+                                                              int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:
