@@ -32,6 +32,12 @@ schema14_1 = {
     }
 }
 
+schema14_2 = {
+    'schema_name': 'qcschema_molecule',
+    'schema_version': 2
+}
+schema14_2.update(schema14_1['molecule'])
+
 schema14_psi4 = {
     "geom": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
     "elem": ["He", "He"],
@@ -68,13 +74,20 @@ def test_1_14a():
     assert compare_molrecs(fullans, molrec)
 
 
-def test_1_ang_14b():
+def test_2_14b():
+    fullans = copy.deepcopy(schema14_2)
+    fullans['provenance'] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject14)
-    with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.to_schema(final['qm'], dtype=1, units='Angstrom')
+    kmol = qcelemental.molparse.to_schema(final['qm'], dtype=2)
+    assert compare_molrecs(fullans, kmol)
 
-    assert "QC_JSON_Schema 1 allows only 'Bohr' coordinates" in str(e)
+    fullans = copy.deepcopy(schema14_psi4)
+    fullans['provenance'] = _schema_prov_stamp
+
+    molrec = qcelemental.molparse.from_schema(kmol)
+    molrec = qcelemental.util.unnp(molrec)
+    assert compare_molrecs(fullans, molrec)
 
 
 def test_psi4_14c():
@@ -86,7 +99,7 @@ def test_psi4_14c():
     assert compare_molrecs(fullans, kmol)
 
 
-def test_dtype_d():
+def test_dtype_error():
 
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
@@ -95,7 +108,20 @@ def test_dtype_d():
     assert "Schema dtype not understood" in str(e)
 
 
-def test_psi4_nm_14e():
+@pytest.mark.parametrize("dtype", [
+    1,
+    2,
+])
+def test_qcschema_ang_error(dtype):
+
+    final = qcelemental.molparse.from_string(subject14)
+    with pytest.raises(qcelemental.ValidationError) as e:
+        qcelemental.molparse.to_schema(final['qm'], dtype=dtype, units='Angstrom')
+
+    assert f"QC_JSON_Schema {dtype} allows only 'Bohr' coordinates" in str(e)
+
+
+def test_psi4_nm_error():
 
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
@@ -132,6 +158,12 @@ schema15_1 = {
     }
 }
 
+schema15_2 = {
+    'schema_name': 'qcschema_molecule',
+    'schema_version': 2
+}
+schema15_2.update(schema15_1['molecule'])
+
 schema15_psi4 = {
     "geom": [0.0, 0.0, twobohrinang, 0.0, 0.0, 0.0, twobohrinang, 0.0, 0.0],
     "elem": ["H", "O", "H"],
@@ -163,6 +195,25 @@ def test_1_15a():
     final['qm']['comment'] = 'I has a comment'
     kmol = qcelemental.molparse.to_schema(final['qm'], dtype=1)
     assert compare_molrecs(fullans['molecule'], kmol['molecule'])
+
+    fullans = copy.deepcopy(schema15_psi4)
+    fullans['units'] = 'Bohr'
+    fullans['geom'] = [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0]
+    fullans['provenance'] = _schema_prov_stamp
+
+    molrec = qcelemental.molparse.from_schema(kmol)
+    molrec = qcelemental.util.unnp(molrec)
+    assert compare_molrecs(fullans, molrec)
+
+
+def test_2_15b():
+    fullans = copy.deepcopy(schema15_2)
+    fullans['provenance'] = _string_prov_stamp
+
+    final = qcelemental.molparse.from_string(subject15)
+    final['qm']['comment'] = 'I has a comment'
+    kmol = qcelemental.molparse.to_schema(final['qm'], dtype=2)
+    assert compare_molrecs(fullans, kmol)
 
     fullans = copy.deepcopy(schema15_psi4)
     fullans['units'] = 'Bohr'
@@ -212,6 +263,12 @@ schema16_1 = {
     },
 }
 
+schema16_2 = {
+    'schema_name': 'qcschema_molecule',
+    'schema_version': 2
+}
+schema16_2.update(schema16_1['molecule'])
+
 schema16_psi4 = {
     'units': 'Bohr',
     'geom': np.array([2., 2., 3.]),
@@ -238,7 +295,7 @@ schema16_psi4 = {
 }
 
 
-def test_froto_16a():
+def test_froto_1_16a():
     basic = {
         'schema_name': 'qc_schema_output',
         'schema_version': 1,
@@ -261,10 +318,35 @@ def test_froto_16a():
     assert compare_molrecs(fullans['molecule'], roundtrip['molecule'])
 
 
-def test_tofro_16b():
+def test_froto_2_16a():
+    basic = {
+        'schema_name': 'qcschema_molecule',
+        'schema_version': 2,
+        'geometry': [2, 2, 3],
+        'symbols': ['C'],
+        'connectivity': [(0.0, -0.0, 0)],
+        'provenance': {
+            'creator': 'Mystery Program',
+            'version': '2018.3',
+            'routine': 'molecule builder',
+        },
+    }
+
+    fullans = copy.deepcopy(schema16_2)
+    fullans['provenance'] = _schema_prov_stamp
+
+    roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=2)
+    assert compare_molrecs(fullans, roundtrip)
+
+
+@pytest.mark.parametrize("dtype", [
+    1,
+    2,
+])
+def test_tofro_16b(dtype):
 
     fullans = copy.deepcopy(schema16_psi4)
     fullans['provenance'] = _schema_prov_stamp
 
-    roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=1))
+    roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=dtype))
     assert compare_molrecs(fullans, roundtrip)

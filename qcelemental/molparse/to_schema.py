@@ -15,9 +15,10 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
     ----------
     molrec : dict
         Psi4 json Molecule spec.
-    dtype : {'psi4', 1}
+    dtype : {'psi4', 1, 2}
         Molecule schema format.
         ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44 + #53
+        ``2`` is ``1`` with internal schema_name/version (https://github.com/MolSSI/QCSchema/pull/60)
     units : {'Bohr', 'Angstrom'}
         Units in which to write string. There is not an option to write in
         intrinsic/input units. Some `dtype` may not allow all units.
@@ -53,38 +54,43 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         qcschema['units'] = units
         qcschema['name'] = name
 
-    elif dtype == 1:
+    elif dtype in [1, 2]:
         if units != 'Bohr':
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
-        qcschema = {'schema_name': 'qc_schema_input', 'schema_version': 1, 'molecule': {}}
-
-        qcschema['molecule']['symbols'] = np.array(molrec['elem'])
-        qcschema['molecule']['geometry'] = geom
-        qcschema['molecule']['masses'] = np.array(molrec['mass'])
-        qcschema['molecule']['atomic_numbers'] = np.array(molrec['elez'])
-        qcschema['molecule']['mass_numbers'] = np.array(molrec['elea'])
-        qcschema['molecule']['atom_labels'] = np.array(molrec['elbl'])
-        qcschema['molecule']['name'] = name
+        molecule = {}
+        molecule['symbols'] = np.array(molrec['elem'])
+        molecule['geometry'] = geom
+        molecule['masses'] = np.array(molrec['mass'])
+        molecule['atomic_numbers'] = np.array(molrec['elez'])
+        molecule['mass_numbers'] = np.array(molrec['elea'])
+        molecule['atom_labels'] = np.array(molrec['elbl'])
+        molecule['name'] = name
         if 'comment' in molrec:
-            qcschema['molecule']['comment'] = molrec['comment']
-        qcschema['molecule']['molecular_charge'] = molrec['molecular_charge']
-        qcschema['molecule']['molecular_multiplicity'] = molrec['molecular_multiplicity']
-        qcschema['molecule']['real'] = np.array(molrec['real'])
+            molecule['comment'] = molrec['comment']
+        molecule['molecular_charge'] = molrec['molecular_charge']
+        molecule['molecular_multiplicity'] = molrec['molecular_multiplicity']
+        molecule['real'] = np.array(molrec['real'])
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
-        qcschema['molecule']['fragments'] = [fr.tolist() for fr in fidx]
-        qcschema['molecule']['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
-        qcschema['molecule']['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
-        qcschema['molecule']['fix_com'] = molrec['fix_com']
-        qcschema['molecule']['fix_orientation'] = molrec['fix_orientation']
+        molecule['fragments'] = [fr.tolist() for fr in fidx]
+        molecule['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
+        molecule['fragment_multiplicities'] = np.array(molrec['fragment_multiplicities']).tolist()
+        molecule['fix_com'] = molrec['fix_com']
+        molecule['fix_orientation'] = molrec['fix_orientation']
         if 'fix_symmetry' in molrec:
-            qcschema['molecule']['fix_symmetry'] = molrec['fix_symmetry']
-        qcschema['molecule']['provenance'] = copy.deepcopy(molrec['provenance'])
+            molecule['fix_symmetry'] = molrec['fix_symmetry']
+        molecule['provenance'] = copy.deepcopy(molrec['provenance'])
         if 'connectivity' in molrec:
-            qcschema['molecule']['connectivity'] = copy.deepcopy(molrec['connectivity'])
+            molecule['connectivity'] = copy.deepcopy(molrec['connectivity'])
+
+        if dtype == 1:
+            qcschema = {'schema_name': 'qcschema_input', 'schema_version': 1, 'molecule': molecule}
+        elif dtype == 2:
+            qcschema = molecule
+            qcschema.update({'schema_name': 'qcschema_molecule', 'schema_version': 2})
 
     else:
-        raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1}}. Found {}.".format(dtype))
+        raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1, 2}}. Found {}.".format(dtype))
 
     if not np_out:
         qcschema = unnp(qcschema)

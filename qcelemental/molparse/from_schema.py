@@ -25,7 +25,13 @@ def from_schema(molschema, verbose=1):
     if ((molschema.get('schema_name', '').startswith('qc_schema')
          or molschema.get('schema_name', '').startswith('qcschema')) and (molschema.get('schema_version', '') == 1)):
         ms = molschema['molecule']
+    elif molschema.get('schema_name', '').startswith('qcschema_molecule') and molschema.get('schema_version', '') == 2:
+        ms = molschema
+    else:
+        raise ValidationError("""Schema not recognized, schema_name/schema_version: {}/{} """.format(
+            molschema.get('schema_name', '(none)'), molschema.get('schema_version', '(none)')))
 
+    if True:
         if 'fragments' in ms:
             frag_pattern = ms['fragments']
         else:
@@ -75,10 +81,6 @@ def from_schema(molschema, verbose=1):
 
         # replace from_arrays stamp with from_schema stamp
         molrec['provenance'] = provenance_stamp(__name__)
-
-    else:
-        raise ValidationError("""Schema not recognized, schema_name/schema_version: {}/{} """.format(
-            molschema.get('schema_name', '(none)'), molschema.get('schema_version', '(none)')))
 
     return molrec
 
