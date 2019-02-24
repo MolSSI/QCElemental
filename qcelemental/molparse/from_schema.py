@@ -31,56 +31,55 @@ def from_schema(molschema, verbose=1):
         raise ValidationError("""Schema not recognized, schema_name/schema_version: {}/{} """.format(
             molschema.get('schema_name', '(none)'), molschema.get('schema_version', '(none)')))
 
-    if True:
-        if 'fragments' in ms:
-            frag_pattern = ms['fragments']
-        else:
-            frag_pattern = [np.arange(len(ms['symbols']))]
+    if 'fragments' in ms:
+        frag_pattern = ms['fragments']
+    else:
+        frag_pattern = [np.arange(len(ms['symbols']))]
 
-        dcontig = contiguize_from_fragment_pattern(
-            frag_pattern,
-            geom=ms['geometry'],
-            elea=ms.get('mass_numbers', None),
-            elez=ms.get('atomic_numbers', None),
-            elem=ms['symbols'],
-            mass=ms.get('masses', None),
-            real=ms.get('real', None),
-            elbl=ms.get('atom_labels', None),
-            throw_reorder=True)
+    dcontig = contiguize_from_fragment_pattern(
+        frag_pattern,
+        geom=ms['geometry'],
+        elea=ms.get('mass_numbers', None),
+        elez=ms.get('atomic_numbers', None),
+        elem=ms['symbols'],
+        mass=ms.get('masses', None),
+        real=ms.get('real', None),
+        elbl=ms.get('atom_labels', None),
+        throw_reorder=True)
 
-        molrec = from_arrays(
-            geom=dcontig['geom'],
-            elea=dcontig['elea'],
-            elez=dcontig['elez'],
-            elem=dcontig['elem'],
-            mass=dcontig['mass'],
-            real=dcontig['real'],
-            elbl=dcontig['elbl'],
-            name=ms.get('name', None),
-            units='Bohr',
-            input_units_to_au=None,
-            fix_com=ms.get('fix_com', None),
-            fix_orientation=ms.get('fix_orientation', None),
-            fix_symmetry=ms.get('fix_symmetry', None),
-            fragment_separators=dcontig['fragment_separators'],
-            fragment_charges=ms.get('fragment_charges', None),
-            fragment_multiplicities=ms.get('fragment_multiplicities', None),
-            molecular_charge=ms.get('molecular_charge', None),
-            molecular_multiplicity=ms.get('molecular_multiplicity', None),
-            comment=ms.get('comment', None),
-            provenance=ms.get('provenance', None),
-            connectivity=ms.get('connectivity', None),
-            domain='qm',
-            #missing_enabled_return=missing_enabled_return,
-            speclabel=False,
-            #tooclose=tooclose,
-            #zero_ghost_fragments=zero_ghost_fragments,
-            #nonphysical=nonphysical,
-            #mtol=mtol,
-            verbose=verbose)
+    molrec = from_arrays(
+        geom=dcontig['geom'],
+        elea=dcontig['elea'],
+        elez=dcontig['elez'],
+        elem=dcontig['elem'],
+        mass=dcontig['mass'],
+        real=dcontig['real'],
+        elbl=dcontig['elbl'],
+        name=ms.get('name', None),
+        units='Bohr',
+        input_units_to_au=None,
+        fix_com=ms.get('fix_com', None),
+        fix_orientation=ms.get('fix_orientation', None),
+        fix_symmetry=ms.get('fix_symmetry', None),
+        fragment_separators=dcontig['fragment_separators'],
+        fragment_charges=ms.get('fragment_charges', None),
+        fragment_multiplicities=ms.get('fragment_multiplicities', None),
+        molecular_charge=ms.get('molecular_charge', None),
+        molecular_multiplicity=ms.get('molecular_multiplicity', None),
+        comment=ms.get('comment', None),
+        provenance=ms.get('provenance', None),
+        connectivity=ms.get('connectivity', None),
+        domain='qm',
+        #missing_enabled_return=missing_enabled_return,
+        speclabel=False,
+        #tooclose=tooclose,
+        #zero_ghost_fragments=zero_ghost_fragments,
+        #nonphysical=nonphysical,
+        #mtol=mtol,
+        verbose=verbose)
 
-        # replace from_arrays stamp with from_schema stamp
-        molrec['provenance'] = provenance_stamp(__name__)
+    # replace from_arrays stamp with from_schema stamp
+    molrec['provenance'] = provenance_stamp(__name__)
 
     return molrec
 
