@@ -50,10 +50,10 @@ class Datum(BaseModel):
     @validator('data')
     def must_be_numerical(cls, v, values, **kwargs):
         try:
-            ident = 1.0 * v
+            1.0 * v
         except TypeError:
             try:
-                ident = Decimal('1.0') * v
+                Decimal('1.0') * v
             except TypeError:
                 raise ValueError('Datum data should be float, Decimal, or np.ndarray')
 
