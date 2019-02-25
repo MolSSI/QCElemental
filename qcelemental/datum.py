@@ -1,14 +1,15 @@
 """
-Contains the Datum class
+Datum Object Model
 """
 
-import collections
 from decimal import Decimal
+from typing import Any
 
 import numpy as np
+from pydantic import BaseModel, validator
 
 
-class Datum(collections.namedtuple('Datum', 'label units data comment doi glossary')):
+class Datum(BaseModel):
     """Facilitates the storage of quantum chemical results by labeling them with basic metadata.
 
     Attributes
@@ -28,8 +29,35 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
 
     """
 
-    def __new__(cls, label, units, data, comment='', doi=None, glossary=''):
-        return super(Datum, cls).__new__(cls, label, units, data, comment, doi, glossary)
+    label: str
+    units: str
+    data: Any
+    comment: str = ''
+    doi: str = None
+    glossary: str = ''
+
+    def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None):
+        kwargs = {'label': label, 'units': units, 'data': data}
+        if comment is not None:
+            kwargs['comment'] = comment
+        if doi is not None:
+            kwargs['doi'] = doi
+        if glossary is not None:
+            kwargs['glossary'] = glossary
+
+        super().__init__(**kwargs)
+
+    @validator('data')
+    def must_be_numerical(cls, v, values, **kwargs):
+        try:
+            ident = 1.0 * v
+        except TypeError:
+            try:
+                ident = Decimal('1.0') * v
+            except TypeError:
+                raise ValueError('Datum data should be float, Decimal, or np.ndarray')
+
+        return v
 
     def __str__(self, label=''):
         width = 40
@@ -45,19 +73,8 @@ class Datum(collections.namedtuple('Datum', 'label units data comment doi glossa
         text.append('-' * width)
         return '\n'.join(text)
 
-    def to_dict(self):
-        dicary = dict(self._asdict())  # dict, not OrderedDict
-        for d in ['doi', 'comment', 'glossary']:
-            dicary.pop(d)
-        if isinstance(self.data, (np.ndarray, np.number)):
-            if self.data.dtype == np.complex:
-                dicary['data'] = [dicary['data'].real.tolist(), dicary['data'].imag.tolist()]
-            else:
-                dicary['data'] = dicary['data'].tolist()
-        elif isinstance(self.data, (complex, np.complex)):
-            dicary['data'] = [self.data.real, self.data.imag]
-
-        return dicary
+    def dict(self, *args, **kwargs):
+        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
 
     def to_units(self, units=None):
         from .physical_constants import constants

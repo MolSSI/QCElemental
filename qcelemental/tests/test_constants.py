@@ -66,7 +66,7 @@ def test_access_2f():
 
 def test_access_2g():
     ref = {'label': 'Hartree energy in eV', 'units': 'eV', 'data': Decimal('27.21138602')}
-    dqca = qcelemental.constants.get('Hartree energy in eV', return_tuple=True).to_dict()
+    dqca = qcelemental.constants.get('Hartree energy in eV', return_tuple=True).dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]

@@ -5,7 +5,7 @@ Contains covalent radii
 import collections
 from decimal import Decimal
 
-from . import datum
+from .datum import Datum, print_variables
 from .exceptions import DataUnavailableError
 from .periodic_table import periodictable
 
@@ -43,7 +43,7 @@ class CovalentRadii:
             self.native_units = alvarez_2008_covalent_radii["units"]
 
             for cr in alvarez_2008_covalent_radii["covalent_radii"]:
-                self.cr[cr[0]] = datum.Datum(cr[0], self.native_units, Decimal(cr[1]), cr[2], doi=self.doi)
+                self.cr[cr[0]] = Datum(cr[0], self.native_units, Decimal(cr[1]), comment=cr[2], doi=self.doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'ALVAREZ2008', } are currently supported")
 
@@ -61,7 +61,7 @@ class CovalentRadii:
         # add alternate names to help QC programs
         for alias in aliases:
             ident, units, value, comment = alias
-            self.cr[ident.capitalize()] = datum.Datum(ident, units, value, comment)
+            self.cr[ident.capitalize()] = Datum(ident, units, value, comment=comment)
 
     def __str__(self):
         return "CovalentRadii(context='{}')".format(self.name)
@@ -125,7 +125,7 @@ class CovalentRadii:
     def string_representation(self):
         """Print name, value, and units of all covalent radii."""
 
-        return datum.print_variables(self.cr)
+        return print_variables(self.cr)
 
     def write_c_header(self, filename='covrad.h', missing=2.0):
         """Write C header file defining covalent radii array.
