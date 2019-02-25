@@ -54,7 +54,7 @@ def test_get(inp, expected):
 
 def test_get_tuple():
     ref = {'label': 'Mn', 'units': 'angstrom', 'data': Decimal('1.61')}
-    dqca = qcelemental.covalentradii.get('manganese', return_tuple=True).to_dict()
+    dqca = qcelemental.covalentradii.get('manganese', return_tuple=True).dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]

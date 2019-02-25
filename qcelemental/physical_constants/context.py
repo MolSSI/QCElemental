@@ -49,7 +49,7 @@ class PhysicalConstantsContext:
                     v["quantity"],
                     v["unit"],
                     Decimal(v["value"]),
-                    'uncertainty={}'.format(v["uncertainty"]),
+                    comment='uncertainty={}'.format(v["uncertainty"]),
                     doi=self.doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
@@ -60,7 +60,7 @@ class PhysicalConstantsContext:
 
         # Extra relationships
         self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J', Decimal('4.184'),
-                                                      'uncertainty=(exact)')
+                                                      comment='uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -97,7 +97,7 @@ class PhysicalConstantsContext:
         # add alternate names for constants or derived values to help QC programs
         for alias in aliases:
             ident, units, value, comment = alias
-            self.pc[ident.lower()] = Datum(ident, units, value, comment)
+            self.pc[ident.lower()] = Datum(ident, units, value, comment=comment)
 
         # add constants as directly callable member data
         for qca in self.pc.values():

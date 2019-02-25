@@ -13,6 +13,12 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+- (:pr:`??`) Converts `qcel.Datum` to Pydantic model. Changes
+  (a) comment, doi, glossary fields must be accessed by keyword,
+  (b) `to_dict()` becomes `dict()` and instead of label, units, data only,
+  now comment, doi, glossary present _if_ non-default,
+  (c) complex values no longer list-ified by `to_dict()`.
+
 0.2.6 / 2019-02-18
 ------------------
 

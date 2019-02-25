@@ -222,7 +222,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     name = _prefix or "root"
     prefix = name + "."
 
-    if isinstance(expected, (str, int, bool)):
+    if isinstance(expected, (str, int, bool, complex)):
         if expected != computed:
             errors.append((name, "Value {} did not match {}.".format(expected, computed)))
 
