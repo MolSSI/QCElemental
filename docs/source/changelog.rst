@@ -13,11 +13,31 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-- (:pr:`??`) Converts `qcel.Datum` to Pydantic model. Changes
+
+0.3.0 / 2019-02-DD
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`33`) `molparse.to_schema` recognizes `dtype=2` in keeping with
+  GH:MolSSI/QCSchema#60 with internal `schema_name=qcschema_molecule` and
+  `schema_version=2` fields. `molparse.from_schema` recognizes external
+  fields (existing functionality), internal fields (dtype=2), and mixed.
+- (:pr:`33`) Pydantic molecule model now contains schema_name and schema_version=2 information.
+
+Enhancements
+++++++++++++
+
+- (:pr:`34`) Converts `qcel.Datum` to Pydantic model. Changes:
   (a) comment, doi, glossary fields must be accessed by keyword,
-  (b) `to_dict()` becomes `dict()` and instead of label, units, data only,
-  now comment, doi, glossary present _if_ non-default,
+  (b) `to_dict()` becomes `dict()` and instead of only label, units,
+  data fields in dict, now comment, doi, glossary present _if_ non-default,
   (c) complex values no longer list-ified by `to_dict()`.
+
+Bug Fixes
++++++++++
+
 
 0.2.6 / 2019-02-18
 ------------------
@@ -72,7 +92,7 @@ Enhancements
 Bug Fixes
 +++++++++
 
-- (:pr:`21`) Molparse's ``from_schema`` method not correctly parses the new ``qcschema_X`` strings for schema names.
+- (:pr:`21`) Molparse's ``from_schema`` method now correctly parses the new ``qcschema_X`` strings for schema names.
 - (:pr:`23`) Pydantic model serializations now correctly handle Numpy Array objects in nested ``BaseModels``. Model serialization testing added to catch these in the future.
 
 0.2.1 / 2019-01-27

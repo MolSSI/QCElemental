@@ -112,6 +112,24 @@ def test_from_schema_1_14e():
     assert compare_molrecs(schema14_psi4_np, ans, 4)
 
 
+def test_from_schema_1p5_14e():
+    # this is the oddball case where passing code has internally a dtype=2 molecule
+    #   but it's still passing the outer data structure
+    schema = {"schema_name": "qc_schema", "schema_version": 1, "molecule": copy.deepcopy(schema14_1)}
+    schema['molecule'].update({"schema_name": "qcschema_molecule", "schema_version": 2})
+
+    ans = qcel.molparse.from_schema(schema)
+    assert compare_molrecs(schema14_psi4_np, ans, 4)
+
+
+def test_from_schema_2_14e():
+    schema = copy.deepcopy(schema14_1)
+    schema.update({"schema_name": "qcschema_molecule", "schema_version": 2})
+
+    ans = qcel.molparse.from_schema(schema)
+    assert compare_molrecs(schema14_psi4_np, ans, 4)
+
+
 def test_from_schema_error_f():
     schema = {"schema_name": "private_schema", "schema_version": 1, "molecule": copy.deepcopy(schema14_1)}
 

@@ -53,6 +53,10 @@ def test_molecule_data_constructor_dict():
     assert water_psi.compare(water_psi, water_from_json)
     assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
 
+    assert water_psi.get_hash() == 'b41f1e38bc4be5482fcd1d4dd53ca7c65146ab91'  # copied from schema_version=1
+    assert water_psi.schema_version == 2
+    assert water_psi.schema_name == 'qcschema_molecule'
+
 
 def test_molecule_data_constructor_error():
     with pytest.raises(TypeError):

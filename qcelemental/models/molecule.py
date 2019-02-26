@@ -9,13 +9,13 @@ import os
 from typing import Any, Dict, List, Tuple
 
 import numpy as np
-from pydantic import BaseModel, Extra, validator
+from pydantic import BaseModel, Extra, validator, constr
 
 from ..molparse import from_arrays, from_string, to_schema
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..util import measure_coordinates, provenance_stamp
-from .common_models import Provenance, ndarray_encoder
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -82,6 +82,8 @@ class Identifiers(BaseModel):
 class Molecule(BaseModel):
 
     # Required data
+    schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
+    schema_version: int = 2
     symbols: List[str]
     # geometry: List[float]
     geometry: NPArray
