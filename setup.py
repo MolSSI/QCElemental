@@ -15,9 +15,9 @@ if __name__ == "__main__":
     setuptools.setup(
         name='qcelemental',
         description='Essentials for Quantum Chemistry.',
-        author='Lori A. Burns',
+        author='Lori A. Burns, Daniel G. A. Smith, MolSSI',
         author_email='lori.burns@gmail.com',
-        url="https://github.com/MolSSI/qcelemental",
+        url="https://github.com/MolSSI/QCElemental",
         license='BSD-3C',
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
@@ -37,13 +37,11 @@ if __name__ == "__main__":
                 'sphinx_rtd_theme',
             ],
             'tests': [
-                'deepdiff',
                 'pytest',
                 'pytest-cov',
             ],
         },
         tests_require=[
-            'deepdiff',
             'pytest',
             'pytest-cov',
         ],
