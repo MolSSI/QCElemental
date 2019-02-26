@@ -1,20 +1,24 @@
 import json
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Extra, constr
+from pydantic import BaseModel, constr
 
+from ..util import provenance_stamp
 from .common_models import (ComputeError, DriverEnum, Model, ndarray_encoder, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default, ObjectId)
+                            qcschema_optimization_input_default, qcschema_optimization_output_default, Provenance)
 from .molecule import Molecule
 from .results import Result
 
 
 class QCInputSpecification(BaseModel):
-    driver: DriverEnum
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
+
+    driver: DriverEnum
     model: Model
     keywords: Dict[str, Any] = {}
+
+    extras: Dict[str, Any] = {}
 
     class Config:
         extra = "forbid"
@@ -22,13 +26,19 @@ class QCInputSpecification(BaseModel):
 
 
 class OptimizationInput(BaseModel):
-    id: Optional[ObjectId] = None
+    id: Optional[str] = None
+    hash_index: Optional[str] = None
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_input_default) = qcschema_optimization_input_default
     schema_version: int = 1
+
     keywords: Dict[str, Any] = {}
+    extras: Dict[str, Any] = {}
+
     input_specification: QCInputSpecification
     initial_molecule: Molecule
+
+    provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
         extra = "forbid"
@@ -42,9 +52,14 @@ class OptimizationInput(BaseModel):
 class Optimization(OptimizationInput):
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
-    final_molecule: Optional[Molecule]
+
+    final_molecule: Optional[Molecule] = None
     trajectory: List[Result] = None
     energies: List[float] = None
+
+    stdout: Optional[str] = None
+    stderr: Optional[str] = None
+
     success: bool
     error: ComputeError = None
 

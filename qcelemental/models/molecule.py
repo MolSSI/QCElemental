@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_string, to_schema
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..util import measure_coordinates, provenance_stamp
-from .common_models import Provenance, ndarray_encoder, ObjectId,  qcschema_molecule_default
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -114,7 +114,7 @@ class Molecule(BaseModel):
 
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
-    id: Optional[ObjectId] = None
+    id: Optional[str] = None
     extras: Dict[str, Any] = None
 
     class Config:

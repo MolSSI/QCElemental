@@ -1,12 +1,11 @@
 import json
-from enum import Enum
 from typing import Any, Dict, List, Union, Optional
 
 from pydantic import BaseModel, constr, validator
 
 from ..util import provenance_stamp
 from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray_encoder, qcschema_input_default,
-                            qcschema_output_default, ObjectId)
+                            qcschema_output_default)
 from .molecule import Molecule
 
 
@@ -54,7 +53,7 @@ class Properties(BaseModel):
 
 class ResultInput(BaseModel):
     """The MolSSI Quantum Chemistry Schema"""
-    id: Optional[ObjectId] = None
+    id: Optional[str] = None
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
 
@@ -62,6 +61,8 @@ class ResultInput(BaseModel):
     driver: DriverEnum
     model: Model
     keywords: Dict[str, Any] = {}
+
+    extras: Dict[str, Any] = {}
 
     provenance: Provenance = provenance_stamp(__name__)
 
@@ -80,6 +81,9 @@ class Result(ResultInput):
 
     properties: Properties = Properties()
     return_result: Union[float, List[float], Dict[str, Any]]
+
+    stdout: Optional[str] = None
+    stderr: Optional[str] = None
 
     success: bool
     error: ComputeError = None
