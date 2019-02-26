@@ -1,12 +1,12 @@
 import json
 from enum import Enum
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
-from pydantic import BaseModel, Extra, constr, validator
+from pydantic import BaseModel, constr, validator
 
 from ..util import provenance_stamp
 from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray_encoder, qcschema_input_default,
-                            qcschema_output_default)
+                            qcschema_output_default, ObjectId)
 from .molecule import Molecule
 
 
@@ -43,16 +43,10 @@ class Properties(BaseModel):
 
     class Config:
         allow_mutation = False
-        extra = Extra.forbid
+        extra = "forbid"
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
-
-
-class ErrorEnum(str, Enum):
-    convergence_error = "convergence_error"
-    file_error = "file_error"
-    memory_error = "memory_error"
 
 
 ### Primary models
@@ -60,18 +54,21 @@ class ErrorEnum(str, Enum):
 
 class ResultInput(BaseModel):
     """The MolSSI Quantum Chemistry Schema"""
-    id: str = None
+    id: Optional[ObjectId] = None
+    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
+    schema_version: int = 1
+
     molecule: Molecule
     driver: DriverEnum
     model: Model
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
-    schema_version: int = 1
     keywords: Dict[str, Any] = {}
+
     provenance: Provenance = provenance_stamp(__name__)
 
     class Config:
         allow_mutation = False
-        extra = Extra.allow  # Not yet fully validated, but will accept extra for now
+        extra = "forbid"
+
         json_encoders = {**ndarray_encoder}
 
     def json_dict(self, *args, **kwargs):
@@ -80,10 +77,12 @@ class ResultInput(BaseModel):
 
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
+
     properties: Properties = Properties()
+    return_result: Union[float, List[float], Dict[str, Any]]
+
     success: bool
     error: ComputeError = None
-    return_result: Union[float, List[float], Dict[str, Any]]
 
     class Config(ResultInput.Config):
         # Will carry other properties

@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Extra, constr
 
 from .common_models import (ComputeError, DriverEnum, Model, ndarray_encoder, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default)
+                            qcschema_optimization_input_default, qcschema_optimization_output_default, ObjectId)
 from .molecule import Molecule
 from .results import Result
 
@@ -17,11 +17,12 @@ class QCInputSpecification(BaseModel):
     keywords: Dict[str, Any] = {}
 
     class Config:
-        extra = Extra.allow
+        extra = "forbid"
         allow_mutation = False
 
 
 class OptimizationInput(BaseModel):
+    id: Optional[ObjectId] = None
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_input_default) = qcschema_optimization_input_default
     schema_version: int = 1
@@ -30,7 +31,7 @@ class OptimizationInput(BaseModel):
     initial_molecule: Molecule
 
     class Config:
-        extra = Extra.allow
+        extra = "forbid"
         allow_mutation = False
         json_encoders = {**ndarray_encoder}
 
@@ -39,7 +40,6 @@ class OptimizationInput(BaseModel):
 
 
 class Optimization(OptimizationInput):
-    id: str = None
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
     final_molecule: Optional[Molecule]
