@@ -7,6 +7,20 @@ from pydantic import BaseModel, Extra
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
+class ObjectId(str):
+    _valid_hex = set("0123456789abcdef")
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if (not isinstance(v, str)) or (len(v) != 24) or (not set(v) <= cls._valid_hex):
+            raise TypeError("The string {} is not a valid 24-character hexadecimal ObjectId!".format(v))
+        return v
+
+
 class Provenance(BaseModel):
     creator: str
     version: str = None
