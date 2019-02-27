@@ -1,7 +1,7 @@
 Overview
 ========
 
-Python implementations of the `MolSSI QCSchema <https://github.com/MolSSI/QC_JSON_Schema>`_
+Python implementations of the `MolSSI QCSchema <https://github.com/MolSSI/QCSchema>`_
 are available within QCElemental. These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
 as their base to provide serialization, validation, and manipluation.
 
@@ -53,7 +53,7 @@ To update or alter a model the ``copy`` command can be used with the ``update`` 
 Serialization
 -------------
 
-All models can be serialized back to their dictionary counterparts through a the ``dict`` function:
+All models can be serialized back to their dictionary counterparts through the ``dict`` function:
 
 .. code-block:: python
 
