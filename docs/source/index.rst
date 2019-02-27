@@ -76,7 +76,6 @@ Index
 
 **User Interface**
 
-* :doc:`models`
 * :doc:`physconst`
 
 .. toctree::
@@ -84,8 +83,22 @@ Index
    :hidden:
    :caption: User Interface
 
-   models
    physconst
+
+**QCSchema Models**
+
+Implementation descriptions of QCSchema objects in Python.
+
+* :doc:`models`
+* :doc:`molecule`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: QCSchema Models
+
+   models
+   molecule
 
 **Developer Documentation**
 
