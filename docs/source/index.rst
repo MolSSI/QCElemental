@@ -24,7 +24,7 @@ Alternatively, with the use of the Pint unit conversion package, arbitrary
 conversion factors can be obtained:
 
 .. code-block:: python
-    
+
     >>> qcel.constants.conversion_factor("bohr", "miles")
     3.2881547429884475e-14
 
@@ -37,7 +37,7 @@ A variety of periodic table quantities are available using virtually any alias:
 
     >>> qcel.periodictable.to_mass("Ne")
     19.9924401762
-    
+
     >>> qcel.periodictable.to_mass(10)
     19.9924401762
 
@@ -64,6 +64,7 @@ Index
 **Getting Started**
 
 * :doc:`install`
+* :doc:`community`
 
 .. toctree::
    :maxdepth: 1
@@ -71,17 +72,44 @@ Index
    :caption: Getting Started
 
    install
+   community
+
+**User Interface**
+
+* :doc:`physconst`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: User Interface
+
+   physconst
+
+**QCSchema Models**
+
+Implementation descriptions of QCSchema objects in Python.
+
+* :doc:`models`
+* :doc:`molecule`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: QCSchema Models
+
+   models
+   molecule
 
 **Developer Documentation**
 
-Contains in-depth developer documentation.
+Contains in-depth developer documentation and API references.
 
 * :doc:`api`
 * :doc:`changelog`
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Developer Documentation
    :hidden:
 
    api

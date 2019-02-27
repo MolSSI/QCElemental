@@ -10,9 +10,7 @@ You can update qcelemental using `conda <https://www.anaconda.com/download/>`_::
 
     conda install qcelemental -c conda-forge
 
-This installs QCElemental and its dependancies.
-
-The qcelemental package is maintained on the
+This installs QCElemental and its dependancies. The qcelemental package is maintained on the
 `conda-forge channel <https://conda-forge.github.io/>`_.
 
 
