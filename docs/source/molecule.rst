@@ -2,9 +2,9 @@ Molecule Model
 ==============
 
 A Python implementations of the `MolSSI QCSchema
-<https://github.com/MolSSI/QC_JSON_Schema>`_ ``Molecule`` object. There are
-many definitions of ``Molecule`` depending on the domain, this particular
-``Molecule`` is an immutable 3D cartesian representation with support for
+<https://github.com/MolSSI/QCSchema>`_ ``Molecule`` object.
+A "Molecule" many definitions of ``Molecule`` depending on the domain; this particular
+``Molecule`` is an immutable 3D Cartesian representation with support for
 quantum chemistry constructs.
 
 
