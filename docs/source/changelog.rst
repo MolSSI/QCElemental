@@ -25,6 +25,8 @@ New Features
   `schema_version=2` fields. `molparse.from_schema` recognizes external
   fields (existing functionality), internal fields (dtype=2), and mixed.
 - (:pr:`33`) Pydantic molecule model now contains schema_name and schema_version=2 information.
+- (:pr:`35`) Models now have an ``extra`` field for extra attributes, no additional base keys are allowed.
+
 
 Enhancements
 ++++++++++++
@@ -34,6 +36,7 @@ Enhancements
   (b) `to_dict()` becomes `dict()` and instead of only label, units,
   data fields in dict, now comment, doi, glossary present _if_ non-default,
   (c) complex values no longer list-ified by `to_dict()`.
+- (:pr:`36`) Changelog and Models documentation.
 
 Bug Fixes
 +++++++++
