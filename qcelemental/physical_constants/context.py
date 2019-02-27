@@ -109,6 +109,9 @@ class PhysicalConstantsContext:
 
     @property
     def ureg(self):
+        """
+        The internal Pint units registry.
+        """
         if self._ureg is None:
             self._ureg = build_units_registry(self)
 
@@ -164,6 +167,13 @@ class PhysicalConstantsContext:
 #       e0                        'electric constant'                         = 8.854187817E-12      # Vacuum permittivity (Fm$^{-1}$)
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
+
+    def Quantity(self, data):
+        """
+        Return a Pint Quantity from the internal UnitsRegistry object.
+        """
+
+        return self.ureg.Quantity(data)
 
     def conversion_factor(self, base_unit, conv_unit):
         """
