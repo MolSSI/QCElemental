@@ -1,5 +1,5 @@
-Models
-======
+Overview
+========
 
 Python implementations of the `MolSSI QCSchema <https://github.com/MolSSI/QC_JSON_Schema>`_
 are available within QCElemental. These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_

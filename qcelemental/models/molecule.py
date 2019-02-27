@@ -278,7 +278,7 @@ class Molecule(BaseModel):
                 text += """  {0:17.12f}""".format(
                     self.geometry[i][j] * constants.conversion_factor("bohr", "angstroms"))
             text += "\n"
-        text += "\n"
+        # text += "\n"
 
         return text
 
