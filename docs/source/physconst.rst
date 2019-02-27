@@ -23,7 +23,7 @@ Conversion factors are available for any valid conversion:
 
 .. warning::
 
-    QCElemental is explicit, ``kcal`` is quite different from ``kcal / mol``. Be careful of common
+    QCElemental is explicit: ``kcal`` is quite different from ``kcal / mol``. Be careful of common
     shorthands.
 
     .. code-block:: python
@@ -54,7 +54,7 @@ QCElemental supports the ``pint`` "values with units" Quantity objects:
 
 These objects are often used for code that has many different units to make
 the requisite bookkeeping nearly effortless. In addition, these objects have
-NumPy and Pandas support is built-in:
+NumPy and Pandas support built-in:
 
 .. code-block:: python
 
@@ -113,9 +113,9 @@ Contexts
 --------
 
 Physical constants are continuously refined over time as experimental precision
-increases or redefinition occurs, to prepare for future changes physical
+increases or redefinition occurs. To prepare for future changes, physical
 constants are contained in contexts. The ``qcel.constants`` context will be
-updated over time to the latest NIST data, to "pin" a context version an
+updated over time to the latest NIST data. To "pin" a context version, a
 specific context can be created like so:
 
 
