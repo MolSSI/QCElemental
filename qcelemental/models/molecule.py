@@ -6,10 +6,10 @@ import collections
 import hashlib
 import json
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Optional
 
 import numpy as np
-from pydantic import BaseModel, Extra, validator, constr
+from pydantic import BaseModel, validator, constr
 
 from ..molparse import from_arrays, from_string, to_schema
 from ..periodic_table import periodictable
@@ -43,7 +43,7 @@ def float_prep(array, around):
     return array
 
 
-class NPArray(np.ndarray):
+class NDArray(np.ndarray):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -73,7 +73,7 @@ class Identifiers(BaseModel):
 
     class Config:
         allow_mutation = False
-        extra = Extra.forbid
+        extra = "forbid"
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
@@ -86,7 +86,7 @@ class Molecule(BaseModel):
     schema_version: int = 2
     symbols: List[str]
     # geometry: List[float]
-    geometry: NPArray
+    geometry: NDArray
 
     # Molecule data
     name: str = ""
@@ -114,13 +114,13 @@ class Molecule(BaseModel):
 
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
-    id: str = None
-    extra: Dict[str, Any] = None
+    id: Optional[str] = None
+    extras: Dict[str, Any] = None
 
     class Config:
         json_encoders = {**ndarray_encoder}
         allow_mutation = False
-        extra = Extra.forbid
+        extra = "forbid"
 
     def __init__(self, orient=False, **kwargs):
         super().__init__(**kwargs)
