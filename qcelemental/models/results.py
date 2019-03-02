@@ -9,7 +9,7 @@ from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray
 from .molecule import Molecule
 
 
-class Properties(BaseModel):
+class ResultProperties(BaseModel):
 
     # Calcinfo
     calcinfo_nbasis: int = None
@@ -79,7 +79,7 @@ class ResultInput(BaseModel):
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
 
-    properties: Properties = Properties()
+    properties: ResultProperties = ResultProperties()
     return_result: Union[float, List[float], Dict[str, Any]]
 
     stdout: Optional[str] = None
