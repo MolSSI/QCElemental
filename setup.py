@@ -1,9 +1,14 @@
 import os
+import sys
 import setuptools
 import versioneer
 
 short_description = "QCElemental is a resource module for quantum chemistry containing physical"
 "constants and periodic table data from NIST and molecule handlers."
+
+# from https://github.com/pytest-dev/pytest-runner#conditional-requirement
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 try:
     with open("README.md", "r") as handle:
@@ -24,9 +29,7 @@ if __name__ == "__main__":
         packages=setuptools.find_packages(exclude=['*checkup*']),
         include_package_data=True,
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
-        setup_requires=[
-            'pytest-runner'
-        ],
+        setup_requires=[] + pytest_runner,
         install_requires=[
             'numpy',
             'pint',
