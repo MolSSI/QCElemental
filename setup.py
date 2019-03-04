@@ -43,12 +43,12 @@ if __name__ == "__main__":
                 'sphinx_rtd_theme',
             ],
             'tests': [
-                'pytest',
+                'pytest >= 3.9.1',
                 'pytest-cov',
             ],
         },
         tests_require=[
-            'pytest',
+            'pytest >= 3.9.1',
             'pytest-cov',
         ],
         classifiers=[

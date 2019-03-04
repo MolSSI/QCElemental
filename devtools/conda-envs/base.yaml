@@ -11,6 +11,6 @@ dependencies:
   - pydantic>=0.20
 
     # Testing
-  - pytest
+  - pytest>=3.9.1
   - pytest-cov
   - codecov
