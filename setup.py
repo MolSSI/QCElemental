@@ -24,6 +24,9 @@ if __name__ == "__main__":
         packages=setuptools.find_packages(exclude=['*checkup*']),
         include_package_data=True,
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
+        setup_requires=[
+            'pytest-runner'
+        ],
         install_requires=[
             'numpy',
             'pint',
