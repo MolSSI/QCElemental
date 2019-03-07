@@ -79,7 +79,7 @@ class ResultInput(BaseModel):
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
 
-    properties: ResultProperties = ResultProperties()
+    properties: ResultProperties
     return_result: Union[float, List[float], Dict[str, Any]]
 
     stdout: Optional[str] = None
@@ -87,6 +87,7 @@ class Result(ResultInput):
 
     success: bool
     error: ComputeError = None
+    provenance: Provenance
 
     class Config(ResultInput.Config):
         # Will carry other properties
