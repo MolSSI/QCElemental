@@ -82,11 +82,7 @@ def test_molecule_serialization(water):
 
 
 def test_molecule_sparsity():
-    m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0]})
-    assert set(m.dict().keys()) == {"symbols", "geometry", "schema_name", "schema_version"}
-
     m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0], "identifiers": {"molecular_formula": "He"}})
-    assert set(m.dict().keys()) == {"symbols", "geometry", "identifiers", "schema_name", "schema_version"}
     assert set(m.dict()["identifiers"].keys()) == {"molecular_formula"}
     assert set(m.identifiers.dict().keys()) == {"molecular_formula"}
 

@@ -130,7 +130,6 @@ class Molecule(BaseModel):
 
             schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"])
 
-            schema = {k: v for k, v in schema.items() if k in original_keys}
             kwargs = {**kwargs, **schema} # Allow any extra fields
 
         super().__init__(**kwargs)
