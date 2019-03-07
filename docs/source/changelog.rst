@@ -14,15 +14,35 @@ Changelog
 .. +++++++++
 
 
+0.3.1 / 2019-03-07
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`37`) Documentation now pulls from the custom QC Archive Sphinx Theme, but can fall back to the standard
+  RTD theme. This allows all docs across QCA to appear consistent with each other.
+- (:pr:`41`) Conda-build recipe removed to avoid possible confusion for everyone who isn't a Conda-Forge
+  recipe maintainer. Tests now rely on the ``conda env`` setups.
+- (:pr:`44`) Molecule objects are now always validated against a more rigorous model and fragment multiplicities are
+  fixed at the correct times, even when no multiplicities are provided.
+
+
+Bug Fixes
++++++++++
+
+- (:pr:`39`) Fixed ``setup.py`` to call ``pytest`` instead of ``unittest`` when running tests on install
+- (:pr:`41`) Pinned a minimum Pytest version to make sure errors are not because of too old of a pytest version
+
 0.3.0 / 2019-02-27
 ------------------
 
 New Features
 ++++++++++++
 
-- (:pr:`33`) `molparse.to_schema` recognizes `dtype=2` in keeping with
-  GH:MolSSI/QCSchema#60 with internal `schema_name=qcschema_molecule` and
-  `schema_version=2` fields. `molparse.from_schema` recognizes external
+- (:pr:`33`) ``molparse.to_schema`` recognizes ``dtype=2`` in keeping with
+  GH:MolSSI/QCSchema#60 with internal ``schema_name=qcschema_molecule`` and
+  ``schema_version=2`` fields. ``molparse.from_schema`` recognizes external
   fields (existing functionality), internal fields (dtype=2), and mixed.
 - (:pr:`33`) Pydantic molecule model now contains schema_name and schema_version=2 information.
 - (:pr:`35`) Models now have an ``extra`` field for extra attributes, no additional base keys are allowed.
@@ -31,11 +51,11 @@ New Features
 Enhancements
 ++++++++++++
 
-- (:pr:`34`) Converts `qcel.Datum` to Pydantic model. Changes:
+- (:pr:`34`) Converts ``qcel.Datum`` to Pydantic model. Changes:
   (a) comment, doi, glossary fields must be accessed by keyword,
-  (b) `to_dict()` becomes `dict()` and instead of only label, units,
+  (b) ``to_dict()`` becomes ``dict()`` and instead of only label, units,
   data fields in dict, now comment, doi, glossary present _if_ non-default,
-  (c) complex values no longer list-ified by `to_dict()`.
+  (c) complex values no longer list-ified by ``to_dict()``.
 - (:pr:`36`) Changelog and Models documentation.
 
 Bug Fixes
@@ -117,7 +137,7 @@ New Features
 Enhancements
 ++++++++++++
 
-- (:pr:`13`) Function `util.unnp` that recursively list-ifies ndarray in a dict now handles lists and flattens.
+- (:pr:`13`) Function ``util.unnp`` that recursively list-ifies ndarray in a dict now handles lists and flattens.
 
 0.1.3 / 2018-12-14
 ------------------
@@ -170,20 +190,20 @@ New Features
 ++++++++++++
 
 - (:pr:`6`) Updated molparse to write new Molecule QCSchema fields in keeping with GH:MolSSI/QCSchema#44
-- Periodic Table data from NIST SRD144 (c. pre-2015?) collected into `qcelemental.periodictable` instance,
-  with accessors `to_Z`, `to_element`, `to_E`, `to_mass`, `to_A` (and redundant accessors `to_mass_number`,
-  `to_atomic_number`, to_symbol`, `to_name`) in `float` and `Decimal` formats. Also includes functionality
+- Periodic Table data from NIST SRD144 (c. pre-2015?) collected into ``qcelemental.periodictable`` instance,
+  with accessors ``to_Z``, ``to_element``, ``to_E``, ``to_mass``, ``to_A`` (and redundant accessors ``to_mass_number``,
+  ``to_atomic_number``, ``to_symbol``, ``to_name``) in ``float`` and ``Decimal`` formats. Also includes functionality
   to write a corresponding "C" header.
-- Physical Constants data from NIST SRD121 (CODATA 2014) collected into `qcelemental.constants` instance,
-  with access through `qcelemental.constants.Faraday_constant` (exact capitalization; `float` result) or
-  `get` (free capitalization; `float` or `Decimal` result). Also includes functionality to write a
+- Physical Constants data from NIST SRD121 (CODATA 2014) collected into ``qcelemental.constants`` instance,
+  with access through ``qcelemental.constants.Faraday_constant`` (exact capitalization; ``float`` result) or
+  ``get`` (free capitalization; ``float`` or ``Decimal`` result). Also includes functionality to write a
   corresponding "C" header.
-- `molparse` submodule where `from_string`, `from_array`, `from_schema` constructors parse and rearrange
+- ``molparse`` submodule where ``from_string``, ``from_array``, ``from_schema`` constructors parse and rearrange
   (if necessary) and validate molecule topology inputs from the QC and EFP domains into a QCSchema-like
   data structure. Current deficiencies from QCSchema are non-contiguous fragments and "provenance" fields.
-  Accessors `to_string` and `to_schema` are highly customizable.
+  Accessors ``to_string`` and ``to_schema`` are highly customizable.
 - A `pint <https://pint.readthedocs.io/en/latest/>`_ context has been built around the NIST physical constants
-  data so that `qcelemental.constants.conversion_factor(from_unit, to_unit)` uses the QCElemental values
-  in its conversions. Resulting `float` is within uncertainty range of NIST constants but won't be exact
+  data so that ``qcelemental.constants.conversion_factor(from_unit, to_unit)`` uses the QCElemental values
+  in its conversions. Resulting ``float`` is within uncertainty range of NIST constants but won't be exact
   for conversions involving multiple fundamental dimensions or ``wavelength -> energy != 1 / (energy -> wavelength)``.
 
