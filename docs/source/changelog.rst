@@ -25,7 +25,7 @@ Enhancements
 - (:pr:`41`) Conda-build recipe removed to avoid possible confusion for everyone who isn't a Conda-Forge
   recipe maintainer. Tests now rely on the ``conda env`` setups.
 - (:pr:`44`) Molecule objects are now always validated against a more rigorous model and fragment multiplicities are
-  fixed at the correct times, even when no multiplicities are provided.
+  fixed at the correct times, even when no multiplicities are provided. Molecule defaults to ``dtype=2``.
 
 
 Bug Fixes

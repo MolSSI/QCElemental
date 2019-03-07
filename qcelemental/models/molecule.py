@@ -126,11 +126,11 @@ class Molecule(BaseModel):
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
-            original_keys = set(kwargs.keys())
+            # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
             schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"])
 
-            kwargs = {**kwargs, **schema} # Allow any extra fields
+            kwargs = {**kwargs, **schema}  # Allow any extra fields
 
         super().__init__(**kwargs)
 
