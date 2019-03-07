@@ -272,6 +272,8 @@ def test_charged_fragment():
         fragment_charges=[0.0, 0.0],
         fragment_multiplicities=[2, 2],
         fragments=[[0], [1]])
+    assert mol.molecular_multiplicity == 3
+    assert mol.molecular_charge == 0
     f1 = mol.get_fragment(0)
     assert f1.molecular_multiplicity == 2
     assert f1.fragment_multiplicities == [2]
