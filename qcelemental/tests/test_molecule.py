@@ -4,8 +4,8 @@ Tests the imports and exports of the Molecule object.
 
 import numpy as np
 import pytest
-from pydantic import ValidationError
 from qcelemental.models import Molecule
+import qcelemental as qcel
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -112,10 +112,9 @@ def test_water_minima_data():
     assert np.allclose(mol.fragment_charges, [0, 0])
     assert np.allclose(mol.fragment_multiplicities, [1, 1])
     assert hasattr(mol, "provenance")
-    assert np.allclose(
-        mol.geometry,
-        [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.], [1.00578203, -0.1092573, 0.],
-         [-2.6821528, -0.12325075, 0.], [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
+    assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
+                                      [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
+                                      [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
     assert mol.get_hash() == "b41f1e38bc4be5482fcd1d4dd53ca7c65146ab91"
 
 
@@ -124,8 +123,8 @@ def test_water_minima_fragment():
     mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
-    assert frag_0.get_hash() == "6d253a5a66eb68b611ab6bb0f15b55bbd3f6fe91"
-    assert frag_1.get_hash() == "feb5c6127ca54d715b999c15ea1ea1772ada8c5d"
+    assert frag_0.get_hash() == "0b13814f79b8f74f17499b31fe7b76cd97b89449"
+    assert frag_1.get_hash() == "4469ff05895a6375a91ce9a225f96e3f9938450b"
 
     frag_0_1 = mol.get_fragment(0, 1)
     frag_1_0 = mol.get_fragment(1, 0)
@@ -242,21 +241,21 @@ def test_water_orient():
 def test_molecule_errors_extra():
     data = water_dimer_minima.dict()
     data["whatever"] = 5
-    with pytest.raises(ValidationError):
+    with pytest.raises(Exception):
         Molecule(**data)
 
 
 def test_molecule_errors_connectivity():
     data = water_molecule.dict()
     data["connectivity"] = [(-1, 5, 5)]
-    with pytest.raises(ValidationError):
+    with pytest.raises(Exception):
         Molecule(**data)
 
 
 def test_molecule_errors_shape():
     data = water_molecule.dict()
     data["geometry"] = list(range(8))
-    with pytest.raises(ValidationError):
+    with pytest.raises(Exception):
         Molecule(**data)
 
 
@@ -264,6 +263,22 @@ def test_molecule_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
     assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
+
+
+def test_charged_fragment():
+    mol = Molecule(
+        symbols=["Li", "Li"],
+        geometry=[0, 0, 0, 0, 0, 5],
+        fragment_charges=[0.0, 0.0],
+        fragment_multiplicities=[2, 2],
+        fragments=[[0], [1]])
+    assert mol.molecular_multiplicity == 3
+    assert mol.molecular_charge == 0
+    f1 = mol.get_fragment(0)
+    assert f1.molecular_multiplicity == 2
+    assert f1.fragment_multiplicities == [2]
+    assert pytest.approx(f1.molecular_charge) == 0
+    assert pytest.approx(f1.fragment_charges) == [0]
 
 
 def test_molecule_repeated_hashing():
