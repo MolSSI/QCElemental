@@ -480,7 +480,7 @@ class Molecule(BaseModel):
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
-            input_dict = to_schema(from_string(data)["qm"], dtype=1)["molecule"]
+            input_dict = to_schema(from_string(data)["qm"], dtype=2)
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -489,7 +489,7 @@ class Molecule(BaseModel):
                 "units": kwargs.pop("units", "Angstrom"),
                 "fragment_separators": kwargs.pop("frags", [])
             }
-            input_dict = to_schema(from_arrays(**data), dtype=1)["molecule"]
+            input_dict = to_schema(from_arrays(**data), dtype=2)
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":
