@@ -53,15 +53,16 @@ class Optimization(OptimizationInput):
     schema_name: constr(
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
 
-    final_molecule: Optional[Molecule] = None
-    trajectory: List[Result] = None
-    energies: List[float] = None
+    final_molecule: Optional[Molecule]
+    trajectory: List[Result]
+    energies: List[float]
 
     stdout: Optional[str] = None
     stderr: Optional[str] = None
 
     success: bool
     error: ComputeError = None
+    provenance: Provenance
 
     class Config(OptimizationInput.Config):
         pass
