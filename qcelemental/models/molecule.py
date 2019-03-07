@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Tuple, Optional
 import numpy as np
 from pydantic import BaseModel, validator, constr
 
-from ..molparse import from_arrays, from_string, to_schema
+from ..molparse import from_arrays, from_schema, from_string, to_schema
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..util import measure_coordinates, provenance_stamp
@@ -122,7 +122,17 @@ class Molecule(BaseModel):
         allow_mutation = False
         extra = "forbid"
 
-    def __init__(self, orient=False, **kwargs):
+    def __init__(self, orient=False, validate=True, **kwargs):
+        if validate:
+            kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
+            kwargs["schema_version"] = kwargs.pop("schema_version", 2)
+            original_keys = set(kwargs.keys())
+
+            schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"])
+
+            schema = {k: v for k, v in schema.items() if k in original_keys}
+            kwargs = {**kwargs, **schema} # Allow any extra fields
+
         super().__init__(**kwargs)
 
         # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected
@@ -351,6 +361,8 @@ class Molecule(BaseModel):
             fragment_multiplicities.append(self.fragment_multiplicities[frag])
 
         constructor_dict["fragments"] = fragments
+        constructor_dict["fragment_charges"] = fragment_charges
+        constructor_dict["fragment_multiplicities"] = fragment_multiplicities
         constructor_dict["symbols"] = symbols
         constructor_dict["geometry"] = np.vstack(geom_blocks)
         constructor_dict["real"] = real_atoms
