@@ -3,6 +3,7 @@ import pytest
 from pydantic import ValidationError
 from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
                                 ResultInput)
+from qcelemental.util import provenance_stamp
 
 
 @pytest.fixture
@@ -36,7 +37,14 @@ def result_input():
 
 @pytest.fixture
 def res_success():
-    return {"success": True, "return_result": 536.2}
+    return {
+        "success": True,
+        "return_result": 536.2,
+        "properties": {
+            "scf_one_electron_energy": 5
+        },
+        "provenance": provenance_stamp("QCEl")
+    }
 
 
 @pytest.fixture
@@ -58,7 +66,13 @@ def opti_input():
 @pytest.fixture
 def opti_success(water, result_input, res_success):
     res = Result(molecule=water, **result_input, **res_success)
-    return {"success": True, "trajectory": [res] * 3, "final_molecule": water, "energies": [1.0, 2.0, 3.0]}
+    return {
+        "success": True,
+        "trajectory": [res] * 3,
+        "final_molecule": water,
+        "energies": [1.0, 2.0, 3.0],
+        "provenance": provenance_stamp("QCEl")
+    }
 
 
 def test_molecule_serialization(water):
@@ -69,10 +83,10 @@ def test_molecule_serialization(water):
 
 def test_molecule_sparsity():
     m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0]})
-    assert set(m.dict().keys()) == {"symbols", "geometry"}
+    assert set(m.dict().keys()) == {"symbols", "geometry", "schema_name", "schema_version"}
 
     m = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0], "identifiers": {"molecular_formula": "He"}})
-    assert set(m.dict().keys()) == {"symbols", "geometry", "identifiers"}
+    assert set(m.dict().keys()) == {"symbols", "geometry", "identifiers", "schema_name", "schema_version"}
     assert set(m.dict()["identifiers"].keys()) == {"molecular_formula"}
     assert set(m.identifiers.dict().keys()) == {"molecular_formula"}
 
@@ -83,7 +97,7 @@ def test_result_pass_serialization(water, result_input, res_success):
     assert isinstance(res_in.json(), str)
     assert isinstance(res_in.json_dict(), dict)
 
-    res_out = Result(molecule=water, properties={"scf_one_electron_energy": 5}, **result_input, **res_success)
+    res_out = Result(molecule=water, **result_input, **res_success)
     assert isinstance(res_out.dict(), dict)
     assert isinstance(res_out.json(), str)
     assert isinstance(res_out.json_dict(), dict)
@@ -113,20 +127,6 @@ def test_optimization_pass_serialization(water, opti_input, opti_success):
     assert isinstance(opti_out.dict(), dict)
     assert isinstance(opti_out.json(), str)
     assert isinstance(opti_out.json_dict(), dict)
-
-
-def test_optimization_wrong_serialization(water, opti_input):
-    opti_out = Optimization(
-        initial_molecule=water,
-        success=False,
-        **opti_input,
-        error={"error_type": "expected_testing_error",
-               "error_message": "If you see this, its all good"})
-    assert isinstance(opti_out.error, ComputeError)
-    assert isinstance(opti_out.dict(), dict)
-    out_json = opti_out.json()
-    assert isinstance(out_json, str)
-    assert 'its all good' in out_json
 
 
 def test_failed_operation(water, result_input):
