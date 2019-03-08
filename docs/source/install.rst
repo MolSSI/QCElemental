@@ -6,9 +6,11 @@ You can install qcelemental with ``conda``, with ``pip``, or by installing from 
 Conda
 -----
 
-You can update qcelemental using `conda <https://www.anaconda.com/download/>`_::
+You can update qcelemental using `conda <https://www.anaconda.com/download/>`_:
 
-    conda install qcelemental -c conda-forge
+.. code-block:: console
+
+    >>> conda install qcelemental -c conda-forge
 
 This installs QCElemental and its dependancies. The qcelemental package is maintained on the
 `conda-forge channel <https://conda-forge.github.io/>`_.
@@ -20,27 +22,47 @@ Pip
 To install QCElemental with ``pip`` there are a few options, depending on which
 dependencies you would like to keep up to date:
 
-*   ``pip install qcelemental``
+.. code-block:: console
+
+   >>> pip install qcelemental
 
 Install from Source
 -------------------
 
 To install QCElemental from source, clone the repository from `github
-<https://github.com/molssi/qcelemental>`_::
+<https://github.com/molssi/qcelemental>`_:
 
-    git clone https://github.com/MolSSI/QCElemental.git
-    cd QCElemental
-    python setup.py install
+.. code-block:: console
 
-or use ``pip`` for a local install::
+    >>> git clone https://github.com/MolSSI/QCElemental.git
+    >>> cd QCElemental
+    >>> python setup.py install
 
-    pip install -e .
+or use ``pip`` for a local install:
+
+.. code-block:: console
+
+    >>> pip install -e .
 
 
-Test
-----
+Testing
+-------
+QCElemental can be tested once install using the ``pytest`` package which can be installed via Conda as well:
 
-Test QCElemental with ``pytest``::
+.. code-block:: console
 
-    cd QCElemental
-    pytest
+    >>> conda install pytest -c conda-forge
+
+Once ``pytest`` is installed QCElemental's testing suite can be run by:
+
+.. code-block:: console
+
+    >>> pytest --pyargs qcelemental
+
+
+QCElemental can also be tested from source with:
+
+.. code-block:: console
+
+    >>> cd QCElemental
+    >>> pytest

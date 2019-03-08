@@ -63,10 +63,14 @@ All models can be serialized back to their dictionary counterparts through the `
 
 JSON representations are supported out of the box for all models:
 
+.. code-block:: python
+
     >>> mol.json()
     '{"symbols": ["He"], "geometry": [0.0, 0.0, 0.0]}'
 
 Raw JSON can also be parsed back into a model:
+
+.. code-block:: python
 
     >>> mol.parse_raw(mol.json())
     <    Geometry (in Angstrom), charge = 0.0, multiplicity = 1:

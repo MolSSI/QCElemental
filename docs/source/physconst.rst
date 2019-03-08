@@ -58,6 +58,7 @@ NumPy and Pandas support built-in:
 
 .. code-block:: python
 
+    >>> import numpy as np
     >>> a = qcel.constants.Quantity("kcal") * np.arange(4)
     >>> a
     <Quantity([0 1 2 3], 'kilocalorie')>
