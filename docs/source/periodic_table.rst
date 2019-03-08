@@ -1,7 +1,7 @@
 Periodic Table
 ==============
 
-Full access to the periodic table is also available within QCPortal. This
+Full access to the periodic table is also available within QCElemental. This
 includes mass, atomic number, symbol, and name information. Data is indexed
 many ways so that many possible aliases can lead to a single quantity. For
 example, to obtain the mass (in a.m.u) of of Carbon atomic number, symbol,
