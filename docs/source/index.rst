@@ -77,6 +77,7 @@ Index
 **User Interface**
 
 * :doc:`physconst`
+* :doc:`periodic_table`
 
 .. toctree::
    :maxdepth: 1
@@ -84,6 +85,7 @@ Index
    :caption: User Interface
 
    physconst
+   periodic_table
 
 **QCSchema Models**
 

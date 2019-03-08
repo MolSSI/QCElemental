@@ -4,6 +4,7 @@ Contains relevant physical constants
 
 import collections
 from decimal import Decimal
+from typing import Union
 
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry
@@ -59,8 +60,8 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship', 'J', Decimal('4.184'),
-                                                      comment='uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = Datum(
+            'calorie-joule relationship', 'J', Decimal('4.184'), comment='uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -108,16 +109,20 @@ class PhysicalConstantsContext:
         return "PhysicalConstantsContext(context='{}')".format(self.name)
 
     @property
-    def ureg(self):
-        """
-        The internal Pint units registry.
+    def ureg(self) -> 'UnitRegistry':
+        """Returns the internal Pint units registry.
+
+        Returns
+        -------
+        UnitRegistry
+            The pint context
         """
         if self._ureg is None:
             self._ureg = build_units_registry(self)
 
         return self._ureg
 
-    def get(self, physical_constant, return_tuple=False):
+    def get(self, physical_constant: str, return_tuple: bool=False) -> Union[float, 'Datum']:
         """Access a physical constant, `physical_constant`.
 
         Parameters
@@ -129,10 +134,9 @@ class PhysicalConstantsContext:
 
         Returns
         -------
-        float
+        Union[float, 'Datum']
             When ``return_tuple=False``, value of physical constant.
-        qcelemental.Datum
-            When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of physical constant as Decimal.
+            When ``return_tuple=True``, Datum with units, description, uncertainty, and value of physical constant as Decimal.
 
         """
         qca = self.pc[physical_constant.lower()]
@@ -168,25 +172,23 @@ class PhysicalConstantsContext:
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def Quantity(self, data):
-        """
-        Return a Pint Quantity from the internal UnitsRegistry object.
+    def Quantity(self, data: str) -> 'Quantity':
+        """Returns a Pint Quantity.
         """
 
         return self.ureg.Quantity(data)
 
-    def conversion_factor(self, base_unit, conv_unit):
-        """
-        Provides the conversion factor from one unit to another using the current NIST 2014CODATA.
+    def conversion_factor(self, base_unit: Union[str, 'Quantity'], conv_unit: Union[str, 'Quantity']) -> float:
+        """Provides the conversion factor from one unit to another.
 
-        Warning!
+        The conversion factor is based on the current contexts CODATA.
 
         Parameters
         ----------
-        base_unit : str or Quantity
+        base_unit : Union[str, 'Quantity']
             The original units
-        conv_unit : str or Quantity
-            The units to conver to
+        conv_unit : Union[str, 'Quantity']
+            The units to convert to
 
         Examples
         --------
@@ -229,7 +231,7 @@ class PhysicalConstantsContext:
 
         return self.ureg.convert(factor, base_unit, conv_unit)
 
-    def string_representation(self):
+    def string_representation(self) -> str:
         """Print name, value, and units of all physical constants."""
 
         return print_variables(self.pc)

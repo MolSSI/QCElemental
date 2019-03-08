@@ -73,23 +73,30 @@ associated with it.
 
 .. code-block:: python
 
->>> mol.get_molecular_formula()
-    'He2'
+    >>> mol.get_molecular_formula()
+        'He2'
 
 Fragments
 ---------
 
-A Molecule with fragments can be created either using the ``--`` separators in the
-``from_data`` function:
+A Molecule with fragments can be created either using the ``--`` separators in
+the ``from_data`` function or by passing explicit fragments in the
+``Molecule`` constructor:
 
 .. code-block:: python
 
     >>> mol = qcel.models.Molecule.from_data(
-            """
-            Ne 0.000000 0.000000 0.000000
-            --
-            Ne 3.100000 0.000000 0.000000
-            """)
+    >>>       """
+    >>>       Ne 0.000000 0.000000 0.000000
+    >>>       --
+    >>>       Ne 3.100000 0.000000 0.000000
+    >>>       """)
+
+    >>> mol = qcel.models.Molecule(
+    >>>       geometry=[0, 0, 0, 3.1, 0, 0],
+    >>>       symbols=["Ne", "Ne"],
+    >>>       fragments=[[0], [1]]
+    >>>       )
 
 Fragments from a molecule containing fragment information can be aquired by:
 

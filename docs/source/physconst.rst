@@ -4,8 +4,8 @@ Physical Constants
 
 NIST Physical constants are available from QCElemental with arbitrary
 conversion factors using the `pint <https://pint.readthedocs.io/en/latest/>`_
-package. The current default physical constants come from the NIST CODATA
-2014.
+package. The current default physical constants come from the `NIST CODATA
+2014 <https://physics.nist.gov/cuu/Constants/>`_.
 
 Conversion Factors
 ------------------
@@ -58,6 +58,7 @@ NumPy and Pandas support built-in:
 
 .. code-block:: python
 
+    >>> import numpy as np
     >>> a = qcel.constants.Quantity("kcal") * np.arange(4)
     >>> a
     <Quantity([0 1 2 3], 'kilocalorie')>
@@ -126,3 +127,28 @@ specific context can be created like so:
     27.21138601949571
 
 Currently only ``CODATA2014`` is available.
+
+API
+---
+
+.. currentmodule:: qcelemental.constants
+
+Top level user functions:
+
+.. autosummary::
+    conversion_factor
+    get
+    Quantity
+    string_representation
+
+Function Definitions
+--------------------
+
+.. autofunction:: conversion_factor
+
+.. autofunction:: get
+
+.. autofunction:: Quantity
+
+.. autofunction:: string_representation
+
