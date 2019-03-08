@@ -47,7 +47,7 @@ or use ``pip`` for a local install:
 
 Testing
 -------
-QCElemental can be tested once install using the ``pytest`` package which can be installed via Conda as well:
+QCElemental can be tested using the ``pytest`` package which can be installed via Conda as well:
 
 .. code-block:: console
 

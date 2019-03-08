@@ -18,7 +18,7 @@ isotope symbol, and name can all be passed:
     >>> qcel.periodictable.to_mass("Carbon")
     12.0
 
-A brevity of infomation can be accessed in this manner. Taking 'Carbon' as an example for mass information:
+A variety of infomation can be accessed in this manner. Taking 'Carbon' as an example for mass information:
 
 .. code-block:: python
 
