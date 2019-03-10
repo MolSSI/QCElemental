@@ -33,6 +33,15 @@ class DriverEnum(str, Enum):
     hessian = 'hessian'
     properties = 'properties'
 
+    def derint(self):
+        # debatable whether properties should be 0, None, 9, ...
+        if self in ['energy', 'properties']:
+            return 0
+        elif self == 'gradient':
+            return 1
+        elif self == 'hessian':
+            return 2
+
 
 class ComputeError(BaseModel):
     """The type of error message raised"""

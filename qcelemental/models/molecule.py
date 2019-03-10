@@ -111,6 +111,7 @@ class Molecule(BaseModel):
     # Orientation
     fix_com: bool = False
     fix_orientation: bool = False
+    fix_symmetry: str = None
 
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
