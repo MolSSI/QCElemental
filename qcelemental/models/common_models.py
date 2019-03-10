@@ -33,14 +33,12 @@ class DriverEnum(str, Enum):
     hessian = 'hessian'
     properties = 'properties'
 
-    def derint(self):
-        # debatable whether properties should be 0, None, 9, ...
-        if self in ['energy', 'properties']:
+    def derivative_int(self):
+        egh = ['energy', 'gradient', 'hessian', 'third', 'fourth', 'fifth']
+        if self == 'properties':
             return 0
-        elif self == 'gradient':
-            return 1
-        elif self == 'hessian':
-            return 2
+        else:
+            return egh.index(self)
 
 
 class ComputeError(BaseModel):
