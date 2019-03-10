@@ -75,6 +75,13 @@ def opti_success(water, result_input, res_success):
     }
 
 
+def test_driverenum_derivative_int(water, result_input):
+    res = ResultInput(molecule=water, **result_input)
+
+    assert res.driver == 'gradient'
+    assert res.driver.derivative_int() == 1
+
+
 def test_molecule_serialization(water):
     assert isinstance(water.dict(), dict)
     assert isinstance(water.json(), str)

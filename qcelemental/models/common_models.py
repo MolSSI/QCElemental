@@ -33,6 +33,13 @@ class DriverEnum(str, Enum):
     hessian = 'hessian'
     properties = 'properties'
 
+    def derivative_int(self):
+        egh = ['energy', 'gradient', 'hessian', 'third', 'fourth', 'fifth']
+        if self == 'properties':
+            return 0
+        else:
+            return egh.index(self)
+
 
 class ComputeError(BaseModel):
     """The type of error message raised"""
