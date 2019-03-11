@@ -356,8 +356,8 @@ class Molecule(BaseModel):
             fragments.append(list(range(frag_start, frag_start + frag_size)))
             frag_start += frag_size
 
-            fragment_charges.append(self.fragment_charges[frag])
-            fragment_multiplicities.append(self.fragment_multiplicities[frag])
+            fragment_charges.append(0)
+            fragment_multiplicities.append(1)
 
         constructor_dict["fragments"] = fragments
         constructor_dict["fragment_charges"] = fragment_charges
