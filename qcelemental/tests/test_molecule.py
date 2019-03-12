@@ -323,3 +323,40 @@ def test_measurements(measure, result):
     }) # yapf: disable
 
     assert pytest.approx(water_dimer_minima.measure(measure)) == result
+
+@pytest.mark.parametrize("f1c,f1m,f2c,f2m,tc,tm", [
+    (0, 2, 0, 2, 0.0, 3),
+    (0, 4, 0, 2, 0.0, 5),
+    (1, 1, 1, 1, 2.0, 1),
+    (1, 1, 0, 2, 1.0, 2),
+    (0, 2, 1, 1, 1.0, 2),
+    (-1, 1, 1, 1, 0.0, 1),
+])
+def test_fragment_charge_configurations(f1c,f1m,f2c,f2m,tc,tm):
+
+
+    mol = Molecule.from_data("""
+    {f1c} {f1m}
+    Li 0 0 0
+    --
+    {f2c} {f2m}
+    Li 0 0 5
+    """.format(f1c=f1c,f1m=f1m, f2c=f2c,f2m=f2m))
+
+    assert pytest.approx(mol.molecular_charge) == tc
+    assert mol.molecular_multiplicity == tm
+
+    # Test fragment1
+    assert pytest.approx(mol.get_fragment(0).molecular_charge) == f1c
+    assert mol.get_fragment(0).molecular_multiplicity == f1m
+
+    assert pytest.approx(mol.get_fragment(0, 1).molecular_charge) == f1c
+    assert mol.get_fragment(0, 1).molecular_multiplicity == f1m
+
+    # Test fragment2
+    assert pytest.approx(mol.get_fragment(1).molecular_charge) == f2c
+    assert mol.get_fragment(1).molecular_multiplicity == f2m
+
+    assert pytest.approx(mol.get_fragment([1], 0).molecular_charge) == f2c
+    assert mol.get_fragment(1, [0]).molecular_multiplicity == f2m
+

@@ -6,7 +6,7 @@ import collections
 import hashlib
 import json
 import os
-from typing import Any, Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Tuple, Optional, Union
 
 import numpy as np
 from pydantic import BaseModel, validator, constr
@@ -357,8 +357,8 @@ class Molecule(BaseModel):
             fragments.append(list(range(frag_start, frag_start + frag_size)))
             frag_start += frag_size
 
-            fragment_charges.append(self.fragment_charges[frag])
-            fragment_multiplicities.append(self.fragment_multiplicities[frag])
+            fragment_charges.append(0)
+            fragment_multiplicities.append(1)
 
         constructor_dict["fragments"] = fragments
         constructor_dict["fragment_charges"] = fragment_charges
@@ -449,26 +449,34 @@ class Molecule(BaseModel):
     ### Constructors
 
     @classmethod
-    def from_data(cls, data, dtype=None, *, orient=False, **kwargs):
+    def from_data(cls,
+                  data: Union[str, Dict[str, Any], np.array],
+                  dtype: Optional[str]=None,
+                  *,
+                  orient: bool=False,
+                  validate: bool=True,
+                  **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
 
         Parameters
         ----------
-        data : Object
-            Data to construct Molecule from. This is likely what would be loaded from a file
-        dtype : {"string", "numpy", "json", "dict"}
-            The type of data to interpret,
-            no attempt to infer what type of data is done here, it must be provided
-        orient: bool, optional
+        data : Union[str, Dict[str, Any], np.array]
+            Data to construct Molecule from
+        dtype : Optional[str], optional
+            How to interpret the data, if not passed attempts to discover this based on input type.
+        orient : bool, optional
             Orientates the molecule to a standard frame or not.
-        kwargs
-            Any additional keywords to pass to the constructor
+        validate : bool, optional
+            Validates the molecule or not.
+        **kwargs : Dict[str, Any]
+            Additional kwargs to pass to the constructors.
 
         Returns
         -------
         Molecule
             A constructed molecule class.
+
         """
         if dtype is None:
             if isinstance(data, str):
@@ -482,6 +490,7 @@ class Molecule(BaseModel):
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
             input_dict = to_schema(from_string(data)["qm"], dtype=2)
+            validate = False  # Already validated, no need to do it twice
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -491,6 +500,7 @@ class Molecule(BaseModel):
                 "fragment_separators": kwargs.pop("frags", [])
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
+            validate = False
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":
@@ -498,7 +508,7 @@ class Molecule(BaseModel):
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
-        return cls(orient=orient, **input_dict)
+        return cls(orient=orient, validate=validate, **input_dict)
 
     @classmethod
     def from_file(cls, filename, dtype=None, orient=False, **kwargs):

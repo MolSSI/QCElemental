@@ -14,6 +14,31 @@ Changelog
 .. +++++++++
 
 
+0.3.2 / 2019-03-11
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`47`) ``models.DriverEnum`` now has a ``derivative_int`` function to return 1 for ``gradient``, etc.,
+  for easy math. ``properties`` returns 0.
+- (:pr:`47`) Optional ``fix_symmetry`` field in qcschema_molecule was missing from ``models.Molecule`` so
+  Pydantic got mad at Psi4. Now calmed.
+
+Enhancements
+++++++++++++
+
+- (:pr:`48`) If Molecule object has passed through molparse validation because it was created with a molparse
+  constructor (e.g., ``from_string``), save some time by not passing it through again at ``model.Molecule``
+  creation time.
+
+Bug Fixes
++++++++++
+
+- (:pr:`48`) Fixed a ``Molecule.get_fragment`` bug where ghosted fragments still asserted charge/multiplicity
+  to the validator, which was rightly confused.
+
+
 0.3.1 / 2019-03-07
 ------------------
 
