@@ -7,6 +7,7 @@ from ..util import filter_comments, provenance_stamp
 from .from_arrays import from_input_arrays
 from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 
+__all__ = ['from_string']
 
 def from_string(molstr,
                 dtype=None,
@@ -280,6 +281,7 @@ def from_string(molstr,
 #        # N.B. Anything starting with PubchemError will be handled correctly by the molecule parser
 #        # in libmints, which will just print the rest of the string and exit gracefully.
 
+pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(([\S ]+)))\Z', re.IGNORECASE)
 
 def _filter_pubchem(string):
     """Find any "pubchem:" lines in `string`, make call to the pubchem database
@@ -288,7 +290,6 @@ def _filter_pubchem(string):
     Author: @andysim
 
     """
-    pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(([\S ]+)))\Z', re.IGNORECASE)
 
     def process_pubchem(matchobj):
         pubsearch = matchobj.group('pubsearch')
@@ -351,6 +352,11 @@ def _filter_kwargs(name, fix_com, fix_orientation, fix_symmetry):
     return processed
 
 
+com = re.compile(r'\A(no_com|nocom)\Z', re.IGNORECASE)
+orient = re.compile(r'\A(no_reorient|noreorient)\Z', re.IGNORECASE)
+bohrang = re.compile(r'\Aunits?[\s=]+((?P<ubohr>(bohr|au|a.u.))|(?P<uang>(ang|angstrom)))\Z', re.IGNORECASE)
+symmetry = re.compile(r'\Asymmetry[\s=]+(?P<pg>\w+)\Z', re.IGNORECASE)
+
 def _filter_universals(string):
     """Process multiline `string` for fix_ and unit markers,
     returning a string of unprocessed `string` and a dictionary of
@@ -363,11 +369,6 @@ def _filter_universals(string):
     units
 
     """
-    com = re.compile(r'\A(no_com|nocom)\Z', re.IGNORECASE)
-    orient = re.compile(r'\A(no_reorient|noreorient)\Z', re.IGNORECASE)
-    bohrang = re.compile(r'\Aunits?[\s=]+((?P<ubohr>(bohr|au|a.u.))|(?P<uang>(ang|angstrom)))\Z', re.IGNORECASE)
-    symmetry = re.compile(r'\Asymmetry[\s=]+(?P<pg>\w+)\Z', re.IGNORECASE)
-
     def process_com(matchobj):
         processed['fix_com'] = True
         return ''
@@ -410,20 +411,20 @@ def _filter_universals(string):
     return '\n'.join(reconstitute), processed
 
 
-def _filter_libefp(string):
+fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
+efpxyzabc = re.compile(
+    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + SEP +
+    r'(?P<x>' + NUMBER + r')' + SEP + r'(?P<y>' + NUMBER + r')' + SEP + r'(?P<z>' + NUMBER + r')' + SEP +
+    r'(?P<a>' + NUMBER + r')' + SEP + r'(?P<b>' + NUMBER + r')' + SEP + r'(?P<c>' + NUMBER + r')' + ENDL + r'\Z',
+    re.IGNORECASE | re.VERBOSE)  # yapf: disable
+efppoints = re.compile(
+    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + ENDL +
+    r'[\s,]*' + r'(?P<x1>' + NUMBER + r')' + SEP + r'(?P<y1>' + NUMBER + r')' + SEP + r'(?P<z1>' + NUMBER + r')' + ENDL +
+    r'[\s,]*' + r'(?P<x2>' + NUMBER + r')' + SEP + r'(?P<y2>' + NUMBER + r')' + SEP + r'(?P<z2>' + NUMBER + r')' + ENDL +
+    r'[\s,]*' + r'(?P<x3>' + NUMBER + r')' + SEP + r'(?P<y3>' + NUMBER + r')' + SEP + r'(?P<z3>' + NUMBER + r')' + ENDL + r'\Z',
+    re.IGNORECASE | re.MULTILINE | re.VERBOSE)  # yapf: disable
 
-    fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
-    efpxyzabc = re.compile(
-        r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + SEP +
-        r'(?P<x>' + NUMBER + r')' + SEP + r'(?P<y>' + NUMBER + r')' + SEP + r'(?P<z>' + NUMBER + r')' + SEP +
-        r'(?P<a>' + NUMBER + r')' + SEP + r'(?P<b>' + NUMBER + r')' + SEP + r'(?P<c>' + NUMBER + r')' + ENDL + r'\Z',
-        re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    efppoints = re.compile(
-        r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + ENDL +
-        r'[\s,]*' + r'(?P<x1>' + NUMBER + r')' + SEP + r'(?P<y1>' + NUMBER + r')' + SEP + r'(?P<z1>' + NUMBER + r')' + ENDL +
-        r'[\s,]*' + r'(?P<x2>' + NUMBER + r')' + SEP + r'(?P<y2>' + NUMBER + r')' + SEP + r'(?P<z2>' + NUMBER + r')' + ENDL +
-        r'[\s,]*' + r'(?P<x3>' + NUMBER + r')' + SEP + r'(?P<y3>' + NUMBER + r')' + SEP + r'(?P<z3>' + NUMBER + r')' + ENDL + r'\Z',
-        re.IGNORECASE | re.MULTILINE | re.VERBOSE)  # yapf: disable
+def _filter_libefp(string):
 
     def process_efpxyzabc(matchobj):
         processed['fragment_files'].append(matchobj.group('efpfile'))
@@ -457,6 +458,38 @@ def _filter_libefp(string):
 
     return '\n--\n'.join(reconstitute), processed
 
+fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
+cgmp = re.compile(r'\A' + CHGMULT + r'\Z', re.VERBOSE)
+
+VAR = r'(-?[a-z][a-z0-9_]*)'  # slight cheat to allow neg in `variable`
+NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
+ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
+ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
+
+atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
+                            re.IGNORECASE | re.VERBOSE)
+atom_vcart = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Xval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Yval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Zval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_zmat2 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_zmat3 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_zmat4 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Didx>' + ANCHORTO + r')' + SEP + r'(?P<Dval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+variable = re.compile(
+    r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
+    re.IGNORECASE | re.VERBOSE)
 
 def _filter_mints(string, unsettled=False):
     """Handle extracting fragment, atom, and chg/mult lines from `string`.
@@ -484,38 +517,6 @@ def _filter_mints(string, unsettled=False):
         accumulating into geom.
 
     """
-    fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
-    cgmp = re.compile(r'\A' + CHGMULT + r'\Z', re.VERBOSE)
-
-    VAR = r'(-?[a-z][a-z0-9_]*)'  # slight cheat to allow neg in `variable`
-    NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
-    ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
-    ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
-
-    atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                                re.IGNORECASE | re.VERBOSE)
-    atom_vcart = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                            r'(?P<Xval>' + ANCHORVAL + r')' + SEP +
-                            r'(?P<Yval>' + ANCHORVAL + r')' + SEP +
-                            r'(?P<Zval>' + ANCHORVAL + r')' + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    atom_zmat2 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                            r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    atom_zmat3 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                            r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
-                            r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    atom_zmat4 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                            r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
-                            r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + SEP +
-                            r'(?P<Didx>' + ANCHORTO + r')' + SEP + r'(?P<Dval>' + ANCHORVAL + r')' + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)  # yapf: disable
-    variable = re.compile(
-        r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
-        re.IGNORECASE | re.VERBOSE)
 
     def process_system_cgmp(matchobj):
         """Handles optional special first fragment with sole contents overall chg/mult."""
@@ -618,6 +619,17 @@ def _filter_mints(string, unsettled=False):
     return '\n--\n'.join(reconstitute), processed
 
 
+xyz1strict = re.compile(r'\A' + r'(?P<nat>\d+)' + r'\Z')
+SIMPLENUCLEUS = r"""((?P<E>[A-Z]{1,3})|(?P<Z>\d{1,3}))"""
+atom_cartesian_strict = re.compile(r'\A' + r'(?P<nucleus>' + SIMPLENUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
+                                   re.IGNORECASE | re.VERBOSE)
+
+xyz1 = re.compile(r'\A' + r'(?P<nat>\d+)' + r'[\s,]*' + r'((?P<ubohr>(bohr|au))|(?P<uang>ang))?' + r'\Z',
+                  re.IGNORECASE)
+xyz2 = re.compile(r'\A' + CHGMULT, re.VERBOSE)
+atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
+                            re.IGNORECASE | re.VERBOSE)
+
 def _filter_xyz(string, strict):
     """Handle extracting atom, units, and chg/mult lines from `string`.
 
@@ -643,16 +655,6 @@ def _filter_xyz(string, strict):
             units : {'Angstrom', 'Bohr'} (`Bohr` `strict=False` only)
 
     """
-    xyz1strict = re.compile(r'\A' + r'(?P<nat>\d+)' + r'\Z')
-    SIMPLENUCLEUS = r"""((?P<E>[A-Z]{1,3})|(?P<Z>\d{1,3}))"""
-    atom_cartesian_strict = re.compile(r'\A' + r'(?P<nucleus>' + SIMPLENUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                                       re.IGNORECASE | re.VERBOSE)
-
-    xyz1 = re.compile(r'\A' + r'(?P<nat>\d+)' + r'[\s,]*' + r'((?P<ubohr>(bohr|au))|(?P<uang>ang))?' + r'\Z',
-                      re.IGNORECASE)
-    xyz2 = re.compile(r'\A' + CHGMULT, re.VERBOSE)
-    atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                                re.IGNORECASE | re.VERBOSE)
 
     def process_bohrang(matchobj):
         nat = matchobj.group('nat')  # lgtm[py/unused-local-variable]
