@@ -14,7 +14,17 @@ Changelog
 .. +++++++++
 
 
-0.3.2 / 2019-03-12
+0.3.3 / 2019-03-12
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`49`) Precompute some mass number and mass lookups and store on ``qcel.periodic_table``. Also move
+  static ``re.compile`` expressions out of fns on to module. Mol validation .127s --> .005s.
+
+
+0.3.2 / 2019-03-11
 ------------------
 
 New Features
@@ -31,8 +41,6 @@ Enhancements
 - (:pr:`48`) If Molecule object has passed through molparse validation because it was created with a molparse
   constructor (e.g., ``from_string``), save some time by not passing it through again at ``model.Molecule``
   creation time.
-- (:pr:`49`) Precompute some mass number and mass lookups and store on ``qcel.periodic_table``. Also move
-  static ``re.compile`` expressions out of fns on to module. Mol validation .127s --> .005s.
 
 Bug Fixes
 +++++++++
