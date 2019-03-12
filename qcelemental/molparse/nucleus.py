@@ -1,9 +1,10 @@
 import re
 
-from . import regex
+from .regex import NUCLEUS
 from ..exceptions import NotAnElementError, ValidationError
 from ..periodic_table import periodictable
 
+_nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
 
 def reconcile_nucleus(A=None,
                       Z=None,
@@ -164,17 +165,13 @@ def reconcile_nucleus(A=None,
 
         z_symbol = periodictable.to_E(z)
         z_mass = periodictable.to_mass(z)
-        re_eliso = re.compile(z_symbol + '[0-9]{1,3}')  # lone symbol (val equals most common isotope) will not match
-        z_a2mass = {
-            int(k[len(z_symbol):]): float(v)
-            for k, v in periodictable._eliso2mass.items() if re_eliso.match(k)
-        }
+        z_a = periodictable.to_A(z)
+
+        z_a2mass = periodictable._el2a2mass[z_symbol]
         z_a2mass_min = min(z_a2mass.keys())
         z_a2mass_max = max(z_a2mass.keys())
-        z_mass2a = {v: k for k, v in z_a2mass.items()}
-        z_mass2a_min = min(z_mass2a.keys())
-        z_mass2a_max = max(z_mass2a.keys())
-        z_a = z_mass2a[z_mass]
+        z_mass2a_min = min(z_a2mass.values())
+        z_mass2a_max = max(z_a2mass.values())
 
         Z_exact.append(z)
         Z_range.append(lambda x, z=z: x == z)
@@ -378,8 +375,7 @@ def parse_nucleus_label(label):
     None, 555, None, 0.1 False, '_mines3'
 
     """
-    nucleus = re.compile(r'\A' + regex.NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
-    matchobj = nucleus.match(label)
+    matchobj = _nucleus.match(label)
 
     if matchobj:
         real = not (matchobj.group('gh1') or matchobj.group('gh2'))

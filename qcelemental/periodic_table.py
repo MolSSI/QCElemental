@@ -60,6 +60,9 @@ class PeriodicTable:
         self._eliso2mass = dict(zip(self.EA, self.mass))
         self._eliso2el = dict(zip(self.EA, self._EE))
         self._eliso2a = dict(zip(self.EA, self.A))
+        self._el2a2mass = collections.defaultdict(dict)
+        for EE, m, A in zip(self._EE, self.mass, self.A):
+            self._el2a2mass[EE][A] = float(m)
 
     def _resolve_atom_to_key(self, atom):
         """Given `atom` as element name, element symbol, nuclide symbol, atomic number, or atomic number string,
