@@ -12,6 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
 import sys
 
@@ -22,8 +23,8 @@ import qcelemental
 # -- Project information -----------------------------------------------------
 
 project = 'qcelemental'
-copyright = '2018, The Molecular Sciences Software Institute'
-author = 'The Molecular Sciences Software Institute'
+copyright = f'2018-{datetime.datetime.today().year}, The Molecular Sciences Software Institute'
+author = 'The QCArchive Development Team'
 
 # The short X.Y version
 version = qcelemental.__version__
