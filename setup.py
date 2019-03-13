@@ -20,8 +20,8 @@ if __name__ == "__main__":
     setuptools.setup(
         name='qcelemental',
         description='Essentials for Quantum Chemistry.',
-        author='Lori A. Burns, Daniel G. A. Smith, MolSSI',
-        author_email='lori.burns@gmail.com',
+        author='The QCArchive Development Team',
+        author_email='qcarchive@molssi.org',
         url="https://github.com/MolSSI/QCElemental",
         license='BSD-3C',
         version=versioneer.get_version(),
