@@ -22,7 +22,7 @@ import qcelemental
 
 # -- Project information -----------------------------------------------------
 
-project = 'qcelemental'
+project = 'QCElemental'
 copyright = f'2018-{datetime.datetime.today().year}, The Molecular Sciences Software Institute'
 author = 'The QCArchive Development Team'
 
@@ -156,8 +156,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'qcelemental.tex', 'qcelemental Documentation',
-     'Asim Alenaizan', 'manual'),
+    (master_doc, 'QCElemental.tex', 'QCElemental Documentation',
+     author, 'manual'),
 ]
 
 
@@ -166,7 +166,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'qcelemental', 'qcelemental Documentation',
+    (master_doc, 'qcelemental', 'QCElemental Documentation',
      [author], 1)
 ]
 
@@ -177,8 +177,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'qcelemental', 'qcelemental Documentation',
-     author, 'qcelemental', 'One line description of project.',
+    (master_doc, 'QCElemental', 'QCElemental Documentation',
+     author, 'QCElemental', 'One line description of project.',
      'Miscellaneous'),
 ]
 
