@@ -53,7 +53,7 @@ def test_molecule_data_constructor_dict():
     assert water_psi.compare(water_psi, water_from_json)
     assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
 
-    assert water_psi.get_hash() == 'b41f1e38bc4be5482fcd1d4dd53ca7c65146ab91'  # copied from schema_version=1
+    assert water_psi.get_hash() == '3c4b98f515d64d1adc1648fe1fe1d6789e978d34'  # copied from schema_version=1
     assert water_psi.schema_version == 2
     assert water_psi.schema_name == 'qcschema_molecule'
 
@@ -115,7 +115,7 @@ def test_water_minima_data():
     assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
                                       [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
                                       [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
-    assert mol.get_hash() == "b41f1e38bc4be5482fcd1d4dd53ca7c65146ab91"
+    assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"
 
 
 def test_water_minima_fragment():
@@ -123,8 +123,8 @@ def test_water_minima_fragment():
     mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
-    assert frag_0.get_hash() == "0b13814f79b8f74f17499b31fe7b76cd97b89449"
-    assert frag_1.get_hash() == "4469ff05895a6375a91ce9a225f96e3f9938450b"
+    assert frag_0.get_hash() == "5f31757232a9a594c46073082534ca8a6806d367"
+    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"
 
     frag_0_1 = mol.get_fragment(0, 1)
     frag_1_0 = mol.get_fragment(1, 0)
@@ -324,6 +324,7 @@ def test_measurements(measure, result):
 
     assert pytest.approx(water_dimer_minima.measure(measure)) == result
 
+
 @pytest.mark.parametrize("f1c,f1m,f2c,f2m,tc,tm", [
     (0, 2, 0, 2, 0.0, 3),
     (0, 4, 0, 2, 0.0, 5),
@@ -332,8 +333,7 @@ def test_measurements(measure, result):
     (0, 2, 1, 1, 1.0, 2),
     (-1, 1, 1, 1, 0.0, 1),
 ])
-def test_fragment_charge_configurations(f1c,f1m,f2c,f2m,tc,tm):
-
+def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm):
 
     mol = Molecule.from_data("""
     {f1c} {f1m}
@@ -341,7 +341,7 @@ def test_fragment_charge_configurations(f1c,f1m,f2c,f2m,tc,tm):
     --
     {f2c} {f2m}
     Li 0 0 5
-    """.format(f1c=f1c,f1m=f1m, f2c=f2c,f2m=f2m))
+    """.format(f1c=f1c, f1m=f1m, f2c=f2c, f2m=f2m))
 
     assert pytest.approx(mol.molecular_charge) == tc
     assert mol.molecular_multiplicity == tm
@@ -359,4 +359,3 @@ def test_fragment_charge_configurations(f1c,f1m,f2c,f2m,tc,tm):
 
     assert pytest.approx(mol.get_fragment([1], 0).molecular_charge) == f2c
     assert mol.get_fragment(1, [0]).molecular_multiplicity == f2m
-

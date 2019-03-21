@@ -103,7 +103,7 @@ class Molecule(BaseModel):
     mass_numbers: List[int] = None
 
     # Fragment and connection data
-    connectivity: List[Tuple[int, int, float]] = []
+    connectivity: List[Tuple[int, int, float]] = None
     fragments: List[List[int]] = None
     fragment_charges: List[float] = None
     fragment_multiplicities: List[int] = None
