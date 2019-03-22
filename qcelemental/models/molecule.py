@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Tuple, Optional, Union
 import numpy as np
 from pydantic import BaseModel, validator, constr
 
-from ..molparse import from_arrays, from_schema, from_string, to_schema
+from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..util import measure_coordinates, provenance_stamp
@@ -370,15 +370,19 @@ class Molecule(BaseModel):
 
         return Molecule(orient=orient, **constructor_dict)
 
-    def to_string(self, dtype="psi4"):
+    def to_string(self, dtype="psi4", units='Bohr', atom_format=None, ghost_format=None, width=17, prec=12):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
+
+        Suggest psi4 --> psi4frag and psi4 route to to_string
         """
         if dtype == "psi4":
             return self._to_psi4_string()
         else:
-            raise KeyError("Molecule:to_string: dtype of '{}' not recognized.".format(dtype))
+            molrec = from_schema(self.dict())
+            string = to_string(molrec, dtype=dtype, units=units, atom_format=atom_format, ghost_format=ghost_format, width=width, prec=prec)
+            return string
 
     def get_hash(self):
         """
@@ -663,3 +667,26 @@ class Molecule(BaseModel):
         text += "    no_reorient\n"
 
         return text
+
+    def nuclear_repulsion_energy(self):
+        Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+
+        nre = 0.
+        for at1 in range(self.geometry.shape[0]):
+            for at2 in range(at1):
+                dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
+                nre += Zeff[at1] * Zeff[at2] / dist
+        return nre
+
+    def nelectrons(self, ifr=None):
+        """Number of electrons in entire molecule or in `ifr`-th fragment."""
+
+        Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+
+        if ifr is None:
+            nel = sum(Zeff) - self.molecular_charge
+
+        else:
+            nel = sum([zf for iat, zf in enumerate(Zeff) if iat in self.fragments[ifr]]) - self.fragment_charges[ifr]
+
+        return int(nel)
