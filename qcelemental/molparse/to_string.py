@@ -125,10 +125,10 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        first_line = """ $DATA"""
+        first_line = """ $data"""
         second_line = f""" {tagline}"""
         third_line = """ C1"""
-        last_line = """ $END"""
+        last_line = """ $end"""
 
         smol = [first_line, second_line, third_line]
         smol.extend(atoms)

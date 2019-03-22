@@ -677,3 +677,16 @@ class Molecule(BaseModel):
                 dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
+
+    def nelectrons(self, ifr=None):
+        """Number of electrons in entire molecule or in `ifr`-th fragment."""
+
+        Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+
+        if ifr is None:
+            nel = sum(Zeff) - self.molecular_charge
+
+        else:
+            nel = sum([zf for iat, zf in enumerate(Zeff) if iat in self.fragments[ifr]]) - self.fragment_charges[ifr]
+
+        return int(nel)
