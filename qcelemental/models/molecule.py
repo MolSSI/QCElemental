@@ -225,6 +225,7 @@ class Molecule(BaseModel):
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
 
+
 ### Non-Pydantic API functions
 
     def measure(self, measurements, degrees=True):
@@ -381,7 +382,14 @@ class Molecule(BaseModel):
             return self._to_psi4_string()
         else:
             molrec = from_schema(self.dict())
-            string = to_string(molrec, dtype=dtype, units=units, atom_format=atom_format, ghost_format=ghost_format, width=width, prec=prec)
+            string = to_string(
+                molrec,
+                dtype=dtype,
+                units=units,
+                atom_format=atom_format,
+                ghost_format=ghost_format,
+                width=width,
+                prec=prec)
             return string
 
     def get_hash(self):
@@ -455,10 +463,10 @@ class Molecule(BaseModel):
     @classmethod
     def from_data(cls,
                   data: Union[str, Dict[str, Any], np.array],
-                  dtype: Optional[str]=None,
+                  dtype: Optional[str] = None,
                   *,
-                  orient: bool=False,
-                  validate: bool=True,
+                  orient: bool = False,
+                  validate: bool = True,
                   **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
@@ -649,8 +657,7 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
-                                                              int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:
@@ -668,9 +675,19 @@ class Molecule(BaseModel):
 
         return text
 
-    def nuclear_repulsion_energy(self, ifr=None):
-        """Nuclear repulsion energy in entire molecule or in `ifr`-th (0-indexed) fragment."""
+    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
+        """Nuclear repulsion energy.
 
+        Parameters
+        ----------
+        ifr : int, optional
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+
+        Returns
+        -------
+        Nuclear repulsion energy in entire molecule or in fragment.
+
+        """
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
         atoms = range(self.geometry.shape[0])
 
@@ -684,9 +701,19 @@ class Molecule(BaseModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr=None):
-        """Number of electrons in entire molecule or in `ifr`-th (0-indexed) fragment."""
+    def nelectrons(self, ifr: int = None) -> int:
+        """Number of electrons.
 
+        Parameters
+        ----------
+        ifr : int, optional
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+
+        Returns
+        -------
+        Number of electrons in entire molecule or in fragment.
+
+        """
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
 
         if ifr is None:

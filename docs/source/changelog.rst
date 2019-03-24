@@ -14,6 +14,24 @@ Changelog
 .. +++++++++
 
 
+0.3.4 / 2019-MM-DD
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`52`, :pr:`53`) ``models.Molecule`` learned ``nuclear_repulsion_energy``, ``nelectrons``, and
+  ``to_string`` functions.
+
+Enhancements
+++++++++++++
+
+- (:pr:`52`, :pr:`53`) ``molparse.to_string`` NWChem and GAMESS dtypes developed.
+
+Bug Fixes
++++++++++
+
+
 0.3.3 / 2019-03-12
 ------------------
 
