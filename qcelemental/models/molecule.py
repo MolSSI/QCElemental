@@ -668,18 +668,24 @@ class Molecule(BaseModel):
 
         return text
 
-    def nuclear_repulsion_energy(self):
+    def nuclear_repulsion_energy(self, ifr=None):
+        """Nuclear repulsion energy in entire molecule or in `ifr`-th (0-indexed) fragment."""
+
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+        atoms = range(self.geometry.shape[0])
+
+        if ifr is not None:
+            atoms = self.fragments[ifr]
 
         nre = 0.
-        for at1 in range(self.geometry.shape[0]):
-            for at2 in range(at1):
+        for iat1, at1 in enumerate(atoms):
+            for at2 in atoms[:iat1]:
                 dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
     def nelectrons(self, ifr=None):
-        """Number of electrons in entire molecule or in `ifr`-th fragment."""
+        """Number of electrons in entire molecule or in `ifr`-th (0-indexed) fragment."""
 
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
 

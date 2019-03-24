@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from qcelemental.models import Molecule
 import qcelemental as qcel
+from qcelemental.testing import compare, compare_values
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -359,3 +360,41 @@ def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm):
 
     assert pytest.approx(mol.get_fragment([1], 0).molecular_charge) == f2c
     assert mol.get_fragment(1, [0]).molecular_multiplicity == f2m
+
+
+def test_nre_nelec():
+
+    mol = Molecule.from_data("""
+    0 1
+    --
+    O          0.75119       -0.61395        0.00271
+    H          1.70471       -0.34686        0.00009
+    --
+    1 1
+    N         -2.77793        0.00179       -0.00054
+    H         -2.10136        0.51768        0.60424
+    H         -3.45559       -0.51904        0.60067
+    H         -2.26004       -0.67356       -0.60592
+    H         -3.29652        0.68076       -0.60124
+    units ang
+    """)
+
+    assert compare_values(34.60370459, mol.nuclear_repulsion_energy(), 'D', atol=1.e-5)
+    assert compare_values(4.275210518, mol.nuclear_repulsion_energy(ifr=0), 'M1', atol=1.e-5)
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=1), 'M2', atol=1.e-5)
+
+    assert compare(20, mol.nelectrons(), 'D')
+    assert compare(10, mol.nelectrons(ifr=0), 'M1')
+    assert compare(10, mol.nelectrons(ifr=1), 'M2')
+
+    mol = mol.get_fragment([1], 0)
+    # Notice the 0th/1st fragments change. Got to stop get_fragment from reordering
+    ifr0 = 1
+    ifr1 = 0
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(), 'D', atol=1.e-5)
+    assert compare_values(0.0, mol.nuclear_repulsion_energy(ifr=ifr0), 'M1', atol=1.e-5)
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=ifr1), 'M2', atol=1.e-5)
+
+    assert compare(10, mol.nelectrons(), 'D')
+    assert compare(0, mol.nelectrons(ifr=ifr0), 'M1')
+    assert compare(10, mol.nelectrons(ifr=ifr1), 'M2')
