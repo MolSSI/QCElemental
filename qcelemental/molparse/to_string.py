@@ -102,10 +102,11 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         atom_format = '{elem}'
         ghost_format = 'GH'
         # TODO handle which units valid
+        umap = {'bohr': 'bohr', 'angstrom': 'angstroms', 'nm': 'nanometers', 'pm': 'picometers'}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        first_line = """geometry units {}""".format(units.lower())
+        first_line = f"""geometry units {umap.get(units.lower())}"""
         # noautosym nocenter  # no reorienting input geometry
         fix_symm = molrec.get('fix_symmetry', None)
         symm_line = ''
