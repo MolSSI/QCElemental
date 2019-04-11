@@ -40,6 +40,14 @@ class ResultProperties(BaseModel):
     mp2_total_correlation_energy: float = None
     mp2_total_energy: float = None
 
+    # CCSD Keywords
+    ccsd_same_spin_correlation_energy: float = None
+    ccsd_opposite_spin_correlation_energy: float = None
+    ccsd_singles_energy: float = None
+    ccsd_doubles_energy: float = None
+    ccsd_total_correlation_energy: float = None
+    ccsd_total_energy: float = None
+
     class Config:
         allow_mutation = False
         extra = "forbid"
