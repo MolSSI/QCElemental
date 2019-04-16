@@ -79,7 +79,21 @@ GH                    1.058354421340     0.000000000000     0.000000000000
 H                    -1.058354421340     0.000000000000     0.000000000000
 
 end
-"""
+""",
+
+"ans2_terachem_au": """3
+CoH2
+Co                    0.000000000000     0.000000000000     0.000000000000
+XH                    2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+""",
+
+"ans2_terachem_ang": """3
+CoH2
+Co                    0.000000000000     0.000000000000     0.000000000000
+XH                    1.058354421340     0.000000000000     0.000000000000
+H                    -1.058354421340     0.000000000000     0.000000000000
+""",
 }  # yapf: disable
 
 
@@ -93,6 +107,8 @@ end
     (("subject2", {'dtype': 'cfour'}), "ans2_cfour_ang"),
     (("subject2", {'dtype': 'nwchem'}), "ans2_nwchem_ang"),
     (("subject1", {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_nm"),
+    (("subject2", {'dtype': 'terachem'}), "ans2_terachem_ang"),
+    (("subject2", {'dtype': 'terachem', 'units': 'bohr'}), "ans2_terachem_au"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(_results[inp[0]])
