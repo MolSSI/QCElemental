@@ -1,42 +1,12 @@
-#
-# @BEGIN LICENSE
-#
-# Psi4: an open-source quantum chemistry software package
-#
-# Copyright (c) 2007-2019 The Psi4 Developers.
-#
-# The copyrights for code used from other parties are included in
-# the corresponding files.
-#
-# This file is part of Psi4.
-#
-# Psi4 is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, version 3.
-#
-# Psi4 is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License along
-# with Psi4; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-#
-# @END LICENSE
-#
-
 import time
 import itertools
 import collections
 
 import numpy as np
 
-import qcelemental as qcel
-
-from .molecule import Molecule
-from .util import *
-from .psiutil import *
+from ..physical_constants import constants
+from ..util import distance_matrix
+from ..testing import compare, compare_values
 
 
 class AlignmentMill(collections.namedtuple('AlignmentMill', 'shift rotation atommap mirror')):
@@ -296,7 +266,7 @@ def B787(cgeom,
             print(atomfmt2.format(cuniq[at][:6], *cgeom[at]))
 
     # start_rmsd is nonsense if not atoms_map
-    start_rmsd = np.linalg.norm(cgeom - rgeom) * qcel.constants.bohr2angstroms / np.sqrt(nat)
+    start_rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
     if verbose >= 1:
         print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
 
@@ -324,7 +294,7 @@ def B787(cgeom,
         tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
         if verbose >= 4:
             print('temp geom diff\n', tgeom - rgeom)
-        temp_rmsd = np.linalg.norm(tgeom - rgeom) * qcel.constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
+        temp_rmsd = np.linalg.norm(tgeom - rgeom) * constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
         temp_rmsd = np.around(temp_rmsd, decimals=8)
         t2 = time.time()
         tc += t2 - t1
@@ -352,7 +322,7 @@ def B787(cgeom,
             tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
             if verbose >= 4:
                 print('temp geom diff\n', tgeom - rgeom)
-            temp_rmsd = np.linalg.norm(tgeom - rgeom) * qcel.constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
+            temp_rmsd = np.linalg.norm(tgeom - rgeom) * constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
             temp_rmsd = np.around(temp_rmsd, decimals=8)
             t2 = time.time()
             tc += t2 - t1
@@ -375,7 +345,7 @@ def B787(cgeom,
         print('Kabsch time [s] for mol alignment:    {:.3}'.format(tc))
 
     ageom, auniq = hold_solution.align_mini_system(cgeom, cuniq, reverse=False)
-    final_rmsd = np.linalg.norm(ageom - rgeom) * qcel.constants.bohr2angstroms / np.sqrt(nat)
+    final_rmsd = np.linalg.norm(ageom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
     assert (abs(best_rmsd - final_rmsd) < 1.e-3)
 
     if verbose >= 1:
@@ -390,21 +360,31 @@ def B787(cgeom,
             print(atomfmt2.format(auniq[at][:6], *ageom[at]))
         print('<<<  Aligned Diff:')
         for at, hsh in enumerate(auniq):
-            print(atomfmt2.format(auniq[at][:6], * [ageom[at][i] - rgeom[at][i] for i in range(3)]))
+            print(atomfmt2.format(auniq[at][:6], *[ageom[at][i] - rgeom[at][i] for i in range(3)]))
 
     if do_plot:
         plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment='Final RMSD = {:8.4f}'.format(final_rmsd))
 
     # sanity checks
     compare_values(
-        _pseudo_nre(cuniq, cgeom), _pseudo_nre(auniq, ageom), 4, 'D: concern_mol-->returned_mol pNRE uncorrupted', verbose=verbose-1)
+        _pseudo_nre(cuniq, cgeom),
+        _pseudo_nre(auniq, ageom),
+        'D: concern_mol-->returned_mol pNRE uncorrupted',
+        atol=1.e-4,
+        quiet=(verbose > 1))
     if mols_align is True:
         compare_values(
             _pseudo_nre(runiq, rgeom),
-            _pseudo_nre(auniq, ageom), 4, 'D: concern_mol-->returned_mol pNRE matches ref_mol', verbose=verbose-1)
-        compare_integers(True, np.allclose(rgeom, ageom, atol=4),
-                         'D: concern_mol-->returned_mol geometry matches ref_mol', verbose=verbose-1)
-        compare_values(0., final_rmsd, 4, 'D: null RMSD', verbose=verbose-1)
+            _pseudo_nre(auniq, ageom),
+            'D: concern_mol-->returned_mol pNRE matches ref_mol',
+            atol=1.e-4,
+            quiet=(verbose > 1))
+        compare(
+            True,
+            np.allclose(rgeom, ageom, atol=4),
+            'D: concern_mol-->returned_mol geometry matches ref_mol',
+            quiet=(verbose > 1))
+        compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose > 1))
 
     return final_rmsd, hold_solution
 
@@ -532,17 +512,17 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
             yield ans
 
     if algo == 'perm':
-        ccdistmat = qcel.util.distance_matrix(cgeom, cgeom)
-        rrdistmat = qcel.util.distance_matrix(rgeom, rgeom)
+        ccdistmat = distance_matrix(cgeom, cgeom)
+        rrdistmat = distance_matrix(rgeom, rgeom)
         algofn = filter_permutative
 
     if algo == 'hung':
-        crdistmat = qcel.util.distance_matrix(cgeom, rgeom)
+        crdistmat = distance_matrix(cgeom, rgeom)
         algofn = filter_hungarian
 
     if algo == 'hunguno':
-        ccdistmat = qcel.util.distance_matrix(cgeom, cgeom)
-        rrdistmat = qcel.util.distance_matrix(rgeom, rgeom)
+        ccdistmat = distance_matrix(cgeom, cgeom)
+        rrdistmat = distance_matrix(rgeom, rgeom)
         # TODO investigate soundness
         with np.errstate(divide='ignore'):
             ccnremat = np.reciprocal(ccdistmat)
@@ -550,8 +530,8 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         ccnremat[ccnremat == np.inf] = 0.
         rrnremat[rrnremat == np.inf] = 0.
         algofn = filter_hungarian_uno
-        from .util.scipy_hungarian import linear_sum_assignment
-        from .util.gph_uno_bipartite import uno
+        from ..util.scipy_hungarian import linear_sum_assignment
+        from ..util.gph_uno_bipartite import uno
 
     # collect candidate atom orderings from algofn for each of the atom classes,
     #   recombine the classes with each other in every permutation (could maybe
@@ -631,7 +611,7 @@ def kabsch_align(rgeom, cgeom, weight=None):
     TT = Ccentroid - RR.dot(Rcentroid)
 
     C = C.dot(RR)
-    rmsd = np.linalg.norm(R - C) * qcel.constants.bohr2angstroms / np.sqrt(np.sum(w))
+    rmsd = np.linalg.norm(R - C) * constants.bohr2angstroms / np.sqrt(np.sum(w))
 
     return rmsd, RR, TT
 
