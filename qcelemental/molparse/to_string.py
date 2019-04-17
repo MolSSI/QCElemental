@@ -143,7 +143,7 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        first_line = f"""{len(atoms)} {umap[units.lower()]}"""  # units only validating, not printing
+        first_line = f"""{len(atoms)} {umap[units.lower()]}"""
         smol = [first_line.rstrip(), name]
         smol.extend(atoms)
 
