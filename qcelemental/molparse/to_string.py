@@ -139,7 +139,7 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
 
         atom_format = '{elem}'
         ghost_format = 'X{elem}'
-        umap = {'bohr': '', 'angstrom': ''}
+        umap = {'bohr': 'au', 'angstrom': ''}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
