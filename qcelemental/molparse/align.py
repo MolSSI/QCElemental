@@ -253,7 +253,6 @@ def B787(cgeom,
         a_convergence = mols_align
 
     # initial presentation
-    atomfmt1 = """  {:6} {:16.8f} {:16.8f} {:16.8f}    {m:16.8f} {hsh:}"""
     atomfmt2 = """  {} {:16.8f} {:16.8f} {:16.8f}"""
 
     if verbose >= 2:
@@ -437,22 +436,6 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
                     print('Candidate:', rgp, '<--', pm)
                 yield pm
 
-    def filter_hungarian(rgp, cgp):
-        if verbose >= 1:
-            print("""Space:     {} <--> {}""".format(rgp, cgp))
-        submatCR = crdistmat[np.ix_(cgp, rgp)]  # this one gets manipulated by hungarian call
-        submatCRcopy = np.copy(submatCR)
-        lapCR = hungarian.lap(submatCR)
-        ptsCR = list(zip(lapCR[1], range(len(rgp))))
-        sumCR = sum(submatCRcopy[lapCR[1], range(len(rgp))])
-
-        subans = lapCR[1]
-        npcgp = np.array(cgp)
-        ans = tuple(npcgp[np.array(subans)])
-        if verbose >= 1:
-            print('Best Candidate ({:6.3}):'.format(sumCR), rgp, '<--', ans, '     from', cgp, subans)
-        yield ans
-
     def filter_hungarian_uno(rgp, cgp):
         """Hungarian algorithm on cost matrix based off headless (all Z same w/i space anyways) NRE.
         Having found _a_ solution and the reduced cost matrix, this still isn't likely to produce
@@ -515,10 +498,6 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         ccdistmat = distance_matrix(cgeom, cgeom)
         rrdistmat = distance_matrix(rgeom, rgeom)
         algofn = filter_permutative
-
-    if algo == 'hung':
-        crdistmat = distance_matrix(cgeom, rgeom)
-        algofn = filter_hungarian
 
     if algo == 'hunguno':
         ccdistmat = distance_matrix(cgeom, cgeom)
