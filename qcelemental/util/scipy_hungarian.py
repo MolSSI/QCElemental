@@ -1,5 +1,8 @@
 # [Apr 2018] stolen directly from scipy so I can get an array back
 #   https://github.com/scipy/scipy/blob/master/scipy/optimize/_hungarian.py
+# [Apr 2019]
+#   * apply MAINT: Switch np.where(c) for np.nonzero(c) 9757612
+#   * transpose reduced_cost if cost_matrix had to be transposed
 
 # Hungarian algorithm (Kuhn-Munkres) for solving the linear sum assignment
 # problem. Taken from scikit-learn. Based on original code by Brian Clapper,
@@ -121,13 +124,15 @@ def linear_sum_assignment(cost_matrix, return_cost=False):
 
     if transposed:
         marked = state.marked.T
+        reduced_cost = state.C.T
     else:
         marked = state.marked
+        reduced_cost = state.C
 
     if return_cost:
-        return np.where(marked == 1), state.C
+        return np.nonzero(marked == 1), reduced_cost
     else:
-        return np.where(marked == 1)
+        return np.nonzero(marked == 1)
 
 
 class _Hungary(object):
@@ -168,7 +173,7 @@ def _step1(state):
     # Step 2: Find a zero (Z) in the resulting matrix. If there is no
     # starred zero in its row or column, star Z. Repeat for each element
     # in the matrix.
-    for i, j in zip(*np.where(state.C == 0)):
+    for i, j in zip(*np.nonzero(state.C == 0)):
         if state.col_uncovered[j] and state.row_uncovered[i]:
             state.marked[i, j] = 1
             state.col_uncovered[j] = False
