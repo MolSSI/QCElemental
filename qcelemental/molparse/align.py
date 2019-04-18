@@ -5,7 +5,7 @@ import collections
 import numpy as np
 
 from ..physical_constants import constants
-from ..util import distance_matrix, linear_sum_assignment, uno
+from ..util import distance_matrix, linear_sum_assignment, uno, random_rotation_matrix
 from ..testing import compare, compare_values
 
 

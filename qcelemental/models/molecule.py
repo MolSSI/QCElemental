@@ -724,7 +724,7 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def B787(concern_mol,
+    def B787(concern_mol,  # lgtm[py/not-named-self]
              ref_mol,
              do_plot=False,
              verbose=1,
@@ -744,10 +744,10 @@ class Molecule(BaseModel):
 
         Parameters
         ----------
-        concern_mol : qcdb.Molecule or psi4.core.Molecule
+        concern_mol : qcel.models.Molecule
             Molecule of concern, to be shifted, rotated, and reordered into
             best coincidence with `ref_mol`.
-        ref_mol : qcdb.Molecule or psi4.core.Molecule
+        ref_mol : qcel.models.Molecule
             Molecule to match.
         atoms_map : bool, optional
             Whether atom1 of `ref_mol` corresponds to atom1 of `concern_mol`, etc.
@@ -772,15 +772,14 @@ class Molecule(BaseModel):
 
         Returns
         -------
-        float, tuple, qcdb.Molecule or psi4.core.Molecule
+        float, tuple, qcel.models.Molecule
             First item is RMSD [A] between `ref_mol` and the optimally aligned
             geometry computed.
             Second item is a AlignmentMill namedtuple with fields
             (shift, rotation, atommap, mirror) that prescribe the transformation
             from `concern_mol` and the optimally aligned geometry.
             Third item is a crude charge-, multiplicity-, fragment-less Molecule
-            at optimally aligned (and atom-ordered) geometry. Return type
-            determined by `concern_mol` type.
+            at optimally aligned (and atom-ordered) geometry.
 
         """
         from ..molparse.align import B787
@@ -826,6 +825,9 @@ class Molecule(BaseModel):
             fix_orientation=True)
         amol = Molecule(validate=False, **to_schema(adict, dtype=2))
 
+        # TODO -- can probably do more with fragments in amol now that
+        #         Mol is something with non-contig frags. frags now discarded.
+
         assert compare_values(
             concern_mol.nuclear_repulsion_energy(),
             amol.nuclear_repulsion_energy(),
@@ -841,106 +843,113 @@ class Molecule(BaseModel):
                 quiet=(verbose > 1))
             assert compare(
                 True,
-                np.allclose(ref_mol.geometry(), amol.geometry(), atol=4),
+                np.allclose(ref_mol.geometry, amol.geometry, atol=4),
                 'Q: concern_mol-->returned_mol geometry matches ref_mol',
                 quiet=(verbose > 1))
 
         return rmsd, solution, amol
 
+    def scramble(ref_mol,  # lgtm[py/not-named-self]
+                 do_shift=True,
+                 do_rotate=True,
+                 do_resort=True,
+                 deflection=1.0,
+                 do_mirror=False,
+                 do_plot=False,
+                 run_to_completion=False,
+                 run_resorting=False,
+                 verbose=1):
+        """Tester for B787 by shifting, rotating, and atom shuffling `ref_mol` and
+        checking that the aligner returns the opposite transformation.
 
-#    def scramble(ref_mol,
-#                 do_shift=True,
-#                 do_rotate=True,
-#                 do_resort=True,
-#                 deflection=1.0,
-#                 do_mirror=False,
-#                 do_plot=False,
-#                 run_to_completion=False,
-#                 run_resorting=False,
-#                 verbose=1):
-#        """Tester for B787 by shifting, rotating, and atom shuffling `ref_mol` and
-#        checking that the aligner returns the opposite transformation.
-#
-#        Parameters
-#        ----------
-#        ref_mol : qcdb.Molecule or psi4.core.Molecule
-#            Molecule to perturb.
-#        do_shift : bool or array-like, optional
-#            Whether to generate a random atom shift on interval [-3, 3) in each
-#            dimension (`True`) or leave at current origin. To shift by a specified
-#            vector, supply a 3-element list.
-#        do_rotate : bool or array-like, optional
-#            Whether to generate a random 3D rotation according to algorithm of Arvo.
-#            To rotate by a specified matrix, supply a 9-element list of lists.
-#        do_resort : bool or array-like, optional
-#            Whether to shuffle atoms (`True`) or leave 1st atom 1st, etc. (`False`).
-#            To specify shuffle, supply a nat-element list of indices.
-#        deflection : float, optional
-#            If `do_rotate`, how random a rotation: 0.0 is no change, 0.1 is small
-#            perturbation, 1.0 is completely random.
-#        do_mirror : bool, optional
-#            Whether to construct the mirror image structure by inverting y-axis.
-#        do_plot : bool, optional
-#            Pops up a mpl plot showing before, after, and ref geometries.
-#        run_to_completion : bool, optional
-#            By construction, scrambled systems are fully alignable (final RMSD=0).
-#            Even so, `True` turns off the mechanism to stop when RMSD reaches zero
-#            and instead proceed to worst possible time.
-#        run_resorting : bool, optional
-#            Even if atoms not shuffled, test the resorting machinery.
-#        verbose : int, optional
-#            Print level.
-#
-#        Returns
-#        -------
-#        None
-#
-#        """
-#        from .align import compute_scramble
-#
-#        rgeom, rmass, relem, relez, runiq = ref_mol.to_arrays()
-#        nat = rgeom.shape[0]
-#
-#        perturbation = compute_scramble(
-#            rgeom.shape[0],
-#            do_shift=do_shift,
-#            do_rotate=do_rotate,
-#            deflection=deflection,
-#            do_resort=do_resort,
-#            do_mirror=do_mirror)
-#        cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
-#        cmol = Molecule.from_arrays(
-#            geom=cgeom,
-#            mass=cmass,
-#            elem=celem,
-#            elez=celez,
-#            units='Bohr',
-#            molecular_charge=ref_mol.molecular_charge(),
-#            molecular_multiplicity=ref_mol.multiplicity(),
-#            fix_com=True,
-#            fix_orientation=True)
-#
-#        rmsd = np.linalg.norm(cgeom - rgeom) * qcel.constants.bohr2angstroms / np.sqrt(nat)
-#        if verbose >= 1:
-#            print('Start RMSD = {:8.4f} [A]'.format(rmsd))
-#
-#        rmsd, solution, amol = cmol.B787(
-#            ref_mol,
-#            do_plot=do_plot,
-#            atoms_map=(not do_resort),
-#            run_resorting=run_resorting,
-#            mols_align=True,
-#            run_to_completion=run_to_completion,
-#            run_mirror=do_mirror,
-#            verbose=verbose)
-#
-#        compare_integers(
-#            True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', verbose=verbose - 1)
-#        if not do_resort:
-#            compare_integers(
-#                True,
-#                np.allclose(solution.rotation.T, perturbation.rotation),
-#                'rotations transpose',
-#                verbose=verbose - 1)
-#        if solution.mirror:
-#            compare_integers(True, do_mirror, 'mirror allowed', verbose=verbose - 1)
+        Parameters
+        ----------
+        ref_mol : qcel.models.Molecule
+            Molecule to perturb.
+        do_shift : bool or array-like, optional
+            Whether to generate a random atom shift on interval [-3, 3) in each
+            dimension (`True`) or leave at current origin. To shift by a specified
+            vector, supply a 3-element list.
+        do_rotate : bool or array-like, optional
+            Whether to generate a random 3D rotation according to algorithm of Arvo.
+            To rotate by a specified matrix, supply a 9-element list of lists.
+        do_resort : bool or array-like, optional
+            Whether to shuffle atoms (`True`) or leave 1st atom 1st, etc. (`False`).
+            To specify shuffle, supply a nat-element list of indices.
+        deflection : float, optional
+            If `do_rotate`, how random a rotation: 0.0 is no change, 0.1 is small
+            perturbation, 1.0 is completely random.
+        do_mirror : bool, optional
+            Whether to construct the mirror image structure by inverting y-axis.
+        do_plot : bool, optional
+            Pops up a mpl plot showing before, after, and ref geometries.
+        run_to_completion : bool, optional
+            By construction, scrambled systems are fully alignable (final RMSD=0).
+            Even so, `True` turns off the mechanism to stop when RMSD reaches zero
+            and instead proceed to worst possible time.
+        run_resorting : bool, optional
+            Even if atoms not shuffled, test the resorting machinery.
+        verbose : int, optional
+            Print level.
+
+        Returns
+        -------
+        None
+
+        """
+        from ..molparse.align import compute_scramble
+
+        rgeom = np.array(ref_mol.geometry)
+        rmass = np.array(ref_mol.masses)
+        relem = np.array(ref_mol.symbols)
+        relez = np.array(ref_mol.atomic_numbers)
+        runiq = np.asarray([
+            hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
+            for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
+        ])
+        nat = rgeom.shape[0]
+
+        perturbation = compute_scramble(
+            rgeom.shape[0],
+            do_shift=do_shift,
+            do_rotate=do_rotate,
+            deflection=deflection,
+            do_resort=do_resort,
+            do_mirror=do_mirror)
+        cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
+        cmolrec = from_arrays(
+            geom=cgeom,
+            mass=cmass,
+            elem=celem,
+            elez=celez,
+            units='Bohr',
+            molecular_charge=ref_mol.molecular_charge,
+            molecular_multiplicity=ref_mol.molecular_multiplicity,
+            fix_com=True,
+            fix_orientation=True)
+        cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
+
+        rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
+        if verbose >= 1:
+            print('Start RMSD = {:8.4f} [A]'.format(rmsd))
+
+        rmsd, solution, amol = cmol.B787(
+            ref_mol,
+            do_plot=do_plot,
+            atoms_map=(not do_resort),
+            run_resorting=run_resorting,
+            mols_align=True,
+            run_to_completion=run_to_completion,
+            run_mirror=do_mirror,
+            verbose=verbose)
+
+        assert compare(
+            True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1))
+        if not do_resort:
+            assert compare(
+                True,
+                np.allclose(solution.rotation.T, perturbation.rotation),
+                'rotations transpose',
+                quiet=(verbose > 1))
+        if solution.mirror:
+            assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))

@@ -17,3 +17,4 @@ dependencies:
   - pytest>=3.9.1
   - pytest-cov
   - codecov
+  - scipy  # tests an aspect of a helper fn not used by qcel functionality

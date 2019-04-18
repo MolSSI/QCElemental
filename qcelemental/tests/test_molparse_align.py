@@ -9,6 +9,47 @@ import numpy as np
 import qcelemental as qcel
 from qcelemental.testing import compare_values
 
+
+
+s22_12 = qcel.models.Molecule.from_data("""
+C    -1.2471894   -1.1718212   -0.6961388
+C    -1.2471894   -1.1718212    0.6961388
+N    -0.2589510   -1.7235771    1.4144796
+C     0.7315327   -2.2652221    0.6967288
+C     0.7315327   -2.2652221   -0.6967288
+N    -0.2589510   -1.7235771   -1.4144796
+H    -2.0634363   -0.7223199   -1.2472797
+H    -2.0634363   -0.7223199    1.2472797
+H     1.5488004   -2.7128282    1.2475604
+H     1.5488004   -2.7128282   -1.2475604
+C    -0.3380031    2.0800608    1.1300452
+C     0.8540254    1.3593471    1.1306308
+N     1.4701787    0.9907598    0.0000000
+C     0.8540254    1.3593471   -1.1306308
+C    -0.3380031    2.0800608   -1.1300452
+N    -0.9523059    2.4528836    0.0000000
+H    -0.8103758    2.3643033    2.0618643
+H     1.3208583    1.0670610    2.0623986
+H     1.3208583    1.0670610   -2.0623986
+H    -0.8103758    2.3643033   -2.0618643
+""")
+
+for trial in range(5):
+    s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0)
+
+chiral = qcel.models.Molecule.from_data("""
+ C     0.000000     0.000000     0.000000
+Br     0.000000     0.000000     1.949834
+ F     1.261262     0.000000    -0.451181
+Cl    -0.845465     1.497406    -0.341118
+ H    -0.524489    -0.897662    -0.376047
+""")
+
+chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False)
+for trial in range(5):
+    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True)
+
+
 soco10 = """
 O  1.0 0.0 0.0
 C  0.0 0.0 0.0
@@ -87,6 +128,7 @@ trop_gs_c2v = qcel.models.Molecule.from_data("""
      H        -5.05910161     0.00000000    -0.16572021
      units au
 """)
+
 
 @using_networkx
 def test_tropolone_b787():
