@@ -28,7 +28,7 @@ class AlignmentMill(collections.namedtuple('AlignmentMill', 'shift rotation atom
         text.append('-' * width)
         text.append('{:^{width}}'.format('AlignmentMill', width=width))
         if label:
-            text.append('{:^{width}}'.format(label))
+            text.append('{:^{width}}'.format(label, width=width))
         text.append('-' * width)
         text.append('Mirror:   {}'.format(self.mirror))
         text.append('Atom Map: {}'.format(self.atommap))

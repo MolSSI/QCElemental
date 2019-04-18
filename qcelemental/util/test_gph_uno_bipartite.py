@@ -131,7 +131,10 @@ def _check(msg, ans, ref, verbose=1):
 
 
 @using_networkx
-@pytest.mark.parametrize("alg", [1, 2])
+@pytest.mark.parametrize("alg", [
+    1,
+    2,
+])
 def test_example2(alg):
     """https://mathematica.stackexchange.com/questions/77410/find-all-perfect-matchings-of-a-graph/82893#82893"""
     import networkx as nx
