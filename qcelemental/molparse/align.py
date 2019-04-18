@@ -365,25 +365,25 @@ def B787(cgeom,
         plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment='Final RMSD = {:8.4f}'.format(final_rmsd))
 
     # sanity checks
-    compare_values(
+    assert compare_values(
         _pseudo_nre(cuniq, cgeom),
         _pseudo_nre(auniq, ageom),
         'D: concern_mol-->returned_mol pNRE uncorrupted',
         atol=1.e-4,
         quiet=(verbose > 1))
     if mols_align is True:
-        compare_values(
+        assert compare_values(
             _pseudo_nre(runiq, rgeom),
             _pseudo_nre(auniq, ageom),
             'D: concern_mol-->returned_mol pNRE matches ref_mol',
             atol=1.e-4,
             quiet=(verbose > 1))
-        compare(
+        assert compare(
             True,
             np.allclose(rgeom, ageom, atol=4),
             'D: concern_mol-->returned_mol geometry matches ref_mol',
             quiet=(verbose > 1))
-        compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose > 1))
+        assert compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose > 1))
 
     return final_rmsd, hold_solution
 
