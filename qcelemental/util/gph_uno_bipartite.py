@@ -14,16 +14,11 @@ Updated Dec 2017 LAB for pep8, py3, more tests, starter_match, and simpler inter
 """
 from __future__ import print_function
 
-try:
-    import networkx as nx
-except ImportError:
-    raise ImportError("""Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`""")
-from networkx import bipartite
 import numpy as np
-
 
 def _plotGraph(graph):
     """Plot graph using nodes as position number."""
+    import networkx as nx
 
     import matplotlib.pyplot as plt
     fig = plt.figure()
@@ -56,6 +51,8 @@ def _formDirected(g, match):
 	    set-0.
 
     """
+    import networkx as nx
+
     d = nx.DiGraph()
 
     for ee in g.edges():
@@ -95,11 +92,12 @@ def _enumMaximumMatching(g, starter_match=None):
     Update time: 2017-05-21 20:04:51.
 
     """
+    import networkx as nx
     all_matches = []
 
     #----------------Find one matching M----------------
     if starter_match is None:
-        match = bipartite.hopcroft_karp_matching(g)
+        match = nx.bipartite.hopcroft_karp_matching(g)
     else:
         match = starter_match
 
@@ -145,6 +143,8 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
     Update time: 2017-05-21 20:09:06.
 
     """
+    import networkx as nx
+
     #---------------Form directed graph D---------------
     d = _formDirected(g, match)
 
@@ -298,6 +298,7 @@ def _enumMaximumMatching2(g):
     Update time: 2017-05-21 20:04:51.
 
     """
+    import networkx as nx
     from scipy import sparse
 
     s1 = set(n for n, d in g.nodes(data=True) if d['bipartite'] == 0)
@@ -309,7 +310,7 @@ def _enumMaximumMatching2(g):
     all_matches = []
 
     #----------------Find one matching----------------
-    match = bipartite.hopcroft_karp_matching(g)
+    match = nx.bipartite.hopcroft_karp_matching(g)
 
     matchadj = np.zeros(adj.shape).astype('int')
     for kk, vv in match.items():
@@ -365,6 +366,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
     Update time: 2017-05-21 20:09:06.
 
     """
+    import networkx as nx
     from scipy import sparse
 
     #-------------------Find cycles-------------------
@@ -517,6 +519,8 @@ def uno(edges, match=None, verbose=1):
     in Bipartite Graphs" by Takeaki UNO
 
     """
+    import networkx as nx
+
     if match is None:
         p_match = None
     else:
@@ -542,270 +546,3 @@ def uno(edges, match=None, verbose=1):
     p_all_matches = [sorted([(pt[0][1], pt[1][1]) for pt in am]) for am in all_matches]
 
     return p_all_matches
-
-
-def example4(alg=1):
-
-    edges = [(0, 0),
-            (0, 1),
-            (1, 5),
-            (1, 6),
-            (2, 0),
-            (2, 1),
-            (3, 5),
-            (3, 6),
-            (4, 2),
-            (4, 3),
-            (5, 2),
-            (5, 3),
-            (6, 4),
-            (6, 7),
-            (7, 4),
-            (7, 7)]
-    match = [(0, 0), (2, 1), (4, 2), (5, 3), (6, 4), (3, 5), (1, 6), (7, 7)]
-
-    ref = [[(0, 0), (2, 1), (4, 2), (5, 3), (6, 4), (3, 5), (1, 6), (7, 7)],  # ----
-           [(0, 1), (2, 0), (4, 2), (5, 3), (6, 4), (3, 5), (1, 6), (7, 7)],  # *---
-
-           [(0, 0), (2, 1), (4, 3), (5, 2), (6, 4), (3, 5), (1, 6), (7, 7)],  # -*--
-           [(0, 1), (2, 0), (4, 3), (5, 2), (6, 4), (3, 5), (1, 6), (7, 7)],  # **--
-
-           [(0, 0), (2, 1), (4, 2), (5, 3), (6, 7), (3, 5), (1, 6), (7, 4)],  # --*-
-           [(0, 1), (2, 0), (4, 2), (5, 3), (6, 7), (3, 5), (1, 6), (7, 4)],  # *-*-
-
-           [(0, 0), (2, 1), (4, 2), (5, 3), (6, 4), (3, 6), (1, 5), (7, 7)],  # ---*
-           [(0, 1), (2, 0), (4, 2), (5, 3), (6, 4), (3, 6), (1, 5), (7, 7)],  # *--*
-
-           [(0, 0), (2, 1), (4, 3), (5, 2), (6, 7), (3, 5), (1, 6), (7, 4)],  # -**-
-           [(0, 1), (2, 0), (4, 3), (5, 2), (6, 7), (3, 5), (1, 6), (7, 4)],  # ***-
-
-           [(0, 0), (2, 1), (4, 3), (5, 2), (6, 4), (3, 6), (1, 5), (7, 7)],  # -*-*
-           [(0, 1), (2, 0), (4, 3), (5, 2), (6, 4), (3, 6), (1, 5), (7, 7)],  # **-*
-
-           [(0, 0), (2, 1), (4, 3), (5, 2), (6, 7), (3, 6), (1, 5), (7, 4)],  # -***
-           [(0, 1), (2, 0), (4, 3), (5, 2), (6, 7), (3, 6), (1, 5), (7, 4)],  # ****
-
-           [(0, 0), (2, 1), (4, 2), (5, 3), (6, 7), (3, 6), (1, 5), (7, 4)],  # --**
-           [(0, 1), (2, 0), (4, 2), (5, 3), (6, 7), (3, 6), (1, 5), (7, 4)],  # *-**
-        ]
-    ref = [sorted(r) for r in ref]
-
-#cost:
-# [[ 0.000  0.000  83.505  83.505  53.406  3.378  3.378  53.406]
-# [ 3.398  3.398  53.169  53.169  29.828  0.000  0.000  29.828]
-# [ 0.000  0.000  83.293  83.293  53.237  3.336  3.336  53.237]
-# [ 3.359  3.359  53.323  53.323  29.944  0.000  0.000  29.944]
-# [ 83.559  83.559  0.000  0.000  3.372  53.380  53.380  3.372]
-# [ 83.297  83.297  0.000  0.000  3.320  53.171  53.171  3.320]
-# [ 53.240  53.240  3.379  3.379  0.000  29.830  29.830  0.000]
-# [ 53.468  53.468  3.322  3.322  0.000  30.001  30.001  0.000]]
-#ptsCR [(0, 0), (2, 1), (4, 2), (5, 3), (6, 4), (3, 5), (1, 6), (7, 7)]
-
-    ans = uno(edges, verbose=2)
-    _check('Example 4a (internal match)', ans, ref, verbose=2)
-
-    ans = uno(edges, verbose=2, match=match)
-    _check('Example 4b (provided match)', ans, ref, verbose=2)
-
-
-def example3(alg=1):
-
-    match = [(1, 2), (3, 4), (5, 6), (7, 8)]
-    edges = [(1, 2),
-             (1, 4),
-             (1, 6),
-             (3, 4),
-             (3, 6),
-             (3, 8), 
-             (5, 6),
-             (5, 8),
-             (5, 2),
-             (7, 8),
-             (7, 2),
-             (7, 4)]
-
-    ref = [ [(1, 2), (3, 6), (5, 8), (7, 4)],
-            [(1, 2), (3, 4), (5, 6), (7, 8)],
-            [(1, 2), (3, 8), (5, 6), (7, 4)],
-            [(1, 4), (3, 6), (5, 2), (7, 8)],
-            [(1, 4), (3, 6), (5, 8), (7, 2)],
-            [(1, 4), (3, 8), (5, 6), (7, 2)],
-            [(1, 6), (3, 4), (5, 2), (7, 8)],
-            [(1, 6), (3, 4), (5, 8), (7, 2)],
-            [(1, 6), (3, 8), (5, 2), (7, 4)]]
-
-    ans = uno(edges, verbose=2)
-    _check('Example 3a (internal match)', ans, ref)
-
-    ans = uno(edges, verbose=2, match=match)
-    _check('Example 3b (provided match)', ans, ref, verbose=2)
-
-
-def _check(msg, ans, ref, verbose=1):
-
-    tans = [tuple(qw) for qw in ans]
-    tref = [tuple(qw) for qw in ref]
-    extra_answers = set(tans).difference(set(tref))
-    missd_answers = set(tref).difference(set(tans))
-    if verbose >= 2:
-        for a in tans:
-            print('Computed:', a)
-        for a in tref:
-            print('Supplied:', a)
-
-    try:
-        assert (extra_answers == set())
-        assert (missd_answers == set())
-    except AssertionError as err:
-        print(msg, 'failed:')
-        if extra_answers != set():
-            for a in extra_answers:
-                print('Incomplete Ref:', a)
-        if missd_answers != set():
-            for a in missd_answers:
-                print('Incomplete Soln:', a)
-        raise err
-    else:
-        print(msg, 'passed')
-
-
-def example2(alg=1):
-    """https://mathematica.stackexchange.com/questions/77410/find-all-perfect-matchings-of-a-graph/82893#82893"""
-
-    g = nx.Graph()
-    edges = [[(1, 1), (0, 2)],
-             [(1, 1), (0, 4)],
-             [(1, 1), (0, 6)],
-             [(1, 3), (0, 4)],
-             [(1, 3), (0, 6)],
-             [(1, 3), (0, 8)], 
-             [(1, 5), (0, 6)],
-             [(1, 5), (0, 8)],
-             [(1, 5), (0, 2)],
-             [(1, 7), (0, 8)],
-             [(1, 7), (0, 2)],
-             [(1, 7), (0, 4)]]
-
-#1 <-> 2, 3 <-> 6, 4 <-> 7, 5 <-> 8
-#1 <-> 2, 3 <-> 4, 5 <-> 6, 7 <-> 8
-#1 <-> 2, 3 <-> 8, 4 <-> 7, 5 <-> 6
-#1 <-> 4, 2 <-> 5, 3 <-> 6, 7 <-> 8
-#1 <-> 4, 2 <-> 7, 3 <-> 6, 5 <-> 8
-#1 <-> 4, 2 <-> 7, 3 <-> 8, 5 <-> 6
-#1 <-> 6, 2 <-> 5, 3 <-> 4, 7 <-> 8
-#1 <-> 6, 2 <-> 7, 3 <-> 4, 5 <-> 8
-#1 <-> 6, 2 <-> 5, 3 <-> 8, 4 <-> 7
-
-#Match2: [(1, 2), (3, 6), (5, 8), (7, 4)]
-#Match2: [(1, 2), (3, 4), (5, 6), (7, 8)]
-#Match2: [(1, 2), (3, 8), (5, 6), (7, 4)]
-#Match2: [(1, 4), (3, 6), (5, 2), (7, 8)]
-#Match2: [(1, 4), (3, 6), (5, 8), (7, 2)]
-#Match2: [(1, 4), (3, 8), (5, 6), (7, 2)]
-#Match2: [(1, 6), (3, 4), (5, 2), (7, 8)]
-#Match2: [(1, 6), (3, 4), (5, 8), (7, 2)]
-#Match2: [(1, 6), (3, 8), (5, 2), (7, 4)]
-
-    for ii in edges:
-        g.add_node(ii[0], bipartite=0)
-        g.add_node(ii[1], bipartite=1)
-
-    g.add_edges_from(edges)
-    #plotGraph(g)
-
-    if alg == 1:
-        all_matches = _enumMaximumMatching(g)
-    elif alg == 2:
-        all_matches = _enumMaximumMatching2(g)
-
-    ref = [ [(1, 2), (3, 6), (5, 8), (7, 4)],
-            [(1, 2), (3, 4), (5, 6), (7, 8)],
-            [(1, 2), (3, 8), (5, 6), (7, 4)],
-            [(1, 4), (3, 6), (5, 2), (7, 8)],
-            [(1, 4), (3, 6), (5, 8), (7, 2)],
-            [(1, 4), (3, 8), (5, 6), (7, 2)],
-            [(1, 6), (3, 4), (5, 2), (7, 8)],
-            [(1, 6), (3, 4), (5, 8), (7, 2)],
-            [(1, 6), (3, 8), (5, 2), (7, 4)]]
-
-    for mm in all_matches:
-        ans = sorted([(ii[0][1], ii[1][1]) for ii in mm])
-        if ans in ref:
-            ref.remove(ans)
-        print('Match2:', ans)
-        g_match = nx.Graph()
-        for ii in mm:
-            g_match.add_edge(ii[0], ii[1])
-        #plotGraph(g_match)
-
-    assert (ref == [])
-    print('Example 2 passed')
-
-
-def example1(alg=1):
-    g=nx.Graph()
-    edges=[
-            [(1,0), (0,0)],
-            [(1,0), (0,1)],
-            [(1,0), (0,2)],
-            [(1,1), (0,0)],
-            [(1,2), (0,2)],
-            #[(1,2), (0,5)],
-            [(1,3), (0,2)],
-            #[(1,3), (0,3)],
-            [(1,4), (0,3)],
-            [(1,4), (0,5)],
-            [(1,5), (0,2)],
-            [(1,5), (0,4)],
-            #[(1,5), (0,6)],
-            [(1,6), (0,1)],
-            [(1,6), (0,4)],
-            [(1,6), (0,6)]
-            ]
-
-    for ii in edges:
-        g.add_node(ii[0], bipartite=0)
-        g.add_node(ii[1], bipartite=1)
-        print('  Node:', ii[0], ii[1])
-
-    g.add_edges_from(edges)
-    #plotGraph(g)
-
-    if alg == 1:
-        all_matches = _enumMaximumMatching(g)
-    elif alg == 2:
-        all_matches = _enumMaximumMatching2(g)
-
-    for mm in sorted(all_matches):
-        ans = [(ii[0][1], ii[1][1]) for ii in mm]
-        #print('Match:', mm)
-        print('Match2:', sorted(ans))
-        g_match = nx.Graph()
-        for ii in mm:
-            g_match.add_edge(ii[0], ii[1])
-        #plotGraph(g_match)
-
-
-#-------------Main---------------------------------
-if __name__ == '__main__':
-    import time
-
-    t0 = time.time()
-    example1(alg=1)
-    t1 = time.time()
-    example2(alg=1)
-    t2 = time.time()
-    #example1(alg=2)
-    t3 = time.time()
-    example2(alg=2)
-    t4 = time.time()
-    example3(alg=1)
-    t5 = time.time()
-    example4(alg=1)
-    t6 = time.time()
-    print('ex1 alg1:', t1 - t0)
-    print('ex2 alg1:', t2 - t1)
-    #print('ex1 alg2:', t3 - t2)
-    print('ex2 alg2:', t4 - t3)
-    print('ex3 alg1:', t5 - t4)
-    print('ex4 alg1:', t6 - t5)

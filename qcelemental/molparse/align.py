@@ -5,7 +5,7 @@ import collections
 import numpy as np
 
 from ..physical_constants import constants
-from ..util import distance_matrix
+from ..util import distance_matrix, linear_sum_assignment, uno
 from ..testing import compare, compare_values
 
 
@@ -465,8 +465,6 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         # find _a_ best match btwn R & C atoms through Kuhn-Munkres (Hungarian) algorithm
         t00 = time.time()
         # exactly like `scipy.optimize.linear_sum_assignment(cost)` only with extra return
-        #    import scipy.optimize
-        #    raise ImportError("""Python module scipy >=0.17 not found. Solve by installing it: `conda install scipy` or `pip install scipy`""")
         (row_ind, col_ind), reducedcost = linear_sum_assignment(cost, return_cost=True)
         ptsCR = list(zip(row_ind, col_ind))
         ptsCR = sorted(ptsCR, key=lambda tup: tup[1])
@@ -477,7 +475,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         if verbose >= 1:
             print('Hungarian time [s] for space:         {:.3}'.format(t01 - t00))
 
-        # final _all_ best matches btwn R & C atoms through Uno algorithm, seeded from Hungarian sol'n
+        # find _all_ best matches btwn R & C atoms through Uno algorithm, seeded from Hungarian sol'n
         edges = np.argwhere(reducedcost < uno_cutoff)
         gooduns = uno(edges, ptsCR)
         t02 = time.time()
@@ -509,8 +507,15 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         ccnremat[ccnremat == np.inf] = 0.
         rrnremat[rrnremat == np.inf] = 0.
         algofn = filter_hungarian_uno
-        from ..util.scipy_hungarian import linear_sum_assignment
-        from ..util.gph_uno_bipartite import uno
+
+        # Ensure networkx exists
+        from importlib.util import find_spec
+        spec = find_spec('networkx')
+        if spec is None:
+            raise ModuleNotFoundError(
+                """Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`"""
+            )
+        del spec, find_spec
 
     # collect candidate atom orderings from algofn for each of the atom classes,
     #   recombine the classes with each other in every permutation (could maybe

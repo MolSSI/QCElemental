@@ -1,3 +1,6 @@
+import pytest
+from .addons import using_networkx
+
 import math
 import pprint
 
@@ -5,7 +8,6 @@ import numpy as np
 
 import qcelemental as qcel
 from qcelemental.testing import  compare_values
-import pytest
 
 
 oco10 = qcel.molparse.from_string("""
@@ -24,6 +26,7 @@ units ang
 
 ref_rmsd = math.sqrt(2. * 0.2 * 0.2 / 3.)  # RMSD always in Angstroms
 
+@using_networkx
 def test_b787():
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
