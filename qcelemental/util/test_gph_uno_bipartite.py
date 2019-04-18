@@ -3,7 +3,7 @@
 # * AmbiguousSolution errors seem to have cropped up, though not in the alignment usage.
 
 import pytest
-from ..tests.addons import using_networkx
+from ..tests.addons import using_networkx, using_scipy
 
 from qcelemental.util.gph_uno_bipartite import uno, _enumMaximumMatching, _enumMaximumMatching2
 
@@ -132,8 +132,8 @@ def _check(msg, ans, ref, verbose=1):
 
 @using_networkx
 @pytest.mark.parametrize("alg", [
-    1,
-    2,
+    pytest.param(1),
+    pytest.param(2, marks=using_scipy),
 ])
 def test_example2(alg):
     """https://mathematica.stackexchange.com/questions/77410/find-all-perfect-matchings-of-a-graph/82893#82893"""
