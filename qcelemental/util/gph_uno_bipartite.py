@@ -16,19 +16,21 @@ from __future__ import print_function
 
 import numpy as np
 
-def _plotGraph(graph):
-    """Plot graph using nodes as position number."""
-    import networkx as nx
 
-    import matplotlib.pyplot as plt
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-
-    pos = [(ii[1], ii[0]) for ii in graph.nodes()]
-    pos_dict = dict(zip(graph.nodes(), pos))
-    nx.draw(graph, pos=pos_dict, ax=ax, with_labels=True)
-    plt.show(block=False)
-    return
+# commented as untested [Apr 2019]
+#def _plotGraph(graph):
+#    """Plot graph using nodes as position number."""
+#    import networkx as nx
+#
+#    import matplotlib.pyplot as plt
+#    fig = plt.figure()
+#    ax = fig.add_subplot(111)
+#
+#    pos = [(ii[1], ii[0]) for ii in graph.nodes()]
+#    pos_dict = dict(zip(graph.nodes(), pos))
+#    nx.draw(graph, pos=pos_dict, ax=ax, with_labels=True)
+#    plt.show(block=False)
+#    return
 
 
 def _formDirected(g, match):
@@ -478,34 +480,35 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         all_matches = _enumMaximumMatchingIter2(g_minus, matchadj, all_matches, n1, add_e, check_cycle)
         all_matches = _enumMaximumMatchingIter2(g_plus, new_match, all_matches, n1, add_e_new, check_cycle)
 
-    if len(all_matches) % 1000 == 0:
-        print('len', len(all_matches))
+    #if len(all_matches) % 1000 == 0:
+    #    print('len', len(all_matches))
 
-    print('another')
+    #print('another')
     return all_matches
 
 
-def _findCycle(adj, n1):
-    from scipy import sparse
-
-    path = []
-    visited = set()
-
-    def visit(v):
-        if v in visited:
-            return False
-        visited.add(v)
-        path.append(v)
-        neighbours = sparse.find(adj[v, :] == 1)[1]
-        for nn in neighbours:
-            if nn in path or visit(nn):
-                return True
-        path.remove(v)
-        return False
-
-    nodes = range(n1)
-    result = any(visit(v) for v in nodes)
-    return result, path
+# commented as unused [Apr 2019]
+#def _findCycle(adj, n1):
+#    from scipy import sparse
+#
+#    path = []
+#    visited = set()
+#
+#    def visit(v):
+#        if v in visited:
+#            return False
+#        visited.add(v)
+#        path.append(v)
+#        neighbours = sparse.find(adj[v, :] == 1)[1]
+#        for nn in neighbours:
+#            if nn in path or visit(nn):
+#                return True
+#        path.remove(v)
+#        return False
+#
+#    nodes = range(n1)
+#    result = any(visit(v) for v in nodes)
+#    return result, path
 
 
 def uno(edges, match=None, verbose=1):

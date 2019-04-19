@@ -4,8 +4,9 @@ import collections
 
 import numpy as np
 
+from ..exceptions import ValidationError
 from ..physical_constants import constants
-from ..util import distance_matrix, linear_sum_assignment, uno, random_rotation_matrix
+from ..util import (blockwise_expand, blockwise_contract, distance_matrix, linear_sum_assignment, uno, random_rotation_matrix)
 from ..testing import compare, compare_values
 
 
@@ -84,7 +85,7 @@ class AlignmentMill(collections.namedtuple('AlignmentMill', 'shift rotation atom
         return algrad
 
     def align_hessian(self, hess):
-        blocked_hess = qcdb.util.blockwise_expand(hess, (3, 3), False)
+        blocked_hess = blockwise_expand(hess, (3, 3), False)
         alhess = np.zeros_like(blocked_hess)
 
         nat = blocked_hess.shape[0]
@@ -94,7 +95,7 @@ class AlignmentMill(collections.namedtuple('AlignmentMill', 'shift rotation atom
 
         alhess = alhess[np.ix_(self.atommap, self.atommap)]
 
-        alhess = qcdb.util.blockwise_contract(alhess)
+        alhess = blockwise_contract(alhess)
         return alhess
 
     def align_system(self, geom, mass, elem, elez, uniq, reverse=False):
@@ -149,6 +150,7 @@ def B787(cgeom,
          run_resorting=False,
          mols_align=False,
          run_to_completion=False,
+         algorithm='hungarian_uno',
          uno_cutoff=1.e-3,
          run_mirror=False):
     """Use Kabsch algorithm to find best alignment of geometry `cgeom` onto
@@ -189,6 +191,9 @@ def B787(cgeom,
     run_to_completion : bool, optional
         Run reorderings to completion (past RMSD = 0) even if unnecessary because
         `mols_align=True`. Used to test worst-case timings.
+    algorithm : {'hungarian_uno', 'permutative'}, optional
+        When `atoms_map=False`, screening algorithm for plausible atom mappings.
+        `permutative` suitable only for small systems.
     uno_cutoff : float, optional
         TODO
     run_mirror : bool, optional
@@ -269,13 +274,13 @@ def B787(cgeom,
     if verbose >= 1:
         print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
 
-    def _plausible_atom_orderings_wrapper(runiq, cuniq, rgeom, cgeom, run_resorting, verbose=1, uno_cutoff=1.e-3):
+    def _plausible_atom_orderings_wrapper(runiq, cuniq, rgeom, cgeom, run_resorting, algorithm=algorithm, verbose=1, uno_cutoff=1.e-3):
         """Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when
         atoms of R & C known to be ordered. Easier to put logic here because _plausible is generator.
 
         """
         if run_resorting:
-            return _plausible_atom_orderings(runiq, cuniq, rgeom, cgeom, verbose=verbose, uno_cutoff=uno_cutoff)
+            return _plausible_atom_orderings(runiq, cuniq, rgeom, cgeom, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff)
         else:
             return [np.arange(rgeom.shape[0])]
 
@@ -388,7 +393,7 @@ def B787(cgeom,
     return final_rmsd, hold_solution
 
 
-def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbose=1, uno_cutoff=1.e-3):
+def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.e-3):
     """
 
     Parameters
@@ -397,7 +402,8 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         Hashes encoding distinguishable non-coord characteristics of reference
         molecule. Namely, atomic symbol, mass, basis sets?.
     current : list
-        Hashes encoding distinguishable non-coord characteristics of
+        Hashes encoding distinguishable non-coord characteristics of trial
+        molecule. Namely, atomic symbol, mass, basis sets?.
 
     Returns
     -------
@@ -431,7 +437,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         bnbn = [rrdistmat[first, second] for first, second in zip(rgp, rgp[1:])]
         for pm in itertools.permutations(cgp):
             cncn = [ccdistmat[first, second] for first, second in zip(pm, pm[1:])]
-            if np.allclose(bnbn, cncn, atol=0.5):
+            if np.allclose(bnbn, cncn, atol=1.0):
                 if verbose >= 1:
                     print('Candidate:', rgp, '<--', pm)
                 yield pm
@@ -463,8 +469,8 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         costcopy = np.copy(cost)  # other one gets manipulated by hungarian call
 
         # find _a_ best match btwn R & C atoms through Kuhn-Munkres (Hungarian) algorithm
+        # * linear_sum_assigment call is exactly like `scipy.optimize.linear_sum_assignment(cost)` only with extra return
         t00 = time.time()
-        # exactly like `scipy.optimize.linear_sum_assignment(cost)` only with extra return
         (row_ind, col_ind), reducedcost = linear_sum_assignment(cost, return_cost=True)
         ptsCR = list(zip(row_ind, col_ind))
         ptsCR = sorted(ptsCR, key=lambda tup: tup[1])
@@ -492,15 +498,14 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
                 print('Best Candidate ({:6.3}):'.format(sumCR), rgp, '<--', ans, '     from', cgp, subans)
             yield ans
 
-    if algo == 'perm':
+    if algorithm == 'permutative':
         ccdistmat = distance_matrix(cgeom, cgeom)
         rrdistmat = distance_matrix(rgeom, rgeom)
         algofn = filter_permutative
 
-    if algo == 'hunguno':
+    if algorithm == 'hungarian_uno':
         ccdistmat = distance_matrix(cgeom, cgeom)
         rrdistmat = distance_matrix(rgeom, rgeom)
-        # TODO investigate soundness
         with np.errstate(divide='ignore'):
             ccnremat = np.reciprocal(ccdistmat)
             rrnremat = np.reciprocal(rrdistmat)
@@ -508,13 +513,13 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algo='hunguno', verbos
         rrnremat[rrnremat == np.inf] = 0.
         algofn = filter_hungarian_uno
 
-        # Ensure networkx exists
+        # Ensure (optional dependency) networkx exists
         from importlib.util import find_spec
         spec = find_spec('networkx')
         if spec is None:
             raise ModuleNotFoundError(
                 """Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`"""
-            )
+            )  # pragma: no cover
         del spec, find_spec
 
     # collect candidate atom orderings from algofn for each of the atom classes,
@@ -564,17 +569,15 @@ def kabsch_align(rgeom, cgeom, weight=None):
     protein wRMSD code: https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt
     quaternion: https://cnx.org/contents/HV-RsdwL@23/Molecular-Distance-Measures
 
-    Author: DAS
+    Author: dsirianni
 
     """
     if weight is None:
         w = np.ones((rgeom.shape[0]))
-    elif isinstance(weight, list):
+    elif isinstance(weight, (list, np.ndarray)):
         w = np.asarray(weight)
-    elif isinstance(weight, np.ndarray):
-        w = weight
     else:
-        raise ValidationError("""Unrecognized argument type {} for kwarg 'weight'.""".format(type(weight)))
+        raise ValidationError(f"""Unrecognized argument type {type(weight)} for kwarg 'weight'.""")
 
     R = rgeom
     C = cgeom

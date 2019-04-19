@@ -7,7 +7,7 @@ import pprint
 import numpy as np
 
 import qcelemental as qcel
-from qcelemental.testing import compare_values
+from qcelemental.testing import compare, compare_values
 
 
 
@@ -34,8 +34,11 @@ H     1.3208583    1.0670610   -2.0623986
 H    -0.8103758    2.3643033   -2.0618643
 """)
 
-for trial in range(5):
-    s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0)
+
+def test_scramble_descrambles_plain():
+    for trial in range(5):
+        s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0)
+
 
 chiral = qcel.models.Molecule.from_data("""
  C     0.000000     0.000000     0.000000
@@ -45,9 +48,12 @@ Cl    -0.845465     1.497406    -0.341118
  H    -0.524489    -0.897662    -0.376047
 """)
 
-chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False)
-for trial in range(5):
-    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True)
+
+def test_scramble_descrambles_chiral():
+    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False)
+    chiral.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=1, do_mirror=False)
+    for trial in range(5):
+        chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True)
 
 
 soco10 = """
@@ -57,10 +63,32 @@ O -1.0 0.0 0.0
 units ang
 """
 
-soco12 = """
+sooc12 = """
 O  1.2 4.0 0.0
 O -1.2 4.0 0.0
 C  0.0 4.0 0.0
+units ang
+"""
+
+s18ooc12 = """
+18O  1.2 4.0 0.0
+O -1.2 4.0 0.0
+C  0.0 4.0 0.0
+units ang
+"""
+
+sooco12 = """
+O  1.2 4.0 0.0
+O -1.2 4.0 0.0
+C  0.0 4.0 0.0
+O  3.0 4.0 0.0
+units ang
+"""
+
+soco12 = """
+O  1.2 4.0 0.0
+C  0.0 4.0 0.0
+O -1.2 4.0 0.0
 units ang
 """
 
@@ -68,15 +96,50 @@ ref_rmsd = math.sqrt(2. * 0.2 * 0.2 / 3.)  # RMSD always in Angstroms
 
 
 @using_networkx
+def test_error_bins_b787():
+    oco10 = qcel.models.Molecule.from_data(soco10)
+    oco12 = qcel.models.Molecule.from_data(s18ooc12)
+
+    with pytest.raises(qcel.ValidationError) as e:
+        oco12.B787(oco10, verbose=0)
+
+    assert 'atom subclasses unequal' in str(e)
+
+
+@using_networkx
+def test_error_nat_b787():
+    oco10 = qcel.models.Molecule.from_data(soco10)
+    oco12 = qcel.models.Molecule.from_data(sooco12)
+
+    with pytest.raises(qcel.ValidationError) as e:
+        oco12.B787(oco10, verbose=0)
+
+    assert "natom doesn't match" in str(e)
+
+
+@using_networkx
 def test_b787():
+    oco10 = qcel.molparse.from_string(soco10)
+    oco12 = qcel.molparse.from_string(sooc12)
+
+    oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+
+    rmsd, mill = qcel.molparse.B787(
+        oco10_geom_au, oco12_geom_au, np.array(['O', 'C', 'O']), np.array(['O', 'O', 'C']), algorithm='permutative', verbose=4, do_plot=False)
+
+    assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.e-6)
+
+
+@using_networkx
+def test_b787_atomsmap():
     oco10 = qcel.molparse.from_string(soco10)
     oco12 = qcel.molparse.from_string(soco12)
 
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
-    rmsd, mill = qcel.molparse.B787(
-        oco10_geom_au, oco12_geom_au, np.array(['O', 'C', 'O']), np.array(['O', 'O', 'C']), verbose=0, do_plot=False)
+    rmsd, mill = qcel.molparse.B787(oco10_geom_au, oco12_geom_au, None, None, atoms_map=True)
 
     assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.e-6)
 
@@ -84,11 +147,33 @@ def test_b787():
 @using_networkx
 def test_model_b787():
     oco10 = qcel.models.Molecule.from_data(soco10)
-    oco12 = qcel.models.Molecule.from_data(soco12)
+    oco12 = qcel.models.Molecule.from_data(sooc12)
 
-    rmsd, mill, mol = oco12.B787(oco10, verbose=0)
+    rmsd, mill, mol = oco12.B787(oco10, verbose=4)
 
     assert compare_values(ref_rmsd, rmsd, 'known rmsd qcel.models.Molecule.B787', atol=1.e-6)
+
+
+def test_error_kabsch():
+    with pytest.raises(qcel.ValidationError) as e:
+        qcel.molparse.kabsch_align([1, 2, 3], [4, 5, 6], weight=7)
+
+    assert "for kwarg 'weight'" in str(e)
+
+
+@using_networkx
+def test_kabsch_identity():
+    oco10 = qcel.molparse.from_string(soco10)
+    oco12 = qcel.molparse.from_string(soco10)
+
+    oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+
+    rmsd, rot, shift = qcel.molparse.kabsch_align(oco10_geom_au, oco12_geom_au)
+
+    assert compare_values(0., rmsd, 'identical')
+    assert compare_values(np.identity(3), rot, 'identity rotation matrix')
+    assert compare_values(np.zeros(3), shift, 'identical COM')
 
 
 trop_cs = qcel.models.Molecule.from_data("""
@@ -134,3 +219,47 @@ trop_gs_c2v = qcel.models.Molecule.from_data("""
 def test_tropolone_b787():
     rmsd, mill, mol = trop_cs.B787(trop_gs_c2v, do_plot=False, verbose=0, uno_cutoff=0.5)
     assert compare_values(0.1413, rmsd, 'cs<-->c2v tropolones align', atol=1.e-2)
+
+
+def test_scramble_identity():
+    mill = qcel.molparse.compute_scramble(4, do_resort=False, do_shift=False, do_rotate=False, deflection=1.0, do_mirror=False)
+
+    mill_str = """----------------------------------------
+             AlignmentMill              
+                  eye                   
+----------------------------------------
+Mirror:   False
+Atom Map: [0 1 2 3]
+Shift:    [0. 0. 0.]
+Rotation:
+[[1. 0. 0.]
+ [0. 1. 0.]
+ [0. 0. 1.]]
+----------------------------------------"""
+
+    assert compare(mill_str, mill.__str__(label='eye'))
+
+
+def test_scramble_specific():
+    mill = qcel.molparse.compute_scramble(4,
+                                          do_resort=[1, 2, 0, 3],
+                                          do_shift=[-1.82564537, 2.25391838, -2.56591963],
+                                          do_rotate=[[ 0.39078817, -0.9101616,  -0.13744259],
+                                                     [ 0.36750838,  0.29117465, -0.88326379],
+                                                     [ 0.84393258,  0.29465774,  0.44827962]])
+
+    mill_str = """----------------------------------------
+             AlignmentMill              
+----------------------------------------
+Mirror:   False
+Atom Map: [1 2 0 3]
+Shift:    [-1.82564537  2.25391838 -2.56591963]
+Rotation:
+[[ 0.39078817 -0.9101616  -0.13744259]
+ [ 0.36750838  0.29117465 -0.88326379]
+ [ 0.84393258  0.29465774  0.44827962]]
+----------------------------------------"""
+
+    assert compare(mill_str, mill.__str__())
+
+

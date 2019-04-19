@@ -724,7 +724,7 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def B787(concern_mol,  # lgtm[py/not-named-self]
+    def B787(concern_mol,
              ref_mol,
              do_plot=False,
              verbose=1,
@@ -733,7 +733,7 @@ class Molecule(BaseModel):
              mols_align=False,
              run_to_completion=False,
              uno_cutoff=1.e-3,
-             run_mirror=False):
+             run_mirror=False):  # lgtm[py/not-named-self]
         """Finds shift, rotation, and atom reordering of `concern_mol` that best
         aligns with `ref_mol`.
 
@@ -769,6 +769,8 @@ class Molecule(BaseModel):
             Run alternate geometries potentially allowing best match to `ref_mol`
             from mirror image of `concern_mol`. Only run if system confirmed to
             be nonsuperimposable upon mirror reflection.
+        verbose : int, optional
+            Print level.
 
         Returns
         -------
@@ -849,7 +851,7 @@ class Molecule(BaseModel):
 
         return rmsd, solution, amol
 
-    def scramble(ref_mol,  # lgtm[py/not-named-self]
+    def scramble(ref_mol,
                  do_shift=True,
                  do_rotate=True,
                  do_resort=True,
@@ -858,7 +860,7 @@ class Molecule(BaseModel):
                  do_plot=False,
                  run_to_completion=False,
                  run_resorting=False,
-                 verbose=1):
+                 verbose=1):  # lgtm[py/not-named-self]
         """Tester for B787 by shifting, rotating, and atom shuffling `ref_mol` and
         checking that the aligner returns the opposite transformation.
 
