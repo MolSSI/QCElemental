@@ -39,14 +39,34 @@ class ResultProperties(BaseModel):
     mp2_doubles_energy: float = None
     mp2_total_correlation_energy: float = None
     mp2_total_energy: float = None
+    mp2_dipole_moment: List[float] = None
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: float = None
     ccsd_opposite_spin_correlation_energy: float = None
     ccsd_singles_energy: float = None
     ccsd_doubles_energy: float = None
-    ccsd_total_correlation_energy: float = None
+    ccsd_correlation_energy: float = None
     ccsd_total_energy: float = None
+    ccsd_dipole_moment: List[float] = None
+    ccsd_iterations: int = None
+
+    # CCSD(T) keywords
+    ccsd_prt_pr_correlation_energy: float = None
+    ccsd_prt_pr_total_energy: float = None
+    ccsd_prt_pr_dipole_moment: List[float] = None
+
+    # CCSDT keywords
+    ccsdt_correlation_energy: float = None
+    ccsdt_total_energy: float = None
+    ccsdt_dipole_moment: List[float] = None
+    ccsdt_iterations: int = None
+
+    # CCSDTQ keywords
+    ccsdtq_correlation_energy: float = None
+    ccsdtq_total_energy: float = None
+    ccsdtq_dipole_moment: List[float] = None
+    ccsdtq_iterations: int = None
 
     class Config:
         allow_mutation = False
