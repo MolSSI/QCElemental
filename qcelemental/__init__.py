@@ -5,7 +5,6 @@ Main init for QCElemental
 from .datum import Datum
 from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError, ChoicesError, DataUnavailableError)
 from .testing import (compare, compare_values)
-from .importing import (parse_version, safe_version, which, which_import)
 from . import molparse
 from . import models
 
