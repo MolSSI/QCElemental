@@ -8,114 +8,7 @@ from ..exceptions import ValidationError
 from ..physical_constants import constants
 from ..util import (blockwise_expand, blockwise_contract, distance_matrix, linear_sum_assignment, uno, random_rotation_matrix)
 from ..testing import compare, compare_values
-
-
-class AlignmentMill(collections.namedtuple('AlignmentMill', 'shift rotation atommap mirror')):
-    """Facilitates the application of the simple transformation operations
-    defined by namedtuple of arrays as recipe to the data structures
-    describing Cartesian molecular coordinates. Attaches functions to
-    transform the geometry, element list, gradient, etc. to the
-    AlignmentRecipe. When `mirror` attribute (defaults to False) active,
-    then molecular system can be substantively changed by procedure.
-
-    """
-
-    def __new__(cls, shift, rotation, atommap, mirror=False):
-        return super(AlignmentMill, cls).__new__(cls, shift, rotation, atommap, mirror)
-
-    def __str__(self, label=''):
-        width = 40
-        text = []
-        text.append('-' * width)
-        text.append('{:^{width}}'.format('AlignmentMill', width=width))
-        if label:
-            text.append('{:^{width}}'.format(label, width=width))
-        text.append('-' * width)
-        text.append('Mirror:   {}'.format(self.mirror))
-        text.append('Atom Map: {}'.format(self.atommap))
-        text.append('Shift:    {}'.format(self.shift))
-        text.append('Rotation:')
-        text.append('{}'.format(self.rotation))
-        text.append('-' * width)
-        return ('\n'.join(text))
-
-    def align_coordinates(self, geom, reverse=False):
-        """suitable for geometry or displaced geometry"""
-
-        algeom = np.copy(geom)
-        if reverse:
-            algeom = algeom.dot(self.rotation)
-            algeom = algeom + self.shift
-            if self.mirror:
-                algeom[:, 1] *= -1.
-        else:
-            if self.mirror:
-                algeom[:, 1] *= -1.
-            algeom = algeom - self.shift
-            algeom = algeom.dot(self.rotation)
-        algeom = algeom[self.atommap, :]
-        # mirror-wise, rsm/msr == rms/msr
-
-        return algeom
-
-    def align_atoms(self, ats):
-        """suitable for masses, symbols, Zs, etc."""
-
-        return ats[self.atommap]
-
-    def align_vector(self, vec):
-        """suitable for vector attached to molecule"""
-
-        # sensible? TODO
-        #alvec = np.copy(vec)
-        #if self.mirror:
-        #    alvec[:, 1] *= -1
-        return vec.dot(self.rotation)
-
-    def align_gradient(self, grad):
-        """suitable for vector system attached to atoms"""
-
-        # sensible? TODO
-        #algrad = np.copy(grad)
-        #if self.mirror:
-        #    algrad[:, 1] *= -1
-        algrad = grad.dot(self.rotation)
-        algrad = algrad[self.atommap]
-
-        return algrad
-
-    def align_hessian(self, hess):
-        blocked_hess = blockwise_expand(hess, (3, 3), False)
-        alhess = np.zeros_like(blocked_hess)
-
-        nat = blocked_hess.shape[0]
-        for iat in range(nat):
-            for jat in range(nat):
-                alhess[iat, jat] = (self.rotation.T).dot(blocked_hess[iat, jat].dot(self.rotation))
-
-        alhess = alhess[np.ix_(self.atommap, self.atommap)]
-
-        alhess = blockwise_contract(alhess)
-        return alhess
-
-    def align_system(self, geom, mass, elem, elez, uniq, reverse=False):
-        """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
-
-        nugeom = self.align_coordinates(geom, reverse=reverse)
-        numass = self.align_atoms(mass)
-        nuelem = self.align_atoms(elem)
-        nuelez = self.align_atoms(elez)
-        nuuniq = self.align_atoms(uniq)
-
-        return nugeom, numass, nuelem, nuelez, nuuniq
-
-    def align_mini_system(self, geom, uniq, reverse=False):
-        """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
-
-        nugeom = self.align_coordinates(geom, reverse=reverse)
-        nuuniq = self.align_atoms(uniq)
-
-        return nugeom, nuuniq
+from ..models import AlignmentMill
 
 
 def _nre(Z, geom):
@@ -135,9 +28,6 @@ def _pseudo_nre(Zhash, geom):
     Zidx = list(set(sorted(Zhash)))
     pZ = [Zidx.index(z) for z in Zhash]
     return _nre(pZ, geom)
-
-
-#         1         2         3         4         5         6         7         8         9         10
 
 
 def B787(cgeom,
@@ -274,7 +164,7 @@ def B787(cgeom,
     if verbose >= 1:
         print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
 
-    def _plausible_atom_orderings_wrapper(runiq, cuniq, rgeom, cgeom, run_resorting, algorithm=algorithm, verbose=1, uno_cutoff=1.e-3):
+    def _plausible_atom_orderings_wrapper(runiq, cuniq, rgeom, cgeom, run_resorting, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.e-3):
         """Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when
         atoms of R & C known to be ordered. Easier to put logic here because _plausible is generator.
 
@@ -287,14 +177,14 @@ def B787(cgeom,
     t0 = time.time()
     tc = 0.
     for ordering in _plausible_atom_orderings_wrapper(
-            runiq, cuniq, rgeom, cgeom, run_resorting, verbose=verbose, uno_cutoff=uno_cutoff):
+            runiq, cuniq, rgeom, cgeom, run_resorting, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff):
         t1 = time.time()
         ocount += 1
         npordd = np.asarray(ordering)
         orrmsd, RR, TT = kabsch_align(rgeom, cgeom[npordd, :], weight=None)
         orrmsd = np.around(orrmsd, decimals=8)
 
-        temp_solution = AlignmentMill(TT, RR, npordd, False)
+        temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=False)
         tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
         if verbose >= 4:
             print('temp geom diff\n', tgeom - rgeom)
@@ -322,7 +212,7 @@ def B787(cgeom,
             orrmsd, RR, TT = kabsch_align(rgeom, icgeom[npordd, :], weight=None)
             orrmsd = np.around(orrmsd, decimals=8)
 
-            temp_solution = AlignmentMill(TT, RR, npordd, True)
+            temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=True)
             tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
             if verbose >= 4:
                 print('temp geom diff\n', tgeom - rgeom)
@@ -712,5 +602,5 @@ def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflect
         rand_rot3d = np.array(do_rotate)
         assert (rand_rot3d.shape == (3, 3))
 
-    perturbation = AlignmentMill(rand_shift, rand_rot3d, rand_elord, do_mirror)
+    perturbation = AlignmentMill(shift=rand_shift, rotation=rand_rot3d, atommap=rand_elord, mirror=do_mirror)
     return perturbation

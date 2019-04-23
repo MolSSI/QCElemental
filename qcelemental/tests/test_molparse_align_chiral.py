@@ -31,10 +31,10 @@ Cl    -0.845116    -1.497706    -0.341045
 
 @using_networkx()
 def test_simpleS():
-    rmsd, mill, mol = simpleS.B787(
+    mol, data = simpleS.align(
         simpleR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.093e-4, rmsd, 'bromochlorofluoromethane R, S', atol=1.e-4)
-    assert compare(True, mill.mirror, 'bromochlorofluoromethane R, S enantiomers')
+    assert compare_values(1.093e-4, data['rmsd'], 'bromochlorofluoromethane R, S', atol=1.e-4)
+    assert compare(True, data['mill'].mirror, 'bromochlorofluoromethane R, S enantiomers')
 
 
 clbrbutRR = qcel.models.Molecule.from_data("""
@@ -112,32 +112,32 @@ Br     2.010793     1.836814     1.833496
 
 @using_networkx()
 def test_clbrbutSS():
-    rmsd, mill, mol = clbrbutSS.B787(
+    mol, data = clbrbutSS.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(5.411e-3, rmsd, '2-chloro-3-bromobutane RR, SS', atol=1.e-3)
-    assert compare(True, mill.mirror, '2-chloro-3-bromobutane RR, SS enantiomers')
+    assert compare_values(5.411e-3, data['rmsd'], '2-chloro-3-bromobutane RR, SS', atol=1.e-3)
+    assert compare(True, data['mill'].mirror, '2-chloro-3-bromobutane RR, SS enantiomers')
 
 
 @using_networkx()
 def test_clbrbutSR_vs_RR():
-    rmsd, mill, mol = clbrbutSR.B787(
+    mol, data = clbrbutSR.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.095, rmsd, '2-chloro-3-bromobutane RR, SR', atol=1.)
+    assert compare_values(1.095, data['rmsd'], '2-chloro-3-bromobutane RR, SR', atol=1.)
 
 
 @using_networkx()
 def test_clbrbutRS():
-    rmsd, mill, mol = clbrbutRS.B787(
+    mol, data = clbrbutRS.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.092, rmsd, '2-chloro-3-bromobutane RR, RS', atol=1.)
+    assert compare_values(1.092, data['rmsd'], '2-chloro-3-bromobutane RR, RS', atol=1.)
 
 
 @using_networkx()
 def test_clbrbutSR_vs_RS():
-    rmsd, mill, mol = clbrbutSR.B787(
+    mol, data = clbrbutSR.align(
         clbrbutRS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(8.652e-3, rmsd, '2-chloro-3-bromobutane RS, SR', atol=2.e-3)
-    assert compare(True, mill.mirror, '2-chloro-3-bromobutane RS, SR enantiomers')
+    assert compare_values(8.652e-3, data['rmsd'], '2-chloro-3-bromobutane RS, SR', atol=2.e-3)
+    assert compare(True, data['mill'].mirror, '2-chloro-3-bromobutane RS, SR enantiomers')
 
 
 dibromobutSS = qcel.models.Molecule.from_data("""
@@ -215,41 +215,41 @@ Br     2.011720    -1.821637     1.845756
 
 @using_networkx()
 def test_dibromobutRS():
-    rmsd, mill, mol = dibromobutRS.B787(
+    mol, data = dibromobutRS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.562, rmsd, '2,3-dibromobutane RR, RS', atol=1.e-1)
+    assert compare_values(1.562, data['rmsd'], '2,3-dibromobutane RR, RS', atol=1.e-1)
 
 
 @using_networkx()
 def test_dibromobutSS():
-    rmsd, mill, mol = dibromobutSS.B787(
+    mol, data = dibromobutSS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.296e-2, rmsd, '2,3-dibromobutane RR, SS', atol=1.e-3)
-    assert compare(True, mill.mirror, '2,3-dibromobutane RR, SS enantiomers')
+    assert compare_values(1.296e-2, data['rmsd'], '2,3-dibromobutane RR, SS', atol=1.e-3)
+    assert compare(True, data['mill'].mirror, '2,3-dibromobutane RR, SS enantiomers')
 
 
 @using_networkx()
 def test_dibromobutRS():
-    rmsd, mill, mol = dibromobutRS.B787(
+    mol, data = dibromobutRS.align(
         dibromobutSS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.560, rmsd, '2,3-dibromobutane SS, RS', atol=1.e-1)
+    assert compare_values(1.560, data['rmsd'], '2,3-dibromobutane SS, RS', atol=1.e-1)
 
 
 @using_networkx()
 def test_dibromobutRS():
     # Table satisfied by non-mirror identical, but 787 finds even better match
-    rmsd, mill, mol = dibromobutRS.B787(
+    mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=False)
-    assert compare_values(4.534e-2, rmsd, '2,3-dibromobutane SR, RS (force non-mirror)', atol=2.e-2)
-    assert compare(False, mill.mirror, '2,3-dibromobutane SR, RS identical (force non-mirror)')
+    assert compare_values(4.534e-2, data['rmsd'], '2,3-dibromobutane SR, RS (force non-mirror)', atol=2.e-2)
+    assert compare(False, data['mill'].mirror, '2,3-dibromobutane SR, RS identical (force non-mirror)')
 
 
 @using_networkx()
 def test_dibromobutRS():
-    rmsd, mill, mol = dibromobutRS.B787(
+    mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=True)
-    assert compare_values(0.004, rmsd, '2,3-dibromobutane SR, RS', atol=1.e-3)
-    assert compare(True, mill.mirror, '2,3-dibromobutane SR, RS identical')
+    assert compare_values(0.004, data['rmsd'], '2,3-dibromobutane SR, RS', atol=1.e-3)
+    assert compare(True, data['mill'].mirror, '2,3-dibromobutane SR, RS identical')
 
 
 chiralanem = qcel.models.Molecule.from_data("""
@@ -371,7 +371,7 @@ chiralaneopt = qcel.models.Molecule.from_data("""
 
 
 def toobig2():
-    rmsd, mill, mol = chiralaneopt.B787(
+    mol, data = chiralaneopt.align(
         chiralanem, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
 
 
@@ -481,4 +481,4 @@ water16b = qcel.models.Molecule.from_data("""
 
 
 def toobig():
-    rmsd, mill, mol = water16a.B787(water16b, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
+    mol, data = water16a.align(water16b, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)

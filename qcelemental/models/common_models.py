@@ -7,6 +7,34 @@ from pydantic import BaseModel
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
+class NDArray(np.ndarray):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        try:
+            v = np.array(v, dtype=np.double)
+        except:
+            raise RuntimeError("Could not cast {} to NumPy Array!".format(v))
+        return v
+
+
+class NDArrayInt(np.ndarray):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        try:
+            v = np.array(v, dtype=np.int)
+        except:
+            raise RuntimeError("Could not cast {} to NumPy Int Array!".format(v))
+        return v
+
+
 class Provenance(BaseModel):
     creator: str
     version: Optional[str] = None

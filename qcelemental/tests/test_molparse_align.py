@@ -101,7 +101,7 @@ def test_error_bins_b787():
     oco12 = qcel.models.Molecule.from_data(s18ooc12)
 
     with pytest.raises(qcel.ValidationError) as e:
-        oco12.B787(oco10, verbose=0)
+        oco12.align(oco10, verbose=0)
 
     assert 'atom subclasses unequal' in str(e)
 
@@ -112,7 +112,7 @@ def test_error_nat_b787():
     oco12 = qcel.models.Molecule.from_data(sooco12)
 
     with pytest.raises(qcel.ValidationError) as e:
-        oco12.B787(oco10, verbose=0)
+        oco12.align(oco10, verbose=0)
 
     assert "natom doesn't match" in str(e)
 
@@ -149,9 +149,9 @@ def test_model_b787():
     oco10 = qcel.models.Molecule.from_data(soco10)
     oco12 = qcel.models.Molecule.from_data(sooc12)
 
-    rmsd, mill, mol = oco12.B787(oco10, verbose=4)
+    mol, data = oco12.align(oco10, verbose=4)
 
-    assert compare_values(ref_rmsd, rmsd, 'known rmsd qcel.models.Molecule.B787', atol=1.e-6)
+    assert compare_values(ref_rmsd, data['rmsd'], 'known rmsd qcel.models.Molecule.align', atol=1.e-6)
 
 
 def test_error_kabsch():
@@ -217,8 +217,8 @@ trop_gs_c2v = qcel.models.Molecule.from_data("""
 
 @using_networkx
 def test_tropolone_b787():
-    rmsd, mill, mol = trop_cs.B787(trop_gs_c2v, do_plot=False, verbose=0, uno_cutoff=0.5)
-    assert compare_values(0.1413, rmsd, 'cs<-->c2v tropolones align', atol=1.e-2)
+    mol, data = trop_cs.align(trop_gs_c2v, do_plot=False, verbose=0, uno_cutoff=0.5)
+    assert compare_values(0.1413, data['rmsd'], 'cs<-->c2v tropolones align', atol=1.e-2)
 
 
 def test_scramble_identity():
@@ -374,7 +374,8 @@ Rotation:
 
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
-    rmsd, mill, aqmol = p4mol.B787(c4mol, atoms_map=True, mols_align=True, verbose=4)
+    aqmol, data = p4mol.align(c4mol, atoms_map=True, mols_align=True, verbose=4)
+    mill = data['mill']
 
     assert compare([0, 1, 2, 3], mill.atommap)
     assert compare_values([

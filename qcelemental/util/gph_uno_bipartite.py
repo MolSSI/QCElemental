@@ -9,11 +9,10 @@ NOTICE: optimization needed.
 Author: guangzhi XU (xugzhi1987@gmail.com; guangzhi.xu@outlook.com)
 Update time: 2017-06-29 14:41:56.
 
+Copied Dec 2017 LAB Adapted from https://github.com/Xunius/bipartite_matching
 Updated Dec 2017 LAB for pep8, py3, more tests, starter_match, and simpler interface
 
 """
-from __future__ import print_function
-
 import numpy as np
 
 

@@ -16,7 +16,7 @@ from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp
-from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
+from .common_models import (Provenance, ndarray_encoder, qcschema_molecule_default, NDArray)
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -26,7 +26,7 @@ CHARGE_NOISE = 4
 
 def float_prep(array, around):
     """
-    Rounds floats to a common value and build positive zero's to prevent hash conflicts.
+    Rounds floats to a common value and build positive zeros to prevent hash conflicts.
     """
     if isinstance(array, (list, np.ndarray)):
         # Round array
@@ -42,20 +42,6 @@ def float_prep(array, around):
         raise TypeError("Type '{}' not recognized".format(type(array).__name__))
 
     return array
-
-
-class NDArray(np.ndarray):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        try:
-            v = np.array(v, dtype=np.double)
-        except:
-            raise RuntimeError("Could not cast {} to NumPy Array!".format(v))
-        return v
 
 
 class Identifiers(BaseModel):
@@ -724,23 +710,22 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def B787(concern_mol,
+    def align(concern_mol,
              ref_mol,
              do_plot=False,
-             verbose=1,
+             verbose=0,
              atoms_map=False,
              run_resorting=False,
              mols_align=False,
              run_to_completion=False,
              uno_cutoff=1.e-3,
              run_mirror=False):  # lgtm[py/not-named-self]
-        """Finds shift, rotation, and atom reordering of `concern_mol` that best
-        aligns with `ref_mol`.
+        """Finds shift, rotation, and atom reordering of `concern_mol` (self)
+        that best aligns with `ref_mol`.
 
-        Wraps :py:func:`qcdb.align.B787` for :py:class:`qcdb.Molecule` or
-        :py:class:`psi4.core.Molecule`. Employs the Kabsch, Hungarian, and
-        Uno algorithms to exhaustively locate the best alignment for
-        non-oriented, non-ordered structures.
+        Wraps :py:func:`qcel.molparse.B787` for :py:class:`qcel.models.Molecule`.
+        Employs the Kabsch, Hungarian, and Uno algorithms to exhaustively locate
+        the best alignment for non-oriented, non-ordered structures.
 
         Parameters
         ----------
@@ -774,14 +759,14 @@ class Molecule(BaseModel):
 
         Returns
         -------
-        float, tuple, qcel.models.Molecule
-            First item is RMSD [A] between `ref_mol` and the optimally aligned
+        Molecule, data
+            Molecule is internal geometry of `self` optimally aligned and atom-ordered
+              to `ref_mol`. Presently all fragment information is discarded.
+            `data['rmsd']` is RMSD [A] between `ref_mol` and the optimally aligned
             geometry computed.
-            Second item is a AlignmentMill namedtuple with fields
+            `data['mill']` is a AlignmentMill namedtuple with fields
             (shift, rotation, atommap, mirror) that prescribe the transformation
             from `concern_mol` and the optimally aligned geometry.
-            Third item is a crude charge-, multiplicity-, fragment-less Molecule
-            at optimally aligned (and atom-ordered) geometry.
 
         """
         from ..molparse.align import B787
@@ -849,7 +834,7 @@ class Molecule(BaseModel):
                 'Q: concern_mol-->returned_mol geometry matches ref_mol',
                 quiet=(verbose > 1))
 
-        return rmsd, solution, amol
+        return amol, {'rmsd': rmsd, 'mill': solution}
 
     def scramble(ref_mol,
                  do_shift=True,
@@ -861,8 +846,8 @@ class Molecule(BaseModel):
                  run_to_completion=False,
                  run_resorting=False,
                  verbose=1):  # lgtm[py/not-named-self]
-        """Tester for B787 by shifting, rotating, and atom shuffling `ref_mol` and
-        checking that the aligner returns the opposite transformation.
+        """Tester for align by shifting, rotating, and atom shuffling `ref_mol` (self)
+        and checking that the aligner returns the opposite transformation.
 
         Parameters
         ----------
@@ -935,7 +920,7 @@ class Molecule(BaseModel):
         if verbose >= 1:
             print('Start RMSD = {:8.4f} [A]'.format(rmsd))
 
-        rmsd, solution, amol = cmol.B787(
+        amol, data = cmol.align(
             ref_mol,
             do_plot=do_plot,
             atoms_map=(not do_resort),
@@ -944,6 +929,7 @@ class Molecule(BaseModel):
             run_to_completion=run_to_completion,
             run_mirror=do_mirror,
             verbose=verbose)
+        solution = data['mill']
 
         assert compare(
             True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1))
