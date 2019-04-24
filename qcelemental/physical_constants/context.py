@@ -209,11 +209,6 @@ class PhysicalConstantsContext:
         """
 
         # Add a little magic incase the incoming values have scalars
-        from ..util.importing import which_import
-        if not which_import('pint', return_bool=True):
-            raise ModuleNotFoundError(
-                """Python module "pint" not found. Solve by installing it: `conda install pint -c conda-forge` or `pip install pint`"""
-            )
         import pint
 
         factor = 1.0

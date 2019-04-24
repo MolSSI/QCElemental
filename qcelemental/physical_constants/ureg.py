@@ -14,13 +14,6 @@ def build_units_registry(context):
     context : PhysicalConstantsContext
         The context to use for the values.
     """
-    # Ensure pint exists
-    from ..util.importing import which_import
-    if not which_import('pint', return_bool=True):
-        raise ModuleNotFoundError(
-            """Python module "pint" not found. Solve by installing it: `conda install pint -c conda-forge` or `pip install pint`"""
-        )
-
     import pint
 
     phys_const = context.raw_codata
