@@ -17,17 +17,23 @@ Changelog
 0.3.4 / 2019-MM-DD
 ------------------
 
+
 New Features
 ++++++++++++
 
 - (:pr:`52`, :pr:`53`) ``models.Molecule`` learned ``nuclear_repulsion_energy``, ``nelectrons``, and
   ``to_string`` functions.
 - (:pr:`54`) ``models.ResultProperties`` supports CCSD and CCSD(T) properties.
+- (:pr:`58`) ``utils`` learned ``which_import`` and ``which`` that provide a path or boolean result
+  for locating modules or commands, respectively. These were migrated from QCEngine along with
+  ``safe_version`` and ``parse_version`` to coloate the import utilities.
 
 Enhancements
 ++++++++++++
 
 - (:pr:`52`, :pr:`53`) ``molparse.to_string`` NWChem and GAMESS dtypes developed.
+- (:pr:`57`) ``molparse.to_string`` learned ``dtype='terachem'`` for writing the separate XYZ file
+  required by TeraChem. Angstroms or Bohr allowed, though the latter requires extra in input file.
 
 Bug Fixes
 +++++++++
