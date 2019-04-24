@@ -56,18 +56,6 @@ class ResultProperties(BaseModel):
     ccsd_prt_pr_total_energy: float = None
     ccsd_prt_pr_dipole_moment: List[float] = None
 
-    # CCSDT keywords
-    ccsdt_correlation_energy: float = None
-    ccsdt_total_energy: float = None
-    ccsdt_dipole_moment: List[float] = None
-    ccsdt_iterations: int = None
-
-    # CCSDTQ keywords
-    ccsdtq_correlation_energy: float = None
-    ccsdtq_total_energy: float = None
-    ccsdtq_dipole_moment: List[float] = None
-    ccsdtq_iterations: int = None
-
     class Config:
         allow_mutation = False
         extra = "forbid"
