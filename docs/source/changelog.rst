@@ -22,6 +22,7 @@ New Features
 
 - (:pr:`52`, :pr:`53`) ``models.Molecule`` learned ``nuclear_repulsion_energy``, ``nelectrons``, and
   ``to_string`` functions.
+- (:pr:`54`) ``models.ResultProperties`` supports CCSD and CCSD(T) properties.
 
 Enhancements
 ++++++++++++
