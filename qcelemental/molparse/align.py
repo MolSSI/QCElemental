@@ -5,10 +5,10 @@ import collections
 import numpy as np
 
 from ..exceptions import ValidationError
-from ..physical_constants import constants
-from ..util import (blockwise_expand, blockwise_contract, distance_matrix, linear_sum_assignment, uno, random_rotation_matrix)
-from ..testing import compare, compare_values
 from ..models import AlignmentMill
+from ..physical_constants import constants
+from ..testing import compare, compare_values
+from ..util import (distance_matrix, linear_sum_assignment, random_rotation_matrix, uno, which_import)
 
 
 def _nre(Z, geom):
@@ -404,13 +404,10 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
         algofn = filter_hungarian_uno
 
         # Ensure (optional dependency) networkx exists
-        from importlib.util import find_spec
-        spec = find_spec('networkx')
-        if spec is None:
+        if not which_import('networkx', return_bool=True):
             raise ModuleNotFoundError(
                 """Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`"""
             )  # pragma: no cover
-        del spec, find_spec
 
     # collect candidate atom orderings from algofn for each of the atom classes,
     #   recombine the classes with each other in every permutation (could maybe
@@ -505,7 +502,7 @@ def kabsch_quaternion(P, Q):
     Returns:
     <np.ndarray> U := Optimal MxM rotation matrix mapping P onto Q.
 
-    Author: DAS
+    Author: dsirianni
 
     """
     # Form covariance matrix

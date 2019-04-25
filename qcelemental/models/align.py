@@ -71,7 +71,6 @@ class AlignmentMill(BaseModel):
     def align_coordinates(self, geom, reverse=False):
         """suitable for geometry or displaced geometry"""
 
-        print('AAAA', self.atommap, type(self.atommap))
         algeom = np.copy(geom)
         if reverse:
             algeom = algeom.dot(self.rotation)
