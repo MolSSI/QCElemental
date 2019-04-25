@@ -37,6 +37,7 @@ class ResultProperties(BaseModel):
     mp2_opposite_spin_correlation_energy: float = None
     mp2_singles_energy: float = None
     mp2_doubles_energy: float = None
+    mp2_total_correlation_energy: float = None # Old name, to be deprecated
     mp2_correlation_energy: float = None
     mp2_total_energy: float = None
     mp2_dipole_moment: List[float] = None
