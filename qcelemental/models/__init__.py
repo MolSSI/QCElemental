@@ -1,6 +1,6 @@
 try:
     import pydantic
-except ImportError:
+except ImportError:  # pragma: no cover
     raise ImportError("Python module pydantic not found. Solve by installing it: "
                       "`conda install pydantic -c conda-forge` or `pip install pydantic`")
 

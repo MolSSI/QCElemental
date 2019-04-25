@@ -181,8 +181,7 @@ def B787(cgeom,
         t1 = time.time()
         ocount += 1
         npordd = np.asarray(ordering)
-        orrmsd, RR, TT = kabsch_align(rgeom, cgeom[npordd, :], weight=None)
-        orrmsd = np.around(orrmsd, decimals=8)
+        _, RR, TT = kabsch_align(rgeom, cgeom[npordd, :], weight=None)
 
         temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=False)
         tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
@@ -209,8 +208,7 @@ def B787(cgeom,
             ocount += 1
             icgeom = np.copy(cgeom)
             icgeom[:, 1] *= -1.
-            orrmsd, RR, TT = kabsch_align(rgeom, icgeom[npordd, :], weight=None)
-            orrmsd = np.around(orrmsd, decimals=8)
+            _, RR, TT = kabsch_align(rgeom, icgeom[npordd, :], weight=None)
 
             temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=True)
             tgeom = temp_solution.align_coordinates(cgeom, reverse=False)

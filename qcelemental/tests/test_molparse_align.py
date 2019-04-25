@@ -5,6 +5,7 @@ import math
 import pprint
 
 import numpy as np
+import pydantic
 
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_values
@@ -37,7 +38,7 @@ H    -0.8103758    2.3643033   -2.0618643
 
 def test_scramble_descrambles_plain():
     for trial in range(5):
-        s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0)
+        s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_test=True)
 
 
 chiral = qcel.models.Molecule.from_data("""
@@ -50,10 +51,10 @@ Cl    -0.845465     1.497406    -0.341118
 
 
 def test_scramble_descrambles_chiral():
-    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False)
-    chiral.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=1, do_mirror=False)
+    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False, do_test=True)
+    chiral.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=1, do_mirror=False, do_test=True)
     for trial in range(5):
-        chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True)
+        chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True, do_test=True)
 
 
 soco10 = """
@@ -115,6 +116,20 @@ def test_error_nat_b787():
         oco12.align(oco10, verbose=0)
 
     assert "natom doesn't match" in str(e)
+
+
+def test_mill_shift_error():
+    with pytest.raises(pydantic.ValidationError) as e:
+        qcel.models.AlignmentMill(shift=[0, 1])
+
+    assert "Shift must be castable to shape" in str(e.value)
+
+
+def test_mill_rot_error():
+    with pytest.raises(pydantic.ValidationError) as e:
+        qcel.models.AlignmentMill(rotation=[0, 1, 3])
+
+    assert "Rotation must be castable to shape" in str(e.value)
 
 
 @using_networkx

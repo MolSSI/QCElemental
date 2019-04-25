@@ -843,11 +843,12 @@ class Molecule(BaseModel):
                  deflection=1.0,
                  do_mirror=False,
                  do_plot=False,
+                 do_test=False,
                  run_to_completion=False,
                  run_resorting=False,
-                 verbose=1):  # lgtm[py/not-named-self]
-        """Tester for align by shifting, rotating, and atom shuffling `ref_mol` (self)
-        and checking that the aligner returns the opposite transformation.
+                 verbose=0):  # lgtm[py/not-named-self]
+        """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
+        Optionally, check that the aligner returns the opposite transformation.
 
         Parameters
         ----------
@@ -870,6 +871,9 @@ class Molecule(BaseModel):
             Whether to construct the mirror image structure by inverting y-axis.
         do_plot : bool, optional
             Pops up a mpl plot showing before, after, and ref geometries.
+        do_test : bool, optional
+            Additionally, run the aligner on the returned Molecule and check that
+            opposite transformations obtained.
         run_to_completion : bool, optional
             By construction, scrambled systems are fully alignable (final RMSD=0).
             Even so, `True` turns off the mechanism to stop when RMSD reaches zero
@@ -881,7 +885,18 @@ class Molecule(BaseModel):
 
         Returns
         -------
-        None
+        Molecule, data
+            Molecule is scrambled copy of `ref_mol` (self).
+            `data['rmsd']` is RMSD [A] between `ref_mol` and the scrambled geometry.
+            `data['mill']` is a AlignmentMill namedtuple with fields
+            (shift, rotation, atommap, mirror) that prescribe the transformation
+            from `ref_mol` to the returned geometry.
+
+        Raises
+        ------
+        AssertionError
+            If `do_test=True` and aligner sanity check fails for any of the reverse
+            transformations.
 
         """
         from ..molparse.align import compute_scramble
@@ -920,24 +935,48 @@ class Molecule(BaseModel):
         if verbose >= 1:
             print('Start RMSD = {:8.4f} [A]'.format(rmsd))
 
-        amol, data = cmol.align(
-            ref_mol,
-            do_plot=do_plot,
-            atoms_map=(not do_resort),
-            run_resorting=run_resorting,
-            mols_align=True,
-            run_to_completion=run_to_completion,
-            run_mirror=do_mirror,
-            verbose=verbose)
-        solution = data['mill']
+        if do_test:
+            amol, data = cmol.align(
+                ref_mol,
+                do_plot=do_plot,
+                atoms_map=(not do_resort),
+                run_resorting=run_resorting,
+                mols_align=True,
+                run_to_completion=run_to_completion,
+                run_mirror=do_mirror,
+                verbose=verbose)
+            solution = data['mill']
 
-        assert compare(
-            True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1))
-        if not do_resort:
             assert compare(
-                True,
-                np.allclose(solution.rotation.T, perturbation.rotation),
-                'rotations transpose',
-                quiet=(verbose > 1))
-        if solution.mirror:
-            assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
+                True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1))
+            if not do_resort:
+                assert compare(
+                    True,
+                    np.allclose(solution.rotation.T, perturbation.rotation),
+                    'rotations transpose',
+                    quiet=(verbose > 1))
+            if solution.mirror:
+                assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
+
+        return cmol, {'rmsd': rmsd, 'mill': perturbation}
+
+
+def asdf1(self, option=None):
+    pass
+
+def asdf2(nonself, option=None):    # lgtm[py/not-named-self]
+    pass
+
+def asdf3(self,
+          option=None):
+    pass
+
+def asdf4(nonself,  # lgtm[py/not-named-self]
+          option=None):
+    pass
+
+def asdf5(nonself, option=None  # lgtm[py/not-named-self]
+    ):
+    pass
+
+
