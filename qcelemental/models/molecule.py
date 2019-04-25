@@ -710,7 +710,7 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def align(concern_mol,
+    def align(concern_mol,  # lgtm[py/not-named-self]
              ref_mol,
              do_plot=False,
              verbose=0,
@@ -719,7 +719,7 @@ class Molecule(BaseModel):
              mols_align=False,
              run_to_completion=False,
              uno_cutoff=1.e-3,
-             run_mirror=False):  # lgtm[py/not-named-self]
+             run_mirror=False):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -836,7 +836,7 @@ class Molecule(BaseModel):
 
         return amol, {'rmsd': rmsd, 'mill': solution}
 
-    def scramble(ref_mol,
+    def scramble(ref_mol,  # lgtm[py/not-named-self]
                  do_shift=True,
                  do_rotate=True,
                  do_resort=True,
@@ -846,7 +846,7 @@ class Molecule(BaseModel):
                  do_test=False,
                  run_to_completion=False,
                  run_resorting=False,
-                 verbose=0):  # lgtm[py/not-named-self]
+                 verbose=0):
         """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
@@ -959,24 +959,3 @@ class Molecule(BaseModel):
                 assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
 
         return cmol, {'rmsd': rmsd, 'mill': perturbation}
-
-
-def asdf1(self, option=None):
-    pass
-
-def asdf2(nonself, option=None):    # lgtm[py/not-named-self]
-    pass
-
-def asdf3(self,
-          option=None):
-    pass
-
-def asdf4(nonself,  # lgtm[py/not-named-self]
-          option=None):
-    pass
-
-def asdf5(nonself, option=None  # lgtm[py/not-named-self]
-    ):
-    pass
-
-

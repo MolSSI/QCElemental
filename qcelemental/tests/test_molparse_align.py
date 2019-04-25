@@ -8,7 +8,7 @@ import numpy as np
 import pydantic
 
 import qcelemental as qcel
-from qcelemental.testing import compare, compare_values
+from qcelemental.testing import compare, compare_values, compare_recursive
 
 
 
@@ -253,6 +253,16 @@ Rotation:
 ----------------------------------------"""
 
     assert compare(mill_str, mill.__str__(label='eye'))
+
+    mill_dict = {
+        'shift': [0., 0., 0.],
+        'rotation': [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]],
+        'atommap': [0, 1, 2, 3],
+        'mirror': False}
+
+    assert compare_recursive(mill_dict, mill.dict())
+    mill_dict['rotation'] = [1., 0., 0., 0., 1., 0., 0., 0., 1.]
+    assert compare_recursive(mill_dict, mill.json_dict())
 
 
 def test_scramble_specific():
