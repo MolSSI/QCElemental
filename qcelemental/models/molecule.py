@@ -959,3 +959,30 @@ class Molecule(BaseModel):
                 assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
 
         return cmol, {'rmsd': rmsd, 'mill': perturbation}
+
+
+    def asdf1(self, option=None):
+        pass
+
+    def asdf2(nonself, option=None):    # lgtm[py/not-named-self]
+        pass
+
+    def asdf3(self,
+              option=None):
+        pass
+
+    def asdf4(nonself,  # lgtm[py/not-named-self]
+              option=None):
+        pass
+
+    def asdf5(nonself, option=None  # lgtm[py/not-named-self]
+        ):
+        pass
+
+    def asdf6(nonself,
+              option=None):  # lgtm[py/not-named-self]
+        pass
+
+    def asdf7(nonself  # lgtm[py/not-named-self]
+              ,option=None):
+        pass
