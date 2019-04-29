@@ -46,6 +46,9 @@ if __name__ == "__main__":
                 'pytest >= 3.9.1',
                 'pytest-cov',
             ],
+            'align': [
+                'networkx',
+            ],
         },
         tests_require=[
             'pytest >= 3.9.1',
