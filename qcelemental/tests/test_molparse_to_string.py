@@ -104,11 +104,11 @@ H                    -1.058354421340     0.000000000000     0.000000000000
     (("subject2", {'dtype': 'xyz', 'units': 'Bohr'}), "ans2_au"),
     (("subject2", {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': 'Gh({elez})'}), "ans2_ang"),
     (("subject2", {'dtype': 'xyz', 'units': 'angstrom', 'ghost_format': ''}), "ans2c_ang"),
-    (("subject2", {'dtype': 'cfour'}), "ans2_cfour_ang"),
-    (("subject2", {'dtype': 'nwchem'}), "ans2_nwchem_ang"),
+    (("subject2", {'dtype': 'cfour', 'units': 'angstrom'}), "ans2_cfour_ang"),
+    (("subject2", {'dtype': 'nwchem', 'units': 'angstrom'}), "ans2_nwchem_ang"),
     (("subject1", {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_nm"),
-    (("subject2", {'dtype': 'terachem'}), "ans2_terachem_ang"),
-    (("subject2", {'dtype': 'terachem', 'units': 'bohr'}), "ans2_terachem_au"),
+    (("subject2", {'dtype': 'terachem', 'units': 'angstrom'}), "ans2_terachem_ang"),
+    (("subject2", {'dtype': 'terachem'}), "ans2_terachem_au"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(_results[inp[0]])

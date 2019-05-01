@@ -5,7 +5,7 @@ import numpy as np
 from ..physical_constants import constants
 
 
-def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12):
+def to_string(molrec, dtype, units=None, atom_format=None, ghost_format=None, width=17, prec=12):
     """Format a string representation of QM molecule.
 
     Parameters
@@ -16,7 +16,7 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
-        'cfour' forces nucleus label, ignoring atom_format, ghost_format
+        'cfour' forces nucleus label, ignorming atom_format, ghost_format
     units : str, optional
         Units in which to write string. Usually ``Angstrom`` or ``Bohr``
         but may be any length unit.  There is not an option to write in
@@ -47,8 +47,23 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
     #funits, fiutau = process_units(molrec)
     #molrec = self.to_dict(force_units=units, np_out=True)
 
-    #if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
-    #    factor = molrec['input_units_to_au']
+    dtype = dtype.lower()
+
+    default_units = {
+        "xyz": "Angstrom",
+        "cfour": "Bohr",
+        "nwchem": "Bohr",
+        "psi4": "Bohr",
+        "gamess": "Bohr",
+        "terachem": "Bohr"
+    }
+    if dtype not in default_units:
+        raise KeyError(f"dtype '{dtype}' not understood.")
+
+    # Handle units
+    if units is None:
+        units = default_units[dtype]
+
     if molrec['units'] == 'Angstrom' and units.capitalize() == 'Angstrom':
         factor = 1.
     elif molrec['units'] == 'Angstrom' and units.capitalize() == 'Bohr':
@@ -147,8 +162,49 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         smol = [first_line.rstrip(), name]
         smol.extend(atoms)
 
+    elif dtype == 'psi4':
+
+        smol = []
+        fragments = []
+
+        # append atoms and coordinates and fragment separators with charge and multiplicity
+        if len(molrec["fragment_separators"]) == 0:
+            fragments.append(list(range(len(molrec["elem"]))))
+        else:
+            cnt = 0
+            for sep in molrec["fragment_separators"]:
+                fragments.append(list(range(cnt, sep)))
+                cnt = sep
+
+            fragments.append(list(range(cnt, len(molrec["elem"]))))
+
+        for num, frag in enumerate(fragments):
+            divider = "--"
+            if num == 0:
+                divider = ""
+
+            if any(molrec["real"][at] for at in frag):
+                smol.append("    {:s}".format(divider))
+                smol.append("    {:d} {:d}".format(
+                    int(molrec["fragment_charges"][num]), molrec["fragment_multiplicities"][num]))
+
+            for at in frag:
+
+                if molrec["real"][at]:
+                    atomrepr = str(molrec["elem"][at])
+                else:
+                    atomrepr = "Gh(" + molrec["elem"][at] + ")"
+                smol.append("    {0:<8s}    {1: 14.10f} {2: 14.10f} {3: 14.10f}".format(
+                    atomrepr, geom[at][0], geom[at][1], geom[at][2]))
+
+        # append units and any other non-default molecule keywords
+        if molrec["fix_com"]:
+            smol.append("    no_com")
+        if molrec["fix_orientation"]:
+            smol.append("    no_reorient")
+
     else:
-        raise ValueError(f'`to_string(dtype={dtype})` unrecognized')
+        raise KeyError(f"dtype '{dtype}' not understood.")
 
     return '\n'.join(smol) + '\n'
 

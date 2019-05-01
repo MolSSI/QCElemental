@@ -53,7 +53,7 @@ def test_molecule_data_constructor_dict():
 
     water_from_json = Molecule.from_data(water_psi.json(), "json")
     assert water_psi.compare(water_psi, water_from_json)
-    assert water_psi.compare(Molecule.from_data(water_psi.to_string(), dtype="psi4"))
+    assert water_psi.compare(Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4"))
 
     assert water_psi.get_hash() == '3c4b98f515d64d1adc1648fe1fe1d6789e978d34'  # copied from schema_version=1
     assert water_psi.schema_version == 2
@@ -103,7 +103,7 @@ def test_water_minima_data():
     mol = Molecule(orient=True, **mol_dict)
 
     assert len(str(mol)) == 661
-    assert len(mol.to_string()) == 442
+    assert len(mol.to_string("psi4")) == 394
 
     assert sum(x == y for x, y in zip(mol.symbols, ['O', 'H', 'H', 'O', 'H', 'H'])) == mol.geometry.shape[0]
     assert mol.name == "water dimer"
@@ -150,13 +150,13 @@ def test_pretty_print():
 def test_to_string():
 
     mol = water_dimer_minima.copy()
-    assert isinstance(mol.to_string(), str)
+    assert isinstance(mol.to_string("psi4"), str)
 
 
 def test_from_file_string(tmp_path):
 
     p = tmp_path / "water.psimol"
-    p.write_text(water_dimer_minima.to_string())
+    p.write_text(water_dimer_minima.to_string("psi4"))
 
     mol = Molecule.from_file(p)
 
