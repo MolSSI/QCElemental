@@ -16,7 +16,7 @@ def to_string(molrec, dtype, units=None, atom_format=None, ghost_format=None, wi
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
-        'cfour' forces nucleus label, ignorming atom_format, ghost_format
+        'cfour' forces nucleus label, ignoring atom_format, ghost_format
     units : str, optional
         Units in which to write string. Usually ``Angstrom`` or ``Bohr``
         but may be any length unit.  There is not an option to write in

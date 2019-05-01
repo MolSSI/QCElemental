@@ -216,7 +216,7 @@ class Molecule(BaseModel):
 
     def visualize(self, style: Union[str, Dict[str, Any]]="ball_and_stick",
                   canvas: Tuple[int, int]=(400, 400)) -> 'py3Dmol.view':
-        """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks are exported as images (`.png`).
+        """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
 
         Parameters
         ----------
@@ -233,7 +233,7 @@ class Molecule(BaseModel):
         """
         if not which_import("py3Dmol", return_bool=True):
             raise ModuleNotFoundError(
-                f"""Python module py3DMol not found. Solve by installing it: `conda install -c conda-forge py3dmol`"""
+                f"Python module py3DMol not found. Solve by installing it: `conda install -c conda-forge py3dmol`"
             )  # pragma: no cover
 
         import py3Dmol
@@ -570,20 +570,20 @@ class Molecule(BaseModel):
         ext = os.path.splitext(filename)[1]
 
         if dtype is None:
-            if ext in [".xyz"]:
-                dtype = "xyz"
-            elif ext in [".psimol"]:
-                dtype = "psi4"
-            elif ext in [".npy"]:
+            if ext in [".npy"]:
                 dtype = "numpy"
             elif ext in [".json"]:
                 dtype = "json"
+            elif ext in [".xyz"]:
+                dtype = "xyz"
+            elif ext in [".psimol"]:
+                dtype = "psi4"
             else:
-                raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
-            # print("Inferring data type to be {} from file extension".format(dtype))
+                # Let `from_string` try to sort it
+                dtype = "string"
 
-            # Raw string type, read and pass through
-        if dtype in ["xyz", "psi4"]:
+        # Raw string type, read and pass through
+        if dtype in ["string", "xyz", "psi4"]:
             with open(filename, "r") as infile:
                 data = infile.read()
         elif dtype == "numpy":
@@ -667,42 +667,6 @@ class Molecule(BaseModel):
         tensor[2][0] = tensor[0][2] = -1.0 * np.sum(weight * geom[:, 0] * geom[:, 2])
         tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
-
-    def _to_psi4_string(self):
-        """Regenerates a input file molecule specification string from the
-        current state of the Molecule. Contains geometry info,
-        fragmentation, charges and multiplicities, and any frame
-        restriction.
-        """
-        text = "\n"
-
-        # append atoms and coordinates and fragment separators with charge and multiplicity
-        for num, frag in enumerate(self.fragments):
-            divider = "    --"
-            if num == 0:
-                divider = ""
-
-            if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
-                                                              int(self.fragment_charges[num]),
-                                                              self.fragment_multiplicities[num])
-
-            for at in frag:
-                if self.real[at]:
-                    text += "    {0:<8s}".format(str(self.symbols[at]))
-                else:
-                    text += "    {0:<8s}".format("Gh(" + self.symbols[at] + ")")
-                text += "    {0: 14.10f} {1: 14.10f} {2: 14.10f}\n".format(*tuple(self.geometry[at]))
-        text += "\n"
-
-        # append units and any other non-default molecule keywords
-        text += "    units bohr\n"
-        if self.fix_com:
-            text += "    no_com\n"
-        if self.fix_orientation:
-            text += "    no_reorient\n"
-
-        return text
 
     def nuclear_repulsion_energy(self, ifr: int=None) -> float:
         """Nuclear repulsion energy.
