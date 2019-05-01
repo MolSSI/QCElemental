@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 
 def which_import(module, *, return_bool=False):
@@ -40,7 +41,7 @@ def which(command, *, return_bool=False):
         When `return_bool=True`, returns whether or not found.
 
     """
-    lenv = {'PATH': ':' + os.environ.get('PATH')}
+    lenv = {'PATH': ':' + os.environ.get('PATH') + ":" + os.path.dirname(sys.executable)}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
