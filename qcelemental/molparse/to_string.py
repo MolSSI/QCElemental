@@ -164,44 +164,24 @@ def to_string(molrec, dtype, units=None, atom_format=None, ghost_format=None, wi
 
     elif dtype == 'psi4':
 
-        smol = []
-        fragments = []
+        atom_format = '{elem}'
+        ghost_format = 'Gh({elem})'
+        umap = {'bohr': 'bohr', 'angstrom': 'angstrom'}
 
-        # append atoms and coordinates and fragment separators with charge and multiplicity
-        if len(molrec["fragment_separators"]) == 0:
-            fragments.append(list(range(len(molrec["elem"]))))
-        else:
-            cnt = 0
-            for sep in molrec["fragment_separators"]:
-                fragments.append(list(range(cnt, sep)))
-                cnt = sep
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-            fragments.append(list(range(cnt, len(molrec["elem"]))))
-
-        for num, frag in enumerate(fragments):
-            divider = "--"
-            if num == 0:
-                divider = ""
-
-            if any(molrec["real"][at] for at in frag):
-                smol.append("    {:s}".format(divider))
-                smol.append("    {:d} {:d}".format(
-                    int(molrec["fragment_charges"][num]), molrec["fragment_multiplicities"][num]))
-
-            for at in frag:
-
-                if molrec["real"][at]:
-                    atomrepr = str(molrec["elem"][at])
-                else:
-                    atomrepr = "Gh(" + molrec["elem"][at] + ")"
-                smol.append("    {0:<8s}    {1: 14.10f} {2: 14.10f} {3: 14.10f}".format(
-                    atomrepr, geom[at][0], geom[at][1], geom[at][2]))
+        smol = [f"""{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}"""]
+        split_atoms = np.split(atoms, molrec["fragment_separators"])
+        for ifr, fr in enumerate(split_atoms):
+            smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+            smol.extend(fr.tolist())
 
         # append units and any other non-default molecule keywords
+        smol.append(f"units {umap[units.lower()]}")
         if molrec["fix_com"]:
-            smol.append("    no_com")
+            smol.append("no_com")
         if molrec["fix_orientation"]:
-            smol.append("    no_reorient")
+            smol.append("no_reorient")
 
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")

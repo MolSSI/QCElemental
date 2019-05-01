@@ -103,7 +103,7 @@ def test_water_minima_data():
     mol = Molecule(orient=True, **mol_dict)
 
     assert len(str(mol)) == 661
-    assert len(mol.to_string("psi4")) == 394
+    assert len(mol.to_string("psi4")) == 479
 
     assert sum(x == y for x, y in zip(mol.symbols, ['O', 'H', 'H', 'O', 'H', 'H'])) == mol.geometry.shape[0]
     assert mol.name == "water dimer"
