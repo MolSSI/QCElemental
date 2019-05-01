@@ -12,6 +12,7 @@ dependencies:
 
     # Optional depends
   - networkx
+  - py3dmol
 
     # Testing
   - pytest>=3.9.1
