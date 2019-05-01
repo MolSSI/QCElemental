@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import measure_coordinates, provenance_stamp
+from ..util import measure_coordinates, provenance_stamp, which_import
 from .common_models import (Provenance, ndarray_encoder, qcschema_molecule_default, NDArray)
 
 # Rounding quantities for hashing
@@ -214,6 +214,46 @@ class Molecule(BaseModel):
 
 ### Non-Pydantic API functions
 
+    def visualize(self, style: Union[str, Dict[str, Any]]="ball_and_stick",
+                  canvas: Tuple[int, int]=(400, 400)) -> 'py3Dmol.view':
+        """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
+
+        Parameters
+        ----------
+        style : Union[str, Dict[str, Any]], optional
+            Either 'ball_and_stick' or 'stick' style representations or a valid py3Dmol style dictionary.
+        canvas : Tuple[int, int], optional
+            The (width, height) of the display canvas in pixels
+
+        Returns
+        -------
+        py3Dmol.view
+            A py3dMol view object of the molecule
+
+        """
+        if not which_import("py3Dmol", return_bool=True):
+            raise ModuleNotFoundError(
+                f"Python module py3DMol not found. Solve by installing it: `conda install -c conda-forge py3dmol`"
+            )  # pragma: no cover
+
+        import py3Dmol
+
+        if isinstance(style, dict):
+            pass
+        elif style == 'ball_and_stick':
+            style = {'stick': {'radius': 0.2}, 'sphere': {'scale': 0.3}}
+        elif style == 'stick':
+            style = {'stick': {}}
+        else:
+            raise KeyError(f"Style '{style}' not recognized.")
+
+        xyzview = py3Dmol.view(width=canvas[0], height=canvas[1])
+
+        xyzview.addModel(self.to_string("xyz", units="angstrom"), 'xyz')
+        xyzview.setStyle(style)
+        xyzview.zoomTo()
+        return xyzview
+
     def measure(self, measurements, degrees=True):
         """
         Takes a measurement of the moleucle from the indicies provided.
@@ -357,26 +397,23 @@ class Molecule(BaseModel):
 
         return Molecule(orient=orient, **constructor_dict)
 
-    def to_string(self, dtype="psi4", units='Bohr', atom_format=None, ghost_format=None, width=17, prec=12):
+    def to_string(self, dtype, units=None, atom_format=None, ghost_format=None, width=17, prec=12):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
 
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
-        if dtype == "psi4":
-            return self._to_psi4_string()
-        else:
-            molrec = from_schema(self.dict())
-            string = to_string(
-                molrec,
-                dtype=dtype,
-                units=units,
-                atom_format=atom_format,
-                ghost_format=ghost_format,
-                width=width,
-                prec=prec)
-            return string
+        molrec = from_schema(self.dict())
+        string = to_string(
+            molrec,
+            dtype=dtype,
+            units=units,
+            atom_format=atom_format,
+            ghost_format=ghost_format,
+            width=width,
+            prec=prec)
+        return string
 
     def get_hash(self):
         """
@@ -449,10 +486,10 @@ class Molecule(BaseModel):
     @classmethod
     def from_data(cls,
                   data: Union[str, Dict[str, Any], np.array],
-                  dtype: Optional[str] = None,
+                  dtype: Optional[str]=None,
                   *,
-                  orient: bool = False,
-                  validate: bool = True,
+                  orient: bool=False,
+                  validate: bool=True,
                   **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
@@ -533,17 +570,20 @@ class Molecule(BaseModel):
         ext = os.path.splitext(filename)[1]
 
         if dtype is None:
-            if ext in [".psimol"]:
-                dtype = "psi4"
-            elif ext in [".npy"]:
+            if ext in [".npy"]:
                 dtype = "numpy"
             elif ext in [".json"]:
                 dtype = "json"
+            elif ext in [".xyz"]:
+                dtype = "xyz"
+            elif ext in [".psimol"]:
+                dtype = "psi4"
             else:
-                raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
-            # print("Inferring data type to be {} from file extension".format(dtype))
+                # Let `from_string` try to sort it
+                dtype = "string"
 
-        if dtype == "psi4":
+        # Raw string type, read and pass through
+        if dtype in ["string", "xyz", "psi4"]:
             with open(filename, "r") as infile:
                 data = infile.read()
         elif dtype == "numpy":
@@ -628,40 +668,7 @@ class Molecule(BaseModel):
         tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
 
-    def _to_psi4_string(self):
-        """Regenerates a input file molecule specification string from the
-        current state of the Molecule. Contains geometry info,
-        fragmentation, charges and multiplicities, and any frame
-        restriction.
-        """
-        text = "\n"
-
-        # append atoms and coordinates and fragment separators with charge and multiplicity
-        for num, frag in enumerate(self.fragments):
-            divider = "    --"
-            if num == 0:
-                divider = ""
-
-            if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
-                                                              self.fragment_multiplicities[num])
-
-            for at in frag:
-                if self.real[at]:
-                    text += "    {0:<8s}".format(str(self.symbols[at]))
-                else:
-                    text += "    {0:<8s}".format("Gh(" + self.symbols[at] + ")")
-                text += "    {0: 14.10f} {1: 14.10f} {2: 14.10f}\n".format(*tuple(self.geometry[at]))
-        text += "\n"
-
-        # append units and any other non-default molecule keywords
-        text += "    units bohr\n"
-        text += "    no_com\n"
-        text += "    no_reorient\n"
-
-        return text
-
-    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
+    def nuclear_repulsion_energy(self, ifr: int=None) -> float:
         """Nuclear repulsion energy.
 
         Parameters
@@ -687,7 +694,7 @@ class Molecule(BaseModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr: int = None) -> int:
+    def nelectrons(self, ifr: int=None) -> int:
         """Number of electrons.
 
         Parameters
@@ -710,16 +717,17 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def align(concern_mol,  # lgtm[py/not-named-self]
-             ref_mol,
-             do_plot=False,
-             verbose=0,
-             atoms_map=False,
-             run_resorting=False,
-             mols_align=False,
-             run_to_completion=False,
-             uno_cutoff=1.e-3,
-             run_mirror=False):
+    def align(
+            concern_mol,  # lgtm[py/not-named-self]
+            ref_mol,
+            do_plot=False,
+            verbose=0,
+            atoms_map=False,
+            run_resorting=False,
+            mols_align=False,
+            run_to_completion=False,
+            uno_cutoff=1.e-3,
+            run_mirror=False):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -836,17 +844,18 @@ class Molecule(BaseModel):
 
         return amol, {'rmsd': rmsd, 'mill': solution}
 
-    def scramble(ref_mol,  # lgtm[py/not-named-self]
-                 do_shift=True,
-                 do_rotate=True,
-                 do_resort=True,
-                 deflection=1.0,
-                 do_mirror=False,
-                 do_plot=False,
-                 do_test=False,
-                 run_to_completion=False,
-                 run_resorting=False,
-                 verbose=0):
+    def scramble(
+            ref_mol,  # lgtm[py/not-named-self]
+            do_shift=True,
+            do_rotate=True,
+            do_resort=True,
+            deflection=1.0,
+            do_mirror=False,
+            do_plot=False,
+            do_test=False,
+            run_to_completion=False,
+            run_resorting=False,
+            verbose=0):
         """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 

@@ -5,7 +5,7 @@ import numpy as np
 from ..physical_constants import constants
 
 
-def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=None, width=17, prec=12):
+def to_string(molrec, dtype, units=None, atom_format=None, ghost_format=None, width=17, prec=12):
     """Format a string representation of QM molecule.
 
     Parameters
@@ -47,8 +47,23 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
     #funits, fiutau = process_units(molrec)
     #molrec = self.to_dict(force_units=units, np_out=True)
 
-    #if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
-    #    factor = molrec['input_units_to_au']
+    dtype = dtype.lower()
+
+    default_units = {
+        "xyz": "Angstrom",
+        "cfour": "Bohr",
+        "nwchem": "Bohr",
+        "psi4": "Bohr",
+        "gamess": "Bohr",
+        "terachem": "Bohr"
+    }
+    if dtype not in default_units:
+        raise KeyError(f"dtype '{dtype}' not understood.")
+
+    # Handle units
+    if units is None:
+        units = default_units[dtype]
+
     if molrec['units'] == 'Angstrom' and units.capitalize() == 'Angstrom':
         factor = 1.
     elif molrec['units'] == 'Angstrom' and units.capitalize() == 'Bohr':
@@ -147,8 +162,29 @@ def to_string(molrec, dtype, units='Angstrom', atom_format=None, ghost_format=No
         smol = [first_line.rstrip(), name]
         smol.extend(atoms)
 
+    elif dtype == 'psi4':
+
+        atom_format = '{elem}'
+        ghost_format = 'Gh({elem})'
+        umap = {'bohr': 'bohr', 'angstrom': 'angstrom'}
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+
+        smol = [f"""{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}"""]
+        split_atoms = np.split(atoms, molrec["fragment_separators"])
+        for ifr, fr in enumerate(split_atoms):
+            smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+            smol.extend(fr.tolist())
+
+        # append units and any other non-default molecule keywords
+        smol.append(f"units {umap[units.lower()]}")
+        if molrec["fix_com"]:
+            smol.append("no_com")
+        if molrec["fix_orientation"]:
+            smol.append("no_reorient")
+
     else:
-        raise ValueError(f'`to_string(dtype={dtype})` unrecognized')
+        raise KeyError(f"dtype '{dtype}' not understood.")
 
     return '\n'.join(smol) + '\n'
 
