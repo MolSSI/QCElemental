@@ -533,7 +533,9 @@ class Molecule(BaseModel):
         ext = os.path.splitext(filename)[1]
 
         if dtype is None:
-            if ext in [".psimol"]:
+            if ext in [".xyz"]:
+                dtype = "xyz"
+            elif ext in [".psimol"]:
                 dtype = "psi4"
             elif ext in [".npy"]:
                 dtype = "numpy"
@@ -543,7 +545,8 @@ class Molecule(BaseModel):
                 raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
             # print("Inferring data type to be {} from file extension".format(dtype))
 
-        if dtype == "psi4":
+        # Raw string type, read and pass through
+        if dtype in ["xyz", "psi4"]:
             with open(filename, "r") as infile:
                 data = infile.read()
         elif dtype == "numpy":
@@ -656,8 +659,10 @@ class Molecule(BaseModel):
 
         # append units and any other non-default molecule keywords
         text += "    units bohr\n"
-        text += "    no_com\n"
-        text += "    no_reorient\n"
+        if self.fix_com:
+            text += "    no_com\n"
+        if self.fix_orientation:
+            text += "    no_reorient\n"
 
         return text
 
