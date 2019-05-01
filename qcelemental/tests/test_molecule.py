@@ -7,6 +7,7 @@ import pytest
 from qcelemental.models import Molecule
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_values
+from .addons import using_py3dmol
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -113,10 +114,9 @@ def test_water_minima_data():
     assert np.allclose(mol.fragment_charges, [0, 0])
     assert np.allclose(mol.fragment_multiplicities, [1, 1])
     assert hasattr(mol, "provenance")
-    assert np.allclose(
-        mol.geometry,
-        [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.], [1.00578203, -0.1092573, 0.],
-         [-2.6821528, -0.12325075, 0.], [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
+    assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
+                                      [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
+                                      [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
     assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"
 
 
@@ -399,3 +399,9 @@ def test_nuclearrepulsionenergy_nelectrons():
     assert compare(10, mol.nelectrons(), 'D')
     assert compare(0, mol.nelectrons(ifr=ifr0), 'M1')
     assert compare(10, mol.nelectrons(ifr=ifr1), 'M2')
+
+
+@using_py3dmol
+def test_visualize():
+
+    water_dimer_minima.visualize()

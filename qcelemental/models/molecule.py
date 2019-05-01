@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import measure_coordinates, provenance_stamp
+from ..util import measure_coordinates, provenance_stamp, which_import
 from .common_models import (Provenance, ndarray_encoder, qcschema_molecule_default, NDArray)
 
 # Rounding quantities for hashing
@@ -213,6 +213,46 @@ class Molecule(BaseModel):
         return json.loads(self.json(*args, **kwargs))
 
 ### Non-Pydantic API functions
+
+    def visualize(self, style: Union[str, Dict[str, Any]]="ball_and_stick",
+                  canvas: Tuple[int, int]=(400, 400)) -> 'py3Dmol.view':
+        """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks are exported as images (`.png`).
+
+        Parameters
+        ----------
+        style : Union[str, Dict[str, Any]], optional
+            Either 'ball_and_stick' or 'stick' style representations or a valid py3Dmol style dictionary.
+        canvas : Tuple[int, int], optional
+            The (width, height) of the display canvas in pixels
+
+        Returns
+        -------
+        py3Dmol.view
+            A py3dMol view object of the molecule
+
+        """
+        if not which_import("py3Dmol", return_bool=True):
+            raise ModuleNotFoundError(
+                f"""Python module py3DMol not found. Solve by installing it: `conda install -c conda-forge py3dmol`"""
+            )  # pragma: no cover
+
+        import py3Dmol
+
+        if isinstance(style, dict):
+            pass
+        elif style == 'ball_and_stick':
+            style = {'stick': {'radius': 0.2}, 'sphere': {'scale': 0.3}}
+        elif style == 'stick':
+            style = {'stick': {}}
+        else:
+            raise KeyError(f"Style '{style}' not recognized.")
+
+        xyzview = py3Dmol.view(width=canvas[0], height=canvas[1])
+
+        xyzview.addModel(self.to_string("xyz", units="angstrom"), 'xyz')
+        xyzview.setStyle(style)
+        xyzview.zoomTo()
+        return xyzview
 
     def measure(self, measurements, degrees=True):
         """
@@ -449,10 +489,10 @@ class Molecule(BaseModel):
     @classmethod
     def from_data(cls,
                   data: Union[str, Dict[str, Any], np.array],
-                  dtype: Optional[str] = None,
+                  dtype: Optional[str]=None,
                   *,
-                  orient: bool = False,
-                  validate: bool = True,
+                  orient: bool=False,
+                  validate: bool=True,
                   **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
@@ -545,7 +585,7 @@ class Molecule(BaseModel):
                 raise KeyError("No dtype provided and ext '{}' not understood.".format(ext))
             # print("Inferring data type to be {} from file extension".format(dtype))
 
-        # Raw string type, read and pass through
+            # Raw string type, read and pass through
         if dtype in ["xyz", "psi4"]:
             with open(filename, "r") as infile:
                 data = infile.read()
@@ -646,7 +686,8 @@ class Molecule(BaseModel):
                 divider = ""
 
             if any(self.real[at] for at in frag):
-                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider, int(self.fragment_charges[num]),
+                text += "{0:s}    \n    {1:d} {2:d}\n".format(divider,
+                                                              int(self.fragment_charges[num]),
                                                               self.fragment_multiplicities[num])
 
             for at in frag:
@@ -666,7 +707,7 @@ class Molecule(BaseModel):
 
         return text
 
-    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
+    def nuclear_repulsion_energy(self, ifr: int=None) -> float:
         """Nuclear repulsion energy.
 
         Parameters
@@ -692,7 +733,7 @@ class Molecule(BaseModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr: int = None) -> int:
+    def nelectrons(self, ifr: int=None) -> int:
         """Number of electrons.
 
         Parameters
@@ -715,16 +756,17 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def align(concern_mol,  # lgtm[py/not-named-self]
-             ref_mol,
-             do_plot=False,
-             verbose=0,
-             atoms_map=False,
-             run_resorting=False,
-             mols_align=False,
-             run_to_completion=False,
-             uno_cutoff=1.e-3,
-             run_mirror=False):
+    def align(
+            concern_mol,  # lgtm[py/not-named-self]
+            ref_mol,
+            do_plot=False,
+            verbose=0,
+            atoms_map=False,
+            run_resorting=False,
+            mols_align=False,
+            run_to_completion=False,
+            uno_cutoff=1.e-3,
+            run_mirror=False):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -841,17 +883,18 @@ class Molecule(BaseModel):
 
         return amol, {'rmsd': rmsd, 'mill': solution}
 
-    def scramble(ref_mol,  # lgtm[py/not-named-self]
-                 do_shift=True,
-                 do_rotate=True,
-                 do_resort=True,
-                 deflection=1.0,
-                 do_mirror=False,
-                 do_plot=False,
-                 do_test=False,
-                 run_to_completion=False,
-                 run_resorting=False,
-                 verbose=0):
+    def scramble(
+            ref_mol,  # lgtm[py/not-named-self]
+            do_shift=True,
+            do_rotate=True,
+            do_resort=True,
+            deflection=1.0,
+            do_mirror=False,
+            do_plot=False,
+            do_test=False,
+            run_to_completion=False,
+            run_resorting=False,
+            verbose=0):
         """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
