@@ -12,35 +12,35 @@ from .molecule import Molecule
 class ResultProperties(BaseModel):
 
     # Calcinfo
-    calcinfo_nbasis: int = None
-    calcinfo_nmo: int = None
-    calcinfo_nalpha: int = None
-    calcinfo_nbeta: int = None
-    calcinfo_natom: int = None
+    calcinfo_nbasis: Optional[int] = None
+    calcinfo_nmo: Optional[int] = None
+    calcinfo_nalpha: Optional[int] = None
+    calcinfo_nbeta: Optional[int] = None
+    calcinfo_natom: Optional[int] = None
 
     # Canonical
-    nuclear_repulsion_energy: float = None
-    return_energy: float = None
+    nuclear_repulsion_energy: Optional[float] = None
+    return_energy: Optional[float] = None
 
     # SCF Keywords
-    scf_one_electron_energy: float = None
-    scf_two_electron_energy: float = None
-    scf_vv10_energy: float = None
-    scf_xc_energy: float = None
-    scf_dispersion_correction_energy: float = None
+    scf_one_electron_energy: Optional[float] = None
+    scf_two_electron_energy: Optional[float] = None
+    scf_vv10_energy: Optional[float] = None
+    scf_xc_energy: Optional[float] = None
+    scf_dispersion_correction_energy: Optional[float] = None
     scf_dipole_moment: List[float] = None
-    scf_total_energy: float = None
-    scf_iterations: int = None
+    scf_total_energy: Optional[float] = None
+    scf_iterations: Optional[int] = None
 
     # MP2 Keywords
-    mp2_same_spin_correlation_energy: float = None
-    mp2_opposite_spin_correlation_energy: float = None
-    mp2_singles_energy: float = None
-    mp2_doubles_energy: float = None
-    mp2_total_correlation_energy: float = None # Old name, to be deprecated
-    mp2_correlation_energy: float = None
-    mp2_total_energy: float = None
-    mp2_dipole_moment: List[float] = None
+    mp2_same_spin_correlation_energy: Optional[float] = None
+    mp2_opposite_spin_correlation_energy: Optional[float] = None
+    mp2_singles_energy: Optional[float] = None
+    mp2_doubles_energy: Optional[float] = None
+    mp2_total_correlation_energy: Optional[float] = None # Old name, to be deprecated
+    mp2_correlation_energy: Optional[float] = None
+    mp2_total_energy: Optional[float] = None
+    mp2_dipole_moment: Optional[List[float]] = None
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: float = None

@@ -11,6 +11,7 @@ __all__ = ['from_string']
 
 def from_string(molstr,
                 dtype=None,
+                *,
                 name=None,
                 fix_com=None,
                 fix_orientation=None,

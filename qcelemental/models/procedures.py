@@ -61,7 +61,7 @@ class Optimization(OptimizationInput):
     stderr: Optional[str] = None
 
     success: bool
-    error: ComputeError = None
+    error: Optional[ComputeError] = None
     provenance: Provenance
 
     class Config(OptimizationInput.Config):

@@ -68,7 +68,7 @@ class AlignmentMill(BaseModel):
         text.append('-' * width)
         return ('\n'.join(text))
 
-    def align_coordinates(self, geom, reverse=False):
+    def align_coordinates(self, geom, *, reverse=False):
         """suitable for geometry or displaced geometry"""
 
         algeom = np.copy(geom)
@@ -127,7 +127,7 @@ class AlignmentMill(BaseModel):
         alhess = blockwise_contract(alhess)
         return alhess
 
-    def align_system(self, geom, mass, elem, elez, uniq, reverse=False):
+    def align_system(self, geom, mass, elem, elez, uniq, *, reverse=False):
         """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
 
         nugeom = self.align_coordinates(geom, reverse=reverse)
@@ -138,7 +138,7 @@ class AlignmentMill(BaseModel):
 
         return nugeom, numass, nuelem, nuelez, nuuniq
 
-    def align_mini_system(self, geom, uniq, reverse=False):
+    def align_mini_system(self, geom, uniq, *, reverse=False):
         """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
 
         nugeom = self.align_coordinates(geom, reverse=reverse)

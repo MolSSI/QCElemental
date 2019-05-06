@@ -5,7 +5,7 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, verbose=1):
+def from_schema(molschema, *, verbose=1):
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters

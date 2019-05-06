@@ -4,6 +4,7 @@ Contains covalent radii
 
 import collections
 from decimal import Decimal
+from typing import Union
 
 from .datum import Datum, print_variables
 from .exceptions import DataUnavailableError
@@ -66,7 +67,7 @@ class CovalentRadii:
     def __str__(self):
         return "CovalentRadii(context='{}')".format(self.name)
 
-    def get(self, atom, return_tuple=False, units='bohr', missing=None):
+    def get(self, atom: Union[int, str], *, return_tuple:bool=False, units:str='bohr', missing:float=None) -> Union[float, 'Datum']:
         """Access a covalent radius for species `atom`.
 
         Parameters

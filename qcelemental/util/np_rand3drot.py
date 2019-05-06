@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def random_rotation_matrix(deflection=1.0, randnums=None):
+def random_rotation_matrix(deflection: float=1.0, randnums=None) -> np.ndarray:
     """Generates a random 3D rotation matrix.
 
     Parameters

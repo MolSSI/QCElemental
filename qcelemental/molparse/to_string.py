@@ -5,7 +5,7 @@ import numpy as np
 from ..physical_constants import constants
 
 
-def to_string(molrec, dtype, units=None, atom_format=None, ghost_format=None, width=17, prec=12):
+def to_string(molrec: str, dtype: str, units=None, *, atom_format=None, ghost_format=None, width=17, prec=12):
     """Format a string representation of QM molecule.
 
     Parameters

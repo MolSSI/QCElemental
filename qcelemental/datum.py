@@ -3,7 +3,7 @@ Datum Object Model
 """
 
 from decimal import Decimal
-from typing import Any
+from typing import Any, Dict
 
 import numpy as np
 from pydantic import BaseModel, validator
@@ -88,7 +88,7 @@ class Datum(BaseModel):
             return factor * self.data
 
 
-def print_variables(qcvars):
+def print_variables(qcvars: Dict[str, 'Datum']) -> str:
     """Form a printable representation of qcvariables.
 
     Parameters

@@ -214,14 +214,14 @@ Br     2.011720    -1.821637     1.845756
 
 
 @using_networkx()
-def test_dibromobutRS():
+def test_dibromobutRS_RR():
     mol, data = dibromobutRS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
     assert compare_values(1.562, data['rmsd'], '2,3-dibromobutane RR, RS', atol=1.e-1)
 
 
 @using_networkx()
-def test_dibromobutSS():
+def test_dibromobutSS_RR():
     mol, data = dibromobutSS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
     assert compare_values(1.296e-2, data['rmsd'], '2,3-dibromobutane RR, SS', atol=1.e-3)
@@ -229,14 +229,14 @@ def test_dibromobutSS():
 
 
 @using_networkx()
-def test_dibromobutRS():
+def test_dibromobutRS_SS():
     mol, data = dibromobutRS.align(
         dibromobutSS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
     assert compare_values(1.560, data['rmsd'], '2,3-dibromobutane SS, RS', atol=1.e-1)
 
 
 @using_networkx()
-def test_dibromobutRS():
+def test_dibromobutRS_SR_nomirror():
     # Table satisfied by non-mirror identical, but 787 finds even better match
     mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=False)
@@ -245,7 +245,7 @@ def test_dibromobutRS():
 
 
 @using_networkx()
-def test_dibromobutRS():
+def test_dibromobutRS_SR():
     mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=True)
     assert compare_values(0.004, data['rmsd'], '2,3-dibromobutane SR, RS', atol=1.e-3)
