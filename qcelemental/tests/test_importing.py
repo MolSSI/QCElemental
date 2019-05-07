@@ -54,6 +54,13 @@ def test_which_f():
     assert ans is None
 
 
+def test_which_f_raise():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which('evills', raise_error=True)
+
+    assert "'evills' not found" in str(e)
+
+
 def test_which_f_bool():
     ans = qcel.util.which('evills', return_bool=True)
     assert ans is False
