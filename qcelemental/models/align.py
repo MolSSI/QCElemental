@@ -16,10 +16,9 @@ class AlignmentMill(BaseModel):
     then molecular system can be substantively changed by procedure.
 
     """
-
-    shift: NDArray = None
-    rotation: NDArray = None
-    atommap: NDArrayInt = None
+    shift: NDArray
+    rotation: NDArray
+    atommap: NDArrayInt
     mirror: bool = False
 
     class Config:
@@ -52,7 +51,7 @@ class AlignmentMill(BaseModel):
 
 ### Non-Pydantic API functions
 
-    def __str__(self, label=''):
+    def __str__(self, label: str = '') -> str:
         width = 40
         text = []
         text.append('-' * width)
@@ -68,7 +67,7 @@ class AlignmentMill(BaseModel):
         text.append('-' * width)
         return ('\n'.join(text))
 
-    def align_coordinates(self, geom, *, reverse=False):
+    def align_coordinates(self, geom, *, reverse=False) -> NDArray:
         """suitable for geometry or displaced geometry"""
 
         algeom = np.copy(geom)
@@ -101,7 +100,7 @@ class AlignmentMill(BaseModel):
         #    alvec[:, 1] *= -1
         return vec.dot(self.rotation)
 
-    def align_gradient(self, grad):
+    def align_gradient(self, grad) -> NDArray:
         """suitable for vector system attached to atoms"""
 
         # sensible? TODO
@@ -113,7 +112,7 @@ class AlignmentMill(BaseModel):
 
         return algrad
 
-    def align_hessian(self, hess):
+    def align_hessian(self, hess) -> NDArray:
         blocked_hess = blockwise_expand(hess, (3, 3), False)
         alhess = np.zeros_like(blocked_hess)
 
@@ -127,7 +126,7 @@ class AlignmentMill(BaseModel):
         alhess = blockwise_contract(alhess)
         return alhess
 
-    def align_system(self, geom, mass, elem, elez, uniq, *, reverse=False):
+    def align_system(self, geom, mass, elem, elez, uniq, *, reverse: bool = False):
         """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
 
         nugeom = self.align_coordinates(geom, reverse=reverse)
@@ -138,7 +137,7 @@ class AlignmentMill(BaseModel):
 
         return nugeom, numass, nuelem, nuelez, nuuniq
 
-    def align_mini_system(self, geom, uniq, *, reverse=False):
+    def align_mini_system(self, geom, uniq, *, reverse: bool = False):
         """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
 
         nugeom = self.align_coordinates(geom, reverse=reverse)

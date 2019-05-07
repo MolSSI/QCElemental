@@ -1,5 +1,5 @@
 import itertools
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import numpy as np
 
@@ -40,12 +40,12 @@ def _parity_ok(z, c, m):
 
 def validate_and_fill_chgmult(zeff,
                               fragment_separators,
-                              molecular_charge,
+                              molecular_charge: Union[float, None],
                               fragment_charges,
-                              molecular_multiplicity,
+                              molecular_multiplicity: Union[int, None],
                               fragment_multiplicities,
-                              zero_ghost_fragments=False,
-                              verbose=1) -> Dict[str, Any]:
+                              zero_ghost_fragments: bool=False,
+                              verbose: int=1) -> Dict[str, Any]:
     """Forms molecular and fragment charge and multiplicity specification
     by completing and reconciling information from argument, supplemented
     by physical constraints and sensible defaults.

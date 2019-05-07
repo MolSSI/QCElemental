@@ -13,6 +13,7 @@ from .regex import VERSION_PATTERN
 
 
 def from_input_arrays(
+        *,
         enable_qm=True,
         enable_efp=True,
         missing_enabled_return_qm='error',
@@ -127,7 +128,8 @@ def from_input_arrays(
     return molinit
 
 
-def from_arrays(geom=None,
+def from_arrays(*,
+                geom=None,
                 elea=None,
                 elez=None,
                 elem=None,

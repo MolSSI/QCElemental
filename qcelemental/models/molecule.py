@@ -681,7 +681,7 @@ class Molecule(BaseModel):
 
         """
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
-        atoms = range(self.geometry.shape[0])
+        atoms = list(range(self.geometry.shape[0]))
 
         if ifr is not None:
             atoms = self.fragments[ifr]
@@ -848,7 +848,7 @@ class Molecule(BaseModel):
     def scramble(
             self,
             *,
-            do_shift=True,
+            do_shift: bool=True,
             do_rotate=True,
             do_resort=True,
             deflection=1.0,
