@@ -1,4 +1,5 @@
 import itertools
+from typing import Any, Dict, List
 
 import numpy as np
 
@@ -44,7 +45,7 @@ def validate_and_fill_chgmult(zeff,
                               molecular_multiplicity,
                               fragment_multiplicities,
                               zero_ghost_fragments=False,
-                              verbose=1):
+                              verbose=1) -> Dict[str, Any]:
     """Forms molecular and fragment charge and multiplicity specification
     by completing and reconciling information from argument, supplemented
     by physical constraints and sensible defaults.
@@ -300,9 +301,9 @@ def validate_and_fill_chgmult(zeff,
     text.append('felez: {}'.format(felez))
 
     cgmp_exact_c = []  # exact_* are candidates for the final value
-    cgmp_exact_fc = [[] for f in range(nfr)]
+    cgmp_exact_fc: List[List[float]] = [[] for f in range(nfr)]
     cgmp_exact_m = []
-    cgmp_exact_fm = [[] for f in range(nfr)]
+    cgmp_exact_fm: List[List[int]] = [[] for f in range(nfr)]
 
     cgmp_range = []  # tests that the final value must pass to be valid
     cgmp_rules = []  # key to what rules in cgmp_range are T/F
@@ -448,10 +449,10 @@ def validate_and_fill_chgmult(zeff,
         uniq_fm = [unique_everseen(f) for f in exact_fm]
         text.append('c: {}'.format(list(exact_c)))
         for f in exact_fc:
-            text.append('fc:'.format(list(f)))
+            text.append('fc: {}'.format(list(f)))
         text.append('m: {}'.format(list(exact_m)))
         for f in exact_fm:
-            text.append('fm:'.format(list(f)))
+            text.append('fm: {}'.format(list(f)))
 
         header = True
         for candidate in itertools.product(*[uniq_c, itertools.product(*uniq_fc),

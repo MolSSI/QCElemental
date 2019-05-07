@@ -1,4 +1,5 @@
 import re
+from typing import List, Tuple
 
 from .regex import NUCLEUS
 from ..exceptions import NotAnElementError, ValidationError
@@ -6,16 +7,16 @@ from ..periodic_table import periodictable
 
 _nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
 
-def reconcile_nucleus(A=None,
-                      Z=None,
-                      E=None,
-                      mass=None,
-                      real=None,
-                      label=None,
-                      speclabel=True,
-                      nonphysical=False,
-                      mtol=1.e-3,
-                      verbose=1):
+def reconcile_nucleus(A:int=None,
+                      Z:int=None,
+                      E:str=None,
+                      mass:float=None,
+                      real:bool=None,
+                      label:str=None,
+                      speclabel:bool=True,
+                      nonphysical:bool=False,
+                      mtol:float=1.e-3,
+                      verbose:int=1) -> Tuple[int, int, str, float, bool, str]:
     """Forms consistent set of nucleus descriptors from all information
     from arguments, supplemented by the periodic table. At the least,
     must provide element identity somehow. Defaults to most-abundant
@@ -248,17 +249,17 @@ def reconcile_nucleus(A=None,
 
     text = ['', """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
 
-    Z_exact = []  # *_exact are candidates for the final value
-    Z_range = []  # *_range are tests that the final value must pass to be valid
-    A_exact = []
-    A_range = []
-    m_exact = []
-    m_range = []
+    Z_exact: List = []  # *_exact are candidates for the final value
+    Z_range: List = []  # *_range are tests that the final value must pass to be valid
+    A_exact: List = []
+    A_range: List = []
+    m_exact: List = []
+    m_range: List = []
 
     r_exact = [True]  # default real/ghost is real
-    r_range = []
+    r_range: List = []
     l_exact = ['']  # default user label is empty string
-    l_range = []
+    l_range: List = []
     mmtol = 0.5  # tolerance for mass outside known masses for element
 
     # <<< collect evidence for Z/A/m, then reconcile Z

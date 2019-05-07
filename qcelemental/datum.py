@@ -3,7 +3,7 @@ Datum Object Model
 """
 
 from decimal import Decimal
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import numpy as np
 from pydantic import BaseModel, validator
@@ -33,7 +33,7 @@ class Datum(BaseModel):
     units: str
     data: Any
     comment: str = ''
-    doi: str = None
+    doi: Optional[str] = None
     glossary: str = ''
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None):

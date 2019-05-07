@@ -71,13 +71,13 @@ class PeriodicTable:
 
         """
         try:
-            self._eliso2mass[atom.capitalize()]
+            self._eliso2mass[atom.capitalize()]  # type: ignore
         except (KeyError, AttributeError):
             try:
                 E = self._z2el[int(atom)]
             except (KeyError, ValueError):
                 try:
-                    E = self._element2el[atom.capitalize()]
+                    E = self._element2el[atom.capitalize()]  # type: ignore
                 except (KeyError, AttributeError):
                     raise NotAnElementError(atom)
                 else:
@@ -85,6 +85,7 @@ class PeriodicTable:
             else:
                 return E
         else:
+            assert isinstance(atom, str)
             return atom.capitalize()
 
     def to_mass(self, atom: Union[int, str], *, return_decimal:bool=False) -> Union[float, 'Decimal']:
@@ -258,8 +259,10 @@ class PeriodicTable:
             return 6
         elif Z <= 118:
             return 7
+        else:
+            return 8
 
-    def to_group(self, atom: Union[int, str]) -> int:
+    def to_group(self, atom: Union[int, str]) -> Union[int, None]:
         """Get group (vertical column in periodic table) of `atom`.
 
         Parameters

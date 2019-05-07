@@ -28,7 +28,7 @@ class ResultProperties(BaseModel):
     scf_vv10_energy: Optional[float] = None
     scf_xc_energy: Optional[float] = None
     scf_dispersion_correction_energy: Optional[float] = None
-    scf_dipole_moment: List[float] = None
+    scf_dipole_moment: Optional[List[float]] = None
     scf_total_energy: Optional[float] = None
     scf_iterations: Optional[int] = None
 
@@ -43,19 +43,19 @@ class ResultProperties(BaseModel):
     mp2_dipole_moment: Optional[List[float]] = None
 
     # CCSD Keywords
-    ccsd_same_spin_correlation_energy: float = None
-    ccsd_opposite_spin_correlation_energy: float = None
-    ccsd_singles_energy: float = None
-    ccsd_doubles_energy: float = None
-    ccsd_correlation_energy: float = None
-    ccsd_total_energy: float = None
-    ccsd_dipole_moment: List[float] = None
-    ccsd_iterations: int = None
+    ccsd_same_spin_correlation_energy: Optional[float] = None
+    ccsd_opposite_spin_correlation_energy: Optional[float] = None
+    ccsd_singles_energy: Optional[float] = None
+    ccsd_doubles_energy: Optional[float] = None
+    ccsd_correlation_energy: Optional[float] = None
+    ccsd_total_energy: Optional[float] = None
+    ccsd_dipole_moment: Optional[List[float]] = None
+    ccsd_iterations: Optional[int] = None
 
     # CCSD(T) keywords
-    ccsd_prt_pr_correlation_energy: float = None
-    ccsd_prt_pr_total_energy: float = None
-    ccsd_prt_pr_dipole_moment: List[float] = None
+    ccsd_prt_pr_correlation_energy: Optional[float] = None
+    ccsd_prt_pr_total_energy: Optional[float] = None
+    ccsd_prt_pr_dipole_moment: Optional[List[float]] = None
 
     class Config:
         allow_mutation = False
@@ -103,7 +103,7 @@ class Result(ResultInput):
     stderr: Optional[str] = None
 
     success: bool
-    error: ComputeError = None
+    error: Optional[ComputeError] = None
     provenance: Provenance
 
     class Config(ResultInput.Config):
