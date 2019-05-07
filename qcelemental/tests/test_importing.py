@@ -1,3 +1,5 @@
+import pytest
+
 import os
 
 import qcelemental as qcel
@@ -23,6 +25,13 @@ def test_which_import_f_bool():
     assert ans is False
 
 
+def test_which_import_f_raise():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which_import('evilpint', raise_error=True)
+
+    assert "'evilpint' not found" in str(e)
+
+
 def test_which_t():
     ans = qcel.util.which('ls')
     assert ans.split(os.path.sep)[-1] == 'ls'
@@ -36,6 +45,13 @@ def test_which_t_bool():
 def test_which_f():
     ans = qcel.util.which('evills')
     assert ans is None
+
+
+def test_which_f_raise():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which('evills', raise_error=True)
+
+    assert "'evills' not found" in str(e)
 
 
 def test_which_f_bool():

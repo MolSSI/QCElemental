@@ -30,11 +30,8 @@ if __name__ == "__main__":
         include_package_data=True,
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
         setup_requires=[] + pytest_runner,
-        install_requires=[
-            'numpy',
-            'pint',
-            'pydantic >= 0.20'
-        ],
+        python_requires='>=3.6',
+        install_requires=['numpy', 'pint', 'pydantic >= 0.20'],
         extras_require={
             'docs': [
                 'numpydoc',
@@ -64,5 +61,4 @@ if __name__ == "__main__":
         ],
         zip_safe=False,
         long_description=long_description,
-        long_description_content_type="text/markdown"
-)
+        long_description_content_type="text/markdown")

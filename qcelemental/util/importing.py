@@ -4,7 +4,7 @@ import sys
 from typing import Union
 
 
-def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, None]:
+def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -14,12 +14,19 @@ def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, No
     bool
         When `return_bool=True`, returns whether or not found.
 
-    """
-    import pkgutil
-    plug_spec = pkgutil.find_loader(module)
+    Raises
+    ------
+    ModuleNotFoundError
+        When `raises_error=True` and module not found.
 
-    if plug_spec is None:
-        if return_bool:
+    """
+    import importlib
+    module_spec = importlib.util.find_spec(module)
+
+    if module_spec is None:
+        if raise_error:
+            raise ModuleNotFoundError(f"Python module '{module}' not found in envvar PYTHONPATH.")
+        elif return_bool:
             return False
         else:
             return None
@@ -27,10 +34,10 @@ def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, No
         if return_bool:
             return True
         else:
-            return plug_spec.path
+            return module_spec.origin
 
 
-def which(command: str, *, return_bool: bool=False) -> Union[bool, str, None]:
+def which(command: str, *, return_bool: bool = False, raise_error: bool = False) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns
@@ -41,11 +48,19 @@ def which(command: str, *, return_bool: bool=False) -> Union[bool, str, None]:
     bool
         When `return_bool=True`, returns whether or not found.
 
+    Raises
+    ------
+    ModuleNotFoundError
+        When `raises_error=True` and command not found.
+
     """
-    lenv = {'PATH': ':' + os.environ.get('PATH') + ":" + os.path.dirname(sys.executable)}
+    lenv = {'PATH': ':' + os.environ.get('PATH', '') + ':' + os.path.dirname(sys.executable)}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
+
+    if raise_error and ans is None:
+        raise ModuleNotFoundError(f"Command '{command}' not found in envvar PATH.")
 
     if return_bool:
         return bool(ans)
