@@ -214,7 +214,7 @@ class Molecule(BaseModel):
 
 ### Non-Pydantic API functions
 
-    def show(self, style: Union[str, Dict[str, Any]] = "ball_and_stick",
+    def show(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
              canvas: Tuple[int, int] = (400, 400)) -> 'py3Dmol.view':
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
 
@@ -658,12 +658,11 @@ class Molecule(BaseModel):
                 break
         return new_geometry
 
-
     def __str__(self):
         return self.pretty_print()
 
     def __repr__(self):
-        return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}')>"
+        return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}' hash='{self.get_hash()[:7]}')>"
 
     def _repr_html_(self):
         try:
