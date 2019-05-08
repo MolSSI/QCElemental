@@ -1,9 +1,10 @@
 import os
 import shutil
 import sys
+from typing import Union
 
 
-def which_import(module, *, return_bool=False):
+def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, None]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -29,7 +30,7 @@ def which_import(module, *, return_bool=False):
             return plug_spec.path
 
 
-def which(command, *, return_bool=False):
+def which(command: str, *, return_bool: bool=False) -> Union[bool, str, None]:
     """Test to see if a command is available.
 
     Returns
@@ -52,7 +53,7 @@ def which(command, *, return_bool=False):
         return ans
 
 
-def safe_version(*args, **kwargs):
+def safe_version(*args, **kwargs) -> str:
     """
     Package resources is a very slow load
     """

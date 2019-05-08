@@ -1,3 +1,5 @@
+from typing import Dict
+
 import numpy as np
 
 from ..exceptions import ValidationError
@@ -5,7 +7,7 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, verbose=1):
+def from_schema(molschema, *, verbose: int=1) -> Dict:
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
@@ -84,7 +86,7 @@ def from_schema(molschema, verbose=1):
     return molrec
 
 
-def contiguize_from_fragment_pattern(frag_pattern, geom=None, verbose=1, throw_reorder=False, **kwargs):
+def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, throw_reorder:bool=False, **kwargs):
     """Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) `frag_pattern`.
 
     Parameters

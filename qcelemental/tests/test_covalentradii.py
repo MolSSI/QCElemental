@@ -6,7 +6,7 @@ import qcelemental
 
 
 @pytest.mark.parametrize("inp", ["He100", '-1', -1, -1.0, 'cat', 200, 'Cr_highspin'])
-def test_id_resolution_error(inp):
+def test_id_resolution_error_bad_element(inp):
     with pytest.raises(qcelemental.NotAnElementError):
         ans = qcelemental.covalentradii.get(inp)
 

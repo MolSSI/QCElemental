@@ -4,6 +4,7 @@ Periodic table class
 
 import collections
 from decimal import Decimal
+from typing import Union
 
 from .exceptions import NotAnElementError
 
@@ -64,19 +65,19 @@ class PeriodicTable:
         for EE, m, A in zip(self._EE, self.mass, self.A):
             self._el2a2mass[EE][A] = float(m)
 
-    def _resolve_atom_to_key(self, atom):
+    def _resolve_atom_to_key(self, atom: Union[int, str]) -> str:
         """Given `atom` as element name, element symbol, nuclide symbol, atomic number, or atomic number string,
         return valid `self._eliso2mass` key, regardless of case. Raises `NotAnElementError` if unidentifiable.
 
         """
         try:
-            self._eliso2mass[atom.capitalize()]
+            self._eliso2mass[atom.capitalize()]  # type: ignore
         except (KeyError, AttributeError):
             try:
                 E = self._z2el[int(atom)]
             except (KeyError, ValueError):
                 try:
-                    E = self._element2el[atom.capitalize()]
+                    E = self._element2el[atom.capitalize()]  # type: ignore
                 except (KeyError, AttributeError):
                     raise NotAnElementError(atom)
                 else:
@@ -84,9 +85,10 @@ class PeriodicTable:
             else:
                 return E
         else:
+            assert isinstance(atom, str)
             return atom.capitalize()
 
-    def to_mass(self, atom, return_decimal=False):
+    def to_mass(self, atom: Union[int, str], *, return_decimal:bool=False) -> Union[float, 'Decimal']:
         """Get atomic mass of `atom`.
 
         Parameters
@@ -118,7 +120,7 @@ class PeriodicTable:
         else:
             return float(mass)
 
-    def to_A(self, atom):
+    def to_A(self, atom: Union[int, str]) -> int:
         """Get mass number of `atom`.
 
         Functions :py:func:`to_A` and :py:func:`to_mass_number` are aliases.
@@ -145,7 +147,7 @@ class PeriodicTable:
         identifier = self._resolve_atom_to_key(atom)
         return self._eliso2a[identifier]
 
-    def to_Z(self, atom):
+    def to_Z(self, atom: Union[int, str]) -> int:
         """Get atomic number of `atom`.
 
         Functions :py:func:`to_Z` and :py:func:`to_atomic_number` are aliases.
@@ -169,7 +171,7 @@ class PeriodicTable:
         identifier = self._resolve_atom_to_key(atom)
         return self._el2z[self._eliso2el[identifier]]
 
-    def to_E(self, atom):
+    def to_E(self, atom: Union[int, str]) -> str:
         """Get element symbol of `atom`.
 
         Functions :py:func:`to_E` and :py:func:`to_symbol` are aliases.
@@ -193,7 +195,7 @@ class PeriodicTable:
         identifier = self._resolve_atom_to_key(atom)
         return self._eliso2el[identifier]
 
-    def to_element(self, atom):
+    def to_element(self, atom: Union[int, str]) -> str:
         """Get element name of `atom`.
 
         Functions :py:func:`to_element` and :py:func:`to_name` are aliases.
@@ -222,7 +224,7 @@ class PeriodicTable:
     to_symbol = to_E
     to_name = to_element
 
-    def to_period(self, atom):
+    def to_period(self, atom: Union[int, str]) -> int:
         """Get period (horizontal row in periodic table) of `atom`.
 
         Parameters
@@ -257,8 +259,10 @@ class PeriodicTable:
             return 6
         elif Z <= 118:
             return 7
+        else:
+            return 8
 
-    def to_group(self, atom):
+    def to_group(self, atom: Union[int, str]) -> Union[int, None]:
         """Get group (vertical column in periodic table) of `atom`.
 
         Parameters

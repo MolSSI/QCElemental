@@ -1,12 +1,13 @@
 import math
 import re
+from typing import Dict, List
 
 import numpy as np
 
 from ..physical_constants import constants
 
 
-def distance_matrix(a, b):
+def distance_matrix(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     """Euclidean distance matrix between rows of arrays `a` and `b`. Equivalent to
     `scipy.spatial.distance.cdist(a, b, 'euclidean')`. Returns a.shape[0] x b.shape[0] array.
 
@@ -18,7 +19,7 @@ def distance_matrix(a, b):
     return distm
 
 
-def update_with_error(a, b, path=None):
+def update_with_error(a: Dict, b: Dict, path=None) -> Dict:
     """Merges `b` into `a` like dict.update; however, raises KeyError if values of a
     key shared by `a` and `b` conflict.
 
@@ -49,7 +50,7 @@ def update_with_error(a, b, path=None):
     return a
 
 
-def standardize_efp_angles_units(units, geom_hints):
+def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> List[List[float]]:
     """Applies to the pre-validated xyzabc or points hints in `geom_hints`
     the libefp default (1) units of [a0] and (2) radian angle range of
     (-pi, pi]. The latter is handy since this is how libefp returns hints
@@ -83,13 +84,13 @@ def standardize_efp_angles_units(units, geom_hints):
     return hints
 
 
-def filter_comments(string):
+def filter_comments(string: str) -> str:
     """Remove from `string` any Python-style comments ('#' to end of line)."""
 
     return re.sub(r'(^|[^\\])#.*', '', string)
 
 
-def unnp(dicary, flat=False, _path=None):
+def unnp(dicary: Dict, _path=None, *, flat: bool=False) -> Dict:
     """Return `dicary` with any ndarray values replaced by lists.
 
     Parameters
@@ -111,11 +112,11 @@ def unnp(dicary, flat=False, _path=None):
     ndicary = {}
     for k, v in dicary.items():
         if isinstance(v, dict):
-            ndicary[k] = unnp(v, flat, _path + [str(k)])
+            ndicary[k] = unnp(v, _path + [str(k)], flat=flat)
         elif isinstance(v, list):
             # relying on Py3.6+ ordered dict here
             fakedict = {kk: vv for kk, vv in enumerate(v)}
-            tolisted = unnp(fakedict, flat, _path + [str(k)])
+            tolisted = unnp(fakedict, _path + [str(k)], flat=flat)
             ndicary[k] = list(tolisted.values())
         else:
             try:
@@ -130,7 +131,7 @@ def unnp(dicary, flat=False, _path=None):
     return ndicary
 
 
-def _norm(points):
+def _norm(points) -> float:
     """
     Return the Frobenius norm across axis=-1, NumPy's internal norm is crazy slow (~4x)
     """
@@ -168,8 +169,7 @@ def measure_coordinates(coordinates, measurements, degrees=False):
             func = compute_dihedral
             kwargs = {"degrees": degrees}
         else:
-            raise KeyError("Unrecognized number of arguements for measurement {}, found {}, expected 2-4.".format(
-                num, len(m)))
+            raise KeyError(f"Unrecognized number of arguments for measurement {num}, found {len(m)}, expected 2-4.")
 
         val = func(*[coordinates[x] for x in m], **kwargs)
         ret.append(float(val))
@@ -180,15 +180,15 @@ def measure_coordinates(coordinates, measurements, degrees=False):
         return ret
 
 
-def compute_distance(points1, points2):
+def compute_distance(points1, points2) -> np.ndarray:
     """
-    Computes the pairwise distance between all points in points1 and points2.
+    Computes the distance between the provided points on a per-row basis.
 
     Parameters
     ----------
-    points1 : np.ndarray
+    points1 : array-like
         The first list of points, can be 1D or 2D
-    points2 : np.ndarray
+    points2 : array-like
         The second list of points, can be 1D or 2D
 
     Returns
@@ -199,15 +199,21 @@ def compute_distance(points1, points2):
     Notes
     -----
     Units are not considered inside these expressions, please preconvert to the same units before using.
-    """
 
+    See Also
+    --------
+    distance_matrix
+        Computes the distance between the provided points in all rows.
+        compute_distance result is the diagonal of the distance_matrix result.
+
+    """
     points1 = np.atleast_2d(points1)
     points2 = np.atleast_2d(points2)
 
     return _norm(points1 - points2)
 
 
-def compute_angle(points1, points2, points3, degrees=False):
+def compute_angle(points1, points2, points3, *, degrees: bool=False) -> np.ndarray:
     """
     Computes the angle (p1, p2 [vertex], p3) between the provided points on a per-row basis.
 
@@ -250,7 +256,7 @@ def compute_angle(points1, points2, points3, degrees=False):
         return angle
 
 
-def compute_dihedral(points1, points2, points3, points4, degrees=False):
+def compute_dihedral(points1, points2, points3, points4, *, degrees: bool=False) -> np.ndarray:
     """
     Computes the dihedral angle (p1, p2, p3, p4) between the provided points on a per-row basis using the Praxeolitic formula.
 

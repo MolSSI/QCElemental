@@ -1,4 +1,5 @@
 import copy
+from typing import Dict
 
 import numpy as np
 
@@ -8,7 +9,7 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec, dtype, units='Bohr', np_out=False):
+def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False) -> Dict:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
@@ -33,7 +34,7 @@ def to_schema(molrec, dtype, units='Bohr', np_out=False):
         Dictionary of the `dtype` repr of `molrec`.
 
     """
-    qcschema = {}
+    qcschema: Dict = {}
 
     if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
         factor = molrec['input_units_to_au']

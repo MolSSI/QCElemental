@@ -41,7 +41,7 @@ def compare_values(expected,
                    equal_nan=False,
                    passnone=False,
                    quiet=False,
-                   return_message=False):
+                   return_message=False) -> bool:
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -139,7 +139,7 @@ def compare_values(expected,
     return _handle_return(allclose, label, message, return_message, quiet)
 
 
-def compare(expected, computed, label=None, *, quiet=False, return_message=False):
+def compare(expected, computed, label=None, *, quiet=False, return_message=False) -> bool:
     """Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
 
     Parameters
@@ -266,7 +266,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16, forgive=None, return_message=False):
+def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16, forgive=None, return_message=False) -> bool:
     """
     Recursively compares nexted structures such as dictionaries and lists.
 
@@ -321,7 +321,7 @@ def compare_molrecs(expected,
                     rtol=1.e-16,
                     forgive=None,
                     verbose=1,
-                    relative_geoms='exact'):
+                    relative_geoms='exact') -> bool:
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).

@@ -118,3 +118,6 @@ runinfo/*
 
 # Pycharm
 .idea/
+
+# VSCode
+.vscode/

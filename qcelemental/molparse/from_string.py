@@ -1,5 +1,6 @@
 import pprint
 import re
+from typing import Dict, Tuple, Union
 
 from . import pubchem
 from ..exceptions import ChoicesError, MoleculeFormatError, ValidationError
@@ -11,6 +12,7 @@ __all__ = ['from_string']
 
 def from_string(molstr,
                 dtype=None,
+                *,
                 name=None,
                 fix_com=None,
                 fix_orientation=None,
@@ -20,7 +22,7 @@ def from_string(molstr,
                 enable_efp=True,
                 missing_enabled_return_qm='none',
                 missing_enabled_return_efp='none',
-                verbose=1):
+                verbose=1) -> Union[Dict, Tuple[Dict, Dict]]:
     """Construct a molecule dictionary from any recognized string format.
 
     Parameters

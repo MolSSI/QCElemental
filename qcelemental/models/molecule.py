@@ -47,16 +47,16 @@ def float_prep(array, around):
 class Identifiers(BaseModel):
     """Canonical chemical identifiers"""
 
-    molecule_hash: str = None
-    molecular_formula: str = None
-    smiles: str = None
-    inchi: str = None
-    inchikey: str = None
-    canonical_explicit_hydrogen_smiles: str = None
-    canonical_isomeric_explicit_hydrogen_mapped_smiles: str = None
-    canonical_isomeric_explicit_hydrogen_smiles: str = None
-    canonical_isomeric_smiles: str = None
-    canonical_smiles: str = None
+    molecule_hash: Optional[str] = None
+    molecular_formula: Optional[str] = None
+    smiles: Optional[str] = None
+    inchi: Optional[str] = None
+    inchikey: Optional[str] = None
+    canonical_explicit_hydrogen_smiles: Optional[str] = None
+    canonical_isomeric_explicit_hydrogen_mapped_smiles: Optional[str] = None
+    canonical_isomeric_explicit_hydrogen_smiles: Optional[str] = None
+    canonical_isomeric_smiles: Optional[str] = None
+    canonical_smiles: Optional[str] = None
 
     class Config:
         allow_mutation = False
@@ -72,33 +72,32 @@ class Molecule(BaseModel):
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
     schema_version: int = 2
     symbols: List[str]
-    # geometry: List[float]
     geometry: NDArray
 
     # Molecule data
     name: str = ""
-    identifiers: Identifiers = None
-    comment: str = None
+    identifiers: Optional[Identifiers] = None
+    comment: Optional[str] = None
     molecular_charge: float = 0.0
     molecular_multiplicity: int = 1
 
     # Atom data
-    masses: List[float] = None
-    real: List[bool] = None
-    atom_labels: List[str] = None
-    atomic_numbers: List[int] = None
-    mass_numbers: List[int] = None
+    masses: List[float]
+    real: List[bool]
+    atom_labels: Optional[List[str]] = None
+    atomic_numbers: Optional[List[int]] = None
+    mass_numbers: Optional[List[int]] = None
 
     # Fragment and connection data
-    connectivity: List[Tuple[int, int, float]] = None
-    fragments: List[List[int]] = None
-    fragment_charges: List[float] = None
-    fragment_multiplicities: List[int] = None
+    connectivity: Optional[List[Tuple[int, int, float]]] = None
+    fragments: List[List[int]]
+    fragment_charges: List[float]
+    fragment_multiplicities: List[int]
 
     # Orientation
     fix_com: bool = False
     fix_orientation: bool = False
-    fix_symmetry: str = None
+    fix_symmetry: Optional[str] = None
 
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
@@ -214,7 +213,7 @@ class Molecule(BaseModel):
 
 ### Non-Pydantic API functions
 
-    def visualize(self, style: Union[str, Dict[str, Any]]="ball_and_stick",
+    def visualize(self, *, style: Union[str, Dict[str, Any]]="ball_and_stick",
                   canvas: Tuple[int, int]=(400, 400)) -> 'py3Dmol.view':
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
 
@@ -254,9 +253,9 @@ class Molecule(BaseModel):
         xyzview.zoomTo()
         return xyzview
 
-    def measure(self, measurements, degrees=True):
+    def measure(self, measurements, *, degrees=True):
         """
-        Takes a measurement of the moleucle from the indicies provided.
+        Takes a measurement of the molecule from the indicies provided.
         """
 
         return measure_coordinates(self.geometry, measurements, degrees=degrees)
@@ -270,7 +269,7 @@ class Molecule(BaseModel):
     def compare(self, other, bench=None):
         """
         Checks if two molecules are identical. This is a molecular identity defined
-        by scientific terms, and not programing terms, so its less rigorous than
+        by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
 
@@ -397,7 +396,7 @@ class Molecule(BaseModel):
 
         return Molecule(orient=orient, **constructor_dict)
 
-    def to_string(self, dtype, units=None, atom_format=None, ghost_format=None, width=17, prec=12):
+    def to_string(self, dtype, units=None, *, atom_format=None, ghost_format=None, width=17, prec=12):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
@@ -546,7 +545,7 @@ class Molecule(BaseModel):
         return cls(orient=orient, validate=validate, **input_dict)
 
     @classmethod
-    def from_file(cls, filename, dtype=None, orient=False, **kwargs):
+    def from_file(cls, filename, dtype=None, *, orient=False, **kwargs):
         """
         Constructs a molecule object from a file.
 
@@ -614,8 +613,8 @@ class Molecule(BaseModel):
         new_geometry -= np.average(new_geometry, axis=0, weights=np_mass)
 
         # Rotate into inertial frame
-        tensor = self._inertial_tensor(new_geometry, np_mass)
-        evals, evecs = np.linalg.eigh(tensor)
+        tensor = self._inertial_tensor(new_geometry, weight=np_mass)
+        _, evecs = np.linalg.eigh(tensor)
 
         new_geometry = np.dot(new_geometry, evecs)
 
@@ -649,7 +648,7 @@ class Molecule(BaseModel):
         return self.pretty_print()
 
     @staticmethod
-    def _inertial_tensor(geom, weight):
+    def _inertial_tensor(geom, *, weight):
         """
         Compute the moment inertia tensor for a given geometry.
         """
@@ -682,7 +681,7 @@ class Molecule(BaseModel):
 
         """
         Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
-        atoms = range(self.geometry.shape[0])
+        atoms = list(range(self.geometry.shape[0]))
 
         if ifr is not None:
             atoms = self.fragments[ifr]
@@ -718,8 +717,9 @@ class Molecule(BaseModel):
         return int(nel)
 
     def align(
-            concern_mol,  # lgtm[py/not-named-self]
+            self,
             ref_mol,
+            *,
             do_plot=False,
             verbose=0,
             atoms_map=False,
@@ -784,6 +784,7 @@ class Molecule(BaseModel):
             hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
             for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
         ])
+        concern_mol = self
         cgeom = np.array(concern_mol.geometry)
         cmass = np.array(concern_mol.masses)
         celem = np.array(concern_mol.symbols)
@@ -807,7 +808,7 @@ class Molecule(BaseModel):
             run_mirror=run_mirror,
             uno_cutoff=uno_cutoff)
 
-        ageom, amass, aelem, aelez, auniq = solution.align_system(cgeom, cmass, celem, celez, cuniq, reverse=False)
+        ageom, amass, aelem, aelez, _ = solution.align_system(cgeom, cmass, celem, celez, cuniq, reverse=False)
         adict = from_arrays(
             geom=ageom,
             mass=amass,
@@ -845,8 +846,9 @@ class Molecule(BaseModel):
         return amol, {'rmsd': rmsd, 'mill': solution}
 
     def scramble(
-            ref_mol,  # lgtm[py/not-named-self]
-            do_shift=True,
+            self,
+            *,
+            do_shift: bool=True,
             do_rotate=True,
             do_resort=True,
             deflection=1.0,
@@ -910,6 +912,7 @@ class Molecule(BaseModel):
         """
         from ..molparse.align import compute_scramble
 
+        ref_mol = self
         rgeom = np.array(ref_mol.geometry)
         rmass = np.array(ref_mol.masses)
         relem = np.array(ref_mol.symbols)
@@ -945,7 +948,7 @@ class Molecule(BaseModel):
             print('Start RMSD = {:8.4f} [A]'.format(rmsd))
 
         if do_test:
-            amol, data = cmol.align(
+            _, data = cmol.align(
                 ref_mol,
                 do_plot=do_plot,
                 atoms_map=(not do_resort),
