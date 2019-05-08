@@ -40,14 +40,14 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
 
 
 def which(command: str, *, return_bool: bool = False, raise_error: bool = False,
-          raise_msg: str = None) -> Union[bool, None, str]:
+          raise_msg: str = None, env: str = None) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns
     -------
     str or None
         By default, returns command path if command found or `None` if not.
-        Environment is $PATH, less any None values.
+        Environment is $PATH or `os.pathsep`-separated `env`, less any None values.
     bool
         When `return_bool=True`, returns whether or not found.
 
@@ -57,7 +57,10 @@ def which(command: str, *, return_bool: bool = False, raise_error: bool = False,
         When `raises_error=True` and command not found. Raises generic message plus any `raise_msg`.
 
     """
-    lenv = {'PATH': ':' + os.environ.get('PATH', '') + ':' + os.path.dirname(sys.executable)}
+    if env is None:
+        lenv = {'PATH': os.pathsep + os.environ.get('PATH', '') + os.path.dirname(sys.executable)}
+    else:
+        lenv = {'PATH': os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ''])}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
