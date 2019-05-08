@@ -101,7 +101,7 @@ class Molecule(BaseModel):
 
     # Extra
     provenance: Provenance = provenance_stamp(__name__)
-    id: Optional[str] = None
+    id: Optional[Any] = None
     extras: Dict[str, Any] = None
 
     class Config:
@@ -658,8 +658,18 @@ class Molecule(BaseModel):
                 break
         return new_geometry
 
+
     def __str__(self):
         return self.pretty_print()
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}')>"
+
+    def _repr_html_(self):
+        try:
+            return self.show()._repr_html_()
+        except ModuleNotFoundError:
+            return f"<p>{repr(self)[1:-1]}</p>"
 
     @staticmethod
     def _inertial_tensor(geom, *, weight):
