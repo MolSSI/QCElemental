@@ -3,7 +3,7 @@
 extraction:
   python:
     python_setup:
-      version: 3.6
+      version: 3
 path_classifiers:
   library:
     - versioneer.py  # Set Versioneer.py to an external "library" (3rd party code)
