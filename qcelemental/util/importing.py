@@ -4,7 +4,8 @@ import sys
 from typing import Union
 
 
-def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, None]:
+def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False,
+                 raise_msg: str = None) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -14,12 +15,20 @@ def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, No
     bool
         When `return_bool=True`, returns whether or not found.
 
-    """
-    import pkgutil
-    plug_spec = pkgutil.find_loader(module)
+    Raises
+    ------
+    ModuleNotFoundError
+        When `raises_error=True` and module not found. Raises generic message plus any `raise_msg`.
 
-    if plug_spec is None:
-        if return_bool:
+    """
+    import importlib
+    module_spec = importlib.util.find_spec(module)
+
+    if module_spec is None:
+        if raise_error:
+            raise ModuleNotFoundError(
+                f"Python module '{module}' not found in envvar PYTHONPATH.{' ' + raise_msg if raise_msg else ''}")
+        elif return_bool:
             return False
         else:
             return None
@@ -27,25 +36,38 @@ def which_import(module: str, *, return_bool: bool=False) -> Union[bool, str, No
         if return_bool:
             return True
         else:
-            return plug_spec.path
+            return module_spec.origin
 
 
-def which(command: str, *, return_bool: bool=False) -> Union[bool, str, None]:
+def which(command: str, *, return_bool: bool = False, raise_error: bool = False,
+          raise_msg: str = None, env: str = None) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns
     -------
     str or None
         By default, returns command path if command found or `None` if not.
-        Environment is $PATH, less any None values.
+        Environment is $PATH or `os.pathsep`-separated `env`, less any None values.
     bool
         When `return_bool=True`, returns whether or not found.
 
+    Raises
+    ------
+    ModuleNotFoundError
+        When `raises_error=True` and command not found. Raises generic message plus any `raise_msg`.
+
     """
-    lenv = {'PATH': ':' + os.environ.get('PATH') + ":" + os.path.dirname(sys.executable)}
+    if env is None:
+        lenv = {'PATH': os.pathsep + os.environ.get('PATH', '') + os.path.dirname(sys.executable)}
+    else:
+        lenv = {'PATH': os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ''])}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
+
+    if raise_error and ans is None:
+        raise ModuleNotFoundError(
+            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}")
 
     if return_bool:
         return bool(ans)

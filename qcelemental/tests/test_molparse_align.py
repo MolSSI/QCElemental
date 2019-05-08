@@ -140,7 +140,7 @@ def test_b787():
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
-    rmsd, mill = qcel.molparse.B787(
+    rmsd, mill = qcel.molutil.B787(
         oco10_geom_au, oco12_geom_au, np.array(['O', 'C', 'O']), np.array(['O', 'O', 'C']), algorithm='permutative', verbose=4, do_plot=False)
 
     assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.e-6)
@@ -154,7 +154,7 @@ def test_b787_atomsmap():
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
-    rmsd, mill = qcel.molparse.B787(oco10_geom_au, oco12_geom_au, None, None, atoms_map=True)
+    rmsd, mill = qcel.molutil.B787(oco10_geom_au, oco12_geom_au, None, None, atoms_map=True)
 
     assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.e-6)
 
@@ -171,7 +171,7 @@ def test_model_b787():
 
 def test_error_kabsch():
     with pytest.raises(qcel.ValidationError) as e:
-        qcel.molparse.kabsch_align([1, 2, 3], [4, 5, 6], weight=7)
+        qcel.molutil.kabsch_align([1, 2, 3], [4, 5, 6], weight=7)
 
     assert "for kwarg 'weight'" in str(e)
 
@@ -184,7 +184,7 @@ def test_kabsch_identity():
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
-    rmsd, rot, shift = qcel.molparse.kabsch_align(oco10_geom_au, oco12_geom_au)
+    rmsd, rot, shift = qcel.molutil.kabsch_align(oco10_geom_au, oco12_geom_au)
 
     assert compare_values(0., rmsd, 'identical')
     assert compare_values(np.identity(3), rot, 'identity rotation matrix')
@@ -237,7 +237,7 @@ def test_tropolone_b787():
 
 
 def test_scramble_identity():
-    mill = qcel.molparse.compute_scramble(4, do_resort=False, do_shift=False, do_rotate=False, deflection=1.0, do_mirror=False)
+    mill = qcel.molutil.compute_scramble(4, do_resort=False, do_shift=False, do_rotate=False, deflection=1.0, do_mirror=False)
 
     mill_str = """----------------------------------------
              AlignmentMill              
@@ -266,7 +266,7 @@ Rotation:
 
 
 def test_scramble_specific():
-    mill = qcel.molparse.compute_scramble(4,
+    mill = qcel.molutil.compute_scramble(4,
                                           do_resort=[1, 2, 0, 3],
                                           do_shift=[-1.82564537, 2.25391838, -2.56591963],
                                           do_rotate=[[ 0.39078817, -0.9101616,  -0.13744259],

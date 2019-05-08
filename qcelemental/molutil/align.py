@@ -118,17 +118,16 @@ def B787(cgeom,
         mcgeom = np.copy(cgeom)
         mcgeom[:, 1] *= -1.
         exact = 1.e-6
-        mrmsd, msolution = B787(
-            mcgeom,
-            cgeom,
-            cuniq,
-            cuniq,
-            do_plot=False,
-            verbose=0,
-            atoms_map=False,
-            mols_align=exact,
-            run_mirror=False,
-            uno_cutoff=0.1)
+        mrmsd, msolution = B787(mcgeom,
+                                cgeom,
+                                cuniq,
+                                cuniq,
+                                do_plot=False,
+                                verbose=0,
+                                atoms_map=False,
+                                mols_align=exact,
+                                run_mirror=False,
+                                uno_cutoff=0.1)
         superimposable = mrmsd < exact
         if verbose >= 1 and superimposable:
             print(
@@ -152,11 +151,11 @@ def B787(cgeom,
 
     if verbose >= 2:
         print('<<<  Reference:')
-        for at, hsh in enumerate(runiq):
+        for at, _ in enumerate(runiq):
             print(atomfmt2.format(runiq[at][:6], *rgeom[at]))
 
         print('<<<  Concern:')
-        for at, hsh in enumerate(cuniq):
+        for at, _ in enumerate(cuniq):
             print(atomfmt2.format(cuniq[at][:6], *cgeom[at]))
 
     # start_rmsd is nonsense if not atoms_map
@@ -164,20 +163,39 @@ def B787(cgeom,
     if verbose >= 1:
         print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
 
-    def _plausible_atom_orderings_wrapper(runiq, cuniq, rgeom, cgeom, run_resorting, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.e-3):
+    def _plausible_atom_orderings_wrapper(runiq,
+                                          cuniq,
+                                          rgeom,
+                                          cgeom,
+                                          run_resorting,
+                                          algorithm='hungarian_uno',
+                                          verbose=1,
+                                          uno_cutoff=1.e-3):
         """Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when
         atoms of R & C known to be ordered. Easier to put logic here because _plausible is generator.
 
         """
         if run_resorting:
-            return _plausible_atom_orderings(runiq, cuniq, rgeom, cgeom, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff)
+            return _plausible_atom_orderings(runiq,
+                                             cuniq,
+                                             rgeom,
+                                             cgeom,
+                                             algorithm=algorithm,
+                                             verbose=verbose,
+                                             uno_cutoff=uno_cutoff)
         else:
             return [np.arange(rgeom.shape[0])]
 
     t0 = time.time()
     tc = 0.
-    for ordering in _plausible_atom_orderings_wrapper(
-            runiq, cuniq, rgeom, cgeom, run_resorting, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff):
+    for ordering in _plausible_atom_orderings_wrapper(runiq,
+                                                      cuniq,
+                                                      rgeom,
+                                                      cgeom,
+                                                      run_resorting,
+                                                      algorithm=algorithm,
+                                                      verbose=verbose,
+                                                      uno_cutoff=uno_cutoff):
         t1 = time.time()
         ocount += 1
         npordd = np.asarray(ordering)
@@ -258,24 +276,21 @@ def B787(cgeom,
         plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment='Final RMSD = {:8.4f}'.format(final_rmsd))
 
     # sanity checks
-    assert compare_values(
-        _pseudo_nre(cuniq, cgeom),
-        _pseudo_nre(auniq, ageom),
-        'D: concern_mol-->returned_mol pNRE uncorrupted',
-        atol=1.e-4,
-        quiet=(verbose > 1))
+    assert compare_values(_pseudo_nre(cuniq, cgeom),
+                          _pseudo_nre(auniq, ageom),
+                          'D: concern_mol-->returned_mol pNRE uncorrupted',
+                          atol=1.e-4,
+                          quiet=(verbose > 1))
     if mols_align is True:
-        assert compare_values(
-            _pseudo_nre(runiq, rgeom),
-            _pseudo_nre(auniq, ageom),
-            'D: concern_mol-->returned_mol pNRE matches ref_mol',
-            atol=1.e-4,
-            quiet=(verbose > 1))
-        assert compare(
-            True,
-            np.allclose(rgeom, ageom, atol=4),
-            'D: concern_mol-->returned_mol geometry matches ref_mol',
-            quiet=(verbose > 1))
+        assert compare_values(_pseudo_nre(runiq, rgeom),
+                              _pseudo_nre(auniq, ageom),
+                              'D: concern_mol-->returned_mol pNRE matches ref_mol',
+                              atol=1.e-4,
+                              quiet=(verbose > 1))
+        assert compare(True,
+                       np.allclose(rgeom, ageom, atol=4),
+                       'D: concern_mol-->returned_mol geometry matches ref_mol',
+                       quiet=(verbose > 1))
         assert compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose > 1))
 
     return final_rmsd, hold_solution

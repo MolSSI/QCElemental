@@ -6,6 +6,7 @@ from .datum import Datum
 from .exceptions import (NotAnElementError, ValidationError, MoleculeFormatError, ChoicesError, DataUnavailableError)
 from .testing import (compare, compare_values)
 from . import molparse
+from . import molutil
 from . import models
 
 # Handle singletons, not their classes or modules

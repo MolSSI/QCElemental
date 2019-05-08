@@ -211,10 +211,11 @@ class Molecule(BaseModel):
     def json_dict(self, *args, **kwargs):
         return json.loads(self.json(*args, **kwargs))
 
+
 ### Non-Pydantic API functions
 
-    def visualize(self, *, style: Union[str, Dict[str, Any]]="ball_and_stick",
-                  canvas: Tuple[int, int]=(400, 400)) -> 'py3Dmol.view':
+    def visualize(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
+                  canvas: Tuple[int, int] = (400, 400)) -> 'py3Dmol.view':
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
 
         Parameters
@@ -311,8 +312,8 @@ class Molecule(BaseModel):
         for i in range(len(self.geometry)):
             text += """    {0:8s}{1:4s} """.format(self.symbols[i], "" if self.real[i] else "(Gh)")
             for j in range(3):
-                text += """  {0:17.12f}""".format(
-                    self.geometry[i][j] * constants.conversion_factor("bohr", "angstroms"))
+                text += """  {0:17.12f}""".format(self.geometry[i][j] *
+                                                  constants.conversion_factor("bohr", "angstroms"))
             text += "\n"
         # text += "\n"
 
@@ -404,14 +405,13 @@ class Molecule(BaseModel):
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
         molrec = from_schema(self.dict())
-        string = to_string(
-            molrec,
-            dtype=dtype,
-            units=units,
-            atom_format=atom_format,
-            ghost_format=ghost_format,
-            width=width,
-            prec=prec)
+        string = to_string(molrec,
+                           dtype=dtype,
+                           units=units,
+                           atom_format=atom_format,
+                           ghost_format=ghost_format,
+                           width=width,
+                           prec=prec)
         return string
 
     def get_hash(self):
@@ -485,10 +485,10 @@ class Molecule(BaseModel):
     @classmethod
     def from_data(cls,
                   data: Union[str, Dict[str, Any], np.array],
-                  dtype: Optional[str]=None,
+                  dtype: Optional[str] = None,
                   *,
-                  orient: bool=False,
-                  validate: bool=True,
+                  orient: bool = False,
+                  validate: bool = True,
                   **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
@@ -667,7 +667,7 @@ class Molecule(BaseModel):
         tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
 
-    def nuclear_repulsion_energy(self, ifr: int=None) -> float:
+    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
         """Nuclear repulsion energy.
 
         Parameters
@@ -693,7 +693,7 @@ class Molecule(BaseModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr: int=None) -> int:
+    def nelectrons(self, ifr: int = None) -> int:
         """Number of electrons.
 
         Parameters
@@ -731,7 +731,7 @@ class Molecule(BaseModel):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
-        Wraps :py:func:`qcel.molparse.B787` for :py:class:`qcel.models.Molecule`.
+        Wraps :py:func:`qcel.molutil.B787` for :py:class:`qcel.models.Molecule`.
         Employs the Kabsch, Hungarian, and Uno algorithms to exhaustively locate
         the best alignment for non-oriented, non-ordered structures.
 
@@ -777,7 +777,7 @@ class Molecule(BaseModel):
             from `concern_mol` and the optimally aligned geometry.
 
         """
-        from ..molparse.align import B787
+        from ..molutil.align import B787
 
         rgeom = np.array(ref_mol.geometry)
         runiq = np.asarray([
@@ -794,54 +794,49 @@ class Molecule(BaseModel):
             for sym, mas in zip(concern_mol.symbols, concern_mol.masses)
         ])
 
-        rmsd, solution = B787(
-            cgeom=cgeom,
-            rgeom=rgeom,
-            cuniq=cuniq,
-            runiq=runiq,
-            do_plot=do_plot,
-            verbose=verbose,
-            atoms_map=atoms_map,
-            run_resorting=run_resorting,
-            mols_align=mols_align,
-            run_to_completion=run_to_completion,
-            run_mirror=run_mirror,
-            uno_cutoff=uno_cutoff)
+        rmsd, solution = B787(cgeom=cgeom,
+                              rgeom=rgeom,
+                              cuniq=cuniq,
+                              runiq=runiq,
+                              do_plot=do_plot,
+                              verbose=verbose,
+                              atoms_map=atoms_map,
+                              run_resorting=run_resorting,
+                              mols_align=mols_align,
+                              run_to_completion=run_to_completion,
+                              run_mirror=run_mirror,
+                              uno_cutoff=uno_cutoff)
 
         ageom, amass, aelem, aelez, _ = solution.align_system(cgeom, cmass, celem, celez, cuniq, reverse=False)
-        adict = from_arrays(
-            geom=ageom,
-            mass=amass,
-            elem=aelem,
-            elez=aelez,
-            units='Bohr',
-            molecular_charge=concern_mol.molecular_charge,
-            molecular_multiplicity=concern_mol.molecular_multiplicity,
-            fix_com=True,
-            fix_orientation=True)
+        adict = from_arrays(geom=ageom,
+                            mass=amass,
+                            elem=aelem,
+                            elez=aelez,
+                            units='Bohr',
+                            molecular_charge=concern_mol.molecular_charge,
+                            molecular_multiplicity=concern_mol.molecular_multiplicity,
+                            fix_com=True,
+                            fix_orientation=True)
         amol = Molecule(validate=False, **to_schema(adict, dtype=2))
 
         # TODO -- can probably do more with fragments in amol now that
         #         Mol is something with non-contig frags. frags now discarded.
 
-        assert compare_values(
-            concern_mol.nuclear_repulsion_energy(),
-            amol.nuclear_repulsion_energy(),
-            'Q: concern_mol-->returned_mol NRE uncorrupted',
-            atol=1.e-4,
-            quiet=(verbose > 1))
+        assert compare_values(concern_mol.nuclear_repulsion_energy(),
+                              amol.nuclear_repulsion_energy(),
+                              'Q: concern_mol-->returned_mol NRE uncorrupted',
+                              atol=1.e-4,
+                              quiet=(verbose > 1))
         if mols_align:
-            assert compare_values(
-                ref_mol.nuclear_repulsion_energy(),
-                amol.nuclear_repulsion_energy(),
-                'Q: concern_mol-->returned_mol NRE matches ref_mol',
-                atol=1.e-4,
-                quiet=(verbose > 1))
-            assert compare(
-                True,
-                np.allclose(ref_mol.geometry, amol.geometry, atol=4),
-                'Q: concern_mol-->returned_mol geometry matches ref_mol',
-                quiet=(verbose > 1))
+            assert compare_values(ref_mol.nuclear_repulsion_energy(),
+                                  amol.nuclear_repulsion_energy(),
+                                  'Q: concern_mol-->returned_mol NRE matches ref_mol',
+                                  atol=1.e-4,
+                                  quiet=(verbose > 1))
+            assert compare(True,
+                           np.allclose(ref_mol.geometry, amol.geometry, atol=4),
+                           'Q: concern_mol-->returned_mol geometry matches ref_mol',
+                           quiet=(verbose > 1))
 
         return amol, {'rmsd': rmsd, 'mill': solution}
 
@@ -910,7 +905,7 @@ class Molecule(BaseModel):
             transformations.
 
         """
-        from ..molparse.align import compute_scramble
+        from ..molutil.align import compute_scramble
 
         ref_mol = self
         rgeom = np.array(ref_mol.geometry)
@@ -923,24 +918,22 @@ class Molecule(BaseModel):
         ])
         nat = rgeom.shape[0]
 
-        perturbation = compute_scramble(
-            rgeom.shape[0],
-            do_shift=do_shift,
-            do_rotate=do_rotate,
-            deflection=deflection,
-            do_resort=do_resort,
-            do_mirror=do_mirror)
+        perturbation = compute_scramble(rgeom.shape[0],
+                                        do_shift=do_shift,
+                                        do_rotate=do_rotate,
+                                        deflection=deflection,
+                                        do_resort=do_resort,
+                                        do_mirror=do_mirror)
         cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
-        cmolrec = from_arrays(
-            geom=cgeom,
-            mass=cmass,
-            elem=celem,
-            elez=celez,
-            units='Bohr',
-            molecular_charge=ref_mol.molecular_charge,
-            molecular_multiplicity=ref_mol.molecular_multiplicity,
-            fix_com=True,
-            fix_orientation=True)
+        cmolrec = from_arrays(geom=cgeom,
+                              mass=cmass,
+                              elem=celem,
+                              elez=celez,
+                              units='Bohr',
+                              molecular_charge=ref_mol.molecular_charge,
+                              molecular_multiplicity=ref_mol.molecular_multiplicity,
+                              fix_com=True,
+                              fix_orientation=True)
         cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
@@ -948,25 +941,25 @@ class Molecule(BaseModel):
             print('Start RMSD = {:8.4f} [A]'.format(rmsd))
 
         if do_test:
-            _, data = cmol.align(
-                ref_mol,
-                do_plot=do_plot,
-                atoms_map=(not do_resort),
-                run_resorting=run_resorting,
-                mols_align=True,
-                run_to_completion=run_to_completion,
-                run_mirror=do_mirror,
-                verbose=verbose)
+            _, data = cmol.align(ref_mol,
+                                 do_plot=do_plot,
+                                 atoms_map=(not do_resort),
+                                 run_resorting=run_resorting,
+                                 mols_align=True,
+                                 run_to_completion=run_to_completion,
+                                 run_mirror=do_mirror,
+                                 verbose=verbose)
             solution = data['mill']
 
-            assert compare(
-                True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1))
+            assert compare(True,
+                           np.allclose(solution.shift, perturbation.shift, atol=6),
+                           'shifts equiv',
+                           quiet=(verbose > 1))
             if not do_resort:
-                assert compare(
-                    True,
-                    np.allclose(solution.rotation.T, perturbation.rotation),
-                    'rotations transpose',
-                    quiet=(verbose > 1))
+                assert compare(True,
+                               np.allclose(solution.rotation.T, perturbation.rotation),
+                               'rotations transpose',
+                               quiet=(verbose > 1))
             if solution.mirror:
                 assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
 
