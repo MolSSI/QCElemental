@@ -4,7 +4,8 @@ import sys
 from typing import Union
 
 
-def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False) -> Union[bool, None, str]:
+def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False,
+                 raise_msg: str = None) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -17,7 +18,7 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
     Raises
     ------
     ModuleNotFoundError
-        When `raises_error=True` and module not found.
+        When `raises_error=True` and module not found. Raises generic message plus any `raise_msg`.
 
     """
     import importlib
@@ -25,7 +26,8 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
 
     if module_spec is None:
         if raise_error:
-            raise ModuleNotFoundError(f"Python module '{module}' not found in envvar PYTHONPATH.")
+            raise ModuleNotFoundError(
+                f"Python module '{module}' not found in envvar PYTHONPATH.{' ' + raise_msg if raise_msg else ''}")
         elif return_bool:
             return False
         else:
@@ -37,7 +39,8 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
             return module_spec.origin
 
 
-def which(command: str, *, return_bool: bool = False, raise_error: bool = False) -> Union[bool, None, str]:
+def which(command: str, *, return_bool: bool = False, raise_error: bool = False,
+          raise_msg: str = None) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns
@@ -51,7 +54,7 @@ def which(command: str, *, return_bool: bool = False, raise_error: bool = False)
     Raises
     ------
     ModuleNotFoundError
-        When `raises_error=True` and command not found.
+        When `raises_error=True` and command not found. Raises generic message plus any `raise_msg`.
 
     """
     lenv = {'PATH': ':' + os.environ.get('PATH', '') + ':' + os.path.dirname(sys.executable)}
@@ -60,7 +63,8 @@ def which(command: str, *, return_bool: bool = False, raise_error: bool = False)
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
 
     if raise_error and ans is None:
-        raise ModuleNotFoundError(f"Command '{command}' not found in envvar PATH.")
+        raise ModuleNotFoundError(
+            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}")
 
     if return_bool:
         return bool(ans)
