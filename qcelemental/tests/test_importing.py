@@ -54,16 +54,23 @@ def test_which_f():
     assert ans is None
 
 
+def test_which_f_bool():
+    ans = qcel.util.which('evills', return_bool=True)
+    assert ans is False
+
+
 def test_which_f_raise():
     with pytest.raises(ModuleNotFoundError) as e:
         qcel.util.which('evills', raise_error=True)
 
-    assert "'evills' not found" in str(e)
+    assert str(e).endswith("Command 'evills' not found in envvar PATH.")
 
 
-def test_which_f_bool():
-    ans = qcel.util.which('evills', return_bool=True)
-    assert ans is False
+def test_which_f_raisemsg():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which('evills', raise_error=True, raise_msg='Install `evills`.')
+
+    assert str(e).endswith("Command 'evills' not found in envvar PATH. Install `evills`.")
 
 
 def test_which_f_raise():
