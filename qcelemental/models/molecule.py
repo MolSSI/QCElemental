@@ -214,8 +214,8 @@ class Molecule(BaseModel):
 
 ### Non-Pydantic API functions
 
-    def visualize(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
-                  canvas: Tuple[int, int] = (400, 400)) -> 'py3Dmol.view':
+    def show(self, style: Union[str, Dict[str, Any]] = "ball_and_stick",
+             canvas: Tuple[int, int] = (400, 400)) -> 'py3Dmol.view':
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as images (`.png`).
 
         Parameters
@@ -254,9 +254,23 @@ class Molecule(BaseModel):
         xyzview.zoomTo()
         return xyzview
 
-    def measure(self, measurements, *, degrees=True):
+    def measure(self, measurements: Union[List[int], List[List[int]]], *,
+                degrees: bool = True) -> Union[float, List[float]]:
         """
-        Takes a measurement of the molecule from the indicies provided.
+        Takes a measurement of the moleucle from the indicies provided.
+
+        Parameters
+        ----------
+        measurements : Union[List[int], List[List[int]]]
+            Either a single list of indices or multiple. Return a distance, angle, or dihedral depending if
+            2, 3, or 4 indices is provided, respectively. Values are returned in Bohr (distance) or degree.
+        degrees : bool, optional
+            Returns degrees by default, radians otherwise.
+
+        Returns
+        -------
+        Union[float, List[float]]
+            Either a value or list of the measured values.
         """
 
         return measure_coordinates(self.geometry, measurements, degrees=degrees)
@@ -716,18 +730,17 @@ class Molecule(BaseModel):
 
         return int(nel)
 
-    def align(
-            self,
-            ref_mol,
-            *,
-            do_plot=False,
-            verbose=0,
-            atoms_map=False,
-            run_resorting=False,
-            mols_align=False,
-            run_to_completion=False,
-            uno_cutoff=1.e-3,
-            run_mirror=False):
+    def align(self,
+              ref_mol,
+              *,
+              do_plot=False,
+              verbose=0,
+              atoms_map=False,
+              run_resorting=False,
+              mols_align=False,
+              run_to_completion=False,
+              uno_cutoff=1.e-3,
+              run_mirror=False):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -840,19 +853,18 @@ class Molecule(BaseModel):
 
         return amol, {'rmsd': rmsd, 'mill': solution}
 
-    def scramble(
-            self,
-            *,
-            do_shift: bool=True,
-            do_rotate=True,
-            do_resort=True,
-            deflection=1.0,
-            do_mirror=False,
-            do_plot=False,
-            do_test=False,
-            run_to_completion=False,
-            run_resorting=False,
-            verbose=0):
+    def scramble(self,
+                 *,
+                 do_shift: bool = True,
+                 do_rotate=True,
+                 do_resort=True,
+                 deflection=1.0,
+                 do_mirror=False,
+                 do_plot=False,
+                 do_test=False,
+                 run_to_completion=False,
+                 run_resorting=False,
+                 verbose=0):
         """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
