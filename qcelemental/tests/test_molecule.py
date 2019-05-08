@@ -402,6 +402,6 @@ def test_nuclearrepulsionenergy_nelectrons():
 
 
 @using_py3dmol
-def test_visualize():
+def test_show():
 
-    water_dimer_minima.visualize()
+    water_dimer_minima.show()
