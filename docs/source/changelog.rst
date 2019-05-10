@@ -26,7 +26,7 @@ New Features
 - (:pr:`54`) ``models.ResultProperties`` supports CCSD and CCSD(T) properties.
 - (:pr:`58`) ``utils`` learned ``which_import`` and ``which`` that provide a path or boolean result
   for locating modules or commands, respectively. These were migrated from QCEngine along with
-  ``safe_version`` and ``parse_version`` to coloate the import utilities.
+  ``safe_version`` and ``parse_version`` to colocate the import utilities.
 
 Enhancements
 ++++++++++++

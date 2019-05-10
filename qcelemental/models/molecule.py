@@ -953,8 +953,9 @@ class Molecule(BaseModel):
                               units='Bohr',
                               molecular_charge=ref_mol.molecular_charge,
                               molecular_multiplicity=ref_mol.molecular_multiplicity,
-                              fix_com=True,
-                              fix_orientation=True)
+                              # copying fix_* vals rather than outright True. neither way great
+                              fix_com=ref_mol.fix_com,
+                              fix_orientation=ref_mol.fix_orientation)
         cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
