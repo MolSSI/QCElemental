@@ -14,9 +14,15 @@ Changelog
 .. +++++++++
 
 
-0.3.4 / 2019-MM-DD
+0.4.0 / 2019-MM-DD
 ------------------
 
+- (:pr:`51`)
+- (:pr:`56`)
+- (:pr:`60`)
+- (:pr:`61`)
+- (:pr:`62`)
+- (:pr:`63`)
 
 New Features
 ++++++++++++
@@ -27,6 +33,10 @@ New Features
 - (:pr:`58`) ``utils`` learned ``which_import`` and ``which`` that provide a path or boolean result
   for locating modules or commands, respectively. These were migrated from QCEngine along with
   ``safe_version`` and ``parse_version`` to colocate the import utilities.
+- (:pr:`65`) ``testing.compare_molrecs`` learned parameter ``relative_geoms='align'`` that lets Molecules pass if
+             geometries within a translation and rotation of each other.
+- (:pr:`65`) ``testing.compare_recursive`` learned parameter ``forgive`` that is a list of paths that may differ without
+             failing the comparison.
 
 Enhancements
 ++++++++++++
@@ -34,10 +44,15 @@ Enhancements
 - (:pr:`52`, :pr:`53`) ``molparse.to_string`` NWChem and GAMESS dtypes developed.
 - (:pr:`57`) ``molparse.to_string`` learned ``dtype='terachem'`` for writing the separate XYZ file
   required by TeraChem. Angstroms or Bohr allowed, though the latter requires extra in input file.
+- (:pr:`65`) Testing functions ``compare``, ``compare_values``, ``compare_recursive`` learned parameter
+             ``return_handler`` that lets other printing, logging, and pass/fail behavior to be interjected.
 
 Bug Fixes
 +++++++++
 
+- (:pr:`65`) Fixed some minor printing and tolerance errors in molecule alignment.
+- (:pr:`65`) ``testing.compare_recursive`` stopped doing ``atol=10**-atol`` for ``atol>=1``, bringing it in line with
+             other compare functions.
 
 0.3.3 / 2019-03-12
 ------------------
