@@ -17,19 +17,19 @@ Changelog
 0.4.0 / 2019-MM-DD
 ------------------
 
-- (:pr:`51`)
-- (:pr:`56`)
-- (:pr:`60`)
-- (:pr:`61`)
-- (:pr:`62`)
-- (:pr:`63`)
-
 New Features
 ++++++++++++
 
 - (:pr:`52`, :pr:`53`) ``models.Molecule`` learned ``nuclear_repulsion_energy``, ``nelectrons``, and
   ``to_string`` functions.
 - (:pr:`54`) ``models.ResultProperties`` supports CCSD and CCSD(T) properties.
+- (:pr:`56`) Algorithms Kabsch ``molutil.kabsch_align``, Hungarian ``util.linear_sum_assignment``, and Uno ``util.uno``
+  added. Utilities to generate random 3D rotations ``util.random_rotation_matrix`` and reindex a NumPy array into
+  smaller blocks ``util.blockwise_expand`` added.
+- (:pr:`56`) Molecular alignment taking into account displacement, rotation, atom exchange, and mirror symmetry for
+  superimposable and differing geometries was added in ``molutil.B787`` (basis NumPy function) and
+  ``models.Molecule.align`` (far more convenient). Suitable for QM-sized molecules. Requires addition package
+  ``networkx``.
 - (:pr:`58`) ``utils`` learned ``which_import`` and ``which`` that provide a path or boolean result
   for locating modules or commands, respectively. These were migrated from QCEngine along with
   ``safe_version`` and ``parse_version`` to colocate the import utilities.
@@ -44,12 +44,22 @@ Enhancements
 - (:pr:`52`, :pr:`53`) ``molparse.to_string`` NWChem and GAMESS dtypes developed.
 - (:pr:`57`) ``molparse.to_string`` learned ``dtype='terachem'`` for writing the separate XYZ file
   required by TeraChem. Angstroms or Bohr allowed, though the latter requires extra in input file.
+- (:pr:`60`) ``util.which`` added the Python interpreter path to the default search ``$PATH``.
+- (:pr:`62`) Added ``*`` to parameter list of many functions requiring subsequent to be keyword only. Code relying
+  heavily on positional arguments may get broken.
+- (:pr:`63`) ``util.which`` learned parameter ``env`` to use an alternate search ``$PATH``.
+- (:pr:`63`) ``util.which`` and ``util.which_import`` learned parameters ``raise_error`` and ``raise_msg`` which raises
+  ``ModuleNotFoundError`` (for both functions) when not located. It error will have a generic error message which can
+  be extended by ``raise_msg``. It is strongly encouraged to add specific remedies (like how to install) through this
+  parameter. This is the third exit pattern possible from the "which" functions, of which path/None is the default,
+  True/error happens when ``raise_error=True``, and True/False happens otherwise when ``return_bool=True``.
 - (:pr:`65`) Testing functions ``compare``, ``compare_values``, ``compare_recursive`` learned parameter
              ``return_handler`` that lets other printing, logging, and pass/fail behavior to be interjected.
 
 Bug Fixes
 +++++++++
 
+- (:pr:`63`) ``util.which`` uses ``os.pathsep`` rather than Linux-focused ``:``.
 - (:pr:`65`) Fixed some minor printing and tolerance errors in molecule alignment.
 - (:pr:`65`) ``testing.compare_recursive`` stopped doing ``atol=10**-atol`` for ``atol>=1``, bringing it in line with
              other compare functions.
