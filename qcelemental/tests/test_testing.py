@@ -222,11 +222,43 @@ root.b.bb
     [[0.    0.02 ]
      [0.005 0.02 ]]""")),
 
+    ({'a': [1, 2], 'b': {'ba':[1, 2, 3], 'bb': [1, 2, 3]}}, {'a': [1, 3], 'b': {'ba':[1, 4, 4], 'bb':[1, 2, 4]}},
+        {}, False, (None,
+        """root.a.1
+    Value 2 did not match 3.
+root.b.ba.1
+    Value 2 did not match 4.
+root.b.ba.2
+    Value 3 did not match 4.
+root.b.bb.2
+    Value 3 did not match 4.""")),
+
+    (_dcts['elll'], _dcts['ell'], {'forgive': ['root.b']}, True, (None, '')),
+
+    (_dcts['ell'], _dcts['elll'], {'forgive': ['b']}, True, (None, '')),
+
+    (_dcts['ellnone'], _dcts['elll'], {'forgive': ['b']}, True, (None, '')),
+
+    (_dcts['ellnone'], _dcts['elll'], {'forgive': ['b.bc']}, True, (None, '')),
+
+    (_dcts['ell'], _dcts['blipell'], {'forgive': ['b']}, False, (None,
+        """root.a
+    Arrays differ.\t_compare_recursive: computed value does not match.
+  Expected:
+    [0 1 2 3]
+  Observed:
+    [0.    1.02  2.005 3.02 ]
+  Difference:
+    [0.    0.02  0.005 0.02 ]""")),
+
+    ({'a': [1, 2], 'b': {'ba':[1, 2, 3], 'bb': [1, 2, 3]}}, {'a': [1, 3], 'b': {'ba':[1, 4, 4], 'bb':[1, 2, 4]}},
+        {'forgive': ['root.a', 'b.bb.2']}, False, (None,
+        """root.b.ba.1
+    Value 2 did not match 4.
+root.b.ba.2
+    Value 3 did not match 4.""")),
 ])
 def test_compare_recursive(ref, cpd, kw, boool, msg):
     res, mstr = qcel.testing.compare_recursive(ref, cpd, **kw, return_message=True)
     assert res is boool
     assert mstr.strip() == msg[1].strip()
-
-
-

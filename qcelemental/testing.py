@@ -3,6 +3,7 @@ import copy
 import logging
 import math
 import pprint
+pp = pprint.PrettyPrinter(width=120)
 import sys
 from typing import Callable
 
@@ -52,7 +53,7 @@ def compare_values(expected,
         Reference value against which `computed` is compared.
     computed : float or float array-like
         Input value to compare against `expected`.
-    atol : int or float, optional
+    atol : float, optional
         Absolute tolerance (see formula below).
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
@@ -317,8 +318,6 @@ def compare_recursive(expected,
         Dict may be of any depth but should contain Plain Old Data.
     atol : int or float, optional
         Absolute tolerance (see formula below).
-        Values less than one are taken literally; one or greater taken as decimal digits for comparison.
-        So `1` means `atol=0.1` and `2` means `atol=0.01` but `0.04` means `atol=0.04`
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
@@ -333,14 +332,40 @@ def compare_recursive(expected,
     message : str, optional
         When return_message=True, also return passed or error message.
 
+    Notes
+    -----
+
+    .. code-block:: python
+
+        absolute(computed - expected) <= (atol + rtol * absolute(expected))
+
     """
     label = label or sys._getframe().f_back.f_code.co_name
     if atol >= 1:
-        atol = 10**-atol
+        raise ValueError('compare_recursive used to 10**-atol any atol >=1. that has ceased. express your atol literally.')
     if return_handler is None:
         return_handler = _handle_return
 
     errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
+
+    if forgive is None:
+        forgive = []
+    else:
+        forgive = [(fg if fg.startswith('root.') else 'root.' + fg) for fg in forgive]
+    forgiven = []
+
+    for nomatch in sorted(errors):
+       for fg in (forgive or []):
+           if nomatch[0].startswith(fg):
+               forgiven.append(nomatch)
+               errors.remove(nomatch)
+
+    ## print if verbose >= 2 if these functions had that knob
+    # forgiven_message = []
+    # for e in sorted(forgiven):
+    #     forgiven_message.append(e[0])
+    #     forgiven_message.append("forgiven    " + e[1])
+    # pprint.pprint(forgiven)
 
     message = []
     for e in sorted(errors):
