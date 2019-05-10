@@ -3,12 +3,14 @@ import copy
 import logging
 import math
 import pprint
+pp = pprint.PrettyPrinter(width=120)
 import sys
+from typing import Callable
 
 import numpy as np
 
 
-def _handle_return(passfail, label, message, return_message, quiet=False):
+def _handle_return(passfail: bool, label: str, message: str, return_message: bool, quiet: bool = False):
     """Function to print a '*label*...PASSED' line to log.
     """
 
@@ -25,7 +27,7 @@ def _handle_return(passfail, label, message, return_message, quiet=False):
         return passfail
 
 
-def tnm():
+def tnm() -> str:
     """Returns the name of the calling function, usually name of test case.
     """
 
@@ -34,14 +36,15 @@ def tnm():
 
 def compare_values(expected,
                    computed,
-                   label=None,
+                   label: str = None,
                    *,
-                   atol=1.e-6,
-                   rtol=1.e-16,
-                   equal_nan=False,
-                   passnone=False,
-                   quiet=False,
-                   return_message=False) -> bool:
+                   atol: float = 1.e-6,
+                   rtol: float = 1.e-16,
+                   equal_nan: bool = False,
+                   passnone: bool = False,
+                   quiet: bool = False,
+                   return_message: bool = False,
+                   return_handler: Callable = None) -> bool:
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -50,14 +53,14 @@ def compare_values(expected,
         Reference value against which `computed` is compared.
     computed : float or float array-like
         Input value to compare against `expected`.
-    atol : int or float, optional
+    atol : float, optional
         Absolute tolerance (see formula below).
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
     equal_nan : bool, optional
-        Passed to np.isclose.
+        Passed to np.isclose. Compare NaN's as equal.
     passnone : bool, optional
         Return True when both expected and computed are None.
     quiet : bool, optional
@@ -72,10 +75,18 @@ def compare_values(expected,
     message : str, optional
         When return_message=True, also return passed or error message.
 
+    Other Parameters
+    ----------------
+    return_handler : function, optional
+        Function to control printing, logging, raising, and returning.
+        Specialized interception for interfacing testing systems.
+
     Notes
     -----
-    Akin to np.allclose.
-    Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:
+    * Akin to np.allclose.
+    * For arbitrary-dimension, np.ndarray-castable, uniform-type, float-comparable types.
+      For mixed types, use :py:func:`compare_recursive`.
+    * Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:
 
     .. code-block:: python
 
@@ -84,19 +95,21 @@ def compare_values(expected,
     """
     label = label or sys._getframe().f_back.f_code.co_name
     pass_message = f'\t{label:.<66}PASSED'
+    if return_handler is None:
+        return_handler = _handle_return
 
     if passnone:
         if expected is None and computed is None:
-            return _handle_return(True, label, pass_message, return_message, quiet)
+            return return_handler(True, label, pass_message, return_message, quiet)
 
     try:
         xptd, cptd = np.array(expected, dtype=np.float), np.array(computed, dtype=np.float)
     except Exception:
-        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray of np.float.""",
+        return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray of np.float.""",
                               return_message, quiet)
 
     if xptd.shape != cptd.shape:
-        return _handle_return(False, label,
+        return return_handler(False, label,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
                               return_message, quiet)
 
@@ -136,10 +149,16 @@ def compare_values(expected,
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
                 label, digits_str, xptd_str, cptd_str, diff_str)
 
-    return _handle_return(allclose, label, message, return_message, quiet)
+    return return_handler(allclose, label, message, return_message, quiet)
 
 
-def compare(expected, computed, label=None, *, quiet=False, return_message=False) -> bool:
+def compare(expected,
+            computed,
+            label: str = None,
+            *,
+            quiet: bool = False,
+            return_message: bool = False,
+            return_handler: Callable = None) -> bool:
     """Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
 
     Parameters
@@ -158,21 +177,31 @@ def compare(expected, computed, label=None, *, quiet=False, return_message=False
     message : str, optional
         When return_message=True, also return passed or error message.
 
+    Other Parameters
+    ----------------
+    return_handler : function, optional
+        Function to control printing, logging, raising, and returning.
+        Specialized interception for interfacing testing systems.
+
     Notes
     -----
-    Akin to np.array_equal.
+    * Akin to np.array_equal.
+    * For arbitrary-dimension, np.ndarray-castable, uniform-type, exactly-comparable types.
+      For mixed types, use :py:func:`compare_recursive`.
 
     """
     label = label or sys._getframe().f_back.f_code.co_name
     pass_message = f'\t{label:.<66}PASSED'
+    if return_handler is None:
+        return_handler = _handle_return
 
     try:
         xptd, cptd = np.array(expected), np.array(computed)
     except Exception:
-        return _handle_return(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message, quiet)
+        return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message, quiet)
 
     if xptd.shape != cptd.shape:
-        return _handle_return(False, label,
+        return return_handler(False, label,
                               f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
                               return_message, quiet)
 
@@ -213,7 +242,7 @@ def compare(expected, computed, label=None, *, quiet=False, return_message=False
             message = """\t{}: computed value does not match.\n  Expected:\n{}\n  Observed:\n{}\n  Difference:\n{}\n""".format(
                 label, xptd_str, cptd_str, diff_str)
 
-    return _handle_return(allclose, label, message, return_message, quiet)
+    return return_handler(allclose, label, message, return_message, quiet)
 
 
 def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
@@ -266,9 +295,18 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16, forgive=None, return_message=False) -> bool:
+def compare_recursive(expected,
+                      computed,
+                      label: str = None,
+                      *,
+                      atol: float = 1.e-6,
+                      rtol: float = 1.e-16,
+                      forgive: bool = None,
+                      quiet: bool = False,
+                      return_message: bool = False,
+                      return_handler: Callable = None) -> bool:
     """
-    Recursively compares nexted structures such as dictionaries and lists.
+    Recursively compares nested structures such as dictionaries and lists.
 
     Parameters
     ----------
@@ -280,8 +318,6 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16
         Dict may be of any depth but should contain Plain Old Data.
     atol : int or float, optional
         Absolute tolerance (see formula below).
-        Values less than one are taken literally; one or greater taken as decimal digits for comparison.
-        So `1` means `atol=0.1` and `2` means `atol=0.01` but `0.04` means `atol=0.04`
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
     rtol : float, optional
@@ -296,38 +332,67 @@ def compare_recursive(expected, computed, label=None, *, atol=1.e-6, rtol=1.e-16
     message : str, optional
         When return_message=True, also return passed or error message.
 
+    Notes
+    -----
+
+    .. code-block:: python
+
+        absolute(computed - expected) <= (atol + rtol * absolute(expected))
+
     """
     label = label or sys._getframe().f_back.f_code.co_name
     if atol >= 1:
-        atol = 10**-atol
+        raise ValueError('compare_recursive used to 10**-atol any atol >=1. that has ceased. express your atol literally.')
+    if return_handler is None:
+        return_handler = _handle_return
 
     errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
 
+    if forgive is None:
+        forgive = []
+    else:
+        forgive = [(fg if fg.startswith('root.') else 'root.' + fg) for fg in forgive]
+    forgiven = []
+
+    for nomatch in sorted(errors):
+       for fg in (forgive or []):
+           if nomatch[0].startswith(fg):
+               forgiven.append(nomatch)
+               errors.remove(nomatch)
+
+    ## print if verbose >= 2 if these functions had that knob
+    # forgiven_message = []
+    # for e in sorted(forgiven):
+    #     forgiven_message.append(e[0])
+    #     forgiven_message.append("forgiven    " + e[1])
+    # pprint.pprint(forgiven)
+
     message = []
-    for e in errors:
+    for e in sorted(errors):
         message.append(e[0])
         message.append("    " + e[1])
 
     message = "\n".join(message)
 
-    return _handle_return(len(message) == 0, label, message, return_message)
+    return return_handler(len(message) == 0, label, message, return_message, quiet)
 
 
 def compare_molrecs(expected,
                     computed,
-                    label=None,
+                    label: str = None,
                     *,
-                    atol=1.e-6,
-                    rtol=1.e-16,
+                    atol: float = 1.e-6,
+                    rtol: float = 1.e-16,
                     forgive=None,
-                    verbose=1,
-                    relative_geoms='exact') -> bool:
+                    verbose: int = 1,
+                    relative_geoms='exact',
+                    return_message: bool = False,
+                    return_handler: Callable = None) -> bool:
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
 
     """
-
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
     cptd = copy.deepcopy(computed)
@@ -364,28 +429,44 @@ def compare_molrecs(expected,
     if relative_geoms == 'exact':
         pass
     elif relative_geoms == 'align':
-        raise FeatureNotImplemented(
-            """compare_molrecs(..., relative_geoms='align') not available without B787 from qcdb.""")
-        ## can't just expect geometries to match, so we'll align them, check that
-        ##   they overlap and that the translation/rotation arrays jibe with
-        ##   fix_com/orientation, then attach the oriented geom to computed before the
-        ##   recursive dict comparison.
-        #from .align import B787
-        #cgeom = np.array(cptd['geom']).reshape((-1, 3))
-        #rgeom = np.array(xptd['geom']).reshape((-1, 3))
-        #rmsd, mill = B787(rgeom=rgeom,
-        #                  cgeom=cgeom,
-        #                  runiq=None,
-        #                  cuniq=None,
-        #                  atoms_map=True,
-        #                  mols_align=True,
-        #                  run_mirror=False,
-        #                  verbose=0)
-        #if cptd['fix_com']:
-        #    compare_integers(1, np.allclose(np.zeros((3)), mill.shift, atol=atol), 'null shift', verbose=verbose)
-        #if cptd['fix_orientation']:
-        #    compare_integers(1, np.allclose(np.identity(3), mill.rotation, atol=atol), 'null rotation', verbose=verbose)
-        #ageom = mill.align_coordinates(cgeom)
-        #cptd['geom'] = ageom.reshape((-1))
+        # can't just expect geometries to match, so we'll align them, check that
+        #   they overlap and that the translation/rotation arrays jibe with
+        #   fix_com/orientation, then attach the oriented geom to computed before the
+        #   recursive dict comparison.
+        from .molutil.align import B787
+        cgeom = np.array(cptd['geom']).reshape((-1, 3))
+        rgeom = np.array(xptd['geom']).reshape((-1, 3))
+        rmsd, mill = B787(rgeom=rgeom,
+                          cgeom=cgeom,
+                          runiq=None,
+                          cuniq=None,
+                          atoms_map=True,
+                          mols_align=True,
+                          run_mirror=False,
+                          verbose=0)
+        if cptd['fix_com']:
+            return compare(True,
+                           np.allclose(np.zeros((3)), mill.shift, atol=atol),
+                           'null shift',
+                           quiet=(verbose == 0),
+                           return_message=return_message,
+                           return_handler=return_handler)
+        if cptd['fix_orientation']:
+            return compare(True,
+                           np.allclose(np.identity(3), mill.rotation, atol=atol),
+                           'null rotation',
+                           quiet=(verbose == 0),
+                           return_message=return_message,
+                           return_handler=return_handler)
+        ageom = mill.align_coordinates(cgeom)
+        cptd['geom'] = ageom.reshape((-1))
 
-    return compare_recursive(xptd, cptd, atol=atol, rtol=rtol, label=label, forgive=forgive)
+    return compare_recursive(xptd,
+                             cptd,
+                             atol=atol,
+                             rtol=rtol,
+                             label=label,
+                             forgive=forgive,
+                             quiet=(verbose == 0),
+                             return_message=return_message,
+                             return_handler=return_handler)

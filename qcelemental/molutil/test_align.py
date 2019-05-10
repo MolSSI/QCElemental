@@ -1,18 +1,19 @@
 import pytest
-from .addons import using_networkx
+from ..tests.addons import using_networkx
 
 import math
 import pprint
+pp = pprint.PrettyPrinter(width=120)
 
 import numpy as np
 import pydantic
 
 import qcelemental as qcel
-from qcelemental.testing import compare, compare_values, compare_recursive
+from qcelemental.testing import compare, compare_values, compare_recursive, compare_molrecs
 
 
 
-s22_12 = qcel.models.Molecule.from_data("""
+ss22_12 = """
 C    -1.2471894   -1.1718212   -0.6961388
 C    -1.2471894   -1.1718212    0.6961388
 N    -0.2589510   -1.7235771    1.4144796
@@ -33,12 +34,36 @@ H    -0.8103758    2.3643033    2.0618643
 H     1.3208583    1.0670610    2.0623986
 H     1.3208583    1.0670610   -2.0623986
 H    -0.8103758    2.3643033   -2.0618643
-""")
+"""
 
 
 def test_scramble_descrambles_plain():
+    s22_12 = qcel.models.Molecule.from_data(ss22_12)
+
     for trial in range(5):
         s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_test=True)
+
+
+def test_relative_geoms_align_free():
+    s22_12 = qcel.models.Molecule.from_data(ss22_12)
+
+    for trial in range(3):
+        cmol, _ = s22_12.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=2, do_test=True)
+
+        rmolrec = qcel.molparse.from_schema(s22_12.dict())
+        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        assert compare_molrecs(rmolrec, cmolrec, atol=1.e-4, relative_geoms='align')
+
+
+def test_relative_geoms_align_fixed():
+    s22_12 = qcel.models.Molecule.from_data(ss22_12 + 'nocom\nnoreorient\n')
+
+    for trial in range(3):
+        cmol, _ = s22_12.scramble(do_shift=False, do_rotate=False, do_resort=False, do_plot=False, verbose=2, do_test=True)
+
+        rmolrec = qcel.molparse.from_schema(s22_12.dict())
+        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        assert compare_molrecs(rmolrec, cmolrec, atol=1.e-4, relative_geoms='align')
 
 
 chiral = qcel.models.Molecule.from_data("""

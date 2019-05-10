@@ -73,6 +73,20 @@ def test_which_f_raisemsg():
     assert str(e).endswith("Command 'evills' not found in envvar PATH. Install `evills`.")
 
 
+def test_which_f_raise():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which('evills', raise_error=True)
+
+    assert str(e).endswith("Command 'evills' not found in envvar PATH.")
+
+
+def test_which_f_raisemsg():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which('evills', raise_error=True, raise_msg='Install `evills`.')
+
+    assert str(e).endswith("Command 'evills' not found in envvar PATH. Install `evills`.")
+
+
 def test_safe_version():
     assert 'v' + qcel.util.safe_version(qcel.__version__) == qcel.__version__
 
