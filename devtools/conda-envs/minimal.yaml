@@ -1,0 +1,16 @@
+name: test
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+    # Base depends
+  - numpy
+  - nomkl
+  - python
+  - pint
+  - pydantic>=0.20
+
+    # Testing
+  - pytest>=3.9.1
+  - pytest-cov
+  - codecov

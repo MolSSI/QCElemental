@@ -37,6 +37,7 @@ H    -0.8103758    2.3643033   -2.0618643
 """
 
 
+@using_networkx
 def test_scramble_descrambles_plain():
     s22_12 = qcel.models.Molecule.from_data(ss22_12)
 
@@ -75,6 +76,7 @@ Cl    -0.845465     1.497406    -0.341118
 """)
 
 
+@using_networkx
 def test_scramble_descrambles_chiral():
     chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False, do_test=True)
     chiral.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=1, do_mirror=False, do_test=True)
