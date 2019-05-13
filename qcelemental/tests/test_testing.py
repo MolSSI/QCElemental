@@ -19,7 +19,7 @@ _dcts = {
     'ellnone': {'a': _arrs['a1234_14'], 'b': {'ba': _arrs['a1234_14'], 'bb': _arrs['a1234_22'], 'bc': None}},
     'ellshort': {'a': np.arange(3), 'b': {'ba': _arrs['a1234_14'], 'bb': _arrs['a1234_22']}},
     'blipell': {'a': _arrs['blip14'], 'b': {'ba': _arrs['a1234_14'], 'bb': _arrs['blip22']}},
-}
+}  # yapf: disable
 
 _pass_message = '\t{:.<66}PASSED'
 
@@ -257,7 +257,7 @@ root.b.bb.2
     Value 2 did not match 4.
 root.b.ba.2
     Value 3 did not match 4.""")),
-])
+])  # yapf: disable
 def test_compare_recursive(ref, cpd, kw, boool, msg):
     res, mstr = qcel.testing.compare_recursive(ref, cpd, **kw, return_message=True)
     assert res is boool
