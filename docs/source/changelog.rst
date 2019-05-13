@@ -14,12 +14,14 @@ Changelog
 .. +++++++++
 
 
-0.4.0 / 2019-MM-DD
+0.4.0 / 2019-05-13
 ------------------
 
 New Features
 ++++++++++++
 
+- (:pr:`51`) Changes ``models.Molecule`` connectivity to default to `None` rather than an empty list. **WARNING** this
+  change alters the hashes produced from the ``Molecule.get_hash`` functionality.
 - (:pr:`52`, :pr:`53`) ``models.Molecule`` learned ``nuclear_repulsion_energy``, ``nelectrons``, and
   ``to_string`` functions.
 - (:pr:`54`) ``models.ResultProperties`` supports CCSD and CCSD(T) properties.
@@ -33,10 +35,11 @@ New Features
 - (:pr:`58`) ``utils`` learned ``which_import`` and ``which`` that provide a path or boolean result
   for locating modules or commands, respectively. These were migrated from QCEngine along with
   ``safe_version`` and ``parse_version`` to colocate the import utilities.
+- (:pr:`61`) Add molecular visualization to the ``models.Molecule`` object through the optional 3dMol.js framework.
 - (:pr:`65`) ``testing.compare_molrecs`` learned parameter ``relative_geoms='align'`` that lets Molecules pass if
-             geometries within a translation and rotation of each other.
+  geometries within a translation and rotation of each other.
 - (:pr:`65`) ``testing.compare_recursive`` learned parameter ``forgive`` that is a list of paths that may differ without
-             failing the comparison.
+  failing the comparison.
 
 Enhancements
 ++++++++++++
@@ -54,7 +57,7 @@ Enhancements
   parameter. This is the third exit pattern possible from the "which" functions, of which path/None is the default,
   True/error happens when ``raise_error=True``, and True/False happens otherwise when ``return_bool=True``.
 - (:pr:`65`) Testing functions ``compare``, ``compare_values``, ``compare_recursive`` learned parameter
-             ``return_handler`` that lets other printing, logging, and pass/fail behavior to be interjected.
+  ``return_handler`` that lets other printing, logging, and pass/fail behavior to be interjected.
 
 Bug Fixes
 +++++++++
@@ -62,7 +65,7 @@ Bug Fixes
 - (:pr:`63`) ``util.which`` uses ``os.pathsep`` rather than Linux-focused ``:``.
 - (:pr:`65`) Fixed some minor printing and tolerance errors in molecule alignment.
 - (:pr:`65`) ``testing.compare_recursive`` stopped doing ``atol=10**-atol`` for ``atol>=1``, bringing it in line with
-             other compare functions.
+  other compare functions.
 
 0.3.3 / 2019-03-12
 ------------------
