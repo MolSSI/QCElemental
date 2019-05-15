@@ -18,6 +18,7 @@ import json
 import re
 
 from ..exceptions import ValidationError
+from .regex import DECIMAL
 
 
 class PubChemObj():
@@ -80,8 +81,7 @@ class PubChemObj():
         lines = re.split('\n', sdf_text)
 
         #  3.7320   -0.2500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
-        NUMBER = "((?:[-+]?\\d*\\.\\d+(?:[DdEe][-+]?\\d+)?)|(?:[-+]?\\d+\\.\\d*(?:[DdEe][-+]?\\d+)?))"
-        atom_re = re.compile(r'^\s*' + NUMBER + r'\s+' + NUMBER + r'\s+' + NUMBER + r'\s*(\w+)(?:\s+\d+){12}')
+        atom_re = re.compile(r'^\s*' + DECIMAL + r'\s+' + DECIMAL + r'\s+' + DECIMAL + r'\s*(\w+)(?:\s+\d+){12}', re.VERBOSE)
 
         molecule_string = "PubchemInput\n"
 

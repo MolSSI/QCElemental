@@ -84,8 +84,8 @@ def compare_values(expected,
     Notes
     -----
     * Akin to np.allclose.
-    * For arbitrary-dimension, np.ndarray-castable, uniform-type, float-comparable types.
-      For mixed types, use :py:func:`compare_recursive`.
+    * For scalar float-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,
+      float-comparable types. For mixed types, use :py:func:`compare_recursive`.
     * Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:
 
     .. code-block:: python
@@ -186,8 +186,8 @@ def compare(expected,
     Notes
     -----
     * Akin to np.array_equal.
-    * For arbitrary-dimension, np.ndarray-castable, uniform-type, exactly-comparable types.
-      For mixed types, use :py:func:`compare_recursive`.
+    * For scalar exactly-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,
+      exactly-comparable types. For mixed types, use :py:func:`compare_recursive`.
 
     """
     label = label or sys._getframe().f_back.f_code.co_name
@@ -263,7 +263,6 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
                 errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol))
 
     elif isinstance(expected, dict):
-
         expected_extra = computed.keys() - expected.keys()
         computed_extra = expected.keys() - computed.keys()
         if len(expected_extra):
@@ -274,10 +273,12 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
         for k in expected.keys() & computed.keys():
             name = prefix + str(k)
             errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
+
     elif isinstance(expected, float):
         passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
         if not passfail:
             errors.append((name, "Arrays differ." + msg))
+
     elif isinstance(expected, np.ndarray):
         if np.issubdtype(expected.dtype, np.floating):
             passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
@@ -285,6 +286,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             passfail, msg = compare(expected, computed, return_message=True, quiet=True)
         if not passfail:
             errors.append((name, "Arrays differ." + msg))
+
     elif isinstance(expected, type(None)):
         if expected is not computed:
             errors.append((name, "'None' does not match."))
@@ -342,7 +344,9 @@ def compare_recursive(expected,
     """
     label = label or sys._getframe().f_back.f_code.co_name
     if atol >= 1:
-        raise ValueError('compare_recursive used to 10**-atol any atol >=1. that has ceased. express your atol literally.')
+        raise ValueError(
+            'Prior to v0.4.0, ``compare_recursive`` used to 10**-atol any atol >=1. That has ceased, so please express your atol literally.'
+        )
     if return_handler is None:
         return_handler = _handle_return
 
@@ -355,10 +359,10 @@ def compare_recursive(expected,
     forgiven = []
 
     for nomatch in sorted(errors):
-       for fg in (forgive or []):
-           if nomatch[0].startswith(fg):
-               forgiven.append(nomatch)
-               errors.remove(nomatch)
+        for fg in (forgive or []):
+            if nomatch[0].startswith(fg):
+                forgiven.append(nomatch)
+                errors.remove(nomatch)
 
     ## print if verbose >= 2 if these functions had that knob
     # forgiven_message = []

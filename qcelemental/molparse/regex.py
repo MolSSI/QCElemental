@@ -1,4 +1,4 @@
-# remember to use re.VERBOSE with NUCLEUS, NUMBER, VERSION_PATTERN
+# remember to use re.VERBOSE with DECIMAL, NUCLEUS, NUMBER, VERSION_PATTERN
 
 NUCLEUS = r"""(?:
    (?P<gh1>@)|(?P<gh2>Gh\())?                # optional ghost: @stuff or Gh(stuff) ...
@@ -19,6 +19,11 @@ NUMBER = r"""(
     (?:[-+]?\d*\.\d+(?:[DdEe][-+]?\d+)?) |   # .num with optional sign, exponent, wholenum
     (?:[-+]?\d+\.\d*(?:[DdEe][-+]?\d+)?) |   # num. with optional sign, exponent, decimals
     (?:[-+]?\d+(?:[DdEe][-+]?\d+)?)          # num with optional sign, exponent
+         )"""
+
+DECIMAL = r"""(
+    (?:[-+]?\d*\.\d+(?:[DdEe][-+]?\d+)?) |   # .num with optional sign, exponent, wholenum
+    (?:[-+]?\d+\.\d*(?:[DdEe][-+]?\d+)?)     # num. with optional sign, exponent, decimals
          )"""
 
 SEP = r"""[\t ,]+"""

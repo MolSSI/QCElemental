@@ -5,7 +5,7 @@ import pytest
 import pydantic
 
 import qcelemental as qcel
-from qcelemental.testing import compare_recursive
+from qcelemental.testing import compare_recursive, compare_values
 
 
 @pytest.fixture
@@ -42,7 +42,7 @@ def test_creation_error():
     (('ndarray', '1/m'), np.arange(4, dtype=np.float) * 400 / 3),
 ])
 def test_units(dataset, inp, expected):
-    assert dataset[inp[0]].to_units(inp[1]) == pytest.approx(expected, 1.e-9)
+    assert compare_values(expected, dataset[inp[0]].to_units(inp[1]), atol=1.e-9)
 
 
 def test_printing(dataset):
