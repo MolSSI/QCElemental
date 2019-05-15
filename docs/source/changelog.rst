@@ -14,6 +14,21 @@ Changelog
 .. +++++++++
 
 
+0.4.1 / 2019-MM-DD
+------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+- (:pr:`66`) Fix tests when `networkx` not installed.
+
+
 0.4.0 / 2019-05-13
 ------------------
 
@@ -66,6 +81,7 @@ Bug Fixes
 - (:pr:`65`) Fixed some minor printing and tolerance errors in molecule alignment.
 - (:pr:`65`) ``testing.compare_recursive`` stopped doing ``atol=10**-atol`` for ``atol>=1``, bringing it in line with
   other compare functions.
+
 
 0.3.3 / 2019-03-12
 ------------------
@@ -122,6 +138,7 @@ Bug Fixes
 - (:pr:`39`) Fixed ``setup.py`` to call ``pytest`` instead of ``unittest`` when running tests on install
 - (:pr:`41`) Pinned a minimum Pytest version to make sure errors are not because of too old of a pytest version
 
+
 0.3.0 / 2019-02-27
 ------------------
 
@@ -172,6 +189,7 @@ Bug Fixes
 
 - (:pr:`30`) Fixes ``dihedral`` measurement code for incorrect phase in certain quadrants.
 
+
 0.2.4 / 2019-02-08
 ------------------
 
@@ -197,6 +215,7 @@ Enhancements
   Also enhances the ``Molecule`` model's ``json`` function to accept ``as_dict`` keyword, permitting a return as a
   dictionary of Pydantic-serialized python (primitive) objects, instead of a string.
 
+
 0.2.2 / 2019-01-28
 ------------------
 
@@ -206,10 +225,12 @@ Bug Fixes
 - (:pr:`21`) Molparse's ``from_schema`` method now correctly parses the new ``qcschema_X`` strings for schema names.
 - (:pr:`23`) Pydantic model serializations now correctly handle Numpy Array objects in nested ``BaseModels``. Model serialization testing added to catch these in the future.
 
+
 0.2.1 / 2019-01-27
 ------------------
 
 - (:pr:`20`) Moves several Molecule parsing functions to the molparse module.
+
 
 0.2.0 / 2019-01-25
 ------------------
@@ -227,6 +248,7 @@ Enhancements
 
 - (:pr:`13`) Function ``util.unnp`` that recursively list-ifies ndarray in a dict now handles lists and flattens.
 
+
 0.1.3 / 2018-12-14
 ------------------
 
@@ -240,6 +262,7 @@ Enhancements
 
 - (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py#L23-L41>`_ rather than previous list o'dicts.
 
+
 0.1.2 / 2018-11-3
 -----------------
 
@@ -249,6 +272,7 @@ New Features
 - (:pr:`10`) Adds covalent radii data available through ``covalentradii.get(atom)`` function.
 - (:pr:`10`) Adds ``to_units(unit)`` to ``Datum`` class to access the data in non-native units.
 - (:pr:`10`) Adds ``periodictable.to_period(atom)`` and ``to_group(atom)`` functions to address periodic table.
+
 
 0.1.1 / 2018-10-30
 ------------------
@@ -268,6 +292,7 @@ Bug Fixes
 +++++++++
 
 - (:pr:`8`) Tests pass for installed module now that comparison tests are xfail.
+
 
 0.1.0a / 2018-10-24
 -------------------

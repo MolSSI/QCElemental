@@ -46,6 +46,9 @@ if __name__ == "__main__":
             'align': [
                 'networkx',
             ],
+            'viz': [
+                'py3dmol',
+            ],
         },
         tests_require=[
             'pytest >= 3.9.1',
