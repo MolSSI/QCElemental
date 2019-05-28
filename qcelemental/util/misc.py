@@ -157,7 +157,7 @@ def measure_coordinates(coordinates, measurements, degrees=False):
     ret = []
     for num, m in enumerate(measurements):
         if any(x >= num_coords for x in m):
-            raise ValueError("An index of measurement {} is out of bounds.".format(num))
+            raise ValueError(f"An index of measurement {num} is out of bounds.")
 
         kwargs = {}
         if len(m) == 2:
