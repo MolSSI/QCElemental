@@ -126,13 +126,13 @@ def compare_values(expected,
 
     else:
         if xptd.shape == ():
-            xptd_str = f'{xptd:.{digits1}f}'
+            xptd_str = f'{float(xptd):.{digits1}f}'
         else:
             xptd_str = np.array_str(xptd, max_line_width=120, precision=12, suppress_small=True)
             xptd_str = '\n'.join('    ' + ln for ln in xptd_str.splitlines())
 
         if cptd.shape == ():
-            cptd_str = f'{cptd:.{digits1}f}'
+            cptd_str = f'{float(cptd):.{digits1}f}'
         else:
             cptd_str = np.array_str(cptd, max_line_width=120, precision=12, suppress_small=True)
             cptd_str = '\n'.join('    ' + ln for ln in cptd_str.splitlines())
