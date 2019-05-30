@@ -139,7 +139,7 @@ def compare_values(expected,
 
         diff = cptd - xptd
         if xptd.shape == ():
-            diff_str = f'{diff:.{digits1}f}'
+            diff_str = f'{float(diff):.{digits1}f}'
             message = """\t{}: computed value ({}) does not match ({}) {} by difference ({}).""".format(
                 label, cptd_str, xptd_str, digits_str, diff_str)
         else:
