@@ -23,10 +23,16 @@ New Features
 Enhancements
 ++++++++++++
 
+- (:pr:`68`) ``molparse.to_string`` learned parameter ``return_data`` that contains aspects of the
+  ``models.Molecule`` not expressible in the string. Implemented for dtypes xyz, cfour, psi4.
+- (:pr:`68`) ``Datum`` gained an attribute ``numeric`` that reflects whether arithmetic on ``data``
+  is valid. ``Datum``\ s that aren't numeric can now be created by initializing with ``numeric=False``.
+
 Bug Fixes
 +++++++++
 
 - (:pr:`66`) Fix tests when `networkx` not installed.
+- (:pr:`67`) Fix "unsupported format string passed to numpy.ndarray.__format__" on Mac for ``testing.compare_values``.
 
 
 0.4.0 / 2019-05-13

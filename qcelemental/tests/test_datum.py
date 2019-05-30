@@ -11,11 +11,12 @@ from qcelemental.testing import compare_recursive, compare_values
 @pytest.fixture
 def dataset():
     datums = {
-        'decimal': qcel.Datum('a label', 'mdyn/angstrom', Decimal('4.4'), comment='force constant', doi='10.1000/182'),
-        'ndarray': qcel.Datum('an array', 'cm^-1',
-                              np.arange(4, dtype=np.float) * 4 / 3, comment='freqs'),
+        'decimal': qcel.Datum('a label', 'mdyn/angstrom', Decimal('4.4'), comment='force constant', doi='10.1000/182', numeric=False),
+        'ndarray': qcel.Datum('an array', 'cm^-1', np.arange(4, dtype=np.float) * 4 / 3, comment='freqs'),
         'float': qcel.Datum('a float', 'kg', 4.4, doi='10.1000/182'),
-    }
+        'string': qcel.Datum('ze lbl', 'ze unit', 'ze data', numeric=False),
+        'lststr': qcel.Datum('ze lbl', 'ze unit', ['V', 'R', None], numeric=False),
+    }  # yapf: disable
 
     return datums
 
@@ -26,6 +27,16 @@ def test_creation(dataset):
     assert datum1.label == 'a label'
     assert datum1.units == 'mdyn/angstrom'
     assert datum1.data == Decimal('4.4')
+    assert datum1.numeric is True  # checking that numeric got properly reset from input
+
+
+def test_creation_nonnum(dataset):
+    datum1 = dataset['string']
+
+    assert datum1.label == 'ze lbl'
+    assert datum1.units == 'ze unit'
+    assert datum1.data == 'ze data'
+    assert datum1.numeric is False
 
 
 def test_creation_error():
@@ -78,8 +89,10 @@ def test_mass_printing(dataset):
   ----------------------------------------------------------------------------
   "decimal" =>                    4.4 [mdyn/angstrom]
   "float"   =>         4.400000000000 [kg]
+  "lststr"  =>       ['V', 'R', None] [ze unit]
   "ndarray" =>                        [cm^-1]
         [0.         1.33333333 2.66666667 4.        ]
+  "string"  =>                ze data [ze unit]
 """
 
     assert str1 == qcel.datum.print_variables(dataset)
@@ -87,7 +100,7 @@ def test_mass_printing(dataset):
 
 def test_to_dict(dataset):
     listans = [i * 4 / 3 for i in range(4)]
-    ans = {'label': 'an array', 'units': 'cm^-1', 'data': listans, 'comment': 'freqs'}
+    ans = {'label': 'an array', 'units': 'cm^-1', 'data': listans, 'comment': 'freqs', 'numeric': True}
 
     dicary = dataset['ndarray'].dict()
     assert compare_recursive(ans, dicary, 9)
@@ -95,7 +108,7 @@ def test_to_dict(dataset):
 
 def test_complex_scalar():
     datum1 = qcel.Datum('complex scalar', '', complex(1, 2))
-    ans = {'label': 'complex scalar', 'units': '', 'data': complex(1, 2)}
+    ans = {'label': 'complex scalar', 'units': '', 'data': complex(1, 2), 'numeric': True}
 
     assert datum1.label == 'complex scalar'
     assert datum1.units == ''
@@ -108,7 +121,12 @@ def test_complex_scalar():
 
 def test_complex_array():
     datum1 = qcel.Datum('complex array', '', np.arange(3, dtype=np.complex_) + 1j)
-    ans = {'label': 'complex array', 'units': '', 'data': [complex(0, 1), complex(1, 1), complex(2, 1)]}
+    ans = {
+        'label': 'complex array',
+        'units': '',
+        'data': [complex(0, 1), complex(1, 1), complex(2, 1)],
+        'numeric': True
+    }
 
     dicary = datum1.dict()
     assert compare_recursive(ans, dicary, 9)

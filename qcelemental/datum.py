@@ -26,9 +26,12 @@ class Datum(BaseModel):
         Literature citation or definition DOI link.
     glossary : str, optional
         Extended description or definition.
+    numeric : bool, optional
+        Whether `data` is numeric. Pass `True` to disable validating `data` as float/Decimal/np.ndarray.
 
     """
 
+    numeric: bool
     label: str
     units: str
     data: Any
@@ -36,8 +39,16 @@ class Datum(BaseModel):
     doi: Optional[str] = None
     glossary: str = ''
 
-    def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None):
-        kwargs = {'label': label, 'units': units, 'data': data}
+    class Config:
+        extra = "forbid"
+        allow_mutation = False
+        json_encoders = {
+            np.ndarray: lambda v: v.flatten().tolist(),
+            complex: lambda v: (v.real, v.imag),
+        }
+
+    def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
+        kwargs = {'label': label, 'units': units, 'data': data, 'numeric': numeric}
         if comment is not None:
             kwargs['comment'] = comment
         if doi is not None:
@@ -55,7 +66,12 @@ class Datum(BaseModel):
             try:
                 Decimal('1.0') * v
             except TypeError:
-                raise ValueError('Datum data should be float, Decimal, or np.ndarray')
+                if values['numeric']:
+                    raise ValueError(f'Datum data should be float, Decimal, or np.ndarray, not {type(v)}.')
+            else:
+                values['numeric'] = True
+        else:
+            values['numeric'] = True
 
         return v
 
@@ -125,15 +141,31 @@ def print_variables(qcvars: Dict[str, 'Datum']) -> str:
         if isinstance(qca.data, np.ndarray):
             data = np.array_str(qca.data, max_line_width=120, precision=8, suppress_small=True)
             data = '\n'.join('        ' + ln for ln in data.splitlines())
-            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format(
-                '"' + k + '"', '', qca.units, keywidth=largest_key, width=largest_characteristic + 14))
+            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format('"' + k + '"',
+                                                                        '',
+                                                                        qca.units,
+                                                                        keywidth=largest_key,
+                                                                        width=largest_characteristic + 14))
             text.append(data)
         elif isinstance(qca.data, Decimal):
-            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format(
-                '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14))
+            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format('"' + k + '"',
+                                                                        qca.data,
+                                                                        qca.units,
+                                                                        keywidth=largest_key,
+                                                                        width=largest_characteristic + 14))
+        elif not qca.numeric:
+            text.append("""  {:{keywidth}} => {:>{width}} [{}]""".format('"' + k + '"',
+                                                                         str(qca.data),
+                                                                         qca.units,
+                                                                         keywidth=largest_key,
+                                                                         width=largest_characteristic + 14))
         else:
-            text.append("""  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format(
-                '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14, prec=12))
+            text.append("""  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format('"' + k + '"',
+                                                                                qca.data,
+                                                                                qca.units,
+                                                                                keywidth=largest_key,
+                                                                                width=largest_characteristic + 14,
+                                                                                prec=12))
 
     text.append('')
     return '\n'.join(text)
