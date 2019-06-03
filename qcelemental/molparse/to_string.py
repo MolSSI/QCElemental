@@ -21,7 +21,7 @@ def to_string(molrec: Dict,
     ----------
     molrec : dict
         Psi4 json Molecule spec.
-    dtype : {'xyz', 'cfour', 'nwchem'}
+    dtype : {'xyz', 'cfour', 'nwchem', 'molpro'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -71,6 +71,7 @@ def to_string(molrec: Dict,
         "xyz": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
+        "molpro": "Bohr",
         "nwchem": "Bohr",
         "psi4": "Bohr",
         "terachem": "Bohr"
@@ -142,6 +143,31 @@ def to_string(molrec: Dict,
             'units': umap.get(units.lower()),
             'coordinates': 'cartesian',
         }
+
+    elif dtype == 'molpro':
+
+        atom_format = '{elem}'
+        ghost_format = '{elem}'
+        umap = {'bohr': 'bohr', 'angstrom': 'angstrom'}
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+
+        ghost_atoms = []
+        nat = geom.shape[0]
+        for iat in range(nat):
+            if not molrec['real'][iat]:
+                ghost_atoms.append(str(iat+1))
+
+        first_line = f"""{{{umap.get(units.lower())}}}"""
+        second_line = """geometry={"""
+        end_bracket = """}"""
+        smol = [first_line, second_line]
+        smol.extend(atoms)
+        smol.append(end_bracket)
+
+        if len(ghost_atoms) != 0:
+            ghost_line = f"""dummy,{",".join(ghost_atoms)}"""
+            smol.append(ghost_line)
 
     elif dtype == 'nwchem':
 
