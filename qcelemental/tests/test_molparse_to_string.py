@@ -107,6 +107,28 @@ units bohr
 no_reorient
 """,
 
+"ans2_molpro_au": """{bohr}
+geometry={
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+}
+dummy,2
+set,charge=0.0
+set,multiplicity=3
+""",
+
+"ans2_molpro_ang": """{angstrom}
+geometry={
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     1.058354421340     0.000000000000     0.000000000000
+H                    -1.058354421340     0.000000000000     0.000000000000
+}
+dummy,2
+set,charge=0.0
+set,multiplicity=3
+""",
+
 }  # yapf: disable
 
 
@@ -123,10 +145,13 @@ no_reorient
     (("subject2", {'dtype': 'terachem', 'units': 'angstrom'}), "ans2_terachem_ang"),
     (("subject2", {'dtype': 'terachem'}), "ans2_terachem_au"),
     (("subject2", {'dtype': 'psi4', 'units': 'bohr'}), "ans2_psi4_au"),
+    (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
+    (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(_results[inp[0]])
     smol = qcelemental.molparse.to_string(molrec['qm'], **inp[1])
+    print(smol)
 
     assert compare(_results[expected], smol)
 
