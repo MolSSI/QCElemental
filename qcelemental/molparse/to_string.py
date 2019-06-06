@@ -152,12 +152,6 @@ def to_string(molrec: Dict,
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        ghost_atoms = []
-        nat = geom.shape[0]
-        for iat in range(nat):
-            if not molrec['real'][iat]:
-                ghost_atoms.append(str(iat+1))
-
         first_line = f"""{{{umap.get(units.lower())}}}"""
         second_line = """geometry={"""
         end_bracket = """}"""
@@ -165,9 +159,12 @@ def to_string(molrec: Dict,
         smol.extend(atoms)
         smol.append(end_bracket)
 
-        if len(ghost_atoms) != 0:
-            ghost_line = f"""dummy,{",".join(ghost_atoms)}"""
+        if False in molrec['real']:
+            ghost_line = 'dummy,' + ','.join([str(idx + 1) for idx, real in enumerate(molrec['real']) if not real])
             smol.append(ghost_line)
+
+        smol.append(f"set,charge={molrec['molecular_charge']}")
+        smol.append(f"set,multiplicity={molrec['molecular_multiplicity']}")
 
     elif dtype == 'nwchem':
 
