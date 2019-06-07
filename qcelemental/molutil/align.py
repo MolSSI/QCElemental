@@ -288,10 +288,11 @@ def B787(cgeom,
                               'D: concern_mol-->returned_mol pNRE matches ref_mol',
                               atol=1.e-4,
                               quiet=(verbose < 2))
-        assert compare(True,
-                       np.allclose(rgeom, ageom, atol=1.e-4),
-                       'D: concern_mol-->returned_mol geometry matches ref_mol',
-                       quiet=(verbose < 2))
+        assert compare_values(rgeom,
+                              ageom,
+                              'D: concern_mol-->returned_mol geometry matches ref_mol',
+                              atol=1.e-4,
+                              quiet=(verbose < 2))
         assert compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose < 2))
 
     return final_rmsd, hold_solution

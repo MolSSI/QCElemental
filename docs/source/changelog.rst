@@ -14,6 +14,21 @@ Changelog
 .. +++++++++
 
 
+0.4.2 / 2019-06-DD
+------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+- (:pr:`70`) ``molparse.to_string`` Molpro dtype developed.
+
+Bug Fixes
++++++++++
+
+
 0.4.1 / 2019-05-31
 ------------------
 
