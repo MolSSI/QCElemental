@@ -107,7 +107,10 @@ units bohr
 no_reorient
 """,
 
-"ans2_molpro_au": """{bohr}
+"ans2_molpro_au": """{orient,noorient}
+{symmetry,auto}
+
+{bohr}
 geometry={
 Co                    0.000000000000     0.000000000000     0.000000000000
 H                     2.000000000000     0.000000000000     0.000000000000
@@ -118,7 +121,10 @@ set,charge=0.0
 set,multiplicity=3
 """,
 
-"ans2_molpro_ang": """{angstrom}
+"ans2_molpro_ang": """{orient,noorient}
+{symmetry,auto}
+
+{angstrom}
 geometry={
 Co                    0.000000000000     0.000000000000     0.000000000000
 H                     1.058354421340     0.000000000000     0.000000000000
