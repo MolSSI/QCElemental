@@ -20,10 +20,10 @@ Changelog
 New Features
 ++++++++++++
 
+- (:pr:`70`, :pr:`72`) ``molparse.to_string`` Molpro dtype developed.
+
 Enhancements
 ++++++++++++
-
-- (:pr:`70`) ``molparse.to_string`` Molpro dtype developed.
 
 Bug Fixes
 +++++++++
