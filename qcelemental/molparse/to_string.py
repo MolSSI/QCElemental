@@ -152,13 +152,29 @@ def to_string(molrec: Dict,
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        first_line = f"""{{{umap.get(units.lower())}}}"""
-        second_line = """geometry={"""
+        smol = []
+
+        # Don't orient the molecule if asked to fix_com or fix_orientation
+        if molrec['fix_orientation'] or molrec['fix_com']:
+            smol.append('{orient,noorient}')
+
+        # Have no symmetry if asked to fix_symmetry
+        if 'fix_symmetry' in molrec.keys() and molrec['fix_symmetry'] == 'c1':
+            smol.append('{symmetry,nosym}')
+        elif 'fix_symmetry' not in molrec.keys():
+            smol.append('{symmetry,auto}')
+
+        smol.append('')
+
+        units_line = f"""{{{umap.get(units.lower())}}}"""
+        geom_line = """geometry={"""
         end_bracket = """}"""
-        smol = [first_line, second_line]
+        smol.append(units_line)
+        smol.append(geom_line)
         smol.extend(atoms)
         smol.append(end_bracket)
 
+        # Write ghost atom declarations in Molpro (using dummy card)
         if False in molrec['real']:
             ghost_line = 'dummy,' + ','.join([str(idx + 1) for idx, real in enumerate(molrec['real']) if not real])
             smol.append(ghost_line)
