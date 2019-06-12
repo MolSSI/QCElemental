@@ -7,7 +7,7 @@ import numpy as np
 from ..exceptions import ValidationError
 from ..models import AlignmentMill
 from ..physical_constants import constants
-from ..testing import compare, compare_values
+from ..testing import compare_values
 from ..util import (distance_matrix, linear_sum_assignment, random_rotation_matrix, uno, which_import)
 
 
