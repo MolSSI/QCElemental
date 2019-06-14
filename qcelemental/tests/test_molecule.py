@@ -208,7 +208,7 @@ def test_water_orient():
     frag_0_1 = mol.get_fragment(0, 1, orient=True)
     frag_1_0 = mol.get_fragment(1, 0, orient=True)
 
-    assert frag_0_1.get_hash() == frag_1_0.get_hash()
+    assert frag_0_1.get_hash() != frag_1_0.get_hash()
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data(
@@ -390,8 +390,8 @@ def test_nuclearrepulsionenergy_nelectrons():
 
     mol = mol.get_fragment([1], 0)
     # Notice the 0th/1st fragments change. Got to stop get_fragment from reordering
-    ifr0 = 1
-    ifr1 = 0
+    ifr0 = 0
+    ifr1 = 1
     assert compare_values(16.04859029, mol.nuclear_repulsion_energy(), 'D', atol=1.e-5)
     assert compare_values(0.0, mol.nuclear_repulsion_energy(ifr=ifr0), 'M1', atol=1.e-5)
     assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=ifr1), 'M2', atol=1.e-5)

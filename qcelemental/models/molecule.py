@@ -333,7 +333,7 @@ class Molecule(BaseModel):
 
         return text
 
-    def get_fragment(self, real, ghost=None, orient=False):
+    def get_fragment(self, real: Union[int, List], ghost=None, orient: bool = False):
         """
         A list of real and ghost fragments:
         """
@@ -363,43 +363,42 @@ class Molecule(BaseModel):
         fragments = []
         fragment_charges = []
         fragment_multiplicities = []
+        atom_size = 0
 
-        # Loop through the real blocks
-        frag_start = 0
-        for frag in real:
-            frag_size = len(self.fragments[frag])
-            geom_blocks.append(self.geometry[self.fragments[frag]])
+        at2fr = [None] * len(self.symbols)
+        for ifr, fr in enumerate(self.fragments):
+            for iat in fr:
+                at2fr[iat] = ifr
 
-            for idx in self.fragments[frag]:
-                symbols.append(self.symbols[idx])
-                real_atoms.append(True)
-                masses.append(self.masses[idx])
+        at2at = [None] * len(self.symbols)
+        for iat in range(len(self.symbols)):
+            ifr = at2fr[iat]
 
-            fragments.append(list(range(frag_start, frag_start + frag_size)))
-            frag_start += frag_size
+            if ifr in real or ifr in ghost:
+                geom_blocks.append(self.geometry[iat])
+                symbols.append(self.symbols[iat])
+                real_atoms.append(ifr in real)
+                masses.append(self.masses[iat])
 
-            fragment_charges.append(float(self.fragment_charges[frag]))
-            fragment_multiplicities.append(self.fragment_multiplicities[frag])
+                at2at[iat] = atom_size
+                atom_size += 1
 
-        # Set charge and multiplicity
-        constructor_dict["molecular_charge"] = sum(fragment_charges)
-        constructor_dict["molecular_multiplicity"] = sum(x - 1 for x in fragment_multiplicities) + 1
+            else:
+                at2at[iat] = None
 
-        # Loop through the ghost blocks
-        for frag in ghost:
-            frag_size = len(self.fragments[frag])
-            geom_blocks.append(self.geometry[self.fragments[frag]])
+        for ifr, fr in enumerate(self.fragments):
+            if ifr in real or ifr in ghost:
+                fragments.append([at2at[iat] for iat in fr])
 
-            for idx in self.fragments[frag]:
-                symbols.append(self.symbols[idx])
-                real_atoms.append(False)
-                masses.append(self.masses[idx])
+            if ifr in real:
+                fragment_charges.append(self.fragment_charges[ifr])
+                fragment_multiplicities.append(self.fragment_multiplicities[ifr])
 
-            fragments.append(list(range(frag_start, frag_start + frag_size)))
-            frag_start += frag_size
+            elif ifr in ghost:
+                fragment_charges.append(0)
+                fragment_multiplicities.append(1)
 
-            fragment_charges.append(0)
-            fragment_multiplicities.append(1)
+        assert None not in fragments
 
         constructor_dict["fragments"] = fragments
         constructor_dict["fragment_charges"] = fragment_charges
@@ -946,16 +945,17 @@ class Molecule(BaseModel):
                                         do_resort=do_resort,
                                         do_mirror=do_mirror)
         cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
-        cmolrec = from_arrays(geom=cgeom,
-                              mass=cmass,
-                              elem=celem,
-                              elez=celez,
-                              units='Bohr',
-                              molecular_charge=ref_mol.molecular_charge,
-                              molecular_multiplicity=ref_mol.molecular_multiplicity,
-                              # copying fix_* vals rather than outright True. neither way great
-                              fix_com=ref_mol.fix_com,
-                              fix_orientation=ref_mol.fix_orientation)
+        cmolrec = from_arrays(
+            geom=cgeom,
+            mass=cmass,
+            elem=celem,
+            elez=celez,
+            units='Bohr',
+            molecular_charge=ref_mol.molecular_charge,
+            molecular_multiplicity=ref_mol.molecular_multiplicity,
+            # copying fix_* vals rather than outright True. neither way great
+            fix_com=ref_mol.fix_com,
+            fix_orientation=ref_mol.fix_orientation)
         cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
