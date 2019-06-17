@@ -333,11 +333,35 @@ class Molecule(BaseModel):
 
         return text
 
-    def get_fragment(self, real: Union[int, List], ghost=None, orient: bool = False):
-        """
-        A list of real and ghost fragments:
-        """
+    def get_fragment(self,
+                     real: Union[int, List],
+                     ghost: Optional[Union[int, List]] = None,
+                     orient: bool = False,
+                     group_fragments: bool = True) -> 'Molecule':
+        """Get new Molecule with fragments of self real, ghosted, or dropped.
 
+        Parameters
+        ----------
+        real
+            Fragment index or list of indices (0-indexed) to be real atoms in new Molecule.
+        ghost
+            Fragment index or list of indices (0-indexed) to be ghost atoms (basis fns only) in new Molecule.
+        orient
+            Whether or not to align (inertial frame) and phase geometry upon new Molecule instantiation
+            (according to _orient_molecule_internal)?
+        group_fragments
+            Whether or not to group real fragments at the start of the atom list and ghost fragments toward the back.
+            Previous to ``v0.5``, this was always effectively True. True is handy for finding duplicate
+            (atom-order-independent) molecules by hash. False preserves fragment order (though collapsing gaps for
+            absent fragments) like Psi4's ``extract_subsets``. False is handy for gradients where atom order of
+            returned values matters.
+
+        Returns
+        -------
+        mol
+            New ``py::class:qcelemental.model.Molecule`` with ``self``'s fragments present, ghosted, or absent.
+
+        """
         if isinstance(real, int):
             real = [real]
 
