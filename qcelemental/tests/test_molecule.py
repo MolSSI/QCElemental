@@ -153,37 +153,31 @@ def test_to_string():
     assert isinstance(mol.to_string("psi4"), str)
 
 
-def test_from_file_string(tmp_path):
+@pytest.mark.parametrize("dtype, filext", [("json", "json"), ("xyz", "xyz"), ("numpy", "npy")])
+def test_to_from_file_simple(tmp_path, dtype, filext):
 
-    p = tmp_path / "water.psimol"
-    p.write_text(water_dimer_minima.to_string("psi4"))
+    benchmol = Molecule.from_data("""
+    O 0 0 0
+    H 0 1.5 0
+    H 0 0 1.5
+    """)
+
+    p = tmp_path / ("water." + filext)
+    benchmol.to_file(p)
 
     mol = Molecule.from_file(p)
 
+    assert mol.compare(benchmol)
+
+
+@pytest.mark.parametrize("dtype", ["json", "psi4"])
+def test_to_from_file_complex(tmp_path, dtype):
+
+    p = tmp_path / ("water." + dtype)
+    water_dimer_minima.to_file(p)
+
+    mol = Molecule.from_file(p)
     assert mol.compare(water_dimer_minima)
-    assert mol.compare(water_dimer_minima.dict())
-
-
-def test_from_file_json(tmp_path):
-
-    p = tmp_path / "water.json"
-    p.write_text(water_dimer_minima.json())
-
-    mol = Molecule.from_file(p)
-    assert mol.compare(water_dimer_minima)
-
-
-def test_from_file_numpy(tmp_path):
-
-    ele = np.array(water_molecule.atomic_numbers).reshape(-1, 1)
-    npwater = np.hstack((ele, water_molecule.geometry))
-
-    # Try npy
-    p = tmp_path / "water.npy"
-    np.save(p, npwater)
-    mol = Molecule.from_file(p)
-
-    assert mol.compare(water_molecule)
 
 
 def test_water_orient():

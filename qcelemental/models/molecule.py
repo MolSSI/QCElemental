@@ -24,6 +24,15 @@ MASS_NOISE = 6
 CHARGE_NOISE = 4
 
 
+_extension_map = {
+    ".npy": "numpy",
+    ".json": "json",
+    ".xyz": "xyz",
+    ".psimol": "psi4",
+    ".psi4": "psi4",
+}
+
+
 def float_prep(array, around):
     """
     Rounds floats to a common value and build positive zeros to prevent hash conflicts.
@@ -559,7 +568,7 @@ class Molecule(BaseModel):
         return cls(orient=orient, validate=validate, **input_dict)
 
     @classmethod
-    def from_file(cls, filename, dtype=None, *, orient=False, **kwargs):
+    def from_file(cls, filename: str, dtype: Optional[str] = None, *, orient: bool = False, **kwargs):
         """
         Constructs a molecule object from a file.
 
@@ -567,30 +576,25 @@ class Molecule(BaseModel):
         ----------
         filename : str
             The filename to build
-        dtype : {None, "psi4", "numpy", "json"}, optional
+        dtype : Optional[str], optional
             The type of file to interpret.
-        orient: bool, optional
+        orient : bool, optional
             Orientates the molecule to a standard frame or not.
-        kwargs
+        **kwargs
             Any additional keywords to pass to the constructor
 
         Returns
         -------
         Molecule
             A constructed molecule class.
+
         """
 
         ext = os.path.splitext(filename)[1]
 
         if dtype is None:
-            if ext in [".npy"]:
-                dtype = "numpy"
-            elif ext in [".json"]:
-                dtype = "json"
-            elif ext in [".xyz"]:
-                dtype = "xyz"
-            elif ext in [".psimol"]:
-                dtype = "psi4"
+            if ext in _extension_map:
+                dtype = _extension_map[ext]
             else:
                 # Let `from_string` try to sort it
                 dtype = "string"
@@ -609,6 +613,42 @@ class Molecule(BaseModel):
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
         return cls.from_data(data, dtype, orient=orient, **kwargs)
+
+    def to_file(self, filename: str, dtype: Optional[str] = None) -> None:
+        """Writes the Molecule to a file.
+
+        Parameters
+        ----------
+        filename : str
+            The filename to write to
+        dtype : Optional[str], optional
+            The type of file to write, attempts to infer dtype from the filename if not provided.
+
+        """
+        ext = os.path.splitext(filename)[1]
+
+        if dtype is None:
+            if ext in _extension_map:
+                dtype = _extension_map[ext]
+            else:
+                raise KeyError(f"Could not infer dtype from filename: `{filename}`")
+
+        if dtype in ["xyz", "psi4"]:
+            stringified = self.to_string(dtype)
+        elif dtype in ["json"]:
+            stringified = json.dumps(self.json_dict())
+        elif dtype in ["numpy"]:
+            elements = np.array(self.atomic_numbers).reshape(-1, 1)
+            npmol = np.hstack((elements, self.geometry))
+
+            np.save(filename, npmol)
+            return
+
+        else:
+            raise KeyError(f"Dtype `{dtype}` is not valid")
+
+        with open(filename, 'w') as handle:
+            handle.write(stringified)
 
     ### Non-Pydantic internal functions
 
