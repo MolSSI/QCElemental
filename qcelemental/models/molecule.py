@@ -5,18 +5,18 @@ Molecule Object Model
 import collections
 import hashlib
 import json
-import os
-from typing import Any, Dict, List, Tuple, Optional, Union
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-from pydantic import BaseModel, validator, constr
+from pydantic import BaseModel, constr, validator
 
+from .common_models import NDArray, Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp, which_import
-from .common_models import (Provenance, ndarray_encoder, qcschema_molecule_default, NDArray)
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -590,7 +590,7 @@ class Molecule(BaseModel):
 
         """
 
-        ext = os.path.splitext(filename)[1]
+        ext = Path(filename).suffix
 
         if dtype is None:
             if ext in _extension_map:
@@ -625,7 +625,7 @@ class Molecule(BaseModel):
             The type of file to write, attempts to infer dtype from the filename if not provided.
 
         """
-        ext = os.path.splitext(filename)[1]
+        ext = Path(filename).suffix
 
         if dtype is None:
             if ext in _extension_map:
