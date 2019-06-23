@@ -338,7 +338,7 @@ class Molecule(BaseModel):
                      ghost: Optional[Union[int, List]] = None,
                      orient: bool = False,
                      group_fragments: bool = True) -> 'Molecule':
-        """Get new Molecule with fragments of self real, ghosted, or dropped.
+        """Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
         ----------
@@ -359,7 +359,7 @@ class Molecule(BaseModel):
         Returns
         -------
         mol
-            New ``py::class:qcelemental.model.Molecule`` with ``self``'s fragments present, ghosted, or absent.
+            New ``py::class:qcelemental.model.Molecule`` with ``self``\ 's fragments present, ghosted, or absent.
 
         """
         if isinstance(real, int):
@@ -389,40 +389,81 @@ class Molecule(BaseModel):
         fragment_multiplicities = []
         atom_size = 0
 
-        at2fr = [None] * len(self.symbols)
-        for ifr, fr in enumerate(self.fragments):
-            for iat in fr:
-                at2fr[iat] = ifr
+        if group_fragments:
 
-        at2at = [None] * len(self.symbols)
-        for iat in range(len(self.symbols)):
-            ifr = at2fr[iat]
+            # Loop through the real blocks
+            frag_start = 0
+            for frag in real:
+                frag_size = len(self.fragments[frag])
+                geom_blocks.append(self.geometry[self.fragments[frag]])
 
-            if ifr in real or ifr in ghost:
-                geom_blocks.append(self.geometry[iat])
-                symbols.append(self.symbols[iat])
-                real_atoms.append(ifr in real)
-                masses.append(self.masses[iat])
+                for idx in self.fragments[frag]:
+                    symbols.append(self.symbols[idx])
+                    real_atoms.append(True)
+                    masses.append(self.masses[idx])
 
-                at2at[iat] = atom_size
-                atom_size += 1
+                fragments.append(list(range(frag_start, frag_start + frag_size)))
+                frag_start += frag_size
 
-            else:
-                at2at[iat] = None
+                fragment_charges.append(float(self.fragment_charges[frag]))
+                fragment_multiplicities.append(self.fragment_multiplicities[frag])
 
-        for ifr, fr in enumerate(self.fragments):
-            if ifr in real or ifr in ghost:
-                fragments.append([at2at[iat] for iat in fr])
+            # Set charge and multiplicity
+            constructor_dict["molecular_charge"] = sum(fragment_charges)
+            constructor_dict["molecular_multiplicity"] = sum(x - 1 for x in fragment_multiplicities) + 1
 
-            if ifr in real:
-                fragment_charges.append(self.fragment_charges[ifr])
-                fragment_multiplicities.append(self.fragment_multiplicities[ifr])
+            # Loop through the ghost blocks
+            for frag in ghost:
+                frag_size = len(self.fragments[frag])
+                geom_blocks.append(self.geometry[self.fragments[frag]])
 
-            elif ifr in ghost:
+                for idx in self.fragments[frag]:
+                    symbols.append(self.symbols[idx])
+                    real_atoms.append(False)
+                    masses.append(self.masses[idx])
+
+                fragments.append(list(range(frag_start, frag_start + frag_size)))
+                frag_start += frag_size
+
                 fragment_charges.append(0)
                 fragment_multiplicities.append(1)
 
-        assert None not in fragments
+        else:
+
+            at2fr = [None] * len(self.symbols)
+            for ifr, fr in enumerate(self.fragments):
+                for iat in fr:
+                    at2fr[iat] = ifr
+
+            at2at = [None] * len(self.symbols)
+            for iat in range(len(self.symbols)):
+                ifr = at2fr[iat]
+
+                if ifr in real or ifr in ghost:
+                    geom_blocks.append(self.geometry[iat])
+                    symbols.append(self.symbols[iat])
+                    real_atoms.append(ifr in real)
+                    masses.append(self.masses[iat])
+
+                    at2at[iat] = atom_size
+                    atom_size += 1
+
+                else:
+                    at2at[iat] = None
+
+            for ifr, fr in enumerate(self.fragments):
+                if ifr in real or ifr in ghost:
+                    fragments.append([at2at[iat] for iat in fr])
+
+                if ifr in real:
+                    fragment_charges.append(self.fragment_charges[ifr])
+                    fragment_multiplicities.append(self.fragment_multiplicities[ifr])
+
+                elif ifr in ghost:
+                    fragment_charges.append(0)
+                    fragment_multiplicities.append(1)
+
+            assert None not in fragments
 
         constructor_dict["fragments"] = fragments
         constructor_dict["fragment_charges"] = fragment_charges
