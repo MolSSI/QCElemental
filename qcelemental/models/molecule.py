@@ -342,11 +342,35 @@ class Molecule(BaseModel):
 
         return text
 
-    def get_fragment(self, real, ghost=None, orient=False):
-        """
-        A list of real and ghost fragments:
-        """
+    def get_fragment(self,
+                     real: Union[int, List],
+                     ghost: Optional[Union[int, List]] = None,
+                     orient: bool = False,
+                     group_fragments: bool = True) -> 'Molecule':
+        """Get new Molecule with fragments preserved, dropped, or ghosted.
 
+        Parameters
+        ----------
+        real
+            Fragment index or list of indices (0-indexed) to be real atoms in new Molecule.
+        ghost
+            Fragment index or list of indices (0-indexed) to be ghost atoms (basis fns only) in new Molecule.
+        orient
+            Whether or not to align (inertial frame) and phase geometry upon new Molecule instantiation
+            (according to _orient_molecule_internal)?
+        group_fragments
+            Whether or not to group real fragments at the start of the atom list and ghost fragments toward the back.
+            Previous to ``v0.5``, this was always effectively True. True is handy for finding duplicate
+            (atom-order-independent) molecules by hash. False preserves fragment order (though collapsing gaps for
+            absent fragments) like Psi4's ``extract_subsets``. False is handy for gradients where atom order of
+            returned values matters.
+
+        Returns
+        -------
+        mol
+            New ``py::class:qcelemental.model.Molecule`` with ``self``\ 's fragments present, ghosted, or absent.
+
+        """
         if isinstance(real, int):
             real = [real]
 
@@ -372,43 +396,83 @@ class Molecule(BaseModel):
         fragments = []
         fragment_charges = []
         fragment_multiplicities = []
+        atom_size = 0
 
-        # Loop through the real blocks
-        frag_start = 0
-        for frag in real:
-            frag_size = len(self.fragments[frag])
-            geom_blocks.append(self.geometry[self.fragments[frag]])
+        if group_fragments:
 
-            for idx in self.fragments[frag]:
-                symbols.append(self.symbols[idx])
-                real_atoms.append(True)
-                masses.append(self.masses[idx])
+            # Loop through the real blocks
+            frag_start = 0
+            for frag in real:
+                frag_size = len(self.fragments[frag])
+                geom_blocks.append(self.geometry[self.fragments[frag]])
 
-            fragments.append(list(range(frag_start, frag_start + frag_size)))
-            frag_start += frag_size
+                for idx in self.fragments[frag]:
+                    symbols.append(self.symbols[idx])
+                    real_atoms.append(True)
+                    masses.append(self.masses[idx])
 
-            fragment_charges.append(float(self.fragment_charges[frag]))
-            fragment_multiplicities.append(self.fragment_multiplicities[frag])
+                fragments.append(list(range(frag_start, frag_start + frag_size)))
+                frag_start += frag_size
 
-        # Set charge and multiplicity
-        constructor_dict["molecular_charge"] = sum(fragment_charges)
-        constructor_dict["molecular_multiplicity"] = sum(x - 1 for x in fragment_multiplicities) + 1
+                fragment_charges.append(float(self.fragment_charges[frag]))
+                fragment_multiplicities.append(self.fragment_multiplicities[frag])
 
-        # Loop through the ghost blocks
-        for frag in ghost:
-            frag_size = len(self.fragments[frag])
-            geom_blocks.append(self.geometry[self.fragments[frag]])
+            # Set charge and multiplicity
+            constructor_dict["molecular_charge"] = sum(fragment_charges)
+            constructor_dict["molecular_multiplicity"] = sum(x - 1 for x in fragment_multiplicities) + 1
 
-            for idx in self.fragments[frag]:
-                symbols.append(self.symbols[idx])
-                real_atoms.append(False)
-                masses.append(self.masses[idx])
+            # Loop through the ghost blocks
+            for frag in ghost:
+                frag_size = len(self.fragments[frag])
+                geom_blocks.append(self.geometry[self.fragments[frag]])
 
-            fragments.append(list(range(frag_start, frag_start + frag_size)))
-            frag_start += frag_size
+                for idx in self.fragments[frag]:
+                    symbols.append(self.symbols[idx])
+                    real_atoms.append(False)
+                    masses.append(self.masses[idx])
 
-            fragment_charges.append(0)
-            fragment_multiplicities.append(1)
+                fragments.append(list(range(frag_start, frag_start + frag_size)))
+                frag_start += frag_size
+
+                fragment_charges.append(0)
+                fragment_multiplicities.append(1)
+
+        else:
+
+            at2fr = [None] * len(self.symbols)
+            for ifr, fr in enumerate(self.fragments):
+                for iat in fr:
+                    at2fr[iat] = ifr
+
+            at2at = [None] * len(self.symbols)
+            for iat in range(len(self.symbols)):
+                ifr = at2fr[iat]
+
+                if ifr in real or ifr in ghost:
+                    geom_blocks.append(self.geometry[iat])
+                    symbols.append(self.symbols[iat])
+                    real_atoms.append(ifr in real)
+                    masses.append(self.masses[iat])
+
+                    at2at[iat] = atom_size
+                    atom_size += 1
+
+                else:
+                    at2at[iat] = None
+
+            for ifr, fr in enumerate(self.fragments):
+                if ifr in real or ifr in ghost:
+                    fragments.append([at2at[iat] for iat in fr])
+
+                if ifr in real:
+                    fragment_charges.append(self.fragment_charges[ifr])
+                    fragment_multiplicities.append(self.fragment_multiplicities[ifr])
+
+                elif ifr in ghost:
+                    fragment_charges.append(0)
+                    fragment_multiplicities.append(1)
+
+            assert None not in fragments
 
         constructor_dict["fragments"] = fragments
         constructor_dict["fragment_charges"] = fragment_charges
@@ -986,16 +1050,17 @@ class Molecule(BaseModel):
                                         do_resort=do_resort,
                                         do_mirror=do_mirror)
         cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
-        cmolrec = from_arrays(geom=cgeom,
-                              mass=cmass,
-                              elem=celem,
-                              elez=celez,
-                              units='Bohr',
-                              molecular_charge=ref_mol.molecular_charge,
-                              molecular_multiplicity=ref_mol.molecular_multiplicity,
-                              # copying fix_* vals rather than outright True. neither way great
-                              fix_com=ref_mol.fix_com,
-                              fix_orientation=ref_mol.fix_orientation)
+        cmolrec = from_arrays(
+            geom=cgeom,
+            mass=cmass,
+            elem=celem,
+            elez=celez,
+            units='Bohr',
+            molecular_charge=ref_mol.molecular_charge,
+            molecular_multiplicity=ref_mol.molecular_multiplicity,
+            # copying fix_* vals rather than outright True. neither way great
+            fix_com=ref_mol.fix_com,
+            fix_orientation=ref_mol.fix_orientation)
         cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)

@@ -202,7 +202,7 @@ def test_water_orient():
     frag_0_1 = mol.get_fragment(0, 1, orient=True)
     frag_1_0 = mol.get_fragment(1, 0, orient=True)
 
-    assert frag_0_1.get_hash() == frag_1_0.get_hash()
+    assert frag_0_1.get_hash() == frag_1_0.get_hash()  # != if get_fragment(..., group_fragments=False)
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data(
@@ -275,6 +275,92 @@ def test_charged_fragment():
     assert f1.fragment_multiplicities == [2]
     assert pytest.approx(f1.molecular_charge) == 0
     assert pytest.approx(f1.fragment_charges) == [0]
+
+
+# someday, when we can have noncontig frags
+#    mol = Molecule(**{
+#        'fragments': [[1, 5, 6], [0], [2, 3, 4]],
+#        'symbols': ["he", "o", "o", "h", "h", "h", "h"],
+#        # same geom as test_water_orient but with He at origin
+#        'geometry': [
+#        0.0, 0.0, 0.0,
+#        -1.551007,  -0.114520,   0.000000,
+#        -0.114520,  -1.551007,  10.000000,
+#         0.762503,  -1.934259,  10.000000,
+#         0.040712,  -0.599677,  10.000000,
+#        -1.934259,   0.762503,   0.000000,
+#        -0.599677,   0.040712,   0.000000],
+#    })
+
+
+@pytest.mark.parametrize("group_fragments, orient", [
+    (True, True),  # original
+    (False, False),  # Psi4-like
+])
+def test_get_fragment(group_fragments, orient):
+    mol = Molecule(**{
+        'fragments': [[0], [1, 2, 3], [4, 5, 6]],
+        'symbols': ["he", "o", "h", "h", "o", "h", "h"],
+        # same geom as test_water_orient but with He at origin
+        'geometry': np.array([
+        0.0, 0.0, 0.0,
+        -1.551007,  -0.114520,   0.000000,
+        -1.934259,   0.762503,   0.000000,
+        -0.599677,   0.040712,   0.000000,
+        -0.114520,  -1.551007,  10.000000,
+         0.762503,  -1.934259,  10.000000,
+         0.040712,  -0.599677,  10.000000]) / qcel.constants.bohr2angstroms,
+    })
+
+    assert mol.nelectrons() == 22
+    assert compare_values(32.25894779318589, mol.nuclear_repulsion_energy(), atol=1.e-5)
+
+    monomers_nelectrons = [2, 10, 10]
+    monomers_nre = [0.0, 9.163830150548483, 9.163830150548483]
+    monomers = [mol.get_fragment(ifr, group_fragments=group_fragments, orient=orient) for ifr in range(3)]
+    for fr in range(3):
+        assert monomers[fr].nelectrons() == monomers_nelectrons[fr]
+        assert compare_values(monomers[fr].nuclear_repulsion_energy(), monomers_nre[fr], 'monomer nre', atol=1.e-5)
+
+    idimers = [(0, 1), (0, 2), (1, 2), (1, 0), (2, 0), (2, 1)]
+    dimers_nelectrons = [12, 12, 20, 12, 12, 20]
+    dimers_nre = [16.8777971, 10.2097206, 23.4990904, 16.8777971, 10.2097206, 23.4990904]
+    dimers = [mol.get_fragment(rl, group_fragments=group_fragments, orient=orient) for rl in idimers]
+    for ifr in range(len(idimers)):
+        # print('dd', ifr, idimers[ifr], dimers[ifr].nuclear_repulsion_energy(), dimers[ifr].get_hash())
+        assert dimers[ifr].nelectrons() == dimers_nelectrons[ifr], 'dimer nelec'
+        assert compare_values(dimers[ifr].nuclear_repulsion_energy(), dimers_nre[ifr], 'dimer nre', atol=1.e-5)
+    if group_fragments and orient:
+        assert dimers[0].get_hash() != dimers[3].get_hash()  # atoms out of order
+        assert dimers[1].get_hash() != dimers[4].get_hash()  # atoms out of order
+        assert dimers[2].get_hash() == dimers[5].get_hash()
+    elif not group_fragments and not orient:
+        assert dimers[0].get_hash() == dimers[3].get_hash()
+        assert dimers[1].get_hash() == dimers[4].get_hash()
+        assert dimers[2].get_hash() == dimers[5].get_hash()
+    else:
+        assert 0
+
+
+    ghdimers_nelectrons = [2, 2, 10, 10, 10, 10]
+    ghdimers_nre = [0.0, 0.0, 9.163830150548483, 9.163830150548483, 9.163830150548483, 9.163830150548483]
+    ghdimers = [mol.get_fragment(rl, gh, group_fragments=group_fragments, orient=orient) for rl, gh in idimers]
+    for ifr in range(len(idimers)):
+        # print('gh', ifr, idimers[ifr], ghdimers[ifr].nuclear_repulsion_energy(), ghdimers[ifr].get_hash())
+        assert ghdimers[ifr].nelectrons() == ghdimers_nelectrons[ifr], 'gh dimer nelec'
+        assert compare_values(ghdimers[ifr].nuclear_repulsion_energy(), ghdimers_nre[ifr], 'gh dimer nre', atol=1.e-5)
+
+    if group_fragments and orient:
+        assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
+        assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
+        assert ghdimers[2].get_hash() == ghdimers[5].get_hash()
+    elif not group_fragments and not orient:
+        assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
+        assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
+        assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
+        assert ghdimers[2].real != ghdimers[5].real
+    else:
+        assert 0
 
 
 def test_molecule_repeated_hashing():
@@ -382,10 +468,10 @@ def test_nuclearrepulsionenergy_nelectrons():
     assert compare(10, mol.nelectrons(ifr=0), 'M1')
     assert compare(10, mol.nelectrons(ifr=1), 'M2')
 
-    mol = mol.get_fragment([1], 0)
-    # Notice the 0th/1st fragments change. Got to stop get_fragment from reordering
-    ifr0 = 1
-    ifr1 = 0
+    mol = mol.get_fragment([1], 0, group_fragments=False)
+    # Notice the 0th/1st fragments change if default group_fragments=True.
+    ifr0 = 0
+    ifr1 = 1
     assert compare_values(16.04859029, mol.nuclear_repulsion_energy(), 'D', atol=1.e-5)
     assert compare_values(0.0, mol.nuclear_repulsion_energy(ifr=ifr0), 'M1', atol=1.e-5)
     assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=ifr1), 'M2', atol=1.e-5)

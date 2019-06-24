@@ -496,7 +496,7 @@ def kabsch_align(rgeom, cgeom, weight=None):
     R *= np.sqrt(w[:, None])
     C *= np.sqrt(w[:, None])
 
-    RR = kabsch_quaternion(C.T, R.T)
+    RR = kabsch_quaternion(C.T, R.T)  # U
     TT = Ccentroid - RR.dot(Rcentroid)
 
     C = C.dot(RR)
@@ -507,7 +507,7 @@ def kabsch_align(rgeom, cgeom, weight=None):
 
 def kabsch_quaternion(P, Q):
     """Computes the optimal rotation matrix U which mapping a set of points P
-    onto the set of points Q according to the minimization of || Q - R * P ||,
+    onto the set of points Q according to the minimization of || Q - U * P ||,
     using the unit quaternion formulation of the Kabsch algorithm.
 
     Arguments:
