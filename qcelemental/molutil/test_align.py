@@ -442,3 +442,95 @@ Rotation:
 
     p2chess = mill.align_hessian(p4_hooh_hess_native)
     assert compare_values(c4_hooh_hess, p2chess, atol=1.e-4)
+
+def test_vector_gradient_align():
+    # from Psi4 test test_hessian_vs_cfour[HOOH_TS-H_analytic]
+
+    rmill = """
+----------------------------------------
+             AlignmentMill              
+----------------------------------------
+Mirror:   False
+Atom Map: [0 1 2 3]
+Shift:    [0.00000000e+00 0.00000000e+00 1.32217718e-10]
+Rotation:
+[[ 9.99999870e-01 -5.08999836e-04 -0.00000000e+00]
+ [ 5.08999836e-04  9.99999870e-01  0.00000000e+00]
+ [ 0.00000000e+00 -0.00000000e+00  1.00000000e+00]]
+----------------------------------------
+"""
+
+    p4_hooh_xyz = """
+    units au
+    H  1.8327917647 -1.5752960165 -0.0000055594
+    O  1.3171390326  0.1388012713  0.0000003503
+    O -1.3171390326 -0.1388012713  0.0000003503
+    H -1.8327917647  1.5752960165 -0.0000055594
+    """
+
+    c4_hooh_xyz = """
+     H   1.83198970    -1.57622870    -0.00000556
+     O   1.31720951     0.13813083     0.00000035
+     O  -1.31720951    -0.13813083     0.00000035
+     H  -1.83198970     1.57622870    -0.00000556
+     units au"""
+
+    # From C4 DIPDER file, analytic
+    c4_hooh_dipder_x = np.array([
+      [ 0.2780463810,      -0.0627423838,      -0.0000001663],
+      [ 0.2780463810,      -0.0627423838,       0.0000001663],
+      [-0.2780463810,       0.0627423838,       0.0000007872],
+      [-0.2780463810,       0.0627423838,      -0.0000007872]])
+    c4_hooh_dipder_y = np.array([
+      [-0.0452364698,       0.2701572972,      -0.0000004246],
+      [-0.0452364698,       0.2701572972,       0.0000004246],
+      [ 0.0452364698,      -0.2701572972,       0.0000007936],
+      [ 0.0452364698,      -0.2701572972,      -0.0000007936]])
+    c4_hooh_dipder_z = np.array([
+      [-0.0000001575,      -0.0000004725,       0.4019549601],
+      [ 0.0000001575,       0.0000004725,       0.4019549601],
+      [-0.0000000523,       0.0000008401,      -0.4019549601],
+      [ 0.0000000523,      -0.0000008401,      -0.4019549601]])
+
+    # Generated from fixing orientation/com in psi4.  Then using
+    # a 5-point finite differences of nuclear gradients computed
+    # with an applied electric field to produce a file17.dat.
+    p4_hooh_dipdir_x_native = np.array(
+      [ 0.2781013514,      -0.0627383175,      -0.0000001660],
+      [-0.2781013514,       0.0627383175,       0.0000007867],
+      [-0.2781013514,       0.0627383175,      -0.0000007867],
+      [ 0.2781013514,      -0.0627383175,       0.0000001660]])
+    p4_hooh_dipdir_y_native = np.array(
+      [-0.0452324587,       0.2701024305,      -0.0000004247],
+      [ 0.0452324587,      -0.2701024305,       0.0000007939],
+      [ 0.0452324587,      -0.2701024305,      -0.0000007939],
+      [-0.0452324587,       0.2701024305,       0.0000004247]])
+    p4_hooh_dipdir_z_native = np.array(
+      [-0.0000001572,      -0.0000004726,       0.4019549470],
+      [-0.0000000527,       0.0000008401,      -0.4019549470],
+      [ 0.0000000527,      -0.0000008401,      -0.4019549470],
+      [ 0.0000001572,       0.0000004726,       0.4019549470]])
+
+    p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
+    c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
+    aqmol, data = p4mol.align(c4mol, atoms_map=True, mols_align=True, verbose=4)
+    mill = data['mill']
+    #assert compare([0, 1, 2, 3], mill.atommap)
+    #assert compare_values([
+ #[ 9.99999870e-01, -5.08999836e-04, -0.00000000e+00],
+ #[ 5.08999836e-04,  9.99999870e-01,  0.00000000e+00],
+ #[ 0.00000000e+00, -0.00000000e+00,  1.00000000e+00]],
+        #mill.rotation,
+        #atol=1.e-6)
+
+    p2cgeom = mill.align_coordinates(p4mol.geometry)
+    assert compare_values(c4mol.geometry, p2cgeom, atol=1.e-6)
+
+    # Still need to account for atom renumbering !
+    p2c_dipdir_x, p2c_dipdir_y, p2c_dipdir_z = mill.align_vector_gradient(
+      p4_hooh_dipdir_x_native, p4_hooh_dipdir_y_native, p4_hooh_dipdir_z_native)
+
+    assert compare_values(c4_hooh_dipdir_x, p2c_dipdir_x, atol=1.e-6)
+    assert compare_values(c4_hooh_dipdir_y, p2c_dipdir_y, atol=1.e-6)
+    assert compare_values(c4_hooh_dipdir_z, p2c_dipdir_z, atol=1.e-6)
+
