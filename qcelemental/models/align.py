@@ -130,22 +130,22 @@ class AlignmentMill(BaseModel):
         """Align the nuclear gradients of vector components (e.g. dipole derivatives)."""
         # Input data is assumed to be organized into separate x, y, z vector components.
         # Organize derivatives for each atom into 3x3 and transform it.
-        nat = mu_x.shape[0] // 3
+        nat = mu_x.shape[0]
         al_mu_x = np.zeros( (nat, 3) )
         al_mu_y = np.zeros( (nat, 3) )
         al_mu_z = np.zeros( (nat, 3) )
 
-        DERatom = np.zeros( (3,3) )
+        Datom = np.zeros( (3,3) ) # atom whose nuclear derivatives are taken
         for at in range(nat):
-            Deratom.fill(0)
-            DERatom[0,:] = mu_x[at,:]
-            DERatom[1,:] = mu_y[at,:]
-            DERatom[2,:] = mu_z[at,:]
-            DERatom[:] = np.dot( self.rotation.T , np.dot(DIPDERatom, self.rotation) )
-            al_mu_x[at][:] = DERatom[0,:]
-            al_mu_y[at][:] = DERatom[1,:]
-            al_mu_z[at][:] = DERatom[2,:]
-        return (al_mu_x, al_mu_y, al_muz)
+            Datom.fill(0)
+            Datom[0,:] = mu_x[at,:]
+            Datom[1,:] = mu_y[at,:]
+            Datom[2,:] = mu_z[at,:]
+            Datom[:] = np.dot( self.rotation.T , np.dot(Datom, self.rotation) )
+            al_mu_x[self.atommap[at]][:] = Datom[0,:]
+            al_mu_y[self.atommap[at]][:] = Datom[1,:]
+            al_mu_z[self.atommap[at]][:] = Datom[2,:]
+        return (al_mu_x, al_mu_y, al_mu_z)
 
     def align_system(self, geom, mass, elem, elez, uniq, *, reverse: bool = False):
         """For AlignmentRecipe `ar`, apply its translation, rotation, and atom map."""
