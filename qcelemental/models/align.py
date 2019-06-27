@@ -138,13 +138,13 @@ class AlignmentMill(BaseModel):
         Datom = np.zeros( (3,3) ) # atom whose nuclear derivatives are taken
         for at in range(nat):
             Datom.fill(0)
-            Datom[0,:] = mu_x[at,:]
-            Datom[1,:] = mu_y[at,:]
-            Datom[2,:] = mu_z[at,:]
+            Datom[0,:] = mu_x[self.atommap[at],:]
+            Datom[1,:] = mu_y[self.atommap[at],:]
+            Datom[2,:] = mu_z[self.atommap[at],:]
             Datom[:] = np.dot( self.rotation.T , np.dot(Datom, self.rotation) )
-            al_mu_x[self.atommap[at]][:] = Datom[0,:]
-            al_mu_y[self.atommap[at]][:] = Datom[1,:]
-            al_mu_z[self.atommap[at]][:] = Datom[2,:]
+            al_mu_x[at][:] = Datom[0,:]
+            al_mu_y[at][:] = Datom[1,:]
+            al_mu_z[at][:] = Datom[2,:]
         return (al_mu_x, al_mu_y, al_mu_z)
 
     def align_system(self, geom, mass, elem, elez, uniq, *, reverse: bool = False):

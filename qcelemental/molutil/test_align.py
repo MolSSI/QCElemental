@@ -443,7 +443,9 @@ Rotation:
     p2chess = mill.align_hessian(p4_hooh_hess_native)
     assert compare_values(c4_hooh_hess, p2chess, atol=1.e-4)
 
+@using_networkx
 def test_vector_gradient_align():
+    # HOOH TS (optimized to be very nearly planar)
     p4_hooh_xyz = """
     units au
     H  1.8327917647 -1.5752960165 -0.0000055594
@@ -452,16 +454,14 @@ def test_vector_gradient_align():
     H -1.8327917647  1.5752960165 -0.0000055594
     """
 
+    # from C4 GRD file, produced by p4_hooh_xyz in ZMAT
     c4_hooh_xyz = """
-    # H   1.83198970    -1.57622870    -0.00000556
-    # O   1.31720951     0.13813083     0.00000035
-    # O  -1.31720951    -0.13813083     0.00000035
-    # H  -1.83198970     1.57622870    -0.00000556
-     H   1.83198970    -1.57622870    -0.00000556
-     H  -1.83198970     1.57622870    -0.00000556
-     O  -1.31720951    -0.13813083     0.00000035
-     O   1.31720951     0.13813083     0.00000035
-     units au"""
+    units au
+    H  1.8319897007 -1.5762287045  -0.0000055594
+    H -1.8319897007  1.5762287045  -0.0000055594
+    O  1.3172095119  0.1381308288   0.0000003503
+    O -1.3172095119 -0.1381308288   0.0000003503
+    """
 
     # From C4 DIPDER file, analytic
     c4_hooh_dipder_x = np.array([
@@ -504,7 +504,7 @@ def test_vector_gradient_align():
     aqmol, data = p4mol.align(c4mol, atoms_map=False, mols_align=True, verbose=4)
     mill = data['mill']
 
-    assert compare([0, 3, 2, 1], mill.atommap)
+    assert compare([0, 3, 1, 2], mill.atommap)
 
     p2cgeom = mill.align_coordinates(p4mol.geometry)
     assert compare_values(c4mol.geometry, p2cgeom, atol=1.e-6)
