@@ -131,7 +131,7 @@ def test_error_bins_b787():
     with pytest.raises(qcel.ValidationError) as e:
         oco12.align(oco10, verbose=0)
 
-    assert 'atom subclasses unequal' in str(e)
+    assert 'atom subclasses unequal' in str(e.value)
 
 
 @using_networkx
@@ -142,7 +142,7 @@ def test_error_nat_b787():
     with pytest.raises(qcel.ValidationError) as e:
         oco12.align(oco10, verbose=0)
 
-    assert "natom doesn't match" in str(e)
+    assert "natom doesn't match" in str(e.value)
 
 
 def test_mill_shift_error():
@@ -200,7 +200,7 @@ def test_error_kabsch():
     with pytest.raises(qcel.ValidationError) as e:
         qcel.molutil.kabsch_align([1, 2, 3], [4, 5, 6], weight=7)
 
-    assert "for kwarg 'weight'" in str(e)
+    assert "for kwarg 'weight'" in str(e.value)
 
 
 @using_networkx

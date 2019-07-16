@@ -105,7 +105,7 @@ def test_dtype_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final['qm'], dtype='xkcd927')
 
-    assert "Schema dtype not understood" in str(e)
+    assert "Schema dtype not understood" in str(e.value)
 
 
 @pytest.mark.parametrize("dtype", [
@@ -118,7 +118,7 @@ def test_qcschema_ang_error(dtype):
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final['qm'], dtype=dtype, units='Angstrom')
 
-    assert f"QC_JSON_Schema {dtype} allows only 'Bohr' coordinates" in str(e)
+    assert f"QC_JSON_Schema {dtype} allows only 'Bohr' coordinates" in str(e.value)
 
 
 def test_psi4_nm_error():
@@ -127,7 +127,7 @@ def test_psi4_nm_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final['qm'], dtype='psi4', units='nm')
 
-    assert "Psi4 Schema psi4 allows only 'Bohr'/'Angstrom' coordinates, not nm" in str(e)
+    assert "Psi4 Schema psi4 allows only 'Bohr'/'Angstrom' coordinates, not nm" in str(e.value)
 
 
 twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")

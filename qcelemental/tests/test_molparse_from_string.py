@@ -140,7 +140,7 @@ def test_psi4_qm_iutautoobig_error_1g():
             fix_com=True,
             fix_orientation=False)
 
-    assert 'No big perturbations to physical constants' in str(e)
+    assert 'No big perturbations to physical constants' in str(e.value)
 
 
 def test_psi4_qm_iutau_1h():
@@ -600,7 +600,7 @@ def test_qmefp_badhint_error_6e():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'efp1'])
 
-    assert "hint_types not among 'xyzabc', 'points', 'rotmat'" in str(e)
+    assert "hint_types not among 'xyzabc', 'points', 'rotmat'" in str(e.value)
 
 
 def test_qmefp_badefpgeom_error_6f():
@@ -615,7 +615,7 @@ def test_qmefp_badefpgeom_error_6f():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'points'])
 
-    assert "Un float-able elements in geom_hints" in str(e)
+    assert "Un float-able elements in geom_hints" in str(e.value)
 
 
 def test_qmefp_badhintgeom_error_6g():
@@ -630,7 +630,7 @@ def test_qmefp_badhintgeom_error_6g():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['points', 'xyzabc'])
 
-    assert 'EFP hint type points not 9 elements' in str(e)
+    assert 'EFP hint type points not 9 elements' in str(e.value)
 
 
 def test_qmefp_badfragfile_error_6h():
@@ -645,7 +645,7 @@ def test_qmefp_badfragfile_error_6h():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'points'])
 
-    assert 'fragment_files not strings' in str(e)
+    assert 'fragment_files not strings' in str(e.value)
 
 
 def test_qmefp_hintlen_error_6i():
@@ -660,7 +660,7 @@ def test_qmefp_hintlen_error_6i():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'points', 'points'])
 
-    assert 'Missing or inconsistent length among efp quantities' in str(e)
+    assert 'Missing or inconsistent length among efp quantities' in str(e.value)
 
 
 def test_qmefp_fixcom_error_6j():
@@ -676,7 +676,7 @@ def test_qmefp_fixcom_error_6j():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'points'])
 
-    assert 'Invalid fix_com (False) with extern (True)' in str(e)
+    assert 'Invalid fix_com (False) with extern (True)' in str(e.value)
 
 
 def test_qmefp_fixori_error_6k():
@@ -692,7 +692,7 @@ def test_qmefp_fixori_error_6k():
                         [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
             hint_types=['xyzabc', 'points'])
 
-    assert 'Invalid fix_orientation (False) with extern (True)' in str(e)
+    assert 'Invalid fix_orientation (False) with extern (True)' in str(e.value)
 
 
 #QCEL@using_pylibefp
@@ -1408,7 +1408,7 @@ def test_tooclose_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-    assert 'too close' in str(e)
+    assert 'too close' in str(e.value)
 
 
 def test_cartbeforezmat_error():
@@ -1417,7 +1417,7 @@ def test_cartbeforezmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-    assert 'Mixing Cartesian and Zmat' in str(e)
+    assert 'Mixing Cartesian and Zmat' in str(e.value)
 
 
 def test_jumbledzmat_error():
@@ -1426,7 +1426,7 @@ def test_jumbledzmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-    assert 'aim for lower triangular' in str(e)
+    assert 'aim for lower triangular' in str(e.value)
 
 
 def test_steepzmat_error():
@@ -1435,7 +1435,7 @@ def test_steepzmat_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_string(subject)
 
-    assert 'aim for lower triangular' in str(e)
+    assert 'aim for lower triangular' in str(e.value)
 
 
 def test_zmatvar_error():
@@ -1447,7 +1447,7 @@ def test_zmatvar_error():
             variables=[['bond', 2.0, 'badextra']],
             geom_unsettled=[[], ['1', 'bond']])
 
-    assert 'Variables should come in pairs' in str(e)
+    assert 'Variables should come in pairs' in str(e.value)
 
 
 def test_toomanyfrag_error():
@@ -1464,7 +1464,7 @@ def test_toomanyfrag_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'zero-length fragment' in str(e)
+    assert 'zero-length fragment' in str(e.value)
 
 
 def test_fragsep_error():
@@ -1481,7 +1481,7 @@ def test_fragsep_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'unable to perform trial np.split on geometry' in str(e)
+    assert 'unable to perform trial np.split on geometry' in str(e.value)
 
 
 def test_cartzmatcart():
@@ -1522,35 +1522,35 @@ def test_fixcom_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], fix_com='thanks!')
 
-    assert 'Invalid fix_com' in str(e)
+    assert 'Invalid fix_com' in str(e.value)
 
 
 def test_fixori_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], fix_orientation=-1)
 
-    assert 'Invalid fix_orientation' in str(e)
+    assert 'Invalid fix_orientation' in str(e.value)
 
 
 def test_units_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(elez=[3], molecular_charge=1, geom=[0, 0, 0], units='furlong')
 
-    assert 'Invalid molecule geometry units' in str(e)
+    assert 'Invalid molecule geometry units' in str(e.value)
 
 
 def test_domain_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(domain='kitten')
 
-    assert 'Topology domain kitten not available' in str(e)
+    assert 'Topology domain kitten not available' in str(e.value)
 
 
 def test_natom_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(elem=['C'], elea=[12, 13], geom=[0, 0, 0])
 
-    assert 'Dimension mismatch natom' in str(e)
+    assert 'Dimension mismatch natom' in str(e.value)
 
 
 def test_incompletefrag_error():
@@ -1566,7 +1566,7 @@ def test_incompletefrag_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'Fragment quantities given without separation info' in str(e)
+    assert 'Fragment quantities given without separation info' in str(e.value)
 
 
 def test_badmult_error():
@@ -1583,7 +1583,7 @@ def test_badmult_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'fragment_multiplicities not among None or positive integer' in str(e)
+    assert 'fragment_multiplicities not among None or positive integer' in str(e.value)
 
 
 def test_badchg_error():
@@ -1600,7 +1600,7 @@ def test_badchg_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'fragment_charges not among None or float' in str(e)
+    assert 'fragment_charges not among None or float' in str(e.value)
 
 
 def test_fraglen_error():
@@ -1617,7 +1617,7 @@ def test_fraglen_error():
             units='Bohr',
             variables=[('bond', '3')])
 
-    assert 'mismatch among fragment quantities' in str(e)
+    assert 'mismatch among fragment quantities' in str(e.value)
 
 
 def test_zmatfragarr_14a():
@@ -1731,7 +1731,7 @@ def test_badprov0_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(geom=[1, 2, 3], elez=[4], provenance='mine')
 
-    assert 'Provenance entry is not dictionary' in str(e)
+    assert 'Provenance entry is not dictionary' in str(e.value)
 
 
 def test_badprov1_error():
@@ -1743,7 +1743,7 @@ def test_badprov1_error():
                 'version': '0.1b'
             })
 
-    assert """Provenance key 'creator' should be string of creating program's name:""" in str(e)
+    assert """Provenance key 'creator' should be string of creating program's name:""" in str(e.value)
 
 
 def test_badprov2_error():
@@ -1757,7 +1757,7 @@ def test_badprov2_error():
                 'version': 'my.vanity.version.13'
             })
 
-    assert """Provenance key 'version' should be a valid PEP 440 string:""" in str(e)
+    assert """Provenance key 'version' should be a valid PEP 440 string:""" in str(e.value)
 
 
 def test_badprov3_error():
@@ -1769,7 +1769,7 @@ def test_badprov3_error():
                 'version': '0.1b'
             })
 
-    assert """Provenance key 'routine' should be string of creating function's name:""" in str(e)
+    assert """Provenance key 'routine' should be string of creating function's name:""" in str(e.value)
 
 
 def test_badprov4_error():
@@ -1781,7 +1781,7 @@ def test_badprov4_error():
                 'version': '0.1b'
             })
 
-    assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e)
+    assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e.value)
 
 
 fullans17 = {
@@ -1851,7 +1851,7 @@ def test_connectivity_atindex_error():
             connectivity=[(2.1, 1, 1), (1, 0, 1)],
         )
 
-    assert "Connectivity first atom should be int" in str(e)
+    assert "Connectivity first atom should be int" in str(e.value)
 
 
 def test_connectivity_atrange_error():
@@ -1866,7 +1866,7 @@ def test_connectivity_atrange_error():
             connectivity=[(2, 1, 1), (1, -1, 1)],
         )
 
-    assert "Connectivity second atom should be int" in str(e)
+    assert "Connectivity second atom should be int" in str(e.value)
 
 
 def test_connectivity_bondorder_error():
@@ -1881,7 +1881,7 @@ def test_connectivity_bondorder_error():
             connectivity=[(2, 1, 1), (1, 0, 6)],
         )
 
-    assert "Connectivity bond order should be float" in str(e)
+    assert "Connectivity bond order should be float" in str(e.value)
 
 
 def test_connectivity_type_error():
@@ -1896,7 +1896,7 @@ def test_connectivity_type_error():
             connectivity='wire',
         )
 
-    assert "Connectivity entry is not of form" in str(e)
+    assert "Connectivity entry is not of form" in str(e.value)
 
 
 #'geom_unsettled': [[], ['1', '2.'], ['1', '2.', '2', '100.', '3', '35.']],
