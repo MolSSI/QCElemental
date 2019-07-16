@@ -131,7 +131,7 @@ def test_pubchem_multiout_g():
         qcelemental.molparse.from_string(subject, return_processed=True)
     except qcelemental.ChoicesError as e:
         assert e.choices[10789] == '2-hydroxycyclohepta-2,4,6-trien-1-one'
-        assert e.choices[100993904] == '5-deuterio-2-hydroxycyclohepta-2,4,6-trien-1-one'
+        assert e.choices[193687] == '2-hydroxy-3-iodo-6-propan-2-ylcyclohepta-2,4,6-trien-1-one'
 
 
 subject13 = """pubchem :ammonium\n"""
