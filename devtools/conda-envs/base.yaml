@@ -8,14 +8,14 @@ dependencies:
   - nomkl
   - python
   - pint
-  - pydantic=0.30.1
+  - pydantic>=0.30.1
 
     # Optional depends
   - networkx
   - py3dmol
 
     # Testing
-  - pytest=4.0.0
+  - pytest>=4.0.0
   - pytest-cov
   - codecov
   - scipy  # tests an aspect of a helper fn not used by qcel functionality
