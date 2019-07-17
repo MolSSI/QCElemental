@@ -66,7 +66,7 @@ def test_contiguize_from_fragment_pattern_error(inp, expected):
     with pytest.raises(qcel.ValidationError) as e:
         qcel.molparse.contiguize_from_fragment_pattern(**inp)
 
-    assert expected in str(e)
+    assert expected in str(e.value)
 
 
 schema14_1 = {
@@ -136,7 +136,7 @@ def test_from_schema_error_f():
     with pytest.raises(qcel.ValidationError) as e:
         qcel.molparse.from_schema(schema)
 
-    assert 'Schema not recognized' in str(e)
+    assert 'Schema not recognized' in str(e.value)
 
 
 def test_from_schema_1_nfr_error_14g():
@@ -146,4 +146,4 @@ def test_from_schema_1_nfr_error_14g():
     with pytest.raises(qcel.ValidationError) as e:
         ans = qcel.molparse.from_schema(schema)
 
-    assert 'Dimension mismatch among fragment quantities: sep + 1 (1), chg (2), and mult(2)' in str(e)
+    assert 'Dimension mismatch among fragment quantities: sep + 1 (1), chg (2), and mult(2)' in str(e.value)

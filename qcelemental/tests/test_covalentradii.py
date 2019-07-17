@@ -77,4 +77,4 @@ def test_covradmaker2018():
     with pytest.raises(KeyError) as e:
         qcelemental.CovalentRadii("COVRADMAKER2018")
 
-    assert "only contexts {'ALVAREZ2008', } are currently supported" in str(e)
+    assert "only contexts {'ALVAREZ2008', } are currently supported" in str(e.value)

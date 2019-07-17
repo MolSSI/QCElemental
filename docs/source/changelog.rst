@@ -13,6 +13,20 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.5.0 / 2019-07-16
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`76`) Adds a built-in ``Molecule.to_file`` function for easy serialization into ``.numpy``, ``.json``, ``.xyz``,
+  ``.psimol``, and ``.psi4`` file formats.
+
+Bug Fixes
++++++++++
+
+- (:pr:`74`) Atom and fragment ordering are preserved when invoking ``get_fragment``.
+
 
 0.4.2 / 2019-06-13
 ------------------
