@@ -38,7 +38,7 @@ install:
     # Create test environment for package
   - |
     if [ $PROG == "MINIMAL" ]; then
-      python devtools/scripts/conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/minimal.yaml
+      python devtools/scripts/conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/minimal_pins.yaml
     elif [ $PROG == "FULL" ]; then
       python devtools/scripts/conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/base.yaml
     else
