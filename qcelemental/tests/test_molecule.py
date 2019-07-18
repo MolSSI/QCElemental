@@ -199,10 +199,15 @@ def test_water_orient():
     assert frag_0.get_hash() == frag_1.get_hash()
 
     # Make sure the complexes match
-    frag_0_1 = mol.get_fragment(0, 1, orient=True)
-    frag_1_0 = mol.get_fragment(1, 0, orient=True)
+    frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=True)
+    frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=True)
+    assert frag_0_1.get_hash() == frag_1_0.get_hash()
 
-    assert frag_0_1.get_hash() == frag_1_0.get_hash()  # != if get_fragment(..., group_fragments=False)
+    # Fragments not reordered, should be different molecules.
+    frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=False)
+    frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=False)
+    assert frag_0_1.get_hash() != frag_1_0.get_hash()
+
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data(
