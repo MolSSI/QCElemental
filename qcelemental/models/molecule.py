@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from pydantic import BaseModel, constr, validator
 
-from .common_models import NDArray, Provenance, ndarray_encoder, qcschema_molecule_default
+from .common_models import Array, Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
@@ -81,7 +81,7 @@ class Molecule(BaseModel):
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
     schema_version: int = 2
     symbols: List[str]
-    geometry: NDArray
+    geometry: Array[float]
 
     # Molecule data
     name: str = ""
@@ -368,7 +368,7 @@ class Molecule(BaseModel):
         Returns
         -------
         mol
-            New ``py::class:qcelemental.model.Molecule`` with ``self``\ 's fragments present, ghosted, or absent.
+            New ``py::class:qcelemental.model.Molecule`` with ``self``\'s fragments present, ghosted, or absent.
 
         """
         if isinstance(real, int):

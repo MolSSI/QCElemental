@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, List
 
 import numpy as np
 from pydantic import BaseModel
@@ -7,7 +7,7 @@ from pydantic import BaseModel
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
-class NDArray(np.ndarray):
+class TypedArray(np.ndarray):
     @classmethod
     def __get_validators__(cls):
         yield cls.validate
@@ -15,24 +15,23 @@ class NDArray(np.ndarray):
     @classmethod
     def validate(cls, v):
         try:
-            v = np.array(v, dtype=np.double)
-        except:
-            raise RuntimeError("Could not cast {} to NumPy Array!".format(v))
+            v = np.asarray(v, dtype=cls._dtype)
+        except ValueError:
+            raise ValueError("Could not cast {} to NumPy Array!".format(v))
+
         return v
 
 
-class NDArrayInt(np.ndarray):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+class ArrayMeta(type):
+    def __getitem__(self, t):
+        return type('Array', (TypedArray, ), {'_dtype': t})
 
-    @classmethod
-    def validate(cls, v):
-        try:
-            v = np.array(v, dtype=np.int)
-        except:
-            raise RuntimeError("Could not cast {} to NumPy Int Array!".format(v))
-        return v
+
+class Array(np.ndarray, metaclass=ArrayMeta):
+    def __init__(self, **kwargs):
+        super().__init__()
+
+    pass
 
 
 class Provenance(BaseModel):

@@ -4,7 +4,9 @@ import numpy as np
 from pydantic import BaseModel, validator
 
 from ..util import blockwise_expand, blockwise_contract
-from .common_models import (NDArray, NDArrayInt, ndarray_encoder)
+from .common_models import (Array, ndarray_encoder)
+
+__all__ = ["AlignmentMill"]
 
 
 class AlignmentMill(BaseModel):
@@ -16,9 +18,9 @@ class AlignmentMill(BaseModel):
     then molecular system can be substantively changed by procedure.
 
     """
-    shift: NDArray
-    rotation: NDArray
-    atommap: NDArrayInt
+    shift: Array[float]
+    rotation: Array[float]
+    atommap: Array[int]
     mirror: bool = False
 
     class Config:
@@ -67,7 +69,7 @@ class AlignmentMill(BaseModel):
         text.append('-' * width)
         return ('\n'.join(text))
 
-    def align_coordinates(self, geom, *, reverse=False) -> NDArray:
+    def align_coordinates(self, geom, *, reverse=False) -> Array:
         """suitable for geometry or displaced geometry"""
 
         algeom = np.copy(geom)
@@ -100,7 +102,7 @@ class AlignmentMill(BaseModel):
         #    alvec[:, 1] *= -1
         return vec.dot(self.rotation)
 
-    def align_gradient(self, grad) -> NDArray:
+    def align_gradient(self, grad) -> Array:
         """suitable for vector system attached to atoms"""
 
         # sensible? TODO
@@ -112,7 +114,7 @@ class AlignmentMill(BaseModel):
 
         return algrad
 
-    def align_hessian(self, hess) -> NDArray:
+    def align_hessian(self, hess) -> Array:
         blocked_hess = blockwise_expand(hess, (3, 3), False)
         alhess = np.zeros_like(blocked_hess)
 
