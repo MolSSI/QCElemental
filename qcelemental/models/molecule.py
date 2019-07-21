@@ -347,7 +347,7 @@ class Molecule(BaseModel):
                      ghost: Optional[Union[int, List]] = None,
                      orient: bool = False,
                      group_fragments: bool = False) -> 'Molecule':
-        """Get new Molecule with fragments preserved, dropped, or ghosted.
+        r"""Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
         ----------
