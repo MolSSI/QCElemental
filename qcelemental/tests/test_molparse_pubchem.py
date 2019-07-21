@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 import qcelemental
 from qcelemental.testing import compare_molrecs, tnm
+from .addons import using_web
 
 _string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
 
@@ -54,6 +55,7 @@ fullans4 = {
 }  # yapf: disable
 
 
+@using_web
 def test_pubchem_4a():
     subject = subject4
     fullans = copy.deepcopy(fullans4)
@@ -64,6 +66,7 @@ def test_pubchem_4a():
     assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
+@using_web
 def test_pubchem_4b():
     """user units potentially contradicting pubchem units"""
     subject = subject4 + '\nunits au'
@@ -72,6 +75,7 @@ def test_pubchem_4b():
         final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
 
 
+@using_web
 def test_pubchem_4c():
     subject = """
 pubchem  : 241
@@ -116,6 +120,7 @@ def test_pubchem_error_f():
         qcelemental.molparse.from_string(subject, return_processed=True)
 
 
+@using_web
 def test_pubchem_multiout_g():
     subject = """
     #pubchem: gobbledegook
@@ -173,6 +178,7 @@ fullans13 = {
 }  # yapf: disable
 
 
+@using_web
 def test_pubchem_13h():
     subject = subject13
     fullans = copy.deepcopy(fullans13)
@@ -183,6 +189,7 @@ def test_pubchem_13h():
     assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
+@using_web
 def test_pubchem_13i():
     subject = "PubChem:223"
     fullans = copy.deepcopy(fullans13)

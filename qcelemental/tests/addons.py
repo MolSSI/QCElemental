@@ -1,7 +1,17 @@
+import socket
+
 import pytest
 
 from qcelemental.util import which_import
 
+def internet_connection():
+    try:
+        socket.create_connection(("www.google.com", 80))
+        return True
+    except OSError:
+        return False
+
+using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
 
 using_networkx = pytest.mark.skipif(
     which_import('networkx', return_bool=True) is False,
