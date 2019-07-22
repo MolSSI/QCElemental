@@ -4,7 +4,8 @@ import numpy as np
 from pydantic import BaseModel, validator
 
 from ..util import blockwise_expand, blockwise_contract
-from .common_models import (Array, ndarray_encoder)
+from .common_models import ndarray_encoder
+from .types import Array
 
 __all__ = ["AlignmentMill"]
 

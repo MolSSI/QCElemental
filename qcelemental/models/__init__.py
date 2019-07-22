@@ -9,3 +9,4 @@ from .results import Result, ResultInput, ResultProperties
 from .procedures import OptimizationInput, Optimization
 from .common_models import Provenance, ComputeError, FailedOperation
 from .align import AlignmentMill
+from . import types
