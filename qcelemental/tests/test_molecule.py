@@ -131,14 +131,14 @@ def test_water_minima_fragment():
     frag_0_1 = mol.get_fragment(0, 1)
     frag_1_0 = mol.get_fragment(1, 0)
 
-    assert mol.symbols[:3] == frag_0.symbols
+    assert np.array_equal(mol.symbols[:3], frag_0.symbols)
     assert np.allclose(mol.masses[:3], frag_0.masses)
 
-    assert mol.symbols == frag_0_1.symbols
+    assert np.array_equal(mol.symbols, frag_0_1.symbols)
     assert np.allclose(mol.geometry, frag_0_1.geometry)
 
-    assert mol.symbols[3:] + mol.symbols[:3] == frag_1_0.symbols
-    assert np.allclose(mol.masses[3:] + mol.masses[:3], frag_1_0.masses)
+    assert np.array_equal(np.hstack((mol.symbols[3:], mol.symbols[:3])), frag_1_0.symbols)
+    assert np.allclose(np.hstack((mol.masses[3:], mol.masses[:3])), frag_1_0.masses)
 
 
 def test_pretty_print():
@@ -363,7 +363,7 @@ def test_get_fragment(group_fragments, orient):
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
-        assert ghdimers[2].real != ghdimers[5].real
+        assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
     else:
         assert 0
 

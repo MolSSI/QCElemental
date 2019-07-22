@@ -31,8 +31,6 @@ class Array(np.ndarray, metaclass=ArrayMeta):
     def __init__(self, **kwargs):
         super().__init__()
 
-    pass
-
 
 class Provenance(BaseModel):
     creator: str

@@ -80,7 +80,7 @@ class Molecule(BaseModel):
     # Required data
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
     schema_version: int = 2
-    symbols: List[str]
+    symbols: Array[str]
     geometry: Array[float]
 
     # Molecule data
@@ -91,17 +91,17 @@ class Molecule(BaseModel):
     molecular_multiplicity: int = 1
 
     # Atom data
-    masses: List[float]
-    real: List[bool]
-    atom_labels: Optional[List[str]] = None
-    atomic_numbers: Optional[List[int]] = None
-    mass_numbers: Optional[List[int]] = None
+    masses: Array[float]
+    real: Array[bool]
+    atom_labels: Optional[Array[str]] = None
+    atomic_numbers: Optional[Array[int]] = None
+    mass_numbers: Optional[Array[int]] = None
 
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = None
-    fragments: List[List[int]]
-    fragment_charges: List[float]
-    fragment_multiplicities: List[int]
+    fragments: List[Array[int]]
+    fragment_charges: Array[float]
+    fragment_multiplicities: Array[int]
 
     # Orientation
     fix_com: bool = False
@@ -134,13 +134,13 @@ class Molecule(BaseModel):
         # All attributes set bellow are equivalent to the default set.
         values = self.__values__
 
-        values["symbols"] = [s.title() for s in self.symbols]  # Title case
+        values["symbols"] = np.array([s.title() for s in self.symbols])  # Title case
 
         if values["masses"] is None:  # Setup masses before fixing the orientation
-            values["masses"] = [periodictable.to_mass(x) for x in values["symbols"]]
+            values["masses"] = np.array([periodictable.to_mass(x) for x in values["symbols"]])
 
         if values["real"] is None:
-            values["real"] = [True for _ in values["symbols"]]
+            values["real"] = np.array([True for _ in values["symbols"]])
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
@@ -148,21 +148,21 @@ class Molecule(BaseModel):
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-        if not values["fragments"]:
+        if values["fragments"] is None:
             natoms = values["geometry"].shape[0]
-            values["fragments"] = [list(range(natoms))]
-            values["fragment_charges"] = [values["molecular_charge"]]
-            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
+            values["fragments"] = np.array([list(range(natoms))])
+            values["fragment_charges"] = np.array([values["molecular_charge"]])
+            values["fragment_multiplicities"] = np.array([values["molecular_multiplicity"]])
         else:
-            if not values["fragment_charges"]:
+            if values["fragment_charges"] is None:
                 if np.isclose(values["molecular_charge"], 0.0):
-                    values["fragment_charges"] = [0 for _ in values["fragments"]]
+                    values["fragment_charges"] = np.array([0 for _ in values["fragments"]])
                 else:
                     raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
 
-            if not values["fragment_multiplicities"]:
+            if values["fragment_multiplicities"] is None:
                 if values["molecular_multiplicity"] == 1:
-                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
+                    values["fragment_multiplicities"] = np.array([1 for _ in values["fragments"]])
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
@@ -187,7 +187,7 @@ class Molecule(BaseModel):
         # Can't use geometry here since its already been validated and not in values
         n = len(values['symbols'])
         if len(v) == 0:
-            v = [True for _ in range(n)]
+            v = np.array([True for _ in range(n)])
         return v
 
     @validator('fragment_charges', 'fragment_multiplicities', whole=True)
@@ -308,7 +308,7 @@ class Molecule(BaseModel):
             bench = self
 
         match = True
-        match &= bench.symbols == other.symbols
+        match &= np.array_equal(bench.symbols, other.symbols)
         match &= np.allclose(bench.masses, other.masses, atol=MASS_NOISE)
         match &= np.equal(bench.real, other.real).all()
         match &= np.equal(bench.fragments, other.fragments).all()
@@ -515,15 +515,15 @@ class Molecule(BaseModel):
         for field in self.hash_fields:
             data = tmp_dict[field]
             if field == "geometry":
-                tmp_dict[field] = float_prep(data, GEOMETRY_NOISE).ravel().tolist()
+                data = float_prep(data, GEOMETRY_NOISE)
             elif field == "fragment_charges":
-                tmp_dict[field] = float_prep(data, CHARGE_NOISE).tolist()
+                data = float_prep(data, CHARGE_NOISE)
             elif field == "molecular_charge":
-                tmp_dict[field] = float_prep(data, CHARGE_NOISE)
+                data = float_prep(data, CHARGE_NOISE)
             elif field == "masses":
-                tmp_dict[field] = float_prep(data, MASS_NOISE).tolist()
+                data = float_prep(data, MASS_NOISE)
 
-            concat += json.dumps(tmp_dict[field])  # This should only be operating on Python types now
+            concat += json.dumps(data, default=lambda x: x.ravel().tolist())
 
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
