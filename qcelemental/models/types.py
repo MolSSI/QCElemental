@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class TypedArray(np.ndarray):
     @classmethod
     def __get_validators__(cls):

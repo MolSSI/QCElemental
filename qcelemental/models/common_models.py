@@ -1,8 +1,10 @@
 from enum import Enum
-from typing import Any, Dict, Optional, List, Set
-from .protomodel import ProtoModel
+from typing import Any, Dict, List, Optional, Set
+
 import numpy as np
 from pydantic import BaseModel
+
+from .protomodel import ProtoModel
 
 # Encoders, to be deprecated
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}

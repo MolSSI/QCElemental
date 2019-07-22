@@ -260,10 +260,17 @@ def test_molecule_errors_shape():
         Molecule(**data)
 
 
-def test_molecule_serialization():
+def test_molecule_json_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
     assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
+
+    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.json(), dtype="json"))
+
+def test_molecule_msgpack_serialization():
+    assert isinstance(water_dimer_minima.msgpack(), bytes)
+
+    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
 
 
 def test_charged_fragment():

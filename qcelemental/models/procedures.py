@@ -4,8 +4,8 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, constr
 
 from ..util import provenance_stamp
-from .common_models import (ComputeError, DriverEnum, Model, ndarray_encoder, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default, Provenance)
+from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray_encoder, qcschema_input_default,
+                            qcschema_optimization_input_default, qcschema_optimization_output_default)
 from .molecule import Molecule
 from .results import Result
 

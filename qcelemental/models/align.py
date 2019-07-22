@@ -3,7 +3,7 @@ import json
 import numpy as np
 from pydantic import BaseModel, validator
 
-from ..util import blockwise_expand, blockwise_contract
+from ..util import blockwise_contract, blockwise_expand
 from .common_models import ndarray_encoder
 from .types import Array
 

@@ -11,12 +11,14 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from pydantic import BaseModel, constr, validator
 
-from .common_models import Array, Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp, which_import
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
+from .protomodel import ProtoModel
+from .types import Array
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -75,7 +77,7 @@ class Identifiers(BaseModel):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
 
 
-class Molecule(BaseModel):
+class Molecule(ProtoModel):
 
     # Required data
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
@@ -622,6 +624,8 @@ class Molecule(BaseModel):
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
             validate = False
+        elif dtype == "msgpack":
+            input_dict = cls._parse_msgpack(data)
         elif dtype == "json":
             input_dict = json.loads(data)
         elif dtype == "dict":
