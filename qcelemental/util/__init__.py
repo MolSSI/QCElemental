@@ -8,3 +8,5 @@ from .misc import (distance_matrix, update_with_error, standardize_efp_angles_un
 from .internal import provenance_stamp
 from .itertools import unique_everseen
 from .importing import parse_version, safe_version, which, which_import
+
+from .serialization import msgpack_dumps, msgpack_loads
