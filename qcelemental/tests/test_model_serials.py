@@ -40,7 +40,7 @@ def result_input():
 def res_success():
     return {
         "success": True,
-        "return_result": 536.2,
+        "return_result": [536.2, 546.2, 556.2],
         "properties": {
             "scf_one_electron_energy": 5
         },

@@ -9,23 +9,21 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-from pydantic import BaseModel, constr, validator
+from pydantic import constr, validator
 
-
-from .types import Array
-from .protomodel import ProtoModel
-from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp, which_import
+from .basemodels import ProtoModel
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
+from .types import Array
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
 MASS_NOISE = 6
 CHARGE_NOISE = 4
-
 
 _extension_map = {
     ".npy": "numpy",
@@ -56,7 +54,7 @@ def float_prep(array, around):
     return array
 
 
-class Identifiers(BaseModel):
+class Identifiers(ProtoModel):
     """Canonical chemical identifiers"""
 
     molecule_hash: Optional[str] = None
@@ -70,12 +68,8 @@ class Identifiers(BaseModel):
     canonical_isomeric_smiles: Optional[str] = None
     canonical_smiles: Optional[str] = None
 
-    class Config:
-        allow_mutation = False
-        extra = "forbid"
-
-    def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
+    class Config(ProtoModel.Config):
+        serialize_skip_defaults = True
 
 
 class Molecule(ProtoModel):

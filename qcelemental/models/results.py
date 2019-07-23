@@ -1,15 +1,18 @@
 import json
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, constr, validator
+import numpy as np
+from pydantic import constr, validator
 
 from ..util import provenance_stamp
+from .basemodels import ProtoModel
 from .common_models import (ComputeError, DriverEnum, Model, Provenance, ndarray_encoder, qcschema_input_default,
                             qcschema_output_default)
 from .molecule import Molecule
+from .types import Array
 
 
-class ResultProperties(BaseModel):
+class ResultProperties(ProtoModel):
 
     # Calcinfo
     calcinfo_nbasis: Optional[int] = None
@@ -37,7 +40,7 @@ class ResultProperties(BaseModel):
     mp2_opposite_spin_correlation_energy: Optional[float] = None
     mp2_singles_energy: Optional[float] = None
     mp2_doubles_energy: Optional[float] = None
-    mp2_total_correlation_energy: Optional[float] = None # Old name, to be deprecated
+    mp2_total_correlation_energy: Optional[float] = None  # Old name, to be deprecated
     mp2_correlation_energy: Optional[float] = None
     mp2_total_energy: Optional[float] = None
     mp2_dipole_moment: Optional[List[float]] = None
@@ -57,18 +60,14 @@ class ResultProperties(BaseModel):
     ccsd_prt_pr_total_energy: Optional[float] = None
     ccsd_prt_pr_dipole_moment: Optional[List[float]] = None
 
-    class Config:
-        allow_mutation = False
-        extra = "forbid"
-
-    def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
+    class Config(ProtoModel.Config):
+        serialize_skip_defaults = True
 
 
 ### Primary models
 
 
-class ResultInput(BaseModel):
+class ResultInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
     id: Optional[str] = None
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
@@ -83,21 +82,15 @@ class ResultInput(BaseModel):
 
     provenance: Provenance = provenance_stamp(__name__)
 
-    class Config:
-        allow_mutation = False
-        extra = "forbid"
-
-        json_encoders = {**ndarray_encoder}
-
-    def json_dict(self, *args, **kwargs):
-        return json.loads(self.json(*args, **kwargs))
+    class Config(ProtoModel.Config):
+        pass
 
 
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
 
     properties: ResultProperties
-    return_result: Union[float, List[float], Dict[str, Any]]
+    return_result: Union[float, Array[float], Dict[str, Any]]
 
     stdout: Optional[str] = None
     stderr: Optional[str] = None
@@ -111,9 +104,20 @@ class Result(ResultInput):
         pass
 
     @validator("schema_name", pre=True)
-    def input_to_output(cls, v):
+    def _input_to_output(cls, v):
         """If qcschema_input is passed in, cast it to output, otherwise no"""
         if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
             return qcschema_output_default
         raise ValueError("Only {0} or {1} is allowed for schema_name, "
                          "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default))
+
+    @validator("return_result", whole=True)
+    def _validate_return_result(cls, v, values):
+        if values["driver"] == "gradient":
+            v = np.asarray(v).reshape(-1, 3)
+        elif values["driver"] == "hessian":
+            v = np.asarray(v)
+            nsq = int(v.size**0.5)
+            v.shape = (nsq, nsq)
+
+        return v

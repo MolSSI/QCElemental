@@ -1,16 +1,17 @@
 import json
 
 import numpy as np
-from pydantic import BaseModel, validator
+from pydantic import validator
 
 from ..util import blockwise_contract, blockwise_expand
+from .basemodels import ProtoModel
 from .common_models import ndarray_encoder
 from .types import Array
 
 __all__ = ["AlignmentMill"]
 
 
-class AlignmentMill(BaseModel):
+class AlignmentMill(ProtoModel):
     """Facilitates the application of the simple transformation operations
     defined by namedtuple of arrays as recipe to the data structures
     describing Cartesian molecular coordinates. Attaches functions to
@@ -24,13 +25,11 @@ class AlignmentMill(BaseModel):
     atommap: Array[int]
     mirror: bool = False
 
-    class Config:
-        json_encoders = {**ndarray_encoder}
-        allow_mutation = False
-        extra = "forbid"
+    class Config(ProtoModel.Config):
+        pass
 
     @validator('shift', whole=True)
-    def must_be_3(cls, v, values, **kwargs):
+    def _must_be_3(cls, v, values, **kwargs):
         try:
             v = v.reshape(3)
         except (ValueError, AttributeError):
@@ -38,7 +37,7 @@ class AlignmentMill(BaseModel):
         return v
 
     @validator('rotation', whole=True)
-    def must_be_33(cls, v, values, **kwargs):
+    def _must_be_33(cls, v, values, **kwargs):
         try:
             v = v.reshape(3, 3)
         except (ValueError, AttributeError):
@@ -47,10 +46,6 @@ class AlignmentMill(BaseModel):
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": False}})
-
-    def json_dict(self, *args, **kwargs):
-        return json.loads(self.json(*args, **kwargs))
-
 
 ### Non-Pydantic API functions
 

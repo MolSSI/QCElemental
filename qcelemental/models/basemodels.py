@@ -1,3 +1,4 @@
+import json
 from typing import Any, Dict, Optional, Set
 
 import numpy as np
@@ -11,11 +12,16 @@ class ProtoModel(BaseModel):
         allow_mutation = False
         extras = "forbid"
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
-        default_excludes = set()
+        serialize_default_excludes = set()
+        serialize_skip_defaults = False
 
     def dict(self, *args, **kwargs):
-        kwargs["exclude"] = (kwargs.pop("exclude", None) or set()) | self.__config__.default_excludes
+        kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
+        kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)
         return super().dict(*args, **kwargs)
+
+    def json_dict(self, *args, **kwargs):
+        return json.loads(self.json(*args, **kwargs))
 
     def msgpack(self,
                 *,

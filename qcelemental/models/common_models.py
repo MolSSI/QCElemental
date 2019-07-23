@@ -2,15 +2,14 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 
 import numpy as np
-from pydantic import BaseModel
 
-from .protomodel import ProtoModel
+from .basemodels import ProtoModel
 
 # Encoders, to be deprecated
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
-class Provenance(BaseModel):
+class Provenance(ProtoModel):
     creator: str
     version: Optional[str] = None
     routine: Optional[str] = None
@@ -19,7 +18,7 @@ class Provenance(BaseModel):
         extra = "allow"
 
 
-class Model(BaseModel):
+class Model(ProtoModel):
     method: str
     basis: Optional[str] = None
 
@@ -44,7 +43,7 @@ class DriverEnum(str, Enum):
             return egh.index(self)
 
 
-class ComputeError(BaseModel):
+class ComputeError(ProtoModel):
     """The type of error message raised"""
     error_type: str  # Error enumeration not yet strict
     error_message: str
@@ -54,17 +53,15 @@ class ComputeError(BaseModel):
         extra = "forbid"
 
 
-class FailedOperation(BaseModel):
+class FailedOperation(ProtoModel):
     id: str = None
     input_data: Any = None
     success: bool = False
     error: ComputeError
     extras: Optional[Dict[str, Any]] = None
 
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
-        json_encoders = {**ndarray_encoder}
+    class Config(ProtoModel.Config):
+        pass
 
 
 qcschema_input_default = "qcschema_input"
