@@ -11,14 +11,14 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from pydantic import constr, validator
 
+from .types import Array
+from .basemodels import ProtoModel
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp, which_import
-from .basemodels import ProtoModel
-from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
-from .types import Array
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -97,8 +97,8 @@ class Molecule(ProtoModel):
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = None
     fragments: List[Array[np.int32]]
-    fragment_charges: Array[float]
-    fragment_multiplicities: Array[np.int16]
+    fragment_charges: List[float]
+    fragment_multiplicities: List[int]
 
     # Orientation
     fix_com: bool = False

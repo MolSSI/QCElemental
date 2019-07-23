@@ -272,6 +272,7 @@ def test_molecule_json_serialization():
 def test_molecule_msgpack_serialization():
     assert isinstance(water_dimer_minima.msgpack(), bytes)
 
+
     assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
 
 
