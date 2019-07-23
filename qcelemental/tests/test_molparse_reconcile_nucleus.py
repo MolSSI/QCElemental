@@ -1,4 +1,5 @@
 import pytest
+
 import qcelemental
 
 co_dominant = (59, 27, 'Co', 58.93319429, True, '')

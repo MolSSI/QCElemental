@@ -1,9 +1,9 @@
 #! testing aligner on enantiomers based on Table 1 of 10.1021/ci100219f aka J Chem Inf Model 2010 50(12) 2129-2140
 
-from .addons import using_networkx
-
 import qcelemental as qcel
-from qcelemental.testing import compare_values, compare
+from qcelemental.testing import compare, compare_values
+
+from .addons import using_networkx
 
 do_plot = False
 verbose = 4

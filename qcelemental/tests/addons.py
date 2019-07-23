@@ -13,6 +13,10 @@ def internet_connection():
 
 using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
 
+using_msgpack = pytest.mark.skipif(
+    which_import('msgpack', return_bool=True) is False,
+    reason='Not detecting module msgpack. Install package if necessary and add to envvar PYTHONPATH')
+
 using_networkx = pytest.mark.skipif(
     which_import('networkx', return_bool=True) is False,
     reason='Not detecting module networkx. Install package if necessary and add to envvar PYTHONPATH')

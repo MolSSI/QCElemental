@@ -2,6 +2,7 @@ import copy
 
 import numpy as np
 import pytest
+
 import qcelemental as qcel
 from qcelemental.testing import compare_molrecs
 

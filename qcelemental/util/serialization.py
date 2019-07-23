@@ -7,12 +7,8 @@ from .importing import which_import
 
 try:
     import msgpack
-
-    _has_msgpack = True
 except ModuleNotFoundError:
-    msgpack = None
-
-    _has_msgpack = True
+    pass
 
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
 

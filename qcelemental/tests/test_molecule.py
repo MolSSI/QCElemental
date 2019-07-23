@@ -4,10 +4,12 @@ Tests the imports and exports of the Molecule object.
 
 import numpy as np
 import pytest
-from qcelemental.models import Molecule
+
 import qcelemental as qcel
+from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
-from .addons import using_py3dmol
+
+from .addons import using_msgpack, using_py3dmol
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -16,8 +18,7 @@ water_molecule = Molecule.from_data("""
     H  -0.599677   0.040712   0.000000
     """)
 
-water_dimer_minima = Molecule.from_data(
-    """
+water_dimer_minima = Molecule.from_data("""
     0 1
     O  -1.551007  -0.114520   0.000000
     H  -1.934259   0.762503   0.000000
@@ -27,8 +28,8 @@ water_dimer_minima = Molecule.from_data(
     H   1.680398  -0.373741  -0.758561
     H   1.680398  -0.373741   0.758561
     """,
-    dtype="psi4",
-    orient=True)
+                                        dtype="psi4",
+                                        orient=True)
 
 
 def test_molecule_data_constructor_numpy():
@@ -73,8 +74,7 @@ def test_molecule_np_constructors():
     Neon tetramer fun
     """
     ### Neon Tetramer
-    neon_from_psi = Molecule.from_data(
-        """
+    neon_from_psi = Molecule.from_data("""
         Ne 0.000000 0.000000 0.000000
         --
         Ne 3.100000 0.000000 0.000000
@@ -83,7 +83,7 @@ def test_molecule_np_constructors():
         --
         Ne 0.000000 0.000000 3.300000
         units bohr""",
-        dtype="psi4")
+                                       dtype="psi4")
     ele = np.array([10, 10, 10, 10]).reshape(-1, 1)
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
@@ -114,9 +114,10 @@ def test_water_minima_data():
     assert np.allclose(mol.fragment_charges, [0, 0])
     assert np.allclose(mol.fragment_multiplicities, [1, 1])
     assert hasattr(mol, "provenance")
-    assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
-                                      [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
-                                      [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
+    assert np.allclose(
+        mol.geometry,
+        [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.], [1.00578203, -0.1092573, 0.],
+         [-2.6821528, -0.12325075, 0.], [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
     assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"
 
 
@@ -210,8 +211,7 @@ def test_water_orient():
 
 
     # These are identical molecules, but should be different with ghost
-    mol = Molecule.from_data(
-        """
+    mol = Molecule.from_data("""
         O  -1.551007  -0.114520   0.000000
         H  -1.934259   0.762503   0.000000
         H  -0.599677   0.040712   0.000000
@@ -220,8 +220,8 @@ def test_water_orient():
         H  -11.934259   0.762503   0.000000
         H  -10.599677   0.040712   0.000000
         """,
-        dtype="psi4",
-        orient=True)
+                             dtype="psi4",
+                             orient=True)
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
@@ -267,6 +267,8 @@ def test_molecule_json_serialization():
 
     assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.json(), dtype="json"))
 
+
+@using_msgpack
 def test_molecule_msgpack_serialization():
     assert isinstance(water_dimer_minima.msgpack(), bytes)
 
@@ -274,12 +276,11 @@ def test_molecule_msgpack_serialization():
 
 
 def test_charged_fragment():
-    mol = Molecule(
-        symbols=["Li", "Li"],
-        geometry=[0, 0, 0, 0, 0, 5],
-        fragment_charges=[0.0, 0.0],
-        fragment_multiplicities=[2, 2],
-        fragments=[[0], [1]])
+    mol = Molecule(symbols=["Li", "Li"],
+                   geometry=[0, 0, 0, 0, 0, 5],
+                   fragment_charges=[0.0, 0.0],
+                   fragment_multiplicities=[2, 2],
+                   fragments=[[0], [1]])
     assert mol.molecular_multiplicity == 3
     assert mol.molecular_charge == 0
     f1 = mol.get_fragment(0)
@@ -305,24 +306,25 @@ def test_charged_fragment():
 #    })
 
 
-@pytest.mark.parametrize("group_fragments, orient", [
-    (True, True),  # original
-    (False, False),  # Psi4-like
-])
+@pytest.mark.parametrize(
+    "group_fragments, orient",
+    [
+        (True, True),  # original
+        (False, False),  # Psi4-like
+    ])
 def test_get_fragment(group_fragments, orient):
-    mol = Molecule(**{
-        'fragments': [[0], [1, 2, 3], [4, 5, 6]],
-        'symbols': ["he", "o", "h", "h", "o", "h", "h"],
-        # same geom as test_water_orient but with He at origin
-        'geometry': np.array([
-        0.0, 0.0, 0.0,
-        -1.551007,  -0.114520,   0.000000,
-        -1.934259,   0.762503,   0.000000,
-        -0.599677,   0.040712,   0.000000,
-        -0.114520,  -1.551007,  10.000000,
-         0.762503,  -1.934259,  10.000000,
-         0.040712,  -0.599677,  10.000000]) / qcel.constants.bohr2angstroms,
-    })
+    mol = Molecule(
+        **{
+            'fragments': [[0], [1, 2, 3], [4, 5, 6]],
+            'symbols': ["he", "o", "h", "h", "o", "h", "h"],
+            # same geom as test_water_orient but with He at origin
+            'geometry':
+            np.array([
+                0.0, 0.0, 0.0, -1.551007, -0.114520, 0.000000, -1.934259, 0.762503, 0.000000, -0.599677, 0.040712,
+                0.000000, -0.114520, -1.551007, 10.000000, 0.762503, -1.934259, 10.000000, 0.040712, -0.599677,
+                10.000000
+            ]) / qcel.constants.bohr2angstroms,
+        })
 
     assert mol.nelectrons() == 22
     assert compare_values(32.25894779318589, mol.nuclear_repulsion_energy(), atol=1.e-5)
@@ -352,7 +354,6 @@ def test_get_fragment(group_fragments, orient):
         assert dimers[2].get_hash() == dimers[5].get_hash()
     else:
         assert 0
-
 
     ghdimers_nelectrons = [2, 2, 10, 10, 10, 10]
     ghdimers_nre = [0.0, 0.0, 9.163830150548483, 9.163830150548483, 9.163830150548483, 9.163830150548483]

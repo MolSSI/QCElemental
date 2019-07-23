@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from pydantic import ValidationError
+
 from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
                                 ResultInput)
 from qcelemental.util import provenance_stamp
