@@ -37,6 +37,8 @@ def msgpack_encode(obj: Any) -> Any:
     if isinstance(obj, np.ndarray):
         if obj.shape:
             data = {b"_nd_": True, b"dtype": obj.dtype.str, b"data": np.ascontiguousarray(obj).tobytes()}
+            if len(obj.shape) > 1:
+                data[b'shape'] = obj.shape
             return data
 
         else:
@@ -62,7 +64,11 @@ def msgpack_decode(obj: Any) -> Any:
     """
 
     if b"_nd_" in obj:
-        return np.frombuffer(obj[b"data"], dtype=obj[b"dtype"])
+        arr = np.frombuffer(obj[b"data"], dtype=obj[b"dtype"])
+        if b"shape" in obj:
+            arr.shape = obj[b"shape"]
+
+        return arr
 
     return obj
 

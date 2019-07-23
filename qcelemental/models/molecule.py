@@ -11,14 +11,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 from pydantic import BaseModel, constr, validator
 
+
+from .types import Array
+from .protomodel import ProtoModel
+from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import measure_coordinates, provenance_stamp, which_import
-from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
-from .protomodel import ProtoModel
-from .types import Array
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -96,14 +97,14 @@ class Molecule(ProtoModel):
     masses: Array[float]
     real: Array[bool]
     atom_labels: Optional[Array[str]] = None
-    atomic_numbers: Optional[Array[int]] = None
-    mass_numbers: Optional[Array[int]] = None
+    atomic_numbers: Optional[Array[np.int16]] = None
+    mass_numbers: Optional[Array[np.int16]] = None
 
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = None
-    fragments: List[Array[int]]
+    fragments: List[Array[np.int32]]
     fragment_charges: Array[float]
-    fragment_multiplicities: Array[int]
+    fragment_multiplicities: Array[np.int16]
 
     # Orientation
     fix_com: bool = False
@@ -169,7 +170,7 @@ class Molecule(ProtoModel):
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
     @validator('geometry')
-    def must_be_3n(cls, v, values, **kwargs):
+    def _must_be_3n(cls, v, values, **kwargs):
         n = len(values['symbols'])
         try:
             v = v.reshape(n, 3)
@@ -178,14 +179,14 @@ class Molecule(ProtoModel):
         return v
 
     @validator('masses', 'real', whole=True)
-    def must_be_n(cls, v, values, **kwargs):
+    def _must_be_n(cls, v, values, **kwargs):
         n = len(values['symbols'])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
     @validator('real', whole=True)
-    def populate_real(cls, v, values, **kwargs):
+    def _populate_real(cls, v, values, **kwargs):
         # Can't use geometry here since its already been validated and not in values
         n = len(values['symbols'])
         if len(v) == 0:
@@ -193,7 +194,7 @@ class Molecule(ProtoModel):
         return v
 
     @validator('fragment_charges', 'fragment_multiplicities', whole=True)
-    def must_be_n_frag(cls, v, values, **kwargs):
+    def _must_be_n_frag(cls, v, values, **kwargs):
         if 'fragments' in values:
             n = len(values['fragments'])
             if len(v) != n:
@@ -204,7 +205,7 @@ class Molecule(ProtoModel):
         return v
 
     @validator('connectivity')
-    def min_zero(cls, v):
+    def _min_zero(cls, v):
         if v < 0:
             raise ValueError("Connectivity entries must be greater than 0")
         return v

@@ -19,7 +19,7 @@ def _high_spin_sum(mult_list):
 
 
 def _mult_ok(m):
-    return isinstance(m, (int, np.int64)) and m >= 1
+    return isinstance(m, (int, np.integer)) and m >= 1
 
 
 def _sufficient_electrons_for_mult(z, c, m):
