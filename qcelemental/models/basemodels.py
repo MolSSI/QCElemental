@@ -1,5 +1,6 @@
 import json
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, Optional, Set, Union
+from pathlib import Path
 
 import numpy as np
 from pydantic import BaseModel
@@ -14,6 +15,46 @@ class ProtoModel(BaseModel):
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes = set()
         serialize_skip_defaults = False
+
+    @classmethod
+    def parse_raw(cls, data: Union[bytes, str], *, content_type: str = None) -> 'Model':
+        """
+        Parses raw string or bytes into a Model object.
+
+        Parameters
+        ----------
+        data : Union[bytes, str]
+            A serialized data blob to be deserialized into a Model.
+        content_type : str, optional
+            The type of the serialized array, available types are: {'json', 'msgpack', 'pickle'}
+
+        Returns
+        -------
+        Model
+            The requested model from a serialized format.
+        """
+
+        if content_type is None:
+            if isinstance(data, str):
+                content_type = "json"
+            elif isinstance(data, bytes):
+                content_type = "msgpack"
+            else:
+                raise TypeError("Input is neither str no")
+
+        if content_type.endswith(('json', 'javascript', 'pickle')):
+            return super().parse_raw(data, content_type=content_type)
+        elif content_type == "msgpack":
+            obj = cls._parse_msgpack(data)
+        else:
+            raise TypeError(f"Content type '{content_type}' not understood.")
+
+        return cls.parse_obj(obj)
+
+    @classmethod
+    def parse_file(cls, path: Union[str, Path], *, content_type: str = None) -> 'Model':
+
+        path = Path(path)
 
     def dict(self, *args, **kwargs):
         kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
