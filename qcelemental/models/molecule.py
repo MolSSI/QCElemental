@@ -88,17 +88,17 @@ class Molecule(ProtoModel):
     molecular_multiplicity: int = 1
 
     # Atom data
-    masses: Array[float]
-    real: Array[bool]
+    masses: Optional[Array[float]] = None
+    real: Optional[Array[bool]] = None
     atom_labels: Optional[Array[str]] = None
     atomic_numbers: Optional[Array[np.int16]] = None
     mass_numbers: Optional[Array[np.int16]] = None
 
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = None
-    fragments: List[Array[np.int32]]
-    fragment_charges: List[float]
-    fragment_multiplicities: List[int]
+    fragments: Optional[List[Array[np.int32]]] = None
+    fragment_charges: Optional[List[float]] = None
+    fragment_multiplicities: Optional[List[int]] = None
 
     # Orientation
     fix_com: bool = False
@@ -110,10 +110,8 @@ class Molecule(ProtoModel):
     id: Optional[Any] = None
     extras: Dict[str, Any] = None
 
-    class Config:
-        json_encoders = {**ndarray_encoder}
-        allow_mutation = False
-        extra = "forbid"
+    class Config(ProtoModel.Config):
+        serialize_skip_defaults = True
 
     def __init__(self, orient=False, validate=True, **kwargs):
         if validate:
@@ -210,12 +208,6 @@ class Molecule(ProtoModel):
             "symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
             "fragment_charges", "fragment_multiplicities", "connectivity"
         ]
-
-    def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
-
-    def json_dict(self, *args, **kwargs):
-        return json.loads(self.json(*args, **kwargs))
 
 
 ### Non-Pydantic API functions
@@ -506,7 +498,7 @@ class Molecule(ProtoModel):
         m = hashlib.sha1()
         concat = ""
 
-        tmp_dict = super().dict()
+        tmp_dict = super().dict(skip_defaults=False)
 
         np.set_printoptions(precision=16)
         for field in self.hash_fields:

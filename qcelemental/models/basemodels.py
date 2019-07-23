@@ -53,8 +53,35 @@ class ProtoModel(BaseModel):
 
     @classmethod
     def parse_file(cls, path: Union[str, Path], *, content_type: str = None) -> 'Model':
+        """Parses a file into a Model object.
 
+        Parameters
+        ----------
+        path : Union[str, Path]
+            The path to the file.
+        content_type : str, optional
+            The type of the files, available types are: {'json', 'msgpack', 'pickle'}. Attempts to
+            automatically infer the file type from disk.
+
+        Returns
+        -------
+        Model
+            The requested model from a serialized format.
+
+        """
         path = Path(path)
+
+        if content_type is None:
+            if path.suffix in ["json", "js"]:
+                content_type = "json"
+            elif path.suffix in ["msgpack"]:
+                content_type = "msgpack"
+            elif path.suffix in ["pickle"]:
+                content_type = "msgpack"
+            else:
+                raise TypeError("Could not infer `content_type`, please provide a `content_type` for this file.")
+
+        return cls.parse_raw(path.read_bytes(), content_type=content_type)
 
     def dict(self, *args, **kwargs):
         kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
