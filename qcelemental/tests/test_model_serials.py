@@ -10,8 +10,7 @@ from qcelemental.util import provenance_stamp
 @pytest.fixture
 def water():
     """Water dimer minima"""
-    return Molecule.from_data(
-        """
+    return Molecule.from_data("""
         0 1
         O  -1.551007  -0.114520   0.000000
         H  -1.934259   0.762503   0.000000
@@ -21,8 +20,8 @@ def water():
         H   1.680398  -0.373741  -0.758561
         H   1.680398  -0.373741   0.758561
         """,
-        dtype="psi4",
-        orient=True)
+                              dtype="psi4",
+                              orient=True)
 
 
 @pytest.fixture
@@ -83,10 +82,23 @@ def test_driverenum_derivative_int(water, result_input):
     assert res.driver.derivative_int() == 1
 
 
-def test_molecule_serialization(water):
+def test_molecule_serialization_types(water):
     assert isinstance(water.dict(), dict)
     assert isinstance(water.json(), str)
     assert isinstance(water.json_dict(), dict)
+
+
+def test_molecule_serialization_json(water):
+    assert water.compare(Molecule.parse_raw(water.json()))
+
+
+def test_molecule_serialization_msgpack(water):
+    assert water.compare(Molecule.parse_raw(water.msgpack()))
+
+
+def test_molecule_skip_defaults(water):
+    mol = Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0]}, validate=False)
+    assert {"symbols", "geometry"} == mol.dict().keys()
 
 
 def test_molecule_sparsity():
@@ -134,11 +146,12 @@ def test_optimization_pass_serialization(water, opti_input, opti_success):
 
 
 def test_failed_operation(water, result_input):
-    failed = FailedOperation(
-        extras={"garbage": water},
-        input_data=result_input,
-        error={"error_type": "expected_testing_error",
-               "error_message": "If you see this, its all good"})
+    failed = FailedOperation(extras={"garbage": water},
+                             input_data=result_input,
+                             error={
+                                 "error_type": "expected_testing_error",
+                                 "error_message": "If you see this, its all good"
+                             })
     assert isinstance(failed.error, ComputeError)
     assert isinstance(failed.dict(), dict)
     failed_json = failed.json()

@@ -11,7 +11,7 @@ from qcelemental.util import msgpack_dumps, msgpack_loads
 class ProtoModel(BaseModel):
     class Config:
         allow_mutation = False
-        extras = "forbid"
+        extra = "forbid"
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes = set()
         serialize_skip_defaults = False

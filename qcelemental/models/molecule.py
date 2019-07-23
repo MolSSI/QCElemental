@@ -129,13 +129,14 @@ class Molecule(ProtoModel):
         # All attributes set bellow are equivalent to the default set.
         values = self.__values__
 
-        values["symbols"] = np.array([s.title() for s in self.symbols])  # Title case
+        natoms = values["geometry"].shape[0]
+        values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
 
         if values["masses"] is None:  # Setup masses before fixing the orientation
             values["masses"] = np.array([periodictable.to_mass(x) for x in values["symbols"]])
 
         if values["real"] is None:
-            values["real"] = np.array([True for _ in values["symbols"]])
+            values["real"] = np.ones(natoms, dtype=bool)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
@@ -144,20 +145,19 @@ class Molecule(ProtoModel):
 
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
         if values["fragments"] is None:
-            natoms = values["geometry"].shape[0]
-            values["fragments"] = np.array([list(range(natoms))])
-            values["fragment_charges"] = np.array([values["molecular_charge"]])
-            values["fragment_multiplicities"] = np.array([values["molecular_multiplicity"]])
+            values["fragments"] = [np.arange(natoms, dtype=np.int32)]
+            values["fragment_charges"] = [values["molecular_charge"]]
+            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
         else:
             if values["fragment_charges"] is None:
                 if np.isclose(values["molecular_charge"], 0.0):
-                    values["fragment_charges"] = np.array([0 for _ in values["fragments"]])
+                    values["fragment_charges"] = [0 for _ in values["fragments"]]
                 else:
                     raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
 
             if values["fragment_multiplicities"] is None:
                 if values["molecular_multiplicity"] == 1:
-                    values["fragment_multiplicities"] = np.array([1 for _ in values["fragments"]])
+                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
@@ -335,8 +335,8 @@ class Molecule(ProtoModel):
                      real: Union[int, List],
                      ghost: Optional[Union[int, List]] = None,
                      orient: bool = False,
-                     group_fragments: bool = False) -> 'Molecule':
-        r"""Get new Molecule with fragments preserved, dropped, or ghosted.
+                     group_fragments: bool = True) -> 'Molecule':
+        """Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
         ----------

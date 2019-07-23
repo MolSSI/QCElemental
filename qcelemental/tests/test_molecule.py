@@ -240,10 +240,10 @@ def test_water_orient():
 
 
 def test_molecule_errors_extra():
-    data = water_dimer_minima.dict()
+    data = water_dimer_minima.dict(skip_defaults=True)
     data["whatever"] = 5
     with pytest.raises(Exception):
-        Molecule(**data)
+        Molecule(**data, validate=False)
 
 
 def test_molecule_errors_connectivity():
@@ -329,6 +329,7 @@ def test_get_fragment(group_fragments, orient):
 
     assert mol.nelectrons() == 22
     assert compare_values(32.25894779318589, mol.nuclear_repulsion_energy(), atol=1.e-5)
+    assert mol.symbols[0] == "He"
 
     monomers_nelectrons = [2, 10, 10]
     monomers_nre = [0.0, 9.163830150548483, 9.163830150548483]
