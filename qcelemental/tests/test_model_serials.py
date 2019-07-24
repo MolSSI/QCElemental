@@ -6,6 +6,8 @@ from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimiz
                                 ResultInput)
 from qcelemental.util import provenance_stamp
 
+from .addons import using_msgpack
+
 
 @pytest.fixture
 def water():
@@ -92,8 +94,29 @@ def test_molecule_serialization_json(water):
     assert water.compare(Molecule.parse_raw(water.json()))
 
 
+@using_msgpack
 def test_molecule_serialization_msgpack(water):
     assert water.compare(Molecule.parse_raw(water.msgpack()))
+
+
+@pytest.mark.parametrize("dtype, filext", [
+    ("json", "json"),
+    pytest.param("msgpack", "msgpack", marks=using_msgpack),
+])
+def test_protomodel_to_from_file(tmp_path, dtype, filext):
+
+    benchmol = Molecule.from_data("""
+    O 0 0 0
+    H 0 1.5 0
+    H 0 0 1.5
+    """)
+
+    p = tmp_path / ("water." + filext)
+    benchmol.to_file(p)
+
+    mol = Molecule.parse_file(p)
+
+    assert mol.compare(benchmol)
 
 
 def test_molecule_skip_defaults(water):

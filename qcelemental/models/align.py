@@ -1,11 +1,8 @@
-import json
-
 import numpy as np
 from pydantic import validator
 
 from ..util import blockwise_contract, blockwise_expand
 from .basemodels import ProtoModel
-from .common_models import ndarray_encoder
 from .types import Array
 
 __all__ = ["AlignmentMill"]

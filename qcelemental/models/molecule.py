@@ -13,7 +13,7 @@ from pydantic import constr, validator
 
 from .types import Array
 from .basemodels import ProtoModel
-from .common_models import Provenance, ndarray_encoder, qcschema_molecule_default
+from .common_models import Provenance, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
@@ -31,6 +31,7 @@ _extension_map = {
     ".xyz": "xyz",
     ".psimol": "psi4",
     ".psi4": "psi4",
+    ".msgpack": "msgpack",
 }
 
 
@@ -664,6 +665,10 @@ class Molecule(ProtoModel):
             with open(filename, "r") as infile:
                 data = json.load(infile)
             dtype = "dict"
+        elif dtype == "msgpack":
+            with open(filename, "rb") as infile:
+                data = cls._parse_msgpack(infile.read())
+            dtype = "dict"
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
@@ -688,10 +693,14 @@ class Molecule(ProtoModel):
             else:
                 raise KeyError(f"Could not infer dtype from filename: `{filename}`")
 
+        flags = "w"
         if dtype in ["xyz", "psi4"]:
             stringified = self.to_string(dtype)
         elif dtype in ["json"]:
-            stringified = json.dumps(self.json_dict())
+            stringified = self.json()
+        elif dtype in ["msgpack"]:
+            stringified = self.msgpack()
+            flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
             npmol = np.hstack((elements, self.geometry))
@@ -702,7 +711,7 @@ class Molecule(ProtoModel):
         else:
             raise KeyError(f"Dtype `{dtype}` is not valid")
 
-        with open(filename, 'w') as handle:
+        with open(filename, flags) as handle:
             handle.write(stringified)
 
     ### Non-Pydantic internal functions

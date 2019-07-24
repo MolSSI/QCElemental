@@ -154,7 +154,12 @@ def test_to_string():
     assert isinstance(mol.to_string("psi4"), str)
 
 
-@pytest.mark.parametrize("dtype, filext", [("json", "json"), ("xyz", "xyz"), ("numpy", "npy")])
+@pytest.mark.parametrize("dtype, filext", [
+    ("json", "json"),
+    ("xyz", "xyz"),
+    ("numpy", "npy"),
+    pytest.param("msgpack", "msgpack", marks=using_msgpack),
+])
 def test_to_from_file_simple(tmp_path, dtype, filext):
 
     benchmol = Molecule.from_data("""
@@ -208,7 +213,6 @@ def test_water_orient():
     frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=False)
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=False)
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
-
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data("""
@@ -271,7 +275,6 @@ def test_molecule_json_serialization():
 @using_msgpack
 def test_molecule_msgpack_serialization():
     assert isinstance(water_dimer_minima.msgpack(), bytes)
-
 
     assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
 

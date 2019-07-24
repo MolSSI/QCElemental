@@ -70,14 +70,13 @@ class ProtoModel(BaseModel):
 
         """
         path = Path(path)
-
         if content_type is None:
-            if path.suffix in ["json", "js"]:
+            if path.suffix in [".json", ".js"]:
                 content_type = "json"
-            elif path.suffix in ["msgpack"]:
+            elif path.suffix in [".msgpack"]:
                 content_type = "msgpack"
-            elif path.suffix in ["pickle"]:
-                content_type = "msgpack"
+            elif path.suffix in [".pickle"]:
+                content_type = "pickle"
             else:
                 raise TypeError("Could not infer `content_type`, please provide a `content_type` for this file.")
 
