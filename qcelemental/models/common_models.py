@@ -14,7 +14,7 @@ class Provenance(ProtoModel):
     version: Optional[str] = None
     routine: Optional[str] = None
 
-    class Config:
+    class Config(ProtoModel.Config):
         extra = "allow"
 
 
@@ -24,8 +24,7 @@ class Model(ProtoModel):
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
-    class Config:
-        allow_mutation = False
+    class Config(ProtoModel.Config):
         extra = "allow"
 
 
@@ -49,9 +48,6 @@ class ComputeError(ProtoModel):
     error_message: str
     extras: Optional[Dict[str, Any]] = None
 
-    class Config:
-        extra = "forbid"
-
 
 class FailedOperation(ProtoModel):
     id: str = None
@@ -59,9 +55,6 @@ class FailedOperation(ProtoModel):
     success: bool = False
     error: ComputeError
     extras: Optional[Dict[str, Any]] = None
-
-    class Config(ProtoModel.Config):
-        pass
 
 
 qcschema_input_default = "qcschema_input"

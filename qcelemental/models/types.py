@@ -17,10 +17,9 @@ class TypedArray(np.ndarray):
 
 
 class ArrayMeta(type):
-    def __getitem__(self, t):
-        return type('Array', (TypedArray, ), {'_dtype': t})
+    def __getitem__(self, dtype):
+        return type('Array', (TypedArray, ), {'_dtype': dtype})
 
 
 class Array(np.ndarray, metaclass=ArrayMeta):
-    def __init__(self, **kwargs):
-        super().__init__()
+    pass

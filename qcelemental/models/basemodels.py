@@ -40,7 +40,7 @@ class ProtoModel(BaseModel):
             elif isinstance(data, bytes):
                 content_type = "msgpack"
             else:
-                raise TypeError("Input is neither str no")
+                raise TypeError("Input is neither str nor bytes, please specify a content_type.")
 
         if content_type.endswith(('json', 'javascript', 'pickle')):
             return super().parse_raw(data, content_type=content_type)

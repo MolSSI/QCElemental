@@ -22,9 +22,6 @@ class AlignmentMill(ProtoModel):
     atommap: Array[int]
     mirror: bool = False
 
-    class Config(ProtoModel.Config):
-        pass
-
     @validator('shift', whole=True)
     def _must_be_3(cls, v, values, **kwargs):
         try:

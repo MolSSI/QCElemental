@@ -81,9 +81,6 @@ class ResultInput(ProtoModel):
 
     provenance: Provenance = provenance_stamp(__name__)
 
-    class Config(ProtoModel.Config):
-        pass
-
 
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
@@ -97,10 +94,6 @@ class Result(ResultInput):
     success: bool
     error: Optional[ComputeError] = None
     provenance: Provenance
-
-    class Config(ResultInput.Config):
-        # Will carry other properties
-        pass
 
     @validator("schema_name", pre=True)
     def _input_to_output(cls, v):

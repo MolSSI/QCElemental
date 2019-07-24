@@ -20,9 +20,6 @@ class QCInputSpecification(ProtoModel):
 
     extras: Dict[str, Any] = {}
 
-    class Config(ProtoModel.Config):
-        pass
-
 
 class OptimizationInput(ProtoModel):
     id: Optional[str] = None
@@ -39,9 +36,6 @@ class OptimizationInput(ProtoModel):
 
     provenance: Provenance = provenance_stamp(__name__)
 
-    class Config(ProtoModel.Config):
-        pass
-
 
 class Optimization(OptimizationInput):
     schema_name: constr(strip_whitespace=True,
@@ -57,6 +51,3 @@ class Optimization(OptimizationInput):
     success: bool
     error: Optional[ComputeError] = None
     provenance: Provenance
-
-    class Config(OptimizationInput.Config):
-        pass
