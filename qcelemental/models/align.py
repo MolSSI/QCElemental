@@ -1,13 +1,14 @@
-import json
-
 import numpy as np
-from pydantic import BaseModel, validator
+from pydantic import validator
 
-from ..util import blockwise_expand, blockwise_contract
-from .common_models import (NDArray, NDArrayInt, ndarray_encoder)
+from ..util import blockwise_contract, blockwise_expand
+from .basemodels import ProtoModel
+from .types import Array
+
+__all__ = ["AlignmentMill"]
 
 
-class AlignmentMill(BaseModel):
+class AlignmentMill(ProtoModel):
     """Facilitates the application of the simple transformation operations
     defined by namedtuple of arrays as recipe to the data structures
     describing Cartesian molecular coordinates. Attaches functions to
@@ -16,18 +17,13 @@ class AlignmentMill(BaseModel):
     then molecular system can be substantively changed by procedure.
 
     """
-    shift: NDArray
-    rotation: NDArray
-    atommap: NDArrayInt
+    shift: Array[float]
+    rotation: Array[float]
+    atommap: Array[int]
     mirror: bool = False
 
-    class Config:
-        json_encoders = {**ndarray_encoder}
-        allow_mutation = False
-        extra = "forbid"
-
     @validator('shift', whole=True)
-    def must_be_3(cls, v, values, **kwargs):
+    def _must_be_3(cls, v, values, **kwargs):
         try:
             v = v.reshape(3)
         except (ValueError, AttributeError):
@@ -35,7 +31,7 @@ class AlignmentMill(BaseModel):
         return v
 
     @validator('rotation', whole=True)
-    def must_be_33(cls, v, values, **kwargs):
+    def _must_be_33(cls, v, values, **kwargs):
         try:
             v = v.reshape(3, 3)
         except (ValueError, AttributeError):
@@ -44,10 +40,6 @@ class AlignmentMill(BaseModel):
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": False}})
-
-    def json_dict(self, *args, **kwargs):
-        return json.loads(self.json(*args, **kwargs))
-
 
 ### Non-Pydantic API functions
 
@@ -67,7 +59,7 @@ class AlignmentMill(BaseModel):
         text.append('-' * width)
         return ('\n'.join(text))
 
-    def align_coordinates(self, geom, *, reverse=False) -> NDArray:
+    def align_coordinates(self, geom, *, reverse=False) -> Array:
         """suitable for geometry or displaced geometry"""
 
         algeom = np.copy(geom)
@@ -100,7 +92,7 @@ class AlignmentMill(BaseModel):
         #    alvec[:, 1] *= -1
         return vec.dot(self.rotation)
 
-    def align_gradient(self, grad) -> NDArray:
+    def align_gradient(self, grad) -> Array:
         """suitable for vector system attached to atoms"""
 
         # sensible? TODO
@@ -112,7 +104,7 @@ class AlignmentMill(BaseModel):
 
         return algrad
 
-    def align_hessian(self, hess) -> NDArray:
+    def align_hessian(self, hess) -> Array:
         blocked_hess = blockwise_expand(hess, (3, 3), False)
         alhess = np.zeros_like(blocked_hess)
 

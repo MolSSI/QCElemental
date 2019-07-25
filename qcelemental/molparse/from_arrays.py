@@ -709,7 +709,7 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
 
         if fragment_multiplicities is None:
             frm = [None] * nfr
-        elif all(f is None or (isinstance(f, (int, np.int64)) and f >= 1) for f in fragment_multiplicities):
+        elif all(f is None or (isinstance(f, (int, np.integer)) and f >= 1) for f in fragment_multiplicities):
             frm = fragment_multiplicities
         else:
             raise ValidationError(

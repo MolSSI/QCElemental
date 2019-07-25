@@ -2,6 +2,7 @@ from decimal import Decimal
 
 import numpy as np
 import pytest
+
 import qcelemental as qcel
 
 _arrs = {

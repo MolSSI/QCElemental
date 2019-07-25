@@ -2,56 +2,29 @@ from enum import Enum
 from typing import Any, Dict, Optional
 
 import numpy as np
-from pydantic import BaseModel
 
+from .basemodels import ProtoModel
+
+# Encoders, to be deprecated
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
-class NDArray(np.ndarray):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        try:
-            v = np.array(v, dtype=np.double)
-        except:
-            raise RuntimeError("Could not cast {} to NumPy Array!".format(v))
-        return v
-
-
-class NDArrayInt(np.ndarray):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        try:
-            v = np.array(v, dtype=np.int)
-        except:
-            raise RuntimeError("Could not cast {} to NumPy Int Array!".format(v))
-        return v
-
-
-class Provenance(BaseModel):
+class Provenance(ProtoModel):
     creator: str
     version: Optional[str] = None
     routine: Optional[str] = None
 
-    class Config:
+    class Config(ProtoModel.Config):
         extra = "allow"
 
 
-class Model(BaseModel):
+class Model(ProtoModel):
     method: str
     basis: Optional[str] = None
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
-    class Config:
-        allow_mutation = False
+    class Config(ProtoModel.Config):
         extra = "allow"
 
 
@@ -69,27 +42,19 @@ class DriverEnum(str, Enum):
             return egh.index(self)
 
 
-class ComputeError(BaseModel):
+class ComputeError(ProtoModel):
     """The type of error message raised"""
     error_type: str  # Error enumeration not yet strict
     error_message: str
     extras: Optional[Dict[str, Any]] = None
 
-    class Config:
-        extra = "forbid"
 
-
-class FailedOperation(BaseModel):
+class FailedOperation(ProtoModel):
     id: str = None
     input_data: Any = None
     success: bool = False
     error: ComputeError
     extras: Optional[Dict[str, Any]] = None
-
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
-        json_encoders = {**ndarray_encoder}
 
 
 qcschema_input_default = "qcschema_input"

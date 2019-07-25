@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 
 import pytest
+
 import qcelemental
 
 

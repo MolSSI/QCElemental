@@ -4,10 +4,12 @@ Tests the imports and exports of the Molecule object.
 
 import numpy as np
 import pytest
-from qcelemental.models import Molecule
+
 import qcelemental as qcel
+from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
-from .addons import using_py3dmol
+
+from .addons import using_msgpack, using_py3dmol
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -16,8 +18,7 @@ water_molecule = Molecule.from_data("""
     H  -0.599677   0.040712   0.000000
     """)
 
-water_dimer_minima = Molecule.from_data(
-    """
+water_dimer_minima = Molecule.from_data("""
     0 1
     O  -1.551007  -0.114520   0.000000
     H  -1.934259   0.762503   0.000000
@@ -27,8 +28,8 @@ water_dimer_minima = Molecule.from_data(
     H   1.680398  -0.373741  -0.758561
     H   1.680398  -0.373741   0.758561
     """,
-    dtype="psi4",
-    orient=True)
+                                        dtype="psi4",
+                                        orient=True)
 
 
 def test_molecule_data_constructor_numpy():
@@ -73,8 +74,7 @@ def test_molecule_np_constructors():
     Neon tetramer fun
     """
     ### Neon Tetramer
-    neon_from_psi = Molecule.from_data(
-        """
+    neon_from_psi = Molecule.from_data("""
         Ne 0.000000 0.000000 0.000000
         --
         Ne 3.100000 0.000000 0.000000
@@ -83,7 +83,7 @@ def test_molecule_np_constructors():
         --
         Ne 0.000000 0.000000 3.300000
         units bohr""",
-        dtype="psi4")
+                                       dtype="psi4")
     ele = np.array([10, 10, 10, 10]).reshape(-1, 1)
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
@@ -114,9 +114,10 @@ def test_water_minima_data():
     assert np.allclose(mol.fragment_charges, [0, 0])
     assert np.allclose(mol.fragment_multiplicities, [1, 1])
     assert hasattr(mol, "provenance")
-    assert np.allclose(mol.geometry, [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.],
-                                      [1.00578203, -0.1092573, 0.], [-2.6821528, -0.12325075, 0.],
-                                      [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
+    assert np.allclose(
+        mol.geometry,
+        [[2.81211080, 0.1255717, 0.], [3.48216664, -1.55439981, 0.], [1.00578203, -0.1092573, 0.],
+         [-2.6821528, -0.12325075, 0.], [-3.27523824, 0.81341093, 1.43347255], [-3.27523824, 0.81341093, -1.43347255]])
     assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"
 
 
@@ -131,14 +132,14 @@ def test_water_minima_fragment():
     frag_0_1 = mol.get_fragment(0, 1)
     frag_1_0 = mol.get_fragment(1, 0)
 
-    assert mol.symbols[:3] == frag_0.symbols
+    assert np.array_equal(mol.symbols[:3], frag_0.symbols)
     assert np.allclose(mol.masses[:3], frag_0.masses)
 
-    assert mol.symbols == frag_0_1.symbols
+    assert np.array_equal(mol.symbols, frag_0_1.symbols)
     assert np.allclose(mol.geometry, frag_0_1.geometry)
 
-    assert mol.symbols[3:] + mol.symbols[:3] == frag_1_0.symbols
-    assert np.allclose(mol.masses[3:] + mol.masses[:3], frag_1_0.masses)
+    assert np.array_equal(np.hstack((mol.symbols[3:], mol.symbols[:3])), frag_1_0.symbols)
+    assert np.allclose(np.hstack((mol.masses[3:], mol.masses[:3])), frag_1_0.masses)
 
 
 def test_pretty_print():
@@ -153,7 +154,12 @@ def test_to_string():
     assert isinstance(mol.to_string("psi4"), str)
 
 
-@pytest.mark.parametrize("dtype, filext", [("json", "json"), ("xyz", "xyz"), ("numpy", "npy")])
+@pytest.mark.parametrize("dtype, filext", [
+    ("json", "json"),
+    ("xyz", "xyz"),
+    ("numpy", "npy"),
+    pytest.param("msgpack", "msgpack", marks=using_msgpack),
+])
 def test_to_from_file_simple(tmp_path, dtype, filext):
 
     benchmol = Molecule.from_data("""
@@ -208,10 +214,8 @@ def test_water_orient():
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=False)
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
 
-
     # These are identical molecules, but should be different with ghost
-    mol = Molecule.from_data(
-        """
+    mol = Molecule.from_data("""
         O  -1.551007  -0.114520   0.000000
         H  -1.934259   0.762503   0.000000
         H  -0.599677   0.040712   0.000000
@@ -220,8 +224,8 @@ def test_water_orient():
         H  -11.934259   0.762503   0.000000
         H  -10.599677   0.040712   0.000000
         """,
-        dtype="psi4",
-        orient=True)
+                             dtype="psi4",
+                             orient=True)
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
@@ -240,10 +244,10 @@ def test_water_orient():
 
 
 def test_molecule_errors_extra():
-    data = water_dimer_minima.dict()
+    data = water_dimer_minima.dict(skip_defaults=True)
     data["whatever"] = 5
     with pytest.raises(Exception):
-        Molecule(**data)
+        Molecule(**data, validate=False)
 
 
 def test_molecule_errors_connectivity():
@@ -260,19 +264,27 @@ def test_molecule_errors_shape():
         Molecule(**data)
 
 
-def test_molecule_serialization():
+def test_molecule_json_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
     assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
 
+    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.json(), dtype="json"))
+
+
+@using_msgpack
+def test_molecule_msgpack_serialization():
+    assert isinstance(water_dimer_minima.msgpack(), bytes)
+
+    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
+
 
 def test_charged_fragment():
-    mol = Molecule(
-        symbols=["Li", "Li"],
-        geometry=[0, 0, 0, 0, 0, 5],
-        fragment_charges=[0.0, 0.0],
-        fragment_multiplicities=[2, 2],
-        fragments=[[0], [1]])
+    mol = Molecule(symbols=["Li", "Li"],
+                   geometry=[0, 0, 0, 0, 0, 5],
+                   fragment_charges=[0.0, 0.0],
+                   fragment_multiplicities=[2, 2],
+                   fragments=[[0], [1]])
     assert mol.molecular_multiplicity == 3
     assert mol.molecular_charge == 0
     f1 = mol.get_fragment(0)
@@ -298,27 +310,29 @@ def test_charged_fragment():
 #    })
 
 
-@pytest.mark.parametrize("group_fragments, orient", [
-    (True, True),  # original
-    (False, False),  # Psi4-like
-])
+@pytest.mark.parametrize(
+    "group_fragments, orient",
+    [
+        (True, True),  # original
+        (False, False),  # Psi4-like
+    ])
 def test_get_fragment(group_fragments, orient):
-    mol = Molecule(**{
-        'fragments': [[0], [1, 2, 3], [4, 5, 6]],
-        'symbols': ["he", "o", "h", "h", "o", "h", "h"],
-        # same geom as test_water_orient but with He at origin
-        'geometry': np.array([
-        0.0, 0.0, 0.0,
-        -1.551007,  -0.114520,   0.000000,
-        -1.934259,   0.762503,   0.000000,
-        -0.599677,   0.040712,   0.000000,
-        -0.114520,  -1.551007,  10.000000,
-         0.762503,  -1.934259,  10.000000,
-         0.040712,  -0.599677,  10.000000]) / qcel.constants.bohr2angstroms,
-    })
+    mol = Molecule(
+        **{
+            'fragments': [[0], [1, 2, 3], [4, 5, 6]],
+            'symbols': ["he", "o", "h", "h", "o", "h", "h"],
+            # same geom as test_water_orient but with He at origin
+            'geometry':
+            np.array([
+                0.0, 0.0, 0.0, -1.551007, -0.114520, 0.000000, -1.934259, 0.762503, 0.000000, -0.599677, 0.040712,
+                0.000000, -0.114520, -1.551007, 10.000000, 0.762503, -1.934259, 10.000000, 0.040712, -0.599677,
+                10.000000
+            ]) / qcel.constants.bohr2angstroms,
+        })
 
     assert mol.nelectrons() == 22
     assert compare_values(32.25894779318589, mol.nuclear_repulsion_energy(), atol=1.e-5)
+    assert mol.symbols[0] == "He"
 
     monomers_nelectrons = [2, 10, 10]
     monomers_nre = [0.0, 9.163830150548483, 9.163830150548483]
@@ -346,7 +360,6 @@ def test_get_fragment(group_fragments, orient):
     else:
         assert 0
 
-
     ghdimers_nelectrons = [2, 2, 10, 10, 10, 10]
     ghdimers_nre = [0.0, 0.0, 9.163830150548483, 9.163830150548483, 9.163830150548483, 9.163830150548483]
     ghdimers = [mol.get_fragment(rl, gh, group_fragments=group_fragments, orient=orient) for rl, gh in idimers]
@@ -363,7 +376,7 @@ def test_get_fragment(group_fragments, orient):
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
-        assert ghdimers[2].real != ghdimers[5].real
+        assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
     else:
         assert 0
 

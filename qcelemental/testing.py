@@ -274,7 +274,7 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             name = prefix + str(k)
             errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
 
-    elif isinstance(expected, float):
+    elif isinstance(expected, (float, np.number)):
         passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
         if not passfail:
             errors.append((name, "Arrays differ." + msg))

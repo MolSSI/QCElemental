@@ -1,16 +1,16 @@
-import json
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, constr
+from pydantic import constr
 
 from ..util import provenance_stamp
-from .common_models import (ComputeError, DriverEnum, Model, ndarray_encoder, qcschema_input_default,
-                            qcschema_optimization_input_default, qcschema_optimization_output_default, Provenance)
+from .basemodels import ProtoModel
+from .common_models import (ComputeError, DriverEnum, Model, Provenance, qcschema_input_default,
+                            qcschema_optimization_input_default, qcschema_optimization_output_default)
 from .molecule import Molecule
 from .results import Result
 
 
-class QCInputSpecification(BaseModel):
+class QCInputSpecification(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
     schema_version: int = 1
 
@@ -20,16 +20,12 @@ class QCInputSpecification(BaseModel):
 
     extras: Dict[str, Any] = {}
 
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
 
-
-class OptimizationInput(BaseModel):
+class OptimizationInput(ProtoModel):
     id: Optional[str] = None
     hash_index: Optional[str] = None
-    schema_name: constr(
-        strip_whitespace=True, regex=qcschema_optimization_input_default) = qcschema_optimization_input_default
+    schema_name: constr(strip_whitespace=True,
+                        regex=qcschema_optimization_input_default) = qcschema_optimization_input_default
     schema_version: int = 1
 
     keywords: Dict[str, Any] = {}
@@ -40,18 +36,10 @@ class OptimizationInput(BaseModel):
 
     provenance: Provenance = provenance_stamp(__name__)
 
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
-        json_encoders = {**ndarray_encoder}
-
-    def json_dict(self, *args, **kwargs):
-        return json.loads(self.json(*args, **kwargs))
-
 
 class Optimization(OptimizationInput):
-    schema_name: constr(
-        strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
+    schema_name: constr(strip_whitespace=True,
+                        regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule]
     trajectory: List[Result]
@@ -63,6 +51,3 @@ class Optimization(OptimizationInput):
     success: bool
     error: Optional[ComputeError] = None
     provenance: Provenance
-
-    class Config(OptimizationInput.Config):
-        pass
