@@ -575,15 +575,22 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1):
     """Check `geom` for overlapping atoms. Return flattened"""
 
     npgeom = np.array(geom, dtype=np.float).reshape((-1, 3))
-    dm = distance_matrix(npgeom, npgeom)
 
-    iu = np.triu_indices(dm.shape[0])
-    dm[iu] = 10.
-    tooclosem = np.where(dm < tooclose)
+    # Upper triangular
+    metric = tooclose ** 2
+    tooclose_inds = []
+    for x in range(npgeom.shape[0]):
+        diffs = npgeom[x] - npgeom[x+1:]
+        dists = np.core._multiarray_umath.c_einsum('ij,ij->i', diffs, diffs)
 
-    if tooclosem[0].shape[0]:
+        # Record issues
+        if np.any(dists < metric):
+            indices = np.where(dists < metric)[0]
+            tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices] ** 0.5) ])
+
+    if tooclose_inds:
         raise ValidationError("""Following atoms are too close: {}""".format(
-            [(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
+            [(i, j, dist) for i, j, dist in tooclose_inds]))
 
     return {'geom': npgeom.reshape((-1))}
 
