@@ -50,7 +50,6 @@ def from_input_arrays(
         zero_ghost_fragments=False,
         nonphysical=False,
         mtol=1.e-3,
-        validate_level=2,
         verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables
     in multiple domains.
@@ -121,7 +120,6 @@ def from_input_arrays(
             zero_ghost_fragments=zero_ghost_fragments,
             nonphysical=nonphysical,
             mtol=mtol,
-            validate_level=validate_level,
             verbose=1)
         update_with_error(molinit, {'qm': processed})
         if molinit['qm'] == {}:
@@ -165,7 +163,6 @@ def from_arrays(*,
                 zero_ghost_fragments=False,
                 nonphysical=False,
                 mtol=1.e-3,
-                validate_level=2,
                 verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
@@ -348,7 +345,6 @@ def from_arrays(*,
             processed = validate_and_fill_geometry(
                 geom=geom,
                 tooclose=tooclose,
-                validate_level=validate_level
                 )  # yapf: disable
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
@@ -576,27 +572,26 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
     return {'fragment_files': files, 'hint_types': types, 'geom_hints': hints}
 
 
-def validate_and_fill_geometry(geom=None, tooclose=0.1, validate_level=2):
+def validate_and_fill_geometry(geom=None, tooclose=0.1):
     """Check `geom` for overlapping atoms. Return flattened"""
 
     npgeom = np.asarray(geom, dtype=np.float).reshape((-1, 3))
 
-    if validate_level > 1:
-        # Upper triangular
-        metric = tooclose ** 2
-        tooclose_inds = []
-        for x in range(npgeom.shape[0]):
-            diffs = npgeom[x] - npgeom[x+1:]
-            dists = np.core._multiarray_umath.c_einsum('ij,ij->i', diffs, diffs)
+    # Upper triangular
+    metric = tooclose ** 2
+    tooclose_inds = []
+    for x in range(npgeom.shape[0]):
+        diffs = npgeom[x] - npgeom[x+1:]
+        dists = np.core._multiarray_umath.c_einsum('ij,ij->i', diffs, diffs)
 
-            # Record issues
-            if np.any(dists < metric):
-                indices = np.where(dists < metric)[0]
-                tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices] ** 0.5) ])
+        # Record issues
+        if np.any(dists < metric):
+            indices = np.where(dists < metric)[0]
+            tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices] ** 0.5) ])
 
-        if tooclose_inds:
-            raise ValidationError("""Following atoms are too close: {}""".format(
-                [(i, j, dist) for i, j, dist in tooclose_inds]))
+    if tooclose_inds:
+        raise ValidationError("""Following atoms are too close: {}""".format(
+            [(i, j, dist) for i, j, dist in tooclose_inds]))
 
     return {'geom': npgeom.reshape((-1))}
 

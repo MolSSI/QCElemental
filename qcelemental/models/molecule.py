@@ -75,9 +75,11 @@ class Identifiers(ProtoModel):
 
 class Molecule(ProtoModel):
 
-    # Required data
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default
     schema_version: int = 2
+    validated: bool = False
+
+    # Required data
     symbols: Array[str]
     geometry: Array[float]
 
@@ -114,15 +116,21 @@ class Molecule(ProtoModel):
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
 
-    def __init__(self, orient=False, validate=True, **kwargs):
+    def __init__(self, orient=False, validate=None, **kwargs):
+
+        if validate is None:
+            validate = not kwargs.get("validated", False)
+
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
-            schema = to_schema(from_schema(kwargs, validate_level=validate), dtype=kwargs["schema_version"], copy=False, units=None, np_out=True)
+            schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"], copy=False, units=None, np_out=True)
 
+            kwargs["validated"] = True
             kwargs = {**kwargs, **schema}  # Allow any extra fields
+            validate = True
 
         super().__init__(**kwargs)
 
@@ -566,7 +574,7 @@ class Molecule(ProtoModel):
                   dtype: Optional[str] = None,
                   *,
                   orient: bool = False,
-                  validate: bool = True,
+                  validate: bool = None,
                   **kwargs: Dict[str, Any]) -> 'Molecule':
         """
         Constructs a molecule object from a data structure.
@@ -602,7 +610,6 @@ class Molecule(ProtoModel):
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
             input_dict = to_schema(from_string(data)["qm"], dtype=2)
-            validate = False  # Already validated, no need to do it twice
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -612,7 +619,6 @@ class Molecule(ProtoModel):
                 "fragment_separators": kwargs.pop("frags", [])
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
-            validate = False
         elif dtype == "msgpack":
             input_dict = cls._parse_msgpack(data)
         elif dtype == "json":

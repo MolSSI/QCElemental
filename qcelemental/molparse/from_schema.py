@@ -7,7 +7,7 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, *, verbose: int=1, validate_level: int=1) -> Dict:
+def from_schema(molschema, *, verbose: int=1) -> Dict:
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
@@ -16,8 +16,6 @@ def from_schema(molschema, *, verbose: int=1, validate_level: int=1) -> Dict:
         Dictionary form of Molecule following known schema.
     verbose : int, optional
         Amount of printing.
-    validate_level : int, optional
-        Increase the amount of validation, 1 is the default.
 
     Returns
     -------
@@ -80,7 +78,6 @@ def from_schema(molschema, *, verbose: int=1, validate_level: int=1) -> Dict:
         #zero_ghost_fragments=zero_ghost_fragments,
         #nonphysical=nonphysical,
         #mtol=mtol,
-        validate_level=validate_level,
         verbose=verbose)
 
     # replace from_arrays stamp with from_schema stamp

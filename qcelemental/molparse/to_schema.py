@@ -9,7 +9,7 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False, validate_level: int=2, copy: bool=True) -> Dict:
+def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False, copy: bool=True) -> Dict:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
@@ -63,6 +63,7 @@ def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False,
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
         molecule = {}
+        molecule["validated"] = True
         molecule['symbols'] = np.array(molrec['elem'], copy=copy)
         molecule['geometry'] = geom
         molecule['masses'] = np.array(molrec['mass'], copy=copy)
