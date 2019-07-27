@@ -1,5 +1,6 @@
 import re
 from typing import List, Tuple
+from functools import lru_cache
 
 from .regex import NUCLEUS
 from ..exceptions import NotAnElementError, ValidationError
@@ -7,16 +8,18 @@ from ..periodic_table import periodictable
 
 _nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
 
-def reconcile_nucleus(A:int=None,
-                      Z:int=None,
-                      E:str=None,
-                      mass:float=None,
-                      real:bool=None,
-                      label:str=None,
-                      speclabel:bool=True,
-                      nonphysical:bool=False,
-                      mtol:float=1.e-3,
-                      verbose:int=1) -> Tuple[int, int, str, float, bool, str]:
+
+@lru_cache(maxsize=512)
+def reconcile_nucleus(A: int = None,
+                      Z: int = None,
+                      E: str = None,
+                      mass: float = None,
+                      real: bool = None,
+                      label: str = None,
+                      speclabel: bool = True,
+                      nonphysical: bool = False,
+                      mtol: float = 1.e-3,
+                      verbose: int = 1) -> Tuple[int, int, str, float, bool, str]:
     """Forms consistent set of nucleus descriptors from all information
     from arguments, supplemented by the periodic table. At the least,
     must provide element identity somehow. Defaults to most-abundant
@@ -188,8 +191,8 @@ def reconcile_nucleus(A:int=None,
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
             if log_text:
                 text.append(
-                    """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".format(
-                        z, z_a2mass_min, z_a2mass_max))
+                    """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".
+                    format(z, z_a2mass_min, z_a2mass_max))
 
         m_exact.append(z_mass)
         if nonphysical:
@@ -322,8 +325,8 @@ def reconcile_nucleus(A:int=None,
     user_final = reconcile(l_exact, l_range, 'user label')
 
     if log_text:
-        text.append("""<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(A_final, Z_final, E_final,
-                                                                                      mass_final, real_final, user_final))
+        text.append("""<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(
+            A_final, Z_final, E_final, mass_final, real_final, user_final))
 
     if log_text:
         print('\n'.join(text))
