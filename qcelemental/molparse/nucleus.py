@@ -136,14 +136,16 @@ def reconcile_nucleus(A:int=None,
     """
 
     # <<< define functions
+    log_text = verbose >= 2
 
     def reconcile(exact, tests, feature):
         """Returns a member from `exact` that passes all `tests`, else raises error for `feature`."""
 
         for candidate in exact:
             assessment = [fn(candidate) for fn in tests]
-            text.append("""Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment,
-                                                                       all(assessment)))
+            if log_text:
+                text.append("""Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment,
+                                                                           all(assessment)))
             if all(assessment):
                 return candidate
 
@@ -180,22 +182,26 @@ def reconcile_nucleus(A:int=None,
         A_exact.append(z_a)
         if nonphysical:
             A_range.append(lambda x: x == -1 or x >= 1)
-            text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
+            if log_text:
+                text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
         else:
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
-            text.append(
-                """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".format(
-                    z, z_a2mass_min, z_a2mass_max))
+            if log_text:
+                text.append(
+                    """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".format(
+                        z, z_a2mass_min, z_a2mass_max))
 
         m_exact.append(z_mass)
         if nonphysical:
             m_range.append(lambda x: x > 0.5)
-            text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
+            if log_text:
+                text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
         else:
             m_range.append(lambda x, mmin=z_mass2a_min, mmax=z_mass2a_max: x >= mmin - mmtol and x <= mmax + mmtol)
-            text.append(
-                """For mass, input Z: {} requires {} < mass < {} +/-{}, the known mass range for element""".format(
-                    z, z_mass2a_min, z_mass2a_max, mmtol))
+            if log_text:
+                text.append(
+                    """For mass, input Z: {} requires {} < mass < {} +/-{}, the known mass range for element""".format(
+                        z, z_mass2a_min, z_mass2a_max, mmtol))
 
     def offer_mass_number(z, a):
         """Given a mass number and element, what can be suggested and asserted about A, mass?"""
@@ -206,11 +212,13 @@ def reconcile_nucleus(A:int=None,
 
         A_exact.append(a)
         A_range.append(lambda x, a=a: x == a)
-        text.append("""For A, inputs Z: {}, A: {} require A == {}.""".format(z, a, a))
+        if log_text:
+            text.append("""For A, inputs Z: {}, A: {} require A == {}.""".format(z, a, a))
 
         m_exact.append(a_mass)
         m_range.append(lambda x, a_mass=a_mass: abs(x - a_mass) < mtol)
-        text.append("""For mass, inputs Z: {}, A: {} require abs(mass - {}) < {}""".format(z, a, a_mass, mtol))
+        if log_text:
+            text.append("""For mass, inputs Z: {}, A: {} require abs(mass - {}) < {}""".format(z, a, a_mass, mtol))
 
     def offer_mass_value(z, m):
         """Given a mass and element, what can be suggested and asserted about A, mass?"""
@@ -228,22 +236,26 @@ def reconcile_nucleus(A:int=None,
 
         A_exact.append(m_a)
         A_range.append(lambda x, m_a=m_a: x == m_a)
-        text.append("""For A, inputs Z: {}, m: {} require A == {}""".format(z, m, m_a))
+        if log_text:
+            text.append("""For A, inputs Z: {}, m: {} require A == {}""".format(z, m, m_a))
 
         m_exact.append(m)
         m_range.append(lambda x, m=m: x == m)
-        text.append("""For mass, inputs Z: {}, m: {} require m == {}""".format(z, m, m))
+        if log_text:
+            text.append("""For mass, inputs Z: {}, m: {} require m == {}""".format(z, m, m))
 
     def offer_reality(rgh):
         r_exact.append(rgh)
         r_range.append(lambda x, rgh=rgh: x == rgh)
-        text.append("""For real/ghost, input rgh: {} requires rgh == {}""".format(rgh, rgh))
+        if log_text:
+            text.append("""For real/ghost, input rgh: {} requires rgh == {}""".format(rgh, rgh))
 
     def offer_user_label(lbl):
         lbl = str(lbl).lower()
         l_exact.append(lbl)
         l_range.append(lambda x, lbl=lbl: x == lbl)
-        text.append("""For user label, input lbl: {} requires lbl == {}""".format(lbl, lbl))
+        if log_text:
+            text.append("""For user label, input lbl: {} requires lbl == {}""".format(lbl, lbl))
 
     # <<< initialize
 
@@ -309,10 +321,11 @@ def reconcile_nucleus(A:int=None,
     real_final = reconcile(r_exact, r_range, 'real/ghost')
     user_final = reconcile(l_exact, l_range, 'user label')
 
-    text.append("""<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(A_final, Z_final, E_final,
-                                                                                  mass_final, real_final, user_final))
+    if log_text:
+        text.append("""<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(A_final, Z_final, E_final,
+                                                                                      mass_final, real_final, user_final))
 
-    if verbose >= 2:
+    if log_text:
         print('\n'.join(text))
 
     return (A_final, Z_final, E_final, mass_final, real_final, user_final)
