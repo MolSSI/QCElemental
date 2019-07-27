@@ -294,11 +294,14 @@ def validate_and_fill_chgmult(zeff,
         'Gh/He/Gh': (np.array([0, 2, 0]), np.array([1, 2]))}
 
     """
+    log_full = verbose >= 2
+    log_brief = verbose >= 2 # TODO: Move back to 1
     text = []
 
     felez = np.split(zeff, fragment_separators)
     nfr = len(felez)
-    text.append('felez: {}'.format(felez))
+    if log_full:
+        text.append('felez: {}'.format(felez))
 
     cgmp_exact_c = []  # exact_* are candidates for the final value
     cgmp_exact_fc: List[List[float]] = [[] for f in range(nfr)]
@@ -311,11 +314,13 @@ def validate_and_fill_chgmult(zeff,
     real_fragments = np.array([not all(f == 0 for f in felez[ifr]) for ifr in range(nfr)])
     all_fc_known = all(f is not None for f in fragment_charges)
     all_fm_known = all(f is not None for f in fragment_multiplicities)
-    text.append('all_fc_known: {}'.format(all_fc_known))
-    text.append('all_fm_known: {}'.format(all_fm_known))
+    if log_full:
+        text.append('all_fc_known: {}'.format(all_fc_known))
+        text.append('all_fm_known: {}'.format(all_fm_known))
 
     if zero_ghost_fragments and not all(real_fragments):
-        print('possibly adjusting charges')
+        if log_brief:
+            print('possibly adjusting charges')
         molecular_charge = None
         fragment_charges = [(fr if real_fragments[ifr] else 0.0) for ifr, fr in enumerate(fragment_charges)]
         molecular_multiplicity = None
@@ -343,8 +348,9 @@ def validate_and_fill_chgmult(zeff,
 
     zel = np.sum(zeff)  # note: number electrons in neutral species, not number total electrons
     fzel = [np.sum(f) for f in felez]
-    text.append('zel: {}'.format(zel))
-    text.append('fzel: {}'.format(fzel))
+    if log_full:
+        text.append('zel: {}'.format(zel))
+        text.append('fzel: {}'.format(fzel))
 
     #   * (R4) require sufficient electrons for mult: mult - 1 <= neutral_electrons - chg
     cgmp_range.append(lambda c, fc, m, fm: _sufficient_electrons_for_mult(zel, c, m))
@@ -459,12 +465,14 @@ def validate_and_fill_chgmult(zeff,
                                              uniq_m, itertools.product(*uniq_fm)]):  # yapf: disable
             cc, cfc, cm, cfm = candidate
             if header:
-                text.append("""Assess candidate {}: {}""".format(candidate, ' '.join(
-                    ('{:3}'.format(r) for r in cgmp_rules))))
+                if log_full:
+                    text.append("""Assess candidate {}: {}""".format(candidate, ' '.join(
+                        ('{:3}'.format(r) for r in cgmp_rules))))
                 header = False
             assessment = [fn(cc, cfc, cm, cfm) for fn in cgmp_range]
             sass = ['{:3}'.format('T' if b else '') for b in assessment]
-            text.append("""Assess candidate {:}: {} --> {}""".format(candidate, ' '.join(sass), all(assessment)))
+            if log_full:
+                text.append("""Assess candidate {:}: {} --> {}""".format(candidate, ' '.join(sass), all(assessment)))
             if all(assessment):
                 return candidate
 
@@ -490,8 +498,9 @@ def validate_and_fill_chgmult(zeff,
     fm_text = ', '.join((stringify(fs, ff) for fs, ff in zip(fragment_multiplicities, fm_final)))
 
     brief = []
-    brief.append('    {:26} {}'.format('      charge = ' + c_text, 'fragments = ' + fc_text))
-    brief.append('    {:26} {}'.format('multiplicity = ' + m_text, 'fragments = ' + fm_text))
+    if log_brief:
+        brief.append('    {:26} {}'.format('      charge = ' + c_text, 'fragments = ' + fc_text))
+        brief.append('    {:26} {}'.format('multiplicity = ' + m_text, 'fragments = ' + fm_text))
 
     been_defaulted = []
     if c_text.count('(') + fc_text.count('(') > 1:
@@ -499,19 +508,19 @@ def validate_and_fill_chgmult(zeff,
     if '(' in m_text or '(' in fm_text:
         been_defaulted.append('multiplicity')
 
-    if been_defaulted:
+    if been_defaulted and log_brief:
         brief.append(
             '    Note: Default values have been applied for {}. Specify intentions in molecule input block'.format(
                 ' and '.join(been_defaulted)))
 
-    if m_final != _high_spin_sum(fm_final):
+    if (m_final != _high_spin_sum(fm_final)) and log_brief:
         brief.append(
             '    Warning: Total multiplicity is not high-spin sum of fragments; may be clobbered by psi4.core.Molecule.update_geometry().'
         )
 
-    if verbose >= 2:
+    if log_full:
         print('\n'.join(text))
-    if verbose >= 1:
+    if log_brief:
         # TODO add back when printing worked out
         #print('\n'.join(brief))
         pass
