@@ -7,7 +7,7 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, *, verbose: int=1) -> Dict:
+def from_schema(molschema, *, verbose: int=1, validate_level: int=1) -> Dict:
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
@@ -16,6 +16,8 @@ def from_schema(molschema, *, verbose: int=1) -> Dict:
         Dictionary form of Molecule following known schema.
     verbose : int, optional
         Amount of printing.
+    validate_level : int, optional
+        Increase the amount of validation, 1 is the default.
 
     Returns
     -------
@@ -78,6 +80,7 @@ def from_schema(molschema, *, verbose: int=1) -> Dict:
         #zero_ghost_fragments=zero_ghost_fragments,
         #nonphysical=nonphysical,
         #mtol=mtol,
+        validate_level=validate_level,
         verbose=verbose)
 
     # replace from_arrays stamp with from_schema stamp
@@ -126,9 +129,20 @@ def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, 
 
     """
 
+
     vsplt = np.cumsum([len(fr) for fr in frag_pattern])
     nat = vsplt[-1]
     fragment_separators = vsplt[:-1]
+
+    # Nothing to do for len =1
+    if len(fragment_separators) == 0:
+        returns = {'fragment_separators': fragment_separators}
+        if geom is not None:
+            returns.update({'geom': geom})
+        extras = {k: v for k, v in kwargs.items()}
+        returns.update(extras)
+
+        return returns
 
     do_reorder = False
     if not np.array_equal(np.sort(np.concatenate(frag_pattern)), np.arange(nat)):
@@ -143,7 +157,7 @@ def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, 
             """Error: QCElemental would need to reorder atoms to accommodate non-contiguous fragments""")
 
     if geom is not None:
-        ncgeom = np.array(geom).reshape(-1, 3)
+        ncgeom = np.asarray(geom).reshape(-1, 3)
         if nat != ncgeom.shape[0]:
             raise ValidationError("""dropped atoms! nat = {} != {}""".format(nat, ncgeom.shape[0]))
         geom = np.vstack([ncgeom[fr] for fr in frag_pattern])

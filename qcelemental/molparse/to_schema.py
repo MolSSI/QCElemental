@@ -9,7 +9,7 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False) -> Dict:
+def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False, validate_level: int=2) -> Dict:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
