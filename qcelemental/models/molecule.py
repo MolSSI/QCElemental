@@ -120,7 +120,7 @@ class Molecule(ProtoModel):
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
-            schema = to_schema(from_schema(kwargs, validate_level=validate), dtype=kwargs["schema_version"])
+            schema = to_schema(from_schema(kwargs, validate_level=validate), dtype=kwargs["schema_version"], copy=False, units=None, np_out=True)
 
             kwargs = {**kwargs, **schema}  # Allow any extra fields
 
@@ -131,7 +131,8 @@ class Molecule(ProtoModel):
         values = self.__values__
 
         natoms = values["geometry"].shape[0]
-        values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
+        if validate:
+            values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
 
         if values["masses"] is None:  # Setup masses before fixing the orientation
             values["masses"] = np.array([periodictable.to_mass(x) for x in values["symbols"]])
@@ -141,7 +142,7 @@ class Molecule(ProtoModel):
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
-        else:
+        elif validate:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
         # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)

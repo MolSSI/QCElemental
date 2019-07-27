@@ -620,34 +620,34 @@ def validate_and_fill_nuclei(
         elea = np.asarray([None] * nat)
     else:
         # -1 equivalent to None
-        elea = np.array(elea)
+        elea = np.asarray(elea)
         if None in elea:
             elea = np.array([(None if at == -1 else at) for at in elea])
 
     if elez is None:
         elez = np.asarray([None] * nat)
     else:
-        elez = np.array(elez)
+        elez = np.asarray(elez)
 
     if elem is None:
         elem = np.asarray([None] * nat)
     else:
-        elem = np.array(elem)
+        elem = np.asarray(elem)
 
     if mass is None:
         mass = np.asarray([None] * nat)
     else:
-        mass = np.array(mass)
+        mass = np.asarray(mass)
 
     if real is None:
         real = np.asarray([None] * nat)
     else:
-        real = np.array(real)
+        real = np.asarray(real)
 
     if elbl is None:
         elbl = np.asarray([None] * nat)
     else:
-        elbl = np.array(elbl)
+        elbl = np.asarray(elbl)
 
     if not ((nat, ) == elea.shape == elez.shape == elem.shape == mass.shape == real.shape == elbl.shape):
         raise ValidationError(
