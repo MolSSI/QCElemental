@@ -6,7 +6,7 @@ import numpy as np
 
 from ..exceptions import ValidationError
 from ..physical_constants import constants
-from ..util import distance_matrix, provenance_stamp, unnp, update_with_error
+from ..util import provenance_stamp, unnp, update_with_error
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
 from .regex import VERSION_PATTERN
@@ -616,8 +616,8 @@ def validate_and_fill_nuclei(
     else:
         # -1 equivalent to None
         elea = np.asarray(elea)
-        if None in elea:
-            elea = np.array([(None if at == -1 else at) for at in elea])
+        if -1 in elea:
+            elea = np.array([(None if at == -1 else at) for at in elea]) # Rebuild to change dtype if needed.
 
     if elez is None:
         elez = np.asarray([None] * nat)

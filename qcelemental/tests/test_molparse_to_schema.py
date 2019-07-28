@@ -15,6 +15,7 @@ schema14_1 = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
     "molecule": {
+        "validated": True,
         "geometry": [0.0, 0.0, -5.0, 0.0, 0.0, 5.0],
         "symbols": ["He", "He"],
         "atomic_numbers": [2, 2],
@@ -35,7 +36,7 @@ schema14_1 = {
 
 schema14_2 = {
     'schema_name': 'qcschema_molecule',
-    'schema_version': 2
+    'schema_version': 2,
 }
 schema14_2.update(schema14_1['molecule'])
 
@@ -139,6 +140,7 @@ schema15_1 = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
     "molecule": {
+        "validated": True,
         "geometry": [0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0],
         "symbols": ["H", "O", "H"],
         "atomic_numbers": [1, 8, 1],
@@ -240,6 +242,7 @@ schema16_1 = {
     'schema_name': 'qc_schema_input',
     'schema_version': 1,
     'molecule': {
+        'validated': True,
         'geometry': [2., 2., 3.],
         'symbols': ['C'],
         'masses': [12.0],

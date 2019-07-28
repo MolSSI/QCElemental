@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Dict
+from typing import Any, Dict, Union
 
 import numpy as np
 
@@ -9,7 +9,7 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False, copy: bool=True) -> Dict:
+def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: bool=False, copy: bool=True) -> Dict[str, Any]:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
