@@ -36,14 +36,19 @@ def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: 
     """
     qcschema: Dict = {}
 
-    if units is None:
-        geom = np.array(molrec["geom"], copy=copy)
+    if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
+        factor = molrec['input_units_to_au']
+    elif molrec["units"] == 'Bohr' and units == 'Bohr':
+        factor = None
     else:
-        if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
-            factor = molrec['input_units_to_au']
-        else:
-            factor = constants.conversion_factor(molrec['units'], units)
-        geom = np.array(molrec['geom']) * factor
+        factor = constants.conversion_factor(molrec['units'], units)
+
+
+    geom = np.array(molrec["geom"], copy=copy)
+
+    if factor:
+        geom = geom * factor
+
     nat = geom.shape[0] // 3
 
     name = molrec.get('name', formula_generator(molrec['elem']))
