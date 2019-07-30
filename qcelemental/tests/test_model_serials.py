@@ -3,7 +3,7 @@ import pytest
 from pydantic import ValidationError
 
 from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
-                                ResultInput)
+                                ResultInput, ResultProperties)
 from qcelemental.util import provenance_stamp
 
 from .addons import using_msgpack
@@ -180,3 +180,17 @@ def test_failed_operation(water, result_input):
     failed_json = failed.json()
     assert isinstance(failed_json, str)
     assert 'its all good' in failed_json
+
+def test_default_skip():
+
+    obj = ResultProperties(scf_one_electron_energy="-5.0")
+
+    assert pytest.approx(obj.scf_one_electron_energy) == -5.0
+
+    assert obj.dict().keys() == {"scf_one_electron_energy"}
+
+def test_default_repr():
+    obj = ResultProperties(scf_one_electron_energy="-5.0")
+    assert len(obj.to_string()) < 100
+    assert len(str(obj)) < 100
+    assert len(repr(obj)) < 100
