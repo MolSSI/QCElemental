@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 import pprint
 import re
 
@@ -50,6 +50,7 @@ def from_input_arrays(
         zero_ghost_fragments=False,
         nonphysical=False,
         mtol=1.e-3,
+        copy=True,
         verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables
     in multiple domains.
@@ -120,6 +121,7 @@ def from_input_arrays(
             zero_ghost_fragments=zero_ghost_fragments,
             nonphysical=nonphysical,
             mtol=mtol,
+            copy=copy,
             verbose=1)
         update_with_error(molinit, {'qm': processed})
         if molinit['qm'] == {}:
@@ -163,6 +165,7 @@ def from_arrays(*,
                 zero_ghost_fragments=False,
                 nonphysical=False,
                 mtol=1.e-3,
+                copy=True,
                 verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
@@ -294,14 +297,14 @@ def from_arrays(*,
         raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
             domain, available_domains))
 
-    if domain == 'qm' and (geom is None or np.array(geom).size == 0):
+    if domain == 'qm' and (geom is None or np.asarray(geom).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == 'efp' and (geom_hints is None or np.array(geom_hints).size == 0):
+    if domain == 'efp' and (geom_hints is None or np.asarray(geom_hints).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
@@ -445,7 +448,7 @@ def validate_and_fill_units(name=None,
         molinit['provenance'] = {}
     else:
         if validate_provenance(provenance):
-            molinit['provenance'] = copy.deepcopy(provenance)
+            molinit['provenance'] = deepcopy(provenance)
 
     if connectivity is not None:
         conn = []
@@ -572,10 +575,10 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
     return {'fragment_files': files, 'hint_types': types, 'geom_hints': hints}
 
 
-def validate_and_fill_geometry(geom=None, tooclose=0.1):
+def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     """Check `geom` for overlapping atoms. Return flattened"""
 
-    npgeom = np.asarray(geom, dtype=np.float).reshape((-1, 3))
+    npgeom = np.array(geom, copy=copy, dtype=np.float).reshape((-1, 3))
 
     # Upper triangular
     metric = tooclose ** 2
@@ -608,6 +611,7 @@ def validate_and_fill_nuclei(
         speclabel=True,
         nonphysical=False,
         mtol=1.e-3,
+        copy=True,
         verbose=1):
     """Check the nuclear identity arrays for consistency and fill in knowable values."""
 
@@ -666,12 +670,12 @@ def validate_and_fill_nuclei(
     else:
         A = Z = E = mass = real = label = []
     return {
-        'elea': np.array(A, dtype=np.int),
-        'elez': np.array(Z, dtype=np.int),
-        'elem': np.array(E),
-        'mass': np.array(mass, dtype=np.float),
-        'real': np.array(real, dtype=np.bool),
-        'elbl': np.array(label)
+        'elea': np.array(A, dtype=np.int, copy=copy),
+        'elez': np.array(Z, dtype=np.int, copy=copy),
+        'elem': np.array(E, copy=copy),
+        'mass': np.array(mass, dtype=np.float, copy=copy),
+        'real': np.array(real, dtype=np.bool, copy=copy),
+        'elbl': np.array(label, copy=copy)
     }
 
 
