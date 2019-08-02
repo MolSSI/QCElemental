@@ -36,18 +36,14 @@ def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: 
     """
     qcschema: Dict = {}
 
-    if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
-        factor = molrec['input_units_to_au']
-    elif molrec["units"] == 'Bohr' and units == 'Bohr':
-        factor = None
-    else:
-        factor = constants.conversion_factor(molrec['units'], units)
-
-
     geom = np.array(molrec["geom"], copy=copy)
 
-    if factor:
-        geom = geom * factor
+    if molrec["units"] == 'Bohr' and units == 'Bohr':
+        pass
+    elif molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
+        geom = geom * molrec['input_units_to_au']
+    else:
+        geom = geom * constants.conversion_factor(molrec['units'], units)
 
     nat = geom.shape[0] // 3
 
@@ -64,7 +60,7 @@ def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: 
         qcschema['name'] = name
 
     elif dtype in [1, 2]:
-        if units not in ['Bohr', None]:
+        if units != 'Bohr':
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
         molecule = {}

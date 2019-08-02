@@ -348,6 +348,7 @@ def from_arrays(*,
             processed = validate_and_fill_geometry(
                 geom=geom,
                 tooclose=tooclose,
+                copy=copy
                 )  # yapf: disable
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
@@ -611,7 +612,6 @@ def validate_and_fill_nuclei(
         speclabel=True,
         nonphysical=False,
         mtol=1.e-3,
-        copy=True,
         verbose=1):
     """Check the nuclear identity arrays for consistency and fill in knowable values."""
 
@@ -670,12 +670,12 @@ def validate_and_fill_nuclei(
     else:
         A = Z = E = mass = real = label = []
     return {
-        'elea': np.array(A, dtype=np.int, copy=copy),
-        'elez': np.array(Z, dtype=np.int, copy=copy),
-        'elem': np.array(E, copy=copy),
-        'mass': np.array(mass, dtype=np.float, copy=copy),
-        'real': np.array(real, dtype=np.bool, copy=copy),
-        'elbl': np.array(label, copy=copy)
+        'elea': np.array(A, dtype=np.int),
+        'elez': np.array(Z, dtype=np.int),
+        'elem': np.array(E),
+        'mass': np.array(mass, dtype=np.float),
+        'real': np.array(real, dtype=np.bool),
+        'elbl': np.array(label)
     }
 
 
