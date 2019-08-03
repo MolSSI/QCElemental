@@ -4,6 +4,7 @@ import pytest
 
 from qcelemental.util import which_import
 
+
 def internet_connection():
     try:
         socket.create_connection(("www.google.com", 80))

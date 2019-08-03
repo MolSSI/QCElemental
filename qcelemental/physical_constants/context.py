@@ -5,6 +5,7 @@ Contains relevant physical constants
 import collections
 from decimal import Decimal
 from typing import Union
+from functools import lru_cache
 
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry
@@ -178,6 +179,7 @@ class PhysicalConstantsContext:
 
         return self.ureg.Quantity(data)
 
+    @lru_cache()
     def conversion_factor(self, base_unit: Union[str, 'Quantity'], conv_unit: Union[str, 'Quantity']) -> float:
         """Provides the conversion factor from one unit to another.
 

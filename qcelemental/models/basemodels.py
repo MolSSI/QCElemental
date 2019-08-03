@@ -118,3 +118,6 @@ class ProtoModel(BaseModel):
     @classmethod
     def _parse_msgpack(cls, data: bytes) -> Dict[str, Any]:
         return msgpack_loads(data)
+
+    def to_string(self): # lgtm [py/inheritance/incorrect-overridden-signature]
+        return f"{self.__class__.__name__}"

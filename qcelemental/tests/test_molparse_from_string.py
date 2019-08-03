@@ -192,6 +192,7 @@ def test_psi4_qm_iutau_1i():
         "schema_name": "qc_schema_input",
         "schema_version": 1,
         "molecule": {
+            'validated': True,
             "geometry": [0.0, 0.0, 0.0, 1.908623386712, 0.0, 0.0],
             "symbols": ["O", "H"],
             "atomic_numbers": [8, 1],

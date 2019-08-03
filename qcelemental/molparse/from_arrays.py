@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 import pprint
 import re
 
@@ -6,7 +6,7 @@ import numpy as np
 
 from ..exceptions import ValidationError
 from ..physical_constants import constants
-from ..util import distance_matrix, provenance_stamp, unnp, update_with_error
+from ..util import provenance_stamp, unnp, update_with_error
 from .chgmult import validate_and_fill_chgmult
 from .nucleus import reconcile_nucleus
 from .regex import VERSION_PATTERN
@@ -50,6 +50,7 @@ def from_input_arrays(
         zero_ghost_fragments=False,
         nonphysical=False,
         mtol=1.e-3,
+        copy=True,
         verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables
     in multiple domains.
@@ -120,6 +121,7 @@ def from_input_arrays(
             zero_ghost_fragments=zero_ghost_fragments,
             nonphysical=nonphysical,
             mtol=mtol,
+            copy=copy,
             verbose=1)
         update_with_error(molinit, {'qm': processed})
         if molinit['qm'] == {}:
@@ -163,6 +165,7 @@ def from_arrays(*,
                 zero_ghost_fragments=False,
                 nonphysical=False,
                 mtol=1.e-3,
+                copy=True,
                 verbose=1):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
@@ -294,14 +297,14 @@ def from_arrays(*,
         raise ValidationError('Topology domain {} not available for processing. Choose among {}'.format(
             domain, available_domains))
 
-    if domain == 'qm' and (geom is None or np.array(geom).size == 0):
+    if domain == 'qm' and (geom is None or np.asarray(geom).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == 'efp' and (geom_hints is None or np.array(geom_hints).size == 0):
+    if domain == 'efp' and (geom_hints is None or np.asarray(geom_hints).size == 0):
         if missing_enabled_return == 'none':
             return {}
         elif missing_enabled_return == 'minimal':
@@ -344,7 +347,9 @@ def from_arrays(*,
         else:
             processed = validate_and_fill_geometry(
                 geom=geom,
-                tooclose=tooclose)  # yapf: disable
+                tooclose=tooclose,
+                copy=copy
+                )  # yapf: disable
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
 
@@ -444,7 +449,7 @@ def validate_and_fill_units(name=None,
         molinit['provenance'] = {}
     else:
         if validate_provenance(provenance):
-            molinit['provenance'] = copy.deepcopy(provenance)
+            molinit['provenance'] = deepcopy(provenance)
 
     if connectivity is not None:
         conn = []
@@ -571,19 +576,26 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
     return {'fragment_files': files, 'hint_types': types, 'geom_hints': hints}
 
 
-def validate_and_fill_geometry(geom=None, tooclose=0.1):
+def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     """Check `geom` for overlapping atoms. Return flattened"""
 
-    npgeom = np.array(geom, dtype=np.float).reshape((-1, 3))
-    dm = distance_matrix(npgeom, npgeom)
+    npgeom = np.array(geom, copy=copy, dtype=np.float).reshape((-1, 3))
 
-    iu = np.triu_indices(dm.shape[0])
-    dm[iu] = 10.
-    tooclosem = np.where(dm < tooclose)
+    # Upper triangular
+    metric = tooclose ** 2
+    tooclose_inds = []
+    for x in range(npgeom.shape[0]):
+        diffs = npgeom[x] - npgeom[x+1:]
+        dists = np.core._multiarray_umath.c_einsum('ij,ij->i', diffs, diffs)
 
-    if tooclosem[0].shape[0]:
+        # Record issues
+        if np.any(dists < metric):
+            indices = np.where(dists < metric)[0]
+            tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices] ** 0.5) ])
+
+    if tooclose_inds:
         raise ValidationError("""Following atoms are too close: {}""".format(
-            [(i, j, dm[i, j]) for i, j in zip(*tooclosem)]))
+            [(i, j, dist) for i, j, dist in tooclose_inds]))
 
     return {'geom': npgeom.reshape((-1))}
 
@@ -607,32 +619,34 @@ def validate_and_fill_nuclei(
         elea = np.asarray([None] * nat)
     else:
         # -1 equivalent to None
-        elea = np.array([(None if at == -1 else at) for at in elea])
+        elea = np.asarray(elea)
+        if -1 in elea:
+            elea = np.array([(None if at == -1 else at) for at in elea]) # Rebuild to change dtype if needed.
 
     if elez is None:
         elez = np.asarray([None] * nat)
     else:
-        elez = np.array(elez)
+        elez = np.asarray(elez)
 
     if elem is None:
         elem = np.asarray([None] * nat)
     else:
-        elem = np.array(elem)
+        elem = np.asarray(elem)
 
     if mass is None:
         mass = np.asarray([None] * nat)
     else:
-        mass = np.array(mass)
+        mass = np.asarray(mass)
 
     if real is None:
         real = np.asarray([None] * nat)
     else:
-        real = np.array(real)
+        real = np.asarray(real)
 
     if elbl is None:
         elbl = np.asarray([None] * nat)
     else:
-        elbl = np.array(elbl)
+        elbl = np.asarray(elbl)
 
     if not ((nat, ) == elea.shape == elez.shape == elem.shape == mass.shape == real.shape == elbl.shape):
         raise ValidationError(

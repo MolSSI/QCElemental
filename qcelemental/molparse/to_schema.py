@@ -1,5 +1,5 @@
-import copy
-from typing import Dict
+from copy import deepcopy
+from typing import Any, Dict
 
 import numpy as np
 
@@ -9,7 +9,7 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False) -> Dict:
+def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: bool=False, copy: bool=True) -> Dict[str, Any]:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
@@ -36,11 +36,15 @@ def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False)
     """
     qcschema: Dict = {}
 
-    if molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
-        factor = molrec['input_units_to_au']
+    geom = np.array(molrec["geom"], copy=copy)
+
+    if molrec["units"] == 'Bohr' and units == 'Bohr':
+        pass
+    elif molrec['units'] == 'Angstrom' and units == 'Bohr' and 'input_units_to_au' in molrec:
+        geom = geom * molrec['input_units_to_au']
     else:
-        factor = constants.conversion_factor(molrec['units'], units)
-    geom = np.array(molrec['geom']) * factor
+        geom = geom * constants.conversion_factor(molrec['units'], units)
+
     nat = geom.shape[0] // 3
 
     name = molrec.get('name', formula_generator(molrec['elem']))
@@ -50,7 +54,7 @@ def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False)
         if units not in ['Angstrom', 'Bohr']:
             raise ValidationError("""Psi4 Schema {} allows only 'Bohr'/'Angstrom' coordinates, not {}.""".format(
                 dtype, units))
-        qcschema = copy.deepcopy(molrec)
+        qcschema = deepcopy(molrec)
         qcschema['geom'] = geom
         qcschema['units'] = units
         qcschema['name'] = name
@@ -60,18 +64,19 @@ def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False)
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
         molecule = {}
-        molecule['symbols'] = np.array(molrec['elem'])
+        molecule["validated"] = True
+        molecule['symbols'] = np.array(molrec['elem'], copy=copy)
         molecule['geometry'] = geom
-        molecule['masses'] = np.array(molrec['mass'])
-        molecule['atomic_numbers'] = np.array(molrec['elez'])
-        molecule['mass_numbers'] = np.array(molrec['elea'])
-        molecule['atom_labels'] = np.array(molrec['elbl'])
+        molecule['masses'] = np.array(molrec['mass'], copy=copy)
+        molecule['atomic_numbers'] = np.array(molrec['elez'], copy=copy)
+        molecule['mass_numbers'] = np.array(molrec['elea'], copy=copy)
+        molecule['atom_labels'] = np.array(molrec['elbl'], copy=copy)
         molecule['name'] = name
         if 'comment' in molrec:
             molecule['comment'] = molrec['comment']
         molecule['molecular_charge'] = molrec['molecular_charge']
         molecule['molecular_multiplicity'] = molrec['molecular_multiplicity']
-        molecule['real'] = np.array(molrec['real'])
+        molecule['real'] = np.array(molrec['real'], copy=copy)
         fidx = np.split(np.arange(nat), molrec['fragment_separators'])
         molecule['fragments'] = [fr.tolist() for fr in fidx]
         molecule['fragment_charges'] = np.array(molrec['fragment_charges']).tolist()
@@ -80,9 +85,9 @@ def to_schema(molrec: Dict, dtype: str, units: str='Bohr', *, np_out: int=False)
         molecule['fix_orientation'] = molrec['fix_orientation']
         if 'fix_symmetry' in molrec:
             molecule['fix_symmetry'] = molrec['fix_symmetry']
-        molecule['provenance'] = copy.deepcopy(molrec['provenance'])
+        molecule['provenance'] = deepcopy(molrec['provenance'])
         if 'connectivity' in molrec:
-            molecule['connectivity'] = copy.deepcopy(molrec['connectivity'])
+            molecule['connectivity'] = deepcopy(molrec['connectivity'])
 
         if dtype == 1:
             qcschema = {'schema_name': 'qcschema_input', 'schema_version': 1, 'molecule': molecule}

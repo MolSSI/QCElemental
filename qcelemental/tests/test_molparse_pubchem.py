@@ -5,6 +5,7 @@ import pytest
 
 import qcelemental
 from qcelemental.testing import compare_molrecs, tnm
+
 from .addons import using_web
 
 _string_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_string'}
