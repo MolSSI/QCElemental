@@ -131,11 +131,11 @@ def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, 
     nat = vsplt[-1]
     fragment_separators = vsplt[:-1]
 
-    # Nothing to do for len =1
-    if len(fragment_separators) == 0:
+    # Nothing to do for len =1 and ordered
+    if (len(fragment_separators) == 0) and np.all(np.diff(frag_pattern[0]) == 1):
         returns = {'fragment_separators': fragment_separators}
         if geom is not None:
-            returns.update({'geom': geom})
+            returns.update({'geom': geom.copy()})
         extras = {k: v for k, v in kwargs.items()}
         returns.update(extras)
 

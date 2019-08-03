@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Any, Dict, Union
+from typing import Any, Dict
 
 import numpy as np
 
