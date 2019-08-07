@@ -745,6 +745,7 @@ class Molecule(ProtoModel):
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
             input_dict = to_schema(from_string(data)["qm"], dtype=2)
+            validate = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -754,6 +755,7 @@ class Molecule(ProtoModel):
                 "fragment_separators": kwargs.pop("frags", [])
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
+            validate = True
         elif dtype == "msgpack":
             input_dict = cls._parse_msgpack(data)
         elif dtype == "json":

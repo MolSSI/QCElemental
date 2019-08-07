@@ -6,6 +6,7 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
+from .basemodels import ProtoModel
 from .common_models import ComputeError, FailedOperation, Provenance
 from .molecule import Molecule
 from .procedures import Optimization, OptimizationInput
