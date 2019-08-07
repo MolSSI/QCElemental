@@ -272,7 +272,7 @@ class Molecule(ProtoModel):
 
         # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected
         # All attributes set bellow are equivalent to the default set.
-        values = self.__values__
+        values = self.__dict__
 
         natoms = values["geometry"].shape[0]
         if validate:

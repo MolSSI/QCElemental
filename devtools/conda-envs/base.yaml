@@ -8,7 +8,7 @@ dependencies:
   - nomkl
   - python
   - pint
-  - pydantic>=0.30.1
+  - pydantic>=0.32
 
     # Optional depends
   - networkx
