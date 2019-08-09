@@ -8,6 +8,7 @@ from .testing import (compare, compare_values)
 from . import molparse
 from . import molutil
 from . import models
+from . import util
 
 # Handle singletons, not their classes or modules
 from .periodic_table import periodictable

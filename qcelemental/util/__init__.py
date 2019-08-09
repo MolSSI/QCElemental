@@ -10,3 +10,4 @@ from .itertools import unique_everseen
 from .importing import parse_version, safe_version, which, which_import
 
 from .serialization import msgpack_dumps, msgpack_loads
+from .autodocs import auto_gen_docs_on_demand, get_base_docs
