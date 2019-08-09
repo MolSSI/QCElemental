@@ -1,15 +1,18 @@
-import pytest
-from ..tests.addons import using_networkx
-
 import math
 import pprint
-pp = pprint.PrettyPrinter(width=120)
 
 import numpy as np
 import pydantic
+import pytest
 
 import qcelemental as qcel
-from qcelemental.testing import compare, compare_values, compare_recursive, compare_molrecs
+from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values
+
+from ..tests.addons import using_networkx
+
+pp = pprint.PrettyPrinter(width=120)
+
+
 
 
 
@@ -267,8 +270,8 @@ def test_scramble_identity():
     mill = qcel.molutil.compute_scramble(4, do_resort=False, do_shift=False, do_rotate=False, deflection=1.0, do_mirror=False)
 
     mill_str = """----------------------------------------
-             AlignmentMill              
-                  eye                   
+             AlignmentMill
+                  eye
 ----------------------------------------
 Mirror:   False
 Atom Map: [0 1 2 3]
@@ -289,7 +292,7 @@ Rotation:
 
     assert compare_recursive(mill_dict, mill.dict())
     mill_dict['rotation'] = [1., 0., 0., 0., 1., 0., 0., 0., 1.]
-    assert compare_recursive(mill_dict, mill.json_dict())
+    assert compare_recursive(mill_dict, mill.dict(encoding="json"))
 
 
 def test_scramble_specific():
@@ -301,7 +304,7 @@ def test_scramble_specific():
                                                      [ 0.84393258,  0.29465774,  0.44827962]])
 
     mill_str = """----------------------------------------
-             AlignmentMill              
+             AlignmentMill
 ----------------------------------------
 Mirror:   False
 Atom Map: [1 2 0 3]
@@ -320,7 +323,7 @@ def test_hessian_align():
 
     rmill = """
 ----------------------------------------
-             AlignmentMill              
+             AlignmentMill
 ----------------------------------------
 Mirror:   False
 Atom Map: [0 1 2 3]
@@ -516,4 +519,3 @@ def test_vector_gradient_align():
     assert compare_values(c4_hooh_dipder_x, p2c_dipder_x, atol=1.e-5)
     assert compare_values(c4_hooh_dipder_y, p2c_dipder_y, atol=1.e-5)
     assert compare_values(c4_hooh_dipder_z, p2c_dipder_z, atol=1.e-5)
-

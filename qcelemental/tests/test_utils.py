@@ -6,7 +6,8 @@ from typing import Optional, Union, List, Tuple, Dict, Any
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
 
-from .addons import using_msgpack
+from .addons import serialize_extensions, using_msgpack
+
 
 @pytest.fixture(scope="function")
 def doc_fixture():
@@ -202,9 +203,16 @@ def test_dihedral2():
     p7 = [22.557, 9.096, 30.459]
 
     _test_dihedral(p0, p1, p2, p3, -71.21515114671394)
+    _test_dihedral(p3, p2, p1, p0, -71.21515114671394)
+
     _test_dihedral(p0, p1, p4, p5, -171.94319947953642)
+    _test_dihedral(p5, p4, p1, p0, -171.94319947953642)
+
     _test_dihedral(p1, p4, p5, p6, 60.82226735264638)
+    _test_dihedral(p6, p5, p4, p1, 60.82226735264638)
+
     _test_dihedral(p1, p4, p5, p7, -177.63641151521261)
+    _test_dihedral(p7, p5, p4, p1, -177.63641151521261)
 
 
 def test_auto_gen_doc(doc_fixture):
@@ -240,25 +248,22 @@ def test_auto_gen_doc_delete(doc_fixture):
 
 @pytest.mark.parametrize("obj", [
     5,
-    1.11111111111111,
+    1.11111,
     "hello",
     "\u0394",
     np.random.rand(4),
     {"a": 5},
     {"a": 1.111111111111},
     {"a": "hello"},
-    {"a": np.random.rand(4), "b": np.array(5), "c": np.array("hello")},
+    {"a": np.random.rand(4), "b": np.array(5.1111111), "c": np.array("hello")},
+    ["12345"],
     ["hello", "world"],
     [5, 123.234, "abcdé", "\u0394", "\U00000394"],
     [5, "B63", np.random.rand(4)],
     ["abcdé", {"a": np.random.rand(2), "b": np.random.rand(5)}],
-    [np.array(3), np.arange(3, dtype=np.uint16), np.array(["a", "b"])],
-])
-@pytest.mark.parametrize("encoding", [
-    "json",
-    "json-ext",
-    pytest.param("msgpack-ext", marks=using_msgpack),
-])
+    [np.array(3), np.arange(3, dtype=np.uint16), {"b": np.array(["a", "b"])}],
+]) # yapf: disable
+@pytest.mark.parametrize("encoding", serialize_extensions)
 def test_serialization(obj, encoding):
     new_obj = qcel.util.deserialize(qcel.util.serialize(obj, encoding=encoding), encoding=encoding)
     assert compare_recursive(obj, new_obj)

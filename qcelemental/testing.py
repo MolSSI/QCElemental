@@ -224,10 +224,16 @@ def compare(expected,
             cptd_str = np.array_str(cptd, max_line_width=120, precision=12, suppress_small=True)
             cptd_str = '\n'.join('    ' + ln for ln in cptd_str.splitlines())
 
+        print()
+        print(str(cptd)[:138])
+        print(str(xptd)[:138])
         try:
             diff = cptd - xptd
         except TypeError:
+            diff_str = f"{sum(x == y for x, y in zip(str(cptd), str(xptd)))} / {len(str(xptd))}"
+        except:
             diff_str = '(n/a)'
+
         else:
             if xptd.shape == ():
                 diff_str = f'{diff}'

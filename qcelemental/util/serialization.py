@@ -1,8 +1,8 @@
+import json
 from typing import Any, Dict, Union
 
 import numpy as np
 from pydantic.json import pydantic_encoder
-import json
 
 from .importing import which_import
 
@@ -127,7 +127,7 @@ class JSONExtArrayEncoder(json.JSONEncoder):
             if obj.shape:
                 data = {"_nd_": True, "dtype": obj.dtype.str, "data": np.ascontiguousarray(obj).tobytes().hex()}
                 if len(obj.shape) > 1:
-                    data[b'shape'] = obj.shape
+                    data['shape'] = obj.shape
                 return data
 
             else:
@@ -155,12 +155,12 @@ def jsonext_dumps(data: Any) -> str:
 
     Parameters
     ----------
-    data : Dict[str, Any]
+    data : Any
         A encodable python object.
 
     Returns
     -------
-    bytes
+    str
         A JSON representation of the data.
     """
 

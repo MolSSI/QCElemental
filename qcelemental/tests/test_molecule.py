@@ -9,7 +9,7 @@ import qcelemental as qcel
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
 
-from .addons import using_msgpack, using_py3dmol
+from .addons import serialize_extensions, using_msgpack, using_py3dmol
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -267,16 +267,15 @@ def test_molecule_errors_shape():
 def test_molecule_json_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
-    assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
+    assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
 
     assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.json(), dtype="json"))
 
 
-@using_msgpack
-def test_molecule_msgpack_serialization():
-    assert isinstance(water_dimer_minima.msgpack(), bytes)
-
-    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_molecule_serialization(encoding):
+    blob = water_dimer_minima.serialize(encoding)
+    assert water_dimer_minima.compare(Molecule.parse_raw(blob, encoding=encoding))
 
 
 def test_charged_fragment():

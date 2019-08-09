@@ -12,6 +12,7 @@ def internet_connection():
     except OSError:
         return False
 
+
 using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
 
 using_msgpack = pytest.mark.skipif(
@@ -29,3 +30,5 @@ using_scipy = pytest.mark.skipif(
 using_py3dmol = pytest.mark.skipif(
     which_import('py3Dmol', return_bool=True) is False,
     reason='Not detecting module py3Dmol. Install package if necessary and add to envvar PYTHONPATH')
+
+serialize_extensions = ["json", "json-ext", pytest.param("msgpack-ext", marks=using_msgpack)]
