@@ -6,6 +6,7 @@ import numpy as np
 from pydantic import BaseModel
 
 from qcelemental.util import deserialize, serialize
+from qcelemental.testing import compare_recursive
 
 
 class ProtoModel(BaseModel):
@@ -82,7 +83,7 @@ class ProtoModel(BaseModel):
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
-    def dict(self, *args, **kwargs):
+    def dict(self, *args, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
         kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
@@ -97,11 +98,11 @@ class ProtoModel(BaseModel):
             raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json'.")
 
     def serialize(self,
-                encoding: str,
-                *,
-                include: Optional[Set[str]] = None,
-                exclude: Optional[Set[str]] = None,
-                skip_defaults: bool = False) -> Union[bytes, str]:
+                  encoding: str,
+                  *,
+                  include: Optional[Set[str]] = None,
+                  exclude: Optional[Set[str]] = None,
+                  skip_defaults: bool = False) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
         Parameters
@@ -123,6 +124,23 @@ class ProtoModel(BaseModel):
         data = self.dict(include=include, exclude=exclude, skip_defaults=skip_defaults)
 
         return serialize(data, encoding=encoding)
+
+    def compare(self, other: 'Model', **kwargs) -> bool:
+        """Compares the current object to the provided object recursively.
+
+        Parameters
+        ----------
+        other : Model
+            The model to compare to.
+        **kwargs
+            Additional kwargs to pass to ``qcelemental.compare_recursive``.
+
+        Returns
+        -------
+        bool
+            True if the objects match.
+        """
+        return compare_recursive(self, other)
 
     def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
         return f"{self.__class__.__name__}"

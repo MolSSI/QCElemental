@@ -1,12 +1,22 @@
+from typing import Dict, List
+
 import numpy as np
 import pytest
 from pydantic import ValidationError
 
-from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
-                                ResultInput, ResultProperties)
+from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, ProtoModel,
+                                Result, ResultInput, ResultProperties)
+from qcelemental.models.types import Array
 from qcelemental.util import provenance_stamp
 
 from .addons import serialize_extensions, using_msgpack
+
+
+class TestModel(ProtoModel):
+    a: Array[float] = np.array(3)
+    b: List[Array[float]] = [np.random.rand(3)]
+    c: Dict[str, int] = {"hi": 3}
+    d: Dict[str, Array[float]] = {"hi": np.random.rand(3)}
 
 
 @pytest.fixture
@@ -77,6 +87,21 @@ def opti_success(water, result_input, res_success):
     }
 
 
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_proto_file(tmp_path, encoding):
+    obj = TestModel(a=np.array(3), b=[np.random.rand(3)], c={"hi": 3}, d={"hi": np.random.rand(3)})
+
+    p = tmp_path / ("data.dat")
+    if "msgpack" in encoding:
+        p.write_bytes(obj.serialize(encoding))
+    else:
+        p.write_text(obj.serialize(encoding))
+
+    obj2 = TestModel.parse_file(p, encoding=encoding)
+
+    assert obj.compare(obj2)
+
+
 def test_driverenum_derivative_int(water, result_input):
     res = ResultInput(molecule=water, **result_input)
 
@@ -87,6 +112,7 @@ def test_driverenum_derivative_int(water, result_input):
 def test_molecule_serialization_types(water):
     assert isinstance(water.dict(), dict)
     assert isinstance(water.json(), str)
+
 
 @pytest.mark.parametrize("encoding", serialize_extensions)
 def test_molecule_serialization(water, encoding):
@@ -172,6 +198,7 @@ def test_failed_operation(water, result_input):
     assert isinstance(failed_json, str)
     assert 'its all good' in failed_json
 
+
 def test_default_skip():
 
     obj = ResultProperties(scf_one_electron_energy="-5.0")
@@ -179,6 +206,7 @@ def test_default_skip():
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
 
     assert obj.dict().keys() == {"scf_one_electron_energy"}
+
 
 def test_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")

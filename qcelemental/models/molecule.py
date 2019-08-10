@@ -424,7 +424,7 @@ class Molecule(ProtoModel):
         """
         return Molecule(orient=True, **self.dict())
 
-    def compare(self, other, bench=None):
+    def compare(self, other):
         """
         Checks if two molecules are identical. This is a molecular identity defined
         by scientific terms, and not programing terms, so it's less rigorous than
@@ -437,9 +437,6 @@ class Molecule(ProtoModel):
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
-
-        if bench is None:
-            bench = self
 
         match = True
         match &= np.array_equal(bench.symbols, other.symbols)

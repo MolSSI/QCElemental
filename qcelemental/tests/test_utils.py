@@ -6,7 +6,7 @@ from typing import Optional, Union, List, Tuple, Dict, Any
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
 
-from .addons import serialize_extensions, using_msgpack
+from .addons import serialize_extensions
 
 
 @pytest.fixture(scope="function")

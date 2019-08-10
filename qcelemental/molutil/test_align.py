@@ -12,10 +12,6 @@ from ..tests.addons import using_networkx
 
 pp = pprint.PrettyPrinter(width=120)
 
-
-
-
-
 ss22_12 = """
 C    -1.2471894   -1.1718212   -0.6961388
 C    -1.2471894   -1.1718212    0.6961388

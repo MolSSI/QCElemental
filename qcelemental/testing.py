@@ -6,6 +6,7 @@ import pprint
 pp = pprint.PrettyPrinter(width=120)
 import sys
 from typing import Callable
+from pydantic import BaseModel
 
 import numpy as np
 
@@ -224,16 +225,10 @@ def compare(expected,
             cptd_str = np.array_str(cptd, max_line_width=120, precision=12, suppress_small=True)
             cptd_str = '\n'.join('    ' + ln for ln in cptd_str.splitlines())
 
-        print()
-        print(str(cptd)[:138])
-        print(str(xptd)[:138])
         try:
             diff = cptd - xptd
         except TypeError:
-            diff_str = f"{sum(x == y for x, y in zip(str(cptd), str(xptd)))} / {len(str(xptd))}"
-        except:
             diff_str = '(n/a)'
-
         else:
             if xptd.shape == ():
                 diff_str = f'{diff}'
@@ -256,6 +251,13 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     errors = []
     name = _prefix or "root"
     prefix = name + "."
+
+    # Initial conversions if required
+    if isinstance(expected, BaseModel):
+        expected = expected.dict()
+
+    if isinstance(computed, BaseModel):
+        computed = computed.dict()
 
     if isinstance(expected, (str, int, bool, complex)):
         if expected != computed:

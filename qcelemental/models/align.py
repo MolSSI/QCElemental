@@ -57,7 +57,7 @@ class AlignmentMill(ProtoModel):
         text.append('Rotation:')
         text.append('{}'.format(self.rotation))
         text.append('-' * width)
-        return ('\n'.join(text))
+        return ('\n'.join(x.rstrip() for x in text))
 
     def align_coordinates(self, geom, *, reverse=False) -> Array:
         """suitable for geometry or displaced geometry"""

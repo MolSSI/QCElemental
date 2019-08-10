@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 import numpy as np
 from pydantic.json import pydantic_encoder
@@ -234,7 +234,8 @@ def json_loads(data: str) -> Any:
         The deserialized Python objects.
     """
 
-    return json.loads(data)
+    # Doesn't hurt anything to try to load JSONext as well
+    return json.loads(data, object_hook=jsonext_decode)
 
 
 ## Helper functions
@@ -285,7 +286,7 @@ def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
         return json_loads(blob)
     elif encoding.lower() == "json-ext":
         return jsonext_loads(blob)
-    elif encoding.lower() == "msgpack-ext":
+    elif encoding.lower() in ["msgpack", "msgpack-ext"]:
         return msgpackext_loads(blob)
     else:
         raise KeyError(f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'")
