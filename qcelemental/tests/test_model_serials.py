@@ -12,7 +12,7 @@ from qcelemental.util import provenance_stamp
 from .addons import serialize_extensions, using_msgpack
 
 
-class TestModel(ProtoModel):
+class TrialModel(ProtoModel):
     a: Array[float] = np.array(3)
     b: List[Array[float]] = [np.random.rand(3)]
     c: Dict[str, int] = {"hi": 3}
@@ -89,7 +89,7 @@ def opti_success(water, result_input, res_success):
 
 @pytest.mark.parametrize("encoding", serialize_extensions)
 def test_proto_file(tmp_path, encoding):
-    obj = TestModel(a=np.array(3), b=[np.random.rand(3)], c={"hi": 3}, d={"hi": np.random.rand(3)})
+    obj = TrialModel(a=np.array(3), b=[np.random.rand(3)], c={"hi": 3}, d={"hi": np.random.rand(3)})
 
     p = tmp_path / ("data.dat")
     if "msgpack" in encoding:
@@ -97,7 +97,7 @@ def test_proto_file(tmp_path, encoding):
     else:
         p.write_text(obj.serialize(encoding))
 
-    obj2 = TestModel.parse_file(p, encoding=encoding)
+    obj2 = TrialModel.parse_file(p, encoding=encoding)
 
     assert obj.compare(obj2)
 

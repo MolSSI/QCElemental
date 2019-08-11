@@ -439,16 +439,16 @@ class Molecule(ProtoModel):
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
         match = True
-        match &= np.array_equal(bench.symbols, other.symbols)
-        match &= np.allclose(bench.masses, other.masses, atol=MASS_NOISE)
-        match &= np.equal(bench.real, other.real).all()
-        match &= np.equal(bench.fragments, other.fragments).all()
-        match &= np.allclose(bench.fragment_charges, other.fragment_charges, atol=CHARGE_NOISE)
-        match &= np.equal(bench.fragment_multiplicities, other.fragment_multiplicities).all()
+        match &= np.array_equal(self.symbols, other.symbols)
+        match &= np.allclose(self.masses, other.masses, atol=MASS_NOISE)
+        match &= np.equal(self.real, other.real).all()
+        match &= np.equal(self.fragments, other.fragments).all()
+        match &= np.allclose(self.fragment_charges, other.fragment_charges, atol=CHARGE_NOISE)
+        match &= np.equal(self.fragment_multiplicities, other.fragment_multiplicities).all()
 
-        match &= np.allclose(bench.molecular_charge, other.molecular_charge, atol=CHARGE_NOISE)
-        match &= np.equal(bench.molecular_multiplicity, other.molecular_multiplicity).all()
-        match &= np.allclose(bench.geometry, other.geometry, atol=GEOMETRY_NOISE)
+        match &= np.allclose(self.molecular_charge, other.molecular_charge, atol=CHARGE_NOISE)
+        match &= np.equal(self.molecular_multiplicity, other.molecular_multiplicity).all()
+        match &= np.allclose(self.geometry, other.geometry, atol=GEOMETRY_NOISE)
         return match
 
     def pretty_print(self):

@@ -38,10 +38,10 @@ def test_molecule_data_constructor_numpy():
     npwater = np.hstack((ele, water_psi.geometry))
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", dtype="numpy", frags=[3])
-    assert water_psi.compare(water_psi, water_from_np)
+    assert water_psi.compare(water_from_np)
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", frags=[3])
-    assert water_psi.compare(water_psi, water_from_np)
+    assert water_psi.compare(water_from_np)
     assert water_psi.get_molecular_formula() == "H4O2"
 
 
@@ -50,10 +50,10 @@ def test_molecule_data_constructor_dict():
 
     # Check the JSON construct/deconstruct
     water_from_json = Molecule.from_data(water_psi.dict())
-    assert water_psi.compare(water_psi, water_from_json)
+    assert water_psi.compare(water_from_json)
 
     water_from_json = Molecule.from_data(water_psi.json(), "json")
-    assert water_psi.compare(water_psi, water_from_json)
+    assert water_psi.compare(water_from_json)
     assert water_psi.compare(Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4"))
 
     assert water_psi.get_hash() == '3c4b98f515d64d1adc1648fe1fe1d6789e978d34'  # copied from schema_version=1
@@ -88,11 +88,11 @@ def test_molecule_np_constructors():
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
 
-    assert neon_from_psi.compare(neon_from_psi, neon_from_np)
+    assert neon_from_psi.compare(neon_from_np)
 
     # Check the JSON construct/deconstruct
     neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
-    assert neon_from_psi.compare(neon_from_psi, neon_from_json)
+    assert neon_from_psi.compare(neon_from_json)
     assert neon_from_json.get_molecular_formula() == "Ne4"
 
 

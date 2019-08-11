@@ -41,7 +41,7 @@ class ProtoModel(BaseModel):
             elif isinstance(data, bytes):
                 encoding = "msgpack-ext"
             else:
-                raise TypeError("Input is neither str nor bytes, please specify a encoding.")
+                raise TypeError("Input is neither str nor bytes, please specify an encoding.")
 
         if encoding.endswith(('json', 'javascript', 'pickle')):
             return super().parse_raw(data, content_type=encoding)
@@ -62,7 +62,7 @@ class ProtoModel(BaseModel):
             The path to the file.
         encoding : str, optional
             The type of the files, available types are: {'json', 'msgpack', 'pickle'}. Attempts to
-            automatically infer the file type from disk.
+            automatically infer the file type from the file extension if None.
 
         Returns
         -------
