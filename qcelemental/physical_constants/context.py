@@ -21,6 +21,8 @@ class PhysicalConstantsContext:
 
     Attributes
     ----------
+    doi : str
+        The DOI of the current context.
     name : str
         The name of the context ('CODATA2014')
     pc : dict of Datum
@@ -29,9 +31,10 @@ class PhysicalConstantsContext:
         value is a Datum object with `lbl` the exact NIST name string,
         `units`, `data` value as Decimal object, and any uncertainty
         in the `comment` field.
+    raw_codata : Dict[str, Any]
+        A dictionary representation of the raw context data.
     year : int
         The year the context was created.
-
     """
 
     _transtable = str.maketrans(' -/{', '__p_', '.,()}')
