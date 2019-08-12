@@ -38,7 +38,7 @@ class CovalentRadii:
 
     """
 
-    def __init__(self, context: str="ALVAREZ2008"):
+    def __init__(self, context: str = "ALVAREZ2008"):
         self.cr = collections.OrderedDict()
 
         from .data import alvarez_2008_covalent_radii
