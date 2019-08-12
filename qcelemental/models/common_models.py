@@ -47,7 +47,7 @@ class ComputeError(ProtoModel):
     """The type of error message raised"""
     error_type: str = Schema(  # Error enumeration not yet strict
         ...,
-        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'"
+        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'."
     )
     error_message: str = Schema(
         ...,
