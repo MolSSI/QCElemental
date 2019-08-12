@@ -64,10 +64,11 @@ class CovalentRadii:
             ident, units, value, comment = alias
             self.cr[ident.capitalize()] = Datum(ident, units, value, comment=comment)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "CovalentRadii(context='{}')".format(self.name)
 
-    def get(self, atom: Union[int, str], *, return_tuple:bool=False, units:str='bohr', missing:float=None) -> Union[float, 'Datum']:
+    def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
+           missing: float = None) -> Union[float, 'Datum']:
         """Access a covalent radius for species `atom`.
 
         Parameters
@@ -123,12 +124,12 @@ class CovalentRadii:
         else:
             return qca.to_units(units)
 
-    def string_representation(self):
+    def string_representation(self) -> str:
         """Print name, value, and units of all covalent radii."""
 
         return print_variables(self.cr)
 
-    def write_c_header(self, filename='covrad.h', missing=2.0):
+    def write_c_header(self, filename: str = 'covrad.h', missing: float = 2.0) -> None:
         """Write C header file defining covalent radii array.
 
         Parameters
