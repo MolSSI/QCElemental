@@ -106,7 +106,7 @@ class PhysicalConstantsContext:
             callname = qca.label.translate(self._transtable)
             setattr(self, callname, float(qca.data))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "PhysicalConstantsContext(context='{}')".format(self.name)
 
     @property
@@ -238,7 +238,7 @@ class PhysicalConstantsContext:
 
         return print_variables(self.pc)
 
-    def run_comparison(self):
+    def run_comparison(self) -> None:
         """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`. Specialized use."""
 
         try:
@@ -270,8 +270,19 @@ class PhysicalConstantsContext:
                     print('Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
                         pc, rat, ref, val))
 
-    def _get_pi(self, from_scratch=False):
-        """Get pi to 36 digits (or more with mpmath)."""
+    def _get_pi(self, from_scratch: bool = False) -> 'Decimal':
+        """Get pi to 36 digits (or more with mpmath).
+ 
+        Parameters
+        ----------
+        from_scratch : bool, optional
+            If True, recomputes Pi from mpmath.
+ 
+        Returns
+        -------
+        Decimal
+            A representation of Pi
+        """
 
         if from_scratch:  # pragma: no cover
             from mpmath import mp
