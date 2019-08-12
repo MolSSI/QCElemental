@@ -178,19 +178,13 @@ class PeriodicTable:
 
         Parameters
         ----------
-        atom : int or str
+        atom : Union[int, str]
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
 
         Returns
         -------
         str
             Element symbol, capitalized.
-
-        Raises
-        ------
-        NotAnElementError
-            If `atom` cannot be resolved into an element or nuclide.
-
         """
         identifier = self._resolve_atom_to_key(atom)
         return self._eliso2el[identifier]
