@@ -421,8 +421,14 @@ class PeriodicTable:
                 elif diff > tol:
                     print('Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
 
-    def write_c_header(self, filename='masses.h'):
-        """Write C header file defining arrays of mass and element information."""
+    def write_c_header(self, filename: str = 'masses.h') -> None:
+        """Write C header file defining arrays of mass and element information.
+
+        Parameters
+        ----------
+        filename : str, optional
+            The filename to write to.
+        """
 
         text = [
             '#ifndef _qcelemental_masses_h_', '#define _qcelemental_masses_h_', '',
