@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 
+from pydantic import Schema
 from .basemodels import ProtoModel
 
 # Encoders, to be deprecated
@@ -50,11 +51,37 @@ class ComputeError(ProtoModel):
 
 
 class FailedOperation(ProtoModel):
-    id: str = None
-    input_data: Any = None
-    success: bool = False
-    error: ComputeError
-    extras: Optional[Dict[str, Any]] = None
+    """
+    A record indicating that a given operation (compute, procedure, etc.) has failed and contains the reason and
+    input data which generated the failure.
+    
+    """
+    id: str = Schema(
+        None,
+        description="A unique identifier which links this FailedOperation, often of the same Id of the operation "
+                     "should it have been successful. This will often be set programmatically by a database such as "
+                      "Fractal."
+    )
+    input_data: Any = Schema(
+        None,
+        description="The input data which was passed in that generated this failure. This should be the complete "
+                    "input which when attempted to be run, caused the operation to fail."
+    )
+    success: bool = Schema(
+        False,
+        description="A boolean indicator that the operation failed consistent with the model of successful operations. "
+                    "Should always be False. Allows programmatic assessment of all operations a"
+    )
+    error: ComputeError = Schema(
+        ...,
+        description="A container which has details of the error that failed this operation. See the "
+                    ":class:`ComputeError` for more details."
+    )
+    extras: Optional[Dict[str, Any]] = Schema(
+        None,
+        description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
+                    "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details."
+    )
 
 
 qcschema_input_default = "qcschema_input"
