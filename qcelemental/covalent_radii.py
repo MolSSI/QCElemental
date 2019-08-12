@@ -21,20 +21,24 @@ class CovalentRadii:
 
     Attributes
     ----------
-    name : str
-        The name of the context ('ALVAREZ2008')
     cr : dict of Datum
         Each covalent radius is an entry in `cr`, where key is the
         "Fe"-cased element symbol if generic or symbol-prefixed label
         if specialized within element. The value is a Datum object with
         `lbl` the same as key, `units`, `data` value as Decimal object,
         and any uncertainty in the `comment` field.
+    doi : str
+        The DOI of the current context.
+    name : str
+        The name of the context ('ALVAREZ2008')
+    native_units : str
+        The units the original data was provided in.
     year : int
         The year the context was created.
 
     """
 
-    def __init__(self, context="ALVAREZ2008"):
+    def __init__(self, context: str="ALVAREZ2008"):
         self.cr = collections.OrderedDict()
 
         from .data import alvarez_2008_covalent_radii
@@ -64,7 +68,7 @@ class CovalentRadii:
             ident, units, value, comment = alias
             self.cr[ident.capitalize()] = Datum(ident, units, value, comment=comment)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "CovalentRadii(context='{}')".format(self.name)
 
     def get(self, atom: Union[int, str], *, return_tuple:bool=False, units:str='bohr', missing:float=None) -> Union[float, 'Datum']:
