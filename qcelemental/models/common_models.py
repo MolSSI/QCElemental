@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 
+from pydantic import Schema
 from .basemodels import ProtoModel
 
 # Encoders, to be deprecated
@@ -19,8 +20,18 @@ class Provenance(ProtoModel):
 
 
 class Model(ProtoModel):
-    method: str
-    basis: Optional[str] = None
+    """
+    The quantum chemistry model specification for a given operation to compute against
+    """
+    method: str = Schema(
+        ...,
+        description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...)."
+    )
+    basis: Optional[str] = Schema(
+        None,
+        description="The quantum chemistry basis set to evaluate (e.g., 6-31g, cc-pVDZ, ...). Can be ``None`` for "
+                    "methods without basis sets."
+    )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
