@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 
+from pydantic import Schema
 from .basemodels import ProtoModel
 
 # Encoders, to be deprecated
@@ -44,10 +45,19 @@ class DriverEnum(str, Enum):
 
 class ComputeError(ProtoModel):
     """The type of error message raised"""
-    error_type: str  # Error enumeration not yet strict
-    error_message: str
-    extras: Optional[Dict[str, Any]] = None
-
+    error_type: str = Schema(  # Error enumeration not yet strict
+        ...,
+        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'"
+    )
+    error_message: str = Schema(
+        ...,
+        description="Text associated with the thrown error, often the backtrace, but can contain additional "
+                    "information as well."
+    )
+    extras: Optional[Dict[str, Any]] = Schema(
+        None,
+        description="Additional data to ship with the ComputeError object."
+    )
 
 class FailedOperation(ProtoModel):
     id: str = None
