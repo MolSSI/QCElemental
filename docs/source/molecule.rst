@@ -122,3 +122,11 @@ Obtaining fragments with ghost atoms is also supported:
         Ne                0.000000000000     0.000000000000     0.000000000000
         Ne      (Gh)      3.100000000572     0.000000000000     0.000000000000
     >
+
+
+Molecule Attributes
+-------------------
+
+Below are the documentations for all attributes and initialization keywords for a Molecule object
+
+.. autoclass:: qcelemental.models.Molecule
