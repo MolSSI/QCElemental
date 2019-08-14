@@ -5,8 +5,8 @@ from typing import Any, Dict, Optional, Set, Union
 import numpy as np
 from pydantic import BaseModel
 
-from qcelemental.util import deserialize, serialize
 from qcelemental.testing import compare_recursive
+from qcelemental.util import deserialize, serialize
 
 
 class ProtoModel(BaseModel):

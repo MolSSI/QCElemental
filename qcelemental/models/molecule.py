@@ -9,13 +9,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-from pydantic import constr, validator, Schema
+from pydantic import Schema, constr, validator
 
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import deserialize, measure_coordinates, provenance_stamp, which_import, auto_gen_docs_on_demand
+from ..util import auto_gen_docs_on_demand, deserialize, measure_coordinates, provenance_stamp, which_import
 from .basemodels import ProtoModel
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array

@@ -3,12 +3,14 @@ import copy
 import logging
 import math
 import pprint
-pp = pprint.PrettyPrinter(width=120)
 import sys
 from typing import Callable
-from pydantic import BaseModel
 
 import numpy as np
+from pydantic import BaseModel
+
+pp = pprint.PrettyPrinter(width=120)
+
 
 
 def _handle_return(passfail: bool, label: str, message: str, return_message: bool, quiet: bool = False):

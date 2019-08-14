@@ -5,8 +5,7 @@ from pydantic import constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
-from .common_models import (ComputeError, DriverEnum, Model, Provenance, qcschema_input_default,
-                            qcschema_output_default)
+from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
 from .types import Array
 

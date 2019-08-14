@@ -7,10 +7,9 @@
 # Author: Brian M. Clapper, G. Varoquaux, Lars Buitinck
 # License: BSD
 
+import numpy as np
 from numpy.testing import assert_array_equal
 from pytest import raises as assert_raises
-
-import numpy as np
 
 from qcelemental.util.scipy_hungarian import linear_sum_assignment
 
