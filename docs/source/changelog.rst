@@ -13,6 +13,35 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.6.0 / 2019-08-14
+------------------
+
+New Features
+++++++++++++
+
+- (:pr:`85`, :pr:`87`) Msgpack is now supported as a serialization option for Models, and is also the default choice for
+  serialization with JSON fallback. This results in substantial speedups for both serialization and deserialization
+  actions and should be a transparent replacement for users within Elemental itself.
+
+Enhancements
+++++++++++++
+
+- (:pr:`78`) Molecular alignments can now be aligned on the derivatives of vector components.
+- (:pr:`81`) Testing is now operated both on the minimal supported and the latest released versions of dependencies.
+- (:pr:`82`) Molecule fragment grouping is now disabled by default to match expected behavior.
+- (:pr:`84`) Testing Elemental without internet connection should now be much faster as PubChem testing is skipped
+  with no connection.
+- (:pr:`88`, :pr:`109`) The ``Molecule`` Model now has its attributes documented and in an on-the-fly manner derived
+  from the Pydantic Schema of those attributes.
+- (:pr:`99`, :pr:`100`, :pr:`101`, :pr:`102`, :pr:`103`, :pr:`104`, :pr:`105`, :pr:`106`, :pr:`107`) Various
+  documentation, type hints, and small changes.
+
+Bug Fixes
++++++++++
+
+- (:pr:`87`) Molecule objects built from Schema are run through validators for consistency.
+
+
 0.5.0 / 2019-07-16
 ------------------
 
