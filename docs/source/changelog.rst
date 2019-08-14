@@ -19,9 +19,10 @@ Changelog
 New Features
 ++++++++++++
 
-- (:pr:`85`, :pr:`87`) Msgpack is now supported as a serialization option for Models, and is also the default choice for
-  serialization with JSON fallback. This results in substantial speedups for both serialization and deserialization
-  actions and should be a transparent replacement for users within Elemental itself.
+- (:pr:`85`, :pr:`87`) Msgpack is a new serialization option for Models. Serialization defaults to msgpack when
+  available (``conda install msgpack-python [-c conda-forge]``), falling back to JSON otherwise. This results in
+  substantial speedups for both serialization and deserialization actions and should be a transparent replacement for
+  users within Elemental itself.
 
 Enhancements
 ++++++++++++
@@ -29,8 +30,10 @@ Enhancements
 - (:pr:`78`) Molecular alignments can now be aligned on the derivatives of vector components.
 - (:pr:`81`) Testing is now operated both on the minimal supported and the latest released versions of dependencies.
 - (:pr:`82`) Molecule fragment grouping is now disabled by default to match expected behavior.
-- (:pr:`84`) Testing Elemental without internet connection should now be much faster as PubChem testing is skipped
-  with no connection.
+- (:pr:`84`) Testing without internet connection should now pass since PubChem testing is skipped with no connection.
+- (:pr:`85`) Molecule switches from lists to numpy arrays for internal storage of per-atom fields.
+- (:pr:`86`) Molecule performance and memory enhancements through reduced validation times and LRU caching of
+  common validations.
 - (:pr:`88`, :pr:`109`) The ``Molecule`` Model now has its attributes documented and in an on-the-fly manner derived
   from the Pydantic Schema of those attributes.
 - (:pr:`99`, :pr:`100`, :pr:`101`, :pr:`102`, :pr:`103`, :pr:`104`, :pr:`105`, :pr:`106`, :pr:`107`) Various
