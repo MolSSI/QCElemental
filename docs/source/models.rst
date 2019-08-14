@@ -82,10 +82,10 @@ Raw JSON can also be parsed back into a model:
     >
 
 The standard ``dict`` operation returns all internal representations which may be classes or other complex structures.
-To return a JSON-like dictionary the ``json_dict`` function can be used:
+To return a JSON-like dictionary the ``dict`` function can be used:
 
 .. code-block:: python
 
-    >>> mol.json_dict()
+    >>> mol.dict(encoding='json')
     {'symbols': ['He'], 'geometry': [0.0, 0.0, 0.0]}
 

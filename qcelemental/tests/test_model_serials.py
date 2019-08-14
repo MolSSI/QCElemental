@@ -1,12 +1,22 @@
+from typing import Dict, List
+
 import numpy as np
 import pytest
 from pydantic import ValidationError
 
-from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, Result,
-                                ResultInput, ResultProperties)
+from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, ProtoModel,
+                                Result, ResultInput, ResultProperties)
+from qcelemental.models.types import Array
 from qcelemental.util import provenance_stamp
 
-from .addons import using_msgpack
+from .addons import serialize_extensions, using_msgpack
+
+
+class TrialModel(ProtoModel):
+    a: Array[float] = np.array(3)
+    b: List[Array[float]] = [np.random.rand(3)]
+    c: Dict[str, int] = {"hi": 3}
+    d: Dict[str, Array[float]] = {"hi": np.random.rand(3)}
 
 
 @pytest.fixture
@@ -77,6 +87,21 @@ def opti_success(water, result_input, res_success):
     }
 
 
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_proto_file(tmp_path, encoding):
+    obj = TrialModel(a=np.array(3), b=[np.random.rand(3)], c={"hi": 3}, d={"hi": np.random.rand(3)})
+
+    p = tmp_path / ("data.dat")
+    if "msgpack" in encoding:
+        p.write_bytes(obj.serialize(encoding))
+    else:
+        p.write_text(obj.serialize(encoding))
+
+    obj2 = TrialModel.parse_file(p, encoding=encoding)
+
+    assert obj.compare(obj2)
+
+
 def test_driverenum_derivative_int(water, result_input):
     res = ResultInput(molecule=water, **result_input)
 
@@ -87,16 +112,12 @@ def test_driverenum_derivative_int(water, result_input):
 def test_molecule_serialization_types(water):
     assert isinstance(water.dict(), dict)
     assert isinstance(water.json(), str)
-    assert isinstance(water.json_dict(), dict)
 
 
-def test_molecule_serialization_json(water):
-    assert water.compare(Molecule.parse_raw(water.json()))
-
-
-@using_msgpack
-def test_molecule_serialization_msgpack(water):
-    assert water.compare(Molecule.parse_raw(water.msgpack()))
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_molecule_serialization(water, encoding):
+    blob = water.serialize(encoding)
+    assert water.compare(Molecule.parse_raw(blob, encoding=encoding))
 
 
 @pytest.mark.parametrize("dtype, filext", [
@@ -134,12 +155,10 @@ def test_result_pass_serialization(water, result_input, res_success):
     res_in = ResultInput(molecule=water, **result_input)
     assert isinstance(res_in.dict(), dict)
     assert isinstance(res_in.json(), str)
-    assert isinstance(res_in.json_dict(), dict)
 
     res_out = Result(molecule=water, **result_input, **res_success)
     assert isinstance(res_out.dict(), dict)
     assert isinstance(res_out.json(), str)
-    assert isinstance(res_out.json_dict(), dict)
 
 
 def test_result_sparsity(water, result_input, res_success):
@@ -160,12 +179,10 @@ def test_optimization_pass_serialization(water, opti_input, opti_success):
     opti_in = OptimizationInput(initial_molecule=water, **opti_input)
     assert isinstance(opti_in.dict(), dict)
     assert isinstance(opti_in.json(), str)
-    assert isinstance(opti_in.json_dict(), dict)
 
     opti_out = Optimization(initial_molecule=water, **opti_input, **opti_success)
     assert isinstance(opti_out.dict(), dict)
     assert isinstance(opti_out.json(), str)
-    assert isinstance(opti_out.json_dict(), dict)
 
 
 def test_failed_operation(water, result_input):
@@ -181,6 +198,7 @@ def test_failed_operation(water, result_input):
     assert isinstance(failed_json, str)
     assert 'its all good' in failed_json
 
+
 def test_default_skip():
 
     obj = ResultProperties(scf_one_electron_energy="-5.0")
@@ -188,6 +206,7 @@ def test_default_skip():
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
 
     assert obj.dict().keys() == {"scf_one_electron_energy"}
+
 
 def test_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")

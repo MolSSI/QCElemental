@@ -2,9 +2,9 @@ import pprint
 import re
 from typing import Dict, Tuple, Union
 
-from . import pubchem
 from ..exceptions import ChoicesError, MoleculeFormatError, ValidationError
 from ..util import filter_comments, provenance_stamp
+from . import pubchem
 from .from_arrays import from_input_arrays
 from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 

@@ -1,10 +1,13 @@
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import numpy as np
 import pytest
 from pydantic import BaseModel, Schema
-from typing import Optional, Union, List, Tuple, Dict, Any
 
-import qcelemental
+import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
+
+from .addons import serialize_extensions
 
 
 @pytest.fixture(scope="function")
@@ -59,7 +62,7 @@ def doc_fixture():
     (['ABBCcAD', str.lower], 'ABCD'),
 ])
 def test_unique_everseen(inp, expected):
-    ue = qcelemental.util.unique_everseen(*inp)
+    ue = qcel.util.unique_everseen(*inp)
     assert list(ue) == list(expected)
 
 
@@ -69,7 +72,7 @@ def test_unique_everseen(inp, expected):
     (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}})
 ]) # yapf: disable
 def test_updatewitherror(inp, expected):
-    assert compare_recursive(expected, qcelemental.util.update_with_error(inp[0], inp[1]))
+    assert compare_recursive(expected, qcel.util.update_with_error(inp[0], inp[1]))
 
 
 @pytest.mark.parametrize("inp", [
@@ -79,7 +82,7 @@ def test_updatewitherror(inp, expected):
 ]) # yapf: disable
 def test_updatewitherror_error(inp):
     with pytest.raises(KeyError):
-        qcelemental.util.update_with_error(inp[0], inp[1])
+        qcel.util.update_with_error(inp[0], inp[1])
 
 
 @pytest.mark.parametrize("inp,expected", [
@@ -97,12 +100,12 @@ def test_updatewitherror_error(inp):
     ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]}),
 ]) # yapf: disable
 def test_unnp(inp, expected):
-    assert compare_recursive(expected, qcelemental.util.unnp(**inp), atol=1.e-4)
+    assert compare_recursive(expected, qcel.util.unnp(**inp), atol=1.e-4)
 
 
 def test_distance():
     def _test_distance(p1, p2, value):
-        tmp = qcelemental.util.compute_distance(p1, p2)
+        tmp = qcel.util.compute_distance(p1, p2)
         assert compare_values(value, float(tmp))
 
     _test_distance([0, 0, 0], [0, 0, 1], 1.0)
@@ -111,13 +114,13 @@ def test_distance():
     tmp1 = np.random.rand(20, 3) * 4
     tmp2 = np.random.rand(20, 3) * 4
     np_dist = np.linalg.norm(tmp1 - tmp2, axis=1)
-    ee_dist = qcelemental.util.compute_distance(tmp1, tmp2)
+    ee_dist = qcel.util.compute_distance(tmp1, tmp2)
     assert np.allclose(np_dist, ee_dist)
 
 
 def test_angle():
     def _test_angle(p1, p2, p3, value, degrees=True):
-        tmp = qcelemental.util.compute_angle(p1, p2, p3, degrees=degrees)
+        tmp = qcel.util.compute_angle(p1, p2, p3, degrees=degrees)
         assert compare_values(value, float(tmp))
 
     # Check all 90 degree domains
@@ -151,7 +154,7 @@ def test_angle():
 
 def test_dihedral1():
     def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
-        tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
+        tmp = qcel.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
         assert compare_values(value, float(tmp), label="test_dihedral1")
 
     p1 = [0, 0, 0]
@@ -188,7 +191,7 @@ def test_dihedral2():
     # FROM: https://stackoverflow.com/questions/20305272/
 
     def _test_dihedral(p1, p2, p3, p4, value, degrees=True):
-        tmp = qcelemental.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
+        tmp = qcel.util.compute_dihedral(p1, p2, p3, p4, degrees=degrees)
         assert compare_values(value, float(tmp), label="test_dihedral1")
 
     p0 = [24.969, 13.428, 30.692]
@@ -201,14 +204,21 @@ def test_dihedral2():
     p7 = [22.557, 9.096, 30.459]
 
     _test_dihedral(p0, p1, p2, p3, -71.21515114671394)
+    _test_dihedral(p3, p2, p1, p0, -71.21515114671394)
+
     _test_dihedral(p0, p1, p4, p5, -171.94319947953642)
+    _test_dihedral(p5, p4, p1, p0, -171.94319947953642)
+
     _test_dihedral(p1, p4, p5, p6, 60.82226735264638)
+    _test_dihedral(p6, p5, p4, p1, 60.82226735264638)
+
     _test_dihedral(p1, p4, p5, p7, -177.63641151521261)
+    _test_dihedral(p7, p5, p4, p1, -177.63641151521261)
 
 
 def test_auto_gen_doc(doc_fixture):
     assert "this is complicated" not in doc_fixture.__doc__
-    qcelemental.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
+    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" in doc_fixture.__doc__
     assert "z3 : float, Optional" in doc_fixture.__doc__
     # Check that docstring does not get duplicated for some reason
@@ -217,21 +227,44 @@ def test_auto_gen_doc(doc_fixture):
 
 def test_auto_gen_doc_exiting(doc_fixture):
     doc_fixture.__doc__ = "Parameters\n"
-    qcelemental.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
+    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" not in doc_fixture.__doc__
 
 
 def test_auto_gen_doc_reapply_failure(doc_fixture):
-    qcelemental.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
+    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     with pytest.raises(ValueError):
         # Allow true here because we are testing application, not errors in the doc generation itself
-        qcelemental.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=True, ignore_reapply=False)
+        qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=True, ignore_reapply=False)
 
 
 def test_auto_gen_doc_delete(doc_fixture):
-    qcelemental.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
+    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" in doc_fixture.__doc__
     assert "A Pydantic model" in doc_fixture.__doc__
     del doc_fixture.__doc__
     assert "this is complicated" not in doc_fixture.__doc__
     assert "A Pydantic model" in doc_fixture.__doc__
+
+
+@pytest.mark.parametrize("obj", [
+    5,
+    1.11111,
+    "hello",
+    "\u0394",
+    np.random.rand(4),
+    {"a": 5},
+    {"a": 1.111111111111},
+    {"a": "hello"},
+    {"a": np.random.rand(4), "b": np.array(5.1111111), "c": np.array("hello")},
+    ["12345"],
+    ["hello", "world"],
+    [5, 123.234, "abcdé", "\u0394", "\U00000394"],
+    [5, "B63", np.random.rand(4)],
+    ["abcdé", {"a": np.random.rand(2), "b": np.random.rand(5)}],
+    [np.array(3), np.arange(3, dtype=np.uint16), {"b": np.array(["a", "b"])}],
+]) # yapf: disable
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_serialization(obj, encoding):
+    new_obj = qcel.util.deserialize(qcel.util.serialize(obj, encoding=encoding), encoding=encoding)
+    assert compare_recursive(obj, new_obj)

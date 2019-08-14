@@ -1,6 +1,6 @@
-from copy import deepcopy
 import pprint
 import re
+from copy import deepcopy
 
 import numpy as np
 

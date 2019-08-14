@@ -3,11 +3,14 @@ import copy
 import logging
 import math
 import pprint
-pp = pprint.PrettyPrinter(width=120)
 import sys
 from typing import Callable
 
 import numpy as np
+from pydantic import BaseModel
+
+pp = pprint.PrettyPrinter(width=120)
+
 
 
 def _handle_return(passfail: bool, label: str, message: str, return_message: bool, quiet: bool = False):
@@ -250,6 +253,13 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     errors = []
     name = _prefix or "root"
     prefix = name + "."
+
+    # Initial conversions if required
+    if isinstance(expected, BaseModel):
+        expected = expected.dict()
+
+    if isinstance(computed, BaseModel):
+        computed = computed.dict()
 
     if isinstance(expected, (str, int, bool, complex)):
         if expected != computed:

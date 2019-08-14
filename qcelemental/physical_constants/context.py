@@ -4,8 +4,8 @@ Contains relevant physical constants
 
 import collections
 from decimal import Decimal
-from typing import Union
 from functools import lru_cache
+from typing import Union
 
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry

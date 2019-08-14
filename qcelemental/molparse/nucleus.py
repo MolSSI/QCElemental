@@ -1,10 +1,10 @@
 import re
-from typing import List, Tuple
 from functools import lru_cache
+from typing import List, Tuple
 
-from .regex import NUCLEUS
 from ..exceptions import NotAnElementError, ValidationError
 from ..periodic_table import periodictable
+from .regex import NUCLEUS
 
 _nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
 

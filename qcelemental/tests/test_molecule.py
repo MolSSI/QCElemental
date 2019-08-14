@@ -9,7 +9,7 @@ import qcelemental as qcel
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
 
-from .addons import using_msgpack, using_py3dmol
+from .addons import serialize_extensions, using_msgpack, using_py3dmol
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -35,13 +35,13 @@ water_dimer_minima = Molecule.from_data("""
 def test_molecule_data_constructor_numpy():
     water_psi = water_dimer_minima.copy()
     ele = np.array(water_psi.atomic_numbers).reshape(-1, 1)
-    npwater = np.hstack((ele, water_psi.geometry))
+    npwater = np.hstack((ele, water_psi.geometry * qcel.constants.conversion_factor("Bohr", "angstrom")))
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", dtype="numpy", frags=[3])
-    assert water_psi.compare(water_psi, water_from_np)
+    assert water_psi.compare(water_from_np)
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", frags=[3])
-    assert water_psi.compare(water_psi, water_from_np)
+    assert water_psi.compare(water_from_np)
     assert water_psi.get_molecular_formula() == "H4O2"
 
 
@@ -50,10 +50,10 @@ def test_molecule_data_constructor_dict():
 
     # Check the JSON construct/deconstruct
     water_from_json = Molecule.from_data(water_psi.dict())
-    assert water_psi.compare(water_psi, water_from_json)
+    assert water_psi.compare(water_from_json)
 
     water_from_json = Molecule.from_data(water_psi.json(), "json")
-    assert water_psi.compare(water_psi, water_from_json)
+    assert water_psi.compare(water_from_json)
     assert water_psi.compare(Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4"))
 
     assert water_psi.get_hash() == '3c4b98f515d64d1adc1648fe1fe1d6789e978d34'  # copied from schema_version=1
@@ -88,12 +88,20 @@ def test_molecule_np_constructors():
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
 
-    assert neon_from_psi.compare(neon_from_psi, neon_from_np)
+    assert neon_from_psi.compare(neon_from_np)
 
     # Check the JSON construct/deconstruct
     neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
-    assert neon_from_psi.compare(neon_from_psi, neon_from_json)
+    assert neon_from_psi.compare(neon_from_json)
     assert neon_from_json.get_molecular_formula() == "Ne4"
+
+
+def test_molecule_compare():
+    water_molecule2 = water_molecule.copy()
+    assert water_molecule2.compare(water_molecule)
+
+    water_molecule3 = water_molecule.copy(update={"geometry": (water_molecule.geometry + np.array([0.1, 0, 0]))})
+    assert water_molecule.compare(water_molecule3) is False
 
 
 def test_water_minima_data():
@@ -267,16 +275,15 @@ def test_molecule_errors_shape():
 def test_molecule_json_serialization():
     assert isinstance(water_dimer_minima.json(), str)
 
-    assert isinstance(water_dimer_minima.json_dict()["geometry"], list)
+    assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
 
     assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.json(), dtype="json"))
 
 
-@using_msgpack
-def test_molecule_msgpack_serialization():
-    assert isinstance(water_dimer_minima.msgpack(), bytes)
-
-    assert water_dimer_minima.compare(Molecule.from_data(water_dimer_minima.msgpack(), dtype="msgpack"))
+@pytest.mark.parametrize("encoding", serialize_extensions)
+def test_molecule_serialization(encoding):
+    blob = water_dimer_minima.serialize(encoding)
+    assert water_dimer_minima.compare(Molecule.parse_raw(blob, encoding=encoding))
 
 
 def test_charged_fragment():

@@ -2,8 +2,8 @@ from enum import Enum
 from typing import Any, Dict, Optional
 
 import numpy as np
-
 from pydantic import Schema
+
 from .basemodels import ProtoModel
 
 # Encoders, to be deprecated

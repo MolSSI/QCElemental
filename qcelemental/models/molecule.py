@@ -9,16 +9,16 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-from pydantic import constr, validator, Schema
+from pydantic import Schema, constr, validator
 
-from .types import Array
-from .basemodels import ProtoModel
-from .common_models import Provenance, qcschema_molecule_default
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import measure_coordinates, provenance_stamp, which_import, auto_gen_docs_on_demand
+from ..util import auto_gen_docs_on_demand, deserialize, measure_coordinates, provenance_stamp, which_import
+from .basemodels import ProtoModel
+from .common_models import Provenance, qcschema_molecule_default
+from .types import Array
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -272,7 +272,7 @@ class Molecule(ProtoModel):
 
         # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected
         # All attributes set bellow are equivalent to the default set.
-        values = self.__values__
+        values = self.__dict__
 
         natoms = values["geometry"].shape[0]
         if validate:
@@ -424,7 +424,7 @@ class Molecule(ProtoModel):
         """
         return Molecule(orient=True, **self.dict())
 
-    def compare(self, other, bench=None):
+    def compare(self, other):
         """
         Checks if two molecules are identical. This is a molecular identity defined
         by scientific terms, and not programing terms, so it's less rigorous than
@@ -438,20 +438,17 @@ class Molecule(ProtoModel):
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
-        if bench is None:
-            bench = self
-
         match = True
-        match &= np.array_equal(bench.symbols, other.symbols)
-        match &= np.allclose(bench.masses, other.masses, atol=MASS_NOISE)
-        match &= np.equal(bench.real, other.real).all()
-        match &= np.equal(bench.fragments, other.fragments).all()
-        match &= np.allclose(bench.fragment_charges, other.fragment_charges, atol=CHARGE_NOISE)
-        match &= np.equal(bench.fragment_multiplicities, other.fragment_multiplicities).all()
+        match &= np.array_equal(self.symbols, other.symbols)
+        match &= np.allclose(self.masses, other.masses, atol=(10**-MASS_NOISE))
+        match &= np.array_equal(self.real, other.real)
+        match &= np.array_equal(self.fragments, other.fragments)
+        match &= np.allclose(self.fragment_charges, other.fragment_charges, atol=(10**-CHARGE_NOISE))
+        match &= np.array_equal(self.fragment_multiplicities, other.fragment_multiplicities)
 
-        match &= np.allclose(bench.molecular_charge, other.molecular_charge, atol=CHARGE_NOISE)
-        match &= np.equal(bench.molecular_multiplicity, other.molecular_multiplicity).all()
-        match &= np.allclose(bench.geometry, other.geometry, atol=GEOMETRY_NOISE)
+        match &= np.allclose(self.molecular_charge, other.molecular_charge, atol=(10**-CHARGE_NOISE))
+        match &= np.array_equal(self.molecular_multiplicity, other.molecular_multiplicity)
+        match &= np.allclose(self.geometry, other.geometry, atol=(10**-GEOMETRY_NOISE))
         return match
 
     def pretty_print(self):
@@ -745,6 +742,7 @@ class Molecule(ProtoModel):
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
             input_dict = to_schema(from_string(data)["qm"], dtype=2)
+            validate = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -754,6 +752,7 @@ class Molecule(ProtoModel):
                 "fragment_separators": kwargs.pop("frags", [])
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
+            validate = True
         elif dtype == "msgpack":
             input_dict = cls._parse_msgpack(data)
         elif dtype == "json":
@@ -809,7 +808,7 @@ class Molecule(ProtoModel):
             dtype = "dict"
         elif dtype == "msgpack":
             with open(filename, "rb") as infile:
-                data = cls._parse_msgpack(infile.read())
+                data = deserialize(infile.read(), encoding="msgpack-ext")
             dtype = "dict"
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
@@ -839,13 +838,13 @@ class Molecule(ProtoModel):
         if dtype in ["xyz", "psi4"]:
             stringified = self.to_string(dtype)
         elif dtype in ["json"]:
-            stringified = self.json()
-        elif dtype in ["msgpack"]:
-            stringified = self.msgpack()
+            stringified = self.serialize("json")
+        elif dtype in ["msgpack", "msgpack-ext"]:
+            stringified = self.serialize("msgpack-ext")
             flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
-            npmol = np.hstack((elements, self.geometry))
+            npmol = np.hstack((elements, self.geometry * constants.conversion_factor("bohr", "angstroms")))
 
             np.save(filename, npmol)
             return
