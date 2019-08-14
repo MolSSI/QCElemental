@@ -140,7 +140,7 @@ class ProtoModel(BaseModel):
         bool
             True if the objects match.
         """
-        return compare_recursive(self, other)
+        return compare_recursive(self, other, **kwargs)
 
     def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
         return f"{self.__class__.__name__}"

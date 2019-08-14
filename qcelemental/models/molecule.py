@@ -440,15 +440,15 @@ class Molecule(ProtoModel):
 
         match = True
         match &= np.array_equal(self.symbols, other.symbols)
-        match &= np.allclose(self.masses, other.masses, atol=MASS_NOISE)
-        match &= np.equal(self.real, other.real).all()
-        match &= np.equal(self.fragments, other.fragments).all()
-        match &= np.allclose(self.fragment_charges, other.fragment_charges, atol=CHARGE_NOISE)
-        match &= np.equal(self.fragment_multiplicities, other.fragment_multiplicities).all()
+        match &= np.allclose(self.masses, other.masses, atol=(10**-MASS_NOISE))
+        match &= np.array_equal(self.real, other.real)
+        match &= np.array_equal(self.fragments, other.fragments)
+        match &= np.allclose(self.fragment_charges, other.fragment_charges, atol=(10**-CHARGE_NOISE))
+        match &= np.array_equal(self.fragment_multiplicities, other.fragment_multiplicities)
 
-        match &= np.allclose(self.molecular_charge, other.molecular_charge, atol=CHARGE_NOISE)
-        match &= np.equal(self.molecular_multiplicity, other.molecular_multiplicity).all()
-        match &= np.allclose(self.geometry, other.geometry, atol=GEOMETRY_NOISE)
+        match &= np.allclose(self.molecular_charge, other.molecular_charge, atol=(10**-CHARGE_NOISE))
+        match &= np.array_equal(self.molecular_multiplicity, other.molecular_multiplicity)
+        match &= np.allclose(self.geometry, other.geometry, atol=(10**-GEOMETRY_NOISE))
         return match
 
     def pretty_print(self):
@@ -844,7 +844,7 @@ class Molecule(ProtoModel):
             flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
-            npmol = np.hstack((elements, self.geometry))
+            npmol = np.hstack((elements, self.geometry * constants.conversion_factor("bohr", "angstroms")))
 
             np.save(filename, npmol)
             return

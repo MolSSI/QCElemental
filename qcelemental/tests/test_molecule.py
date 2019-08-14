@@ -35,7 +35,7 @@ water_dimer_minima = Molecule.from_data("""
 def test_molecule_data_constructor_numpy():
     water_psi = water_dimer_minima.copy()
     ele = np.array(water_psi.atomic_numbers).reshape(-1, 1)
-    npwater = np.hstack((ele, water_psi.geometry))
+    npwater = np.hstack((ele, water_psi.geometry * qcel.constants.conversion_factor("Bohr", "angstrom")))
 
     water_from_np = Molecule.from_data(npwater, name="water dimer", dtype="numpy", frags=[3])
     assert water_psi.compare(water_from_np)
@@ -94,6 +94,14 @@ def test_molecule_np_constructors():
     neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
     assert neon_from_psi.compare(neon_from_json)
     assert neon_from_json.get_molecular_formula() == "Ne4"
+
+
+def test_molecule_compare():
+    water_molecule2 = water_molecule.copy()
+    assert water_molecule2.compare(water_molecule)
+
+    water_molecule3 = water_molecule.copy(update={"geometry": (water_molecule.geometry + np.array([0.1, 0, 0]))})
+    assert water_molecule.compare(water_molecule3) is False
 
 
 def test_water_minima_data():
