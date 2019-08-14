@@ -144,7 +144,10 @@ Top level user functions:
 Function Definitions
 --------------------
 
-.. autofunction:: conversion_factor
+.. note:: ``conversion_factor`` is a function, not a class, but cannot be documented in Sphinx as such
+           due to the way the LRU Cache wraps it. Please disregard the marking of it being a "class."
+
+.. autoclass:: conversion_factor
 
 .. autofunction:: get
 
