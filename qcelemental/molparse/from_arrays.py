@@ -586,7 +586,7 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     tooclose_inds = []
     for x in range(npgeom.shape[0]):
         diffs = npgeom[x] - npgeom[x+1:]
-        dists = np.core._multiarray_umath.c_einsum('ij,ij->i', diffs, diffs)
+        dists = np.einsum('ij,ij->i', diffs, diffs)
 
         # Record issues
         if np.any(dists < metric):
