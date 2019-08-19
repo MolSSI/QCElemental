@@ -13,6 +13,15 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.6.1 / 2019-08-19
+------------------
+
+Bug Fixes
++++++++++
+
+- (:pr:`114`) The Numpy einsum calls reference the top level functions and not core C functions. This fixes an issue
+  which can result in NumPy version dependencies.
+
 0.6.0 / 2019-08-14
 ------------------
 
