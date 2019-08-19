@@ -6,7 +6,7 @@ You can install qcelemental with ``conda``, with ``pip``.
 Conda
 -----
 
-You can update qcelemental using `conda <https://www.anaconda.com/download/>`_:
+You can install qcelemental using `conda <https://www.anaconda.com/download/>`_:
 
 .. code-block:: console
 
@@ -19,8 +19,7 @@ This installs QCElemental and its dependencies. The qcelemental package is maint
 Pip
 ---
 
-To install QCElemental with ``pip`` there are a few options, depending on which
-dependencies you would like to keep up to date:
+You can also install QCElemental using ``pip``:
 
 .. code-block:: console
 
