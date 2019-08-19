@@ -30,7 +30,7 @@ dependencies you would like to keep up to date:
 Test the Installation
 ---------------------
 
-You can test to make sure that Elemental is installed correctly by first installing ``pytest``
+You can test to make sure that Elemental is installed correctly by first installing ``pytest``.
 
 From ``conda``:
 
@@ -55,4 +55,4 @@ Developing from Source
 ----------------------
 
 If you are a developer and want to make contributions Elemental, you can access the source code from
-`github <https://github.com/molssi/qcelemental>`_:
+`github <https://github.com/molssi/qcelemental>`_.
