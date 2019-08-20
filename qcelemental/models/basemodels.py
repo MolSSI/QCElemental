@@ -17,6 +17,7 @@ class ProtoModel(BaseModel):
         serialize_default_excludes = set()
         serialize_skip_defaults = False
         force_skip_defaults = False
+        canonical_repr = False
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
@@ -146,5 +147,9 @@ class ProtoModel(BaseModel):
         """
         return compare_recursive(self, other, **kwargs)
 
-    def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
-        return f"{self.__class__.__name__}(ProtoModel)"
+
+    def __str__(self) -> str:
+        if self.__config__.canonical_repr:
+            return super().to_string()
+        else:
+            return f"{self.__class__.__name__}(ProtoModel)"

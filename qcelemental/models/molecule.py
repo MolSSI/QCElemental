@@ -845,7 +845,6 @@ class Molecule(ProtoModel):
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
             npmol = np.hstack((elements, self.geometry * constants.conversion_factor("bohr", "angstroms")))
-
             np.save(filename, npmol)
             return
 
@@ -903,13 +902,13 @@ class Molecule(ProtoModel):
                 break
         return new_geometry
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.pretty_print()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}' hash='{self.get_hash()[:7]}')>"
 
-    def _repr_html_(self):
+    def _repr_html_(self) -> str:
         try:
             return self.show()._repr_html_()
         except ModuleNotFoundError:
