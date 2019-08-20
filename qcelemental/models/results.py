@@ -59,7 +59,7 @@ class ResultProperties(ProtoModel):
     ccsd_prt_pr_dipole_moment: Optional[List[float]] = None
 
     class Config(ProtoModel.Config):
-        serialize_skip_defaults = True
+        force_skip_defaults = True
 
 
 ### Primary models

@@ -16,6 +16,7 @@ class ProtoModel(BaseModel):
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes = set()
         serialize_skip_defaults = False
+        force_skip_defaults = False
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
@@ -88,6 +89,9 @@ class ProtoModel(BaseModel):
 
         kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
         kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)
+        if self.__config__.force_skip_defaults:
+            kwargs["skip_defaults"] = True
+
         data = super().dict(*args, **kwargs)
 
         if encoding is None:
