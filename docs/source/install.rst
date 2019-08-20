@@ -1,68 +1,57 @@
 Install QCElemental
 ===================
 
-You can install qcelemental with ``conda``, with ``pip``, or by installing from source.
+You can install qcelemental with ``conda`` or with ``pip``.
 
 Conda
 -----
 
-You can update qcelemental using `conda <https://www.anaconda.com/download/>`_:
+You can install qcelemental using `conda <https://www.anaconda.com/download/>`_:
 
 .. code-block:: console
 
     >>> conda install qcelemental -c conda-forge
 
-This installs QCElemental and its dependancies. The qcelemental package is maintained on the
+This installs QCElemental and its dependencies. The qcelemental package is maintained on the
 `conda-forge channel <https://conda-forge.github.io/>`_.
 
 
 Pip
 ---
 
-To install QCElemental with ``pip`` there are a few options, depending on which
-dependencies you would like to keep up to date:
+You can also install QCElemental using ``pip``:
 
 .. code-block:: console
 
    >>> pip install qcelemental
 
-Install from Source
--------------------
 
-To install QCElemental from source, clone the repository from `github
-<https://github.com/molssi/qcelemental>`_:
+Test the Installation
+---------------------
 
-.. code-block:: console
+You can test to make sure that Elemental is installed correctly by first installing ``pytest``.
 
-    >>> git clone https://github.com/MolSSI/QCElemental.git
-    >>> cd QCElemental
-    >>> python setup.py install
-
-or use ``pip`` for a local install:
+From ``conda``:
 
 .. code-block:: console
 
-    >>> pip install -e .
+   >>> conda install pytest -c conda-forge
 
-
-Testing
--------
-QCElemental can be tested using the ``pytest`` package which can be installed via Conda as well:
+From ``pip``:
 
 .. code-block:: console
 
-    >>> conda install pytest -c conda-forge
+   >>> pip install pytest
 
-Once ``pytest`` is installed QCElemental's testing suite can be run by:
+Then, run the following command:
 
-.. code-block:: console
+.. code-block::
 
-    >>> pytest --pyargs qcelemental
+   >>> pytest --pyargs qcelemental
 
 
-QCElemental can also be tested from source with:
+Developing from Source
+----------------------
 
-.. code-block:: console
-
-    >>> cd QCElemental
-    >>> pytest
+If you are a developer and want to make contributions Elemental, you can access the source code from
+`github <https://github.com/molssi/qcelemental>`_.
