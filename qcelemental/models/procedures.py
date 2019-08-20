@@ -36,6 +36,9 @@ class OptimizationInput(ProtoModel):
 
     provenance: Provenance = provenance_stamp(__name__)
 
+    def __str__(self):
+        return f"{self.__class__.__name__}(model='{self.input_specification.model.dict()}' molecule_hash='{self.initial_molecule.get_hash()[:7]}')"
+
 
 class Optimization(OptimizationInput):
     schema_name: constr(strip_whitespace=True,

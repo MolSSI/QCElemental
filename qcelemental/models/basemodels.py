@@ -147,4 +147,4 @@ class ProtoModel(BaseModel):
         return compare_recursive(self, other, **kwargs)
 
     def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
-        return f"{self.__class__.__name__}"
+        return f"{self.__class__.__name__}(ProtoModel)"
