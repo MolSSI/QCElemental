@@ -1,7 +1,7 @@
 Install QCElemental
 ===================
 
-You can install qcelemental with ``conda``, with ``pip``.
+You can install qcelemental with ``conda`` or with ``pip``.
 
 Conda
 -----
