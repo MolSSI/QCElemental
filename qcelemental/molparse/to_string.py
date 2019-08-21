@@ -203,6 +203,14 @@ def to_string(molrec: Dict,
         smol.append(symm_line)
         smol.append(last_line)
 
+        data['fields'].extend(['molecular_charge', 'molecular_multiplicity'])
+        data['keywords'] = {
+            'charge': int(molrec['molecular_charge']),
+        }
+        if molrec['molecular_multiplicity'] != 1:
+            data['keywords']['scf__nopen'] = molrec['molecular_multiplicity'] - 1
+            data['keywords']['dft__mult'] = molrec['molecular_multiplicity']
+
     elif dtype == 'gamess':
 
         atom_format = ' {elem}{elbl} {elez}'
