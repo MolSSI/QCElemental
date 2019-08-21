@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
+from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
 class ProtoModel(BaseModel):
@@ -16,6 +17,10 @@ class ProtoModel(BaseModel):
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes = set()
         serialize_skip_defaults = False
+
+    def __init__(self, **data: Any) -> None:
+        super().__init__(**data)
+        self.__doc__ = AutoPydanticDocGenerator(self, allow_failure=True)
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
