@@ -61,6 +61,10 @@ class ResultProperties(ProtoModel):
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
+    def __str__(self):
+        data_str = ', '.join(f'{k}={v}' for k, v in self.dict().items())
+        return f"{self.__class__.__name__}({data_str})"
+
 
 ### Primary models
 

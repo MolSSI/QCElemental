@@ -210,7 +210,6 @@ def test_default_skip():
 
 def test_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")
-    assert len(obj.to_string()) < 100
     assert len(str(obj)) < 100
     assert len(repr(obj)) < 100
 
