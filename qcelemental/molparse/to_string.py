@@ -204,10 +204,10 @@ def to_string(molrec: Dict,
         smol.append(last_line)
 
     elif dtype == 'gamess':
-        # Untested by gamess itself
 
         atom_format = ' {elem}{elbl} {elez}'
         ghost_format = ' {BQ} -{elez}'
+        umap = {'bohr': 'bohr', 'angstrom': 'angs'}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
@@ -219,6 +219,14 @@ def to_string(molrec: Dict,
         smol = [first_line, second_line, third_line]
         smol.extend(atoms)
         smol.append(last_line)
+
+        data['fields'].extend(['molecular_charge', 'molecular_multiplicity'])
+        data['keywords'] = {
+            'contrl__icharg': int(molrec['molecular_charge']),
+            'contrl__mult': molrec['molecular_multiplicity'],
+            'contrl__units': umap.get(units.lower()),
+            'contrl__coord': 'prinaxis',
+        }
 
     elif dtype == 'terachem':
 
@@ -254,8 +262,14 @@ def to_string(molrec: Dict,
             smol.append("no_reorient")
 
         data['fields'].extend([
-            'molecular_charge', 'molecular_multiplicity', 'fragments', 'fragment_charges', 'fragment_multiplicities',
-            'fix_com', 'fix_orientation', 'real',
+            'molecular_charge',
+            'molecular_multiplicity',
+            'fragments',
+            'fragment_charges',
+            'fragment_multiplicities',
+            'fix_com',
+            'fix_orientation',
+            'real',
         ])
         data['keywords'] = {}
 

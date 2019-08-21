@@ -360,6 +360,7 @@ class Molecule(ProtoModel):
             "fragment_charges", "fragment_multiplicities", "connectivity"
         ]
 
+
 ### Non-Pydantic API functions
 
     def show(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
@@ -620,7 +621,15 @@ class Molecule(ProtoModel):
 
         return Molecule(orient=orient, **constructor_dict)
 
-    def to_string(self, dtype, units=None, *, atom_format=None, ghost_format=None, width=17, prec=12):
+    def to_string(self,
+                  dtype: str,
+                  units: str = None,
+                  *,
+                  atom_format: str = None,
+                  ghost_format: str = None,
+                  width: int = 17,
+                  prec: int = 12,
+                  return_data: bool = False):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
@@ -628,14 +637,14 @@ class Molecule(ProtoModel):
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
         molrec = from_schema(self.dict())
-        string = to_string(molrec,
-                           dtype=dtype,
-                           units=units,
-                           atom_format=atom_format,
-                           ghost_format=ghost_format,
-                           width=width,
-                           prec=prec)
-        return string
+        return to_string(molrec,
+                         dtype=dtype,
+                         units=units,
+                         atom_format=atom_format,
+                         ghost_format=ghost_format,
+                         width=width,
+                         prec=prec,
+                         return_data=return_data)
 
     def get_hash(self):
         """
