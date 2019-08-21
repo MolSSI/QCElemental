@@ -19,9 +19,9 @@ def to_string(molrec: Dict,
 
     Parameters
     ----------
-    molrec : dict
+    molrec : Dict
         Psi4 json Molecule spec.
-    dtype : {'xyz', 'cfour', 'nwchem', 'molpro'}
+    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -45,7 +45,7 @@ def to_string(molrec: Dict,
         Field width for formatting coordinate float.
     prec : int, optional
         Number of decimal places for formatting coordinate float.
-    return data : bool, optional
+    return_data : bool, optional
         Whether to return dictionary with additional info from the molrec that's
         not expressible in the string but may be of interest to the QC program.
         Note that field names are in QCSchema, not molrec, language.

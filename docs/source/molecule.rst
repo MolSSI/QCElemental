@@ -43,16 +43,16 @@ Molecular Hash
 A molecule hash is automatically created to allow each molecule to be uniquely
 identified. The following keys are used to generate the hash:
 
- - ``symbols``
- - ``masses`` (1.e-6 tolerance)
- - ``molecular_charge`` (1.e-4 tolerance)
- - ``molecular_multiplicity``
- - ``real``
- - ``geometry`` (1.e-8 tolerance)
- - ``fragments``
- - ``fragment_charges`` (1.e-4 tolerance)
- - ``fragment_multiplicities``
- - ``connectivity``
+- ``symbols``
+- ``masses`` (1.e-6 tolerance)
+- ``molecular_charge`` (1.e-4 tolerance)
+- ``molecular_multiplicity``
+- ``real``
+- ``geometry`` (1.e-8 tolerance)
+- ``fragments``
+- ``fragment_charges`` (1.e-4 tolerance)
+- ``fragment_multiplicities``
+- ``connectivity``
 
 Hashes can be acquired from any molecule object and a ``FractalServer``
 automatically generates canonical hashes when a molecule is added to the
@@ -124,9 +124,9 @@ Obtaining fragments with ghost atoms is also supported:
     >
 
 
-Molecule Attributes
--------------------
-
-Below are the documentations for all attributes and initialization keywords for a Molecule object
+API
+---
 
 .. autoclass:: qcelemental.models.Molecule
+   :members:
+

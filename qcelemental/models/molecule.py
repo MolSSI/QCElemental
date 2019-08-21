@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import deserialize, measure_coordinates, provenance_stamp, which_import
+from ..util import auto_gen_docs_on_demand, deserialize, measure_coordinates, provenance_stamp, which_import
 from .basemodels import ProtoModel
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
@@ -258,8 +258,6 @@ class Molecule(ProtoModel):
             If ``None`` validation is always applied unless the ``validated`` flag is set. Otherwise uses the boolean to decide to validate the Molecule or not.
         **kwargs : Any
             The values of the Molecule object attributes.
-
-
         """
         if validate is None:
             validate = not kwargs.get("validated", False)
@@ -681,7 +679,6 @@ class Molecule(ProtoModel):
         ... H      0.3345     -0.9314     -0.4496
         ... H     -1.0685     -0.0537      0.1921
         ... ''')
-
         >>> methane.get_molecular_formula()
         CH4
 
@@ -689,7 +686,6 @@ class Molecule(ProtoModel):
         ... H      0.0000      0.0000      0.0000
         ... Cl     0.0000      0.0000      1.2000
         ... ''')
-
         >>> hcl.get_molecular_formula()
         ClH
 
@@ -1240,3 +1236,5 @@ class Molecule(ProtoModel):
 
         return cmol, {'rmsd': rmsd, 'mill': perturbation}
 
+
+auto_gen_docs_on_demand(Molecule)

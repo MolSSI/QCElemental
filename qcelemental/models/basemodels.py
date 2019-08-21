@@ -18,10 +18,6 @@ class ProtoModel(BaseModel):
         serialize_default_excludes = set()
         serialize_skip_defaults = False
 
-    def __init__(self, **data: Any) -> None:
-        super().__init__(**data)
-        self.__doc__ = AutoPydanticDocGenerator(self, allow_failure=True)
-
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
         """
@@ -149,3 +145,7 @@ class ProtoModel(BaseModel):
 
     def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
         return f"{self.__class__.__name__}"
+
+ProtoModel.__doc__ = AutoPydanticDocGenerator(ProtoModel, allow_failure=True)
+
+
