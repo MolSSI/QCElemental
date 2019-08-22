@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import auto_gen_docs_on_demand, deserialize, measure_coordinates, provenance_stamp, which_import
+from ..util import deserialize, measure_coordinates, provenance_stamp, which_import
 from .basemodels import ProtoModel
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
@@ -75,15 +75,10 @@ class Identifiers(ProtoModel):
 
 class Molecule(ProtoModel):
     """
-    The fundamental representation of a Molecule inside the QCArchive Ecosystem. This model contains
-    data for atomic elements, coordinates, connectivity, charges, fragmentation, etc. The model also
-    supports orientation and measurement utilities.
+    A QCSchema representation of a Molecule. This model contains
+    data for symbols, geometry, connectivity, charges, fragmentation, etc while also supporting a wide array of I/O and manipulation capabilities.
 
-    All Molecule objects are oriented via inertia tensor with the center-of-mass at (0,0,0) unless
-    explicitly blocked.
-
-    All Molecule objects have coordinates truncated to 8 (GEOMETRY_NOISE) decimal places and mass and charge truncated
-    to 6 (MASS_NOISE) and 4 (CHARGE_NOISE), respectively, unless explicitly blocked.
+    Molecule objects geometry, masses, and charges are truncated to 8, 6, and 4 decimal places respectively to assist with duplicate detection.
     """
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = Schema(
@@ -252,8 +247,18 @@ class Molecule(ProtoModel):
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
 
-    def __init__(self, orient=False, validate=None, **kwargs):
+    def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
+        """Initializes the molecule object from dictionary-like values.
 
+        Parameters
+        ----------
+        orient : bool, optional
+            If True, orientates the Molecule to a common reference frame.
+        validate : Optional[bool], optional
+            If ``None`` validation is always applied unless the ``validated`` flag is set. Otherwise uses the boolean to decide to validate the Molecule or not.
+        **kwargs : Any
+            The values of the Molecule object attributes.
+        """
         if validate is None:
             validate = not kwargs.get("validated", False)
 
@@ -674,7 +679,6 @@ class Molecule(ProtoModel):
         ... H      0.3345     -0.9314     -0.4496
         ... H     -1.0685     -0.0537      0.1921
         ... ''')
-
         >>> methane.get_molecular_formula()
         CH4
 
@@ -682,7 +686,6 @@ class Molecule(ProtoModel):
         ... H      0.0000      0.0000      0.0000
         ... Cl     0.0000      0.0000      1.2000
         ... ''')
-
         >>> hcl.get_molecular_formula()
         ClH
 
@@ -1234,4 +1237,4 @@ class Molecule(ProtoModel):
         return cmol, {'rmsd': rmsd, 'mill': perturbation}
 
 
-auto_gen_docs_on_demand(Molecule)
+# auto_gen_docs_on_demand(Molecule)

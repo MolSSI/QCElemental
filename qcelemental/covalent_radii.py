@@ -73,20 +73,21 @@ class CovalentRadii:
 
     def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
            missing: float = None) -> Union[float, 'Datum']:
-        """Access a covalent radius for species `atom`.
+        """
+        Access a covalent radius for species `atom`.
 
         Parameters
         ----------
         atom : int or str
-            Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+            Identifier for element or nuclide, e.g., ``H``, ``D``, ``H2``, ``He``, ``hE4``.
             In general, one value recommended for each element; however, certain other exact labels may be available.
             ALVAREZ2008: C_sp3, C_sp2, C_sp, Mn_lowspin, Mn_highspin, Fe_lowspin, Fe_highspin, Co_lowspin, Co_highspin
         units : str, optional
             Units of returned value. To return in native unit (ALVAREZ2008: angstrom), pass it explicitly.
             Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
         missing : float or None, optional
-            How to handle when `atom` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
-            When a float, returns that float, so supply in `units` units. Supplying a float is a more compact assurance
+            How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
+            When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
             ``try:\n\trad = qcel.covalentradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
             Only relevant for ``return_tuple=False``.

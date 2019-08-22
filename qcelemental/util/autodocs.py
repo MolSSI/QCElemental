@@ -163,15 +163,19 @@ class AutoPydanticDocGenerator:
     ALREADY_AUTODOCED_ATTR = "__model_autodoc_applied__"
     AUTODOC_BASE_DOC_REFERENCE_ATTR = "__base_doc__"
 
-    def __init__(self, target: Union[BaseModel, type(BaseModel)], allow_failure: bool = True):
+    def __init__(self, target: Union[BaseModel, type(BaseModel)], allow_failure: bool = True, always_apply: bool = False):
         # Checks against already instanced and uninstanced classes while avoiding unhahsable type error
-        if isinstance(target, BaseModel) or (isinstance(target, type) and issubclass(target, BaseModel)):
-            if hasattr(target, self.ALREADY_AUTODOCED_ATTR) and getattr(target, self.ALREADY_AUTODOCED_ATTR) is True:
-                raise AutoDocError("Object already has autodoc rules applied to it, cannot re-apply auto documentation"
-                                   f"without first resetting the __doc__ attribute and setting "
-                                   f"{self.ALREADY_AUTODOCED_ATTR} to False (or deleting it)")
-        else:
-            raise TypeError("Cannot use auto-doc tech on non-BaseModel subclasses")
+
+        if not always_apply:
+            if isinstance(target, BaseModel) or (isinstance(target, type) and issubclass(target, BaseModel)):
+
+                if hasattr(target, self.ALREADY_AUTODOCED_ATTR) and getattr(target, self.ALREADY_AUTODOCED_ATTR) is True:
+                    raise AutoDocError("Object already has autodoc rules applied to it, cannot re-apply auto documentation"
+                                       f"without first resetting the __doc__ attribute and setting "
+                                       f"{self.ALREADY_AUTODOCED_ATTR} to False (or deleting it)")
+            else:
+                raise TypeError("Cannot use auto-doc tech on non-BaseModel subclasses")
+                
         self.base_doc = target.__doc__
         setattr(target, self.AUTODOC_BASE_DOC_REFERENCE_ATTR, self.base_doc)
         self.target = target
