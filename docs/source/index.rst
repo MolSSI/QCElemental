@@ -64,7 +64,6 @@ Index
 **Getting Started**
 
 * :doc:`install`
-* :doc:`community`
 
 .. toctree::
    :maxdepth: 1
@@ -72,12 +71,12 @@ Index
    :caption: Getting Started
 
    install
-   community
 
-**User Interface**
+**Quantities**
 
 * :doc:`physconst`
 * :doc:`periodic_table`
+* :doc:`covalent_radii`
 
 .. toctree::
    :maxdepth: 1
@@ -86,6 +85,7 @@ Index
 
    physconst
    periodic_table
+   covalent_radii
 
 **QCSchema Models**
 
