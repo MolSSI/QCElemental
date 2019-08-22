@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import auto_gen_docs_on_demand, deserialize, measure_coordinates, provenance_stamp, which_import
+from ..util import deserialize, measure_coordinates, provenance_stamp, which_import
 from .basemodels import ProtoModel
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
@@ -78,7 +78,7 @@ class Molecule(ProtoModel):
     A QCSchema representation of a Molecule. This model contains
     data for symbols, geometry, connectivity, charges, fragmentation, etc while also supporting a wide array of I/O and manipulation capabilities.
 
-    Molecule objects truncate geometry, masses, and charges are truncated to 8, 6, and 4 decimal places respectively.
+    Molecule objects geometry, masses, and charges are truncated to 8, 6, and 4 decimal places respectively to assist with duplicate detection.
     """
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = Schema(
