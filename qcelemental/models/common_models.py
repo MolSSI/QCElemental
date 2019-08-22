@@ -16,6 +16,7 @@ class Provenance(ProtoModel):
     routine: Optional[str] = None
 
     class Config(ProtoModel.Config):
+        canonical_repr = True
         extra = "allow"
 
 
@@ -36,6 +37,7 @@ class Model(ProtoModel):
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
     class Config(ProtoModel.Config):
+        canonical_repr = True
         extra = "allow"
 
 
@@ -69,11 +71,15 @@ class ComputeError(ProtoModel):
         description="Additional data to ship with the ComputeError object."
     )
 
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(error_type={self.error_type} error_message:\n{self.error_message}\n)"
+
+
 class FailedOperation(ProtoModel):
     """
     A record indicating that a given operation (compute, procedure, etc.) has failed and contains the reason and
     input data which generated the failure.
-    
+
     """
     id: str = Schema(
         None,
@@ -101,6 +107,9 @@ class FailedOperation(ProtoModel):
         description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
                     "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details."
     )
+
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(error={self.error})"
 
 
 qcschema_input_default = "qcschema_input"

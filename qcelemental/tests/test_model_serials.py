@@ -5,7 +5,7 @@ import pytest
 from pydantic import ValidationError
 
 from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, ProtoModel,
-                                Result, ResultInput, ResultProperties)
+                                Provenance, Result, ResultInput, ResultProperties)
 from qcelemental.models.types import Array
 from qcelemental.util import provenance_stamp
 
@@ -210,6 +210,63 @@ def test_default_skip():
 
 def test_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")
-    assert len(obj.to_string()) < 100
     assert len(str(obj)) < 100
     assert len(repr(obj)) < 100
+
+
+def test_repr_provenance():
+
+    prov = Provenance(creator="qcel", version="v0.3.2")
+
+    assert "qcel" in str(prov)
+    assert "qcel" in repr(prov)
+
+
+def test_repr_compute_error():
+    ce = ComputeError(error_type="random_error", error_message="this is bad")
+
+    assert "random_error" in str(ce)
+    assert "random_error" in repr(ce)
+
+
+def test_repr_failed_op():
+    fail_op = FailedOperation(error=ComputeError(error_type="random_error", error_message="this is bad"))
+
+    assert "random_error" in str(fail_op)
+    assert "random_error" in repr(fail_op)
+
+
+def test_repr_result():
+
+    result = ResultInput(**{
+        "driver": "gradient",
+        "model": {
+            "method": "UFF"
+        },
+        "molecule": {
+            "symbols": ["He"],
+            "geometry": [0, 0, 0]
+        }
+    })
+    assert "UFF" in str(result)
+    assert "UFF" in repr(result)
+
+
+def test_repr_optimization():
+
+    opt = OptimizationInput(
+        **{
+            "input_specification": {
+                "driver": "gradient",
+                "model": {
+                    "method": "UFF"
+                },
+            },
+            "initial_molecule": {
+                "symbols": ["He"],
+                "geometry": [0, 0, 0]
+            }
+        })
+
+    assert "UFF" in str(opt)
+    assert "UFF" in repr(opt)

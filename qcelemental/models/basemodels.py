@@ -27,6 +27,8 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes = set()
         serialize_skip_defaults = False
+        force_skip_defaults = False
+        canonical_repr = False
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
@@ -99,6 +101,9 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
 
         kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
         kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)
+        if self.__config__.force_skip_defaults:
+            kwargs["skip_defaults"] = True
+
         data = super().dict(*args, **kwargs)
 
         if encoding is None:
@@ -153,5 +158,9 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         """
         return compare_recursive(self, other, **kwargs)
 
-    def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
-        return f"{self.__class__.__name__}"
+
+    def __str__(self) -> str:
+        if self.__config__.canonical_repr:
+            return super().to_string()
+        else:
+            return f"{self.__class__.__name__}(ProtoModel)"

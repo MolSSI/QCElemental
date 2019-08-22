@@ -59,7 +59,11 @@ class ResultProperties(ProtoModel):
     ccsd_prt_pr_dipole_moment: Optional[List[float]] = None
 
     class Config(ProtoModel.Config):
-        serialize_skip_defaults = True
+        force_skip_defaults = True
+
+    def __str__(self):
+        data_str = ', '.join(f'{k}={v}' for k, v in self.dict().items())
+        return f"{self.__class__.__name__}({data_str})"
 
 
 ### Primary models
@@ -79,6 +83,9 @@ class ResultInput(ProtoModel):
     extras: Dict[str, Any] = {}
 
     provenance: Provenance = provenance_stamp(__name__)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(driver='{self.driver}' model='{self.model.dict()}' molecule_hash='{self.molecule.get_hash()[:7]}')"
 
 
 class Result(ResultInput):
