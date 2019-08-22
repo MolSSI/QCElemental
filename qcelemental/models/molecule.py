@@ -325,7 +325,6 @@ class Molecule(ProtoModel):
             "fragment_charges", "fragment_multiplicities", "connectivity"
         ]
 
-
 ### Non-Pydantic API functions
 
     def show(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
