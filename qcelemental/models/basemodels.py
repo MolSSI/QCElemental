@@ -9,8 +9,18 @@ from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
+from pydantic.main import MetaModel
 
-class ProtoModel(BaseModel):
+
+class PydanticAutodocMeta(MetaModel):
+    def __new__(mcs, name, bases, namespace):
+
+        ret = super().__new__(mcs, name, bases, namespace)
+        ret.__doc__ = AutoPydanticDocGenerator(ret, always_apply=True)
+        return ret
+
+
+class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
     class Config:
         allow_mutation = False
         extra = "forbid"
@@ -145,7 +155,3 @@ class ProtoModel(BaseModel):
 
     def to_string(self):  # lgtm [py/inheritance/incorrect-overridden-signature]
         return f"{self.__class__.__name__}"
-
-ProtoModel.__doc__ = AutoPydanticDocGenerator(ProtoModel, allow_failure=True)
-
-

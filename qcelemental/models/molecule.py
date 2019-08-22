@@ -1237,4 +1237,4 @@ class Molecule(ProtoModel):
         return cmol, {'rmsd': rmsd, 'mill': perturbation}
 
 
-auto_gen_docs_on_demand(Molecule)
+# auto_gen_docs_on_demand(Molecule)
