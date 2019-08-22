@@ -84,165 +84,130 @@ class Molecule(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = Schema(
         qcschema_molecule_default,
         description=(f"The QCSchema specification this model conforms to. Explicitly fixed as "
-                     f"{qcschema_molecule_default}.")
-    )
+                     f"{qcschema_molecule_default}."))
     schema_version: int = Schema(
-        2,
-        description="The version number of ``schema_name`` that this Molecule model conforms to."
-    )
+        2, description="The version number of ``schema_name`` that this Molecule model conforms to.")
     validated: bool = Schema(
         False,
         description="A boolean indicator (for speed purposes) that the input Molecule data has been previously checked "
-                    "for schema (data layout and type) and physics (e.g., non-overlapping atoms, feasible "
-                    "multiplicity) compliance. This should be False in most cases. A ``True`` setting "
-                    "should only ever be set by the constructor for this class itself or other trusted sources such as "
-                    "a Fractal Server or previously serialized Molecules."
-    )
+        "for schema (data layout and type) and physics (e.g., non-overlapping atoms, feasible "
+        "multiplicity) compliance. This should be False in most cases. A ``True`` setting "
+        "should only ever be set by the constructor for this class itself or other trusted sources such as "
+        "a Fractal Server or previously serialized Molecules.")
 
     # Required data
     symbols: Array[str] = Schema(
         ...,
         description="An ordered (nat,) array-like object of atomic elemental symbols of shape (nat,). The index of "
-                    "this attribute sets atomic order for all other per-atom setting like ``real`` and the first "
-                    "dimension of ``geometry``. Ghost/Virtual atoms must have an entry in this array-like and are "
-                    "indicated by the matching the 0-indexed indices in ``real`` field."
-    )
+        "this attribute sets atomic order for all other per-atom setting like ``real`` and the first "
+        "dimension of ``geometry``. Ghost/Virtual atoms must have an entry in this array-like and are "
+        "indicated by the matching the 0-indexed indices in ``real`` field.")
     geometry: Array[float] = Schema(
         ...,
         description="An ordered (nat,3) array-like for XYZ atomic coordinates [a0]. "
-                    "Atom ordering is fixed; that is, a consumer who shuffles atoms must not reattach the input "
-                    "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-atom results "
-                    "(e.g., gradient). Index of the first dimension matches the 0-indexed indices of all other "
-                    "per-atom settings like ``symbols`` and ``real``."
-                    "\n"
-                    "Can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
-                    "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
-                    "(nat,3) for this attribute."
-    )
+        "Atom ordering is fixed; that is, a consumer who shuffles atoms must not reattach the input "
+        "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-atom results "
+        "(e.g., gradient). Index of the first dimension matches the 0-indexed indices of all other "
+        "per-atom settings like ``symbols`` and ``real``."
+        "\n"
+        "Can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
+        "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
+        "(nat,3) for this attribute.")
 
     # Molecule data
     name: Optional[str] = Schema(
-        None,
-        description="A common or human-readable name to assign to this molecule. Can be arbitrary."
-    )
+        None, description="A common or human-readable name to assign to this molecule. Can be arbitrary.")
     identifiers: Optional[Identifiers] = Schema(
         None,
         description="An optional dictionary of additional identifiers by which this Molecule can be referenced, "
-                    "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details."
-    )
+        "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.")
     comment: Optional[str] = Schema(
         None,
         description="Additional comments for this Molecule. Intended for pure human/user consumption "
-                    "and clarity."
-    )
-    molecular_charge: float = Schema(
-        0.0,
-        description="The net electrostatic charge of this Molecule."
-    )
-    molecular_multiplicity: int = Schema(
-        1,
-        description="The total multiplicity of this Molecule."
-    )
+        "and clarity.")
+    molecular_charge: float = Schema(0.0, description="The net electrostatic charge of this Molecule.")
+    molecular_multiplicity: int = Schema(1, description="The total multiplicity of this Molecule.")
 
     # Atom data
     masses: Optional[Array[float]] = Schema(
         None,
         description="An ordered 1-D array-like object of atomic masses [u] of shape (nat,). Index order "
-                    "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. If "
-                    "this is not provided, the mass of each atom is inferred from their most common isotope. If this "
-                    "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
-                    "standard masses to infer from the same index in the ``symbols`` field."
-    )
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. If "
+        "this is not provided, the mass of each atom is inferred from their most common isotope. If this "
+        "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
+        "standard masses to infer from the same index in the ``symbols`` field.")
     real: Optional[Array[bool]] = Schema(
         None,
         description="An ordered 1-D array-like object of shape (nat,) indicating if each atom is real (``True``) or "
-                    "ghost/virtual (``False``). Index "
-                    "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
-                    "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
-                    "If this is provided, the reality or ghostality of every atom must be specified."
-    )
+        "ghost/virtual (``False``). Index "
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
+        "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
+        "If this is provided, the reality or ghostality of every atom must be specified.")
     atom_labels: Optional[Array[str]] = Schema(
         None,
         description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
-                    "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
-                    "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule."
-    )
+        "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
+        "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.")
     atomic_numbers: Optional[Array[np.int16]] = Schema(
         None,
         description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
-                    "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-                    "Values are inferred from the ``symbols`` list if not explicitly set."
-    )
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
+        "Values are inferred from the ``symbols`` list if not explicitly set.")
     mass_numbers: Optional[Array[np.int16]] = Schema(
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
-                    "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-                    "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set."
-    )
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
+        "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set.")
 
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = Schema(
         None,
         description="The connectivity information between each atom in the ``symbols`` array. Each entry in this "
-                    "list is a Tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
-                    "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``."
-        )
+        "list is a Tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``.")
     fragments: Optional[List[Array[np.int32]]] = Schema(
         None,
         description="An indication of which sets of atoms are fragments within the Molecule. This is a list of shape "
-                    "(nfr) of 1-D array-like objects of arbitrary length. Each entry in the list indicates a new "
-                    "fragment. The index "
-                    "of the list matches the 0-indexed indices of ``fragment_charges`` and "
-                    "``fragment_multiplicities``. The 1-D array-like objects are sets of atom indices indicating the "
-                    "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
-                    "per-atom settings like ``symbols`` and ``real``."
-    )
+        "(nfr) of 1-D array-like objects of arbitrary length. Each entry in the list indicates a new "
+        "fragment. The index "
+        "of the list matches the 0-indexed indices of ``fragment_charges`` and "
+        "``fragment_multiplicities``. The 1-D array-like objects are sets of atom indices indicating the "
+        "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
+        "per-atom settings like ``symbols`` and ``real``.")
     fragment_charges: Optional[List[float]] = Schema(
         None,
         description="The total charge of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
-                    "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of rules "
-                    "if not provided (and ``fragments`` are specified)."
-    )
+        "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of rules "
+        "if not provided (and ``fragments`` are specified).")
     fragment_multiplicities: Optional[List[int]] = Schema(
         None,
         description="The multiplicity of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
-                    "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of "
-                    "rules if not provided (and ``fragments`` are specified)."
-    )
+        "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of "
+        "rules if not provided (and ``fragments`` are specified).")
 
     # Orientation
     fix_com: bool = Schema(
         False,
         description="An indicator which prevents pre-processing the Molecule object to translate the Center-of-Mass "
-                    "to (0,0,0) in euclidean coordinate space. Will result in a different ``geometry`` than the "
-                    "one provided if False."
-    )
+        "to (0,0,0) in euclidean coordinate space. Will result in a different ``geometry`` than the "
+        "one provided if False.")
     fix_orientation: bool = Schema(
         False,
         description="An indicator which prevents pre-processes the Molecule object to orient via the inertia tensor."
-                    "Will result in a different ``geometry`` than the one provided if False."
-
-    )
+        "Will result in a different ``geometry`` than the one provided if False.")
     fix_symmetry: Optional[str] = Schema(
-        None,
-        description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase."
-    )
+        None, description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase.")
     # Extra
     provenance: Provenance = Schema(
         provenance_stamp(__name__),
         description="The provenance information about how this Molecule (and its attributes) were generated, "
-                    "provided, and manipulated."
-    )
+        "provided, and manipulated.")
     id: Optional[Any] = Schema(
         None,
         description="A unique identifier for this Molecule object. This field exists primarily for Databases "
-                    "(e.g. Fractal's Server) to track and lookup this specific object and should virtually "
-                    "never need to be manually set."
-    )
-    extras: Dict[str, Any] = Schema(
-        None,
-        description="Extra information to associate with this Molecule."
-    )
+        "(e.g. Fractal's Server) to track and lookup this specific object and should virtually "
+        "never need to be manually set.")
+    extras: Dict[str, Any] = Schema(None, description="Extra information to associate with this Molecule.")
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
@@ -620,7 +585,15 @@ class Molecule(ProtoModel):
 
         return Molecule(orient=orient, **constructor_dict)
 
-    def to_string(self, dtype, units=None, *, atom_format=None, ghost_format=None, width=17, prec=12):
+    def to_string(self,
+                  dtype: str,
+                  units: str = None,
+                  *,
+                  atom_format: str = None,
+                  ghost_format: str = None,
+                  width: int = 17,
+                  prec: int = 12,
+                  return_data: bool = False):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
@@ -628,14 +601,14 @@ class Molecule(ProtoModel):
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
         molrec = from_schema(self.dict())
-        string = to_string(molrec,
-                           dtype=dtype,
-                           units=units,
-                           atom_format=atom_format,
-                           ghost_format=ghost_format,
-                           width=width,
-                           prec=prec)
-        return string
+        return to_string(molrec,
+                         dtype=dtype,
+                         units=units,
+                         atom_format=atom_format,
+                         ghost_format=ghost_format,
+                         width=width,
+                         prec=prec,
+                         return_data=return_data)
 
     def get_hash(self):
         """
