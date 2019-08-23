@@ -34,4 +34,4 @@ def test_parse_nucleus_label(inp, expected):
 ])
 def test_parse_nucleus_label_error(inp):
     with pytest.raises(qcelemental.ValidationError):
-        ans = qcelemental.molparse.nucleus.parse_nucleus_label(inp)
+        qcelemental.molparse.nucleus.parse_nucleus_label(inp)

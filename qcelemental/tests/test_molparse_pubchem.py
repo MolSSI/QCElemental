@@ -38,12 +38,12 @@ fullans4 = {
         0.000000, -2.139300, 1.256400, 0.000100, -0.018400, -2.480900, -0.000100, 0.018400, 2.480800, 0.000000,
         2.139400, -1.256300, 0.000100, 2.157700, 1.224500, 0.000000
     ]),
-    'elbl': np.array(['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H']),
     'elea': np.array([12, 12, 12, 12, 12, 12, 1, 1, 1, 1, 1, 1]),
     'elez': np.array([6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1, 1]),
     'elem': np.array(['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H']),
     'mass': np.array([12., 12., 12., 12., 12., 12., 1.00782503, 1.00782503, 1.00782503, 1.00782503, 1.00782503, 1.00782503]),
     'real': np.array([True, True, True, True, True, True, True, True, True, True, True, True]),
+    # 'elbl': np.array(['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H']),
     'elbl': np.array(['', '', '', '', '', '', '', '', '', '', '', '']),
     'units': 'Angstrom',
     'fix_com': False,
@@ -74,7 +74,7 @@ def test_pubchem_4b():
     subject = subject4 + '\nunits au'
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 @using_web

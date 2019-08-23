@@ -397,7 +397,7 @@ chiralaneopt = qcel.models.Molecule.from_data("""
 
 
 def toobig2():
-    mol, data = chiralaneopt.align(chiralanem, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
+    chiralaneopt.align(chiralanem, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
 
 
 water16a = qcel.models.Molecule.from_data("""
@@ -506,4 +506,4 @@ water16b = qcel.models.Molecule.from_data("""
 
 
 def toobig():
-    mol, data = water16a.align(water16b, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
+    water16a.align(water16b, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)

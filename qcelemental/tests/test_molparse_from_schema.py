@@ -145,6 +145,6 @@ def test_from_schema_1_nfr_error_14g():
     schema['molecule'].pop('fragments')
 
     with pytest.raises(qcel.ValidationError) as e:
-        ans = qcel.molparse.from_schema(schema)
+        qcel.molparse.from_schema(schema)
 
     assert 'Dimension mismatch among fragment quantities: sep + 1 (1), chg (2), and mult(2)' in str(e.value)
