@@ -5,7 +5,7 @@ from typing import Any, Union
 
 from pydantic import BaseModel, BaseSettings
 
-__all__ = ["auto_gen_docs_on_demand", "get_base_docs"]
+__all__ = ["auto_gen_docs_on_demand", "get_base_docs", "AutoPydanticDocGenerator"]
 
 
 class AutoDocError(ValueError):
@@ -159,7 +159,8 @@ def doc_formatter(base_docs: str, target_object: Union[BaseModel, type(BaseModel
 
 class AutoPydanticDocGenerator:
     """
-    Dynamic Doc generator, should never be called directly and only though augo_gen_docs_on_demand
+    Dynamic Doc generator, should never be called directly and only though augo_gen_docs_on_demand or as a part of the
+    __new__ constructor in a metaclass.
     """
     ALREADY_AUTODOCED_ATTR = "__model_autodoc_applied__"
     AUTODOC_BASE_DOC_REFERENCE_ATTR = "__base_doc__"

@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel, BaseSettings
 from pydantic.main import MetaModel
 
 from qcelemental.testing import compare_recursive
@@ -17,6 +17,10 @@ class PydanticAutodocMeta(MetaModel):
         ret = super().__new__(mcs, name, bases, namespace)
         ret.__doc__ = AutoPydanticDocGenerator(ret, always_apply=True)
         return ret
+
+
+class AutodocBaseSettings(BaseSettings, metaclass=PydanticAutodocMeta):
+    pass
 
 
 class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
