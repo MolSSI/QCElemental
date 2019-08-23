@@ -99,7 +99,7 @@ pygments_style = 'default'
 # a list of builtin themes.
 #
 try:
-    import qcarchive_sphinx_theme
+    import qcarchive_sphinx_theme  # lgtm: [py/unused-import]
     html_theme = 'qcarchive_sphinx_theme'
 except ModuleNotFoundError:
     html_theme = 'sphinx_rtd_theme'

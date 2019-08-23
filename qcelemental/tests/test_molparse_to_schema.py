@@ -182,7 +182,6 @@ schema15_psi4 = {
     "molecular_multiplicity": 1,
     'units': 'Angstrom',
     'fragment_separators': [],
-    'elbl': ['', '', '_deut'],
     "real": [True, True, True]
 }
 

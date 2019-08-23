@@ -1,5 +1,4 @@
 import copy
-import sys
 
 import numpy as np
 import pytest
@@ -119,16 +118,16 @@ def test_psi4_qm_1e():
     subject = subject1 + '\n  nocom'
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_psi4_qm_1f():
 
-    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
-                                             elez=np.array([8, 1]),
-                                             units='Angstrom',
-                                             fix_com=True,
-                                             fix_orientation=False)
+    qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
+                                     elez=np.array([8, 1]),
+                                     units='Angstrom',
+                                     fix_com=True,
+                                     fix_orientation=False)
 
 
 def test_psi4_qm_iutautoobig_error_1g():
@@ -310,7 +309,7 @@ def test_psi4_qm_2c():
     subject = '\n--\n'.join(subject)
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_psi4_qm_2d():
@@ -320,7 +319,7 @@ def test_psi4_qm_2d():
     subject = '\n--\n'.join(subject)
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 #def test_psi4_qm_2e():
@@ -340,7 +339,7 @@ def test_psi4_qm_2f():
     subject = '\n--\n'.join(subject)
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_psi4_qm_2g():
@@ -350,7 +349,7 @@ def test_psi4_qm_2g():
     subject = '\n--\n'.join(subject)
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_psi4_qm_3():
@@ -359,7 +358,7 @@ def test_psi4_qm_3():
 Mg 0 0"""
 
     with pytest.raises(qcelemental.ValidationError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 subject5 = """
@@ -429,7 +428,7 @@ def test_psi4_efp_5c():
     subject = subject5 + '\nno_com\nfix_orientation\nsymmetry c1'
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_psi4_efp_5d():
@@ -453,7 +452,7 @@ def test_psi4_efp_5e():
     subject = subject5 + 'symmetry cs\nunits a.u.'
 
     with pytest.raises(qcelemental.ValidationError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 subject6 = """
@@ -566,7 +565,7 @@ def test_psi4_qmefpformat_error_6c():
     subject = subject6.replace('    efp h2O', '0 1\n    efp h2O')
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+        qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_qmefp_array_6d():
@@ -606,7 +605,7 @@ def test_qmefp_badhint_error_6e():
 def test_qmefp_badefpgeom_error_6f():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        final = qcelemental.molparse.from_input_arrays(
+        qcelemental.molparse.from_input_arrays(
             units='Bohr',
             geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
@@ -770,7 +769,7 @@ def test_xyzp_qm_7a():
     subject = subject7
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='psi4')
+        qcelemental.molparse.from_string(subject, return_processed=True, dtype='psi4')
 
 
 def test_xyzp_qm_7b():
@@ -778,7 +777,7 @@ def test_xyzp_qm_7b():
     subject = subject7
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz')
+        qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz')
 
 
 def test_xyzp_qm_7c():
@@ -1044,8 +1043,6 @@ def test_arrays_10g():
         'missing_enabled_return_efp': 'none'
     }
 
-    fullans = {}
-
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):
         final['qm']
@@ -1178,8 +1175,6 @@ def test_arrays_10o():
         'enable_efp': False,
         'missing_enabled_return_qm': 'none'
     }
-
-    fullans = {}
 
     final = qcelemental.molparse.from_input_arrays(**subject)
     with pytest.raises(KeyError):

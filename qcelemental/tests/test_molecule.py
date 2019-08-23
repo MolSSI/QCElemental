@@ -365,7 +365,7 @@ def test_get_fragment(group_fragments, orient):
         assert dimers[1].get_hash() == dimers[4].get_hash()
         assert dimers[2].get_hash() == dimers[5].get_hash()
     else:
-        assert 0
+        assert 0  # lgtm: [py/unreachable-statement]
 
     ghdimers_nelectrons = [2, 2, 10, 10, 10, 10]
     ghdimers_nre = [0.0, 0.0, 9.163830150548483, 9.163830150548483, 9.163830150548483, 9.163830150548483]
@@ -385,7 +385,7 @@ def test_get_fragment(group_fragments, orient):
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
         assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
     else:
-        assert 0
+        assert 0  # lgtm: [py/unreachable-statement]
 
 
 def test_molecule_repeated_hashing():
@@ -398,7 +398,7 @@ def test_molecule_repeated_hashing():
             -1.3143,  0.0084, -0.2741,
             -1.7241, -1.3079,  1.0277
         ]
-    }) # yapf: disable
+    })  # yapf: disable
 
     h1 = mol.get_hash()
     assert mol.get_molecular_formula() == "H2O2"
@@ -419,7 +419,7 @@ def test_molecule_repeated_hashing():
 ])
 def test_measurements(measure, result):
 
-    mol = Molecule(**{
+    Molecule(**{
         'symbols': ['H', 'O', 'O', 'H'],
         'geometry': [
              1.7317,  1.2909,  1.0371,
@@ -427,7 +427,7 @@ def test_measurements(measure, result):
             -1.3143,  0.0084, -0.2741,
             -1.7241, -1.3079,  1.0277
         ]
-    }) # yapf: disable
+    })  # yapf: disable
 
     assert pytest.approx(water_dimer_minima.measure(measure)) == result
 
