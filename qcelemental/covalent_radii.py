@@ -37,7 +37,6 @@ class CovalentRadii:
         The year the context was created.
 
     """
-
     def __init__(self, context: str = "ALVAREZ2008"):
         self.cr = collections.OrderedDict()
 
@@ -72,7 +71,7 @@ class CovalentRadii:
         return "CovalentRadii(context='{}')".format(self.name)
 
     def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
-           missing: float = None) -> Union[float, 'Datum']:
+            missing: float = None) -> Union[float, 'Datum']:
         """
         Access a covalent radius for species `atom`.
 

@@ -353,37 +353,34 @@ def from_arrays(*,
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
 
-        processed = validate_and_fill_nuclei(
-            nat,
-            elea=elea,
-            elez=elez,
-            elem=elem,
-            mass=mass,
-            real=real,
-            elbl=elbl,
-            speclabel=speclabel,
-            nonphysical=nonphysical,
-            mtol=mtol,
-            verbose=verbose)
+        processed = validate_and_fill_nuclei(nat,
+                                             elea=elea,
+                                             elez=elez,
+                                             elem=elem,
+                                             mass=mass,
+                                             real=real,
+                                             elbl=elbl,
+                                             speclabel=speclabel,
+                                             nonphysical=nonphysical,
+                                             mtol=mtol,
+                                             verbose=verbose)
         update_with_error(molinit, processed)
 
-        processed = validate_and_fill_fragments(
-            nat,
-            fragment_separators=fragment_separators,
-            fragment_charges=fragment_charges,
-            fragment_multiplicities=fragment_multiplicities)
+        processed = validate_and_fill_fragments(nat,
+                                                fragment_separators=fragment_separators,
+                                                fragment_charges=fragment_charges,
+                                                fragment_multiplicities=fragment_multiplicities)
         update_with_error(molinit, processed)
 
         Z_available = molinit['elez'] * molinit['real'] * 1.
-        processed = validate_and_fill_chgmult(
-            zeff=Z_available,
-            fragment_separators=molinit['fragment_separators'],
-            molecular_charge=molecular_charge,
-            fragment_charges=molinit['fragment_charges'],
-            molecular_multiplicity=molecular_multiplicity,
-            fragment_multiplicities=molinit['fragment_multiplicities'],
-            zero_ghost_fragments=zero_ghost_fragments,
-            verbose=verbose)
+        processed = validate_and_fill_chgmult(zeff=Z_available,
+                                              fragment_separators=molinit['fragment_separators'],
+                                              molecular_charge=molecular_charge,
+                                              fragment_charges=molinit['fragment_charges'],
+                                              molecular_multiplicity=molecular_multiplicity,
+                                              fragment_multiplicities=molinit['fragment_multiplicities'],
+                                              zero_ghost_fragments=zero_ghost_fragments,
+                                              verbose=verbose)
         del molinit['fragment_charges']  # sometimes safe update is too picky about overwriting v_a_f_fragments values
         del molinit['fragment_multiplicities']
         update_with_error(molinit, processed)
@@ -582,20 +579,20 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     npgeom = np.array(geom, copy=copy, dtype=np.float).reshape((-1, 3))
 
     # Upper triangular
-    metric = tooclose ** 2
+    metric = tooclose**2
     tooclose_inds = []
     for x in range(npgeom.shape[0]):
-        diffs = npgeom[x] - npgeom[x+1:]
+        diffs = npgeom[x] - npgeom[x + 1:]
         dists = np.einsum('ij,ij->i', diffs, diffs)
 
         # Record issues
         if np.any(dists < metric):
             indices = np.where(dists < metric)[0]
-            tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices] ** 0.5) ])
+            tooclose_inds.extend([(x, y, dist) for y, dist in zip(indices + x + 1, dists[indices]**0.5)])
 
     if tooclose_inds:
-        raise ValidationError("""Following atoms are too close: {}""".format(
-            [(i, j, dist) for i, j, dist in tooclose_inds]))
+        raise ValidationError("""Following atoms are too close: {}""".format([(i, j, dist)
+                                                                              for i, j, dist in tooclose_inds]))
 
     return {'geom': npgeom.reshape((-1))}
 
@@ -621,7 +618,7 @@ def validate_and_fill_nuclei(
         # -1 equivalent to None
         elea = np.asarray(elea)
         if -1 in elea:
-            elea = np.array([(None if at == -1 else at) for at in elea]) # Rebuild to change dtype if needed.
+            elea = np.array([(None if at == -1 else at) for at in elea])  # Rebuild to change dtype if needed.
 
     if elez is None:
         elez = np.asarray([None] * nat)
@@ -655,17 +652,16 @@ def validate_and_fill_nuclei(
 
     if nat:
         A, Z, E, mass, real, label = zip(*[
-            reconcile_nucleus(
-                A=elea[at],
-                Z=elez[at],
-                E=elem[at],
-                mass=mass[at],
-                real=real[at],
-                label=elbl[at],
-                speclabel=speclabel,
-                nonphysical=nonphysical,
-                mtol=mtol,
-                verbose=verbose) for at in range(nat)
+            reconcile_nucleus(A=elea[at],
+                              Z=elez[at],
+                              E=elem[at],
+                              mass=mass[at],
+                              real=real[at],
+                              label=elbl[at],
+                              speclabel=speclabel,
+                              nonphysical=nonphysical,
+                              mtol=mtol,
+                              verbose=verbose) for at in range(nat)
         ])
     else:
         A = Z = E = mass = real = label = []

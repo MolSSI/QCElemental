@@ -41,6 +41,7 @@ class AlignmentMill(ProtoModel):
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"skip_defaults": False}})
 
+
 ### Non-Pydantic API functions
 
     def __str__(self, label: str = '') -> str:
@@ -124,18 +125,18 @@ class AlignmentMill(ProtoModel):
         # Organize derivatives for each atom into 3x3 and transform it.
         mu_x, mu_y, mu_z = mu_derivatives
         nat = mu_x.shape[0] // 3
-        al_mu = np.zeros( (3,3*nat) )
+        al_mu = np.zeros((3, 3 * nat))
 
-        Datom = np.zeros( (3,3) ) # atom whose nuclear derivatives are taken
+        Datom = np.zeros((3, 3))  # atom whose nuclear derivatives are taken
         for at in range(nat):
             Datom.fill(0)
-            Datom[0,:] = mu_x[3*self.atommap[at]:3*self.atommap[at]+3]
-            Datom[1,:] = mu_y[3*self.atommap[at]:3*self.atommap[at]+3]
-            Datom[2,:] = mu_z[3*self.atommap[at]:3*self.atommap[at]+3]
-            Datom[:] = np.dot( self.rotation.T , np.dot(Datom, self.rotation) )
-            al_mu[0, 3*at : 3*at+3] = Datom[0,:]
-            al_mu[1, 3*at : 3*at+3] = Datom[1,:]
-            al_mu[2, 3*at : 3*at+3] = Datom[2,:]
+            Datom[0, :] = mu_x[3 * self.atommap[at]:3 * self.atommap[at] + 3]
+            Datom[1, :] = mu_y[3 * self.atommap[at]:3 * self.atommap[at] + 3]
+            Datom[2, :] = mu_z[3 * self.atommap[at]:3 * self.atommap[at] + 3]
+            Datom[:] = np.dot(self.rotation.T, np.dot(Datom, self.rotation))
+            al_mu[0, 3 * at:3 * at + 3] = Datom[0, :]
+            al_mu[1, 3 * at:3 * at + 3] = Datom[1, :]
+            al_mu[2, 3 * at:3 * at + 3] = Datom[2, :]
         return al_mu
 
     def align_system(self, geom, mass, elem, elez, uniq, *, reverse: bool = False):

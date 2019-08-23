@@ -10,6 +10,7 @@ from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 
 __all__ = ['from_string']
 
+
 def from_string(molstr,
                 dtype=None,
                 *,
@@ -254,13 +255,12 @@ def from_string(molstr,
         print('>>>\n')
 
     # << 4 >>  dict-->molspec
-    molrec = from_input_arrays(
-        speclabel=True,
-        enable_qm=enable_qm,
-        enable_efp=enable_efp,
-        missing_enabled_return_qm=missing_enabled_return_qm,
-        missing_enabled_return_efp=missing_enabled_return_efp,
-        **molinit)
+    molrec = from_input_arrays(speclabel=True,
+                               enable_qm=enable_qm,
+                               enable_efp=enable_efp,
+                               missing_enabled_return_qm=missing_enabled_return_qm,
+                               missing_enabled_return_efp=missing_enabled_return_efp,
+                               **molinit)
 
     # replace from_arrays stamp with from_string stamp
     if 'qm' in molrec and molrec['qm']:
@@ -285,6 +285,7 @@ def from_string(molstr,
 
 pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(([\S ]+)))\Z', re.IGNORECASE)
 
+
 def _filter_pubchem(string):
     """Find any "pubchem:" lines in `string`, make call to the pubchem database
     and return the XYZ results back to `string`.
@@ -292,7 +293,6 @@ def _filter_pubchem(string):
     Author: @andysim
 
     """
-
     def process_pubchem(matchobj):
         pubsearch = matchobj.group('pubsearch')
 
@@ -358,6 +358,7 @@ com = re.compile(r'\A(no_com|nocom)\Z', re.IGNORECASE)
 orient = re.compile(r'\A(no_reorient|noreorient)\Z', re.IGNORECASE)
 bohrang = re.compile(r'\Aunits?[\s=]+((?P<ubohr>(bohr|au|a.u.))|(?P<uang>(ang|angstrom)))\Z', re.IGNORECASE)
 symmetry = re.compile(r'\Asymmetry[\s=]+(?P<pg>\w+)\Z', re.IGNORECASE)
+
 
 def _filter_universals(string):
     """Process multiline `string` for fix_ and unit markers,
@@ -427,7 +428,6 @@ efppoints = re.compile(
     re.IGNORECASE | re.MULTILINE | re.VERBOSE)  # yapf: disable
 
 def _filter_libefp(string):
-
     def process_efpxyzabc(matchobj):
         processed['fragment_files'].append(matchobj.group('efpfile'))
         processed['hint_types'].append('xyzabc')
@@ -459,6 +459,7 @@ def _filter_libefp(string):
             reconstitute.append(frag)
 
     return '\n--\n'.join(reconstitute), processed
+
 
 fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
 cgmp = re.compile(r'\A' + CHGMULT + r'\Z', re.VERBOSE)
@@ -493,6 +494,7 @@ variable = re.compile(
     r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
     re.IGNORECASE | re.VERBOSE)
 
+
 def _filter_mints(string, unsettled=False):
     """Handle extracting fragment, atom, and chg/mult lines from `string`.
 
@@ -519,7 +521,6 @@ def _filter_mints(string, unsettled=False):
         accumulating into geom.
 
     """
-
     def process_system_cgmp(matchobj):
         """Handles optional special first fragment with sole contents overall chg/mult."""
 
@@ -532,7 +533,6 @@ def _filter_mints(string, unsettled=False):
         single chg/mult (or None/None) and multiple atom lines.
 
         """
-
         def process_fragment_cgmp(matchobj):
             processed['fragment_charges'].append(float(matchobj.group('chg')))
             processed['fragment_multiplicities'].append(int(matchobj.group('mult')))
@@ -632,6 +632,7 @@ xyz2 = re.compile(r'\A' + CHGMULT, re.VERBOSE)
 atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
                             re.IGNORECASE | re.VERBOSE)
 
+
 def _filter_xyz(string, strict):
     """Handle extracting atom, units, and chg/mult lines from `string`.
 
@@ -657,7 +658,6 @@ def _filter_xyz(string, strict):
             units : {'Angstrom', 'Bohr'} (`Bohr` `strict=False` only)
 
     """
-
     def process_bohrang(matchobj):
         nat = matchobj.group('nat')  # lgtm[py/unused-local-variable]
         if matchobj.group('uang'):

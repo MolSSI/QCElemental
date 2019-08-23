@@ -9,7 +9,6 @@ from yapf.yapflib.yapf_api import FormatCode
 import re
 from decimal import Decimal
 
-
 # from https://www.nist.gov/pml/periodic-table-elements on 30 Aug 2018
 #   NIST SP 966 (July 2018)
 element_names = [
@@ -199,13 +198,7 @@ File Authors: QCElemental Authors
 
 '''.format(year, title, date_modified, doi, url, access_date)
 
-atomic_weights_json = {
-"title": title,
-"date": date_modified,
-"doi": doi,
-"url": url,
-"access_data": access_date}
-
+atomic_weights_json = {"title": title, "date": date_modified, "doi": doi, "url": url, "access_data": access_date}
 
 # length number of elements
 Z = [0]  # , 1, 2, ...
@@ -290,7 +283,6 @@ for delem in atomic_weights_data['data']:
     Z.append(z)
     E.append(delem['Atomic Symbol'])
     name.append(element_names[z - 1].capitalize())
-
 
 atomic_weights_json["Z"] = Z
 atomic_weights_json["E"] = E

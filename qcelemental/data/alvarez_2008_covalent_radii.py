@@ -120,4 +120,4 @@ alvarez_2008_covalent_radii = {
         ('Am',          '1.80', 'e.s.d.=6 n=11'),
         ('Cm',          '1.69', 'e.s.d.=3 n=16'),
     ]
-}
+}  # yapf: disable

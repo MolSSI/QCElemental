@@ -11,14 +11,12 @@ metadata_file = "srd121_nist-codata-fundamental-physical-constants-2014-metadata
 with open(metadata_file, "r") as handle:
     metadata = json.load(handle)
 
-
 title = metadata["title"]
 date_modified = metadata["modified"]
-year = metadata["modified"].split('-')[0]
+year = date_modified.split('-')[0]
 doi = metadata['distribution'][-1]['accessURL'].strip('https://dx.doi.org/')
 url = metadata['distribution'][0]['downloadURL']
 access_date = str(datetime.datetime.utcnow())
-year = date_modified.split('-')[0]
 
 constants = requests.get(url).json()
 
@@ -38,12 +36,13 @@ File Authors: QCElemental Authors
 '''.format(year, title, date_modified, doi, url, access_date)
 
 constants_json = {
-"title": title,
-"date": date_modified,
-"doi": doi,
-"url": url,
-"access_data": access_date,
-"constants": {}}
+    "title": title,
+    "date": date_modified,
+    "doi": doi,
+    "url": url,
+    "access_data": access_date,
+    "constants": {}
+}
 
 for pc in constants['constant']:
     value = pc['Value'].strip()
@@ -56,7 +55,7 @@ for pc in constants['constant']:
         "unit": pc["Unit"],
         "value": value.replace(" ", ""),
         'uncertainty': uncertainty
-        }
+    }
 output += "nist_{}_codata = {}".format(year, constants_json)
 
 output = FormatCode(output)

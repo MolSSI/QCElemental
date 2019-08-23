@@ -37,7 +37,6 @@ class PeriodicTable:
         Element name from periodic table, starting with "Dummy". "Iron" capitalization.
 
     """
-
     def __init__(self):
 
         from . import data
@@ -88,7 +87,7 @@ class PeriodicTable:
             assert isinstance(atom, str)
             return atom.capitalize()
 
-    def to_mass(self, atom: Union[int, str], *, return_decimal:bool=False) -> Union[float, 'Decimal']:
+    def to_mass(self, atom: Union[int, str], *, return_decimal: bool = False) -> Union[float, 'Decimal']:
         """Get atomic mass of `atom`.
 
         Parameters

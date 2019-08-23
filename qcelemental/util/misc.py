@@ -56,7 +56,6 @@ def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> L
     (-pi, pi]. The latter is handy since this is how libefp returns hints
 
     """
-
     def radrge(radang):
         """Adjust `radang` by 2pi into (-pi, pi] range."""
         if radang > math.pi:
@@ -90,7 +89,7 @@ def filter_comments(string: str) -> str:
     return re.sub(r'(^|[^\\])#.*', '', string)
 
 
-def unnp(dicary: Dict, _path=None, *, flat: bool=False) -> Dict:
+def unnp(dicary: Dict, _path=None, *, flat: bool = False) -> Dict:
     """Return `dicary` with any ndarray values replaced by lists.
 
     Parameters
@@ -213,7 +212,7 @@ def compute_distance(points1, points2) -> np.ndarray:
     return _norm(points1 - points2)
 
 
-def compute_angle(points1, points2, points3, *, degrees: bool=False) -> np.ndarray:
+def compute_angle(points1, points2, points3, *, degrees: bool = False) -> np.ndarray:
     """
     Computes the angle (p1, p2 [vertex], p3) between the provided points on a per-row basis.
 
@@ -256,7 +255,7 @@ def compute_angle(points1, points2, points3, *, degrees: bool=False) -> np.ndarr
         return angle
 
 
-def compute_dihedral(points1, points2, points3, points4, *, degrees: bool=False) -> np.ndarray:
+def compute_dihedral(points1, points2, points3, points4, *, degrees: bool = False) -> np.ndarray:
     """
     Computes the dihedral angle (p1, p2, p3, p4) between the provided points on a per-row basis using the Praxeolitic formula.
 

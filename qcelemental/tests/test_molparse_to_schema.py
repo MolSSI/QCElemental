@@ -161,10 +161,7 @@ schema15_1 = {
     }
 }
 
-schema15_2 = {
-    'schema_name': 'qcschema_molecule',
-    'schema_version': 2
-}
+schema15_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
 schema15_2.update(schema15_1['molecule'])
 
 schema15_psi4 = {
@@ -267,10 +264,7 @@ schema16_1 = {
     },
 }
 
-schema16_2 = {
-    'schema_name': 'qcschema_molecule',
-    'schema_version': 2
-}
+schema16_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
 schema16_2.update(schema16_1['molecule'])
 
 schema16_psi4 = {

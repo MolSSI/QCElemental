@@ -158,7 +158,6 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         """
         return compare_recursive(self, other, **kwargs)
 
-
     def __str__(self) -> str:
         if self.__config__.canonical_repr:
             return super().to_string()

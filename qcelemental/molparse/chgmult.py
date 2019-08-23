@@ -44,8 +44,8 @@ def validate_and_fill_chgmult(zeff,
                               fragment_charges,
                               molecular_multiplicity: Union[int, None],
                               fragment_multiplicities,
-                              zero_ghost_fragments: bool=False,
-                              verbose: int=1) -> Dict[str, Any]:
+                              zero_ghost_fragments: bool = False,
+                              verbose: int = 1) -> Dict[str, Any]:
     """Forms molecular and fragment charge and multiplicity specification
     by completing and reconciling information from argument, supplemented
     by physical constraints and sensible defaults.
@@ -295,7 +295,7 @@ def validate_and_fill_chgmult(zeff,
 
     """
     log_full = verbose >= 2
-    log_brief = verbose >= 2 # TODO: Move back to 1
+    log_brief = verbose >= 2  # TODO: Move back to 1
     text = []
 
     felez = np.split(zeff, fragment_separators)

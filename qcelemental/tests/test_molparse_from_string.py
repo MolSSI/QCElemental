@@ -72,8 +72,10 @@ def test_psi4_qm_1ab():
     fullans['fix_com'] = False
     fullans['provenance'] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(
-        subject, return_processed=True, fix_orientation=False, fix_com=False)
+    final, intermed = qcelemental.molparse.from_string(subject,
+                                                       return_processed=True,
+                                                       fix_orientation=False,
+                                                       fix_com=False)
     assert compare_recursive(ans, intermed, tnm() + ': intermediate')
     assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
@@ -122,24 +124,22 @@ def test_psi4_qm_1e():
 
 def test_psi4_qm_1f():
 
-    final = qcelemental.molparse.from_arrays(
-        geom=np.array([0., 0., 0., 1., 0., 0.]),
-        elez=np.array([8, 1]),
-        units='Angstrom',
-        fix_com=True,
-        fix_orientation=False)
+    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
+                                             elez=np.array([8, 1]),
+                                             units='Angstrom',
+                                             fix_com=True,
+                                             fix_orientation=False)
 
 
 def test_psi4_qm_iutautoobig_error_1g():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            geom=np.array([0., 0., 0., 1., 0., 0.]),
-            elez=np.array([8, 1]),
-            input_units_to_au=1.1 / 0.52917721067,
-            units='Angstrom',
-            fix_com=True,
-            fix_orientation=False)
+        qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
+                                         elez=np.array([8, 1]),
+                                         input_units_to_au=1.1 / 0.52917721067,
+                                         units='Angstrom',
+                                         fix_com=True,
+                                         fix_orientation=False)
 
     assert 'No big perturbations to physical constants' in str(e.value)
 
@@ -150,13 +150,12 @@ def test_psi4_qm_iutau_1h():
     fullans['input_units_to_au'] = iutau
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(
-        geom=np.array([0., 0., 0., 1., 0., 0.]),
-        elez=np.array([8, 1]),
-        input_units_to_au=iutau,
-        units='Angstrom',
-        fix_com=True,
-        fix_orientation=False)
+    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
+                                             elez=np.array([8, 1]),
+                                             input_units_to_au=iutau,
+                                             units='Angstrom',
+                                             fix_com=True,
+                                             fix_orientation=False)
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -176,14 +175,13 @@ def test_psi4_qm_iutau_1i():
     fullans['fix_symmetry'] = 'cs'
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(
-        geom=np.array([0., 0., 0., 1., 0., 0.]),
-        elez=np.array([8, 1]),
-        input_units_to_au=iutau,
-        units='Angstrom',
-        fix_symmetry="CS",
-        fix_com=True,
-        fix_orientation=False)
+    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
+                                             elez=np.array([8, 1]),
+                                             input_units_to_au=iutau,
+                                             units='Angstrom',
+                                             fix_symmetry="CS",
+                                             fix_com=True,
+                                             fix_orientation=False)
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1226,8 +1224,11 @@ def test_arrays_10q():
 def test_strings_10r():
     subject = ''
 
-    final = qcelemental.molparse.from_string(
-        subject, enable_qm=True, enable_efp=True, missing_enabled_return_qm='none', missing_enabled_return_efp='none')
+    final = qcelemental.molparse.from_string(subject,
+                                             enable_qm=True,
+                                             enable_efp=True,
+                                             missing_enabled_return_qm='none',
+                                             missing_enabled_return_efp='none')
 
     print('final', final)
     with pytest.raises(KeyError):
@@ -1239,12 +1240,11 @@ def test_strings_10r():
 def test_strings_10s():
     subject = ''
 
-    final = qcelemental.molparse.from_string(
-        subject,
-        enable_qm=True,
-        enable_efp=True,
-        missing_enabled_return_qm='minimal',
-        missing_enabled_return_efp='minimal')
+    final = qcelemental.molparse.from_string(subject,
+                                             enable_qm=True,
+                                             enable_efp=True,
+                                             missing_enabled_return_qm='minimal',
+                                             missing_enabled_return_efp='minimal')
 
     fullans = {'qm': blankqm, 'efp': blankefp}
     fullans['qm']['provenance'] = _string_prov_stamp
@@ -1258,12 +1258,11 @@ def test_strings_10t():
     subject = ''
 
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.from_string(
-            subject,
-            enable_qm=True,
-            enable_efp=True,
-            missing_enabled_return_qm='error',
-            missing_enabled_return_efp='error')
+        qcelemental.molparse.from_string(subject,
+                                         enable_qm=True,
+                                         enable_efp=True,
+                                         missing_enabled_return_qm='error',
+                                         missing_enabled_return_efp='error')
 
 
 def test_qmol_11c():
@@ -1443,11 +1442,10 @@ def test_steepzmat_error():
 def test_zmatvar_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            elem=['Rn', 'Rn'],
-            variables=[['bond', 2.0, 'badextra']],
-            geom_unsettled=[[], ['1', 'bond']])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         elem=['Rn', 'Rn'],
+                                         variables=[['bond', 2.0, 'badextra']],
+                                         geom_unsettled=[[], ['1', 'bond']])
 
     assert 'Variables should come in pairs' in str(e.value)
 
@@ -1455,16 +1453,15 @@ def test_zmatvar_error():
 def test_toomanyfrag_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['ar1', '42AR2'],
-            fragment_multiplicities=[3, 3],
-            fragment_separators=[1, 2],
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['ar1', '42AR2'],
+                                         fragment_multiplicities=[3, 3],
+                                         fragment_separators=[1, 2],
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'zero-length fragment' in str(e.value)
 
@@ -1472,16 +1469,15 @@ def test_toomanyfrag_error():
 def test_fragsep_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['ar1', '42AR2'],
-            fragment_multiplicities=[3, 3],
-            fragment_separators=np.array(['1']),
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['ar1', '42AR2'],
+                                         fragment_multiplicities=[3, 3],
+                                         fragment_separators=np.array(['1']),
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'unable to perform trial np.split on geometry' in str(e.value)
 
@@ -1558,15 +1554,14 @@ def test_natom_error():
 def test_incompletefrag_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['ar1', '42AR2'],
-            fragment_multiplicities=[3, 3],
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['ar1', '42AR2'],
+                                         fragment_multiplicities=[3, 3],
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'Fragment quantities given without separation info' in str(e.value)
 
@@ -1574,16 +1569,15 @@ def test_incompletefrag_error():
 def test_badmult_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['ar1', '42AR2'],
-            fragment_multiplicities=[-3, 3],
-            fragment_separators=np.array([1]),
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['ar1', '42AR2'],
+                                         fragment_multiplicities=[-3, 3],
+                                         fragment_separators=np.array([1]),
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'fragment_multiplicities not among None or positive integer' in str(e.value)
 
@@ -1591,16 +1585,15 @@ def test_badmult_error():
 def test_badchg_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['ar1', '42AR2'],
-            fragment_charges=[[], {}],
-            fragment_separators=np.array([1]),
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['ar1', '42AR2'],
+                                         fragment_charges=[[], {}],
+                                         fragment_separators=np.array([1]),
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'fragment_charges not among None or float' in str(e.value)
 
@@ -1608,16 +1601,15 @@ def test_badchg_error():
 def test_fraglen_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            domain='qmvz',
-            speclabel=True,
-            elbl=['na', 'cl'],
-            fragment_charges=[1, -1, 0],
-            fragment_separators=np.array([1]),
-            geom_unsettled=[[], ['1', 'bond']],
-            hint_types=[],
-            units='Bohr',
-            variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(domain='qmvz',
+                                         speclabel=True,
+                                         elbl=['na', 'cl'],
+                                         fragment_charges=[1, -1, 0],
+                                         fragment_separators=np.array([1]),
+                                         geom_unsettled=[[], ['1', 'bond']],
+                                         hint_types=[],
+                                         units='Bohr',
+                                         variables=[('bond', '3')])
 
     assert 'mismatch among fragment quantities' in str(e.value)
 
@@ -1626,16 +1618,15 @@ def test_zmatfragarr_14a():
     fullans = copy.deepcopy(fullans14)
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(
-        domain='qmvz',
-        speclabel=True,
-        elbl=['ar1', '42AR2'],
-        fragment_multiplicities=[3, 3],
-        fragment_separators=[1],
-        geom_unsettled=[[], ['1', 'bond']],
-        hint_types=[],
-        units='Bohr',
-        variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(domain='qmvz',
+                                             speclabel=True,
+                                             elbl=['ar1', '42AR2'],
+                                             fragment_multiplicities=[3, 3],
+                                             fragment_separators=[1],
+                                             geom_unsettled=[[], ['1', 'bond']],
+                                             hint_types=[],
+                                             units='Bohr',
+                                             variables=[('bond', '3')])
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1645,18 +1636,17 @@ def test_zmatfragarr_14b():
     fullans['elbl'] = ['', '']
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(
-        domain='qmvz',
-        speclabel=False,
-        elez=[18, 18],
-        elea=np.array([40, 42]),
-        real=[True, True],
-        fragment_multiplicities=[3, 3],
-        fragment_separators=[1],
-        geom_unsettled=[[], ['1', 'bond']],
-        hint_types=[],
-        units='Bohr',
-        variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(domain='qmvz',
+                                             speclabel=False,
+                                             elez=[18, 18],
+                                             elea=np.array([40, 42]),
+                                             real=[True, True],
+                                             fragment_multiplicities=[3, 3],
+                                             fragment_separators=[1],
+                                             geom_unsettled=[[], ['1', 'bond']],
+                                             hint_types=[],
+                                             units='Bohr',
+                                             variables=[('bond', '3')])
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1670,22 +1660,21 @@ def test_zmatfragarr_14c():
     fullans['real'] = fullans['real'].tolist()
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(
-        np_out=False,
-        domain='qmvz',
-        speclabel=False,
-        elez=[18, 18],
-        elea=[40, None],
-        mass=[None, 41.96304574],
-        real=[True, True],
-        fragment_multiplicities=[3, 3],
-        fragment_separators=[1],
-        geom_unsettled=[[], ['1', 'bond']],
-        hint_types=[],
-        units='Bohr',
-        fix_com=True,
-        fix_orientation=True,
-        variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(np_out=False,
+                                             domain='qmvz',
+                                             speclabel=False,
+                                             elez=[18, 18],
+                                             elea=[40, None],
+                                             mass=[None, 41.96304574],
+                                             real=[True, True],
+                                             fragment_multiplicities=[3, 3],
+                                             fragment_separators=[1],
+                                             geom_unsettled=[[], ['1', 'bond']],
+                                             hint_types=[],
+                                             units='Bohr',
+                                             fix_com=True,
+                                             fix_orientation=True,
+                                             variables=[('bond', '3')])
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1738,50 +1727,52 @@ def test_badprov0_error():
 
 def test_badprov1_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            geom=[1, 2, 3], elez=[4], provenance={
-                'creator': ('psi', 'tuple'),
-                'routine': 'buggy',
-                'version': '0.1b'
-            })
+        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
+                                         elez=[4],
+                                         provenance={
+                                             'creator': ('psi', 'tuple'),
+                                             'routine': 'buggy',
+                                             'version': '0.1b'
+                                         })
 
     assert """Provenance key 'creator' should be string of creating program's name:""" in str(e.value)
 
 
 def test_badprov2_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            geom=[1, 2, 3],
-            elez=[4],
-            provenance={
-                'creator': '',
-                'routine': 'buggy',
-                'version': 'my.vanity.version.13'
-            })
+        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
+                                         elez=[4],
+                                         provenance={
+                                             'creator': '',
+                                             'routine': 'buggy',
+                                             'version': 'my.vanity.version.13'
+                                         })
 
     assert """Provenance key 'version' should be a valid PEP 440 string:""" in str(e.value)
 
 
 def test_badprov3_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            geom=[1, 2, 3], elez=[4], provenance={
-                'creator': '',
-                'routine': 5,
-                'version': '0.1b'
-            })
+        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
+                                         elez=[4],
+                                         provenance={
+                                             'creator': '',
+                                             'routine': 5,
+                                             'version': '0.1b'
+                                         })
 
     assert """Provenance key 'routine' should be string of creating function's name:""" in str(e.value)
 
 
 def test_badprov4_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(
-            geom=[1, 2, 3], elez=[4], provenance={
-                'creators': '',
-                'routine': 'buggy',
-                'version': '0.1b'
-            })
+        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
+                                         elez=[4],
+                                         provenance={
+                                             'creators': '',
+                                             'routine': 'buggy',
+                                             'version': '0.1b'
+                                         })
 
     assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e.value)
 
