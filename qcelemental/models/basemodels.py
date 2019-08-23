@@ -19,10 +19,6 @@ class PydanticAutodocMeta(MetaModel):
         return ret
 
 
-class AutodocBaseSettings(BaseSettings, metaclass=PydanticAutodocMeta):
-    pass
-
-
 class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
     class Config:
         allow_mutation = False
@@ -166,3 +162,7 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
             return super().to_string()
         else:
             return f"{self.__class__.__name__}(ProtoModel)"
+
+
+class AutodocBaseSettings(BaseSettings, metaclass=PydanticAutodocMeta):
+    pass
