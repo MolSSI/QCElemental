@@ -4,12 +4,11 @@ from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
 from pydantic import BaseModel
+from pydantic.main import MetaModel
 
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
-
-from pydantic.main import MetaModel
 
 
 class PydanticAutodocMeta(MetaModel):
