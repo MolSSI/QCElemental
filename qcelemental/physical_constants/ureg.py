@@ -114,7 +114,6 @@ def build_units_registry(context):
         default : str
             A fall back conversion rule to apply
         """
-
         def transformer(ureg, val):
 
             left_unit = _find_nist_unit(val)

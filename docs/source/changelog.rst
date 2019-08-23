@@ -13,6 +13,19 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.7.0 / 2019-18-23
+------------------
+
+Enhancements
+++++++++++++
+
+- (:pr:`118`) Model string representations should be more user friendly and descriptive without overload the
+  output.
+- (:pr:`119`) The ``molparse.to_string`` keyword-arg ``return_data`` now returns molecule keywords for GAMESS and
+  NWChem. The ``models.Molecule.to_string`` can use ``return_data`` now, too.
+- (:pr:`120`) Auto documentation tech is now built into the ``ProtoModel`` and does not need
+  an external function.
+
 0.6.1 / 2019-08-19
 ------------------
 

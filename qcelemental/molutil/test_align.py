@@ -48,7 +48,12 @@ def test_relative_geoms_align_free():
     s22_12 = qcel.models.Molecule.from_data(ss22_12)
 
     for trial in range(3):
-        cmol, _ = s22_12.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=2, do_test=True)
+        cmol, _ = s22_12.scramble(do_shift=True,
+                                  do_rotate=True,
+                                  do_resort=False,
+                                  do_plot=False,
+                                  verbose=2,
+                                  do_test=True)
 
         rmolrec = qcel.molparse.from_schema(s22_12.dict())
         cmolrec = qcel.molparse.from_schema(cmol.dict())
@@ -59,7 +64,12 @@ def test_relative_geoms_align_fixed():
     s22_12 = qcel.models.Molecule.from_data(ss22_12 + 'nocom\nnoreorient\n')
 
     for trial in range(3):
-        cmol, _ = s22_12.scramble(do_shift=False, do_rotate=False, do_resort=False, do_plot=False, verbose=2, do_test=True)
+        cmol, _ = s22_12.scramble(do_shift=False,
+                                  do_rotate=False,
+                                  do_resort=False,
+                                  do_plot=False,
+                                  verbose=2,
+                                  do_test=True)
 
         rmolrec = qcel.molparse.from_schema(s22_12.dict())
         cmolrec = qcel.molparse.from_schema(cmol.dict())
@@ -77,10 +87,28 @@ Cl    -0.845465     1.497406    -0.341118
 
 @using_networkx
 def test_scramble_descrambles_chiral():
-    chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False, do_test=True)
-    chiral.scramble(do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=1, do_mirror=False, do_test=True)
+    chiral.scramble(do_shift=True,
+                    do_rotate=True,
+                    do_resort=True,
+                    do_plot=False,
+                    verbose=0,
+                    do_mirror=False,
+                    do_test=True)
+    chiral.scramble(do_shift=True,
+                    do_rotate=True,
+                    do_resort=False,
+                    do_plot=False,
+                    verbose=1,
+                    do_mirror=False,
+                    do_test=True)
     for trial in range(5):
-        chiral.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=True, do_test=True)
+        chiral.scramble(do_shift=True,
+                        do_rotate=True,
+                        do_resort=True,
+                        do_plot=False,
+                        verbose=0,
+                        do_mirror=True,
+                        do_test=True)
 
 
 soco10 = """
@@ -166,8 +194,13 @@ def test_b787():
     oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
     oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
-    rmsd, mill = qcel.molutil.B787(
-        oco10_geom_au, oco12_geom_au, np.array(['O', 'C', 'O']), np.array(['O', 'O', 'C']), algorithm='permutative', verbose=4, do_plot=False)
+    rmsd, mill = qcel.molutil.B787(oco10_geom_au,
+                                   oco12_geom_au,
+                                   np.array(['O', 'C', 'O']),
+                                   np.array(['O', 'O', 'C']),
+                                   algorithm='permutative',
+                                   verbose=4,
+                                   do_plot=False)
 
     assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.e-6)
 
@@ -263,7 +296,12 @@ def test_tropolone_b787():
 
 
 def test_scramble_identity():
-    mill = qcel.molutil.compute_scramble(4, do_resort=False, do_shift=False, do_rotate=False, deflection=1.0, do_mirror=False)
+    mill = qcel.molutil.compute_scramble(4,
+                                         do_resort=False,
+                                         do_shift=False,
+                                         do_rotate=False,
+                                         deflection=1.0,
+                                         do_mirror=False)
 
     mill_str = """----------------------------------------
              AlignmentMill
@@ -284,7 +322,8 @@ Rotation:
         'shift': [0., 0., 0.],
         'rotation': [[1., 0., 0.], [0., 1., 0.], [0., 0., 1.]],
         'atommap': [0, 1, 2, 3],
-        'mirror': False}
+        'mirror': False
+    }
 
     assert compare_recursive(mill_dict, mill.dict())
     mill_dict['rotation'] = [1., 0., 0., 0., 1., 0., 0., 0., 1.]
@@ -293,11 +332,11 @@ Rotation:
 
 def test_scramble_specific():
     mill = qcel.molutil.compute_scramble(4,
-                                          do_resort=[1, 2, 0, 3],
-                                          do_shift=[-1.82564537, 2.25391838, -2.56591963],
-                                          do_rotate=[[ 0.39078817, -0.9101616,  -0.13744259],
-                                                     [ 0.36750838,  0.29117465, -0.88326379],
-                                                     [ 0.84393258,  0.29465774,  0.44827962]])
+                                         do_resort=[1, 2, 0, 3],
+                                         do_shift=[-1.82564537, 2.25391838, -2.56591963],
+                                         do_rotate=[[ 0.39078817, -0.9101616,  -0.13744259],
+                                                    [ 0.36750838,  0.29117465, -0.88326379],
+                                                    [ 0.84393258,  0.29465774,  0.44827962]])  # yapf: disable
 
     mill_str = """----------------------------------------
              AlignmentMill
@@ -382,7 +421,7 @@ Rotation:
        2.01940000e-06, -1.48044116e-01,  5.70582596e-01, -1.97410000e-06],
      [ 3.62000000e-08,  2.30000000e-09, -1.39262780e-03,  1.70000000e-09,
       -7.57000000e-08,  1.39261030e-03, -5.48500000e-07,  2.04760000e-06,
-       1.39251280e-03,  5.10600000e-07, -1.97410000e-06, -1.39249540e-03]])
+       1.39251280e-03,  5.10600000e-07, -1.97410000e-06, -1.39249540e-03]])  # yapf: disable
 
     # generated from native psi4 geometry before alignment to cfour geometry
     p4_hooh_hess_native = np.array(
@@ -421,7 +460,7 @@ Rotation:
        2.01926658e-06, -1.48270387e-01,  5.70432494e-01, -1.97383511e-06],
      [ 3.62193872e-08,  2.24249453e-09, -1.39262906e-03,  1.69276446e-09,
       -7.57451701e-08,  1.39262075e-03, -5.49492724e-07,  2.04733779e-06,
-       1.39262576e-03,  5.11580572e-07, -1.97383511e-06, -1.39261744e-03]])
+       1.39262576e-03,  5.11580572e-07, -1.97383511e-06, -1.39261744e-03]])  # yapf: disable
 
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
@@ -430,17 +469,18 @@ Rotation:
 
     assert compare([0, 1, 2, 3], mill.atommap)
     assert compare_values([
- [ 9.99999870e-01, -5.08999836e-04, -0.00000000e+00],
- [ 5.08999836e-04,  9.99999870e-01,  0.00000000e+00],
- [ 0.00000000e+00, -0.00000000e+00,  1.00000000e+00]],
-        mill.rotation,
-        atol=1.e-6)
+                           [ 9.99999870e-01, -5.08999836e-04, -0.00000000e+00],
+                           [ 5.08999836e-04,  9.99999870e-01,  0.00000000e+00],
+                           [ 0.00000000e+00, -0.00000000e+00,  1.00000000e+00]],
+                          mill.rotation,
+                          atol=1.e-6)  # yapf: disable
 
     p2cgeom = mill.align_coordinates(p4mol.geometry)
     assert compare_values(c4mol.geometry, p2cgeom, atol=1.e-6)
 
     p2chess = mill.align_hessian(p4_hooh_hess_native)
     assert compare_values(c4_hooh_hess, p2chess, atol=1.e-4)
+
 
 @using_networkx
 def test_vector_gradient_align():
@@ -467,17 +507,17 @@ def test_vector_gradient_align():
         0.2780463810,      -0.0627423838,      -0.0000001663,
         0.2780463810,      -0.0627423838,       0.0000001663,
        -0.2780463810,       0.0627423838,       0.0000007872,
-       -0.2780463810,       0.0627423838,      -0.0000007872])
+       -0.2780463810,       0.0627423838,      -0.0000007872])  # yapf: disable
     c4_hooh_dipder_y = np.array([
        -0.0452364698,       0.2701572972,      -0.0000004246,
        -0.0452364698,       0.2701572972,       0.0000004246,
         0.0452364698,      -0.2701572972,       0.0000007936,
-        0.0452364698,      -0.2701572972,      -0.0000007936])
+        0.0452364698,      -0.2701572972,      -0.0000007936])  # yapf: disable
     c4_hooh_dipder_z = np.array([
        -0.0000001575,      -0.0000004725,       0.4019549601,
         0.0000001575,       0.0000004725,       0.4019549601,
        -0.0000000523,       0.0000008401,      -0.4019549601,
-        0.0000000523,      -0.0000008401,      -0.4019549601])
+        0.0000000523,      -0.0000008401,      -0.4019549601])  # yapf: disable
 
     # Generated from fixing orientation/com in psi4.  Then using
     # a 5-point finite differences of nuclear gradients computed
@@ -486,19 +526,18 @@ def test_vector_gradient_align():
         0.2781013514,      -0.0627383175,      -0.0000001660,
        -0.2781013514,       0.0627383175,       0.0000007867,
        -0.2781013514,       0.0627383175,      -0.0000007867,
-        0.2781013514,      -0.0627383175,       0.0000001660])
+        0.2781013514,      -0.0627383175,       0.0000001660])  # yapf: disable
     p4_hooh_dipder_y  = np.array([
        -0.0452324587,       0.2701024305,      -0.0000004247,
         0.0452324587,      -0.2701024305,       0.0000007939,
         0.0452324587,      -0.2701024305,      -0.0000007939,
-       -0.0452324587,       0.2701024305,       0.0000004247])
+       -0.0452324587,       0.2701024305,       0.0000004247])  # yapf: disable
     p4_hooh_dipder_z  = np.array([
        -0.0000001572,      -0.0000004726,       0.4019549470,
        -0.0000000527,       0.0000008401,      -0.4019549470,
         0.0000000527,      -0.0000008401,      -0.4019549470,
-        0.0000001572,       0.0000004726,       0.4019549470])
-    p4_hooh_dipder = np.concatenate((p4_hooh_dipder_x, p4_hooh_dipder_y,
-                                     p4_hooh_dipder_z)).reshape(3,-1)
+        0.0000001572,       0.0000004726,       0.4019549470])  # yapf: disable
+    p4_hooh_dipder = np.concatenate((p4_hooh_dipder_x, p4_hooh_dipder_y, p4_hooh_dipder_z)).reshape(3, -1)
 
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)

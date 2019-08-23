@@ -3,13 +3,12 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel
+from pydantic import BaseModel, BaseSettings
+from pydantic.main import MetaModel
 
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
-
-from pydantic.main import MetaModel
 
 
 class PydanticAutodocMeta(MetaModel):
@@ -158,9 +157,12 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         """
         return compare_recursive(self, other, **kwargs)
 
-
     def __str__(self) -> str:
         if self.__config__.canonical_repr:
             return super().to_string()
         else:
             return f"{self.__class__.__name__}(ProtoModel)"
+
+
+class AutodocBaseSettings(BaseSettings, metaclass=PydanticAutodocMeta):
+    pass

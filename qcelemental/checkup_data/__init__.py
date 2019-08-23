@@ -1,3 +1,2 @@
-from . import periodictable
-from . import physconst
+from . import periodictable, physconst
 from .cfour_primary_masses import cfour_primary_masses

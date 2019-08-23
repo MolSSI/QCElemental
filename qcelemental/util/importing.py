@@ -39,8 +39,12 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
             return module_spec.origin
 
 
-def which(command: str, *, return_bool: bool = False, raise_error: bool = False,
-          raise_msg: str = None, env: str = None) -> Union[bool, None, str]:
+def which(command: str,
+          *,
+          return_bool: bool = False,
+          raise_error: bool = False,
+          raise_msg: str = None,
+          env: str = None) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns

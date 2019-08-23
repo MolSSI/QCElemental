@@ -24,15 +24,11 @@ class Model(ProtoModel):
     """
     The quantum chemistry model specification for a given operation to compute against
     """
-    method: str = Schema(
-        ...,
-        description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...)."
-    )
+    method: str = Schema(..., description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...).")
     basis: Optional[str] = Schema(
         None,
         description="The quantum chemistry basis set to evaluate (e.g., 6-31g, cc-pVDZ, ...). Can be ``None`` for "
-                    "methods without basis sets."
-    )
+        "methods without basis sets.")
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
@@ -59,17 +55,13 @@ class ComputeError(ProtoModel):
     """The type of error message raised"""
     error_type: str = Schema(  # Error enumeration not yet strict
         ...,
-        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'."
-    )
+        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'.")
     error_message: str = Schema(
         ...,
         description="Text associated with the thrown error, often the backtrace, but can contain additional "
-                    "information as well."
-    )
-    extras: Optional[Dict[str, Any]] = Schema(
-        None,
-        description="Additional data to ship with the ComputeError object."
-    )
+        "information as well.")
+    extras: Optional[Dict[str, Any]] = Schema(None,
+                                              description="Additional data to ship with the ComputeError object.")
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(error_type={self.error_type} error_message:\n{self.error_message}\n)"
@@ -84,29 +76,25 @@ class FailedOperation(ProtoModel):
     id: str = Schema(
         None,
         description="A unique identifier which links this FailedOperation, often of the same Id of the operation "
-                     "should it have been successful. This will often be set programmatically by a database such as "
-                      "Fractal."
-    )
+        "should it have been successful. This will often be set programmatically by a database such as "
+        "Fractal.")
     input_data: Any = Schema(
         None,
         description="The input data which was passed in that generated this failure. This should be the complete "
-                    "input which when attempted to be run, caused the operation to fail."
-    )
+        "input which when attempted to be run, caused the operation to fail.")
     success: bool = Schema(
         False,
         description="A boolean indicator that the operation failed consistent with the model of successful operations. "
-                    "Should always be False. Allows programmatic assessment of all operations a"
-    )
+        "Should always be False. Allows programmatic assessment of all operations regardless of if they failed or "
+        "succeeded")
     error: ComputeError = Schema(
         ...,
         description="A container which has details of the error that failed this operation. See the "
-                    ":class:`ComputeError` for more details."
-    )
+        ":class:`ComputeError` for more details.")
     extras: Optional[Dict[str, Any]] = Schema(
         None,
         description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
-                    "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details."
-    )
+        "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.")
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(error={self.error})"

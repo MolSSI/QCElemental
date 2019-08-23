@@ -50,12 +50,11 @@ class PhysicalConstantsContext:
 
             # physical constant loop
             for k, v in self.raw_codata.items():
-                self.pc[k] = Datum(
-                    v["quantity"],
-                    v["unit"],
-                    Decimal(v["value"]),
-                    comment='uncertainty={}'.format(v["uncertainty"]),
-                    doi=self.doi)
+                self.pc[k] = Datum(v["quantity"],
+                                   v["unit"],
+                                   Decimal(v["value"]),
+                                   comment='uncertainty={}'.format(v["uncertainty"]),
+                                   doi=self.doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
 
@@ -64,8 +63,10 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = Datum(
-            'calorie-joule relationship', 'J', Decimal('4.184'), comment='uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship',
+                                                      'J',
+                                                      Decimal('4.184'),
+                                                      comment='uncertainty=(exact)')
 
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -126,7 +127,7 @@ class PhysicalConstantsContext:
 
         return self._ureg
 
-    def get(self, physical_constant: str, return_tuple: bool=False) -> Union[float, 'Datum']:
+    def get(self, physical_constant: str, return_tuple: bool = False) -> Union[float, 'Datum']:
         """Access a physical constant, `physical_constant`.
 
         Parameters
@@ -267,8 +268,9 @@ class PhysicalConstantsContext:
                 val = getattr(checkup_data.physconst, pc)
                 rat = abs(1.0 - float(ref) / val)
                 if rat > 1.e-4:
-                    print(bcolors.FAIL + 'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.
-                          format(pc, rat, ref, val) + bcolors.ENDC)
+                    print(bcolors.FAIL +
+                          'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                              pc, rat, ref, val) + bcolors.ENDC)
                 if rat > tol:
                     print('Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
                         pc, rat, ref, val))

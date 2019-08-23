@@ -7,7 +7,7 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, *, verbose: int=1) -> Dict:
+def from_schema(molschema, *, verbose: int = 1) -> Dict:
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
@@ -38,16 +38,15 @@ def from_schema(molschema, *, verbose: int=1) -> Dict:
     else:
         frag_pattern = [np.arange(len(ms['symbols']))]
 
-    dcontig = contiguize_from_fragment_pattern(
-        frag_pattern,
-        geom=ms['geometry'],
-        elea=ms.get('mass_numbers', None),
-        elez=ms.get('atomic_numbers', None),
-        elem=ms['symbols'],
-        mass=ms.get('masses', None),
-        real=ms.get('real', None),
-        elbl=ms.get('atom_labels', None),
-        throw_reorder=True)
+    dcontig = contiguize_from_fragment_pattern(frag_pattern,
+                                               geom=ms['geometry'],
+                                               elea=ms.get('mass_numbers', None),
+                                               elez=ms.get('atomic_numbers', None),
+                                               elem=ms['symbols'],
+                                               mass=ms.get('masses', None),
+                                               real=ms.get('real', None),
+                                               elbl=ms.get('atom_labels', None),
+                                               throw_reorder=True)
 
     molrec = from_arrays(
         geom=dcontig['geom'],
@@ -86,7 +85,12 @@ def from_schema(molschema, *, verbose: int=1) -> Dict:
     return molrec
 
 
-def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, throw_reorder:bool=False, **kwargs):
+def contiguize_from_fragment_pattern(frag_pattern,
+                                     *,
+                                     geom=None,
+                                     verbose: int = 1,
+                                     throw_reorder: bool = False,
+                                     **kwargs):
     """Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) `frag_pattern`.
 
     Parameters
@@ -125,7 +129,6 @@ def contiguize_from_fragment_pattern(frag_pattern, *, geom=None, verbose:int=1, 
         detected.
 
     """
-
 
     vsplt = np.cumsum([len(fr) for fr in frag_pattern])
     nat = vsplt[-1]

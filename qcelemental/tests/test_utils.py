@@ -12,7 +12,6 @@ from .addons import serialize_extensions
 
 @pytest.fixture(scope="function")
 def doc_fixture():
-
     class Nest(BaseModel):
         """A nested model"""
         n: float = 56
@@ -22,17 +21,11 @@ def doc_fixture():
         x: int
         y: str = Schema(...)
         n: Nest
-        n2: Nest = Schema(
-            Nest(),
-            description="A detailed description"
-        )
+        n2: Nest = Schema(Nest(), description="A detailed description")
         z: float = 5
         z2: float = None
         z3: Optional[float]
-        z4: Optional[float] = Schema(
-            5,
-            description="Some number I just made up"
-        )
+        z4: Optional[float] = Schema(5, description="Some number I just made up")
         z5: Optional[Union[float, int]]
         z6: Optional[List[int]]
         l: List[int]
@@ -44,16 +37,9 @@ def doc_fixture():
         dlu: Dict[Union[int, str], List[Union[int, str, float]]] = Schema(..., description="this is complicated")
         dlu2: Dict[Any, List[Union[int, str, float]]]
         dlu3: Dict[str, Any]
-        si: int = Schema(
-            ...,
-            description="A level of constraint",
-            gt=0
-        )
-        sf: float = Schema(
-            None,
-            description="Optional Constrained Number",
-            le=100.3
-        )
+        si: int = Schema(..., description="A level of constraint", gt=0)
+        sf: float = Schema(None, description="Optional Constrained Number", le=100.3)
+
     yield X
 
 

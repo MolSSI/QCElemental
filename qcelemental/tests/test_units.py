@@ -66,6 +66,7 @@ def test_unit_conversion_other(from_unit, to_unit, expected):
     rel_tol = float("10e-{}".format(len(expected.as_tuple().digits) + 2))
     assert pytest.approx(float(inv_expected), rel_tol) == float(to_from_value)
 
+
 def test_quantities_smoke():
     """
     Smoke test to ensure Quantities are correctly returned

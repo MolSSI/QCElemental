@@ -9,7 +9,8 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: bool=False, copy: bool=True) -> Dict[str, Any]:
+def to_schema(molrec: Dict[str, Any], dtype: str, units: str = 'Bohr', *, np_out: bool = False,
+              copy: bool = True) -> Dict[str, Any]:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
@@ -96,7 +97,8 @@ def to_schema(molrec: Dict[str, Any], dtype: str, units: str='Bohr', *, np_out: 
             qcschema.update({'schema_name': 'qcschema_molecule', 'schema_version': 2})
 
     else:
-        raise ValidationError("Schema dtype not understood, valid options are {{'psi4', 1, 2}}. Found {}.".format(dtype))
+        raise ValidationError(
+            "Schema dtype not understood, valid options are {{'psi4', 1, 2}}. Found {}.".format(dtype))
 
     if not np_out:
         qcschema = unnp(qcschema)

@@ -60,7 +60,7 @@ def test_linear_sum_assignment():
         ([[], []],
          [],
          [[], []]),
-    ]:
+    ]:  # yapf: disable
         cost_matrix = np.array(cost_matrix)
         (row_ind, col_ind), reduced_cost_matrix = linear_sum_assignment(cost_matrix, return_cost=True)
         assert_array_equal(row_ind, np.sort(row_ind))
@@ -70,22 +70,19 @@ def test_linear_sum_assignment():
         cost_matrix = cost_matrix.T
         row_ind, col_ind = linear_sum_assignment(cost_matrix)
         assert_array_equal(row_ind, np.sort(row_ind))
-        assert_array_equal(np.sort(expected_cost),
-                           np.sort(cost_matrix[row_ind, col_ind]))
+        assert_array_equal(np.sort(expected_cost), np.sort(cost_matrix[row_ind, col_ind]))
 
 
 def test_linear_sum_assignment_input_validation():
     assert_raises(ValueError, linear_sum_assignment, [1, 2, 3])
 
     C = [[1, 2, 3], [4, 5, 6]]
-    assert_array_equal(linear_sum_assignment(C),
-                       linear_sum_assignment(np.asarray(C)))
+    assert_array_equal(linear_sum_assignment(C), linear_sum_assignment(np.asarray(C)))
     # assert_array_equal(linear_sum_assignment(C),
     #                    linear_sum_assignment(matrix(C)))
 
     I = np.identity(3)
-    assert_array_equal(linear_sum_assignment(I.astype(np.bool)),
-                       linear_sum_assignment(I))
+    assert_array_equal(linear_sum_assignment(I.astype(np.bool)), linear_sum_assignment(I))
     assert_raises(ValueError, linear_sum_assignment, I.astype(str))
 
     I[0][0] = np.nan
