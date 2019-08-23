@@ -43,7 +43,6 @@ fullans4 = {
     'elem': np.array(['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H']),
     'mass': np.array([12., 12., 12., 12., 12., 12., 1.00782503, 1.00782503, 1.00782503, 1.00782503, 1.00782503, 1.00782503]),
     'real': np.array([True, True, True, True, True, True, True, True, True, True, True, True]),
-    # 'elbl': np.array(['C', 'C', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H']),
     'elbl': np.array(['', '', '', '', '', '', '', '', '', '', '', '']),
     'units': 'Angstrom',
     'fix_com': False,

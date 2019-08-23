@@ -364,6 +364,8 @@ def test_get_fragment(group_fragments, orient):
         assert dimers[0].get_hash() == dimers[3].get_hash()
         assert dimers[1].get_hash() == dimers[4].get_hash()
         assert dimers[2].get_hash() == dimers[5].get_hash()
+    else:
+        assert 0  # lgtm: [py/unreachable-statement]
 
     ghdimers_nelectrons = [2, 2, 10, 10, 10, 10]
     ghdimers_nre = [0.0, 0.0, 9.163830150548483, 9.163830150548483, 9.163830150548483, 9.163830150548483]
@@ -382,6 +384,8 @@ def test_get_fragment(group_fragments, orient):
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
         assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
+    else:
+        assert 0  # lgtm: [py/unreachable-statement]
 
 
 def test_molecule_repeated_hashing():
