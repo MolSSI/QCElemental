@@ -11,7 +11,7 @@ from ..datum import Datum, print_variables
 from .ureg import build_units_registry
 
 if TYPE_CHECKING:
-    from pint import quantity, UnitRegistry
+    from pint import quantity, UnitRegistry  # lgtm: [py/unused-import]
 
 
 class PhysicalConstantsContext:

@@ -1,7 +1,7 @@
 import re
 from enum import Enum, EnumMeta
 from textwrap import dedent, indent
-from typing import Any, Union
+from typing import Any
 
 from pydantic import BaseModel, BaseSettings
 
