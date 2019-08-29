@@ -1,6 +1,6 @@
 import math
 import re
-from typing import Dict, List, Union, overload
+from typing import Dict, List
 
 import numpy as np
 
