@@ -12,10 +12,10 @@ from .addons import serialize_extensions, using_msgpack
 
 
 class TrialModel(ProtoModel):
-    a: Array[float] = np.array(3)
-    b: List[Array[float]] = [np.random.rand(3)]
+    a: Array[float] = np.array(3)  # type: ignore
+    b: List[Array[float]] = [np.random.rand(3)]  # type: ignore
     c: Dict[str, int] = {"hi": 3}
-    d: Dict[str, Array[float]] = {"hi": np.random.rand(3)}
+    d: Dict[str, Array[float]] = {"hi": np.random.rand(3)}  # type: ignore
 
 
 @pytest.fixture

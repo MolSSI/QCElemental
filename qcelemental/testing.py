@@ -2,7 +2,7 @@ import copy
 import logging
 import pprint
 import sys
-from typing import Callable
+from typing import Callable, List, Dict, Union
 
 import numpy as np
 from pydantic import BaseModel
@@ -22,7 +22,7 @@ def _handle_return(passfail: bool, label: str, message: str, return_message: boo
             logging.error(f'    {message:.<53}')
 
     if return_message:
-        return (passfail, message)
+        return passfail, message
     else:
         return passfail
 
@@ -304,16 +304,17 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
     return errors
 
 
-def compare_recursive(expected,
-                      computed,
-                      label: str = None,
-                      *,
-                      atol: float = 1.e-6,
-                      rtol: float = 1.e-16,
-                      forgive: bool = None,
-                      quiet: bool = False,
-                      return_message: bool = False,
-                      return_handler: Callable = None) -> bool:
+def compare_recursive(
+        expected: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
+        computed: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
+        label: str = None,
+        *,
+        atol: float = 1.e-6,
+        rtol: float = 1.e-16,
+        forgive: List[str] = None,
+        quiet: bool = False,
+        return_message: bool = False,
+        return_handler: Callable = None) -> bool:
     """
     Recursively compares nested structures such as dictionaries and lists.
 
@@ -383,9 +384,9 @@ def compare_recursive(expected,
         message.append(e[0])
         message.append("    " + e[1])
 
-    message = "\n".join(message)
+    ret_msg_str = "\n".join(message)
 
-    return return_handler(len(message) == 0, label, message, return_message, quiet)
+    return return_handler(len(ret_msg_str) == 0, label, ret_msg_str, return_message, quiet)
 
 
 def compare_molrecs(expected,

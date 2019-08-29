@@ -7,6 +7,8 @@ from decimal import Decimal
 from functools import lru_cache
 from typing import Union
 
+from pint import quantity, UnitRegistry
+
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry
 
@@ -38,6 +40,31 @@ class PhysicalConstantsContext:
     """
 
     _transtable = str.maketrans(' -/{', '__p_', '.,()}')
+
+    # Alias Typing
+    h: float
+    c: float
+    kb: float
+    R: float
+    bohr2angstroms: float
+    bohr2cm: float
+    amu2g: float
+    amu2kg: float
+    hartree2J: float
+    hartree2aJ: float
+    cal2J: float
+    dipmom_au2si: float
+    dipmom_au2debye: float
+    c_au: float
+    hartree2ev: float
+    hartree2wavenumbers: float
+    hartree2kcalmol: float
+    hartree2kJmol: float
+    hartree2MHz: float
+    kcalmol2wavenumbers: float
+    e0: float
+    na: float
+    me: float
 
     def __init__(self, context="CODATA2014"):
         self.pc = collections.OrderedDict()
@@ -114,7 +141,7 @@ class PhysicalConstantsContext:
         return "PhysicalConstantsContext(context='{}')".format(self.name)
 
     @property
-    def ureg(self) -> 'UnitRegistry':
+    def ureg(self) -> UnitRegistry:
         """Returns the internal Pint units registry.
 
         Returns
@@ -127,7 +154,7 @@ class PhysicalConstantsContext:
 
         return self._ureg
 
-    def get(self, physical_constant: str, return_tuple: bool = False) -> Union[float, 'Datum']:
+    def get(self, physical_constant: str, return_tuple: bool = False) -> Union[float, Datum]:
         """Access a physical constant, `physical_constant`.
 
         Parameters
@@ -177,14 +204,15 @@ class PhysicalConstantsContext:
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def Quantity(self, data: str) -> 'Quantity':
+    def Quantity(self, data: str) -> quantity._Quantity:
         """Returns a Pint Quantity.
         """
 
         return self.ureg.Quantity(data)
 
     @lru_cache()
-    def conversion_factor(self, base_unit: Union[str, 'Quantity'], conv_unit: Union[str, 'Quantity']) -> float:
+    def conversion_factor(self, base_unit: Union[str, quantity._Quantity],
+                          conv_unit: Union[str, quantity._Quantity]) -> float:
         """Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
@@ -214,8 +242,7 @@ class PhysicalConstantsContext:
             The requested conversion factor
         """
 
-        # Add a little magic incase the incoming values have scalars
-        import pint
+        # Add a little magic in case the incoming values have scalars
 
         factor = 1.0
 
@@ -227,11 +254,11 @@ class PhysicalConstantsContext:
             conv_unit = self.ureg.parse_expression(conv_unit)
 
         # Need to play with prevector if we have Quantities
-        if isinstance(base_unit, pint.quantity._Quantity):
+        if isinstance(base_unit, quantity._Quantity):
             factor *= base_unit.magnitude
             base_unit = base_unit.units
 
-        if isinstance(conv_unit, pint.quantity._Quantity):
+        if isinstance(conv_unit, quantity._Quantity):
             factor /= conv_unit.magnitude
             conv_unit = conv_unit.units
 
@@ -243,12 +270,14 @@ class PhysicalConstantsContext:
         return print_variables(self.pc)
 
     def run_comparison(self) -> None:
-        """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`. Specialized use."""
+        """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`.
+        Specialized use."""
 
         try:
             from .. import checkup_data
         except ImportError:  # pragma: no cover
             print('Info for comparison (directory checkup_data) not installed. Run from source.')
+            raise
 
         class bcolors:
             HEADER = '\033[95m'
@@ -266,6 +295,7 @@ class PhysicalConstantsContext:
             if not pc.startswith('__'):
                 ref = self.get(pc)
                 val = getattr(checkup_data.physconst, pc)
+                assert isinstance(ref, (int, float))
                 rat = abs(1.0 - float(ref) / val)
                 if rat > 1.e-4:
                     print(bcolors.FAIL +

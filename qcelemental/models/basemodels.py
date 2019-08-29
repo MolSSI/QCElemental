@@ -24,13 +24,13 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         allow_mutation = False
         extra = "forbid"
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
-        serialize_default_excludes = set()
+        serialize_default_excludes: Set = set()
         serialize_skip_defaults = False
         force_skip_defaults = False
         canonical_repr = False
 
     @classmethod
-    def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'Model':
+    def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
         """
         Parses raw string or bytes into a Model object.
 
@@ -65,7 +65,7 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         return cls.parse_obj(obj)
 
     @classmethod
-    def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> 'Model':
+    def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
         """Parses a file into a Model object.
 
         Parameters
@@ -95,15 +95,16 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
-    def dict(self, *args, **kwargs) -> Dict[str, Any]:
+    def dict(self, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
-        kwargs["exclude"] = (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes
-        kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)
-        if self.__config__.force_skip_defaults:
+        kwargs["exclude"] = (
+            (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes)  # type: ignore
+        kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)  # type: ignore
+        if self.__config__.force_skip_defaults:  # type: ignore
             kwargs["skip_defaults"] = True
 
-        data = super().dict(*args, **kwargs)
+        data = super().dict(**kwargs)
 
         if encoding is None:
             return data
@@ -140,7 +141,7 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
 
         return serialize(data, encoding=encoding)
 
-    def compare(self, other: 'Model', **kwargs) -> bool:
+    def compare(self, other: Union['ProtoModel', BaseModel], **kwargs) -> bool:
         """Compares the current object to the provided object recursively.
 
         Parameters
@@ -158,7 +159,7 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         return compare_recursive(self, other, **kwargs)
 
     def __str__(self) -> str:  # lgtm: [py/inheritance/incorrect-overridden-signature]
-        if self.__config__.canonical_repr:
+        if self.__config__.canonical_repr:  # type: ignore
             return super().to_string()
         else:
             return f"{self.__class__.__name__}(ProtoModel)"

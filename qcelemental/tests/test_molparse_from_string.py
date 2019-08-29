@@ -1,4 +1,5 @@
 import copy
+from typing import Dict
 
 import numpy as np
 import pytest
@@ -379,7 +380,7 @@ ans5 = {
     'fragment_separators': [],
 }
 
-fullans5b = {'efp': {}}
+fullans5b: Dict = {'efp': {}}
 fullans5b['efp']['hint_types'] = ans5['hint_types']
 fullans5b['efp']['geom_hints'] = ans5['geom_hints']
 fullans5b['efp']['units'] = 'Bohr'

@@ -17,9 +17,9 @@ class AlignmentMill(ProtoModel):
     then molecular system can be substantively changed by procedure.
 
     """
-    shift: Array[float]
-    rotation: Array[float]
-    atommap: Array[int]
+    shift: Array[float]  # type: ignore
+    rotation: Array[float]  # type: ignore
+    atommap: Array[int]  # type: ignore
     mirror: bool = False
 
     @validator('shift', whole=True)

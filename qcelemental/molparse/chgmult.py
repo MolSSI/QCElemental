@@ -356,14 +356,15 @@ def validate_and_fill_chgmult(zeff,
     cgmp_range.append(lambda c, fc, m, fm: _sufficient_electrons_for_mult(zel, c, m))
     cgmp_rules.append('4')
     for ifr in range(nfr):
-        cgmp_range.append(lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr]))
+        cgmp_range.append(
+            lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr]))  # type: ignore
         cgmp_rules.append('4-' + str(ifr))
 
     #   * (R5) require total parity consistent among neutral_electrons, chg, and mult
     cgmp_range.append(lambda c, fc, m, fm: _parity_ok(zel, c, m))
     cgmp_rules.append('5')
     for ifr in range(nfr):
-        cgmp_range.append(lambda c, fc, m, fm, ifr=ifr: _parity_ok(fzel[ifr], fc[ifr], fm[ifr]))
+        cgmp_range.append(lambda c, fc, m, fm, ifr=ifr: _parity_ok(fzel[ifr], fc[ifr], fm[ifr]))  # type: ignore
         cgmp_rules.append('5-' + str(ifr))
 
     # <<< (R6, R7, S1) assert & suggest input values
@@ -375,7 +376,7 @@ def validate_and_fill_chgmult(zeff,
     for ifr, chg in enumerate(fragment_charges):
         if chg is not None:
             cgmp_exact_fc[ifr].append(chg)
-            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr, chg=chg: fc[ifr] == chg)
+            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr, chg=chg: fc[ifr] == chg)  # type: ignore
             cgmp_rules.append('6-' + str(ifr))
     if molecular_multiplicity is not None:
         cgmp_exact_m.append(molecular_multiplicity)
@@ -384,7 +385,7 @@ def validate_and_fill_chgmult(zeff,
     for ifr, mult in enumerate(fragment_multiplicities):
         if mult is not None:
             cgmp_exact_fm[ifr].append(mult)
-            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr, mult=mult: fm[ifr] == mult)
+            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr, mult=mult: fm[ifr] == mult)  # type: ignore
             cgmp_rules.append('7-' + str(ifr))
 
     # <<< assert high-spin-rule and suggest "missing quantity" and default values
@@ -440,7 +441,7 @@ def validate_and_fill_chgmult(zeff,
     #   * (R9) require that ghost fragments be neutral singlet
     for ifr in range(nfr):
         if all(f == 0 for f in felez[ifr]):
-            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr: fc[ifr] == 0 and fm[ifr] == 1)
+            cgmp_range.append(lambda c, fc, m, fm, ifr=ifr: fc[ifr] == 0 and fm[ifr] == 1)  # type: ignore
             cgmp_rules.append('9-' + str(ifr))
 
     # <<< reconcile and report

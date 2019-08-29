@@ -1,4 +1,5 @@
 import copy
+from typing import Dict
 
 import numpy as np
 import pytest
@@ -11,7 +12,7 @@ _schema_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qc
 
 subject14 = """0 3\n--\nHe 0 0 -5\n--\n@He 0 0 5\nunits au"""
 
-schema14_1 = {
+schema14_1: Dict = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
     "molecule": {
@@ -34,7 +35,7 @@ schema14_1 = {
     }
 }
 
-schema14_2 = {
+schema14_2: Dict = {
     'schema_name': 'qcschema_molecule',
     'schema_version': 2,
 }
@@ -136,7 +137,7 @@ twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")
 subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(
     twobohrinang=twobohrinang)
 
-schema15_1 = {
+schema15_1: Dict = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
     "molecule": {
@@ -161,10 +162,10 @@ schema15_1 = {
     }
 }
 
-schema15_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
+schema15_2: Dict = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
 schema15_2.update(schema15_1['molecule'])
 
-schema15_psi4 = {
+schema15_psi4: Dict = {
     "geom": [0.0, 0.0, twobohrinang, 0.0, 0.0, 0.0, twobohrinang, 0.0, 0.0],
     "elem": ["H", "O", "H"],
     "elez": [1, 8, 1],
@@ -234,7 +235,7 @@ def test_psi4_15c():
     assert compare_molrecs(fullans, kmol)
 
 
-schema16_1 = {
+schema16_1: Dict = {
     'schema_name': 'qc_schema_input',
     'schema_version': 1,
     'molecule': {
@@ -263,10 +264,10 @@ schema16_1 = {
     },
 }
 
-schema16_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
+schema16_2: Dict = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
 schema16_2.update(schema16_1['molecule'])
 
-schema16_psi4 = {
+schema16_psi4: Dict = {
     'units': 'Bohr',
     'geom': np.array([2., 2., 3.]),
     'elem': np.array(['C']),

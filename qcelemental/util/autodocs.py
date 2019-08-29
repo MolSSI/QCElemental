@@ -99,7 +99,7 @@ def parse_type_str(prop) -> str:
     return prop_type_str
 
 
-def doc_formatter(base_docs: str, target_object: Union[BaseModel, type(BaseModel)], allow_failure: bool = True) -> str:
+def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool = True) -> str:
     """
     Generate the docstring for a Pydantic object automatically based on the parameters
 
@@ -130,7 +130,7 @@ def doc_formatter(base_docs: str, target_object: Union[BaseModel, type(BaseModel
                 prop_type_str = parse_type_str(prop)
 
                 # Handle (optional) description
-                prop_desc = prop.schema.description
+                prop_desc = prop.schema.description  # type: ignore
 
                 # Combine in the following format:
                 # name : type(, Optional, Default)
@@ -165,10 +165,7 @@ class AutoPydanticDocGenerator:
     ALREADY_AUTODOCED_ATTR = "__model_autodoc_applied__"
     AUTODOC_BASE_DOC_REFERENCE_ATTR = "__base_doc__"
 
-    def __init__(self,
-                 target: Union[BaseModel, type(BaseModel)],
-                 allow_failure: bool = True,
-                 always_apply: bool = False):
+    def __init__(self, target: BaseModel, allow_failure: bool = True, always_apply: bool = False):
         # Checks against already instanced and uninstanced classes while avoiding unhahsable type error
 
         if not always_apply:
@@ -203,13 +200,13 @@ class AutoPydanticDocGenerator:
             pass
 
 
-def auto_gen_docs_on_demand(target: Union[BaseModel, type(BaseModel)],
+def auto_gen_docs_on_demand(target: BaseModel,
                             allow_failure: bool = True,
                             ignore_reapply: bool = True,
                             force_reapply: bool = False):
     """Tell a Pydantic base model to generate its docstrings on the fly with the tech here """
     try:
-        target.__doc__ = AutoPydanticDocGenerator(target, allow_failure=allow_failure)
+        target.__doc__ = AutoPydanticDocGenerator(target, allow_failure=allow_failure)  # type: ignore
     except AutoDocError:
         if ignore_reapply:
             pass

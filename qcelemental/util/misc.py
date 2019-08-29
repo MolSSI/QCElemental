@@ -1,6 +1,6 @@
 import math
 import re
-from typing import Dict, List
+from typing import Dict, List, Union, overload
 
 import numpy as np
 
@@ -105,10 +105,11 @@ def unnp(dicary: Dict, _path=None, *, flat: bool = False) -> Dict:
         Input with any ndarray values replaced by lists.
 
     """
+
     if _path is None:
         _path = []
 
-    ndicary = {}
+    ndicary: Dict = {}
     for k, v in dicary.items():
         if isinstance(v, dict):
             ndicary[k] = unnp(v, _path + [str(k)], flat=flat)

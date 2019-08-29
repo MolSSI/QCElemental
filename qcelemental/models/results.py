@@ -72,7 +72,7 @@ class ResultProperties(ProtoModel):
 class ResultInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
     id: Optional[str] = None
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
     schema_version: int = 1
 
     molecule: Molecule
@@ -82,17 +82,20 @@ class ResultInput(ProtoModel):
 
     extras: Dict[str, Any] = {}
 
-    provenance: Provenance = provenance_stamp(__name__)
+    provenance: Provenance = Provenance(**provenance_stamp(__name__))
 
     def __str__(self):
-        return f"{self.__class__.__name__}(driver='{self.driver}' model='{self.model.dict()}' molecule_hash='{self.molecule.get_hash()[:7]}')"
+        return (f"{self.__class__.__name__}"
+                f"(driver='{self.driver}' "
+                f"model='{self.model.dict()}' "
+                f"molecule_hash='{self.molecule.get_hash()[:7]}')")
 
 
 class Result(ResultInput):
-    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
     properties: ResultProperties
-    return_result: Union[float, Array[float], Dict[str, Any]]
+    return_result: Union[float, Array[float], Dict[str, Any]]  # type: ignore
 
     stdout: Optional[str] = None
     stderr: Optional[str] = None
