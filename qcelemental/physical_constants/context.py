@@ -5,12 +5,13 @@ Contains relevant physical constants
 import collections
 from decimal import Decimal
 from functools import lru_cache
-from typing import Union
-
-from pint import quantity, UnitRegistry
+from typing import Union, TYPE_CHECKING
 
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry
+
+if TYPE_CHECKING:
+    from pint import quantity, UnitRegistry
 
 
 class PhysicalConstantsContext:
@@ -141,7 +142,7 @@ class PhysicalConstantsContext:
         return "PhysicalConstantsContext(context='{}')".format(self.name)
 
     @property
-    def ureg(self) -> UnitRegistry:
+    def ureg(self) -> 'UnitRegistry':
         """Returns the internal Pint units registry.
 
         Returns
@@ -204,15 +205,15 @@ class PhysicalConstantsContext:
 #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
 #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def Quantity(self, data: str) -> quantity._Quantity:
+    def Quantity(self, data: str) -> 'quantity._Quantity':
         """Returns a Pint Quantity.
         """
 
         return self.ureg.Quantity(data)
 
     @lru_cache()
-    def conversion_factor(self, base_unit: Union[str, quantity._Quantity],
-                          conv_unit: Union[str, quantity._Quantity]) -> float:
+    def conversion_factor(self, base_unit: Union[str, 'quantity._Quantity'],
+                          conv_unit: Union[str, 'quantity._Quantity']) -> float:
         """Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
@@ -243,6 +244,8 @@ class PhysicalConstantsContext:
         """
 
         # Add a little magic in case the incoming values have scalars
+
+        from pint import quantity
 
         factor = 1.0
 
