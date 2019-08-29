@@ -1,4 +1,5 @@
 import copy
+from typing import Dict
 
 import numpy as np
 import pytest
@@ -136,7 +137,7 @@ twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")
 subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(
     twobohrinang=twobohrinang)
 
-schema15_1 = {
+schema15_1: Dict = {
     "schema_name": "qc_schema_input",
     "schema_version": 1,
     "molecule": {

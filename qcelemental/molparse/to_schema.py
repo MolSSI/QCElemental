@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import numpy as np
 
@@ -9,7 +9,11 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict[str, Any], dtype: str, units: str = 'Bohr', *, np_out: bool = False,
+def to_schema(molrec: Dict[str, Any],
+              dtype: Union[str, int],
+              units: str = 'Bohr',
+              *,
+              np_out: bool = False,
               copy: bool = True) -> Dict[str, Any]:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
@@ -64,7 +68,7 @@ def to_schema(molrec: Dict[str, Any], dtype: str, units: str = 'Bohr', *, np_out
         if units != 'Bohr':
             raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
-        molecule = {}
+        molecule: Dict = {}
         molecule["validated"] = True
         molecule['symbols'] = np.array(molrec['elem'], copy=copy)
         molecule['geometry'] = geom

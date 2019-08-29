@@ -167,13 +167,13 @@ def jsonext_dumps(data: Any) -> str:
     return json.dumps(data, cls=JSONExtArrayEncoder)
 
 
-def jsonext_loads(data: str) -> Any:
+def jsonext_loads(data: Union[str, bytes]) -> Any:
     """Deserializes a json representation of known objects into those objects.
 
     Parameters
     ----------
-    data : str
-        The serialized JSON blob.
+    data : str or bytes
+        The byte-serialized JSON blob.
 
     Returns
     -------
@@ -283,10 +283,13 @@ def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
         The deserialized Python objects.
     """
     if encoding.lower() == "json":
+        assert isinstance(blob, str)
         return json_loads(blob)
     elif encoding.lower() == "json-ext":
+        assert isinstance(blob, (str, bytes))
         return jsonext_loads(blob)
     elif encoding.lower() in ["msgpack", "msgpack-ext"]:
+        assert isinstance(blob, bytes)
         return msgpackext_loads(blob)
     else:
         raise KeyError(f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'")

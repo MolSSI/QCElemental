@@ -4,7 +4,7 @@ Contains covalent radii
 
 import collections
 from decimal import Decimal
-from typing import Union
+from typing import Union, Dict
 
 from .datum import Datum, print_variables
 from .exceptions import DataUnavailableError
@@ -38,7 +38,7 @@ class CovalentRadii:
 
     """
     def __init__(self, context: str = "ALVAREZ2008"):
-        self.cr = collections.OrderedDict()
+        self.cr: Dict[str, Datum] = collections.OrderedDict()
 
         from .data import alvarez_2008_covalent_radii
 
@@ -46,13 +46,14 @@ class CovalentRadii:
             self.doi = alvarez_2008_covalent_radii["doi"]
             self.native_units = alvarez_2008_covalent_radii["units"]
 
-            for cr in alvarez_2008_covalent_radii["covalent_radii"]:
+            # TypedDict wont be in until 3.8, have to ignore heterogeneous dicts for now
+            for cr in alvarez_2008_covalent_radii["covalent_radii"]:  # type: ignore
                 self.cr[cr[0]] = Datum(cr[0], self.native_units, Decimal(cr[1]), comment=cr[2], doi=self.doi)
         else:
             raise KeyError("Context set as '{}', only contexts {'ALVAREZ2008', } are currently supported")
 
         self.name = context
-        self.year = int(alvarez_2008_covalent_radii["date"][:4])
+        self.year = int(alvarez_2008_covalent_radii["date"][:4])  # type: ignore
 
         # Extra relationships
         aliases = [
@@ -116,6 +117,7 @@ class CovalentRadii:
             identifier = periodictable.to_E(atom)
 
         try:
+            assert isinstance(identifier, str)  # Should be string by now
             qca = self.cr[identifier]
         except KeyError as e:
             if missing is not None and return_tuple is False:
