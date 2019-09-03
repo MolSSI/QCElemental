@@ -235,7 +235,10 @@ class Molecule(ProtoModel):
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
-            schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"], copy=False, np_out=True)
+            schema = to_schema(from_schema(kwargs, missing_enabled_return='minimal'),
+                               dtype=kwargs["schema_version"],
+                               copy=False,
+                               np_out=True)
 
             kwargs["validated"] = True
             kwargs = {**kwargs, **schema}  # Allow any extra fields
