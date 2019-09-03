@@ -55,7 +55,8 @@ def test_unique_everseen(inp, expected):
 @pytest.mark.parametrize("inp,expected", [
     (({1:{"a":"A"},2:{"b":"B"}}, {2:{"c":"C"},3:{"d":"D"}}), {1:{"a":"A"},2:{"b":"B","c":"C"},3:{"d":"D"}}),
     (({1:{"a":"A"},2:{"b":"B","c":None}}, {2:{"c":"C"},3:{"d":"D"}}), {1:{"a":"A"},2:{"b":"B","c":"C"},3:{"d":"D"}}),
-    (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}})
+    (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}}),
+    (({1: True, 'extras':{'aa': [True]}}, {2: None, 'extras':{'bb': 5}}), {1: True, 2: None, 'extras':{'aa': [True], 'bb':5}}),
 ]) # yapf: disable
 def test_updatewitherror(inp, expected):
     assert compare_recursive(expected, qcel.util.update_with_error(inp[0], inp[1]))
