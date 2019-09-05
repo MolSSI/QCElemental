@@ -142,6 +142,10 @@ def contiguize_from_fragment_pattern(frag_pattern,
         extras = {k: v for k, v in kwargs.items()}
         returns.update(extras)
 
+        ncgeom = np.asarray(geom).reshape(-1, 3)
+        if nat != ncgeom.shape[0]:
+            raise ValidationError("""dropped atoms! nat = {} != {}""".format(nat, ncgeom.shape[0]))
+
         return returns
 
     do_reorder = False
