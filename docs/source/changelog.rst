@@ -13,6 +13,20 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.7.1 / 2019-09-DD
+------------------
+
+New Features
+++++++++++++
+- (:pr:`123`) QCElemental now passes MyPy!
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+- (:pr:`125`) Add back a consistency check that had been optimized out.
+
 0.7.0 / 2019-18-23
 ------------------
 
