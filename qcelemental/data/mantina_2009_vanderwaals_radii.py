@@ -74,4 +74,3 @@ mantina_2009_vanderwaals_radii = {
         ('Ra', '2.83'),
     ]
 }
-
