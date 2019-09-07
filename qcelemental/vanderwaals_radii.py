@@ -22,7 +22,7 @@ class VanderwaalsRadii:
     Attributes
     ----------
     vdwr : dict of Datum
-        Each van der Waals radius is an entry in `cr`, where key is the
+        Each van der Waals radius is an entry in `vdwr`, where key is the
         "Fe"-cased element symbol if generic or symbol-prefixed label
         if specialized within element. The value is a Datum object with
         `lbl` the same as key, `units` and `data` value as Decimal object.
@@ -40,7 +40,6 @@ class VanderwaalsRadii:
         self.vdwr: Dict[str, Datum] = collections.OrderedDict()
 
         from .data import mantina_2009_vanderwaals_radii
-        from .data import alvarez_2008_covalent_radii
 
         if context == "MANTINA2009":
             self.doi = mantina_2009_vanderwaals_radii["doi"]
@@ -54,7 +53,6 @@ class VanderwaalsRadii:
 
         self.name = context
         self.year = int(mantina_2009_vanderwaals_radii["date"][:4])  # type: ignore
-
 
     def __str__(self) -> str:
         return "VanderwaalsRadii(context='{}')".format(self.name)
@@ -75,7 +73,7 @@ class VanderwaalsRadii:
             How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
             When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
-            ``try:\n\trad = qcel.vanderwaalsradiiradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
+            ``try:\n\trad = qcel.vanderwaalsradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
             Only relevant for ``return_tuple=False``.
         return_tuple : bool, optional
             See below.
