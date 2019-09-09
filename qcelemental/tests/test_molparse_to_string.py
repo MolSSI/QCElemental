@@ -119,7 +119,7 @@ H                    -2.000000000000     0.000000000000     0.000000000000
 }
 dummy,2
 set,charge=0.0
-set,multiplicity=3
+set,spin=2
 """,
 
 "ans2_molpro_ang": """{orient,noorient}
@@ -133,7 +133,7 @@ H                    -1.058354421340     0.000000000000     0.000000000000
 }
 dummy,2
 set,charge=0.0
-set,multiplicity=3
+set,spin=2
 """,
 
 }  # yapf: disable

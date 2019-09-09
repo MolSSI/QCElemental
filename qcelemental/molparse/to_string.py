@@ -187,7 +187,8 @@ def to_string(molrec: Dict,
             smol.append(ghost_line)
 
         smol.append(f"set,charge={molrec['molecular_charge']}")
-        smol.append(f"set,multiplicity={molrec['molecular_multiplicity']}")
+        # The Molpro "spin" is the multiplicity minus one
+        smol.append(f"set,spin={molrec['molecular_multiplicity']-1}")
 
     elif dtype == 'nwchem':
 
