@@ -647,7 +647,7 @@ def validate_and_fill_nuclei(
 
     if not ((nat, ) == elea.shape == elez.shape == elem.shape == mass.shape == real.shape == elbl.shape):
         raise ValidationError(
-            """Dimension mismatch natom ({}) among A ({}), Z ({}), E ({}), mass ({}), real ({}), and elbl({})""".
+            """Dimension mismatch natom {} among A {}, Z {}, E {}, mass {}, real {}, and elbl {}""".
             format((nat, ), elea.shape, elez.shape, elem.shape, mass.shape, real.shape, elbl.shape))
 
     if nat:
