@@ -70,6 +70,7 @@ def test_to_mass(inp, expected):
     ])
 def test_to_mass_number(inp, expected):
     assert qcelemental.periodictable.to_A(inp) == expected
+    assert qcelemental.periodictable.to_mass_number(inp) == expected
 
 
 @pytest.mark.parametrize(
@@ -90,6 +91,7 @@ def test_to_mass_number(inp, expected):
     ])
 def test_to_atomic_number(inp, expected):
     assert qcelemental.periodictable.to_Z(inp) == expected
+    assert qcelemental.periodictable.to_atomic_number(inp) == expected
 
 
 @pytest.mark.parametrize(
@@ -110,6 +112,7 @@ def test_to_atomic_number(inp, expected):
     ])
 def test_to_symbol(inp, expected):
     assert qcelemental.periodictable.to_E(inp) == expected
+    assert qcelemental.periodictable.to_symbol(inp) == expected
 
 
 @pytest.mark.parametrize(
@@ -130,6 +133,7 @@ def test_to_symbol(inp, expected):
     ])
 def test_to_element(inp, expected):
     assert qcelemental.periodictable.to_element(inp) == expected
+    assert qcelemental.periodictable.to_name(inp) == expected
 
 
 @pytest.mark.parametrize("inp,expected", [('HE', 1), ('carbon', 2), ('cl35', 3), (36, 4), (37.0, 5), ('mercury', 6),
