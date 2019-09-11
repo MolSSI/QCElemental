@@ -72,7 +72,7 @@ conversion factors can be obtained:
 
 ### Covalent Radii
 
-Covalent radii are accessible for most of the periodic table from [Alvarez, Dalton Transactions (2008) doi:10.1039/b801115j](https://doi.org/10.1039/b801115j).
+Covalent radii are accessible for most of the periodic table from [Alvarez, Dalton Transactions (2008) doi:10.1039/b801115j](https://doi.org/10.1039/b801115j) ([details](qcelemental/data/alvarez_2008_covalent_radii.py.py)).
 ```python
 >>> import qcelemental as qcel
 >>> qcel.covalentradii.get('I')
@@ -85,6 +85,23 @@ Traceback (most recent call last):
 qcelemental.exceptions.DataUnavailableError: ('covalent radius', 'Lv')
 >>> qcel.covalentradii.get(116, missing=4.0)
 4.0
->>> qcel.covalentradii.get('iodine', return_tuple=True).to_dict()
-{'label': 'I', 'units': 'angstrom', 'data': Decimal('1.39')}
+>>> qcel.covalentradii.get('iodine', return_tuple=True).dict()
+{'numeric': True, 'label': 'I', 'units': 'angstrom', 'data': Decimal('1.39'), 'comment': 'e.s.d.=3 n=451', 'doi': 'DOI: 10.1039/b801115j'}
+```
+
+### van der Waals Radii
+
+Van der Waals radii are accessible for tmost of the periodic table from [Mantina, J. Phys. Chem. A (2009) doi: 10.1021/jp8111556](https://pubs.acs.org/doi/10.1021/jp8111556) ([details](qcelemental/data/mantina_2009_vanderwaals_radii.py)).
+```python
+>>> import qcelemental as qcel
+>>> qcel.vanderwaalsradii.get('I')
+3.7416577284064996
+>>> qcel.vanderwaalsradii.get('I', units='angstrom')
+1.98
+>>> qcel.vanderwaalsradii.get(116)
+Traceback (most recent call last):
+...
+qcelemental.exceptions.DataUnavailableError: ('vanderwaals radius', 'Lv')
+>>> qcel.vanderwaalsradii.get('iodine', return_tuple=True).dict()
+{'numeric': True, 'label': 'I', 'units': 'angstrom', 'data': Decimal('1.98'), 'doi': 'DOI: 10.1021/jp8111556'}
 ```
