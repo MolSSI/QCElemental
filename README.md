@@ -94,14 +94,14 @@ qcelemental.exceptions.DataUnavailableError: ('covalent radius', 'Lv')
 Van der Waals radii are accessible for tmost of the periodic table from [Mantina, J. Phys. Chem. A (2009) doi: 10.1021/jp8111556](https://pubs.acs.org/doi/10.1021/jp8111556) ([details](qcelemental/data/mantina_2009_vanderwaals_radii.py)).
 ```python
 >>> import qcelemental as qcel
->>> qcel.vanderwaalsradii.get('I')
+>>> qcel.vdwradii.get('I')
 3.7416577284064996
->>> qcel.vanderwaalsradii.get('I', units='angstrom')
+>>> qcel.vdwradii.get('I', units='angstrom')
 1.98
->>> qcel.vanderwaalsradii.get(116)
+>>> qcel.vdwradii.get(116)
 Traceback (most recent call last):
 ...
 qcelemental.exceptions.DataUnavailableError: ('vanderwaals radius', 'Lv')
->>> qcel.vanderwaalsradii.get('iodine', return_tuple=True).dict()
+>>> qcel.vdwradii.get('iodine', return_tuple=True).dict()
 {'numeric': True, 'label': 'I', 'units': 'angstrom', 'data': Decimal('1.98'), 'doi': 'DOI: 10.1021/jp8111556'}
 ```

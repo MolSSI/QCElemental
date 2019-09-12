@@ -5,13 +5,13 @@ Access van der Waals Radii information within QCElemental.
 
 .. code-block:: python
 
-    >>> qcel.vanderwaalsradii.get(6)
+    >>> qcel.vdwradii.get(6)
     3.212534413278308
-    >>> qcel.vanderwaalsradii.get("C")
+    >>> qcel.vdwradii.get("C")
     3.212534413278308
-    >>> qcel.vanderwaalsradii.get("C12")
+    >>> qcel.vdwradii.get("C12")
     3.212534413278308
-    >>> qcel.vanderwaalsradii.get("Carbon")
+    >>> qcel.vdwradii.get("Carbon")
     3.212534413278308
 
 
@@ -19,14 +19,14 @@ Contexts
 --------
 
 To prepare for future changes, van der waals radii
-are contained in contexts. The ``qcel.vanderwaalsradii`` context will be
+are contained in contexts. The ``qcel.vdwradii`` context will be
 updated over time to the latest data. To "pin" a context version, a
 specific context can be created like so:
 
 .. code-block:: python
 
-    >>> context = qcel.VanderwaalsRadii("MANTINA2009")
-    >>> qcel.vanderwaalsradii.get(6)
+    >>> context = qcel.VanderWaalsRadii("MANTINA2009")
+    >>> qcel.vdwradii.get(6)
     3.212534413278308
 
 Currently only ``MANTINA2009`` is available.

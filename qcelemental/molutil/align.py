@@ -96,7 +96,7 @@ def B787(cgeom,
     float, tuple
         First item is RMSD [A] between `rgeom` and the optimally aligned
         geometry computed.
-        Second item is a AlignmentMill namedtuple with fields
+        Second item is a AlignmentMill with fields
         (shift, rotation, atommap, mirror) that prescribe the transformation
         from `cgeom` and the optimally aligned geometry.
 
@@ -585,7 +585,7 @@ def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflect
     Returns
     -------
     tuple
-        AlignmentMill namedtuple with fields (shift, rotation, atommap, mirror)
+        AlignmentMill with fields (shift, rotation, atommap, mirror)
         as requested: identity, random, or specified.
 
     """

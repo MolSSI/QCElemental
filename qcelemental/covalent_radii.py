@@ -99,7 +99,7 @@ class CovalentRadii:
         float
             When ``return_tuple=False``, value of covalent radius. If multiple defined for element, returns largest.
         qcelemental.Datum
-            When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).
+            When ``return_tuple=True``, Datum with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).
             If multiple defined for element, returns largest.
 
         Raises

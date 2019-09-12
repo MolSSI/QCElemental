@@ -10,7 +10,8 @@ __all__ = ["AlignmentMill"]
 
 class AlignmentMill(ProtoModel):
     """Facilitates the application of the simple transformation operations
-    defined by namedtuple of arrays as recipe to the data structures
+    defined by ``shift``, ``rotation``, ``atommap`` arrays and ``mirror``
+    boolean as recipe to the data structures
     describing Cartesian molecular coordinates. Attaches functions to
     transform the geometry, element list, gradient, etc. to the
     AlignmentRecipe. When `mirror` attribute (defaults to False) active,

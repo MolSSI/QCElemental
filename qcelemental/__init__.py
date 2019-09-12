@@ -18,8 +18,8 @@ PhysicalConstantsContext = physical_constants.PhysicalConstantsContext
 constants = physical_constants.constants
 CovalentRadii = covalent_radii.CovalentRadii
 covalentradii = covalent_radii.covalentradii
-VanderwaalsRadii = vanderwaals_radii.VanderwaalsRadii
-vanderwaalsradii = vanderwaals_radii.vanderwaalsradii
+VanderWaalsRadii = vanderwaals_radii.VanderWaalsRadii
+vdwradii = vanderwaals_radii.vdwradii
 
 # Remove singleton-providing modules from known imported objects
 del periodic_table
