@@ -13,13 +13,13 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-0.8.0 / 2019-09-DD
+0.8.0 / 2019-09-12
 ------------------
 
 New Features
 ++++++++++++
 - (:pr:`123`) QCElemental now passes MyPy!
-- (:pr:`127`) Adds van der Waals radii data available through ``vanderwaalsradii.get(atom)`` function.
+- (:pr:`127`, :pr:`131`) Adds van der Waals radii data available through ``vdwradii.get(atom)`` function.
 
 Enhancements
 ++++++++++++

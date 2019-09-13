@@ -1,5 +1,5 @@
 """
-Contains covalent radii
+Contains van der Waals radii
 """
 
 import collections
@@ -11,7 +11,7 @@ from .exceptions import DataUnavailableError
 from .periodic_table import periodictable
 
 
-class VanderwaalsRadii:
+class VanderWaalsRadii:
     """Van der Waals radii sets.
 
     Parameters
@@ -55,12 +55,12 @@ class VanderwaalsRadii:
         self.year = int(mantina_2009_vanderwaals_radii["date"][:4])  # type: ignore
 
     def __str__(self) -> str:
-        return "VanderwaalsRadii(context='{}')".format(self.name)
+        return "VanderWaalsRadii(context='{}')".format(self.name)
 
     def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
             missing: float = None) -> Union[float, 'Datum']:
         """
-        Access a covalent radius for species `atom`.
+        Access a van der Waals radius for species `atom`.
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class VanderwaalsRadii:
             How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
             When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
-            ``try:\n\trad = qcel.vanderwaalsradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
+            ``try:\n\trad = qcel.vdwradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
             Only relevant for ``return_tuple=False``.
         return_tuple : bool, optional
             See below.
@@ -83,7 +83,7 @@ class VanderwaalsRadii:
         float
             When ``return_tuple=False``, value of Van der Waals radius. If multiple defined for element, returns largest.
         qcelemental.Datum
-            When ``return_tuple=True``, Datum namedtuple with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).
+            When ``return_tuple=True``, Datum with units, description, uncertainty, and value of van der Waals radius as Decimal (preserving significant figures).
             If multiple defined for element, returns largest.
 
         Raises
@@ -91,7 +91,7 @@ class VanderwaalsRadii:
         NotAnElementError
             If `atom` cannot be resolved into an element or nuclide or label.
         DataUnavailableError
-            If `atom` is a valid element or nuclide but not one for which a covalent radius is available and `missing=None`.
+            If `atom` is a valid element or nuclide but not one for which a van der Waals radius is available and `missing=None`.
 
         """
         if atom in self.vdwr.keys():
@@ -115,7 +115,7 @@ class VanderwaalsRadii:
             return qca.to_units(units)
 
     def string_representation(self) -> str:
-        """Print name, value, and units of all covalent radii."""
+        """Print name, value, and units of all van der Waals radii."""
 
         return print_variables(self.vdwr)
 
@@ -158,4 +158,4 @@ class VanderwaalsRadii:
 
 
 # singleton
-vanderwaalsradii = VanderwaalsRadii("MANTINA2009")
+vdwradii = VanderWaalsRadii("MANTINA2009")

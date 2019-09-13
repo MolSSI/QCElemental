@@ -1026,7 +1026,7 @@ class Molecule(ProtoModel):
               to `ref_mol`. Presently all fragment information is discarded.
             `data['rmsd']` is RMSD [A] between `ref_mol` and the optimally aligned
             geometry computed.
-            `data['mill']` is a AlignmentMill namedtuple with fields
+            `data['mill']` is a AlignmentMill with fields
             (shift, rotation, atommap, mirror) that prescribe the transformation
             from `concern_mol` and the optimally aligned geometry.
 
@@ -1147,7 +1147,7 @@ class Molecule(ProtoModel):
         Molecule, data
             Molecule is scrambled copy of `ref_mol` (self).
             `data['rmsd']` is RMSD [A] between `ref_mol` and the scrambled geometry.
-            `data['mill']` is a AlignmentMill namedtuple with fields
+            `data['mill']` is a AlignmentMill with fields
             (shift, rotation, atommap, mirror) that prescribe the transformation
             from `ref_mol` to the returned geometry.
 
