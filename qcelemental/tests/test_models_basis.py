@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 import pytest
 
@@ -26,17 +27,15 @@ basis_data = {
             "coefficients": [[-0.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]]
         }]
     },
-    "bs_custom_zr": {
+    "bs_def2tzvp_zr": {
         "electron_shells": [{
-            "harmonic_type":
-            "spherical",
+            "harmonic_type": "spherical",
             "angular_momentum": [0],
             "exponents": [11.000000000, 9.5000000000, 3.6383667759, 0.76822026698],
             "coefficients": [[-0.19075595259, 0.33895588754, 0.0000000, 0.0000000],
                              [0.0000000, 0.0000000, 1.0000000000, 0.0000000]]
         }, {
-            "harmonic_type":
-            "spherical",
+            "harmonic_type": "spherical",
             "angular_momentum": [2],
             "exponents": [4.5567957795, 1.2904939799, 0.51646987229],
             "coefficients": [[-0.96190569023E-09, 0.20569990155, 0.41831381851], [0.0000000, 0.0000000, 0.0000000],
@@ -47,8 +46,7 @@ basis_data = {
             "exponents": [0.3926100],
             "coefficients": [[1.0000000]]
         }],
-        "ecp_electrons":
-        28,
+        "ecp_electrons": 28,
         "ecp_potentials": [{
             "ecp_type": "scalar",
             "angular_momentum": [0],
@@ -63,14 +61,46 @@ basis_data = {
             "coefficients": [[87.78499169, 11.56406599, 19.12219811, 2.43637549]]
         }]
     }
-}
+} # yapf: disable
 
 
 @pytest.mark.parametrize("center_name", basis_data.keys())
 def test_basis_shell_centers(center_name):
     assert basis.BasisCenter(**basis_data[center_name])
 
+
 def test_basis_set_build():
     assert basis.BasisSet(basis_name="custom_basis",
                           basis_data=basis_data,
                           basis_atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+
+
+def test_basis_electron_center_raises():
+    data = basis_data["bs_sto3g_h"]["electron_shells"][0].copy()
+    data["coefficients"] = [[5, 3]]
+
+    with pytest.raises(ValueError):
+        basis.ElectronShell(**data)
+
+
+def test_basis_ecp_center_raises():
+    # Check coefficients
+    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data["coefficients"] = [[5, 3]]
+
+    with pytest.raises(ValueError):
+        basis.ECPPotential(**data)
+
+    # Check gaussian_exponents
+    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data["gaussian_exponents"] = [5, 3]
+
+    with pytest.raises(ValueError):
+        basis.ECPPotential(**data)
+
+def test_basis_map_raises():
+
+    with pytest.raises(ValueError) as e:
+        assert basis.BasisSet(basis_name="custom_basis",
+                          basis_data=basis_data,
+                          basis_atom_map=["something_odd"])

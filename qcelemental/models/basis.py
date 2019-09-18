@@ -29,6 +29,15 @@ class ElectronShell(ProtoModel):
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
+    @validator('coefficients', whole=True)
+    def _check_coefficient_length(cls, v, values):
+        len_exp = len(values["exponents"])
+        for row in v:
+            if len(row) != len_exp:
+                raise ValueError("The length of coefficients does not match the length of exponents.")
+
+        return v
+
 
 class ECPType(str, Enum):
     """
@@ -53,6 +62,23 @@ class ECPPotential(ProtoModel):
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
+    @validator('gaussian_exponents', whole=True)
+    def _check_gaussian_exponentst_length(cls, v, values):
+        len_exp = len(values["r_exponents"])
+        if len(v) != len_exp:
+            raise ValueError("The length of gaussian_exponents does not match the length of `r` exponents.")
+
+        return v
+
+    @validator('coefficients', whole=True)
+    def _check_coefficient_length(cls, v, values):
+        len_exp = len(values["r_exponents"])
+        for row in v:
+            if len(row) != len_exp:
+                raise ValueError("The length of coefficients does not match the length of `r` exponents.")
+
+        return v
+
 
 class BasisCenter(ProtoModel):
     """
@@ -75,3 +101,13 @@ class BasisSet(ProtoModel):
     basis_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
     basis_atom_map: List[str] = Schema(
         ..., description="Mapping of all centers in the parent molecule to centers in `basis_data`.")
+
+    @validator('basis_atom_map', whole=True)
+    def _check_atom_map(cls, v, values):
+        sv = set(v)
+        missing = sv - values["basis_data"].keys()
+
+        if missing:
+            raise ValueError(f"'basis_atom_map' contains unknown keys to 'basis_data': {missing}.")
+
+        return v
