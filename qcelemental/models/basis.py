@@ -95,10 +95,10 @@ class BasisSet(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
     schema_version: int = 1
 
-    basis_name: str = Schema(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
+    name: str = Schema(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
     description: Optional[str] = Schema(None, description="A brief description of the basis set.")
-    basis_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
-    basis_atom_map: List[str] = Schema(
+    center_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
+    atom_map: List[str] = Schema(
         ..., description="Mapping of all centers in the parent molecule to centers in `basis_data`.")
 
     @validator('basis_atom_map', whole=True)

@@ -5,7 +5,7 @@ import pytest
 
 from qcelemental.models import basis
 
-basis_data = {
+center_data = {
     "bs_sto3g_h": {
         "electron_shells": [{
             "harmonic_type": "spherical",
@@ -65,19 +65,19 @@ basis_data = {
 } # yapf: disable
 
 
-@pytest.mark.parametrize("center_name", basis_data.keys())
+@pytest.mark.parametrize("center_name", center_data.keys())
 def test_basis_shell_centers(center_name):
-    assert basis.BasisCenter(**basis_data[center_name])
+    assert basis.BasisCenter(**center_data[center_name])
 
 
 def test_basis_set_build():
-    assert basis.BasisSet(basis_name="custom_basis",
-                          basis_data=basis_data,
-                          basis_atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+    assert basis.BasisSet(name="custom_basis",
+                          center_data=center_data,
+                          atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
 
 
 def test_basis_electron_center_raises():
-    data = basis_data["bs_sto3g_h"]["electron_shells"][0].copy()
+    data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
     data["coefficients"] = [[5, 3]]
 
     with pytest.raises(ValueError):
@@ -86,22 +86,21 @@ def test_basis_electron_center_raises():
 
 def test_basis_ecp_center_raises():
     # Check coefficients
-    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
     data["coefficients"] = [[5, 3]]
 
     with pytest.raises(ValueError):
         basis.ECPPotential(**data)
 
     # Check gaussian_exponents
-    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
     data["gaussian_exponents"] = [5, 3]
 
     with pytest.raises(ValueError):
         basis.ECPPotential(**data)
 
+
 def test_basis_map_raises():
 
     with pytest.raises(ValueError) as e:
-        assert basis.BasisSet(basis_name="custom_basis",
-                          basis_data=basis_data,
-                          basis_atom_map=["something_odd"])
+        assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
