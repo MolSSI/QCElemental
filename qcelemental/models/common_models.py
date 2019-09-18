@@ -11,6 +11,9 @@ ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
 class Provenance(ProtoModel):
+    """
+    Provenance information.
+    """
     creator: str
     version: Optional[str] = None
     routine: Optional[str] = None
@@ -39,6 +42,8 @@ class Model(ProtoModel):
 
 
 class DriverEnum(str, Enum):
+    """Allowed quantum chemistry driver values.
+    """
     energy = 'energy'
     gradient = 'gradient'
     hessian = 'hessian'
@@ -53,7 +58,7 @@ class DriverEnum(str, Enum):
 
 
 class ComputeError(ProtoModel):
-    """The type of error message raised"""
+    """A complete description of the error."""
     error_type: str = Schema(  # type: ignore
         ...,  # Error enumeration not yet strict
         description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'.")
