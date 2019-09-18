@@ -2,7 +2,7 @@ import copy
 import logging
 import pprint
 import sys
-from typing import Callable, List, Dict, Union
+from typing import Callable, Dict, List, Union
 
 import numpy as np
 from pydantic import BaseModel

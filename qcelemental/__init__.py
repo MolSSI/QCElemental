@@ -2,13 +2,12 @@
 Main init for QCElemental
 """
 
-from . import models, molparse, molutil, util
+# Handle singletons, not their classes or modules
+from . import covalent_radii, models, molparse, molutil, periodic_table, physical_constants, util, vanderwaals_radii
 from .datum import Datum
 from .exceptions import ChoicesError, DataUnavailableError, MoleculeFormatError, NotAnElementError, ValidationError
 # Handle versioneer
 from .extras import get_information
-# Handle singletons, not their classes or modules
-from . import covalent_radii, vanderwaals_radii, periodic_table, physical_constants
 # from .physical_constants import PhysicalConstantsContext, constants
 from .testing import compare, compare_recursive, compare_values
 

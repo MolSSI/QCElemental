@@ -1,7 +1,6 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
-import numpy as np
 from pydantic import Schema, constr, validator
 
 from .basemodels import ProtoModel

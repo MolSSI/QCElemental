@@ -4,7 +4,7 @@ Contains covalent radii
 
 import collections
 from decimal import Decimal
-from typing import Union, Dict
+from typing import Dict, Union
 
 from .datum import Datum, print_variables
 from .exceptions import DataUnavailableError

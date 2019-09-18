@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from pydantic import constr
+from pydantic import Schema, constr
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
@@ -18,7 +18,7 @@ class QCInputSpecification(ProtoModel):
     schema_version: int = 1
 
     driver: DriverEnum = Schema(..., description=str(DriverEnum.__doc__))
-    model: DriverEnum = Schema(..., description=str(DriverEnum.__doc__))
+    model: Model = Schema(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Schema({}, description="The program specific keywords to be used.")
 
     extras: Dict[str, Any] = Schema({}, description="Extra fields that are not part of the schema.")

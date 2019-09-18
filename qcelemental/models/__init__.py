@@ -6,9 +6,9 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
-from .basemodels import ProtoModel, AutodocBaseSettings
+from .basemodels import AutodocBaseSettings, ProtoModel
+from .basis import BasisSet
 from .common_models import ComputeError, FailedOperation, Provenance
 from .molecule import Molecule
 from .procedures import Optimization, OptimizationInput
 from .results import Result, ResultInput, ResultProperties
-from .basis import BasisSet

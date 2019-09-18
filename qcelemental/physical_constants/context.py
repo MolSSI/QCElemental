@@ -5,7 +5,7 @@ Contains relevant physical constants
 import collections
 from decimal import Decimal
 from functools import lru_cache
-from typing import Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from ..datum import Datum, print_variables
 from .ureg import build_units_registry

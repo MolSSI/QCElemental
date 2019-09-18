@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
-from pydantic import constr, Schema, validator
+from pydantic import Schema, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
