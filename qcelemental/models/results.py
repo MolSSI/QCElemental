@@ -5,6 +5,7 @@ from pydantic import Schema, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
+from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
 from .types import Array
@@ -155,3 +156,48 @@ class Result(ResultInput):
             v.shape = (nsq, nsq)
 
         return v
+
+
+class WavefunctionProperties(ProtoModel):
+
+    # The full basis set description of the quantities
+    basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
+
+    # Core Hamiltonian
+    h_core_a: Array[float] = Schema(None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.")
+    h_core_b: Array[float] = Schema(None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.")
+    h_effective_a: Array[float] = Schema(
+        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.")
+    h_effective_b: Array[float] = Schema(
+        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis.")
+
+    # Return results
+    orbitals_a: Array[float] = Schema(None,
+                                      description="The alpha-spin orbitals in the AO basis of the primary return.")
+    orbitals_b: Array[float] = Schema(None, description="")
+    density_a: Array[float] = Schema(None, description="")
+    density_b: Array[float] = Schema(None, description="")
+    fock_a: Array[float] = Schema(None, description="")
+    fock_b: Array[float] = Schema(None, description="")
+    eigenvalues_a: Array[float] = Schema(None, description="")
+    eigenvalues_b: Array[float] = Schema(None, description="")
+    occupations_a: Array[float] = Schema(None, description="")
+    occupations_b: Array[float] = Schema(None, description="")
+
+    # SCF Results
+    scf_orbitals_a: Array[float] = Schema(None, description="")
+    scf_orbitals_b: Array[float] = Schema(None, description="")
+    scf_density_a: Array[float] = Schema(None, description="")
+    scf_density_b: Array[float] = Schema(None, description="")
+    scf_fock_a: Array[float] = Schema(None, description="")
+    scf_fock_b: Array[float] = Schema(None, description="")
+    scf_eigenvalues_a: Array[float] = Schema(None, description="")
+    scf_eigenvalues_b: Array[float] = Schema(None, description="")
+    scf_occupations_a: Array[float] = Schema(None, description="")
+    scf_occupations_b: Array[float] = Schema(None, description="")
+
+
+class Wavefunction(Result):
+    schema_name: constr(strip_whitespace=True, regex="qcschema_wavefunction") = "qcschema_wavefunction"  # type: ignore
+
+    wavefunction: WavefunctionProperties = Schema(..., description=str(WavefunctionProperties.__doc__))
