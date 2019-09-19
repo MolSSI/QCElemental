@@ -15,7 +15,7 @@ from ..molparse import from_arrays, from_schema, from_string, to_schema, to_stri
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import deserialize, measure_coordinates, provenance_stamp, which_import, msgpackext_loads
+from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
 from .basemodels import ProtoModel
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array

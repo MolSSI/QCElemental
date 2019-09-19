@@ -1,5 +1,5 @@
 import collections
-from typing import Dict, Any, List, Union, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
