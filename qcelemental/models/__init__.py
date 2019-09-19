@@ -11,3 +11,4 @@ from .common_models import ComputeError, FailedOperation, Provenance
 from .molecule import Molecule
 from .procedures import Optimization, OptimizationInput
 from .results import Result, ResultInput, ResultProperties
+from .multipole import Multipoles, Singlepole
