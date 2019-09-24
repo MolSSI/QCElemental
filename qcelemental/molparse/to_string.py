@@ -21,7 +21,7 @@ def to_string(molrec: Dict,
     ----------
     molrec : Dict
         Psi4 json Molecule spec.
-    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro'}
+    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'turbomole'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -74,7 +74,8 @@ def to_string(molrec: Dict,
         "molpro": "Bohr",
         "nwchem": "Bohr",
         "psi4": "Bohr",
-        "terachem": "Bohr"
+        "terachem": "Bohr",
+        "turbomole": "Bohr",
     }
     if dtype not in default_units:
         raise KeyError(f"dtype '{dtype}' not understood.")
@@ -289,6 +290,14 @@ def to_string(molrec: Dict,
         ])
         data.keywords = {}
 
+    elif dtype == 'turbomole':
+        # In Turbomole coord files the coordinates come first, and the atomic
+        # symbol comes afterwards.
+        # Handling of ghost atoms is done in the basis section of the control
+        # file by setting the nuclear charge of certain atoms to zero.
+        smol = [f"{x: >20.14f}{y: >20.14f}{z: >20.14f}{atom.lower():>8s}"
+                for (x, y, z), atom in zip(geom, molrec["elem"])]
+        smol = ["$coord"] + smol + ["$end"]
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
 

@@ -136,6 +136,14 @@ set,charge=0.0
 set,spin=2
 """,
 
+"ans2_turbomole_au": """$coord
+    0.00000000000000    0.00000000000000    0.00000000000000      co
+    2.00000000000000    0.00000000000000    0.00000000000000       h
+   -2.00000000000000    0.00000000000000    0.00000000000000       h
+$end
+"""
+
+
 }  # yapf: disable
 
 
@@ -154,6 +162,7 @@ set,spin=2
     (("subject2", {'dtype': 'psi4', 'units': 'bohr'}), "ans2_psi4_au"),
     (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
     (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
+    (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcelemental.molparse.from_string(_results[inp[0]])
