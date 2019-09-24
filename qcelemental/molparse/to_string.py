@@ -293,6 +293,8 @@ def to_string(molrec: Dict,
     elif dtype == 'turbomole':
         # In Turbomole coord files the coordinates come first, and the atomic
         # symbol comes afterwards.
+        # Handling of ghost atoms is done in the basis section of the control
+        # file by setting the nuclear charge of certain atoms to zero.
         coords3d = molrec["geom"].reshape(-1, 3)
         smol = [f"{x: .8f} {y: .8f} {z: .8f} {atom.lower()}"
                 for (x, y, z), atom in zip(coords3d, molrec["elem"])]
