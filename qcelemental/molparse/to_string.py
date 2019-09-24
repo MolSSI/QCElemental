@@ -74,7 +74,8 @@ def to_string(molrec: Dict,
         "molpro": "Bohr",
         "nwchem": "Bohr",
         "psi4": "Bohr",
-        "terachem": "Bohr"
+        "terachem": "Bohr",
+        "turbomole": "Bohr",
     }
     if dtype not in default_units:
         raise KeyError(f"dtype '{dtype}' not understood.")
@@ -289,6 +290,13 @@ def to_string(molrec: Dict,
         ])
         data.keywords = {}
 
+    elif dtype == 'turbomole':
+        # In Turbomole coord files the coordinates come first, and the atomic
+        # symbol comes afterwards.
+        coords3d = molrec["geom"].reshape(-1, 3)
+        smol = [f"{x: .8f} {y: .8f} {z: .8f} {atom.lower()}"
+                for (x, y, z), atom in zip(coords3d, molrec["elem"])]
+        smol = ["$coord"] + smol + ["$end"]
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
 
