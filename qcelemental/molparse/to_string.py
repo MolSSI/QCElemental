@@ -21,7 +21,7 @@ def to_string(molrec: Dict,
     ----------
     molrec : Dict
         Psi4 json Molecule spec.
-    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro'}
+    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'turbomole'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -295,9 +295,8 @@ def to_string(molrec: Dict,
         # symbol comes afterwards.
         # Handling of ghost atoms is done in the basis section of the control
         # file by setting the nuclear charge of certain atoms to zero.
-        coords3d = molrec["geom"].reshape(-1, 3)
-        smol = [f"{x: .8f} {y: .8f} {z: .8f} {atom.lower()}"
-                for (x, y, z), atom in zip(coords3d, molrec["elem"])]
+        smol = [f"{x: >20.14f}{y: >20.14f}{z: >20.14f}{atom.lower():>8s}"
+                for (x, y, z), atom in zip(geom, molrec["elem"])]
         smol = ["$coord"] + smol + ["$end"]
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
