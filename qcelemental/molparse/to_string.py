@@ -295,9 +295,16 @@ def to_string(molrec: Dict,
         # symbol comes afterwards.
         # Handling of ghost atoms is done in the basis section of the control
         # file by setting the nuclear charge of certain atoms to zero.
-        smol = [f"{x: >20.14f}{y: >20.14f}{z: >20.14f}{atom.lower():>8s}"
-                for (x, y, z), atom in zip(geom, molrec["elem"])]
-        smol = ["$coord"] + smol + ["$end"]
+        atom_format = '{elem}'
+        ghost_format = '{elem}'
+        umap = {'bohr': 'bohr'}
+        umap[units.lower()]  # trigger error if downstream can't handle
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2, xyze=True)
+        atoms = [at.lower() for at in atoms]
+
+        smol = ["$coord"] + atoms + ["$end"]
+
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
 
@@ -308,10 +315,9 @@ def to_string(molrec: Dict,
         return smol_ret
 
 
-def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp):
+def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp, xyze=False):
     """Format a list of strings, one per atom from `molrec`."""
 
-    #geom = molrec['geom'].reshape((-1, 3))
     nat = geom.shape[0]
     fxyz = """{:>{width}.{prec}f}"""
     sp = """{:{sp}}""".format('', sp=sp)
@@ -338,6 +344,8 @@ def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp):
                 atom.append(nuc)
 
         atom.extend([fxyz.format(x, width=width, prec=prec) for x in geom[iat]])
+        if xyze:
+            atom.append(atom.pop(0).rstrip())
         atoms.append(sp.join(atom))
 
     return atoms
