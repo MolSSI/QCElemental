@@ -65,6 +65,69 @@ center_data = {
     }
 } # yapf: disable
 
+@pytest.fixture(scope="function")
+def result_data_fixture():
+    mol = qcel.models.Molecule.from_data("""
+        O 0 0 0
+        H 0 0 2
+        H 0 2 0
+    """)
+
+    return {
+        "molecule": mol,
+        "driver": "energy",
+        "model": {
+            "method": "UFF"
+        },
+        "return_result": 5,
+        "success": True,
+        "properties": {},
+        "provenance": {
+            "creator": "qcel"
+        }
+    }
+
+
+@pytest.fixture(scope="function")
+def wavefunction_data_fixture(result_data_fixture):
+    bas = basis.BasisSet(name="custom_basis",
+                         center_data=center_data,
+                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
+    c_matrix = np.random.rand(bas.nbf, bas.nbf)
+    result_data_fixture["wavefunction"] = {"basis": bas, "scf_orbitals_a": c_matrix, "orbitals_a": "scf_orbitals_a"}
+
+    return result_data_fixture
+
+
+@pytest.fixture(scope="function")
+def optimization_data_fixture(result_data_fixture):
+
+    trajectory = []
+    energies = []
+    for x in range(5):
+        result = result_data_fixture.copy()
+        result["return_result"] = x
+        trajectory.append(result)
+        energies.append(x)
+
+    ret = {
+        "initial_molecule": result_data_fixture["molecule"],
+        "final_molecule": result_data_fixture["molecule"],
+        "trajectory": trajectory,
+        "energies": energies,
+        "success": True,
+        "provenance": {
+            "creator": "qcel"
+        },
+        "input_specification": {
+            "model": {
+                "method": "UFF"
+            }
+        }
+    }
+
+    return ret
+
 
 @pytest.mark.parametrize("center_name", center_data.keys())
 def test_basis_shell_centers(center_name):
@@ -111,38 +174,6 @@ def test_basis_map_raises():
         assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
 
 
-@pytest.fixture(scope="function")
-def wavefunction_data_fixture():
-    bas = basis.BasisSet(name="custom_basis",
-                         center_data=center_data,
-                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
-    c_matrix = np.random.rand(bas.nbf, bas.nbf)
-    mol = qcel.models.Molecule.from_data("""
-        O 0 0 0
-        H 0 0 2
-        H 0 2 0
-    """)
-
-    return {
-        "molecule": mol,
-        "driver": "energy",
-        "model": {
-            "method": "UFF"
-        },
-        "return_result": 5,
-        "wavefunction": {
-            "basis": bas,
-            "scf_orbitals_a": c_matrix,
-            "orbitals_a": "scf_orbitals_a"
-        },
-        "success": True,
-        "properties": {},
-        "provenance": {
-            "creator": "qcel"
-        }
-    }
-
-
 def test_wavefunction_build(wavefunction_data_fixture):
     assert qcel.models.Result(**wavefunction_data_fixture)
 
@@ -163,3 +194,21 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
         qcel.models.Result(**wavefunction_data_fixture)
 
     assert "does not exist" in str(e.value)
+
+
+@pytest.mark.parametrize("keep, indices", [
+    (None, [0, 1, 2, 3, 4]),
+    ('all', [0, 1, 2, 3, 4]),
+    ('initial_and_final', [0, 4]),
+    ('final', [4]),
+    ('none', []),
+])
+def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
+
+    if keep is not None:
+        optimization_data_fixture["protocols"] = {"keep_trajectory": keep}
+    opt = qcel.models.Optimization(**optimization_data_fixture)
+
+    assert len(opt.trajectory) == len(indices)
+    for result, index in zip(opt.trajectory, indices):
+        assert result.return_result == index

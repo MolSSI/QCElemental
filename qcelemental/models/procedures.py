@@ -1,6 +1,8 @@
 from typing import Any, Dict, List, Optional
+import warnings
+from enum import Enum
 
-from pydantic import Schema, constr
+from pydantic import Schema, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
@@ -10,6 +12,25 @@ from .molecule import Molecule
 from .results import Result
 
 
+class KeepTrajectoryProtocolEnum(str, Enum):
+    """
+    Which gradient evaluations to keep in an optimization trajectory.
+    """
+    all = "all"
+    initial_and_final = "initial_and_final"
+    final = "final"
+    none = "none"
+
+
+class OptimizationProtocol(ProtoModel):
+    """
+    Protocols regarding the manipulation of a Optimization output data.
+    """
+
+    keep_trajectory: KeepTrajectoryProtocolEnum = Schema(KeepTrajectoryProtocolEnum.all,
+                                                         description=str(KeepTrajectoryProtocolEnum.__doc__))
+
+
 class QCInputSpecification(ProtoModel):
     """
     A compute description for energy, gradient, and Hessian computations used in a geometry optimization.
@@ -17,7 +38,7 @@ class QCInputSpecification(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
     schema_version: int = 1
 
-    driver: DriverEnum = Schema(..., description=str(DriverEnum.__doc__))
+    driver: DriverEnum = Schema(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Schema(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Schema({}, description="The program specific keywords to be used.")
 
@@ -33,6 +54,7 @@ class OptimizationInput(ProtoModel):
 
     keywords: Dict[str, Any] = Schema({}, description="The optimization specific keywords to be used.")
     extras: Dict[str, Any] = Schema({}, description="Extra fields that are not part of the schema.")
+    protocols: OptimizationProtocol = Schema(OptimizationProtocol(), description=str(OptimizationProtocol.__doc__))
 
     input_specification: QCInputSpecification = Schema(..., description=str(QCInputSpecification.__doc__))
     initial_molecule: Molecule = Schema(..., description="The starting molecule for the geometry optimization.")
@@ -50,7 +72,8 @@ class Optimization(OptimizationInput):
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule] = Schema(..., description="The final molecule of the geometry optimization.")
-    trajectory: List[Result] = Schema(..., description="A list of order Result objects for each step in the optimization.")
+    trajectory: List[Result] = Schema(...,
+                                      description="A list of order Result objects for each step in the optimization.")
     energies: List[float] = Schema(..., description="A list of ordered energies for each step in the optimization.")
 
     stdout: Optional[str] = Schema(None, description="The standard output of the program.")
@@ -60,3 +83,34 @@ class Optimization(OptimizationInput):
         ..., description="The success of a given programs execution. If False, other fields may be blank.")
     error: Optional[ComputeError] = Schema(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Schema(..., description=str(Provenance.__doc__))
+
+    @validator('trajectory', whole=True)
+    def _trajectory_protocol(cls, v, values):
+
+        # Do not propogate validation errors
+        if 'protocols' not in values:
+            raise ValidationError("Protocols was not properly formed.")
+
+        keep_enum = values['protocols'].keep_trajectory
+        warn = False
+        if keep_enum == 'all':
+            pass
+        elif keep_enum == "initial_and_final":
+            if len(v) != 2:
+                v = [v[0], v[-1]]
+                warn = True
+        elif keep_enum == "final":
+            if len(v) != 1:
+                v = [v[-1]]
+                warn = True
+        elif keep_enum == "none":
+            if len(v) != []:
+                v = []
+                warn = True
+        else:
+            raise KeyError(f"Protocol `keep_trajectory:{keep_enum}` is not understood.")
+
+        # if warn:
+        #     warnings.warn(f"Protocol `keep_trajectory:{keep_enum}` modified the input data.")
+
+        return v
