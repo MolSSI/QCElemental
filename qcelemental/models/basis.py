@@ -37,6 +37,21 @@ class ElectronShell(ProtoModel):
 
         return v
 
+    def nfunctions(self) -> int:
+        """
+        Computes the number of basis functions on this shell.
+
+        Returns
+        -------
+        int
+            The number of basis functions on this shell.
+        """
+
+        if self.harmonic_type == 'spherical':
+            return sum((2 * L + 1) for L in self.angular_momentum)
+        else:
+            return sum(((L + 1) * (L + 2) // 2) for L in self.angular_momentum)
+
 
 class ECPType(str, Enum):
     """
@@ -95,18 +110,58 @@ class BasisSet(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
     schema_version: int = 1
 
-    basis_name: str = Schema(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
+    name: str = Schema(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
     description: Optional[str] = Schema(None, description="A brief description of the basis set.")
-    basis_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
-    basis_atom_map: List[str] = Schema(
-        ..., description="Mapping of all centers in the parent molecule to centers in `basis_data`.")
+    center_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
+    atom_map: List[str] = Schema(
+        ..., description="Mapping of all centers in the parent molecule to centers in `center_data`.")
 
-    @validator('basis_atom_map', whole=True)
+    nbf: Optional[int] = Schema(None, description="The number of basis functions.")
+
+    @validator('atom_map', whole=True)
     def _check_atom_map(cls, v, values):
         sv = set(v)
-        missing = sv - values["basis_data"].keys()
+        missing = sv - values["center_data"].keys()
 
         if missing:
-            raise ValueError(f"'basis_atom_map' contains unknown keys to 'basis_data': {missing}.")
+            raise ValueError(f"'atom_map' contains unknown keys to 'center_data': {missing}.")
 
         return v
+
+    @validator('nbf', always=True)
+    def _check_nbf(cls, v, values):
+
+        # Bad construction, pass on errors
+        try:
+            nbf = cls._calculate_nbf(values["atom_map"], values["center_data"])
+        except KeyError:
+            return v
+
+        if v is None:
+            v = nbf
+        else:
+            if v != nbf:
+                raise ValidationError("Calculated nbf does not match supplied nbf.")
+
+        return v
+
+    @classmethod
+    def _calculate_nbf(self, atom_map, center_data) -> int:
+        """
+        Number of basis functions in the basis set.
+
+        Returns
+        -------
+        int
+            The number of basis functions.
+        """
+
+        center_count = {}
+        for k, center in center_data.items():
+            center_count[k] = sum(x.nfunctions() for x in center.electron_shells)
+
+        ret = 0
+        for center in atom_map:
+            ret += center_count[center]
+
+        return ret

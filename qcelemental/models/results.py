@@ -5,6 +5,7 @@ from pydantic import Schema, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
+from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
 from .types import Array
@@ -97,6 +98,119 @@ class ResultProperties(ProtoModel):
         return f"{self.__class__.__name__}({data_str})"
 
 
+class WavefunctionProperties(ProtoModel):
+
+    # The full basis set description of the quantities
+    basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
+
+    # Core Hamiltonian
+    h_core_a: Optional[Array[float]] = Schema(None, description="Alpha-spin core (one-electron) Hamiltonian.")
+    h_core_b: Optional[Array[float]] = Schema(None, description="Beta-spin core (one-electron) Hamiltonian.")
+    h_effective_a: Optional[Array[float]] = Schema(None,
+                                                   description="Alpha-spin effective core (one-electron) Hamiltonian.")
+    h_effective_b: Optional[Array[float]] = Schema(None,
+                                                   description="Beta-spin effective core (one-electron) Hamiltonian ")
+
+    # SCF Results
+    scf_orbitals_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin orbitals.")
+    scf_orbitals_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin orbitals.")
+    scf_density_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin density matrix.")
+    scf_density_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin density matrix.")
+    scf_fock_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin Fock matrix.")
+    scf_fock_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin Fock matrix.")
+    scf_eigenvalues_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin eigenvalues.")
+    scf_eigenvalues_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin eigenvalues.")
+    scf_occupations_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin occupations.")
+    scf_occupations_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin occupations.")
+
+    # Return results, must be defined last
+    orbitals_a: Optional[str] = Schema(None, description="Index to the alpha-spin orbitals of the primary return.")
+    orbitals_b: Optional[str] = Schema(None, description="Index to the beta-spin orbitals of the primary return.")
+    density_a: Optional[str] = Schema(None, description="Index to the alpha-spin density of the primary return.")
+    density_b: Optional[str] = Schema(None, description="Index to the beta-spin density of the primary return.")
+    fock_a: Optional[str] = Schema(None, description="Index to the alpha-spin Fock matrix of the primary return.")
+    fock_b: Optional[str] = Schema(None, description="Index to the beta-spin Fock matrix of the primary return.")
+    eigenvalues_a: Optional[str] = Schema(None,
+                                          description="Index to the alpha-spin eigenvalues of the primary return.")
+    eigenvalues_b: Optional[str] = Schema(None,
+                                          description="Index to the beta-spin eigenvalues of the primary return.")
+    occupations_a: Optional[str] = Schema(
+        None, description="Index to the alpha-spin orbital eigenvalues of the primary return.")
+    occupations_b: Optional[str] = Schema(
+        None, description="Index to the beta-spin orbital eigenvalues of the primary return.")
+
+    class Config(ProtoModel.Config):
+        force_skip_defaults = True
+
+    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b', whole=True)
+    def _assert1d(cls, v, values):
+
+        try:
+            v = v.reshape(-1)
+        except (ValueError, AttributeError):
+            raise ValueError("Vector must be castable to shape (-1, )!")
+        return v
+
+    @validator(
+        'scf_orbitals_a',
+        'scf_orbitals_b',
+        whole=True)
+    def _assert2d_nao_x(cls, v, values):
+        bas = values.get("basis", None)
+
+        # Do not raise multiple errors
+        if bas is None:
+            return v
+
+        try:
+            v = v.reshape(bas.nbf, -1)
+        except (ValueError, AttributeError):
+            raise ValueError("Matrix must be castable to shape (nbf, -1)!")
+        return v
+
+    @validator(
+        'h_core_a',
+        'h_core_b',
+        'h_effective_a',
+        'h_effective_b',
+
+        # SCF
+        'scf_density_a',
+        'scf_density_b',
+        'scf_fock_a',
+        'scf_fock_b',
+        whole=True)
+    def _assert2d(cls, v, values):
+        bas = values.get("basis", None)
+
+        # Do not raise multiple errors
+        if bas is None:
+            return v
+
+        try:
+            v = v.reshape(bas.nbf, bas.nbf)
+        except (ValueError, AttributeError):
+            raise ValueError("Matrix must be castable to shape (nbf, nbf)!")
+        return v
+
+    @validator('orbitals_a',
+               'orbitals_a',
+               'density_a',
+               'density_b',
+               'fock_a',
+               'fock_b',
+               'eigenvalues_a',
+               'eigenvalues_b',
+               'occupations_a',
+               'occupations_b',
+               whole=True)
+    def _assert_exists(cls, v, values):
+
+        if values.get(v, None) is None:
+            raise ValueError(f"Return quantity {v} does not exist in the values.")
+        return v
+
+
 ### Primary models
 
 
@@ -126,6 +240,8 @@ class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
     properties: ResultProperties = Schema(..., description=str(ResultProperties.__doc__))
+    wavefunction: Optional[WavefunctionProperties] = Schema(None, description=str(WavefunctionProperties.__doc__))
+
     return_result: Union[float, Array[float], Dict[str, Any]] = Schema(
         ..., description="The value requested by the 'driver' attribute.")  # type: ignore
 

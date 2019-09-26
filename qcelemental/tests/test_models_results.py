@@ -3,9 +3,10 @@ import copy
 import numpy as np
 import pytest
 
+import qcelemental as qcel
 from qcelemental.models import basis
 
-basis_data = {
+center_data = {
     "bs_sto3g_h": {
         "electron_shells": [{
             "harmonic_type": "spherical",
@@ -65,19 +66,23 @@ basis_data = {
 } # yapf: disable
 
 
-@pytest.mark.parametrize("center_name", basis_data.keys())
+@pytest.mark.parametrize("center_name", center_data.keys())
 def test_basis_shell_centers(center_name):
-    assert basis.BasisCenter(**basis_data[center_name])
+    assert basis.BasisCenter(**center_data[center_name])
 
 
 def test_basis_set_build():
-    assert basis.BasisSet(basis_name="custom_basis",
-                          basis_data=basis_data,
-                          basis_atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+    bas = basis.BasisSet(name="custom_basis",
+                         center_data=center_data,
+                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+
+    assert len(bas.center_data) == 3
+    assert len(bas.atom_map) == 4
+    assert bas.nbf == 20
 
 
 def test_basis_electron_center_raises():
-    data = basis_data["bs_sto3g_h"]["electron_shells"][0].copy()
+    data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
     data["coefficients"] = [[5, 3]]
 
     with pytest.raises(ValueError):
@@ -86,22 +91,75 @@ def test_basis_electron_center_raises():
 
 def test_basis_ecp_center_raises():
     # Check coefficients
-    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
     data["coefficients"] = [[5, 3]]
 
     with pytest.raises(ValueError):
         basis.ECPPotential(**data)
 
     # Check gaussian_exponents
-    data = basis_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
+    data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
     data["gaussian_exponents"] = [5, 3]
 
     with pytest.raises(ValueError):
         basis.ECPPotential(**data)
 
+
 def test_basis_map_raises():
 
     with pytest.raises(ValueError) as e:
-        assert basis.BasisSet(basis_name="custom_basis",
-                          basis_data=basis_data,
-                          basis_atom_map=["something_odd"])
+        assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
+
+
+@pytest.fixture(scope="function")
+def wavefunction_data_fixture():
+    bas = basis.BasisSet(name="custom_basis",
+                         center_data=center_data,
+                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
+    c_matrix = np.random.rand(bas.nbf, bas.nbf)
+    mol = qcel.models.Molecule.from_data("""
+        O 0 0 0
+        H 0 0 2
+        H 0 2 0
+    """)
+
+    return {
+        "molecule": mol,
+        "driver": "energy",
+        "model": {
+            "method": "UFF"
+        },
+        "return_result": 5,
+        "wavefunction": {
+            "basis": bas,
+            "scf_orbitals_a": c_matrix,
+            "orbitals_a": "scf_orbitals_a"
+        },
+        "success": True,
+        "properties": {},
+        "provenance": {
+            "creator": "qcel"
+        }
+    }
+
+
+def test_wavefunction_build(wavefunction_data_fixture):
+    assert qcel.models.Result(**wavefunction_data_fixture)
+
+
+def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
+
+    wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"] = np.random.rand(2, 2)
+    with pytest.raises(ValueError) as e:
+        qcel.models.Result(**wavefunction_data_fixture)
+
+    assert "castable to shape" in str(e.value)
+
+
+def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
+
+    del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
+    with pytest.raises(ValueError) as e:
+        qcel.models.Result(**wavefunction_data_fixture)
+
+    assert "does not exist" in str(e.value)
