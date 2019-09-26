@@ -71,9 +71,13 @@ def test_basis_shell_centers(center_name):
 
 
 def test_basis_set_build():
-    assert basis.BasisSet(name="custom_basis",
-                          center_data=center_data,
-                          atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+    b = basis.BasisSet(name="custom_basis",
+                       center_data=center_data,
+                       atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+
+    assert len(b.center_data) == 3
+    assert len(b.atom_map) == 4
+    assert b.nbf() == 20
 
 
 def test_basis_electron_center_raises():

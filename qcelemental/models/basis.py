@@ -37,6 +37,21 @@ class ElectronShell(ProtoModel):
 
         return v
 
+    def nfunctions(self) -> int:
+        """
+        Computes the number of basis functions on this shell.
+
+        Returns
+        -------
+        int
+            The number of basis functions on this shell.
+        """
+
+        if self.harmonic_type == 'spherical':
+            return sum((2 * L + 1) for L in self.angular_momentum)
+        else:
+            return sum(((L + 1) * (L + 2) // 2) for L in self.angular_momentum)
+
 
 class ECPType(str, Enum):
     """
@@ -110,3 +125,23 @@ class BasisSet(ProtoModel):
             raise ValueError(f"'atom_map' contains unknown keys to 'center_data': {missing}.")
 
         return v
+
+    def nbf(self) -> int:
+        """
+        Number of basis functions in the basis set.
+
+        Returns
+        -------
+        int
+            The number of basis functions.
+        """
+
+        center_count = {}
+        for k, center in self.center_data.items():
+            center_count[k] = sum(x.nfunctions() for x in center.electron_shells)
+
+        ret = 0
+        for center in self.atom_map:
+            ret += center_count[center]
+
+        return ret
