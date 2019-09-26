@@ -144,6 +144,18 @@ class WavefunctionProperties(ProtoModel):
 
     @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b', whole=True)
     def _assert1d(cls, v, values):
+
+        try:
+            v = v.reshape(-1)
+        except (ValueError, AttributeError):
+            raise ValueError("Vector must be castable to shape (-1, )!")
+        return v
+
+    @validator(
+        'scf_orbitals_a',
+        'scf_orbitals_a',
+        whole=True)
+    def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
         # Do not raise multiple errors
@@ -151,9 +163,9 @@ class WavefunctionProperties(ProtoModel):
             return v
 
         try:
-            v = v.reshape(bas.nbf)
+            v = v.reshape(bas.nbf, -1)
         except (ValueError, AttributeError):
-            raise ValueError("Vector must be castable to shape (nbf, nbf)!")
+            raise ValueError("Matrix must be castable to shape (nbf, -1)!")
         return v
 
     @validator(
@@ -163,8 +175,6 @@ class WavefunctionProperties(ProtoModel):
         'h_effective_b',
 
         # SCF
-        'scf_orbitals_a',
-        'scf_orbitals_a',
         'scf_density_a',
         'scf_density_b',
         'scf_fock_a',
@@ -191,6 +201,8 @@ class WavefunctionProperties(ProtoModel):
                'fock_b',
                'eigenvalues_a',
                'eigenvalues_b',
+               'occupations_a',
+               'occupations_b',
                whole=True)
     def _assert_exists(cls, v, values):
 
