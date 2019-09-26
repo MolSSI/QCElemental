@@ -77,7 +77,7 @@ def test_basis_set_build():
 
     assert len(b.center_data) == 3
     assert len(b.atom_map) == 4
-    assert b.nbf() == 20
+    assert b.nbf == 20
 
 
 def test_basis_electron_center_raises():

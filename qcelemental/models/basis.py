@@ -116,6 +116,8 @@ class BasisSet(ProtoModel):
     atom_map: List[str] = Schema(
         ..., description="Mapping of all centers in the parent molecule to centers in `center_data`.")
 
+    nbf: Optional[int] = Schema(None, description="The number of basis functions.")
+
     @validator('atom_map', whole=True)
     def _check_atom_map(cls, v, values):
         sv = set(v)
@@ -126,7 +128,25 @@ class BasisSet(ProtoModel):
 
         return v
 
-    def nbf(self) -> int:
+    @validator('nbf', always=True)
+    def _check_nbf(cls, v, values):
+
+        # Bad construction, pass on errors
+        try:
+            nbf = cls._calculate_nbf(values["atom_map"], values["center_data"])
+        except KeyError:
+            return v
+
+        if v is None:
+            v = nbf
+        else:
+            if v != nbf:
+                raise ValidationError("Calculated nbf does not match supplied nbf.")
+
+        return v
+
+    @classmethod
+    def _calculate_nbf(self, atom_map, center_data) -> int:
         """
         Number of basis functions in the basis set.
 
@@ -137,11 +157,11 @@ class BasisSet(ProtoModel):
         """
 
         center_count = {}
-        for k, center in self.center_data.items():
+        for k, center in center_data.items():
             center_count[k] = sum(x.nfunctions() for x in center.electron_shells)
 
         ret = 0
-        for center in self.atom_map:
+        for center in atom_map:
             ret += center_count[center]
 
         return ret
