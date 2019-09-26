@@ -139,6 +139,54 @@ class WavefunctionProperties(ProtoModel):
     scf_occupations_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin occupations.")
     scf_occupations_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin occupations.")
 
+    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b', whole=True)
+    def _assert1d(cls, v, values):
+        n = values["basis"].nbf
+
+        try:
+            v = v.reshape(n)
+        except (ValueError, AttributeError):
+            raise ValueError("Vector must be castable to shape (nbf, nbf)!")
+        return v
+
+    @validator(
+        'h_core_a',
+        'h_core_b',
+        'h_effective_a',
+        'h_effective_b',
+
+        # SCF
+        'scf_orbitals_a',
+        'scf_orbitals_a',
+        'scf_density_a',
+        'scf_density_b',
+        'scf_fock_a',
+        'scf_fock_b',
+        whole=True)
+    def _assert2d(cls, v, values):
+        n = values["basis"].nbf
+
+        try:
+            v = v.reshape(n, n)
+        except (ValueError, AttributeError):
+            raise ValueError("Matrix must be castable to shape (nbf, nbf)!")
+        return v
+
+    @validator('orbitals_a',
+               'orbitals_a',
+               'density_a',
+               'density_b',
+               'fock_a',
+               'fock_b',
+               'eigenvalues_a',
+               'eigenvalues_b',
+               whole=True)
+    def _assert_exists(cls, v, values):
+
+        if values.get(v, None) is None:
+            raise ValueError(f"Return quantity {v} does not exists in the values.")
+        return v
+
 
 ### Primary models
 
