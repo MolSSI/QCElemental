@@ -3,6 +3,7 @@ import copy
 import numpy as np
 import pytest
 
+import qcelemental as qcel
 from qcelemental.models import basis
 
 center_data = {
@@ -71,13 +72,13 @@ def test_basis_shell_centers(center_name):
 
 
 def test_basis_set_build():
-    b = basis.BasisSet(name="custom_basis",
-                       center_data=center_data,
-                       atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+    bas = basis.BasisSet(name="custom_basis",
+                         center_data=center_data,
+                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
 
-    assert len(b.center_data) == 3
-    assert len(b.atom_map) == 4
-    assert b.nbf == 20
+    assert len(bas.center_data) == 3
+    assert len(bas.atom_map) == 4
+    assert bas.nbf == 20
 
 
 def test_basis_electron_center_raises():
@@ -108,3 +109,66 @@ def test_basis_map_raises():
 
     with pytest.raises(ValueError) as e:
         assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
+
+
+@pytest.fixture(scope="function")
+def wavefunction_data_fixture():
+    bas = basis.BasisSet(name="custom_basis",
+                         center_data=center_data,
+                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
+    c_matrix = np.random.rand(bas.nbf, bas.nbf)
+    mol = qcel.models.Molecule.from_data("""
+        O 0 0 0
+        H 0 0 2
+        H 0 2 0
+    """)
+
+    return {
+        "molecule": mol,
+        "driver": "energy",
+        "model": {
+            "method": "UFF"
+        },
+        "return_result": 5,
+        "wavefunction": {
+            "basis": bas,
+            "scf_orbitals_a": c_matrix,
+            "orbitals_a": "scf_orbitals_a"
+        },
+        "success": True,
+        "properties": {},
+        "provenance": {
+            "creator": "qcel"
+        }
+    }
+
+
+def test_wavefunction_build(wavefunction_data_fixture):
+    assert qcel.models.Result(**wavefunction_data_fixture)
+
+
+def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
+
+    wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"] = np.random.rand(2, 2)
+    with pytest.raises(ValueError) as e:
+        qcel.models.Result(**wavefunction_data_fixture)
+
+    assert "castable to shape" in str(e.value)
+
+
+def test_wavefunction_vector_size_error(wavefunction_data_fixture):
+
+    wavefunction_data_fixture["wavefunction"]["scf_eigenvalues_a"] = np.random.rand(2)
+    with pytest.raises(ValueError) as e:
+        qcel.models.Result(**wavefunction_data_fixture)
+
+    assert "castable to shape" in str(e.value)
+
+
+def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
+
+    del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
+    with pytest.raises(ValueError) as e:
+        qcel.models.Result(**wavefunction_data_fixture)
+
+    assert "does not exists" in str(e.value)

@@ -111,7 +111,19 @@ class WavefunctionProperties(ProtoModel):
     h_effective_b: Optional[Array[float]] = Schema(None,
                                                    description="Beta-spin effective core (one-electron) Hamiltonian ")
 
-    # Return results
+    # SCF Results
+    scf_orbitals_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin orbitals.")
+    scf_orbitals_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin orbitals.")
+    scf_density_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin density matrix.")
+    scf_density_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin density matrix.")
+    scf_fock_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin Fock matrix.")
+    scf_fock_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin Fock matrix.")
+    scf_eigenvalues_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin eigenvalues.")
+    scf_eigenvalues_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin eigenvalues.")
+    scf_occupations_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin occupations.")
+    scf_occupations_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin occupations.")
+
+    # Return results, must be defined last
     orbitals_a: Optional[str] = Schema(None, description="Index to the alpha-spin orbitals of the primary return.")
     orbitals_b: Optional[str] = Schema(None, description="Index to the beta-spin orbitals of the primary return.")
     density_a: Optional[str] = Schema(None, description="Index to the alpha-spin density of the primary return.")
@@ -127,24 +139,19 @@ class WavefunctionProperties(ProtoModel):
     occupations_b: Optional[str] = Schema(
         None, description="Index to the beta-spin orbital eigenvalues of the primary return.")
 
-    # SCF Results
-    scf_orbitals_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin orbitals.")
-    scf_orbitals_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin orbitals.")
-    scf_density_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin density matrix.")
-    scf_density_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin density matrix.")
-    scf_fock_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin Fock matrix.")
-    scf_fock_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin Fock matrix.")
-    scf_eigenvalues_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin eigenvalues.")
-    scf_eigenvalues_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin eigenvalues.")
-    scf_occupations_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin occupations.")
-    scf_occupations_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin occupations.")
+    class Config(ProtoModel.Config):
+        force_skip_defaults = True
 
     @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b', whole=True)
     def _assert1d(cls, v, values):
-        n = values["basis"].nbf
+        bas = values.get("basis", None)
+
+        # Do not raise multiple errors
+        if bas is None:
+            return v
 
         try:
-            v = v.reshape(n)
+            v = v.reshape(bas.nbf)
         except (ValueError, AttributeError):
             raise ValueError("Vector must be castable to shape (nbf, nbf)!")
         return v
@@ -164,10 +171,14 @@ class WavefunctionProperties(ProtoModel):
         'scf_fock_b',
         whole=True)
     def _assert2d(cls, v, values):
-        n = values["basis"].nbf
+        bas = values.get("basis", None)
+
+        # Do not raise multiple errors
+        if bas is None:
+            return v
 
         try:
-            v = v.reshape(n, n)
+            v = v.reshape(bas.nbf, bas.nbf)
         except (ValueError, AttributeError):
             raise ValueError("Matrix must be castable to shape (nbf, nbf)!")
         return v
