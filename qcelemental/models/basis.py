@@ -99,14 +99,14 @@ class BasisSet(ProtoModel):
     description: Optional[str] = Schema(None, description="A brief description of the basis set.")
     center_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
     atom_map: List[str] = Schema(
-        ..., description="Mapping of all centers in the parent molecule to centers in `basis_data`.")
+        ..., description="Mapping of all centers in the parent molecule to centers in `center_data`.")
 
-    @validator('basis_atom_map', whole=True)
+    @validator('atom_map', whole=True)
     def _check_atom_map(cls, v, values):
         sv = set(v)
-        missing = sv - values["basis_data"].keys()
+        missing = sv - values["center_data"].keys()
 
         if missing:
-            raise ValueError(f"'basis_atom_map' contains unknown keys to 'basis_data': {missing}.")
+            raise ValueError(f"'atom_map' contains unknown keys to 'center_data': {missing}.")
 
         return v
