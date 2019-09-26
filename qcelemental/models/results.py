@@ -153,7 +153,7 @@ class WavefunctionProperties(ProtoModel):
 
     @validator(
         'scf_orbitals_a',
-        'scf_orbitals_a',
+        'scf_orbitals_b',
         whole=True)
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
@@ -207,7 +207,7 @@ class WavefunctionProperties(ProtoModel):
     def _assert_exists(cls, v, values):
 
         if values.get(v, None) is None:
-            raise ValueError(f"Return quantity {v} does not exists in the values.")
+            raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
 
 

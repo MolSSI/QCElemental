@@ -156,19 +156,10 @@ def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
     assert "castable to shape" in str(e.value)
 
 
-def test_wavefunction_vector_size_error(wavefunction_data_fixture):
-
-    wavefunction_data_fixture["wavefunction"]["scf_eigenvalues_a"] = np.random.rand(2)
-    with pytest.raises(ValueError) as e:
-        qcel.models.Result(**wavefunction_data_fixture)
-
-    assert "castable to shape" in str(e.value)
-
-
 def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
 
     del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
     with pytest.raises(ValueError) as e:
         qcel.models.Result(**wavefunction_data_fixture)
 
-    assert "does not exists" in str(e.value)
+    assert "does not exist" in str(e.value)
