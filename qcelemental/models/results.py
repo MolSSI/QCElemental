@@ -98,6 +98,48 @@ class ResultProperties(ProtoModel):
         return f"{self.__class__.__name__}({data_str})"
 
 
+class WavefunctionProperties(ProtoModel):
+
+    # The full basis set description of the quantities
+    basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
+
+    # Core Hamiltonian
+    h_core_a: Optional[Array[float]] = Schema(None, description="Alpha-spin core (one-electron) Hamiltonian.")
+    h_core_b: Optional[Array[float]] = Schema(None, description="Beta-spin core (one-electron) Hamiltonian.")
+    h_effective_a: Optional[Array[float]] = Schema(None,
+                                                   description="Alpha-spin effective core (one-electron) Hamiltonian.")
+    h_effective_b: Optional[Array[float]] = Schema(None,
+                                                   description="Beta-spin effective core (one-electron) Hamiltonian ")
+
+    # Return results
+    orbitals_a: Optional[str] = Schema(None, description="Index to the alpha-spin orbitals of the primary return.")
+    orbitals_b: Optional[str] = Schema(None, description="Index to the beta-spin orbitals of the primary return.")
+    density_a: Optional[str] = Schema(None, description="Index to the alpha-spin density of the primary return.")
+    density_b: Optional[str] = Schema(None, description="Index to the beta-spin density of the primary return.")
+    fock_a: Optional[str] = Schema(None, description="Index to the alpha-spin Fock matrix of the primary return.")
+    fock_b: Optional[str] = Schema(None, description="Index to the beta-spin Fock matrix of the primary return.")
+    eigenvalues_a: Optional[str] = Schema(None,
+                                          description="Index to the alpha-spin eigenvalues of the primary return.")
+    eigenvalues_b: Optional[str] = Schema(None,
+                                          description="Index to the beta-spin eigenvalues of the primary return.")
+    occupations_a: Optional[str] = Schema(
+        None, description="Index to the alpha-spin orbital eigenvalues of the primary return.")
+    occupations_b: Optional[str] = Schema(
+        None, description="Index to the beta-spin orbital eigenvalues of the primary return.")
+
+    # SCF Results
+    scf_orbitals_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin orbitals.")
+    scf_orbitals_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin orbitals.")
+    scf_density_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin density matrix.")
+    scf_density_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin density matrix.")
+    scf_fock_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin Fock matrix.")
+    scf_fock_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin Fock matrix.")
+    scf_eigenvalues_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin eigenvalues.")
+    scf_eigenvalues_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin eigenvalues.")
+    scf_occupations_a: Optional[Array[float]] = Schema(None, description="SCF alpha-spin occupations.")
+    scf_occupations_b: Optional[Array[float]] = Schema(None, description="SCF beta-spin occupations.")
+
+
 ### Primary models
 
 
@@ -127,6 +169,8 @@ class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
     properties: ResultProperties = Schema(..., description=str(ResultProperties.__doc__))
+    wavefunction: Optional[WavefunctionProperties] = Schema(None, description=str(WavefunctionProperties.__doc__))
+
     return_result: Union[float, Array[float], Dict[str, Any]] = Schema(
         ..., description="The value requested by the 'driver' attribute.")  # type: ignore
 
@@ -156,48 +200,3 @@ class Result(ResultInput):
             v.shape = (nsq, nsq)
 
         return v
-
-
-class WavefunctionProperties(ProtoModel):
-
-    # The full basis set description of the quantities
-    basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
-
-    # Core Hamiltonian
-    h_core_a: Array[float] = Schema(None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.")
-    h_core_b: Array[float] = Schema(None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.")
-    h_effective_a: Array[float] = Schema(
-        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.")
-    h_effective_b: Array[float] = Schema(
-        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis.")
-
-    # Return results
-    orbitals_a: Array[float] = Schema(None,
-                                      description="The alpha-spin orbitals in the AO basis of the primary return.")
-    orbitals_b: Array[float] = Schema(None, description="")
-    density_a: Array[float] = Schema(None, description="")
-    density_b: Array[float] = Schema(None, description="")
-    fock_a: Array[float] = Schema(None, description="")
-    fock_b: Array[float] = Schema(None, description="")
-    eigenvalues_a: Array[float] = Schema(None, description="")
-    eigenvalues_b: Array[float] = Schema(None, description="")
-    occupations_a: Array[float] = Schema(None, description="")
-    occupations_b: Array[float] = Schema(None, description="")
-
-    # SCF Results
-    scf_orbitals_a: Array[float] = Schema(None, description="")
-    scf_orbitals_b: Array[float] = Schema(None, description="")
-    scf_density_a: Array[float] = Schema(None, description="")
-    scf_density_b: Array[float] = Schema(None, description="")
-    scf_fock_a: Array[float] = Schema(None, description="")
-    scf_fock_b: Array[float] = Schema(None, description="")
-    scf_eigenvalues_a: Array[float] = Schema(None, description="")
-    scf_eigenvalues_b: Array[float] = Schema(None, description="")
-    scf_occupations_a: Array[float] = Schema(None, description="")
-    scf_occupations_b: Array[float] = Schema(None, description="")
-
-
-class Wavefunction(Result):
-    schema_name: constr(strip_whitespace=True, regex="qcschema_wavefunction") = "qcschema_wavefunction"  # type: ignore
-
-    wavefunction: WavefunctionProperties = Schema(..., description=str(WavefunctionProperties.__doc__))
