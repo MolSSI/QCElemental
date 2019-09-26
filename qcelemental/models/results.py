@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
@@ -151,10 +152,7 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Vector must be castable to shape (-1, )!")
         return v
 
-    @validator(
-        'scf_orbitals_a',
-        'scf_orbitals_b',
-        whole=True)
+    @validator('scf_orbitals_a', 'scf_orbitals_b', whole=True)
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
@@ -211,6 +209,24 @@ class WavefunctionProperties(ProtoModel):
         return v
 
 
+class KeepWavefunctionProtocolEnum(str, Enum):
+    """
+    Wavefunction to keep from a Result computation.
+    """
+    all = "all"
+    orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
+    none = "none"
+
+
+class ResultProtocol(ProtoModel):
+    """
+    Protocols regarding the manipulation of a Result output data.
+    """
+
+    wavefunction: KeepWavefunctionProtocolEnum = Schema(KeepWavefunctionProtocolEnum.none,
+                                                        description=str(KeepWavefunctionProtocolEnum.__doc__))
+
+
 ### Primary models
 
 
@@ -224,6 +240,7 @@ class ResultInput(ProtoModel):
     driver: DriverEnum = Schema(..., description=str(DriverEnum.__doc__))
     model: Model = Schema(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Schema({}, description="The program specific keywords to be used.")
+    protocols: ResultProtocol = Schema(ResultProtocol(), description=str(ResultProtocol.__doc__))
 
     extras: Dict[str, Any] = Schema({}, description="Extra fields that are not part of the schema.")
 
