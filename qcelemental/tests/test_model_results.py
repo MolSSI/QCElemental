@@ -27,6 +27,12 @@ center_data = {
             "angular_momentum": [0, 1],
             "exponents": [5.0331513, 1.1695961, 0.3803890],
             "coefficients": [[-0.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]]
+        }, {
+            "harmonic_type":
+            "cartesian",
+            "angular_momentum": [0],
+            "exponents": [5.0331513, 1.1695961, 0.3803890],
+            "coefficients": [[-5.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]]
         }]
     },
     "bs_def2tzvp_zr": {
@@ -141,15 +147,32 @@ def test_basis_set_build():
 
     assert len(bas.center_data) == 3
     assert len(bas.atom_map) == 4
-    assert bas.nbf == 20
+    assert bas.nbf == 21
+
+    es = bas.center_data["bs_sto3g_o"].electron_shells
+    assert es[0].is_contracted() is False
+    assert es[1].is_contracted() is False
+    assert es[2].is_contracted()
 
 
 def test_basis_electron_center_raises():
     data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
-    data["coefficients"] = [[5, 3]]
 
-    with pytest.raises(ValueError):
-        basis.ElectronShell(**data)
+    # Check bad coefficient length
+    bad_coef = data.copy()
+    bad_coef["coefficients"] = [[5, 3]]
+    with pytest.raises(ValueError) as e:
+        basis.ElectronShell(**bad_coef)
+
+    assert "does not match the" in str(e.value)
+
+    # Check bad fused shell
+    bad_fused = data.copy()
+    bad_fused["angular_momentum"] = [0, 1]
+    with pytest.raises(ValueError) as e:
+        basis.ElectronShell(**bad_fused)
+
+    assert "fused shell" in str(e.value)
 
 
 def test_basis_ecp_center_raises():
@@ -206,7 +229,7 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
 def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
 
     if keep is not None:
-        optimization_data_fixture["protocols"] = {"keep_trajectory": keep}
+        optimization_data_fixture["protocols"] = {"trajectory": keep}
     opt = qcel.models.Optimization(**optimization_data_fixture)
 
     assert len(opt.trajectory) == len(indices)
