@@ -91,7 +91,6 @@ class Optimization(OptimizationInput):
             raise ValueError("Protocols was not properly formed.")
 
         keep_enum = values['protocols'].trajectory
-        warn = False
         if keep_enum == 'all':
             pass
         elif keep_enum == "initial_and_final":
@@ -104,6 +103,6 @@ class Optimization(OptimizationInput):
             if len(v) != []:
                 v = []
         else:
-            raise KeyError(f"Protocol `keep_trajectory:{keep_enum}` is not understood.")
+            raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 
         return v
