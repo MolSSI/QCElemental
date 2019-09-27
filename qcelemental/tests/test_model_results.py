@@ -100,7 +100,13 @@ def wavefunction_data_fixture(result_data_fixture):
                          center_data=center_data,
                          atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
-    result_data_fixture["wavefunction"] = {"basis": bas, "scf_orbitals_a": c_matrix, "orbitals_a": "scf_orbitals_a"}
+    result_data_fixture["protocols"] = {"wavefunction": "all"}
+    result_data_fixture["wavefunction"] = {
+        "basis": bas,
+        "restricted": True,
+        "scf_orbitals_a": c_matrix,
+        "orbitals_a": "scf_orbitals_a"
+    }
 
     return result_data_fixture
 
@@ -197,6 +203,17 @@ def test_basis_map_raises():
         assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
 
 
+def test_result_build(result_data_fixture):
+    ret = qcel.models.Result(**result_data_fixture)
+    assert ret.wavefunction is None
+
+
+def test_result_build_wavefunction_delete(wavefunction_data_fixture):
+    del wavefunction_data_fixture["protocols"]
+    ret = qcel.models.Result(**wavefunction_data_fixture)
+    assert ret.wavefunction is None
+
+
 def test_wavefunction_build(wavefunction_data_fixture):
     assert qcel.models.Result(**wavefunction_data_fixture)
 
@@ -217,6 +234,46 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
         qcel.models.Result(**wavefunction_data_fixture)
 
     assert "does not exist" in str(e.value)
+
+
+@pytest.mark.parametrize("protocol, restricted, provided, expected", [
+    ('none', True, ['orbitals_a', 'orbitals_b'], []),
+    (None, True, ['orbitals_a', 'orbitals_b'], []),
+    ('all', False, ['orbitals_a', 'orbitals_b'], ['orbitals_a', 'orbitals_b']),
+    ('all', True, ['orbitals_a', 'orbitals_b'], ['orbitals_a']),
+    ('orbitals_and_eigenvalues', False, ['orbitals_a', 'orbitals_b', 'fock_a', 'fock_b'], ['orbitals_a', 'orbitals_b'
+                                                                                           ]),
+    ('orbitals_and_eigenvalues', True, ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'fock_a', 'fock_b'
+                                        ], ['orbitals_a', 'eigenvalues_a']),
+    ('return_results', True, ['orbitals_a', 'fock_a', 'fock_b'], ['orbitals_a', 'fock_a']),
+])
+def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture):
+
+    wfn_data = wavefunction_data_fixture["wavefunction"]
+
+    if protocol is None:
+        wavefunction_data_fixture.pop("protocols")
+    else:
+        wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
+
+    wfn_data["restricted"] = restricted
+    bas = wfn_data["basis"]
+
+    for name in provided:
+        scf_name = "scf_" + name
+        wfn_data[name] = scf_name
+        if "eigen" in name:
+            wfn_data[scf_name] = np.random.rand(bas.nbf)
+        else:
+            wfn_data[scf_name] = np.random.rand(bas.nbf, bas.nbf)
+
+    wfn = qcel.models.Result(**wavefunction_data_fixture)
+
+    if len(expected) == 0:
+        assert wfn.wavefunction is None
+    else:
+        expected_keys = (set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"})
+        assert wfn.wavefunction.dict().keys() == expected_keys
 
 
 @pytest.mark.parametrize("keep, indices", [

@@ -100,8 +100,7 @@ class Optimization(OptimizationInput):
             if len(v) != 1:
                 v = [v[-1]]
         elif keep_enum == "none":
-            if len(v) != []:
-                v = []
+            v = []
         else:
             raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 

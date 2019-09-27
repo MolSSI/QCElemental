@@ -70,10 +70,7 @@ class ElectronShell(ProtoModel):
             True if the shell is contracted.
         """
 
-        if (len(self.coefficients) != 1) and (len(self.angular_momentum) == 1):
-            return True
-        else:
-            return False
+        return (len(self.coefficients) != 1) and (len(self.angular_momentum) == 1)
 
 
 class ECPType(str, Enum):
