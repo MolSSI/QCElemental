@@ -4,7 +4,6 @@ from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
 from pydantic import BaseModel, BaseSettings
-from pydantic.main import MetaModel
 
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize

@@ -1,4 +1,3 @@
-import warnings
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -12,7 +11,7 @@ from .molecule import Molecule
 from .results import Result
 
 
-class KeepTrajectoryProtocolEnum(str, Enum):
+class TrajectoryProtocolEnum(str, Enum):
     """
     Which gradient evaluations to keep in an optimization trajectory.
     """
@@ -22,13 +21,13 @@ class KeepTrajectoryProtocolEnum(str, Enum):
     none = "none"
 
 
-class OptimizationProtocol(ProtoModel):
+class OptimizationProtocols(ProtoModel):
     """
     Protocols regarding the manipulation of a Optimization output data.
     """
 
-    keep_trajectory: KeepTrajectoryProtocolEnum = Schema(KeepTrajectoryProtocolEnum.all,
-                                                         description=str(KeepTrajectoryProtocolEnum.__doc__))
+    trajectory: TrajectoryProtocolEnum = Schema(TrajectoryProtocolEnum.all,
+                                                description=str(TrajectoryProtocolEnum.__doc__))
 
 
 class QCInputSpecification(ProtoModel):
@@ -54,7 +53,7 @@ class OptimizationInput(ProtoModel):
 
     keywords: Dict[str, Any] = Schema({}, description="The optimization specific keywords to be used.")
     extras: Dict[str, Any] = Schema({}, description="Extra fields that are not part of the schema.")
-    protocols: OptimizationProtocol = Schema(OptimizationProtocol(), description=str(OptimizationProtocol.__doc__))
+    protocols: OptimizationProtocols = Schema(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
 
     input_specification: QCInputSpecification = Schema(..., description=str(QCInputSpecification.__doc__))
     initial_molecule: Molecule = Schema(..., description="The starting molecule for the geometry optimization.")
@@ -72,8 +71,8 @@ class Optimization(OptimizationInput):
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule] = Schema(..., description="The final molecule of the geometry optimization.")
-    trajectory: List[Result] = Schema(...,
-                                      description="A list of ordered Result objects for each step in the optimization.")
+    trajectory: List[Result] = Schema(
+        ..., description="A list of ordered Result objects for each step in the optimization.")
     energies: List[float] = Schema(..., description="A list of ordered energies for each step in the optimization.")
 
     stdout: Optional[str] = Schema(None, description="The standard output of the program.")
@@ -89,28 +88,22 @@ class Optimization(OptimizationInput):
 
         # Do not propogate validation errors
         if 'protocols' not in values:
-            raise ValidationError("Protocols was not properly formed.")
+            raise ValueError("Protocols was not properly formed.")
 
-        keep_enum = values['protocols'].keep_trajectory
+        keep_enum = values['protocols'].trajectory
         warn = False
         if keep_enum == 'all':
             pass
         elif keep_enum == "initial_and_final":
             if len(v) != 2:
                 v = [v[0], v[-1]]
-                warn = True
         elif keep_enum == "final":
             if len(v) != 1:
                 v = [v[-1]]
-                warn = True
         elif keep_enum == "none":
             if len(v) != []:
                 v = []
-                warn = True
         else:
             raise KeyError(f"Protocol `keep_trajectory:{keep_enum}` is not understood.")
-
-        # if warn:
-        #     warnings.warn(f"Protocol `keep_trajectory:{keep_enum}` modified the input data.")
 
         return v
