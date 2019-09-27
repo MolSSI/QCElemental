@@ -11,15 +11,7 @@ from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
-class PydanticAutodocMeta(MetaModel):
-    def __new__(mcs, name, bases, namespace):
-
-        ret = super().__new__(mcs, name, bases, namespace)
-        ret.__doc__ = AutoPydanticDocGenerator(ret, always_apply=True)
-        return ret
-
-
-class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
+class ProtoModel(BaseModel):
     class Config:
         allow_mutation = False
         extra = "forbid"
@@ -28,6 +20,9 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
         serialize_skip_defaults = False
         force_skip_defaults = False
         canonical_repr = False
+
+    def __init_subclass__(cls) -> None:
+        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
@@ -165,5 +160,6 @@ class ProtoModel(BaseModel, metaclass=PydanticAutodocMeta):
             return f"{self.__class__.__name__}(ProtoModel)"
 
 
-class AutodocBaseSettings(BaseSettings, metaclass=PydanticAutodocMeta):
-    pass
+class AutodocBaseSettings(BaseSettings):
+    def __init_subclass__(cls) -> None:
+        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)

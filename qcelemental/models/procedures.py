@@ -73,7 +73,7 @@ class Optimization(OptimizationInput):
 
     final_molecule: Optional[Molecule] = Schema(..., description="The final molecule of the geometry optimization.")
     trajectory: List[Result] = Schema(...,
-                                      description="A list of order Result objects for each step in the optimization.")
+                                      description="A list of ordered Result objects for each step in the optimization.")
     energies: List[float] = Schema(..., description="A list of ordered energies for each step in the optimization.")
 
     stdout: Optional[str] = Schema(None, description="The standard output of the program.")
