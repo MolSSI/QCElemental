@@ -37,6 +37,14 @@ class ElectronShell(ProtoModel):
 
         return v
 
+    @validator('coefficients', whole=True)
+    def _check_general_contraction_or_fused(cls, v, values):
+        if len(values["angular_momentum"]) > 1:
+            if len(values["angular_momentum"]) != len(v):
+                raise ValueError("The length for a fused shell must equal the length of coefficients.")
+
+        return v
+
     def nfunctions(self) -> int:
         """
         Computes the number of basis functions on this shell.
@@ -51,6 +59,18 @@ class ElectronShell(ProtoModel):
             return sum((2 * L + 1) for L in self.angular_momentum)
         else:
             return sum(((L + 1) * (L + 2) // 2) for L in self.angular_momentum)
+
+    def is_contracted(self) -> bool:
+        """
+        Checks if the shell represents a contracted Gaussian or not.
+
+        Returns
+        -------
+        bool
+            True if the shell is contracted.
+        """
+
+        return (len(self.coefficients) != 1) and (len(self.angular_momentum) == 1)
 
 
 class ECPType(str, Enum):

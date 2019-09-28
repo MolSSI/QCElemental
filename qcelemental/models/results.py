@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
@@ -102,6 +103,10 @@ class WavefunctionProperties(ProtoModel):
 
     # The full basis set description of the quantities
     basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
+    restricted: bool = Schema(
+        ...,
+        description=str(
+            "If the computation was restricted or not (alpha == beta). If True, all beta quantities are skipped."))
 
     # Core Hamiltonian
     h_core_a: Optional[Array[float]] = Schema(None, description="Alpha-spin core (one-electron) Hamiltonian.")
@@ -151,10 +156,7 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Vector must be castable to shape (-1, )!")
         return v
 
-    @validator(
-        'scf_orbitals_a',
-        'scf_orbitals_b',
-        whole=True)
+    @validator('scf_orbitals_a', 'scf_orbitals_b', whole=True)
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
@@ -194,7 +196,7 @@ class WavefunctionProperties(ProtoModel):
         return v
 
     @validator('orbitals_a',
-               'orbitals_a',
+               'orbitals_b',
                'density_a',
                'density_b',
                'fock_a',
@@ -211,6 +213,25 @@ class WavefunctionProperties(ProtoModel):
         return v
 
 
+class WavefunctionProtocolEnum(str, Enum):
+    """
+    Wavefunction to keep from a Result computation.
+    """
+    all = "all"
+    orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
+    return_results = "return_results"
+    none = "none"
+
+
+class ResultProtocols(ProtoModel):
+    """
+    Protocols regarding the manipulation of a Result output data.
+    """
+
+    wavefunction: WavefunctionProtocolEnum = Schema(WavefunctionProtocolEnum.none,
+                                                    description=str(WavefunctionProtocolEnum.__doc__))
+
+
 ### Primary models
 
 
@@ -224,6 +245,7 @@ class ResultInput(ProtoModel):
     driver: DriverEnum = Schema(..., description=str(DriverEnum.__doc__))
     model: Model = Schema(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Schema({}, description="The program specific keywords to be used.")
+    protocols: ResultProtocols = Schema(ResultProtocols(), description=str(ResultProtocols.__doc__))
 
     extras: Dict[str, Any] = Schema({}, description="Extra fields that are not part of the schema.")
 
@@ -271,3 +293,64 @@ class Result(ResultInput):
             v.shape = (nsq, nsq)
 
         return v
+
+    @validator('wavefunction', whole=True, pre=True)
+    def _wavefunction_protocol(cls, value, values):
+
+        # We are pre, gotta do extra checks
+        if value is None:
+            return value
+        elif isinstance(value, dict):
+            wfn = value.copy()
+        elif isinstance(value, WavefunctionProperties):
+            wfn = value.dict()
+        else:
+            raise ValueError('wavefunction must be None, a dict, or a WavefunctionProperties object.')
+
+        # Do not propogate validation errors
+        if 'protocols' not in values:
+            raise ValueError("Protocols was not properly formed.")
+
+        # Handle restricted
+        restricted = wfn.get('restricted', None)
+        if restricted is None:
+            raise ValueError('`restricted` is required.')
+
+        if restricted:
+            for k in list(wfn.keys()):
+                if k.endswith('_b'):
+                    wfn.pop(k)
+
+        # Handle protocols
+        wfnp = values['protocols'].wavefunction
+        return_keep = None
+        if wfnp == 'all':
+            pass
+        elif wfnp == 'none':
+            wfn = None
+        elif wfnp == 'return_results':
+            return_keep = [
+                'orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a',
+                'eigenvalues_b', 'occupations_a', 'occupations_b'
+            ]
+        elif wfnp == 'orbitals_and_eigenvalues':
+            return_keep = ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'eigenvalues_b']
+        else:
+            raise ValueError(f"Protocol `wavefunction:{wfnp}` is not understood.")
+
+        if return_keep is not None:
+            ret_wfn = {"restricted": restricted}
+            if "basis" in wfn:
+                ret_wfn["basis"] = wfn["basis"]
+
+            for rk in return_keep:
+                key = wfn.get(rk, None)
+                if key is None:
+                    continue
+
+                ret_wfn[rk] = key
+                ret_wfn[key] = wfn[key]
+
+            return ret_wfn
+        else:
+            return wfn
