@@ -166,7 +166,7 @@ class BasisSet(ProtoModel):
         return v
 
     @classmethod
-    def _calculate_nbf(self, atom_map, center_data) -> int:
+    def _calculate_nbf(cls, atom_map, center_data) -> int:
         """
         Number of basis functions in the basis set.
 

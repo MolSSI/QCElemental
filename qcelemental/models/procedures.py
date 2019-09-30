@@ -29,6 +29,9 @@ class OptimizationProtocols(ProtoModel):
     trajectory: TrajectoryProtocolEnum = Schema(TrajectoryProtocolEnum.all,
                                                 description=str(TrajectoryProtocolEnum.__doc__))
 
+    class Config:
+        force_skip_defaults = True
+
 
 class QCInputSpecification(ProtoModel):
     """

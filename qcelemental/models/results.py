@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Set, Optional, Union
 
 import numpy as np
 from pydantic import Schema, constr, validator
@@ -100,6 +100,12 @@ class ResultProperties(ProtoModel):
 
 
 class WavefunctionProperties(ProtoModel):
+
+    # Class properties
+    _return_results_names: Set[str] = {
+        'orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a', 'eigenvalues_b',
+        'occupations_a', 'occupations_b'
+    }
 
     # The full basis set description of the quantities
     basis: BasisSet = Schema(..., description=str(BasisSet.__doc__))
@@ -230,6 +236,9 @@ class ResultProtocols(ProtoModel):
 
     wavefunction: WavefunctionProtocolEnum = Schema(WavefunctionProtocolEnum.none,
                                                     description=str(WavefunctionProtocolEnum.__doc__))
+
+    class Config:
+        force_skip_defaults = True
 
 
 ### Primary models
