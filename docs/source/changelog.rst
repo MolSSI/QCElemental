@@ -13,6 +13,22 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.9.0 / 2019-10-01
+------------------
+
+New Features
+++++++++++++
+- (:pr:`137`, :pr:`138`) Coordinates can now be output in ``Turbomole`` format in addition to all other formats.
+- (:pr:`139`) A wavefunction property have been added to the ``Result`` Model. Adds the ability for Engine and other
+  programs to store and fetch wavefunction data.
+- (:pr:`140`) ``Protocols`` have been added to ``QCInputSpecification`` which allows data to pre-pruned by different
+  specifications. Main intention is to reduce wavefunction data which may be re-computed cheaply rather than storing
+  all of it. This does change the input model, so requires a minor version bump.
+
+Enhancements
+++++++++++++
+- (:pr:`132`) ``BasisSet`` and ``Result``'s documentations have been brought up to the standards of other models.
+
 0.8.0 / 2019-09-13
 ------------------
 
