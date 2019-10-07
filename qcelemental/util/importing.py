@@ -22,7 +22,11 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
 
     """
     import importlib
-    module_spec = importlib.util.find_spec(module)
+
+    try:
+        module_spec = importlib.util.find_spec(module)
+    except ModuleNotFoundError:
+        module_spec = None
 
     if module_spec is None:
         if raise_error:
