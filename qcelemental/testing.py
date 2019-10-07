@@ -102,7 +102,7 @@ def compare_values(expected,
         if expected is None and computed is None:
             return return_handler(True, label, pass_message, return_message, quiet)
 
-    if expected.dtype == np.complex:
+    if np.iscomplexobj(expected):
         dtype = np.complex
     else:
         dtype = np.float
