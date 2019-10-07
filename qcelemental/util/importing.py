@@ -5,7 +5,7 @@ from typing import Union
 
 
 def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False,
-                 raise_msg: str = None) -> Union[bool, None, str]:
+                 raise_msg: str = None, package: str = None) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -22,7 +22,8 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
 
     """
     import importlib
-    module_spec = importlib.util.find_spec(module)
+
+    module_spec = importlib.util.find_spec(module, package=package)
 
     if module_spec is None:
         if raise_error:
