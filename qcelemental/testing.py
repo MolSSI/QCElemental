@@ -102,10 +102,15 @@ def compare_values(expected,
         if expected is None and computed is None:
             return return_handler(True, label, pass_message, return_message, quiet)
 
+    if np.iscomplexobj(expected):
+        dtype = np.complex
+    else:
+        dtype = np.float
+
     try:
-        xptd, cptd = np.array(expected, dtype=np.float), np.array(computed, dtype=np.float)
+        xptd, cptd = np.array(expected, dtype=dtype), np.array(computed, dtype=dtype)
     except Exception:
-        return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray of np.float.""",
+        return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray of {dtype}.""",
                               return_message, quiet)
 
     if xptd.shape != cptd.shape:
