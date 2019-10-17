@@ -289,14 +289,14 @@ class Molecule(ProtoModel):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
 
-    @validator('masses', 'real', each_item=False)
+    @validator('masses', 'real')
     def _must_be_n(cls, v, values, **kwargs):
         n = len(values['symbols'])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
-    @validator('real', each_item=False)
+    @validator('real')
     def _populate_real(cls, v, values, **kwargs):
         # Can't use geometry here since its already been validated and not in values
         n = len(values['symbols'])
@@ -304,7 +304,7 @@ class Molecule(ProtoModel):
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator('fragment_charges', 'fragment_multiplicities', each_item=False)
+    @validator('fragment_charges', 'fragment_multiplicities')
     def _must_be_n_frag(cls, v, values, **kwargs):
         if 'fragments' in values:
             n = len(values['fragments'])
@@ -317,7 +317,7 @@ class Molecule(ProtoModel):
 
     @validator('connectivity')
     def _min_zero(cls, v):
-        if v < 0:
+        if v and (v < 0):
             raise ValueError("Connectivity entries must be greater than 0")
         return v
 

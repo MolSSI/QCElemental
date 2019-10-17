@@ -153,7 +153,7 @@ class WavefunctionProperties(ProtoModel):
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
-    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b', each_item=False)
+    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b')
     def _assert1d(cls, v, values):
 
         try:
@@ -162,7 +162,7 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Vector must be castable to shape (-1, )!")
         return v
 
-    @validator('scf_orbitals_a', 'scf_orbitals_b', each_item=False)
+    @validator('scf_orbitals_a', 'scf_orbitals_b')
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
@@ -186,8 +186,7 @@ class WavefunctionProperties(ProtoModel):
         'scf_density_a',
         'scf_density_b',
         'scf_fock_a',
-        'scf_fock_b',
-        each_item=False)
+        'scf_fock_b')
     def _assert2d(cls, v, values):
         bas = values.get("basis", None)
 
@@ -210,8 +209,7 @@ class WavefunctionProperties(ProtoModel):
                'eigenvalues_a',
                'eigenvalues_b',
                'occupations_a',
-               'occupations_b',
-               each_item=False)
+               'occupations_b')
     def _assert_exists(cls, v, values):
 
         if values.get(v, None) is None:
@@ -292,7 +290,7 @@ class Result(ResultInput):
         raise ValueError("Only {0} or {1} is allowed for schema_name, "
                          "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default))
 
-    @validator("return_result", each_item=False)
+    @validator("return_result")
     def _validate_return_result(cls, v, values):
         if values["driver"] == "gradient":
             v = np.asarray(v).reshape(-1, 3)
@@ -303,7 +301,7 @@ class Result(ResultInput):
 
         return v
 
-    @validator('wavefunction', each_item=False, pre=True)
+    @validator('wavefunction', pre=True)
     def _wavefunction_protocol(cls, value, values):
 
         # We are pre, gotta do extra checks
