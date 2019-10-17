@@ -86,7 +86,7 @@ class Optimization(OptimizationInput):
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    @validator('trajectory', whole=True)
+    @validator('trajectory', each_item=False)
     def _trajectory_protocol(cls, v, values):
 
         # Do not propogate validation errors

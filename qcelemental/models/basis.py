@@ -28,7 +28,7 @@ class ElectronShell(ProtoModel):
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients', each_item=False)
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["exponents"])
         for row in v:
@@ -37,7 +37,7 @@ class ElectronShell(ProtoModel):
 
         return v
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients', each_item=False)
     def _check_general_contraction_or_fused(cls, v, values):
         if len(values["angular_momentum"]) > 1:
             if len(values["angular_momentum"]) != len(v):
@@ -96,7 +96,7 @@ class ECPPotential(ProtoModel):
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
-    @validator('gaussian_exponents', whole=True)
+    @validator('gaussian_exponents', each_item=False)
     def _check_gaussian_exponentst_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         if len(v) != len_exp:
@@ -104,7 +104,7 @@ class ECPPotential(ProtoModel):
 
         return v
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients', each_item=False)
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         for row in v:
@@ -138,7 +138,7 @@ class BasisSet(ProtoModel):
 
     nbf: Optional[int] = Field(None, description="The number of basis functions.")
 
-    @validator('atom_map', whole=True)
+    @validator('atom_map', each_item=False)
     def _check_atom_map(cls, v, values):
         sv = set(v)
         missing = sv - values["center_data"].keys()

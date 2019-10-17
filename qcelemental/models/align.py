@@ -23,7 +23,7 @@ class AlignmentMill(ProtoModel):
     atommap: Array[int]  # type: ignore
     mirror: bool = False
 
-    @validator('shift', whole=True)
+    @validator('shift', each_item=False)
     def _must_be_3(cls, v, values, **kwargs):
         try:
             v = v.reshape(3)
@@ -31,7 +31,7 @@ class AlignmentMill(ProtoModel):
             raise ValueError("Shift must be castable to shape (3,)!")
         return v
 
-    @validator('rotation', whole=True)
+    @validator('rotation', each_item=False)
     def _must_be_33(cls, v, values, **kwargs):
         try:
             v = v.reshape(3, 3)
