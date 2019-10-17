@@ -37,12 +37,12 @@ def is_pydantic(test_object):
 
 
 def parse_type_str(prop) -> str:
-    from pydantic.fields import Shape  # Import here to minimize issues
+    from pydantic import fields  # Import here to minimize issues
     typing_map = {
-        Shape.TUPLE: "Tuple",
-        Shape.SET: "Set",
-        Shape.LIST: "List",
-        Shape.SINGLETON: "Union"
+        fields.SHAPE_TUPLE: "Tuple",
+        fields.SHAPE_SET: "Set",
+        fields.SHAPE_LIST: "List",
+        fields.SHAPE_SINGLETON: "Union"
     }  # yapf: disable
     if type(prop) is type or prop.__module__ == "typing":
         # True native Python type
@@ -50,7 +50,7 @@ def parse_type_str(prop) -> str:
     elif issubclass(prop.type_.__class__, Enum) or issubclass(prop.type_.__class__, EnumMeta):
         # Enumerate, have to do the __class__ or issubclass(prop.type_) throws issues later.
         prop_type_str = '{' + ','.join([str(x.value) for x in prop.type_]) + '}'
-    elif type(prop.type_) is type and prop.shape == Shape.SINGLETON:
+    elif type(prop.type_) is type and prop.shape == fields.SHAPE_SINGLETON:
         # Native Python type buried in a Field
         prop_type_str = type_to_string(prop.type_)
     elif is_pydantic(prop.type_):
@@ -70,7 +70,7 @@ def parse_type_str(prop) -> str:
                 prop_type_str = parsed_types[0]
             else:
                 prop_type_str = "Union[" + ', '.join(parsed_types) + ']'
-        elif prop.shape == Shape.MAPPING:
+        elif prop.shape == fields.SHAPE_MAPPING:
             prop_type_str = "Dict[" + parse_type_str(key_field) + ', ' + parse_type_str(prop.type_) + ']'
         elif sub_fields is not None:
             # Not "optional", but iterable
@@ -130,7 +130,7 @@ def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool 
                 prop_type_str = parse_type_str(prop)
 
                 # Handle (optional) description
-                prop_desc = prop.schema.description  # type: ignore
+                prop_desc = prop.field_info.description  # type: ignore
 
                 # Combine in the following format:
                 # name : type(, Optional, Default)
