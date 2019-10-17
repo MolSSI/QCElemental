@@ -61,8 +61,8 @@ class ResultProperties(ProtoModel):
     mp2_total_correlation_energy: Optional[float] = Field(
         None, description="The MP2 correlation energy.")  # Old name, to be deprecated
     mp2_correlation_energy: Optional[float] = Field(None, description="The MP2 correlation energy.")
-    mp2_total_energy: Optional[float] = Field(
-        None, description="The total MP2 energy (MP2 correlation energy + HF energy).")
+    mp2_total_energy: Optional[float] = Field(None,
+                                              description="The total MP2 energy (MP2 correlation energy + HF energy).")
     mp2_dipole_moment: Optional[List[float]] = Field(None, description="The MP2 X, Y, and Z dipole components.")
 
     # CCSD Keywords
@@ -81,22 +81,17 @@ class ResultProperties(ProtoModel):
     ccsd_total_energy: Optional[float] = Field(
         None, description="The total CCSD energy (CCSD correlation energy + HF energy).")
     ccsd_dipole_moment: Optional[List[float]] = Field(None, description="The CCSD X, Y, and Z dipole components.")
-    ccsd_iterations: Optional[int] = Field(None,
-                                            description="The number of CCSD iterations taken before convergence.")
+    ccsd_iterations: Optional[int] = Field(None, description="The number of CCSD iterations taken before convergence.")
 
     # CCSD(T) keywords
     ccsd_prt_pr_correlation_energy: Optional[float] = Field(None, description="The CCSD(T) correlation energy.")
     ccsd_prt_pr_total_energy: Optional[float] = Field(
         None, description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy).")
     ccsd_prt_pr_dipole_moment: Optional[List[float]] = Field(None,
-                                                              description="The CCSD(T) X, Y, and Z dipole components.")
+                                                             description="The CCSD(T) X, Y, and Z dipole components.")
 
     class Config(ProtoModel.Config):
         force_skip_defaults = True
-
-    def __str__(self):
-        data_str = ', '.join(f'{k}={v}' for k, v in self.dict().items())
-        return f"{self.__class__.__name__}({data_str})"
 
 
 class WavefunctionProperties(ProtoModel):
@@ -118,9 +113,9 @@ class WavefunctionProperties(ProtoModel):
     h_core_a: Optional[Array[float]] = Field(None, description="Alpha-spin core (one-electron) Hamiltonian.")
     h_core_b: Optional[Array[float]] = Field(None, description="Beta-spin core (one-electron) Hamiltonian.")
     h_effective_a: Optional[Array[float]] = Field(None,
-                                                   description="Alpha-spin effective core (one-electron) Hamiltonian.")
+                                                  description="Alpha-spin effective core (one-electron) Hamiltonian.")
     h_effective_b: Optional[Array[float]] = Field(None,
-                                                   description="Beta-spin effective core (one-electron) Hamiltonian ")
+                                                  description="Beta-spin effective core (one-electron) Hamiltonian ")
 
     # SCF Results
     scf_orbitals_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin orbitals.")
@@ -142,9 +137,8 @@ class WavefunctionProperties(ProtoModel):
     fock_a: Optional[str] = Field(None, description="Index to the alpha-spin Fock matrix of the primary return.")
     fock_b: Optional[str] = Field(None, description="Index to the beta-spin Fock matrix of the primary return.")
     eigenvalues_a: Optional[str] = Field(None,
-                                          description="Index to the alpha-spin eigenvalues of the primary return.")
-    eigenvalues_b: Optional[str] = Field(None,
-                                          description="Index to the beta-spin eigenvalues of the primary return.")
+                                         description="Index to the alpha-spin eigenvalues of the primary return.")
+    eigenvalues_b: Optional[str] = Field(None, description="Index to the beta-spin eigenvalues of the primary return.")
     occupations_a: Optional[str] = Field(
         None, description="Index to the alpha-spin orbital eigenvalues of the primary return.")
     occupations_b: Optional[str] = Field(
@@ -200,16 +194,8 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Matrix must be castable to shape (nbf, nbf)!")
         return v
 
-    @validator('orbitals_a',
-               'orbitals_b',
-               'density_a',
-               'density_b',
-               'fock_a',
-               'fock_b',
-               'eigenvalues_a',
-               'eigenvalues_b',
-               'occupations_a',
-               'occupations_b')
+    @validator('orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a',
+               'eigenvalues_b', 'occupations_a', 'occupations_b')
     def _assert_exists(cls, v, values):
 
         if values.get(v, None) is None:
@@ -233,7 +219,7 @@ class ResultProtocols(ProtoModel):
     """
 
     wavefunction: WavefunctionProtocolEnum = Field(WavefunctionProtocolEnum.none,
-                                                    description=str(WavefunctionProtocolEnum.__doc__))
+                                                   description=str(WavefunctionProtocolEnum.__doc__))
 
     class Config:
         force_skip_defaults = True

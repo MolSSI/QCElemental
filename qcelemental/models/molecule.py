@@ -893,8 +893,9 @@ class Molecule(ProtoModel):
     def __str__(self) -> str:
         return self.pretty_print()
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}' hash='{self.get_hash()[:7]}')>"
+    def __repr_str__(self, join_str: str) -> str:
+        return join_str.join(
+            ["name='{self.name}'", f"formula='{self.get_molecular_formula()}'", f"hash='{self.get_hash()[:7]}')>"])
 
     def _repr_html_(self) -> str:
         try:

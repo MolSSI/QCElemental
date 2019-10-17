@@ -207,10 +207,33 @@ def test_default_skip():
     assert obj.dict().keys() == {"scf_one_electron_energy"}
 
 
-def test_default_repr():
+def test_result_properties_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")
+    print()
+    print(str(obj))
+    print(repr(obj))
     assert len(str(obj)) < 100
     assert len(repr(obj)) < 100
+
+def test_canonical_repr():
+
+    class A(ProtoModel):
+        f1: float = 5.0
+        f2: float = 3.0
+
+        class Config:
+            canonical_repr = False
+
+    class B(ProtoModel):
+        f1: float = 5.0
+        f2: float = 3.0
+
+        class Config:
+            canonical_repr = True
+
+    a = A()
+    print(str(a))
+    print(repr(a))
 
 
 def test_repr_provenance():

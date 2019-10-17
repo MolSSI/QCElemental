@@ -10,18 +10,31 @@ from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
+def _proto_repr_style(self, join_str: str) -> str:
+    """
+    This is required to be __repr_str__ as pydantic decided to rebuild a new base
+    """
+    if self.__config__.repr_style == "default":
+        return super().__repr_str__(join_str)
+    elif self.__config__.repr_style == 'dict':
+        return join_str.join(f'{k}={v}' for k, v in self.dict().items())
+    else:
+        raise "Invalid repr_style detected, please edit this classes config."
+
+
 class ProtoModel(BaseModel):
     class Config:
-        allow_mutation = False
-        extra = "forbid"
-        json_encoders = {np.ndarray: lambda v: v.flatten().tolist()}
+        allow_mutation: bool = False
+        extra: str = "forbid"
+        json_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes: Set = set()
-        serialize_skip_defaults = False
-        force_skip_defaults = False
-        canonical_repr = False
+        serialize_skip_defaults: bool = False
+        force_skip_defaults: bool = False
+        repr_style: str = 'dict'
 
     def __init_subclass__(cls) -> None:
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
+        cls.__repr_str__ = _proto_repr_style
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
@@ -151,12 +164,6 @@ class ProtoModel(BaseModel):
             True if the objects match.
         """
         return compare_recursive(self, other, **kwargs)
-
-    def __str__(self) -> str:  # lgtm: [py/inheritance/incorrect-overridden-signature]
-        if self.__config__.canonical_repr:  # type: ignore
-            return super().to_string()
-        else:
-            return f"{self.__class__.__name__}(ProtoModel)"
 
 
 class AutodocBaseSettings(BaseSettings):
