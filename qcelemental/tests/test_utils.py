@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-from pydantic import BaseModel, Schema
+from pydantic import BaseModel, Field
 
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
@@ -19,13 +19,13 @@ def doc_fixture():
     class X(BaseModel):
         """A Pydantic model made up of many, many different combinations of ways of mapping types in Pydantic"""
         x: int
-        y: str = Schema(...)
+        y: str = Field(...)
         n: Nest
-        n2: Nest = Schema(Nest(), description="A detailed description")
+        n2: Nest = Field(Nest(), description="A detailed description")
         z: float = 5
         z2: float = None
         z3: Optional[float]
-        z4: Optional[float] = Schema(5, description="Some number I just made up")
+        z4: Optional[float] = Field(5, description="Some number I just made up")
         z5: Optional[Union[float, int]]
         z6: Optional[List[int]]
         l: List[int]
@@ -34,11 +34,11 @@ def doc_fixture():
         t2: Tuple[List[int]]
         t3: Tuple[Any]
         d: Dict[str, Any]
-        dlu: Dict[Union[int, str], List[Union[int, str, float]]] = Schema(..., description="this is complicated")
+        dlu: Dict[Union[int, str], List[Union[int, str, float]]] = Field(..., description="this is complicated")
         dlu2: Dict[Any, List[Union[int, str, float]]]
         dlu3: Dict[str, Any]
-        si: int = Schema(..., description="A level of constraint", gt=0)
-        sf: float = Schema(None, description="Optional Constrained Number", le=100.3)
+        si: int = Field(..., description="A level of constraint", gt=0)
+        sf: float = Field(None, description="Optional Constrained Number", le=100.3)
 
     yield X
 
