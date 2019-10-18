@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Tuple, Union
 import numpy as np
 
 from ..physical_constants import constants
+from ..molutil import guess_connectivity
 
 
 def to_string(molrec: Dict,
@@ -312,7 +313,12 @@ def to_string(molrec: Dict,
         if units.capitalize() != "Angstrom":
             raise ValueError("SDF Format must be in Angstroms")
 
-        connectivity = molrec.get("connectivity", [])
+        ghost_format = ghost_format or "Gh"
+
+        connectivity = molrec.get("connectivity", None)
+        if connectivity is None:
+            bohr_geom = geom * constants.conversion_factor("Angstrom", "Bohr")
+            connectivity = guess_connectivity(molrec["elem"], bohr_geom, default_connectivity=1)
 
         smol = []
         smol.append("")
@@ -320,7 +326,7 @@ def to_string(molrec: Dict,
         smol.append(f"{len(molrec['real']):3d} {len(connectivity):2d}  0  0  0  0  0  0  0  0  0")
         for real, sym, xyz in zip(molrec["real"], molrec["elem"], geom):
             if bool(real) is False:
-                sym = "Zr"
+                sym = ghost_format
             smol.append(f"   {xyz[0]: .4f}   {xyz[1]: .4f}   {xyz[2]: .4f} {sym:2s}  0  0     0  0  0  0  0  0")
 
         for a1, a2, b in connectivity:

@@ -146,9 +146,12 @@ $end
 "ans2_sdf": """
 QCElemental
 
-  2  0  0  0  0  0  0  0  0  0  0
+  3  2  0  0  0  0  0  0  0  0  0
     0.0000    0.0000    0.0000 Co  0  0     0  0  0  0  0  0
+    1.0584    0.0000    0.0000 Gh  0  0     0  0  0  0  0  0
    -1.0584    0.0000    0.0000 H   0  0     0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  1  3  1  0  0  0  0
 """
 
 
@@ -156,21 +159,21 @@ QCElemental
 
 
 @pytest.mark.parametrize("inp,expected", [
-    # (("subject1", {'dtype': 'xyz', 'units': 'Bohr'}), "ans1_au"),
-    # (("subject1", {'dtype': 'xyz', 'units': 'Angstrom'}), "ans1_ang"),
-    # (("subject1", {'dtype': 'xyz', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_ang"),
-    # (("subject2", {'dtype': 'xyz', 'units': 'Bohr'}), "ans2_au"),
-    # (("subject2", {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': 'Gh({elez})'}), "ans2_ang"),
-    # (("subject2", {'dtype': 'xyz', 'units': 'angstrom', 'ghost_format': ''}), "ans2c_ang"),
-    # (("subject2", {'dtype': 'cfour', 'units': 'angstrom'}), "ans2_cfour_ang"),
-    # (("subject2", {'dtype': 'nwchem', 'units': 'angstrom'}), "ans2_nwchem_ang"),
-    # (("subject1", {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_nm"),
-    # (("subject2", {'dtype': 'terachem', 'units': 'angstrom'}), "ans2_terachem_ang"),
-    # (("subject2", {'dtype': 'terachem'}), "ans2_terachem_au"),
-    # (("subject2", {'dtype': 'psi4', 'units': 'bohr'}), "ans2_psi4_au"),
-    # (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
-    # (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
-    # (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),V
+    (("subject1", {'dtype': 'xyz', 'units': 'Bohr'}), "ans1_au"),
+    (("subject1", {'dtype': 'xyz', 'units': 'Angstrom'}), "ans1_ang"),
+    (("subject1", {'dtype': 'xyz', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_ang"),
+    (("subject2", {'dtype': 'xyz', 'units': 'Bohr'}), "ans2_au"),
+    (("subject2", {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': 'Gh({elez})'}), "ans2_ang"),
+    (("subject2", {'dtype': 'xyz', 'units': 'angstrom', 'ghost_format': ''}), "ans2c_ang"),
+    (("subject2", {'dtype': 'cfour', 'units': 'angstrom'}), "ans2_cfour_ang"),
+    (("subject2", {'dtype': 'nwchem', 'units': 'angstrom'}), "ans2_nwchem_ang"),
+    (("subject1", {'dtype': 'xyz', 'units': 'nm', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_nm"),
+    (("subject2", {'dtype': 'terachem', 'units': 'angstrom'}), "ans2_terachem_ang"),
+    (("subject2", {'dtype': 'terachem'}), "ans2_terachem_au"),
+    (("subject2", {'dtype': 'psi4', 'units': 'bohr'}), "ans2_psi4_au"),
+    (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
+    (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
+    (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
     (("subject2", {'dtype': 'sdf'}), "ans2_sdf"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
@@ -187,6 +190,11 @@ _molecule_inputs = {
         "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
         "symbols": ["O", "H", "H"],
         "connectivity": [[0, 1, 1], [0, 2, 1]]
+    }),
+    "subject1_nocon":
+    qcel.models.Molecule(**{
+        "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+        "symbols": ["O", "H", "H"],
     }),
     "subject2":
     qcel.models.Molecule(
@@ -215,8 +223,8 @@ QCElemental
 QCElemental
 
   3  2  0  0  0  0  0  0  0  0  0
-    0.0000    0.0000    0.0000 Zr  0  0     0  0  0  0  0  0
-    0.0000    0.0000    1.0054 Zr  0  0     0  0  0  0  0  0
+    0.0000    0.0000    0.0000 Gh  0  0     0  0  0  0  0  0
+    0.0000    0.0000    1.0054 Gh  0  0     0  0  0  0  0  0
     0.0000   -1.0054    0.0000 H   0  0     0  0  0  0  0  0
   1  2  1  0  0  0  0
   1  3  1  0  0  0  0
@@ -224,13 +232,14 @@ QCElemental
 }
 
 
-@pytest.mark.parametrize("inp,expected", [
-    (("subject1", {'dtype': 'sdf'}), "ans1_sdf"),
-    (("subject2", {'dtype': 'sdf'}), "ans2_sdf")
+@pytest.mark.parametrize("inp,kwargs,expected", [
+    ("subject1", {'dtype': 'sdf'}, "ans1_sdf"),
+    ("subject1_nocon", {'dtype': 'sdf'}, "ans1_sdf"),
+    ("subject2", {'dtype': 'sdf'}, "ans2_sdf")
 ])  # yapf: disable
-def test_molecule_to_string(inp, expected):
+def test_molecule_to_string(inp, kwargs, expected):
 
-    smol = _molecule_inputs[inp[0]].to_string(**inp[1])
+    smol = _molecule_inputs[inp].to_string(**kwargs)
     assert compare(_molecule_outputs[expected], smol)
 
 
