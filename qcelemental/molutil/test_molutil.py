@@ -554,3 +554,17 @@ def test_vector_gradient_align():
     assert compare_values(c4_hooh_dipder_x, p2c_dipder_x, atol=1.e-5)
     assert compare_values(c4_hooh_dipder_y, p2c_dipder_y, atol=1.e-5)
     assert compare_values(c4_hooh_dipder_z, p2c_dipder_z, atol=1.e-5)
+
+@pytest.mark.parametrize("args, kwargs, ans", [
+  ((["C", "C"], [0, 0, 0, 0, 0, 3]), {}, [(0, 1)]),
+  ((["C", "C"], [0, 0, 0, 0, 0, 3]), {"threshold": 4}, [(0, 1)]),
+  ((["C", "C"], [0, 0, 0, 0, 0, 10]), {}, []),
+  ((["C", "C"], [0, 0, 0, 0, 0, 2]), {"default_connectivity": 3}, [(0, 1, 3)]),
+  ((["C", "C", "C"], [0, 0, 0, 0, 0, 3, 0, 0, -3]), {}, [(0, 1), (0, 2)]),
+  ((["C", "Unknown"], [0, 0, 0, 0, 0, 3]), {}, [(0, 1)]),
+
+]) # yapf: disable
+def test_geuss_connectivity(args, kwargs, ans):
+
+    computed = qcel.molutil.guess_connectivity(*args, **kwargs)
+    assert compare(computed, ans)

@@ -32,6 +32,7 @@ def guess_connectivity(symbols: np.ndarray,
         connected atoms and default connectivity if provided.
     """
 
+    geometry = np.asarray(geometry, dtype=float).reshape(-1, 3)
     radii = np.array([covalentradii.get(x, missing=1.8) for x in symbols])
 
     # Upper triangular

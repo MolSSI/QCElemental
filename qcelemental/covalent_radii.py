@@ -7,7 +7,7 @@ from decimal import Decimal
 from typing import Dict, Union
 
 from .datum import Datum, print_variables
-from .exceptions import DataUnavailableError
+from .exceptions import DataUnavailableError, NotAnElementError
 from .periodic_table import periodictable
 
 
@@ -113,6 +113,11 @@ class CovalentRadii:
         if atom in self.cr.keys():
             # catch extra labels like 'C_sp3'
             identifier = atom
+        elif missing:
+            try:
+                identifier = periodictable.to_E(atom)
+            except NotAnElementError:
+                identifier = atom
         else:
             identifier = periodictable.to_E(atom)
 
