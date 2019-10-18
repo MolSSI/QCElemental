@@ -23,6 +23,9 @@ class AlignmentMill(ProtoModel):
     atommap: Array[int]  # type: ignore
     mirror: bool = False
 
+    class Config:
+        force_skip_defaults = True
+
     @validator('shift')
     def _must_be_3(cls, v, values, **kwargs):
         try:
@@ -38,9 +41,6 @@ class AlignmentMill(ProtoModel):
         except (ValueError, AttributeError):
             raise ValueError("Rotation must be castable to shape (3, 3)!")
         return v
-
-    def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": False}})
 
 
 ### Non-Pydantic API functions
