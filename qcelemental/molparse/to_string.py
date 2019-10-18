@@ -70,7 +70,7 @@ def to_string(molrec: Dict,
 
     default_units = {
         "xyz": "Angstrom",
-        "nsglview-sdf": "Angstrom",
+        "nglview-sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
         "molpro": "Bohr",
@@ -307,7 +307,7 @@ def to_string(molrec: Dict,
 
         smol = ["$coord"] + atoms + ["$end"]
 
-    elif dtype == 'nsglview-sdf':
+    elif dtype == 'nglview-sdf':
         # SDF is pretty special, handle it manually
 
         if units.capitalize() != "Angstrom":

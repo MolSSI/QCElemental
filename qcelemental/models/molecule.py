@@ -330,46 +330,34 @@ class Molecule(ProtoModel):
 
 ### Non-Pydantic API functions
 
-    def show(self, *, style: Union[str, Dict[str, Any]] = "ball_and_stick",
-             canvas: Tuple[int, int] = (400, 400)) -> 'py3Dmol.view':  # type: ignore
+    def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> 'nglview.NGLWidget':  # type: ignore
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
         images (`.png`).
 
         Parameters
         ----------
-        style : Union[str, Dict[str, Any]], optional
-            Either 'ball_and_stick' or 'stick' style representations or a valid py3Dmol style dictionary.
-        canvas : Tuple[int, int], optional
-            The (width, height) of the display canvas in pixels
+        ngl_kwargs : Optional[Dict[str, Any]], optional
+            Addition nglview NGLWidget kwargs
 
         Returns
         -------
-        py3Dmol.view
-            A py3dMol view object of the molecule
+        nglview.NGLWidget
+            A nglview view of the molecule
 
         """
-        if not which_import("py3Dmol", return_bool=True):
+        if not which_import("nglview", return_bool=True):
             raise ModuleNotFoundError(
-                f"Python module py3DMol not found. Solve by installing it: `conda install -c conda-forge py3dmol`"
+                f"Python module nglwview not found. Solve by installing it: `conda install -c conda-forge nglview`"
             )  # pragma: no cover
 
-        import py3Dmol  # type: ignore
+        import nglview as nv # type: ignore
 
-        if isinstance(style, dict):
-            pass
-        elif style == 'ball_and_stick':
-            style = {'stick': {'radius': 0.2}, 'sphere': {'scale': 0.3}}
-        elif style == 'stick':
-            style = {'stick': {}}
-        else:
-            raise KeyError(f"Style '{style}' not recognized.")
+        if ngl_kwargs is None:
+            ngl_kwargs = {}
 
-        xyzview = py3Dmol.view(width=canvas[0], height=canvas[1])
-
-        xyzview.addModel(self.to_string("xyz", units="angstrom"), 'xyz')
-        xyzview.setStyle(style)
-        xyzview.zoomTo()
-        return xyzview
+        structure = nv.TextStructure(self.to_string('nglview-sdf'), ext="sdf")
+        widget = nv.NGLWidget(structure, **ngl_kwargs)
+        return widget
 
     def measure(self, measurements: Union[List[int], List[List[int]]], *,
                 degrees: bool = True) -> Union[float, List[float]]:
@@ -896,11 +884,12 @@ class Molecule(ProtoModel):
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__}(name='{self.name}' formula='{self.get_molecular_formula()}' hash='{self.get_hash()[:7]}')>"
 
-    def _repr_html_(self) -> str:
+    def _ipython_display_(self, **kwargs) -> None:
         try:
-            return self.show()._repr_html_()
+            self.show()._ipython_display_(**kwargs)
         except ModuleNotFoundError:
-            return f"<p>{repr(self)[1:-1]}</p>"
+            from IPython.display import display
+            display(f"Install nglview for interactive visualization.", f"{repr(self)}")
 
     @staticmethod
     def _inertial_tensor(geom, *, weight):

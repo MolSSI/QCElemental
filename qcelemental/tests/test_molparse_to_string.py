@@ -174,7 +174,7 @@ QCElemental
     (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
     (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
     (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
-    (("subject2", {'dtype': 'nsglview-sdf'}), "ans2_ngslviewsdf"),
+    (("subject2", {'dtype': 'nglview-sdf'}), "ans2_ngslviewsdf"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcel.molparse.from_string(_results[inp[0]])
@@ -233,9 +233,9 @@ QCElemental
 
 
 @pytest.mark.parametrize("inp,kwargs,expected", [
-    ("subject1", {'dtype': 'nsglview-sdf'}, "ans1_ngslviewsdf"),
-    ("subject1_nocon", {'dtype': 'nsglview-sdf'}, "ans1_ngslviewsdf"),
-    ("subject2", {'dtype': 'nsglview-sdf'}, "ans2_ngslviewsdf")
+    ("subject1", {'dtype': 'nglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject1_nocon", {'dtype': 'nglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject2", {'dtype': 'nglview-sdf'}, "ans2_ngslviewsdf")
 ])  # yapf: disable
 def test_molecule_to_string(inp, kwargs, expected):
 
@@ -254,7 +254,7 @@ def test_to_string_pint_error(inp):
         qcel.molparse.to_string(molrec['qm'], **inp[1])
 
 @pytest.mark.parametrize("inp", [
-    ("subject1", {'dtype': 'nsglview-sdf', 'units': 'bohr'}),
+    ("subject1", {'dtype': 'nglview-sdf', 'units': 'bohr'}),
 ])  # yapf: disable
 def test_to_string_value_error(inp):
     molrec = qcel.molparse.from_string(_results[inp[0]])
