@@ -13,19 +13,14 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-0.10.0 / 2019-MM-DD
-------------------
-
-New Features
-++++++++++++
+0.10.0 / 2019-10-16
+-------------------
 
 Enhancements
 ++++++++++++
 - (:pr:`144`) Allows `which_import` to handle submodules.
 - (:pr:`143`) Allow testing complex numbers.
 
-Bug Fixes
-+++++++++
 
 0.9.0 / 2019-10-01
 ------------------
