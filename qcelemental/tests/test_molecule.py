@@ -5,6 +5,7 @@ Tests the imports and exports of the Molecule object.
 import numpy as np
 import pytest
 
+import pydantic
 import qcelemental as qcel
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
@@ -510,3 +511,15 @@ def test_nuclearrepulsionenergy_nelectrons():
 def test_show():
 
     water_dimer_minima.show()
+
+
+def test_molecule_connectivity():
+    data = {"geometry": np.random.rand(5, 3), "symbols": ["he"] * 5, "validate": False}
+    mol = Molecule(**data, connectivity=None)
+
+    connectivity = [[n, n + 1, 1] for n in range(4)]
+    mol = Molecule(**data, connectivity=connectivity)
+
+    connectivity[0][0] = -1
+    with pytest.raises(ValueError):
+        mol = Molecule(**data, connectivity=connectivity)

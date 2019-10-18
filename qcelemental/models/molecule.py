@@ -315,9 +315,9 @@ class Molecule(ProtoModel):
             raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities " "without Fragments")
         return v
 
-    @validator('connectivity')
+    @validator('connectivity', each_item=True)
     def _min_zero(cls, v):
-        if v and (v < 0):
+        if v < 0:
             raise ValueError("Connectivity entries must be greater than 0")
         return v
 
