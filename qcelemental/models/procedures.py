@@ -65,7 +65,7 @@ class OptimizationInput(ProtoModel):
 
     def __repr_str__(self, join_str: str) -> str:
         return join_str.join([f"(model='{self.input_specification.model.dict()}'",
-                f"molecule_hash='{self.initial_molecule.get_hash()[:7]}')"]
+                f"molecule_hash='{self.initial_molecule.get_hash()[:7]}')"])
 
 
 class Optimization(OptimizationInput):
