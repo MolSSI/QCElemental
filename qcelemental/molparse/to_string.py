@@ -69,6 +69,7 @@ def to_string(molrec: Dict,
 
     default_units = {
         "xyz": "Angstrom",
+        "sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
         "molpro": "Bohr",
@@ -305,6 +306,38 @@ def to_string(molrec: Dict,
 
         smol = ["$coord"] + atoms + ["$end"]
 
+    elif dtype == 'sdf':
+        # SDF is pretty special, handle it manually
+
+        if units.capitalize() != "Angstrom":
+            raise ValueError("SDF Format must be in Angstroms")
+
+        connectivity = []
+        real = [bool(x) for x in molrec["real"]]
+
+        # Snip out connectivity that is not real
+        if np.any(np.logical_not(molrec["real"])):
+            new_con = []
+            for a1, a2, b in connectivity:
+                if (real[a1] is False) or (real[a2] is False):
+                    continue
+
+                new_con.append((a1, a2, b))
+            connectivity = new_con
+
+
+        smol = []
+        smol.append("")
+        smol.append("QCElemental\n")
+        smol.append(f"{sum(real):3d} {len(connectivity):2d}  0  0  0  0  0  0  0  0  0")
+        for real, sym, xyz in zip(molrec["real"], molrec["elem"], geom):
+            if bool(real) is False:
+                continue
+            smol.append(f"   {xyz[0]: .4f}   {xyz[1]: .4f}   {xyz[2]: .4f} {sym:2s}  0  0     0  0  0  0  0  0")
+
+        for a1, a2, b in connectivity:
+            smol.append(f" {(a1 + 1):2d} {(a2 + 1):2d}  {int(b):1d}  0  0  0  0")
+
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
 
@@ -337,7 +370,7 @@ def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp, x
             nuc = """{:{width}}""".format(atom_format.format(**atominfo), width=width)
             atom.append(nuc)
         else:
-            if ghost_format == '':
+            if ghost_format in ['', None]:
                 continue
             else:
                 nuc = """{:{width}}""".format(ghost_format.format(**atominfo), width=width)
