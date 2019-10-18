@@ -143,7 +143,7 @@ set,spin=2
 $end
 """,
 
-"ans2_sdf": """
+"ans2_ngslviewsdf": """
 QCElemental
 
   3  2  0  0  0  0  0  0  0  0  0
@@ -174,7 +174,7 @@ QCElemental
     (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
     (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
     (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
-    (("subject2", {'dtype': 'sdf'}), "ans2_sdf"),
+    (("subject2", {'dtype': 'nsglview-sdf'}), "ans2_ngslviewsdf"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcel.molparse.from_string(_results[inp[0]])
@@ -207,7 +207,7 @@ _molecule_inputs = {
 }
 
 _molecule_outputs = {
-    "ans1_sdf":
+    "ans1_ngslviewsdf":
     """
 QCElemental
 
@@ -218,7 +218,7 @@ QCElemental
   1  2  1  0  0  0  0
   1  3  1  0  0  0  0
 """,
-    "ans2_sdf":
+    "ans2_ngslviewsdf":
     """
 QCElemental
 
@@ -233,9 +233,9 @@ QCElemental
 
 
 @pytest.mark.parametrize("inp,kwargs,expected", [
-    ("subject1", {'dtype': 'sdf'}, "ans1_sdf"),
-    ("subject1_nocon", {'dtype': 'sdf'}, "ans1_sdf"),
-    ("subject2", {'dtype': 'sdf'}, "ans2_sdf")
+    ("subject1", {'dtype': 'nsglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject1_nocon", {'dtype': 'nsglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject2", {'dtype': 'nsglview-sdf'}, "ans2_ngslviewsdf")
 ])  # yapf: disable
 def test_molecule_to_string(inp, kwargs, expected):
 
@@ -254,7 +254,7 @@ def test_to_string_pint_error(inp):
         qcel.molparse.to_string(molrec['qm'], **inp[1])
 
 @pytest.mark.parametrize("inp", [
-    ("subject1", {'dtype': 'sdf', 'units': 'bohr'}),
+    ("subject1", {'dtype': 'nsglview-sdf', 'units': 'bohr'}),
 ])  # yapf: disable
 def test_to_string_value_error(inp):
     molrec = qcel.molparse.from_string(_results[inp[0]])
