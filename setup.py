@@ -47,7 +47,7 @@ if __name__ == "__main__":
                 'networkx',
             ],
             'viz': [
-                'py3dmol',
+                'nglview',
             ],
         },
         tests_require=[

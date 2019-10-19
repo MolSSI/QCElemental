@@ -15,7 +15,7 @@ A Molecule can be created using the normal kwargs fashion as shown below:
 
 .. code-block:: python
 
-    >>> mol = qcel.models.Molecule(**{"symbols":["He"], "geometry": [0, 0, 0]})
+    >>> mol = qcel.models.Molecule(**{"symbols": ["He"], "geometry": [0, 0, 0]})
 
 In addition, there is the ``from_data`` attribute to create a molecule from standard strings:
 
