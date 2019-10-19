@@ -94,6 +94,14 @@ def to_schema(molrec: Dict[str, Any],
         if 'connectivity' in molrec:
             molecule['connectivity'] = deepcopy(molrec['connectivity'])
 
+        # EFP extras
+        if 'fragment_files' in molrec:
+            molecule['extras'] = {
+                'fragment_files': molrec['fragment_files'],
+                'hint_types': molrec['hint_types'],
+                'geom_hints': molrec['geom_hints'],
+            }
+
         if dtype == 1:
             qcschema = {'schema_name': 'qcschema_input', 'schema_version': 1, 'molecule': molecule}
         elif dtype == 2:

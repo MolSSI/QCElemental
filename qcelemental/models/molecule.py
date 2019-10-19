@@ -235,7 +235,10 @@ class Molecule(ProtoModel):
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
-            schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"], copy=False, np_out=True)
+            schema = to_schema(from_schema(kwargs, missing_enabled_return='minimal'),
+                               dtype=kwargs["schema_version"],
+                               copy=False,
+                               np_out=True)
 
             kwargs["validated"] = True
             kwargs = {**kwargs, **schema}  # Allow any extra fields
@@ -712,9 +715,9 @@ class Molecule(ProtoModel):
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
         if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
-            mol_dict = from_string(data)
-            assert isinstance(mol_dict, dict)
-            input_dict = to_schema(mol_dict["qm"], dtype=2)
+            molrec = from_string(data, enable_qm=True, missing_enabled_return_qm='minimal')
+            assert isinstance(molrec, dict)
+            input_dict = to_schema(molrec["qm"], dtype=2)
             validate = True
         elif dtype == "numpy":
             data = np.asarray(data)
