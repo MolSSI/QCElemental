@@ -1,7 +1,9 @@
+from typing import List, Optional, Tuple, Union
+
 import numpy as np
-from typing import List, Union, Tuple, Optional
 
 from ..covalent_radii import covalentradii
+from ..exceptions import NotAnElementError
 
 __all__ = ["guess_connectivity"]
 
@@ -33,7 +35,14 @@ def guess_connectivity(symbols: np.ndarray,
     """
 
     geometry = np.asarray(geometry, dtype=float).reshape(-1, 3)
-    radii = np.array([covalentradii.get(x, missing=1.8) for x in symbols])
+    radii = []
+    for s in symbols:
+        try:
+            radii.append(covalentradii.get(s, missing=1.8))
+        except NotAnElementError:
+            radii.append(1.8)
+
+    radii = np.array(radii)
 
     # Upper triangular
     con = []

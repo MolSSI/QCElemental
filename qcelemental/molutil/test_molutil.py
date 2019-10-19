@@ -564,7 +564,7 @@ def test_vector_gradient_align():
   ((["C", "Unknown"], [0, 0, 0, 0, 0, 3]), {}, [(0, 1)]),
 
 ]) # yapf: disable
-def test_geuss_connectivity(args, kwargs, ans):
+def test_guess_connectivity(args, kwargs, ans):
 
     computed = qcel.molutil.guess_connectivity(*args, **kwargs)
     assert compare(computed, ans)
