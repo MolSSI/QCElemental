@@ -46,6 +46,10 @@ def build_units_registry(context):
     ureg.define("atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(
         phys_const["atomic mass constant"]["value"]))
 
+    # Coulomb
+    ureg.define("statcoulomb = coulomb / 2997924580 = statC")
+    ureg.define("debye = 1e-18 * statcoulomb * cm = D")
+
     # Define relationships
     _const_rename = {
         "inverse meter": "inverse_meter",
@@ -114,6 +118,7 @@ def build_units_registry(context):
         default : str
             A fall back conversion rule to apply
         """
+
         def transformer(ureg, val):
 
             left_unit = _find_nist_unit(val)
