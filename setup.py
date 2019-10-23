@@ -31,7 +31,7 @@ if __name__ == "__main__":
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
         setup_requires=[] + pytest_runner,
         python_requires='>=3.6',
-        install_requires=['numpy', 'pint', 'pydantic >= 0.32'],
+        install_requires=['numpy', 'pint', 'pydantic >= 1.0.0'],
         extras_require={
             'docs': [
                 'numpydoc',
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 'pytest-cov',
             ],
             'align': [
-                'networkx',
+                'networkx>=2.4.0',
             ],
             'viz': [
                 'py3dmol',
