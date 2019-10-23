@@ -48,6 +48,8 @@ def test_unit_conversion_nist(from_unit, to_unit, expected):
     ("amu", "g", "1.660539040e-24"),
     ("Bohr", "bohr", "1.0"),
     ("Angstrom", "Angstrom", "1.0"),
+    ("coulomb", "statC", "2997924580"),
+    ("debye", "e * Bohr", "0.393430273"),
 ]) # yapf: disable
 def test_unit_conversion_other(from_unit, to_unit, expected):
 
@@ -60,9 +62,9 @@ def test_unit_conversion_other(from_unit, to_unit, expected):
     inv_expected = 1 / Decimal(expected)
     to_from_value = Decimal(qcelemental.constants.conversion_factor(to_unit, from_unit))
 
-    # Expected to a relative tolerance as the number of digits plus two for rounding
+    # Expected to a relative tolerance as the number of digits plus one for rounding
     # Using float comparisons as we are taking an (1 / float) inverse in the conversion code
-    rel_tol = float("10e-{}".format(len(expected.as_tuple().digits) + 2))
+    rel_tol = float("10e-{}".format(len(expected.as_tuple().digits) + 1))
     assert pytest.approx(float(inv_expected), rel_tol) == float(to_from_value)
 
 
