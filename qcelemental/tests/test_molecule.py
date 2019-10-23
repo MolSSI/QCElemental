@@ -10,7 +10,7 @@ import qcelemental as qcel
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
 
-from .addons import serialize_extensions, using_msgpack, using_py3dmol
+from .addons import serialize_extensions, using_msgpack, using_nglview
 
 water_molecule = Molecule.from_data("""
     0 1
@@ -507,7 +507,7 @@ def test_nuclearrepulsionenergy_nelectrons():
     assert compare(10, mol.nelectrons(ifr=ifr1), 'M2')
 
 
-@using_py3dmol
+@using_nglview
 def test_show():
 
     water_dimer_minima.show()

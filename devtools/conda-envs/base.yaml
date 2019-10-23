@@ -12,7 +12,7 @@ dependencies:
 
     # Optional depends
   - networkx>=2.4.0
-  - py3dmol
+  - nglview
 
     # Testing
   - pytest>=4.0.0

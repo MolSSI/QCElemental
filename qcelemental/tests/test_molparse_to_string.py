@@ -1,6 +1,6 @@
 import pytest
 
-import qcelemental
+import qcelemental as qcel
 from qcelemental.testing import compare
 
 _results = {
@@ -141,6 +141,17 @@ set,spin=2
    2.000000000000     0.000000000000     0.000000000000  h
   -2.000000000000     0.000000000000     0.000000000000  h
 $end
+""",
+
+"ans2_ngslviewsdf": """
+QCElemental
+
+  3  2  0  0  0  0  0  0  0  0  0
+    0.0000    0.0000    0.0000 Co  0  0     0  0  0  0  0  0
+    1.0584    0.0000    0.0000 Gh  0  0     0  0  0  0  0  0
+   -1.0584    0.0000    0.0000 H   0  0     0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  1  3  1  0  0  0  0
 """
 
 
@@ -163,21 +174,90 @@ $end
     (("subject2", {'dtype': 'molpro', 'units': 'bohr'}), "ans2_molpro_au"),
     (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
     (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
+    (("subject2", {'dtype': 'nglview-sdf'}), "ans2_ngslviewsdf"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
-    molrec = qcelemental.molparse.from_string(_results[inp[0]])
-    smol = qcelemental.molparse.to_string(molrec['qm'], **inp[1])
+    molrec = qcel.molparse.from_string(_results[inp[0]])
+    smol = qcel.molparse.to_string(molrec['qm'], **inp[1])
     print(smol)
 
     assert compare(_results[expected], smol)
 
 
+_molecule_inputs = {
+    "subject1":
+    qcel.models.Molecule(**{
+        "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+        "symbols": ["O", "H", "H"],
+        "connectivity": [[0, 1, 1], [0, 2, 1]]
+    }),
+    "subject1_nocon":
+    qcel.models.Molecule(**{
+        "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+        "symbols": ["O", "H", "H"],
+    }),
+    "subject2":
+    qcel.models.Molecule(
+        **{
+            "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+            "symbols": ["O", "H", "H"],
+            "connectivity": [[0, 1, 1], [0, 2, 1]],
+            "real": [False, False, True]
+        })
+}
+
+_molecule_outputs = {
+    "ans1_ngslviewsdf":
+    """
+QCElemental
+
+  3  2  0  0  0  0  0  0  0  0  0
+    0.0000    0.0000    0.0000 O   0  0     0  0  0  0  0  0
+    0.0000    0.0000    1.0054 H   0  0     0  0  0  0  0  0
+    0.0000   -1.0054    0.0000 H   0  0     0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  1  3  1  0  0  0  0
+""",
+    "ans2_ngslviewsdf":
+    """
+QCElemental
+
+  3  2  0  0  0  0  0  0  0  0  0
+    0.0000    0.0000    0.0000 Gh  0  0     0  0  0  0  0  0
+    0.0000    0.0000    1.0054 Gh  0  0     0  0  0  0  0  0
+    0.0000   -1.0054    0.0000 H   0  0     0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  1  3  1  0  0  0  0
+"""
+}
+
+
+@pytest.mark.parametrize("inp,kwargs,expected", [
+    ("subject1", {'dtype': 'nglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject1_nocon", {'dtype': 'nglview-sdf'}, "ans1_ngslviewsdf"),
+    ("subject2", {'dtype': 'nglview-sdf'}, "ans2_ngslviewsdf")
+])  # yapf: disable
+def test_molecule_to_string(inp, kwargs, expected):
+
+    smol = _molecule_inputs[inp].to_string(**kwargs)
+    assert compare(_molecule_outputs[expected], smol)
+
+
 @pytest.mark.parametrize("inp", [
     ("subject1", {'dtype': 'xyz', 'units': 'kg', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}),
 ])  # yapf: disable
-def test_to_string_error(inp):
+def test_to_string_pint_error(inp):
     import pint
-    molrec = qcelemental.molparse.from_string(_results[inp[0]])
+    molrec = qcel.molparse.from_string(_results[inp[0]])
 
     with pytest.raises(pint.errors.DimensionalityError):
-        qcelemental.molparse.to_string(molrec['qm'], **inp[1])
+        qcel.molparse.to_string(molrec['qm'], **inp[1])
+
+@pytest.mark.parametrize("inp", [
+    ("subject1", {'dtype': 'nglview-sdf', 'units': 'bohr'}),
+])  # yapf: disable
+def test_to_string_value_error(inp):
+    molrec = qcel.molparse.from_string(_results[inp[0]])
+
+    with pytest.raises(ValueError):
+        qcel.molparse.to_string(molrec['qm'], **inp[1])
