@@ -623,7 +623,7 @@ class Molecule(ProtoModel):
         m = hashlib.sha1()
         concat = ""
 
-        tmp_dict = super().dict(skip_defaults=False)
+        tmp_dict = super().dict(exclude_unset=False)
 
         np.set_printoptions(precision=16)
         for field in self.hash_fields:

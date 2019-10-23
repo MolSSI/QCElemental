@@ -107,9 +107,9 @@ class ProtoModel(BaseModel):
 
         kwargs["exclude"] = (
             (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes)  # type: ignore
-        kwargs.setdefault("skip_defaults", self.__config__.serialize_skip_defaults)  # type: ignore
+        kwargs.setdefault("exclude_unset", self.__config__.serialize_skip_defaults)  # type: ignore
         if self.__config__.force_skip_defaults:  # type: ignore
-            kwargs["skip_defaults"] = True
+            kwargs["exclude_unset"] = True
 
         data = super().dict(**kwargs)
 
@@ -125,7 +125,7 @@ class ProtoModel(BaseModel):
                   *,
                   include: Optional[Set[str]] = None,
                   exclude: Optional[Set[str]] = None,
-                  skip_defaults: bool = False) -> Union[bytes, str]:
+                  exclude_unset: bool = False) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
         Parameters
@@ -136,7 +136,7 @@ class ProtoModel(BaseModel):
             Fields to be included in the serialization.
         exclude : Optional[Set[str]], optional
             Fields to be excluded in the serialization.
-        skip_defaults : bool, optional
+        exclude_unset : bool, optional
             If True, skips fields that have default values provided.
 
         Returns
@@ -144,7 +144,7 @@ class ProtoModel(BaseModel):
         Union[bytes, str]
             The serialized model.
         """
-        data = self.dict(include=include, exclude=exclude, skip_defaults=skip_defaults)
+        data = self.dict(include=include, exclude=exclude, exclude_unset=exclude_unset)
 
         return serialize(data, encoding=encoding)
 

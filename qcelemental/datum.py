@@ -90,7 +90,7 @@ class Datum(BaseModel):
         return '\n'.join(text)
 
     def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": True}})
+        return super().dict(*args, **{**kwargs, **{"exclude_unset": True}})
 
     def to_units(self, units=None):
         from .physical_constants import constants

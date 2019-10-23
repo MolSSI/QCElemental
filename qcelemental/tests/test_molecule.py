@@ -253,7 +253,7 @@ def test_water_orient():
 
 
 def test_molecule_errors_extra():
-    data = water_dimer_minima.dict(skip_defaults=True)
+    data = water_dimer_minima.dict(exclude_unset=True)
     data["whatever"] = 5
     with pytest.raises(Exception):
         Molecule(**data, validate=False)
