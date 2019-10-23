@@ -310,12 +310,12 @@ class PhysicalConstantsContext:
 
     def _get_pi(self, from_scratch: bool = False) -> 'Decimal':
         """Get pi to 36 digits (or more with mpmath).
- 
+
         Parameters
         ----------
         from_scratch : bool, optional
             If True, recomputes Pi from mpmath.
- 
+
         Returns
         -------
         Decimal

@@ -8,7 +8,7 @@ dependencies:
   - nomkl
   - python
   - pint
-  - pydantic=0.32
+  - pydantic=1.0.0
 
     # Testing
   - pytest=4.0.0

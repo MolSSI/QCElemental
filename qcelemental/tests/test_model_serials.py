@@ -207,8 +207,10 @@ def test_default_skip():
     assert obj.dict().keys() == {"scf_one_electron_energy"}
 
 
-def test_default_repr():
+def test_result_properties_default_repr():
     obj = ResultProperties(scf_one_electron_energy="-5.0")
+    assert "none" not in str(obj).lower()
+    assert "scf_one_electron_energy" in str(obj)
     assert len(str(obj)) < 100
     assert len(repr(obj)) < 100
 

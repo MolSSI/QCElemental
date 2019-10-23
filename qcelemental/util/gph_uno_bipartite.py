@@ -36,12 +36,12 @@ def _formDirected(g, match):
 
     Parameters
     ----------
-    g : 
+    g :
         Undirected bipartite graph. Nodes are separated by their
         'bipartite' attribute.
-    match : 
-        List of edges forming a matching of `g`. 
-    
+    match :
+        List of edges forming a matching of `g`.
+
     Returns
     -------
     networkx.DiGraph
@@ -57,12 +57,12 @@ def _formDirected(g, match):
 
     for ee in g.edges():
         if ee in match or (ee[1], ee[0]) in match:
-            if g.node[ee[0]]['bipartite'] == 0:
+            if g.nodes[ee[0]]['bipartite'] == 0:
                 d.add_edge(ee[0], ee[1])
             else:
                 d.add_edge(ee[1], ee[0])
         else:
-            if g.node[ee[0]]['bipartite'] == 0:
+            if g.nodes[ee[0]]['bipartite'] == 0:
                 d.add_edge(ee[1], ee[0])
             else:
                 d.add_edge(ee[0], ee[1])
@@ -84,7 +84,7 @@ def _enumMaximumMatching(g, starter_match=None):
     Returns
     -------
     list
-        Each is a list of edges forming a maximum matching of `g`. 
+        Each is a list of edges forming a maximum matching of `g`.
 
     Author
     ------
@@ -104,7 +104,7 @@ def _enumMaximumMatching(g, starter_match=None):
     #---------------Re-orient match arcs---------------
     match2 = []
     for kk, vv in match.items():
-        if g.node[kk]['bipartite'] == 0:
+        if g.nodes[kk]['bipartite'] == 0:
             match2.append((kk, vv))
     match = match2
     all_matches.append(match)
@@ -120,12 +120,12 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
     Parameters
     ----------
-    g : 
+    g :
         Undirected bipartite graph. Nodes are separated by their
         'bipartite' attribute.
-    match : 
+    match :
         List of edges forming one maximum matching of `g`.
-    all_matches : 
+    all_matches :
 	    List, each is a list of edges forming a maximum matching of `g`.
 	    Newly found matchings will be appended into this list.
     add_e : tuple, optional
@@ -154,7 +154,7 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
     if len(cycles) == 0:
 
         #---------If no cycle, find a feasible path---------
-        all_uncovered = set(g.node).difference(set([ii[0] for ii in match]))
+        all_uncovered = set(g.nodes).difference(set([ii[0] for ii in match]))
         all_uncovered = all_uncovered.difference(set([ii[1] for ii in match]))
         all_uncovered = list(all_uncovered)
 
@@ -198,10 +198,10 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
         new_match = []
         for ee in d.edges():
             if ee in len2path:
-                if g.node[ee[1]]['bipartite'] == 0:
+                if g.nodes[ee[1]]['bipartite'] == 0:
                     new_match.append((ee[1], ee[0]))
             else:
-                if g.node[ee[0]]['bipartite'] == 0:
+                if g.nodes[ee[0]]['bipartite'] == 0:
                     new_match.append(ee)
 
         if add_e is not None:
@@ -241,10 +241,10 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
         new_match = []
         for ee in d.edges():
             if ee in cycle:
-                if g.node[ee[1]]['bipartite'] == 0:
+                if g.nodes[ee[1]]['bipartite'] == 0:
                     new_match.append((ee[1], ee[0]))
             else:
-                if g.node[ee[0]]['bipartite'] == 0:
+                if g.nodes[ee[0]]['bipartite'] == 0:
                     new_match.append(ee)
 
         if add_e is not None:
@@ -283,14 +283,14 @@ def _enumMaximumMatching2(g):
 
     Parameters
     ----------
-    g: 
+    g:
         Undirected bipartite graph. Nodes are separated by their
         'bipartite' attribute.
 
     Returns
     -------
     list
-        Each is a list of edges forming a maximum matching of `g`. 
+        Each is a list of edges forming a maximum matching of `g`.
 
     Author
     ------
@@ -343,12 +343,12 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
 
     Parameters
     ----------
-#    g : 
+#    g :
 #        Undirected bipartite graph. Nodes are separated by their
 #        'bipartite' attribute.
-#    match : 
+#    match :
 #        List of edges forming one maximum matching of `g`.
-#    all_matches : 
+#    all_matches :
 #	    List, each is a list of edges forming a maximum matching of `g`.
 #	    Newly found matchings will be appended into this list.
     add_e : tuple, optional

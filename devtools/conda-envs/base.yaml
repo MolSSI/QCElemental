@@ -8,10 +8,10 @@ dependencies:
   - nomkl
   - python
   - pint
-  - pydantic>=0.32
+  - pydantic>=1.0.0
 
     # Optional depends
-  - networkx
+  - networkx>=2.4.0
   - nglview
 
     # Testing

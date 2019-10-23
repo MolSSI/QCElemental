@@ -23,7 +23,10 @@ class AlignmentMill(ProtoModel):
     atommap: Array[int]  # type: ignore
     mirror: bool = False
 
-    @validator('shift', whole=True)
+    class Config:
+        force_skip_defaults = True
+
+    @validator('shift')
     def _must_be_3(cls, v, values, **kwargs):
         try:
             v = v.reshape(3)
@@ -31,16 +34,13 @@ class AlignmentMill(ProtoModel):
             raise ValueError("Shift must be castable to shape (3,)!")
         return v
 
-    @validator('rotation', whole=True)
+    @validator('rotation')
     def _must_be_33(cls, v, values, **kwargs):
         try:
             v = v.reshape(3, 3)
         except (ValueError, AttributeError):
             raise ValueError("Rotation must be castable to shape (3, 3)!")
         return v
-
-    def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"skip_defaults": False}})
 
 
 ### Non-Pydantic API functions

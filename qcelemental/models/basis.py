@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
-from pydantic import Schema, constr, validator
+from pydantic import Field, constr, validator
 
 from .basemodels import ProtoModel
 
@@ -19,16 +19,16 @@ class ElectronShell(ProtoModel):
     Information for a single electronic shell
     """
 
-    angular_momentum: List[int] = Schema(..., description="Angular momentum for this shell.")
-    harmonic_type: HarmonicType = Schema(..., description=str(HarmonicType.__doc__))
-    exponents: List[float] = Schema(..., description="Exponents for this contracted shell.")
-    coefficients: List[List[float]] = Schema(
+    angular_momentum: List[int] = Field(..., description="Angular momentum for this shell.")
+    harmonic_type: HarmonicType = Field(..., description=str(HarmonicType.__doc__))
+    exponents: List[float] = Field(..., description="Exponents for this contracted shell.")
+    coefficients: List[List[float]] = Field(
         ...,
         description=
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients')
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["exponents"])
         for row in v:
@@ -37,7 +37,7 @@ class ElectronShell(ProtoModel):
 
         return v
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients')
     def _check_general_contraction_or_fused(cls, v, values):
         if len(values["angular_momentum"]) > 1:
             if len(values["angular_momentum"]) != len(v):
@@ -86,17 +86,17 @@ class ECPPotential(ProtoModel):
     Information for a single ECP potential.
     """
 
-    ecp_type: ECPType = Schema(..., description=str(ECPType.__doc__))
-    angular_momentum: List[int] = Schema(..., description="Angular momentum for the ECPs.")
-    r_exponents: List[int] = Schema(..., description="Exponents of the 'r' term.")
-    gaussian_exponents: List[float] = Schema(..., description="Exponents of the 'gaussian' term.")
-    coefficients: List[List[float]] = Schema(
+    ecp_type: ECPType = Field(..., description=str(ECPType.__doc__))
+    angular_momentum: List[int] = Field(..., description="Angular momentum for the ECPs.")
+    r_exponents: List[int] = Field(..., description="Exponents of the 'r' term.")
+    gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.")
+    coefficients: List[List[float]] = Field(
         ...,
         description=
         "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
     )
 
-    @validator('gaussian_exponents', whole=True)
+    @validator('gaussian_exponents')
     def _check_gaussian_exponentst_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         if len(v) != len_exp:
@@ -104,7 +104,7 @@ class ECPPotential(ProtoModel):
 
         return v
 
-    @validator('coefficients', whole=True)
+    @validator('coefficients')
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         for row in v:
@@ -118,9 +118,9 @@ class BasisCenter(ProtoModel):
     """
     Data for a single atom/center in a basis set.
     """
-    electron_shells: List[ElectronShell] = Schema(..., description="Electronic shells for this center.")
-    ecp_electrons: int = Schema(0, description="Number of electrons replace by ECP potentials.")
-    ecp_potentials: Optional[List[ECPPotential]] = Schema(None, description="ECPs for this center.")
+    electron_shells: List[ElectronShell] = Field(..., description="Electronic shells for this center.")
+    ecp_electrons: int = Field(0, description="Number of electrons replace by ECP potentials.")
+    ecp_potentials: Optional[List[ECPPotential]] = Field(None, description="ECPs for this center.")
 
 
 class BasisSet(ProtoModel):
@@ -130,15 +130,15 @@ class BasisSet(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
     schema_version: int = 1
 
-    name: str = Schema(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
-    description: Optional[str] = Schema(None, description="A brief description of the basis set.")
-    center_data: Dict[str, BasisCenter] = Schema(..., description="A mapping of all types of centers available.")
-    atom_map: List[str] = Schema(
+    name: str = Field(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
+    description: Optional[str] = Field(None, description="A brief description of the basis set.")
+    center_data: Dict[str, BasisCenter] = Field(..., description="A mapping of all types of centers available.")
+    atom_map: List[str] = Field(
         ..., description="Mapping of all centers in the parent molecule to centers in `center_data`.")
 
-    nbf: Optional[int] = Schema(None, description="The number of basis functions.")
+    nbf: Optional[int] = Field(None, description="The number of basis functions.")
 
-    @validator('atom_map', whole=True)
+    @validator('atom_map')
     def _check_atom_map(cls, v, values):
         sv = set(v)
         missing = sv - values["center_data"].keys()
