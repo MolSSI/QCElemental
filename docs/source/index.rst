@@ -92,7 +92,10 @@ Index
 Implementation descriptions of QCSchema objects in Python.
 
 * :doc:`models`
-* :doc:`molecule`
+* :doc:`model_molecule`
+* :doc:`model_result`
+* :doc:`model_molecule`
+* :doc:`model_common`
 
 .. toctree::
    :maxdepth: 1
@@ -100,7 +103,9 @@ Implementation descriptions of QCSchema objects in Python.
    :caption: QCSchema Models
 
    models
-   molecule
+   model_molecule
+   model_result
+   model_common
 
 **Developer Documentation**
 

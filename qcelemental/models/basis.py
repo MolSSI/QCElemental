@@ -130,7 +130,7 @@ class BasisSet(ProtoModel):
     schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
     schema_version: int = 1
 
-    name: str = Field(..., description="A standard basis name if available (e.g., 'cc-pVDZ'.")
+    name: str = Field(..., description="A standard basis name if available (e.g., 'cc-pVDZ').")
     description: Optional[str] = Field(None, description="A brief description of the basis set.")
     center_data: Dict[str, BasisCenter] = Field(..., description="A mapping of all types of centers available.")
     atom_map: List[str] = Field(

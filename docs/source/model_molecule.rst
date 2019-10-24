@@ -1,7 +1,7 @@
-Molecule Model
-==============
+Molecule
+========
 
-A Python implementations of the `MolSSI QCSchema
+A Python implementation of the `MolSSI QCSchema
 <https://github.com/MolSSI/QCSchema>`_ ``Molecule`` object.
 A "Molecule" many definitions of ``Molecule`` depending on the domain; this particular
 ``Molecule`` is an immutable 3D Cartesian representation with support for
@@ -123,10 +123,16 @@ Obtaining fragments with ghost atoms is also supported:
         Ne      (Gh)      3.100000000572     0.000000000000     0.000000000000
     >
 
+Fields
+------
+
+.. autoclass:: qcelemental.models.Molecule
+
 
 API
 ---
 
 .. autoclass:: qcelemental.models.Molecule
    :members:
+   :no-special-members:
 
