@@ -39,6 +39,50 @@ def test_which_import_f_raisemsg():
     assert str(e.value).endswith("Python module 'evilpint' not found in envvar PYTHONPATH. Install `evilpint`.")
 
 
+def test_which_import_t_submodule():
+    ans = qcel.util.which_import('pint.util')
+    assert ans.split(os.path.sep)[-1] == 'util.py'
+
+
+def test_which_import_t_submodule_altsyntax():
+    ans = qcel.util.which_import('.util', package='pint')
+    assert ans.split(os.path.sep)[-1] == 'util.py'
+
+
+def test_which_import_t_bool_submodule():
+    ans = qcel.util.which_import('pint.util', return_bool=True)
+    assert ans is True
+
+
+def test_which_import_f_submodule():
+    ans = qcel.util.which_import('evilpint.util')
+    assert ans is None
+
+
+def test_which_import_f_submodule_altsyntax():
+    ans = qcel.util.which_import('.util', package='evilpint')
+    assert ans is None
+
+
+def test_which_import_f_bool_submodule():
+    ans = qcel.util.which_import('evilpint.util', return_bool=True)
+    assert ans is False
+
+
+def test_which_import_f_raise_submodule():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which_import('evilpint.util', raise_error=True)
+
+    assert str(e.value).endswith("Python module 'evilpint.util' not found in envvar PYTHONPATH.")
+
+
+def test_which_import_f_raisemsg_submodule():
+    with pytest.raises(ModuleNotFoundError) as e:
+        qcel.util.which_import('evilpint.util', raise_error=True, raise_msg='Install `evilpint`.')
+
+    assert str(e.value).endswith("Python module 'evilpint.util' not found in envvar PYTHONPATH. Install `evilpint`.")
+
+
 def test_which_t():
     ans = qcel.util.which('ls')
     assert ans.split(os.path.sep)[-1] == 'ls'
