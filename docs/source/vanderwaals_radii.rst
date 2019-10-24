@@ -35,7 +35,7 @@ Currently only ``MANTINA2009`` is available.
 API
 ---
 
-.. currentmodule:: qcelemental.vanderwaalsradii
+.. currentmodule:: qcelemental.vdwradii
 
 Top level user functions:
 

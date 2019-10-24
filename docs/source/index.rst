@@ -77,15 +77,17 @@ Index
 * :doc:`physconst`
 * :doc:`periodic_table`
 * :doc:`covalent_radii`
+* :doc:`vanderwaals_radii`
 
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: User Interface
+   :caption: Quantities
 
    physconst
    periodic_table
    covalent_radii
+   vanderwaals_radii
 
 **QCSchema Models**
 
@@ -94,7 +96,6 @@ Implementation descriptions of QCSchema objects in Python.
 * :doc:`models`
 * :doc:`model_molecule`
 * :doc:`model_result`
-* :doc:`model_molecule`
 * :doc:`model_common`
 
 .. toctree::
