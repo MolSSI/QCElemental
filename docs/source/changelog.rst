@@ -13,6 +13,19 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.11.0 / 2019-10-24
+-------------------
+
+Enhancements
+++++++++++++
+- (:pr:`147`) Updates Pydantic to the 1.0 release and fixes a number of breaking changes.
+- (:pr:`148`) Switches from Py3dMoljs to NGLView for molecular visualization due to Jupyter Widget integration.
+- (:pr:`149`) Adds statC and Debye to the units registry.
+
+Bug Fixes
++++++++++
+- (:pr:`150`) Patches ``which_import`` to correctly handle submodules.
+
 0.10.0 / 2019-10-16
 -------------------
 
@@ -53,7 +66,7 @@ Bug Fixes
 +++++++++
 - (:pr:`125`) Add back a consistency check that had been optimized out.
 
-0.7.0 / 2019-18-23
+0.7.0 / 2019-08-23
 ------------------
 
 Enhancements
