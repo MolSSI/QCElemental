@@ -60,7 +60,7 @@ class VanderWaalsRadii:
     def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
             missing: float = None) -> Union[float, 'Datum']:
         """
-        Access a van der Waals radius for species `atom`.
+        Access a van der Waals radius for species ``atom``.
 
         Parameters
         ----------
@@ -73,7 +73,14 @@ class VanderWaalsRadii:
             How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
             When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
-            ``try:\n\trad = qcel.vdwradii.get(atom)\texcept qcel.DataUnavailableError:\n\trad = 4.0``.
+
+            .. code-block:: python
+
+                try:
+                    rad = qcel.vdwradii.get(atom)
+                except qcel.DataUnavailableError:
+                    rad = 4.0
+
             Only relevant for ``return_tuple=False``.
         return_tuple : bool, optional
             See below.

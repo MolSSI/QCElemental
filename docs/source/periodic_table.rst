@@ -26,7 +26,6 @@ A variety of infomation can be accessed in this manner. Taking 'Carbon' as an ex
     12.0
     >>> qcel.periodictable.to_mass_number("Carbon")
     12
-
     >>> qcel.periodictable.to_atomic_number("Carbon")
     6
 

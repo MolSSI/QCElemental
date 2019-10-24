@@ -14,9 +14,9 @@ class Provenance(ProtoModel):
     """
     Provenance information.
     """
-    creator: str
-    version: Optional[str] = None
-    routine: Optional[str] = None
+    creator: str = Field(..., description="The creator of the object.")
+    version: Optional[str] = Field(None, description="The version of the creator.")
+    routine: Optional[str] = Field(None, description="The routine of the creator.")
 
     class Config(ProtoModel.Config):
         canonical_repr = True

@@ -236,13 +236,13 @@ class ResultInput(ProtoModel):
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
+    model: Model = Field(..., description=str(Model.__base_doc__))
     keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
-    protocols: ResultProtocols = Field(ResultProtocols(), description=str(ResultProtocols.__doc__))
+    protocols: ResultProtocols = Field(ResultProtocols(), description=str(ResultProtocols.__base_doc__))
 
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
+    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
 
     def __str__(self):
         return (f"{self.__class__.__name__}"
@@ -254,8 +254,8 @@ class ResultInput(ProtoModel):
 class Result(ResultInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
-    properties: ResultProperties = Field(..., description=str(ResultProperties.__doc__))
-    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
+    properties: ResultProperties = Field(..., description=str(ResultProperties.__base_doc__))
+    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
         ..., description="The value requested by the 'driver' attribute.")  # type: ignore
@@ -265,8 +265,8 @@ class Result(ResultInput):
 
     success: bool = Field(
         ..., description="The success of a given programs execution. If False, other fields may be blank.")
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
+    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
+    provenance: Provenance = Field(..., description=str(Provenance.__base_doc__))
 
     @validator("schema_name", pre=True)
     def _input_to_output(cls, v):
