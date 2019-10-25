@@ -3,8 +3,8 @@ from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
-from ..physical_constants import constants
 from ..molutil import guess_connectivity
+from ..physical_constants import constants
 
 
 def to_string(molrec: Dict,
@@ -70,6 +70,7 @@ def to_string(molrec: Dict,
 
     default_units = {
         "xyz": "Angstrom",
+        "xyz+": "Angstrom",
         "nglview-sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
@@ -115,7 +116,7 @@ def to_string(molrec: Dict,
 
     data = Data()
 
-    if dtype == 'xyz':
+    if dtype in ['xyz', 'xyz+']:
         # Notes
         # * if units not in umap (e.g., nm), can't be read back in by from_string()
 
@@ -127,7 +128,11 @@ def to_string(molrec: Dict,
         nat = len(atoms)
 
         first_line = """{} {}""".format(str(nat), umap.get(units.lower(), units.lower()))
-        smol = [first_line.rstrip(), name]
+        smol = [first_line.rstrip()]
+        if dtype == 'xyz':
+            smol.append(name)
+        else:
+            smol.append(f"{molrec['molecular_charge']} {molrec['molecular_multiplicity']} {name}")
         smol.extend(atoms)
 
     elif dtype == 'cfour':

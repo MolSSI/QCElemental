@@ -243,7 +243,7 @@ def from_string(molstr,
                         raise MoleculeFormatError(
                             """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr))
     else:
-        raise KeyError("Molecule: dtype of %s not recognized.")
+        raise KeyError(f"Molecule: dtype of `{dtype}` not recognized.")
 
     # << 3 >>  args-->dict -- process name, com, orient, symm from arguments
     processed = _filter_kwargs(name, fix_com, fix_orientation, fix_symmetry)
