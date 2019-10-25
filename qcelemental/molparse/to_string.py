@@ -129,10 +129,8 @@ def to_string(molrec: Dict,
 
         first_line = """{} {}""".format(str(nat), umap.get(units.lower(), units.lower()))
         smol = [first_line.rstrip()]
-        if dtype == 'xyz':
-            smol.append(name)
-        else:
-            smol.append(f"{molrec['molecular_charge']} {molrec['molecular_multiplicity']} {name}")
+        smol.append(f"{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']} {name}")
+
         smol.extend(atoms)
 
     elif dtype == 'cfour':

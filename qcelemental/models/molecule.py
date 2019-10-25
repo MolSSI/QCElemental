@@ -712,8 +712,8 @@ class Molecule(ProtoModel):
             else:
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
-        if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
-            mol_dict = from_string(data, dtype if dtype is not "string" else None)
+        if dtype in ["string", "psi4", "xyz", "xyz+"]:
+            mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
             input_dict = to_schema(mol_dict["qm"], dtype=2)
             validate = True
@@ -740,10 +740,15 @@ class Molecule(ProtoModel):
             raise KeyError("Dtype not understood '{}'.".format(dtype))
 
         input_dict.update(kwargs)
-        if "molecular_charge" in kwargs and "fragment_charges" not in kwargs:
-            input_dict["fragment_charges"] = None
-        if "molecular_multiplicity" in kwargs and "fragment_multiplicities" not in kwargs:
-            input_dict["fragment_multiplicities"] = None
+
+        # if charge/spin options are given, invalidate charge and spin options that are missing
+        charge_spin_opts = {
+            "molecular_charge", "fragment_charges", "molecular_multiplicity", "fragment_multiplicities"
+        }
+        kwarg_keys = set(kwargs.keys())
+        if len(charge_spin_opts & kwarg_keys) > 0:
+            for key in charge_spin_opts - kwarg_keys:
+                input_dict[key] = None
 
         return cls(orient=orient, validate=validate, **input_dict)
 
