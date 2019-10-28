@@ -195,6 +195,60 @@ def test_to_from_file_complex(tmp_path, dtype):
     assert mol.compare(water_dimer_minima)
 
 
+@pytest.mark.parametrize("dtype, filext", [
+    ("json", "json"),
+    ("xyz+", "xyz"),
+    pytest.param("msgpack", "msgpack", marks=using_msgpack),
+])
+def test_to_from_file_charge_spin(tmp_path, dtype, filext):
+
+    benchmol = Molecule.from_data("""
+    1 2
+    O 0 0 0
+    H 0 1.5 0
+    H 0 0 1.5
+    """)
+
+    p = tmp_path / ("water." + filext)
+    benchmol.to_file(p, dtype=dtype)
+
+    mol = Molecule.from_file(p, dtype=dtype)
+
+    assert mol.molecular_charge == 1
+    assert mol.molecular_multiplicity == 2
+    assert mol.fragment_charges[0] == 1
+    assert mol.fragment_multiplicities[0] == 2
+    assert mol.compare(benchmol)
+
+
+def test_from_data_kwargs():
+    mol = Molecule.from_data("""
+        O 0 0 0
+        H 0 1.5 0
+        H 0 0 1.5
+        """,
+                             molecular_charge=1,
+                             molecular_multiplicity=2,
+                             fragment_charges=[1],
+                             fragment_multiplicities=[2])
+    assert mol.molecular_charge == 1
+    assert mol.molecular_multiplicity == 2
+    assert mol.fragment_charges[0] == 1
+    assert mol.fragment_multiplicities[0] == 2
+
+    mol = Molecule.from_data("""
+            O 0 0 0
+            H 0 1.5 0
+            H 0 0 1.5
+            """,
+                             molecular_charge=1,
+                             molecular_multiplicity=2)
+    assert mol.molecular_charge == 1
+    assert mol.molecular_multiplicity == 2
+    assert mol.fragment_charges[0] == 1
+    assert mol.fragment_multiplicities[0] == 2
+
+
 def test_water_orient():
     # These are identical molecules, should find the correct results
     mol = Molecule.from_data("""

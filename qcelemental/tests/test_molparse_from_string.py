@@ -161,7 +161,7 @@ def test_psi4_qm_iutau_1h():
 
     smol = qcelemental.molparse.to_string(final, dtype='xyz', units='Bohr')
     rsmol = """2 au
-HO
+0 2 HO
 O                     0.000000000000     0.000000000000     0.000000000000
 H                     1.908623386712     0.000000000000     0.000000000000
 """

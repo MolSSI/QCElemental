@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
+
 from pydantic import Field, constr, validator
 
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
@@ -350,7 +351,7 @@ class Molecule(ProtoModel):
                 f"Python module nglwview not found. Solve by installing it: `conda install -c conda-forge nglview`"
             )  # pragma: no cover
 
-        import nglview as nv # type: ignore
+        import nglview as nv  # type: ignore
 
         if ngl_kwargs is None:
             ngl_kwargs = {}
@@ -691,7 +692,7 @@ class Molecule(ProtoModel):
         validate : bool, optional
             Validates the molecule or not.
         **kwargs : Dict[str, Any]
-            Additional kwargs to pass to the constructors.
+            Additional kwargs to pass to the constructors. kwargs take precedence over data.
 
         Returns
         -------
@@ -711,8 +712,8 @@ class Molecule(ProtoModel):
             else:
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
-        if dtype in ["string", "psi4", "psi4+", "xyz", "xyz+"]:
-            mol_dict = from_string(data)
+        if dtype in ["string", "psi4", "xyz", "xyz+"]:
+            mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
             input_dict = to_schema(mol_dict["qm"], dtype=2)
             validate = True
@@ -737,6 +738,17 @@ class Molecule(ProtoModel):
             input_dict = data
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
+
+        input_dict.update(kwargs)
+
+        # if charge/spin options are given, invalidate charge and spin options that are missing
+        charge_spin_opts = {
+            "molecular_charge", "fragment_charges", "molecular_multiplicity", "fragment_multiplicities"
+        }
+        kwarg_keys = set(kwargs.keys())
+        if len(charge_spin_opts & kwarg_keys) > 0:
+            for key in charge_spin_opts - kwarg_keys:
+                input_dict[key] = None
 
         return cls(orient=orient, validate=validate, **input_dict)
 
@@ -773,7 +785,7 @@ class Molecule(ProtoModel):
                 dtype = "string"
 
         # Raw string type, read and pass through
-        if dtype in ["string", "xyz", "psi4"]:
+        if dtype in ["string", "xyz", "xyz+", "psi4"]:
             with open(filename, "r") as infile:
                 data = infile.read()
         elif dtype == "numpy":
@@ -811,7 +823,7 @@ class Molecule(ProtoModel):
                 raise KeyError(f"Could not infer dtype from filename: `{filename}`")
 
         flags = "w"
-        if dtype in ["xyz", "psi4"]:
+        if dtype in ["xyz", "xyz+", "psi4"]:
             stringified = self.to_string(dtype)
         elif dtype in ["json"]:
             stringified = self.serialize("json")
