@@ -13,6 +13,14 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.11.1 / 2019-10-28
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`152`) Patches ``Molecule.from_file`` and ``Molecule.from_data`` to read XYZ+ format and correctly handle keyword arguments.
+   Patches ``Molecule.to_file`` to write XYZ+ format as the default for XYZ and XYZ+ files.
+
 0.11.0 / 2019-10-24
 -------------------
 
@@ -455,4 +463,3 @@ New Features
   data so that ``qcelemental.constants.conversion_factor(from_unit, to_unit)`` uses the QCElemental values
   in its conversions. Resulting ``float`` is within uncertainty range of NIST constants but won't be exact
   for conversions involving multiple fundamental dimensions or ``wavelength -> energy != 1 / (energy -> wavelength)``.
-
