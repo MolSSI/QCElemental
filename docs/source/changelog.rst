@@ -13,6 +13,23 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+X.Y.0 / 2019-MM-DD
+------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`156`) ``Molecules`` can now be correctly compared with ``==``.
+
+Deprecations
+++++++++++++
+- (:pr:`156`) ``Molecule.compare`` is deprecated and will be removed in v0.13.0.
+
+Bug Fixes
++++++++++
+
 0.11.1 / 2019-10-28
 -------------------
 

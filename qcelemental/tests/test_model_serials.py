@@ -136,7 +136,7 @@ def test_protomodel_to_from_file(tmp_path, dtype, filext):
 
     mol = Molecule.parse_file(p)
 
-    assert mol.compare(benchmol)
+    assert mol == benchmol
 
 
 def test_molecule_skip_defaults(water):
