@@ -5,6 +5,7 @@ Molecule Object Model
 import collections
 import hashlib
 import json
+import warnings
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -388,6 +389,11 @@ class Molecule(ProtoModel):
         return Molecule(orient=True, **self.dict())
 
     def compare(self, other):
+        warnings.warn("Molecule.compare is deprecated and will be removed in v0.13.0. Use == instead.",
+                      DeprecationWarning)
+        return self == other
+
+    def __eq__(self, other):
         """
         Checks if two molecules are identical. This is a molecular identity defined
         by scientific terms, and not programing terms, so it's less rigorous than
@@ -401,18 +407,7 @@ class Molecule(ProtoModel):
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
-        match = True
-        match &= np.array_equal(self.symbols, other.symbols)
-        match &= np.allclose(self.masses, other.masses, atol=(10**-MASS_NOISE))
-        match &= np.array_equal(self.real, other.real)
-        match &= np.array_equal(self.fragments, other.fragments)
-        match &= np.allclose(self.fragment_charges, other.fragment_charges, atol=(10**-CHARGE_NOISE))
-        match &= np.array_equal(self.fragment_multiplicities, other.fragment_multiplicities)
-
-        match &= np.allclose(self.molecular_charge, other.molecular_charge, atol=(10**-CHARGE_NOISE))
-        match &= np.array_equal(self.molecular_multiplicity, other.molecular_multiplicity)
-        match &= np.allclose(self.geometry, other.geometry, atol=(10**-GEOMETRY_NOISE))
-        return match
+        return self.get_hash() == other.get_hash()
 
     def pretty_print(self):
         """Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
