@@ -40,6 +40,21 @@ H                    -1.058354421340     0.000000000000     0.000000000000
 1H_other                 -0.10583544         0.00000000         0.00000000
 """,
 
+"ans1_psi4_ang": """0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     1.058354421340     0.000000000000     0.000000000000
+H_other              -1.058354421340     0.000000000000     0.000000000000
+units angstrom
+""",
+
+"ans1_qchem_ang": """$molecule
+0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     1.058354421340     0.000000000000     0.000000000000
+H                    -1.058354421340     0.000000000000     0.000000000000
+$end
+""",
+
 "subject2": """
 Co 0 0 0
 no_reorient
@@ -103,9 +118,21 @@ Co                    0.000000000000     0.000000000000     0.000000000000
 --
 0 2
 Gh(H)                 2.000000000000     0.000000000000     0.000000000000
-H                    -2.000000000000     0.000000000000     0.000000000000
+H_other              -2.000000000000     0.000000000000     0.000000000000
 units bohr
 no_reorient
+""",
+
+"ans2_qchem_au": """$molecule
+0 3
+--
+0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+--
+0 2
+@H                    2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+$end
 """,
 
 "ans2_molpro_au": """{orient,noorient}
@@ -162,6 +189,8 @@ QCElemental
     (("subject1", {'dtype': 'xyz', 'units': 'Bohr'}), "ans1_au"),
     (("subject1", {'dtype': 'xyz', 'units': 'Angstrom'}), "ans1_ang"),
     (("subject1", {'dtype': 'xyz', 'prec': 8, 'atom_format': '{elea}{elem}{elbl}'}), "ans1c_ang"),
+    (("subject1", {'dtype': 'psi4', 'units': 'angstrom'}), "ans1_psi4_ang"),
+    (("subject1", {'dtype': 'qchem', 'units': 'angstrom'}), "ans1_qchem_ang"),
     (("subject2", {'dtype': 'xyz', 'units': 'Bohr'}), "ans2_au"),
     (("subject2", {'dtype': 'xyz', 'units': 'Angstrom', 'ghost_format': 'Gh({elez})'}), "ans2_ang"),
     (("subject2", {'dtype': 'xyz', 'units': 'angstrom', 'ghost_format': ''}), "ans2c_ang"),
@@ -175,6 +204,7 @@ QCElemental
     (("subject2", {'dtype': 'molpro', 'units': 'angstrom'}), "ans2_molpro_ang"),
     (("subject2", {'dtype': 'turbomole', 'units': 'bohr'}), "ans2_turbomole_au"),
     (("subject2", {'dtype': 'nglview-sdf'}), "ans2_ngslviewsdf"),
+    (("subject2", {'dtype': 'qchem', 'units': 'bohr'}), "ans2_qchem_au"),
 ])  # yapf: disable
 def test_to_string_xyz(inp, expected):
     molrec = qcel.molparse.from_string(_results[inp[0]])

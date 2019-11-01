@@ -22,6 +22,7 @@ New Features
 Enhancements
 ++++++++++++
 - (:pr:`156`) ``Molecules`` can now be correctly compared with ``==``.
+- (:pr:``) ``molparse.to_string`` Q-Chem dtype developed. Psi4 dtype now includes label and doesn't have extraneous info for single fragment systems.
 
 Deprecations
 ++++++++++++

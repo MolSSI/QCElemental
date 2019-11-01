@@ -22,7 +22,7 @@ def to_string(molrec: Dict,
     ----------
     molrec : Dict
         Psi4 json Molecule spec.
-    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'turbomole'}
+    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'turbomole', 'qchem'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -77,6 +77,7 @@ def to_string(molrec: Dict,
         "molpro": "Bohr",
         "nwchem": "Bohr",
         "psi4": "Bohr",
+        "qchem": "Bohr",
         "terachem": "Bohr",
         "turbomole": "Bohr",
     }
@@ -264,8 +265,8 @@ def to_string(molrec: Dict,
 
     elif dtype == 'psi4':
 
-        atom_format = '{elem}'
-        ghost_format = 'Gh({elem})'
+        atom_format = '{elem}{elbl}'
+        ghost_format = 'Gh({elem}{elbl})'
         umap = {'bohr': 'bohr', 'angstrom': 'angstrom'}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -273,7 +274,8 @@ def to_string(molrec: Dict,
         smol = [f"""{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}"""]
         split_atoms = np.split(atoms, molrec["fragment_separators"])
         for ifr, fr in enumerate(split_atoms):
-            smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+            if len(split_atoms) > 1:  # harmless to include but tidier to exclude
+                smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
             smol.extend(fr.tolist())
 
         # append units and any other non-default molecule keywords
@@ -334,6 +336,46 @@ def to_string(molrec: Dict,
 
         for a1, a2, b in connectivity:
             smol.append(f" {(a1 + 1):2d} {(a2 + 1):2d}  {int(b):1d}  0  0  0  0")
+
+    elif dtype == 'qchem':
+
+        atom_format = '{elem}'
+        ghost_format = '@{elem}'
+        umap = {'bohr': True, 'angstrom': False}
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+
+        first_line = '$molecule'
+        chgmult_line = f"""{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}"""
+        last_line = '$end'
+
+        smol = [first_line, chgmult_line]
+        split_atoms = np.split(atoms, molrec["fragment_separators"])
+        for ifr, fr in enumerate(split_atoms):
+            if len(split_atoms) > 1:
+                smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+            smol.extend(fr.tolist())
+        smol.append(last_line)
+
+        data.fields.extend([
+            'fix_com',
+            'fix_orientation',
+            'fragment_charges',
+            'fragment_multiplicities',
+            'molecular_charge',
+            'molecular_multiplicity',
+            'real',
+            'units',
+        ])
+
+        data.keywords = {
+            'no_reorient': molrec['fix_orientation'] or molrec['fix_com'],
+            'input_bohr': umap[units.lower()],
+        }
+
+        if 'fix_symmetry' in molrec.keys() and molrec['fix_symmetry'] == 'c1':
+            data.keywords['sym_ignore'] = True
+            data.keywords['symmetry'] = False
 
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
