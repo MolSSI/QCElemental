@@ -249,7 +249,7 @@ def serialize(data: Any, encoding: str) -> Union[str, bytes]:
     data : Any
         A encodable python object.
     encoding : str
-        The type of encoding to perform: {'json', 'json-ext', 'msgpack'}
+        The type of encoding to perform: {'json', 'json-ext', 'msgpack-ext'}
 
     Returns
     -------
