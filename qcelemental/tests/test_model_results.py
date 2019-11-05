@@ -90,7 +90,8 @@ def result_data_fixture():
         "properties": {},
         "provenance": {
             "creator": "qcel"
-        }
+        },
+        "stdout": "I ran.",
     }
 
 
@@ -292,3 +293,14 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
     assert len(opt.trajectory) == len(indices)
     for result, index in zip(opt.trajectory, indices):
         assert result.return_result == index
+
+
+def test_result_build_stdout_delete(result_data_fixture):
+    result_data_fixture["protocols"] = {"logfile": False}
+    ret = qcel.models.Result(**result_data_fixture)
+    assert ret.stdout is None
+
+
+def test_result_build_stdout(result_data_fixture):
+    ret = qcel.models.Result(**result_data_fixture)
+    assert ret.stdout == "I ran."
