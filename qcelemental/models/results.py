@@ -220,7 +220,7 @@ class ResultProtocols(ProtoModel):
 
     wavefunction: WavefunctionProtocolEnum = Field(WavefunctionProtocolEnum.none,
                                                    description=str(WavefunctionProtocolEnum.__doc__))
-    logfile: bool = Field(True, description="Primary output file to keep from a Result computation")
+    stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
 
     class Config:
         force_skip_defaults = True
@@ -301,7 +301,7 @@ class Result(ResultInput):
         else:
             raise ValueError('wavefunction must be None, a dict, or a WavefunctionProperties object.')
 
-        # Do not propogate validation errors
+        # Do not propagate validation errors
         if 'protocols' not in values:
             raise ValueError("Protocols was not properly formed.")
 
@@ -349,17 +349,17 @@ class Result(ResultInput):
         else:
             return wfn
 
-    @validator('stdout', pre=True)
-    def _logfile_protocol(cls, value, values):
+    @validator('stdout')
+    def _stdout_protocol(cls, value, values):
 
-        # Do not propogate validation errors
+        # Do not propagate validation errors
         if 'protocols' not in values:
             raise ValueError("Protocols was not properly formed.")
 
-        logp = values['protocols'].logfile
-        if logp is True:
+        outp = values['protocols'].stdout
+        if outp is True:
             return value
-        elif logp is False:
+        elif outp is False:
             return None
         else:
-            raise ValueError(f"Protocol `logfile:{logp}` is not understood")
+            raise ValueError(f"Protocol `stdout:{outp}` is not understood")

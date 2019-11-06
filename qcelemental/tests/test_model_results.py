@@ -296,7 +296,7 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
 
 
 def test_result_build_stdout_delete(result_data_fixture):
-    result_data_fixture["protocols"] = {"logfile": False}
+    result_data_fixture["protocols"] = {"stdout": False}
     ret = qcel.models.Result(**result_data_fixture)
     assert ret.stdout is None
 

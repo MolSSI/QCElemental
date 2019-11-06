@@ -23,8 +23,8 @@ Enhancements
 ++++++++++++
 - (:pr:`156`) ``Molecules`` can now be correctly compared with ``==``.
 - (:pr:`157`) ``molparse.to_string`` Q-Chem dtype developed. Psi4 dtype now includes label and doesn't have extraneous info for single fragment systems.
-- (:pr:``) New protocol ``logfile`` controlling whether ``stdout`` (which generally contains the primary logfile, whether a
-  program writes it to file or stdout) is returned added to ``ResultProtocols``.
+- (:pr:`162`) New protocol ``stdout`` added to ``ResultProtocols`` controlling whether ``stdout`` field (which generally
+  contains the primary logfile, whether a program writes it to file or stdout) is returned.
 
 Deprecations
 ++++++++++++
