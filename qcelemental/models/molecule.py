@@ -357,7 +357,7 @@ class Molecule(ProtoModel):
         if ngl_kwargs is None:
             ngl_kwargs = {}
 
-        structure = nv.TextStructure(self.to_string('nglview-sdf'), ext="sdf")
+        structure = nv.TextStructure(self.orient_molecule().to_string('nglview-sdf'), ext="sdf")
         widget = nv.NGLWidget(structure, **ngl_kwargs)
         return widget
 
