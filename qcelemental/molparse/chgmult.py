@@ -32,20 +32,22 @@ def _parity_ok(z, c, m):
     return (m % 2) != ((z - c) % 2)
 
 
-#def _alpha_beta_allocator(z, c, m):
+# def _alpha_beta_allocator(z, c, m):
 #    nbeta = (z - c - m + 1) // 2
 #    nalpha = nbeta + m - 1
 #    return nalpha, nbeta
 
 
-def validate_and_fill_chgmult(zeff,
-                              fragment_separators,
-                              molecular_charge: Union[float, None],
-                              fragment_charges,
-                              molecular_multiplicity: Union[int, None],
-                              fragment_multiplicities,
-                              zero_ghost_fragments: bool = False,
-                              verbose: int = 1) -> Dict[str, Any]:
+def validate_and_fill_chgmult(
+    zeff,
+    fragment_separators,
+    molecular_charge: Union[float, None],
+    fragment_charges,
+    molecular_multiplicity: Union[int, None],
+    fragment_multiplicities,
+    zero_ghost_fragments: bool = False,
+    verbose: int = 1,
+) -> Dict[str, Any]:
     """Forms molecular and fragment charge and multiplicity specification
     by completing and reconciling information from argument, supplemented
     by physical constraints and sensible defaults.
@@ -324,16 +326,17 @@ def validate_and_fill_chgmult(zeff,
         molecular_charge = None
         fragment_charges = [(fr if real_fragments[ifr] else 0.0) for ifr, fr in enumerate(fragment_charges)]
         molecular_multiplicity = None
-        fragment_multiplicities = [(fr if real_fragments[ifr] else 1)
-                                   for ifr, fr in enumerate(fragment_multiplicities)]
+        fragment_multiplicities = [(fr if real_fragments[ifr] else 1) for ifr, fr in enumerate(fragment_multiplicities)]
 
     # <<< assert broad physical requirements
 
     #   * (R1) require all chg & mult exist
-    cgmp_range.append(lambda c, fc, m, fm:     c is not None and
-                                           all(f is not None for f in fc) and
-                                               m is not None and
-                                           all(f is not None for f in fm))  # yapf: disable
+    cgmp_range.append(
+        lambda c, fc, m, fm: c is not None
+        and all(f is not None for f in fc)
+        and m is not None
+        and all(f is not None for f in fm)
+    )  # yapf: disable
     cgmp_rules.append('1')
 
     #   * (R2) require total charge to be the sum of fragment charges
@@ -357,7 +360,8 @@ def validate_and_fill_chgmult(zeff,
     cgmp_rules.append('4')
     for ifr in range(nfr):
         cgmp_range.append(
-            lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr]))  # type: ignore
+            lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr])
+        )  # type: ignore
         cgmp_rules.append('4-' + str(ifr))
 
     #   * (R5) require total parity consistent among neutral_electrons, chg, and mult
@@ -393,7 +397,7 @@ def validate_and_fill_chgmult(zeff,
     #   * (S2) suggest net frag charge for total charge, allowing for indiv frag defaulting to 0
     cgmp_exact_c.append(sum(filter(None, fragment_charges)))
 
-    missing_frag_chg = 0. if molecular_charge is None else molecular_charge
+    missing_frag_chg = 0.0 if molecular_charge is None else molecular_charge
     missing_frag_chg -= sum(filter(None, fragment_charges))
 
     #   * (S3) suggest distributing unallocated charge onto fragment
@@ -401,7 +405,7 @@ def validate_and_fill_chgmult(zeff,
     for ifr in range(nfr):
         if fragment_charges[ifr] is None:  # unneeded, but shortens the exact lists
             cgmp_exact_fc[ifr].append(missing_frag_chg)
-            cgmp_exact_fc[ifr].append(0.)
+            cgmp_exact_fc[ifr].append(0.0)
 
     #   * (R8) require that frag mult follow high spin addition unless fully specified
     if molecular_multiplicity is None or any(f is None for f in fragment_multiplicities):
@@ -462,13 +466,17 @@ def validate_and_fill_chgmult(zeff,
             text.append('fm: {}'.format(list(f)))
 
         header = True
-        for candidate in itertools.product(*[uniq_c, itertools.product(*uniq_fc),
-                                             uniq_m, itertools.product(*uniq_fm)]):  # yapf: disable
+        for candidate in itertools.product(
+            *[uniq_c, itertools.product(*uniq_fc), uniq_m, itertools.product(*uniq_fm)]
+        ):  # yapf: disable
             cc, cfc, cm, cfm = candidate
             if header:
                 if log_full:
-                    text.append("""Assess candidate {}: {}""".format(candidate, ' '.join(
-                        ('{:3}'.format(r) for r in cgmp_rules))))
+                    text.append(
+                        """Assess candidate {}: {}""".format(
+                            candidate, ' '.join(('{:3}'.format(r) for r in cgmp_rules))
+                        )
+                    )
                 header = False
             assessment = [fn(cc, cfc, cm, cfm) for fn in cgmp_range]
             sass = ['{:3}'.format('T' if b else '') for b in assessment]
@@ -478,7 +486,8 @@ def validate_and_fill_chgmult(zeff,
                 return candidate
 
         err = """Inconsistent or unspecified chg/mult: sys chg: {}, frag chg: {}, sys mult: {}, frag mult: {}""".format(
-            molecular_charge, fragment_charges, molecular_multiplicity, fragment_multiplicities)
+            molecular_charge, fragment_charges, molecular_multiplicity, fragment_multiplicities
+        )
         if verbose > -1:
             print('\n\n' + '\n'.join(text))
         raise ValidationError(err)
@@ -512,7 +521,9 @@ def validate_and_fill_chgmult(zeff,
     if been_defaulted and log_brief:
         brief.append(
             '    Note: Default values have been applied for {}. Specify intentions in molecule input block'.format(
-                ' and '.join(been_defaulted)))
+                ' and '.join(been_defaulted)
+            )
+        )
 
     if (m_final != _high_spin_sum(fm_final)) and log_brief:
         brief.append(
@@ -523,12 +534,12 @@ def validate_and_fill_chgmult(zeff,
         print('\n'.join(text))
     if log_brief:
         # TODO add back when printing worked out
-        #print('\n'.join(brief))
+        # print('\n'.join(brief))
         pass
 
     return {
         'molecular_charge': float(c_final),
         'fragment_charges': [float(f) for f in fc_final],
         'molecular_multiplicity': m_final,
-        'fragment_multiplicities': list(fm_final)
+        'fragment_multiplicities': list(fm_final),
     }

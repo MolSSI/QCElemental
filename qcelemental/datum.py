@@ -42,10 +42,7 @@ class Datum(BaseModel):
     class Config:
         extra = "forbid"
         allow_mutation = False
-        json_encoders = {
-            np.ndarray: lambda v: v.flatten().tolist(),
-            complex: lambda v: (v.real, v.imag),
-        }
+        json_encoders = {np.ndarray: lambda v: v.flatten().tolist(), complex: lambda v: (v.real, v.imag)}
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
         kwargs = {'label': label, 'units': units, 'data': data, 'numeric': numeric}
@@ -135,37 +132,36 @@ def print_variables(qcvars: Dict[str, 'Datum']) -> str:
             largest_characteristic = max(exp, largest_characteristic)
 
     for k, qca in sorted(qcvars.items()):
-        #if k != qca.lbl:
+        # if k != qca.lbl:
         #    raise ValidationError('Huh? {} != {}'.format(k, qca.label))
 
         if isinstance(qca.data, np.ndarray):
             data = np.array_str(qca.data, max_line_width=120, precision=8, suppress_small=True)
             data = '\n'.join('        ' + ln for ln in data.splitlines())
-            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format('"' + k + '"',
-                                                                        '',
-                                                                        qca.units,
-                                                                        keywidth=largest_key,
-                                                                        width=largest_characteristic + 14))
+            text.append(
+                """  {:{keywidth}} => {:{width}} [{}]""".format(
+                    '"' + k + '"', '', qca.units, keywidth=largest_key, width=largest_characteristic + 14
+                )
+            )
             text.append(data)
         elif isinstance(qca.data, Decimal):
-            text.append("""  {:{keywidth}} => {:{width}} [{}]""".format('"' + k + '"',
-                                                                        qca.data,
-                                                                        qca.units,
-                                                                        keywidth=largest_key,
-                                                                        width=largest_characteristic + 14))
+            text.append(
+                """  {:{keywidth}} => {:{width}} [{}]""".format(
+                    '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14
+                )
+            )
         elif not qca.numeric:
-            text.append("""  {:{keywidth}} => {:>{width}} [{}]""".format('"' + k + '"',
-                                                                         str(qca.data),
-                                                                         qca.units,
-                                                                         keywidth=largest_key,
-                                                                         width=largest_characteristic + 14))
+            text.append(
+                """  {:{keywidth}} => {:>{width}} [{}]""".format(
+                    '"' + k + '"', str(qca.data), qca.units, keywidth=largest_key, width=largest_characteristic + 14
+                )
+            )
         else:
-            text.append("""  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format('"' + k + '"',
-                                                                                qca.data,
-                                                                                qca.units,
-                                                                                keywidth=largest_key,
-                                                                                width=largest_characteristic + 14,
-                                                                                prec=12))
+            text.append(
+                """  {:{keywidth}} => {:{width}.{prec}f} [{}]""".format(
+                    '"' + k + '"', qca.data, qca.units, keywidth=largest_key, width=largest_characteristic + 14, prec=12
+                )
+            )
 
     text.append('')
     return '\n'.join(text)

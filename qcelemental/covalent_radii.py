@@ -37,6 +37,7 @@ class CovalentRadii:
         The year the context was created.
 
     """
+
     def __init__(self, context: str = "ALVAREZ2008"):
         self.cr: Dict[str, Datum] = collections.OrderedDict()
 
@@ -57,7 +58,7 @@ class CovalentRadii:
 
         # Extra relationships
         aliases = [
-            ('C',  'angstrom', self.cr['C_sp3'].data,       'Largest (sp3) chosen for generic atom'),
+            ('C', 'angstrom', self.cr['C_sp3'].data, 'Largest (sp3) chosen for generic atom'),
             ('Mn', 'angstrom', self.cr['Mn_highspin'].data, 'Larger (high-spin) chosen for generic atom'),
             ('Fe', 'angstrom', self.cr['Fe_highspin'].data, 'Larger (high-spin) chosen for generic atom'),
             ('Co', 'angstrom', self.cr['Co_highspin'].data, 'Larger (high-spin) chosen for generic atom'),
@@ -71,8 +72,9 @@ class CovalentRadii:
     def __str__(self) -> str:
         return "CovalentRadii(context='{}')".format(self.name)
 
-    def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
-            missing: float = None) -> Union[float, 'Datum']:
+    def get(
+        self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr', missing: float = None
+    ) -> Union[float, 'Datum']:
         """
         Access a covalent radius for species `atom`.
 
@@ -168,8 +170,11 @@ class CovalentRadii:
                 qca = self.cr[el]
                 text.append('{},  /*- [{}] {} {} -*/'.format(qca.data, qca.units, qca.label, qca.comment))
             except KeyError:
-                text.append('{:.2f},  /*- [{}] {} {} -*/'.format(missing, self.native_units, el,
-                                                                 'Default value for missing data'))
+                text.append(
+                    '{:.2f},  /*- [{}] {} {} -*/'.format(
+                        missing, self.native_units, el, 'Default value for missing data'
+                    )
+                )
 
         text.append('};')
         text.append('#endif /* header guard */')

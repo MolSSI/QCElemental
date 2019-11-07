@@ -14,7 +14,7 @@ from ..util import distance_matrix, linear_sum_assignment, random_rotation_matri
 def _nre(Z, geom):
     """Nuclear repulsion energy"""
 
-    nre = 0.
+    nre = 0.0
     for at1 in range(geom.shape[0]):
         for at2 in range(at1):
             dist = np.linalg.norm(geom[at1] - geom[at2])
@@ -30,19 +30,21 @@ def _pseudo_nre(Zhash, geom):
     return _nre(pZ, geom)
 
 
-def B787(cgeom,
-         rgeom,
-         cuniq,
-         runiq,
-         do_plot=False,
-         verbose=1,
-         atoms_map=False,
-         run_resorting=False,
-         mols_align=False,
-         run_to_completion=False,
-         algorithm='hungarian_uno',
-         uno_cutoff=1.e-3,
-         run_mirror=False):
+def B787(
+    cgeom,
+    rgeom,
+    cuniq,
+    runiq,
+    do_plot=False,
+    verbose=1,
+    atoms_map=False,
+    run_resorting=False,
+    mols_align=False,
+    run_to_completion=False,
+    algorithm='hungarian_uno',
+    uno_cutoff=1.0e-3,
+    run_mirror=False,
+):
     """Use Kabsch algorithm to find best alignment of geometry `cgeom` onto
     `rgeom` while sampling atom mappings restricted by `runiq` and `cuniq`.
 
@@ -116,18 +118,20 @@ def B787(cgeom,
         #   superimposible and hence whether its worth doubling the number of Kabsch
         #   runs below to check for mirror-image matches
         mcgeom = np.copy(cgeom)
-        mcgeom[:, 1] *= -1.
-        exact = 1.e-6
-        mrmsd, msolution = B787(mcgeom,
-                                cgeom,
-                                cuniq,
-                                cuniq,
-                                do_plot=False,
-                                verbose=0,
-                                atoms_map=False,
-                                mols_align=exact,
-                                run_mirror=False,
-                                uno_cutoff=0.1)
+        mcgeom[:, 1] *= -1.0
+        exact = 1.0e-6
+        mrmsd, msolution = B787(
+            mcgeom,
+            cgeom,
+            cuniq,
+            cuniq,
+            do_plot=False,
+            verbose=0,
+            atoms_map=False,
+            mols_align=exact,
+            run_mirror=False,
+            uno_cutoff=0.1,
+        )
         superimposable = mrmsd < exact
         if verbose >= 1 and superimposable:
             print(
@@ -135,12 +139,12 @@ def B787(cgeom,
             )
 
     # initialization
-    best_rmsd = 100.  # [A]
+    best_rmsd = 100.0  # [A]
     ocount = 0
     hold_solution = None
     run_resorting = run_resorting or not atoms_map
     if mols_align is True:
-        a_convergence = 1.e-3
+        a_convergence = 1.0e-3
     elif mols_align is False:
         a_convergence = 0.0
     else:
@@ -163,39 +167,25 @@ def B787(cgeom,
     if verbose >= 1:
         print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
 
-    def _plausible_atom_orderings_wrapper(runiq,
-                                          cuniq,
-                                          rgeom,
-                                          cgeom,
-                                          run_resorting,
-                                          algorithm='hungarian_uno',
-                                          verbose=1,
-                                          uno_cutoff=1.e-3):
+    def _plausible_atom_orderings_wrapper(
+        runiq, cuniq, rgeom, cgeom, run_resorting, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.0e-3
+    ):
         """Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when
         atoms of R & C known to be ordered. Easier to put logic here because _plausible is generator.
 
         """
         if run_resorting:
-            return _plausible_atom_orderings(runiq,
-                                             cuniq,
-                                             rgeom,
-                                             cgeom,
-                                             algorithm=algorithm,
-                                             verbose=verbose,
-                                             uno_cutoff=uno_cutoff)
+            return _plausible_atom_orderings(
+                runiq, cuniq, rgeom, cgeom, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff
+            )
         else:
             return [np.arange(rgeom.shape[0])]
 
     t0 = time.time()
-    tc = 0.
-    for ordering in _plausible_atom_orderings_wrapper(runiq,
-                                                      cuniq,
-                                                      rgeom,
-                                                      cgeom,
-                                                      run_resorting,
-                                                      algorithm=algorithm,
-                                                      verbose=verbose,
-                                                      uno_cutoff=uno_cutoff):
+    tc = 0.0
+    for ordering in _plausible_atom_orderings_wrapper(
+        runiq, cuniq, rgeom, cgeom, run_resorting, algorithm=algorithm, verbose=verbose, uno_cutoff=uno_cutoff
+    ):
         t1 = time.time()
         ocount += 1
         npordd = np.asarray(ordering)
@@ -225,7 +215,7 @@ def B787(cgeom,
             t1 = time.time()
             ocount += 1
             icgeom = np.copy(cgeom)
-            icgeom[:, 1] *= -1.
+            icgeom[:, 1] *= -1.0
             _, RR, TT = kabsch_align(rgeom, icgeom[npordd, :], weight=None)
 
             temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=True)
@@ -256,7 +246,7 @@ def B787(cgeom,
 
     ageom, auniq = hold_solution.align_mini_system(cgeom, cuniq, reverse=False)
     final_rmsd = np.linalg.norm(ageom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
-    assert (abs(best_rmsd - final_rmsd) < 1.e-3)
+    assert abs(best_rmsd - final_rmsd) < 1.0e-3
 
     if verbose >= 1:
         print('Final RMSD = {:8.4f} [A]'.format(final_rmsd))
@@ -276,29 +266,31 @@ def B787(cgeom,
         plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment='Final RMSD = {:8.4f}'.format(final_rmsd))
 
     # sanity checks
-    assert compare_values(_pseudo_nre(cuniq, cgeom),
-                          _pseudo_nre(auniq, ageom),
-                          'D: concern_mol-->returned_mol pNRE uncorrupted',
-                          atol=1.e-4,
-                          quiet=(verbose < 2))
+    assert compare_values(
+        _pseudo_nre(cuniq, cgeom),
+        _pseudo_nre(auniq, ageom),
+        'D: concern_mol-->returned_mol pNRE uncorrupted',
+        atol=1.0e-4,
+        quiet=(verbose < 2),
+    )
 
     if mols_align is True:
-        assert compare_values(_pseudo_nre(runiq, rgeom),
-                              _pseudo_nre(auniq, ageom),
-                              'D: concern_mol-->returned_mol pNRE matches ref_mol',
-                              atol=1.e-4,
-                              quiet=(verbose < 2))
-        assert compare_values(rgeom,
-                              ageom,
-                              'D: concern_mol-->returned_mol geometry matches ref_mol',
-                              atol=1.e-4,
-                              quiet=(verbose < 2))
-        assert compare_values(0., final_rmsd, 'D: null RMSD', atol=1.e-4, quiet=(verbose < 2))
+        assert compare_values(
+            _pseudo_nre(runiq, rgeom),
+            _pseudo_nre(auniq, ageom),
+            'D: concern_mol-->returned_mol pNRE matches ref_mol',
+            atol=1.0e-4,
+            quiet=(verbose < 2),
+        )
+        assert compare_values(
+            rgeom, ageom, 'D: concern_mol-->returned_mol geometry matches ref_mol', atol=1.0e-4, quiet=(verbose < 2)
+        )
+        assert compare_values(0.0, final_rmsd, 'D: null RMSD', atol=1.0e-4, quiet=(verbose < 2))
 
     return final_rmsd, hold_solution
 
 
-def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.e-3):
+def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.0e-3):
     """
 
     Parameters
@@ -316,8 +308,9 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
 
     """
     if sorted(ref) != sorted(current):
-        raise ValidationError("""ref and current can't map to each other.\n""" + 'R:  ' + str(ref) + '\nC:  ' +
-                              str(current))
+        raise ValidationError(
+            """ref and current can't map to each other.\n""" + 'R:  ' + str(ref) + '\nC:  ' + str(current)
+        )
 
     where = collections.defaultdict(list)
     for iuq, uq in enumerate(ref):
@@ -363,12 +356,12 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
         npcgp = np.array(cgp)
         submatCC = ccnremat[np.ix_(cgp, cgp)]
         submatRR = rrnremat[np.ix_(rgp, rgp)]
-        sumCC = 100. * np.sum(submatCC, axis=0)  # cost mat small if not scaled, this way like Z=Neon
-        sumRR = 100. * np.sum(submatRR, axis=0)
+        sumCC = 100.0 * np.sum(submatCC, axis=0)  # cost mat small if not scaled, this way like Z=Neon
+        sumRR = 100.0 * np.sum(submatRR, axis=0)
         cost = np.zeros((len(cgp), len(rgp)))
         for j in range(cost.shape[1]):
             for i in range(cost.shape[0]):
-                cost[i, j] = (sumCC[i] - sumRR[j])**2
+                cost[i, j] = (sumCC[i] - sumRR[j]) ** 2
         if verbose >= 2:
             print('Cost:\n', cost)
         costcopy = np.copy(cost)  # other one gets manipulated by hungarian call
@@ -414,8 +407,8 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
         with np.errstate(divide='ignore'):
             ccnremat = np.reciprocal(ccdistmat)
             rrnremat = np.reciprocal(rrdistmat)
-        ccnremat[ccnremat == np.inf] = 0.
-        rrnremat[rrnremat == np.inf] = 0.
+        ccnremat[ccnremat == np.inf] = 0.0
+        rrnremat[rrnremat == np.inf] = 0.0
         algofn = filter_hungarian_uno
 
         # Ensure (optional dependency) networkx exists
@@ -486,7 +479,7 @@ def kabsch_align(rgeom, cgeom, weight=None):
     N = rgeom.shape[0]
     if np.allclose(R, C):
         # can hit a mixed non-identity translation/rotation, so head off
-        return 0., np.identity(3), np.zeros(3)
+        return 0.0, np.identity(3), np.zeros(3)
 
     Rcentroid = R.sum(axis=0) / N
     Ccentroid = C.sum(axis=0) / N
@@ -545,15 +538,15 @@ def kabsch_quaternion(P, Q):
     q = ev[:, -1]
     U = np.zeros((3, 3))
 
-    U[0, 0] = q[0]**2 + q[1]**2 - q[2]**2 - q[3]**2
+    U[0, 0] = q[0] ** 2 + q[1] ** 2 - q[2] ** 2 - q[3] ** 2
     U[0, 1] = 2 * (q[1] * q[2] - q[0] * q[3])
     U[0, 2] = 2 * (q[1] * q[3] + q[0] * q[2])
     U[1, 0] = 2 * (q[1] * q[2] + q[0] * q[3])
-    U[1, 1] = q[0]**2 - q[1]**2 + q[2]**2 - q[3]**2
+    U[1, 1] = q[0] ** 2 - q[1] ** 2 + q[2] ** 2 - q[3] ** 2
     U[1, 2] = 2 * (q[2] * q[3] - q[0] * q[1])
     U[2, 0] = 2 * (q[1] * q[3] - q[0] * q[2])
     U[2, 1] = 2 * (q[2] * q[3] + q[0] * q[1])
-    U[2, 2] = q[0]**2 - q[1]**2 - q[2]**2 + q[3]**2
+    U[2, 2] = q[0] ** 2 - q[1] ** 2 - q[2] ** 2 + q[3] ** 2
 
     return U
 
@@ -596,15 +589,15 @@ def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflect
         pass
     else:
         rand_elord = np.array(do_resort)
-        assert (rand_elord.shape == (nat, ))
+        assert rand_elord.shape == (nat,)
 
     if do_shift is True:
-        rand_shift = 6 * np.random.random_sample((3, )) - 3
+        rand_shift = 6 * np.random.random_sample((3,)) - 3
     elif do_shift is False:
-        rand_shift = np.zeros((3, ))
+        rand_shift = np.zeros((3,))
     else:
         rand_shift = np.array(do_shift)
-        assert (rand_shift.shape == (3, ))
+        assert rand_shift.shape == (3,)
 
     if do_rotate is True:
         rand_rot3d = random_rotation_matrix(deflection=deflection)
@@ -612,7 +605,7 @@ def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflect
         rand_rot3d = np.identity(3)
     else:
         rand_rot3d = np.array(do_rotate)
-        assert (rand_rot3d.shape == (3, 3))
+        assert rand_rot3d.shape == (3, 3)
 
     perturbation = AlignmentMill(shift=rand_shift, rotation=rand_rot3d, atommap=rand_elord, mirror=do_mirror)
     return perturbation

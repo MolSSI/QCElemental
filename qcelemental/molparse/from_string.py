@@ -11,19 +11,21 @@ from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 __all__ = ['from_string']
 
 
-def from_string(molstr,
-                dtype=None,
-                *,
-                name=None,
-                fix_com=None,
-                fix_orientation=None,
-                fix_symmetry=None,
-                return_processed=False,
-                enable_qm=True,
-                enable_efp=True,
-                missing_enabled_return_qm='none',
-                missing_enabled_return_efp='none',
-                verbose=1) -> Union[Dict, Tuple[Dict, Dict]]:
+def from_string(
+    molstr,
+    dtype=None,
+    *,
+    name=None,
+    fix_com=None,
+    fix_orientation=None,
+    fix_symmetry=None,
+    return_processed=False,
+    enable_qm=True,
+    enable_efp=True,
+    missing_enabled_return_qm='none',
+    missing_enabled_return_efp='none',
+    verbose=1,
+) -> Union[Dict, Tuple[Dict, Dict]]:
     """Construct a molecule dictionary from any recognized string format.
 
     Parameters
@@ -241,7 +243,8 @@ def from_string(molstr,
                         dtype = 'psi4+'
                     except MoleculeFormatError as err:
                         raise MoleculeFormatError(
-                            """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr))
+                            """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr)
+                        )
     else:
         raise KeyError(f"Molecule: dtype of `{dtype}` not recognized.")
 
@@ -255,12 +258,14 @@ def from_string(molstr,
         print('>>>\n')
 
     # << 4 >>  dict-->molspec
-    molrec = from_input_arrays(speclabel=True,
-                               enable_qm=enable_qm,
-                               enable_efp=enable_efp,
-                               missing_enabled_return_qm=missing_enabled_return_qm,
-                               missing_enabled_return_efp=missing_enabled_return_efp,
-                               **molinit)
+    molrec = from_input_arrays(
+        speclabel=True,
+        enable_qm=enable_qm,
+        enable_efp=enable_efp,
+        missing_enabled_return_qm=missing_enabled_return_qm,
+        missing_enabled_return_efp=missing_enabled_return_efp,
+        **molinit,
+    )
 
     # replace from_arrays stamp with from_string stamp
     if 'qm' in molrec and molrec['qm']:
@@ -293,6 +298,7 @@ def _filter_pubchem(string):
     Author: @andysim
 
     """
+
     def process_pubchem(matchobj):
         pubsearch = matchobj.group('pubsearch')
 
@@ -372,6 +378,7 @@ def _filter_universals(string):
     units
 
     """
+
     def process_com(matchobj):
         processed['fix_com'] = True
         return ''
@@ -416,33 +423,120 @@ def _filter_universals(string):
 
 fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
 efpxyzabc = re.compile(
-    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + SEP +
-    r'(?P<x>' + NUMBER + r')' + SEP + r'(?P<y>' + NUMBER + r')' + SEP + r'(?P<z>' + NUMBER + r')' + SEP +
-    r'(?P<a>' + NUMBER + r')' + SEP + r'(?P<b>' + NUMBER + r')' + SEP + r'(?P<c>' + NUMBER + r')' + ENDL + r'\Z',
-    re.IGNORECASE | re.VERBOSE)  # yapf: disable
+    r'\A'
+    + r'efp'
+    + SEP
+    + r'(?P<efpfile>(\w+))'
+    + SEP
+    + r'(?P<x>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<y>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<z>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<a>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<b>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<c>'
+    + NUMBER
+    + r')'
+    + ENDL
+    + r'\Z',
+    re.IGNORECASE | re.VERBOSE,
+)  # yapf: disable
 efppoints = re.compile(
-    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + ENDL +
-    r'[\s,]*' + r'(?P<x1>' + NUMBER + r')' + SEP + r'(?P<y1>' + NUMBER + r')' + SEP + r'(?P<z1>' + NUMBER + r')' + ENDL +
-    r'[\s,]*' + r'(?P<x2>' + NUMBER + r')' + SEP + r'(?P<y2>' + NUMBER + r')' + SEP + r'(?P<z2>' + NUMBER + r')' + ENDL +
-    r'[\s,]*' + r'(?P<x3>' + NUMBER + r')' + SEP + r'(?P<y3>' + NUMBER + r')' + SEP + r'(?P<z3>' + NUMBER + r')' + ENDL + r'\Z',
-    re.IGNORECASE | re.MULTILINE | re.VERBOSE)  # yapf: disable
+    r'\A'
+    + r'efp'
+    + SEP
+    + r'(?P<efpfile>(\w+))'
+    + ENDL
+    + r'[\s,]*'
+    + r'(?P<x1>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<y1>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<z1>'
+    + NUMBER
+    + r')'
+    + ENDL
+    + r'[\s,]*'
+    + r'(?P<x2>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<y2>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<z2>'
+    + NUMBER
+    + r')'
+    + ENDL
+    + r'[\s,]*'
+    + r'(?P<x3>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<y3>'
+    + NUMBER
+    + r')'
+    + SEP
+    + r'(?P<z3>'
+    + NUMBER
+    + r')'
+    + ENDL
+    + r'\Z',
+    re.IGNORECASE | re.MULTILINE | re.VERBOSE,
+)  # yapf: disable
+
 
 def _filter_libefp(string):
     def process_efpxyzabc(matchobj):
         processed['fragment_files'].append(matchobj.group('efpfile'))
         processed['hint_types'].append('xyzabc')
-        processed['geom_hints'].append([
-            float(matchobj.group('x')), float(matchobj.group('y')), float(matchobj.group('z')),
-            float(matchobj.group('a')), float(matchobj.group('b')), float(matchobj.group('c'))])  # yapf: disable
+        processed['geom_hints'].append(
+            [
+                float(matchobj.group('x')),
+                float(matchobj.group('y')),
+                float(matchobj.group('z')),
+                float(matchobj.group('a')),
+                float(matchobj.group('b')),
+                float(matchobj.group('c')),
+            ]
+        )  # yapf: disable
         return ''
 
     def process_efppoints(matchobj):
         processed['fragment_files'].append(matchobj.group('efpfile'))
         processed['hint_types'].append('points')
-        processed['geom_hints'].append([
-            float(matchobj.group('x1')), float(matchobj.group('y1')), float(matchobj.group('z1')),
-            float(matchobj.group('x2')), float(matchobj.group('y2')), float(matchobj.group('z2')),
-            float(matchobj.group('x3')), float(matchobj.group('y3')), float(matchobj.group('z3'))])  # yapf: disable
+        processed['geom_hints'].append(
+            [
+                float(matchobj.group('x1')),
+                float(matchobj.group('y1')),
+                float(matchobj.group('z1')),
+                float(matchobj.group('x2')),
+                float(matchobj.group('y2')),
+                float(matchobj.group('z2')),
+                float(matchobj.group('x3')),
+                float(matchobj.group('y3')),
+                float(matchobj.group('z3')),
+            ]
+        )  # yapf: disable
         return ''
 
     reconstitute = []
@@ -469,30 +563,106 @@ NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
 ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
 ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
 
-atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)
-atom_vcart = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                        r'(?P<Xval>' + ANCHORVAL + r')' + SEP +
-                        r'(?P<Yval>' + ANCHORVAL + r')' + SEP +
-                        r'(?P<Zval>' + ANCHORVAL + r')' + r'\Z',
-                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
-atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z',
-                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
-atom_zmat2 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + r'\Z',
-                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
-atom_zmat3 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
-                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + r'\Z',
-                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
-atom_zmat4 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
-                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
-                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + SEP +
-                        r'(?P<Didx>' + ANCHORTO + r')' + SEP + r'(?P<Dval>' + ANCHORVAL + r')' + r'\Z',
-                        re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_cartesian = re.compile(
+    r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
+)
+atom_vcart = re.compile(
+    r'\A'
+    + r'(?P<nucleus>'
+    + NUCLEUS
+    + r')'
+    + SEP
+    + r'(?P<Xval>'
+    + ANCHORVAL
+    + r')'
+    + SEP
+    + r'(?P<Yval>'
+    + ANCHORVAL
+    + r')'
+    + SEP
+    + r'(?P<Zval>'
+    + ANCHORVAL
+    + r')'
+    + r'\Z',
+    re.IGNORECASE | re.VERBOSE,
+)  # yapf: disable
+atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z', re.IGNORECASE | re.VERBOSE)  # yapf: disable
+atom_zmat2 = re.compile(
+    r'\A'
+    + r'(?P<nucleus>'
+    + NUCLEUS
+    + r')'
+    + SEP
+    + r'(?P<Ridx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Rval>'
+    + ANCHORVAL
+    + r')'
+    + r'\Z',
+    re.IGNORECASE | re.VERBOSE,
+)  # yapf: disable
+atom_zmat3 = re.compile(
+    r'\A'
+    + r'(?P<nucleus>'
+    + NUCLEUS
+    + r')'
+    + SEP
+    + r'(?P<Ridx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Rval>'
+    + ANCHORVAL
+    + r')'
+    + SEP
+    + r'(?P<Aidx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Aval>'
+    + ANCHORVAL
+    + r')'
+    + r'\Z',
+    re.IGNORECASE | re.VERBOSE,
+)  # yapf: disable
+atom_zmat4 = re.compile(
+    r'\A'
+    + r'(?P<nucleus>'
+    + NUCLEUS
+    + r')'
+    + SEP
+    + r'(?P<Ridx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Rval>'
+    + ANCHORVAL
+    + r')'
+    + SEP
+    + r'(?P<Aidx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Aval>'
+    + ANCHORVAL
+    + r')'
+    + SEP
+    + r'(?P<Didx>'
+    + ANCHORTO
+    + r')'
+    + SEP
+    + r'(?P<Dval>'
+    + ANCHORVAL
+    + r')'
+    + r'\Z',
+    re.IGNORECASE | re.VERBOSE,
+)  # yapf: disable
 variable = re.compile(
     r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
-    re.IGNORECASE | re.VERBOSE)
+    re.IGNORECASE | re.VERBOSE,
+)
 
 
 def _filter_mints(string, unsettled=False):
@@ -521,6 +691,7 @@ def _filter_mints(string, unsettled=False):
         accumulating into geom.
 
     """
+
     def process_system_cgmp(matchobj):
         """Handles optional special first fragment with sole contents overall chg/mult."""
 
@@ -533,6 +704,7 @@ def _filter_mints(string, unsettled=False):
         single chg/mult (or None/None) and multiple atom lines.
 
         """
+
         def process_fragment_cgmp(matchobj):
             processed['fragment_charges'].append(float(matchobj.group('chg')))
             processed['fragment_multiplicities'].append(int(matchobj.group('mult')))
@@ -623,14 +795,15 @@ def _filter_mints(string, unsettled=False):
 
 xyz1strict = re.compile(r'\A' + r'(?P<nat>\d+)' + r'\Z')
 SIMPLENUCLEUS = r"""((?P<E>[A-Z]{1,3})|(?P<Z>\d{1,3}))"""
-atom_cartesian_strict = re.compile(r'\A' + r'(?P<nucleus>' + SIMPLENUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                                   re.IGNORECASE | re.VERBOSE)
+atom_cartesian_strict = re.compile(
+    r'\A' + r'(?P<nucleus>' + SIMPLENUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
+)
 
-xyz1 = re.compile(r'\A' + r'(?P<nat>\d+)' + r'[\s,]*' + r'((?P<ubohr>(bohr|au))|(?P<uang>ang))?' + r'\Z',
-                  re.IGNORECASE)
+xyz1 = re.compile(r'\A' + r'(?P<nat>\d+)' + r'[\s,]*' + r'((?P<ubohr>(bohr|au))|(?P<uang>ang))?' + r'\Z', re.IGNORECASE)
 xyz2 = re.compile(r'\A' + CHGMULT, re.VERBOSE)
-atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
-                            re.IGNORECASE | re.VERBOSE)
+atom_cartesian = re.compile(
+    r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
+)
 
 
 def _filter_xyz(string, strict):
@@ -658,6 +831,7 @@ def _filter_xyz(string, strict):
             units : {'Angstrom', 'Bohr'} (`Bohr` `strict=False` only)
 
     """
+
     def process_bohrang(matchobj):
         nat = matchobj.group('nat')  # lgtm[py/unused-local-variable]
         if matchobj.group('uang'):
@@ -678,7 +852,7 @@ def _filter_xyz(string, strict):
         processed['geom'].append(float(matchobj.group('z')))
         return ''
 
-    #nat = 0
+    # nat = 0
     reconstitute = []
     processed = {}
     processed['geom'] = []
@@ -710,7 +884,7 @@ def _filter_xyz(string, strict):
     if 'units' not in processed:
         processed['units'] = 'Angstrom'
 
-    #if len(processed['geom']) != nat:
+    # if len(processed['geom']) != nat:
     #    raise ValidationError
     processed['geom_hints'] = []  # no EFP
 

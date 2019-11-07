@@ -9,12 +9,9 @@ from ..util import unnp
 from .to_string import formula_generator
 
 
-def to_schema(molrec: Dict[str, Any],
-              dtype: Union[str, int],
-              units: str = 'Bohr',
-              *,
-              np_out: bool = False,
-              copy: bool = True) -> Dict[str, Any]:
+def to_schema(
+    molrec: Dict[str, Any], dtype: Union[str, int], units: str = 'Bohr', *, np_out: bool = False, copy: bool = True
+) -> Dict[str, Any]:
     """Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
@@ -57,8 +54,9 @@ def to_schema(molrec: Dict[str, Any],
 
     if dtype == 'psi4':
         if units not in ['Angstrom', 'Bohr']:
-            raise ValidationError("""Psi4 Schema {} allows only 'Bohr'/'Angstrom' coordinates, not {}.""".format(
-                dtype, units))
+            raise ValidationError(
+                """Psi4 Schema {} allows only 'Bohr'/'Angstrom' coordinates, not {}.""".format(dtype, units)
+            )
         qcschema = deepcopy(molrec)
         qcschema['geom'] = geom
         qcschema['units'] = units
@@ -102,17 +100,18 @@ def to_schema(molrec: Dict[str, Any],
 
     else:
         raise ValidationError(
-            "Schema dtype not understood, valid options are {{'psi4', 1, 2}}. Found {}.".format(dtype))
+            "Schema dtype not understood, valid options are {{'psi4', 1, 2}}. Found {}.".format(dtype)
+        )
 
     if not np_out:
         qcschema = unnp(qcschema)
 
     return qcschema
 
-    #if return_type == 'json':
+    # if return_type == 'json':
     #    return json.dumps(qcschema)
-    #elif return_type == 'yaml':
+    # elif return_type == 'yaml':
     #    import yaml
     #    return yaml.dump(qcschema)
-    #else:
+    # else:
     #    raise ValidationError("""Return type ({}) not recognized.""".format(return_type))

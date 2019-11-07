@@ -20,7 +20,7 @@ def blockwise_contract(arr):
         From: https://stackoverflow.com/a/16873755
         """
         n, nrows, ncols = arr.shape
-        return (arr.reshape(h // nrows, -1, nrows, ncols).swapaxes(1, 2).reshape(h, w))
+        return arr.reshape(h // nrows, -1, nrows, ncols).swapaxes(1, 2).reshape(h, w)
 
     ans = unblockshaped(ans, gr * lr, gc * lc)
     return ans
@@ -84,9 +84,9 @@ def blockwise_expand(a, blockshape, aslist=False, require_aligned_blocks=True):
     view_shape = outershape + blockshape
 
     if require_aligned_blocks:
-        assert (np.mod(a.shape, blockshape) == 0).all(), \
-            "blockshape {} must divide evenly into array shape {}"\
-            .format( blockshape, a.shape )
+        assert (np.mod(a.shape, blockshape) == 0).all(), "blockshape {} must divide evenly into array shape {}".format(
+            blockshape, a.shape
+        )
 
     # inner strides: strides within each block (same as original array)
     intra_block_strides = a.strides

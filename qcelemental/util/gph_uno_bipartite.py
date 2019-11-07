@@ -16,7 +16,7 @@ Updated Dec 2017 LAB for pep8, py3, more tests, starter_match, and simpler inter
 import numpy as np
 
 # commented as untested [Apr 2019]
-#def _plotGraph(graph):
+# def _plotGraph(graph):
 #    """Plot graph using nodes as position number."""
 #    import networkx as nx
 #
@@ -93,15 +93,16 @@ def _enumMaximumMatching(g, starter_match=None):
 
     """
     import networkx as nx
+
     all_matches = []
 
-    #----------------Find one matching M----------------
+    # ----------------Find one matching M----------------
     if starter_match is None:
         match = nx.bipartite.hopcroft_karp_matching(g)
     else:
         match = starter_match
 
-    #---------------Re-orient match arcs---------------
+    # ---------------Re-orient match arcs---------------
     match2 = []
     for kk, vv in match.items():
         if g.nodes[kk]['bipartite'] == 0:
@@ -109,7 +110,7 @@ def _enumMaximumMatching(g, starter_match=None):
     match = match2
     all_matches.append(match)
 
-    #-----------------Enter recursion-----------------
+    # -----------------Enter recursion-----------------
     all_matches = _enumMaximumMatchingIter(g, match, all_matches, None)
 
     return all_matches
@@ -145,24 +146,24 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
     """
     import networkx as nx
 
-    #---------------Form directed graph D---------------
+    # ---------------Form directed graph D---------------
     d = _formDirected(g, match)
 
-    #-----------------Find cycles in D-----------------
+    # -----------------Find cycles in D-----------------
     cycles = list(nx.simple_cycles(d))
 
     if len(cycles) == 0:
 
-        #---------If no cycle, find a feasible path---------
+        # ---------If no cycle, find a feasible path---------
         all_uncovered = set(g.nodes).difference(set([ii[0] for ii in match]))
         all_uncovered = all_uncovered.difference(set([ii[1] for ii in match]))
         all_uncovered = list(all_uncovered)
 
-        #--------------If no path, terminiate--------------
+        # --------------If no path, terminiate--------------
         if len(all_uncovered) == 0:
             return all_matches
 
-        #----------Find a length 2 feasible path----------
+        # ----------Find a length 2 feasible path----------
         idx = 0
         uncovered = all_uncovered[idx]
         while True:
@@ -175,7 +176,7 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
                     reversed = False
                     break
 
-                #----------------Try reversed path----------------
+                # ----------------Try reversed path----------------
                 paths_rev = nx.single_source_shortest_path(d.reverse(), uncovered, cutoff=2)
                 len2paths = [vv for kk, vv in paths_rev.items() if len(vv) == 3]
 
@@ -189,7 +190,7 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
             uncovered = all_uncovered[idx]
 
-        #-------------Create a new matching M'-------------
+        # -------------Create a new matching M'-------------
         len2path = len2paths[0]
         if reversed:
             len2path = len2path[::-1]
@@ -210,11 +211,11 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
         all_matches.append(new_match)
 
-        #---------------------Select e---------------------
+        # ---------------------Select e---------------------
         e = set(len2path).difference(set(match))
         e = list(e)[0]
 
-        #-----------------Form subproblems-----------------
+        # -----------------Form subproblems-----------------
         g_plus = g.copy()
         g_minus = g.copy()
         g_plus.remove_node(e[0])
@@ -222,9 +223,7 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
         g_minus.remove_edge(e[0], e[1])
 
-        add_e_new = [
-            e,
-        ]
+        add_e_new = [e]
         if add_e is not None:
             add_e_new.extend(add_e)
 
@@ -232,12 +231,12 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
         all_matches = _enumMaximumMatchingIter(g_plus, new_match, all_matches, add_e_new)
 
     else:
-        #----------------Find a cycle in D----------------
+        # ----------------Find a cycle in D----------------
         cycle = cycles[0]
         cycle.append(cycle[0])
         cycle = list(zip(cycle[:-1], cycle[1:]))
 
-        #-------------Create a new matching M'-------------
+        # -------------Create a new matching M'-------------
         new_match = []
         for ee in d.edges():
             if ee in cycle:
@@ -253,20 +252,18 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
         all_matches.append(new_match)
 
-        #-----------------Choose an edge E-----------------
+        # -----------------Choose an edge E-----------------
         e = set(match).intersection(set(cycle))
         e = list(e)[0]
 
-        #-----------------Form subproblems-----------------
+        # -----------------Form subproblems-----------------
         g_plus = g.copy()
         g_minus = g.copy()
         g_plus.remove_node(e[0])
         g_plus.remove_node(e[1])
         g_minus.remove_edge(e[0], e[1])
 
-        add_e_new = [
-            e,
-        ]
+        add_e_new = [e]
         if add_e is not None:
             add_e_new.extend(add_e)
 
@@ -309,7 +306,7 @@ def _enumMaximumMatching2(g):
     adj = nx.adjacency_matrix(g, nodes).tolil()
     all_matches = []
 
-    #----------------Find one matching----------------
+    # ----------------Find one matching----------------
     match = nx.bipartite.hopcroft_karp_matching(g)
 
     matchadj = np.zeros(adj.shape).astype('int')
@@ -319,10 +316,10 @@ def _enumMaximumMatching2(g):
 
     all_matches.append(matchadj)
 
-    #-----------------Enter recursion-----------------
+    # -----------------Enter recursion-----------------
     all_matches = _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, None, True)
 
-    #---------------Re-orient match arcs---------------
+    # ---------------Re-orient match arcs---------------
     all_matches2 = []
     for ii in all_matches:
         match_list = sparse.find(ii[:n1] == 1)
@@ -369,7 +366,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
     import networkx as nx
     from scipy import sparse
 
-    #-------------------Find cycles-------------------
+    # -------------------Find cycles-------------------
     if check_cycle:
         d = matchadj.multiply(adj)
         d[n1:, :] = adj[n1:, :] - matchadj[n1:, :].multiply(adj[n1:, :])
@@ -386,7 +383,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         cycle.append(cycle[0])
         cycle = zip(cycle[:-1], cycle[1:])
 
-        #--------------Create a new matching--------------
+        # --------------Create a new matching--------------
         new_match = matchadj.copy()
         for ee in cycle:
             if matchadj[ee[0], ee[1]] == 1:
@@ -403,7 +400,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
 
         all_matches.append(new_match)
 
-        #-----------------Form subproblems-----------------
+        # -----------------Form subproblems-----------------
         g_plus = adj.copy()
         g_minus = adj.copy()
         g_plus[e[0], :] = 0
@@ -413,9 +410,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         g_minus[e[0], e[1]] = 0
         g_minus[e[1], e[0]] = 0
 
-        add_e_new = [
-            e,
-        ]
+        add_e_new = [e]
         if add_e is not None:
             add_e_new.extend(add_e)
 
@@ -423,13 +418,13 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         all_matches = _enumMaximumMatchingIter2(g_plus, matchadj, all_matches, n1, add_e_new, check_cycle)
 
     else:
-        #---------------Find uncovered nodes---------------
+        # ---------------Find uncovered nodes---------------
         uncovered = np.where(np.sum(matchadj, axis=1) == 0)[0]
 
         if len(uncovered) == 0:
             return all_matches
 
-        #---------------Find feasible paths---------------
+        # ---------------Find feasible paths---------------
         paths = []
         for ii in uncovered:
             aa = adj[ii, :].dot(matchadj)
@@ -442,11 +437,11 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         if len(paths) == 0:
             return all_matches
 
-        #----------------------Find e----------------------
+        # ----------------------Find e----------------------
         feas1, feas2 = paths[0]
         e = (feas1, int(sparse.find(matchadj[:, feas2] == 1)[0]))
 
-        #----------------Create a new match----------------
+        # ----------------Create a new match----------------
         new_match = matchadj.copy()
         new_match[feas2, :] = 0
         new_match[:, feas2] = 0
@@ -459,7 +454,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
 
         all_matches.append(new_match)
 
-        #-----------------Form subproblems-----------------
+        # -----------------Form subproblems-----------------
         g_plus = adj.copy()
         g_minus = adj.copy()
         g_plus[e[0], :] = 0
@@ -469,24 +464,22 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         g_minus[e[0], e[1]] = 0
         g_minus[e[1], e[0]] = 0
 
-        add_e_new = [
-            e,
-        ]
+        add_e_new = [e]
         if add_e is not None:
             add_e_new.extend(add_e)
 
         all_matches = _enumMaximumMatchingIter2(g_minus, matchadj, all_matches, n1, add_e, check_cycle)
         all_matches = _enumMaximumMatchingIter2(g_plus, new_match, all_matches, n1, add_e_new, check_cycle)
 
-    #if len(all_matches) % 1000 == 0:
+    # if len(all_matches) % 1000 == 0:
     #    print('len', len(all_matches))
 
-    #print('another')
+    # print('another')
     return all_matches
 
 
 # commented as unused [Apr 2019]
-#def _findCycle(adj, n1):
+# def _findCycle(adj, n1):
 #    from scipy import sparse
 #
 #    path = []

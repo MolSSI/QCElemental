@@ -78,11 +78,13 @@ class PhysicalConstantsContext:
 
             # physical constant loop
             for k, v in self.raw_codata.items():
-                self.pc[k] = Datum(v["quantity"],
-                                   v["unit"],
-                                   Decimal(v["value"]),
-                                   comment='uncertainty={}'.format(v["uncertainty"]),
-                                   doi=self.doi)
+                self.pc[k] = Datum(
+                    v["quantity"],
+                    v["unit"],
+                    Decimal(v["value"]),
+                    comment='uncertainty={}'.format(v["uncertainty"]),
+                    doi=self.doi,
+                )
         else:
             raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
 
@@ -91,11 +93,11 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = Datum('calorie-joule relationship',
-                                                      'J',
-                                                      Decimal('4.184'),
-                                                      comment='uncertainty=(exact)')
+        self.pc['calorie-joule relationship'] = Datum(
+            'calorie-joule relationship', 'J', Decimal('4.184'), comment='uncertainty=(exact)'
+        )
 
+        # fmt: off
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
             ('c',                    'Hz',             self.pc['inverse meter-hertz relationship'].data,                     'Speed of light (ms$^{-1}$)'),
@@ -126,7 +128,8 @@ class PhysicalConstantsContext:
             ('e0',                   'F m^-1',         self.pc['electric constant'].data,                                    'Vacuum permittivity (Fm$^{-1}$)'),
             ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avogadro's number"),
             ('me',                   'kg',             self.pc['electron mass'].data,                                        'Electron rest mass (in kg)'),
-        ]  # yapf: disable
+        ]
+        # fmt: on
 
         # add alternate names for constants or derived values to help QC programs
         for alias in aliases:
@@ -179,31 +182,31 @@ class PhysicalConstantsContext:
         else:
             return float(qca.data)
 
-#       h                         'hertz-joule relationship'                  = 6.62606896E-34       # The Planck constant (Js)
-#       c                         'inverse meter-hertz relationship'          = 2.99792458E8         # Speed of light (ms$^{-1}$)
-#       kb                        'kelvin-joule relationship'                 = 1.3806504E-23        # The Boltzmann constant (JK$^{-1}$)
-#       R                         'molar gas constant'                        = 8.314472             # Universal gas constant (JK$^{-1}$mol$^{-1}$)
-#       bohr2angstroms            'Bohr radius' * 1.E10                       = 0.52917720859        # Bohr to Angstroms conversion factor
-#       bohr2m                    'Bohr radius'                               = 0.52917720859E-10    # Bohr to meters conversion factor
-#       bohr2cm                   'Bohr radius' * 100                         = 0.52917720859E-8     # Bohr to centimeters conversion factor
-#       amu2kg                    'atomic mass constant'                      = 1.660538782E-27      # Atomic mass units to kg conversion factor
-#       au2amu                    'electron mass in u'                        = 5.485799097E-4       # Atomic units (m$@@e$) to atomic mass units conversion factor
-#       hartree2J                 'Hartree energy'                            = 4.359744E-18         # Hartree to joule conversion factor
-#       hartree2aJ                'Hartree energy' * 1.E18                    = 4.359744             # Hartree to attojoule (10$^{-18}$J) conversion factor
-#       cal2J                     = 4.184                # Calorie to joule conversion factor
-#       dipmom_au2si              'atomic unit of electric dipole mom.'       = 8.47835281E-30       # Atomic units to SI units (Cm) conversion factor for dipoles
-#       dipmom_au2debye           'atomic unit of electric dipole mom.' / ('hertz-inverse meter relationship' * 1.E-21)     = 2.54174623           # Atomic units to Debye conversion factor for dipoles
-#       dipmom_debye2si           'hertz-inverse meter relationship' * 1.E-21 = 3.335640952E-30      # Debye to SI units (Cm) conversion factor for dipoles
-#       c_au                      'inverse fine-structure constant'           = 137.035999679        # Speed of light in atomic units
-#       hartree2ev                'Hartree energy in eV'                      = 27.21138             # Hartree to eV conversion factor
-#       hartree2wavenumbers       'hartree-inverse meter relationship' * 0.01 = 219474.6             # Hartree to cm$^{-1}$ conversion factor
-#       hartree2kcalmol           hartree2kJmol / cal2J                       = 627.5095             # Hartree to kcal mol$^{-1}$ conversion factor
-#       hartree2kJmol             'Hartree energy'*'Avogadro constant'*0.001  = 2625.500             # Hartree to kilojoule mol$^{-1}$ conversion factor
-#       hartree2MHz               'hartree-hertz relationship'                = 6.579684E9           # Hartree to MHz conversion factor
-#       kcalmol2wavenumbers       10. / 'molar Planck constant times c'*4.184 = 349.7551             # kcal mol$^{-1}$ to cm$^{-1}$ conversion factor
-#       e0                        'electric constant'                         = 8.854187817E-12      # Vacuum permittivity (Fm$^{-1}$)
-#       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
-#       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
+    #       h                         'hertz-joule relationship'                  = 6.62606896E-34       # The Planck constant (Js)
+    #       c                         'inverse meter-hertz relationship'          = 2.99792458E8         # Speed of light (ms$^{-1}$)
+    #       kb                        'kelvin-joule relationship'                 = 1.3806504E-23        # The Boltzmann constant (JK$^{-1}$)
+    #       R                         'molar gas constant'                        = 8.314472             # Universal gas constant (JK$^{-1}$mol$^{-1}$)
+    #       bohr2angstroms            'Bohr radius' * 1.E10                       = 0.52917720859        # Bohr to Angstroms conversion factor
+    #       bohr2m                    'Bohr radius'                               = 0.52917720859E-10    # Bohr to meters conversion factor
+    #       bohr2cm                   'Bohr radius' * 100                         = 0.52917720859E-8     # Bohr to centimeters conversion factor
+    #       amu2kg                    'atomic mass constant'                      = 1.660538782E-27      # Atomic mass units to kg conversion factor
+    #       au2amu                    'electron mass in u'                        = 5.485799097E-4       # Atomic units (m$@@e$) to atomic mass units conversion factor
+    #       hartree2J                 'Hartree energy'                            = 4.359744E-18         # Hartree to joule conversion factor
+    #       hartree2aJ                'Hartree energy' * 1.E18                    = 4.359744             # Hartree to attojoule (10$^{-18}$J) conversion factor
+    #       cal2J                     = 4.184                # Calorie to joule conversion factor
+    #       dipmom_au2si              'atomic unit of electric dipole mom.'       = 8.47835281E-30       # Atomic units to SI units (Cm) conversion factor for dipoles
+    #       dipmom_au2debye           'atomic unit of electric dipole mom.' / ('hertz-inverse meter relationship' * 1.E-21)     = 2.54174623           # Atomic units to Debye conversion factor for dipoles
+    #       dipmom_debye2si           'hertz-inverse meter relationship' * 1.E-21 = 3.335640952E-30      # Debye to SI units (Cm) conversion factor for dipoles
+    #       c_au                      'inverse fine-structure constant'           = 137.035999679        # Speed of light in atomic units
+    #       hartree2ev                'Hartree energy in eV'                      = 27.21138             # Hartree to eV conversion factor
+    #       hartree2wavenumbers       'hartree-inverse meter relationship' * 0.01 = 219474.6             # Hartree to cm$^{-1}$ conversion factor
+    #       hartree2kcalmol           hartree2kJmol / cal2J                       = 627.5095             # Hartree to kcal mol$^{-1}$ conversion factor
+    #       hartree2kJmol             'Hartree energy'*'Avogadro constant'*0.001  = 2625.500             # Hartree to kilojoule mol$^{-1}$ conversion factor
+    #       hartree2MHz               'hartree-hertz relationship'                = 6.579684E9           # Hartree to MHz conversion factor
+    #       kcalmol2wavenumbers       10. / 'molar Planck constant times c'*4.184 = 349.7551             # kcal mol$^{-1}$ to cm$^{-1}$ conversion factor
+    #       e0                        'electric constant'                         = 8.854187817E-12      # Vacuum permittivity (Fm$^{-1}$)
+    #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
+    #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
     def Quantity(self, data: str) -> 'quantity._Quantity':
         """Returns a Pint Quantity.
@@ -212,8 +215,9 @@ class PhysicalConstantsContext:
         return self.ureg.Quantity(data)
 
     @lru_cache()
-    def conversion_factor(self, base_unit: Union[str, 'quantity._Quantity'],
-                          conv_unit: Union[str, 'quantity._Quantity']) -> float:
+    def conversion_factor(
+        self, base_unit: Union[str, 'quantity._Quantity'], conv_unit: Union[str, 'quantity._Quantity']
+    ) -> float:
         """Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
@@ -292,7 +296,7 @@ class PhysicalConstantsContext:
             BOLD = '\033[1m'
             UNDERLINE = '\033[4m'
 
-        tol = 1.e-8
+        tol = 1.0e-8
         print(bcolors.OKBLUE + '\nChecking ({}) physconst vs. Psi4 ...'.format(tol) + bcolors.ENDC)
         for pc in dir(checkup_data.physconst):
             if not pc.startswith('__'):
@@ -300,13 +304,20 @@ class PhysicalConstantsContext:
                 val = getattr(checkup_data.physconst, pc)
                 assert isinstance(ref, (int, float))
                 rat = abs(1.0 - float(ref) / val)
-                if rat > 1.e-4:
-                    print(bcolors.FAIL +
-                          'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
-                              pc, rat, ref, val) + bcolors.ENDC)
+                if rat > 1.0e-4:
+                    print(
+                        bcolors.FAIL
+                        + 'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                            pc, rat, ref, val
+                        )
+                        + bcolors.ENDC
+                    )
                 if rat > tol:
-                    print('Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
-                        pc, rat, ref, val))
+                    print(
+                        'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                            pc, rat, ref, val
+                        )
+                    )
 
     def _get_pi(self, from_scratch: bool = False) -> 'Decimal':
         """Get pi to 36 digits (or more with mpmath).
@@ -324,6 +335,7 @@ class PhysicalConstantsContext:
 
         if from_scratch:  # pragma: no cover
             from mpmath import mp
+
             mp.dps = 36
             return mp.pi
         else:
@@ -336,9 +348,14 @@ class PhysicalConstantsContext:
         tau = 2 * pi
 
         text = [
-            '#ifndef _qcelemental_physconst_h_', '#define _qcelemental_physconst_h_', '',
-            '/* This file is autogenerated from the QCElemental python module */', '', '/* clang-format off */',
-            '#define pc_pi {}'.format(pi), '#define pc_twopi {}'.format(tau)
+            '#ifndef _qcelemental_physconst_h_',
+            '#define _qcelemental_physconst_h_',
+            '',
+            '/* This file is autogenerated from the QCElemental python module */',
+            '',
+            '/* clang-format off */',
+            '#define pc_pi {}'.format(pi),
+            '#define pc_twopi {}'.format(tau),
         ]
 
         for pc, qca in self.pc.items():

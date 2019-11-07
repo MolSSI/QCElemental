@@ -36,12 +36,14 @@ def update_with_error(a: Dict, b: Dict, path=None) -> Dict:
                 pass  # same leaf value
             elif a[key] is None:
                 a[key] = b[key]
-            elif (isinstance(a[key], (list, tuple)) and
-                  not isinstance(a[key], str) and
-                  isinstance(b[key], (list, tuple)) and
-                  not isinstance(b[key], str) and
-                  len(a[key]) == len(b[key]) and
-                  all((av is None or av == bv) for av, bv in zip(a[key], b[key]))):  # yapf: disable
+            elif (
+                isinstance(a[key], (list, tuple))
+                and not isinstance(a[key], str)
+                and isinstance(b[key], (list, tuple))
+                and not isinstance(b[key], str)
+                and len(a[key]) == len(b[key])
+                and all((av is None or av == bv) for av, bv in zip(a[key], b[key]))
+            ):  # yapf: disable
                 a[key] = b[key]
             else:
                 raise KeyError('Conflict at {}: {} vs. {}'.format('.'.join(path + [str(key)]), a[key], b[key]))
@@ -56,6 +58,7 @@ def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> L
     (-pi, pi]. The latter is handy since this is how libefp returns hints
 
     """
+
     def radrge(radang):
         """Adjust `radang` by 2pi into (-pi, pi] range."""
         if radang > math.pi:
@@ -66,9 +69,9 @@ def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> L
             return radang
 
     if units == 'Angstrom':
-        iutau = 1. / constants.bohr2angstroms
+        iutau = 1.0 / constants.bohr2angstroms
     else:
-        iutau = 1.
+        iutau = 1.0
 
     hints = []
     for hint in geom_hints:

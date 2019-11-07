@@ -4,8 +4,9 @@ import sys
 from typing import Union
 
 
-def which_import(module: str, *, return_bool: bool = False, raise_error: bool = False,
-                 raise_msg: str = None, package: str = None) -> Union[bool, None, str]:
+def which_import(
+    module: str, *, return_bool: bool = False, raise_error: bool = False, raise_msg: str = None, package: str = None
+) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
@@ -31,7 +32,8 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
     if module_spec is None:
         if raise_error:
             raise ModuleNotFoundError(
-                f"Python module '{module}' not found in envvar PYTHONPATH.{' ' + raise_msg if raise_msg else ''}")
+                f"Python module '{module}' not found in envvar PYTHONPATH.{' ' + raise_msg if raise_msg else ''}"
+            )
         elif return_bool:
             return False
         else:
@@ -43,12 +45,9 @@ def which_import(module: str, *, return_bool: bool = False, raise_error: bool = 
             return module_spec.origin
 
 
-def which(command: str,
-          *,
-          return_bool: bool = False,
-          raise_error: bool = False,
-          raise_msg: str = None,
-          env: str = None) -> Union[bool, None, str]:
+def which(
+    command: str, *, return_bool: bool = False, raise_error: bool = False, raise_msg: str = None, env: str = None
+) -> Union[bool, None, str]:
     """Test to see if a command is available.
 
     Returns
@@ -75,7 +74,8 @@ def which(command: str,
 
     if raise_error and ans is None:
         raise ModuleNotFoundError(
-            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}")
+            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}"
+        )
 
     if return_bool:
         return bool(ans)
@@ -88,6 +88,7 @@ def safe_version(*args, **kwargs) -> str:
     Package resources is a very slow load
     """
     import pkg_resources
+
     return pkg_resources.safe_version(*args, **kwargs)
 
 
@@ -96,4 +97,5 @@ def parse_version(*args, **kwargs):
     Package resources is a very slow load
     """
     import pkg_resources
+
     return pkg_resources.parse_version(*args, **kwargs)

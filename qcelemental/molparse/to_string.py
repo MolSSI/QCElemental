@@ -7,15 +7,17 @@ from ..molutil import guess_connectivity
 from ..physical_constants import constants
 
 
-def to_string(molrec: Dict,
-              dtype: str,
-              units: str = None,
-              *,
-              atom_format: str = None,
-              ghost_format: str = None,
-              width: int = 17,
-              prec: int = 12,
-              return_data: bool = False) -> Union[str, Tuple[str, Dict]]:
+def to_string(
+    molrec: Dict,
+    dtype: str,
+    units: str = None,
+    *,
+    atom_format: str = None,
+    ghost_format: str = None,
+    width: int = 17,
+    prec: int = 12,
+    return_data: bool = False,
+) -> Union[str, Tuple[str, Dict]]:
     """Format a string representation of QM molecule.
 
     Parameters
@@ -63,8 +65,8 @@ def to_string(molrec: Dict,
 
     """
 
-    #funits, fiutau = process_units(molrec)
-    #molrec = self.to_dict(force_units=units, np_out=True)
+    # funits, fiutau = process_units(molrec)
+    # molrec = self.to_dict(force_units=units, np_out=True)
 
     dtype = dtype.lower()
 
@@ -89,16 +91,16 @@ def to_string(molrec: Dict,
         units = default_units[dtype]
 
     if molrec['units'] == 'Angstrom' and units.capitalize() == 'Angstrom':
-        factor = 1.
+        factor = 1.0
     elif molrec['units'] == 'Angstrom' and units.capitalize() == 'Bohr':
         if 'input_units_to_au' in molrec:
             factor = molrec['input_units_to_au']
         else:
-            factor = 1. / constants.bohr2angstroms
+            factor = 1.0 / constants.bohr2angstroms
     elif molrec['units'] == 'Bohr' and units.capitalize() == 'Angstrom':
         factor = constants.bohr2angstroms
     elif molrec['units'] == 'Bohr' and units.capitalize() == 'Bohr':
-        factor = 1.
+        factor = 1.0
     else:
         factor = constants.conversion_factor(molrec['units'], units)
     geom = np.asarray(molrec['geom']).reshape((-1, 3)) * factor
@@ -219,9 +221,7 @@ def to_string(molrec: Dict,
         smol.append(last_line)
 
         data.fields.extend(['molecular_charge', 'molecular_multiplicity'])
-        data.keywords = {
-            'charge': int(molrec['molecular_charge']),
-        }
+        data.keywords = {'charge': int(molrec['molecular_charge'])}
         if molrec['molecular_multiplicity'] != 1:
             data.keywords['scf__nopen'] = molrec['molecular_multiplicity'] - 1
             data.keywords['dft__mult'] = molrec['molecular_multiplicity']
@@ -275,7 +275,9 @@ def to_string(molrec: Dict,
         split_atoms = np.split(atoms, molrec["fragment_separators"])
         for ifr, fr in enumerate(split_atoms):
             if len(split_atoms) > 1:  # harmless to include but tidier to exclude
-                smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+                smol.extend(
+                    ['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""]
+                )
             smol.extend(fr.tolist())
 
         # append units and any other non-default molecule keywords
@@ -285,16 +287,18 @@ def to_string(molrec: Dict,
         if molrec["fix_orientation"]:
             smol.append("no_reorient")
 
-        data.fields.extend([
-            'molecular_charge',
-            'molecular_multiplicity',
-            'fragments',
-            'fragment_charges',
-            'fragment_multiplicities',
-            'fix_com',
-            'fix_orientation',
-            'real',
-        ])
+        data.fields.extend(
+            [
+                'molecular_charge',
+                'molecular_multiplicity',
+                'fragments',
+                'fragment_charges',
+                'fragment_multiplicities',
+                'fix_com',
+                'fix_orientation',
+                'real',
+            ]
+        )
         data.keywords = {}
 
     elif dtype == 'turbomole':
@@ -353,20 +357,24 @@ def to_string(molrec: Dict,
         split_atoms = np.split(atoms, molrec["fragment_separators"])
         for ifr, fr in enumerate(split_atoms):
             if len(split_atoms) > 1:
-                smol.extend(['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""])
+                smol.extend(
+                    ['--', f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""]
+                )
             smol.extend(fr.tolist())
         smol.append(last_line)
 
-        data.fields.extend([
-            'fix_com',
-            'fix_orientation',
-            'fragment_charges',
-            'fragment_multiplicities',
-            'molecular_charge',
-            'molecular_multiplicity',
-            'real',
-            'units',
-        ])
+        data.fields.extend(
+            [
+                'fix_com',
+                'fix_orientation',
+                'fragment_charges',
+                'fragment_multiplicities',
+                'molecular_charge',
+                'molecular_multiplicity',
+                'real',
+                'units',
+            ]
+        )
 
         data.keywords = {
             'no_reorient': molrec['fix_orientation'] or molrec['fix_com'],
@@ -402,7 +410,7 @@ def _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, sp, x
             'elez': molrec['elez'][iat],
             'elem': molrec['elem'][iat],
             'mass': molrec['mass'][iat],
-            'elbl': molrec['elbl'][iat]
+            'elbl': molrec['elbl'][iat],
         }
 
         if molrec['real'][iat]:

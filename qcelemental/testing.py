@@ -34,17 +34,19 @@ def tnm() -> str:
     return sys._getframe().f_back.f_code.co_name
 
 
-def compare_values(expected,
-                   computed,
-                   label: str = None,
-                   *,
-                   atol: float = 1.e-6,
-                   rtol: float = 1.e-16,
-                   equal_nan: bool = False,
-                   passnone: bool = False,
-                   quiet: bool = False,
-                   return_message: bool = False,
-                   return_handler: Callable = None) -> bool:
+def compare_values(
+    expected,
+    computed,
+    label: str = None,
+    *,
+    atol: float = 1.0e-6,
+    rtol: float = 1.0e-16,
+    equal_nan: bool = False,
+    passnone: bool = False,
+    quiet: bool = False,
+    return_message: bool = False,
+    return_handler: Callable = None,
+) -> bool:
     """Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
@@ -110,17 +112,22 @@ def compare_values(expected,
     try:
         xptd, cptd = np.array(expected, dtype=dtype), np.array(computed, dtype=dtype)
     except Exception:
-        return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray of {dtype}.""",
-                              return_message, quiet)
+        return return_handler(
+            False, label, f"""\t{label}: inputs not cast-able to ndarray of {dtype}.""", return_message, quiet
+        )
 
     if xptd.shape != cptd.shape:
-        return return_handler(False, label,
-                              f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
-                              return_message, quiet)  # lgtm: [py/syntax-error]
+        return return_handler(
+            False,
+            label,
+            f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
+            return_message,
+            quiet,
+        )  # lgtm: [py/syntax-error]
 
     digits1 = abs(int(np.log10(atol))) + 2
     digits_str = f'to atol={atol}'
-    if rtol > 1.e-12:
+    if rtol > 1.0e-12:
         digits_str += f', rtol={rtol}'
 
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
@@ -146,24 +153,28 @@ def compare_values(expected,
         if xptd.shape == ():
             diff_str = f'{float(diff):.{digits1}f}'
             message = """\t{}: computed value ({}) does not match ({}) {} by difference ({}).""".format(
-                label, cptd_str, xptd_str, digits_str, diff_str)
+                label, cptd_str, xptd_str, digits_str, diff_str
+            )
         else:
             diff[isclose] = 0.0
             diff_str = np.array_str(diff, max_line_width=120, precision=12, suppress_small=False)
             diff_str = '\n'.join('    ' + ln for ln in diff_str.splitlines())
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
-                label, digits_str, xptd_str, cptd_str, diff_str)
+                label, digits_str, xptd_str, cptd_str, diff_str
+            )
 
     return return_handler(allclose, label, message, return_message, quiet)
 
 
-def compare(expected,
-            computed,
-            label: str = None,
-            *,
-            quiet: bool = False,
-            return_message: bool = False,
-            return_handler: Callable = None) -> bool:
+def compare(
+    expected,
+    computed,
+    label: str = None,
+    *,
+    quiet: bool = False,
+    return_message: bool = False,
+    return_handler: Callable = None,
+) -> bool:
     """Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
 
     Parameters
@@ -206,9 +217,13 @@ def compare(expected,
         return return_handler(False, label, f"""\t{label}: inputs not cast-able to ndarray.""", return_message, quiet)
 
     if xptd.shape != cptd.shape:
-        return return_handler(False, label,
-                              f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
-                              return_message, quiet)
+        return return_handler(
+            False,
+            label,
+            f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
+            return_message,
+            quiet,
+        )
 
     isclose = np.asarray(xptd == cptd)
     allclose = bool(isclose.all())
@@ -242,10 +257,12 @@ def compare(expected,
 
         if xptd.shape == ():
             message = """\t{}: computed value ({}) does not match ({}) by difference ({}).""".format(
-                label, cptd_str, xptd_str, diff_str)
+                label, cptd_str, xptd_str, diff_str
+            )
         else:
             message = """\t{}: computed value does not match.\n  Expected:\n{}\n  Observed:\n{}\n  Difference:\n{}\n""".format(
-                label, xptd_str, cptd_str, diff_str)
+                label, xptd_str, cptd_str, diff_str
+            )
 
     return return_handler(allclose, label, message, return_message, quiet)
 
@@ -310,16 +327,17 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
 
 
 def compare_recursive(
-        expected: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
-        computed: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
-        label: str = None,
-        *,
-        atol: float = 1.e-6,
-        rtol: float = 1.e-16,
-        forgive: List[str] = None,
-        quiet: bool = False,
-        return_message: bool = False,
-        return_handler: Callable = None) -> bool:
+    expected: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
+    computed: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
+    label: str = None,
+    *,
+    atol: float = 1.0e-6,
+    rtol: float = 1.0e-16,
+    forgive: List[str] = None,
+    quiet: bool = False,
+    return_message: bool = False,
+    return_handler: Callable = None,
+) -> bool:
     """
     Recursively compares nested structures such as dictionaries and lists.
 
@@ -372,7 +390,7 @@ def compare_recursive(
     forgiven = []
 
     for nomatch in sorted(errors):
-        for fg in (forgive or []):
+        for fg in forgive or []:
             if nomatch[0].startswith(fg):
                 forgiven.append(nomatch)
                 errors.remove(nomatch)
@@ -394,17 +412,19 @@ def compare_recursive(
     return return_handler(len(ret_msg_str) == 0, label, ret_msg_str, return_message, quiet)
 
 
-def compare_molrecs(expected,
-                    computed,
-                    label: str = None,
-                    *,
-                    atol: float = 1.e-6,
-                    rtol: float = 1.e-16,
-                    forgive=None,
-                    verbose: int = 1,
-                    relative_geoms='exact',
-                    return_message: bool = False,
-                    return_handler: Callable = None) -> bool:
+def compare_molrecs(
+    expected,
+    computed,
+    label: str = None,
+    *,
+    atol: float = 1.0e-6,
+    rtol: float = 1.0e-16,
+    forgive=None,
+    verbose: int = 1,
+    relative_geoms='exact',
+    return_message: bool = False,
+    return_handler: Callable = None,
+) -> bool:
     """Function to compare Molecule dictionaries. Prints
 #    :py:func:`util.success` when elements of `computed` match elements of
 #    `expected` to `tol` number of digits (for float arrays).
@@ -451,39 +471,48 @@ def compare_molrecs(expected,
         #   fix_com/orientation, then attach the oriented geom to computed before the
         #   recursive dict comparison.
         from .molutil.align import B787
+
         cgeom = np.array(cptd['geom']).reshape((-1, 3))
         rgeom = np.array(xptd['geom']).reshape((-1, 3))
-        rmsd, mill = B787(rgeom=rgeom,
-                          cgeom=cgeom,
-                          runiq=None,
-                          cuniq=None,
-                          atoms_map=True,
-                          mols_align=True,
-                          run_mirror=False,
-                          verbose=0)
+        rmsd, mill = B787(
+            rgeom=rgeom,
+            cgeom=cgeom,
+            runiq=None,
+            cuniq=None,
+            atoms_map=True,
+            mols_align=True,
+            run_mirror=False,
+            verbose=0,
+        )
         if cptd['fix_com']:
-            return compare(True,
-                           np.allclose(np.zeros((3)), mill.shift, atol=atol),
-                           'null shift',
-                           quiet=(verbose == 0),
-                           return_message=return_message,
-                           return_handler=return_handler)
+            return compare(
+                True,
+                np.allclose(np.zeros((3)), mill.shift, atol=atol),
+                'null shift',
+                quiet=(verbose == 0),
+                return_message=return_message,
+                return_handler=return_handler,
+            )
         if cptd['fix_orientation']:
-            return compare(True,
-                           np.allclose(np.identity(3), mill.rotation, atol=atol),
-                           'null rotation',
-                           quiet=(verbose == 0),
-                           return_message=return_message,
-                           return_handler=return_handler)
+            return compare(
+                True,
+                np.allclose(np.identity(3), mill.rotation, atol=atol),
+                'null rotation',
+                quiet=(verbose == 0),
+                return_message=return_message,
+                return_handler=return_handler,
+            )
         ageom = mill.align_coordinates(cgeom)
         cptd['geom'] = ageom.reshape((-1))
 
-    return compare_recursive(xptd,
-                             cptd,
-                             atol=atol,
-                             rtol=rtol,
-                             label=label,
-                             forgive=forgive,
-                             quiet=(verbose == 0),
-                             return_message=return_message,
-                             return_handler=return_handler)
+    return compare_recursive(
+        xptd,
+        cptd,
+        atol=atol,
+        rtol=rtol,
+        label=label,
+        forgive=forgive,
+        quiet=(verbose == 0),
+        return_message=return_message,
+        return_handler=return_handler,
+    )

@@ -36,6 +36,7 @@ class VanderWaalsRadii:
         The year the context was created.
 
     """
+
     def __init__(self, context: str = "MANTINA2009"):
         self.vdwr: Dict[str, Datum] = collections.OrderedDict()
 
@@ -57,8 +58,9 @@ class VanderWaalsRadii:
     def __str__(self) -> str:
         return "VanderWaalsRadii(context='{}')".format(self.name)
 
-    def get(self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr',
-            missing: float = None) -> Union[float, 'Datum']:
+    def get(
+        self, atom: Union[int, str], *, return_tuple: bool = False, units: str = 'bohr', missing: float = None
+    ) -> Union[float, 'Datum']:
         """
         Access a van der Waals radius for species ``atom``.
 
@@ -152,8 +154,11 @@ class VanderWaalsRadii:
                 qca = self.vdwr[el]
                 text.append('{},  /*- [{}] {} {} -*/'.format(qca.data, qca.units, qca.label, qca.comment))
             except KeyError:
-                text.append('{:.2f},  /*- [{}] {} {} -*/'.format(missing, self.native_units, el,
-                                                                 'Default value for missing data'))
+                text.append(
+                    '{:.2f},  /*- [{}] {} {} -*/'.format(
+                        missing, self.native_units, el, 'Default value for missing data'
+                    )
+                )
 
         text.append('};')
         text.append('#endif /* header guard */')
