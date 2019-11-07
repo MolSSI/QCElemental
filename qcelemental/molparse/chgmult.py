@@ -336,7 +336,7 @@ def validate_and_fill_chgmult(
         and all(f is not None for f in fc)
         and m is not None
         and all(f is not None for f in fm)
-    )  # yapf: disable
+    )  
     cgmp_rules.append('1')
 
     #   * (R2) require total charge to be the sum of fragment charges
@@ -468,7 +468,7 @@ def validate_and_fill_chgmult(
         header = True
         for candidate in itertools.product(
             *[uniq_c, itertools.product(*uniq_fc), uniq_m, itertools.product(*uniq_fm)]
-        ):  # yapf: disable
+        ):  
             cc, cfc, cm, cfm = candidate
             if header:
                 if log_full:

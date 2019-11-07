@@ -8,105 +8,120 @@ from qcelemental.models import basis
 
 center_data = {
     "bs_sto3g_h": {
-        "electron_shells": [{
-            "harmonic_type": "spherical",
-            "angular_momentum": [0],
-            "exponents": [3.42525091, 0.62391373, 0.16885540],
-            "coefficients": [[0.15432897, 0.53532814, 0.44463454]]
-        }]
+        "electron_shells": [
+            {
+                "harmonic_type": "spherical",
+                "angular_momentum": [0],
+                "exponents": [3.42525091, 0.62391373, 0.16885540],
+                "coefficients": [[0.15432897, 0.53532814, 0.44463454]],
+            }
+        ]
     },
     "bs_sto3g_o": {
-        "electron_shells": [{
-            "harmonic_type": "spherical",
-            "angular_momentum": [0],
-            "exponents": [130.70939, 23.808861, 6.4436089],
-            "coefficients": [[0.15432899, 0.53532814, 0.44463454]]
-        }, {
-            "harmonic_type":
-            "cartesian",
-            "angular_momentum": [0, 1],
-            "exponents": [5.0331513, 1.1695961, 0.3803890],
-            "coefficients": [[-0.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]]
-        }, {
-            "harmonic_type":
-            "cartesian",
-            "angular_momentum": [0],
-            "exponents": [5.0331513, 1.1695961, 0.3803890],
-            "coefficients": [[-5.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]]
-        }]
+        "electron_shells": [
+            {
+                "harmonic_type": "spherical",
+                "angular_momentum": [0],
+                "exponents": [130.70939, 23.808861, 6.4436089],
+                "coefficients": [[0.15432899, 0.53532814, 0.44463454]],
+            },
+            {
+                "harmonic_type": "cartesian",
+                "angular_momentum": [0, 1],
+                "exponents": [5.0331513, 1.1695961, 0.3803890],
+                "coefficients": [[-0.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]],
+            },
+            {
+                "harmonic_type": "cartesian",
+                "angular_momentum": [0],
+                "exponents": [5.0331513, 1.1695961, 0.3803890],
+                "coefficients": [[-5.09996723, 0.39951283, 0.70011547], [0.15591629, 0.60768379, 0.39195739]],
+            },
+        ]
     },
     "bs_def2tzvp_zr": {
-        "electron_shells": [{
-            "harmonic_type": "spherical",
-            "angular_momentum": [0],
-            "exponents": [11.000000000, 9.5000000000, 3.6383667759, 0.76822026698],
-            "coefficients": [[-0.19075595259, 0.33895588754, 0.0000000, 0.0000000],
-                             [0.0000000, 0.0000000, 1.0000000000, 0.0000000]]
-        }, {
-            "harmonic_type": "spherical",
-            "angular_momentum": [2],
-            "exponents": [4.5567957795, 1.2904939799, 0.51646987229],
-            "coefficients": [[-0.96190569023E-09, 0.20569990155, 0.41831381851], [0.0000000, 0.0000000, 0.0000000],
-                             [0.0000000, 0.0000000, 0.0000000]]
-        }, {
-            "harmonic_type": "spherical",
-            "angular_momentum": [3],
-            "exponents": [0.3926100],
-            "coefficients": [[1.0000000]]
-        }],
+        "electron_shells": [
+            {
+                "harmonic_type": "spherical",
+                "angular_momentum": [0],
+                "exponents": [11.000000000, 9.5000000000, 3.6383667759, 0.76822026698],
+                "coefficients": [
+                    [-0.19075595259, 0.33895588754, 0.0000000, 0.0000000],
+                    [0.0000000, 0.0000000, 1.0000000000, 0.0000000],
+                ],
+            },
+            {
+                "harmonic_type": "spherical",
+                "angular_momentum": [2],
+                "exponents": [4.5567957795, 1.2904939799, 0.51646987229],
+                "coefficients": [
+                    [-0.96190569023e-09, 0.20569990155, 0.41831381851],
+                    [0.0000000, 0.0000000, 0.0000000],
+                    [0.0000000, 0.0000000, 0.0000000],
+                ],
+            },
+            {
+                "harmonic_type": "spherical",
+                "angular_momentum": [3],
+                "exponents": [0.3926100],
+                "coefficients": [[1.0000000]],
+            },
+        ],
         "ecp_electrons": 28,
-        "ecp_potentials": [{
-            "ecp_type": "scalar",
-            "angular_momentum": [0],
-            "r_exponents": [2, 2, 2, 2],
-            "gaussian_exponents": [7.4880494, 3.7440249, 6.5842120, 3.2921060],
-            "coefficients": [[135.15384419, 15.55244130, 19.12219811, 2.43637549]]
-        }, {
-            "ecp_type": "spinorbit",
-            "angular_momentum": [1],
-            "r_exponents": [2, 2, 2, 2],
-            "gaussian_exponents": [6.4453779, 3.2226886, 6.5842120, 3.2921060],
-            "coefficients": [[87.78499169, 11.56406599, 19.12219811, 2.43637549]]
-        }]
-    }
-} # yapf: disable
+        "ecp_potentials": [
+            {
+                "ecp_type": "scalar",
+                "angular_momentum": [0],
+                "r_exponents": [2, 2, 2, 2],
+                "gaussian_exponents": [7.4880494, 3.7440249, 6.5842120, 3.2921060],
+                "coefficients": [[135.15384419, 15.55244130, 19.12219811, 2.43637549]],
+            },
+            {
+                "ecp_type": "spinorbit",
+                "angular_momentum": [1],
+                "r_exponents": [2, 2, 2, 2],
+                "gaussian_exponents": [6.4453779, 3.2226886, 6.5842120, 3.2921060],
+                "coefficients": [[87.78499169, 11.56406599, 19.12219811, 2.43637549]],
+            },
+        ],
+    },
+}
+
 
 @pytest.fixture(scope="function")
 def result_data_fixture():
-    mol = qcel.models.Molecule.from_data("""
+    mol = qcel.models.Molecule.from_data(
+        """
         O 0 0 0
         H 0 0 2
         H 0 2 0
-    """)
+    """
+    )
 
     return {
         "molecule": mol,
         "driver": "energy",
-        "model": {
-            "method": "UFF"
-        },
+        "model": {"method": "UFF"},
         "return_result": 5,
         "success": True,
         "properties": {},
-        "provenance": {
-            "creator": "qcel"
-        },
+        "provenance": {"creator": "qcel"},
         "stdout": "I ran.",
     }
 
 
 @pytest.fixture(scope="function")
 def wavefunction_data_fixture(result_data_fixture):
-    bas = basis.BasisSet(name="custom_basis",
-                         center_data=center_data,
-                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
+    bas = basis.BasisSet(
+        name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]
+    )
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
     result_data_fixture["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
         "basis": bas,
         "restricted": True,
         "scf_orbitals_a": c_matrix,
-        "orbitals_a": "scf_orbitals_a"
+        "orbitals_a": "scf_orbitals_a",
     }
 
     return result_data_fixture
@@ -129,14 +144,8 @@ def optimization_data_fixture(result_data_fixture):
         "trajectory": trajectory,
         "energies": energies,
         "success": True,
-        "provenance": {
-            "creator": "qcel"
-        },
-        "input_specification": {
-            "model": {
-                "method": "UFF"
-            }
-        }
+        "provenance": {"creator": "qcel"},
+        "input_specification": {"model": {"method": "UFF"}},
     }
 
     return ret
@@ -148,9 +157,11 @@ def test_basis_shell_centers(center_name):
 
 
 def test_basis_set_build():
-    bas = basis.BasisSet(name="custom_basis",
-                         center_data=center_data,
-                         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"])
+    bas = basis.BasisSet(
+        name="custom_basis",
+        center_data=center_data,
+        atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"],
+    )
 
     assert len(bas.center_data) == 3
     assert len(bas.atom_map) == 4
@@ -237,17 +248,28 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
     assert "does not exist" in str(e.value)
 
 
-@pytest.mark.parametrize("protocol, restricted, provided, expected", [
-    ('none', True, ['orbitals_a', 'orbitals_b'], []),
-    (None, True, ['orbitals_a', 'orbitals_b'], []),
-    ('all', False, ['orbitals_a', 'orbitals_b'], ['orbitals_a', 'orbitals_b']),
-    ('all', True, ['orbitals_a', 'orbitals_b'], ['orbitals_a']),
-    ('orbitals_and_eigenvalues', False, ['orbitals_a', 'orbitals_b', 'fock_a', 'fock_b'], ['orbitals_a', 'orbitals_b'
-                                                                                           ]),
-    ('orbitals_and_eigenvalues', True, ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'fock_a', 'fock_b'
-                                        ], ['orbitals_a', 'eigenvalues_a']),
-    ('return_results', True, ['orbitals_a', 'fock_a', 'fock_b'], ['orbitals_a', 'fock_a']),
-])
+@pytest.mark.parametrize(
+    "protocol, restricted, provided, expected",
+    [
+        ('none', True, ['orbitals_a', 'orbitals_b'], []),
+        (None, True, ['orbitals_a', 'orbitals_b'], []),
+        ('all', False, ['orbitals_a', 'orbitals_b'], ['orbitals_a', 'orbitals_b']),
+        ('all', True, ['orbitals_a', 'orbitals_b'], ['orbitals_a']),
+        (
+            'orbitals_and_eigenvalues',
+            False,
+            ['orbitals_a', 'orbitals_b', 'fock_a', 'fock_b'],
+            ['orbitals_a', 'orbitals_b'],
+        ),
+        (
+            'orbitals_and_eigenvalues',
+            True,
+            ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'fock_a', 'fock_b'],
+            ['orbitals_a', 'eigenvalues_a'],
+        ),
+        ('return_results', True, ['orbitals_a', 'fock_a', 'fock_b'], ['orbitals_a', 'fock_a']),
+    ],
+)
 def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture):
 
     wfn_data = wavefunction_data_fixture["wavefunction"]
@@ -273,17 +295,14 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
     if len(expected) == 0:
         assert wfn.wavefunction is None
     else:
-        expected_keys = (set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"})
+        expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
         assert wfn.wavefunction.dict().keys() == expected_keys
 
 
-@pytest.mark.parametrize("keep, indices", [
-    (None, [0, 1, 2, 3, 4]),
-    ('all', [0, 1, 2, 3, 4]),
-    ('initial_and_final', [0, 4]),
-    ('final', [4]),
-    ('none', []),
-])
+@pytest.mark.parametrize(
+    "keep, indices",
+    [(None, [0, 1, 2, 3, 4]), ('all', [0, 1, 2, 3, 4]), ('initial_and_final', [0, 4]), ('final', [4]), ('none', [])],
+)
 def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
 
     if keep is not None:
@@ -307,18 +326,19 @@ def test_result_build_stdout(result_data_fixture):
 
 
 def test_failed_operation(result_data_fixture):
-    water = qcel.models.Molecule.from_data("""
+    water = qcel.models.Molecule.from_data(
+        """
         O 0 0 0
         H 0 0 2
         H 0 2 0
-    """)
+    """
+    )
 
-    failed = qcel.models.FailedOperation(extras={"garbage": water},
-                                         input_data=result_data_fixture,
-                                         error={
-                                             "error_type": "expected_testing_error",
-                                             "error_message": "If you see this, its all good"
-                                         })
+    failed = qcel.models.FailedOperation(
+        extras={"garbage": water},
+        input_data=result_data_fixture,
+        error={"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
+    )
     assert isinstance(failed.error, qcel.models.ComputeError)
     assert isinstance(failed.dict(), dict)
     failed_json = failed.json()

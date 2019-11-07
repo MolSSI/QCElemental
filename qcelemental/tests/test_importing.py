@@ -123,4 +123,5 @@ def test_safe_version():
 
 def test_parse_version():
     import pydantic
+
     assert qcel.util.parse_version(str(pydantic.VERSION)) >= qcel.util.parse_version("v0.20")

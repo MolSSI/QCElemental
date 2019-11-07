@@ -10,33 +10,38 @@ verbose = 4
 run_mirror = True
 uno_cutoff = 0.1
 
-simpleR = qcel.models.Molecule.from_data("""
+simpleR = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -50.881170
  C     0.000000     0.000000     0.000000
 Br     0.000000     0.000000     1.949834
  F     1.261262     0.000000    -0.451181
 Cl    -0.845465     1.497406    -0.341118
  H    -0.524489    -0.897662    -0.376047
-""")
+"""
+)
 
-simpleS = qcel.models.Molecule.from_data("""
+simpleS = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -50.881200
  C     0.000000     0.000000     0.000000
 Br     0.000000     0.000000     1.949804
  F     1.261275     0.000000    -0.451161
 Cl    -0.845116    -1.497706    -0.341045
  H    -0.524793     0.897448    -0.376232
-""")
+"""
+)
 
 
 @using_networkx()
 def test_simpleS():
     mol, data = simpleS.align(simpleR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
-    assert compare_values(1.093e-4, data['rmsd'], 'bromochlorofluoromethane R, S', atol=1.e-4)
+    assert compare_values(1.093e-4, data['rmsd'], 'bromochlorofluoromethane R, S', atol=1.0e-4)
     assert compare(True, data['mill'].mirror, 'bromochlorofluoromethane R, S enantiomers')
 
 
-clbrbutRR = qcel.models.Molecule.from_data("""
+clbrbutRR = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -29.636550
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509728
@@ -52,9 +57,11 @@ Br     2.013324    -1.836057     1.828118
  H     2.493301     0.125569     3.923171
  H     0.857400    -0.536748     4.093681
  H     1.087887     1.206566     3.844299
-""")
+"""
+)
 
-clbrbutRS = qcel.models.Molecule.from_data("""
+clbrbutRS = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -30.277180
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509142
@@ -70,9 +77,11 @@ Br     2.082342     1.783785     1.662513
  H     2.486863     0.018622     3.935397
  H     0.881502     0.759255     4.041367
  H     1.035280    -1.006910     3.957479
-""")
+"""
+)
 
-clbrbutSR = qcel.models.Molecule.from_data("""
+clbrbutSR = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -30.275240
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509155
@@ -88,9 +97,11 @@ Br     2.086426    -1.779337     1.653668
  H     2.485550    -0.019639     3.936806
  H     0.888172    -0.777962     4.036680
  H     1.023018     0.990363     3.964880
-""")
+"""
+)
 
-clbrbutSS = qcel.models.Molecule.from_data("""
+clbrbutSS = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -29.643460
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509392
@@ -106,52 +117,46 @@ Br     2.010793     1.836814     1.833496
  H     2.491742    -0.116029     3.925086
  H     0.847599     0.527095     4.093658
  H     1.098918    -1.213191     3.842777
-""")
+"""
+)
 
 
 @using_networkx()
 def test_clbrbutSS():
-    mol, data = clbrbutSS.align(clbrbutRR,
-                                do_plot=do_plot,
-                                verbose=verbose,
-                                uno_cutoff=uno_cutoff,
-                                run_mirror=run_mirror)
-    assert compare_values(5.411e-3, data['rmsd'], '2-chloro-3-bromobutane RR, SS', atol=1.e-3)
+    mol, data = clbrbutSS.align(
+        clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(5.411e-3, data['rmsd'], '2-chloro-3-bromobutane RR, SS', atol=1.0e-3)
     assert compare(True, data['mill'].mirror, '2-chloro-3-bromobutane RR, SS enantiomers')
 
 
 @using_networkx()
 def test_clbrbutSR_vs_RR():
-    mol, data = clbrbutSR.align(clbrbutRR,
-                                do_plot=do_plot,
-                                verbose=verbose,
-                                uno_cutoff=uno_cutoff,
-                                run_mirror=run_mirror)
-    assert compare_values(1.095, data['rmsd'], '2-chloro-3-bromobutane RR, SR', atol=1.)
+    mol, data = clbrbutSR.align(
+        clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(1.095, data['rmsd'], '2-chloro-3-bromobutane RR, SR', atol=1.0)
 
 
 @using_networkx()
 def test_clbrbutRS():
-    mol, data = clbrbutRS.align(clbrbutRR,
-                                do_plot=do_plot,
-                                verbose=verbose,
-                                uno_cutoff=uno_cutoff,
-                                run_mirror=run_mirror)
-    assert compare_values(1.092, data['rmsd'], '2-chloro-3-bromobutane RR, RS', atol=1.)
+    mol, data = clbrbutRS.align(
+        clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(1.092, data['rmsd'], '2-chloro-3-bromobutane RR, RS', atol=1.0)
 
 
 @using_networkx()
 def test_clbrbutSR_vs_RS():
-    mol, data = clbrbutSR.align(clbrbutRS,
-                                do_plot=do_plot,
-                                verbose=verbose,
-                                uno_cutoff=uno_cutoff,
-                                run_mirror=run_mirror)
-    assert compare_values(8.652e-3, data['rmsd'], '2-chloro-3-bromobutane RS, SR', atol=2.e-3)
+    mol, data = clbrbutSR.align(
+        clbrbutRS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(8.652e-3, data['rmsd'], '2-chloro-3-bromobutane RS, SR', atol=2.0e-3)
     assert compare(True, data['mill'].mirror, '2-chloro-3-bromobutane RS, SR enantiomers')
 
 
-dibromobutSS = qcel.models.Molecule.from_data("""
+dibromobutSS = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -22.937250
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.496279
@@ -167,9 +172,11 @@ Br     2.015868     1.817420     1.832045
  H     2.370436    -0.004470     4.013614
  H     0.693388     0.572465     4.075885
  H     1.030818    -1.164970     3.906985
-""")
+"""
+)
 
-dibromobutSR = qcel.models.Molecule.from_data("""
+dibromobutSR = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -21.346970
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.495389
@@ -185,9 +192,11 @@ Br     2.112214    -1.739283     1.628669
  H     2.375204    -0.088280     4.013274
  H     0.795144    -0.888367     4.010872
  H     0.887114     0.885089     4.029976
-""")
+"""
+)
 
-dibromobutRS = qcel.models.Molecule.from_data("""
+dibromobutRS = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -21.346980
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.495412
@@ -203,9 +212,11 @@ Br     2.112747     1.739065     1.629148
  H     0.790548     0.884898     4.011423
  H     0.891569    -0.888103     4.029483
  H     2.374702     0.092797     4.013327
-""")
+"""
+)
 
-dibromobutRR = qcel.models.Molecule.from_data("""
+dibromobutRR = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =   -22.930210
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.496210
@@ -221,64 +232,56 @@ Br     2.011720    -1.821637     1.845756
  H     2.378222     0.050588     4.007472
  H     0.719551    -0.577247     4.084122
  H     1.002433     1.167985     3.899397
-""")
+"""
+)
 
 
 @using_networkx()
 def test_dibromobutRS_RR():
-    mol, data = dibromobutRS.align(dibromobutRR,
-                                   do_plot=do_plot,
-                                   verbose=verbose,
-                                   uno_cutoff=uno_cutoff,
-                                   run_mirror=run_mirror)
-    assert compare_values(1.562, data['rmsd'], '2,3-dibromobutane RR, RS', atol=1.e-1)
+    mol, data = dibromobutRS.align(
+        dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(1.562, data['rmsd'], '2,3-dibromobutane RR, RS', atol=1.0e-1)
 
 
 @using_networkx()
 def test_dibromobutSS_RR():
-    mol, data = dibromobutSS.align(dibromobutRR,
-                                   do_plot=do_plot,
-                                   verbose=verbose,
-                                   uno_cutoff=uno_cutoff,
-                                   run_mirror=run_mirror)
-    assert compare_values(1.296e-2, data['rmsd'], '2,3-dibromobutane RR, SS', atol=1.e-3)
+    mol, data = dibromobutSS.align(
+        dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(1.296e-2, data['rmsd'], '2,3-dibromobutane RR, SS', atol=1.0e-3)
     assert compare(True, data['mill'].mirror, '2,3-dibromobutane RR, SS enantiomers')
 
 
 @using_networkx()
 def test_dibromobutRS_SS():
-    mol, data = dibromobutRS.align(dibromobutSS,
-                                   do_plot=do_plot,
-                                   verbose=verbose,
-                                   uno_cutoff=uno_cutoff,
-                                   run_mirror=run_mirror)
-    assert compare_values(1.560, data['rmsd'], '2,3-dibromobutane SS, RS', atol=1.e-1)
+    mol, data = dibromobutRS.align(
+        dibromobutSS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
+    )
+    assert compare_values(1.560, data['rmsd'], '2,3-dibromobutane SS, RS', atol=1.0e-1)
 
 
 @using_networkx()
 def test_dibromobutRS_SR_nomirror():
     # Table satisfied by non-mirror identical, but 787 finds even better match
-    mol, data = dibromobutRS.align(dibromobutSR,
-                                   do_plot=do_plot,
-                                   verbose=verbose,
-                                   uno_cutoff=uno_cutoff,
-                                   run_mirror=False)
-    assert compare_values(4.534e-2, data['rmsd'], '2,3-dibromobutane SR, RS (force non-mirror)', atol=2.e-2)
+    mol, data = dibromobutRS.align(
+        dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=False
+    )
+    assert compare_values(4.534e-2, data['rmsd'], '2,3-dibromobutane SR, RS (force non-mirror)', atol=2.0e-2)
     assert compare(False, data['mill'].mirror, '2,3-dibromobutane SR, RS identical (force non-mirror)')
 
 
 @using_networkx()
 def test_dibromobutRS_SR():
-    mol, data = dibromobutRS.align(dibromobutSR,
-                                   do_plot=do_plot,
-                                   verbose=verbose,
-                                   uno_cutoff=uno_cutoff,
-                                   run_mirror=True)
-    assert compare_values(0.004, data['rmsd'], '2,3-dibromobutane SR, RS', atol=1.e-3)
+    mol, data = dibromobutRS.align(
+        dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=True
+    )
+    assert compare_values(0.004, data['rmsd'], '2,3-dibromobutane SR, RS', atol=1.0e-3)
     assert compare(True, data['mill'].mirror, '2,3-dibromobutane SR, RS identical')
 
 
-chiralanem = qcel.models.Molecule.from_data("""
+chiralanem = qcel.models.Molecule.from_data(
+    """
 C 0.000000 0 0.000000
 C 0.886800 -0.8868 0.886800
 C 0.886800 0.8868 -0.886800
@@ -334,9 +337,11 @@ H -0.019200 0.8693 3.656500
 H 0.019200 -0.8693 3.656500
 H -0.019200 -0.8693 -3.656500
 H 0.019200 0.8693 -3.656500
-""")
+"""
+)
 
-chiralaneopt = qcel.models.Molecule.from_data("""
+chiralaneopt = qcel.models.Molecule.from_data(
+    """
 #FINAL HEAT OF FORMATION =    47.217140
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.535668
@@ -393,14 +398,16 @@ chiralaneopt = qcel.models.Molecule.from_data("""
  H     4.776160    -2.609759     3.957486
  H     0.122734     1.023670    -0.400858
  H    -0.965759    -0.365759    -0.396401
-""")
+"""
+)
 
 
 def toobig2():
     chiralaneopt.align(chiralanem, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
 
 
-water16a = qcel.models.Molecule.from_data("""
+water16a = qcel.models.Molecule.from_data(
+    """
 #Structure 1
    O    -0.084467    1.283579    2.178253  
    H     -0.214426    0.497331    1.648012 
@@ -450,9 +457,11 @@ water16a = qcel.models.Molecule.from_data("""
    O    -0.624923   -0.765966    0.467598    
    H     -1.374788   -1.163513    0.910194   
    H     -1.011241   -0.233905   -0.228031   
-""")
+"""
+)
 
-water16b = qcel.models.Molecule.from_data("""
+water16b = qcel.models.Molecule.from_data(
+    """
 #molden generated tinker .xyz (Wales)
    O     0.274606    2.281294    0.941720    
    H     -0.279583    3.044112    0.776748   
@@ -502,7 +511,8 @@ water16b = qcel.models.Molecule.from_data("""
    O    -0.513316    1.649229    3.471300  
    H      0.215824    1.180728    3.877618    
    H     -0.167536    1.948370    2.630358   
-""")
+"""
+)
 
 
 def toobig():

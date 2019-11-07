@@ -23,10 +23,10 @@ def test_id_resolution_error(inp):
     with pytest.raises(qcelemental.DataUnavailableError):
         qcelemental.covalentradii.get(inp, return_tuple=True, missing=3.0)
 
-    assert qcelemental.covalentradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.e-9)
+    assert qcelemental.covalentradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.0e-9)
 
 
-a2b = 1. / qcelemental.constants.bohr2angstroms
+a2b = 1.0 / qcelemental.constants.bohr2angstroms
 
 
 @pytest.mark.parametrize(
@@ -37,20 +37,19 @@ a2b = 1. / qcelemental.constants.bohr2angstroms
         ("kr", 1.16),
         ("kr84", 1.16),
         (36, 1.16),
-
         # aliases
         ("C", 0.76),
         ("C_sp", 0.69),
         ("MN", 1.61),
         ("Mn_lowspin", 1.39),
-
         # Deuterium
         ("D", 0.31),
         ("h2", 0.31),
-    ])
+    ],
+)
 def test_get(inp, expected):
-    assert qcelemental.covalentradii.get(inp, units='angstrom') == pytest.approx(expected, 1.e-9)
-    assert qcelemental.covalentradii.get(inp) == pytest.approx(a2b * expected, 1.e-9)
+    assert qcelemental.covalentradii.get(inp, units='angstrom') == pytest.approx(expected, 1.0e-9)
+    assert qcelemental.covalentradii.get(inp) == pytest.approx(a2b * expected, 1.0e-9)
 
 
 def test_get_tuple():

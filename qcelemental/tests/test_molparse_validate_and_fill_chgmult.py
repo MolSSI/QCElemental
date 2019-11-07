@@ -41,20 +41,34 @@ from qcelemental.testing import compare
         (('H/He', None, [None, None], None, [None, None]), (0, [0, 0], 2, [2, 1])),  # 37
         (('H/He', None, [1, 1], None, [None, None]), (2, [1, 1], 2, [1, 2])),  # 38
         (('H/He', -2, [-1, None], None, [None, None]), (-2, [-1, -1], 2, [1, 2])),  # 39
-        (('H/He/Na/Ne', None, [1, None, 1, None], None, [None, None, None, None]),
-         (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 40
-        (('H/He/Na/Ne', None, [-1, None, 1, None], None, [None, None, None, None]),
-         (0, [-1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 41
-        (('H/He/Na/Ne', 2, [None, None, 1, None], None, [None, None, None, None]),
-         (2, [1, 0, 1, 0], 1, [1, 1, 1, 1])),  # 42
-        (('H/He/Na/Ne', 3, [None, None, 1, None], None, [None, None, None, None]),
-         (3, [0, 2, 1, 0], 2, [2, 1, 1, 1])),  # 43
-        (('H/He/Na/Ne', None, [None, 1, 0, 1], None, [None, None, None, None]),
-         (2, [0, 1, 0, 1], 5, [2, 2, 2, 2])),  # 47
-        (('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, None, None]),
-         (1, [0, 1, 0, 0], 4, [2, 2, 2, 1])),  # 48
-        (('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, 4, None]),
-         (1, [0, 1, 0, 0], 6, [2, 2, 4, 1])),  # 49
+        (
+            ('H/He/Na/Ne', None, [1, None, 1, None], None, [None, None, None, None]),
+            (2, [1, 0, 1, 0], 1, [1, 1, 1, 1]),
+        ),  # 40
+        (
+            ('H/He/Na/Ne', None, [-1, None, 1, None], None, [None, None, None, None]),
+            (0, [-1, 0, 1, 0], 1, [1, 1, 1, 1]),
+        ),  # 41
+        (
+            ('H/He/Na/Ne', 2, [None, None, 1, None], None, [None, None, None, None]),
+            (2, [1, 0, 1, 0], 1, [1, 1, 1, 1]),
+        ),  # 42
+        (
+            ('H/He/Na/Ne', 3, [None, None, 1, None], None, [None, None, None, None]),
+            (3, [0, 2, 1, 0], 2, [2, 1, 1, 1]),
+        ),  # 43
+        (
+            ('H/He/Na/Ne', None, [None, 1, 0, 1], None, [None, None, None, None]),
+            (2, [0, 1, 0, 1], 5, [2, 2, 2, 2]),
+        ),  # 47
+        (
+            ('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, None, None]),
+            (1, [0, 1, 0, 0], 4, [2, 2, 2, 1]),
+        ),  # 48
+        (
+            ('H/He/Na/Ne', None, [None, 1, 0, None], None, [None, None, 4, None]),
+            (1, [0, 1, 0, 0], 6, [2, 2, 4, 1]),
+        ),  # 49
         (('He/He/He', 0, [None, None, 1], None, [1, None, 2]), (0, [0, -1, 1], 3, [1, 2, 2])),  # 50
         (('N/N/N', None, [1, 1, 1], 3, [None, 3, None]), (3, [1, 1, 1], 3, [1, 3, 1])),  # 51
         (('N/N/N', None, [1, 1, 1], 3, [None, None, None]), (3, [1, 1, 1], 3, [3, 1, 1])),  # 52
@@ -67,13 +81,13 @@ from qcelemental.testing import compare
         (('Gh/He/Gh', 1, [None, None, None], None, [None, None, None]), (1, [0, 1, 0], 2, [1, 2, 1])),  # 64
         (('Ne/Ne', 2, [-2, None], None, [None, None]), (2, [-2, 4], 1, [1, 1])),  # 65a
         (('Gh/Ne', 2, [-2, None], None, [None, None], {'zero_ghost_fragments': True}), (0, [0, 0], 1, [1, 1])),  # 65c
-    ]) # yapf: disable
+    ],
+)
 def test_validate_and_fill_chgmult(inp, expected):
     system = _systemtranslator[inp[0]]
     kwargs = inp[5] if len(inp) > 5 else {}
 
-    ans = qcelemental.molparse.validate_and_fill_chgmult(system[0], system[1], inp[1], inp[2], inp[3], inp[4],
-                                                         **kwargs)
+    ans = qcelemental.molparse.validate_and_fill_chgmult(system[0], system[1], inp[1], inp[2], inp[3], inp[4], **kwargs)
     assert compare(1, ans == dict(zip(_keys, expected)), """{}: {}, {}, {}, {} --> {}""".format(*inp, expected))
 
 
@@ -97,7 +111,8 @@ def test_validate_and_fill_chgmult(inp, expected):
         ('Gh', None, [None], 3, [None]),  # 60
         ('Gh/He', None, [2, None], None, [None, None]),  # 62
         ('Gh/Ne', 2, [-2, None], None, [None, None]),  # 65b
-    ]) # yapf: disable
+    ],
+)
 def test_validate_and_fill_chgmult_irreconcilable(inp):
     system = _systemtranslator[inp[0]]
 

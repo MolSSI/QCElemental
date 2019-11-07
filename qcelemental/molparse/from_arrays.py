@@ -331,14 +331,14 @@ def from_arrays(
         provenance=provenance,
         connectivity=connectivity,
         always_return_iutau=False,
-    )  # yapf: disable
+    )  
     processed['provenance'] = provenance_stamp(__name__)
     update_with_error(molinit, processed)
 
     if domain == 'efp':
         processed = validate_and_fill_efp(
             fragment_files=fragment_files, hint_types=hint_types, geom_hints=geom_hints
-        )  # yapf: disable
+        )  
         update_with_error(molinit, processed)
         extern = bool(len(molinit['geom_hints']))
 
@@ -346,12 +346,12 @@ def from_arrays(
         if domain == 'qmvz':
             processed = validate_and_fill_unsettled_geometry(
                 geom_unsettled=geom_unsettled, variables=variables
-            )  # yapf: disable
+            )  
             update_with_error(molinit, processed)
             nat = len(molinit['geom_unsettled'])
 
         else:
-            processed = validate_and_fill_geometry(geom=geom, tooclose=tooclose, copy=copy)  # yapf: disable
+            processed = validate_and_fill_geometry(geom=geom, tooclose=tooclose, copy=copy)  
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
 
@@ -397,7 +397,7 @@ def from_arrays(
 
     processed = validate_and_fill_frame(
         extern=extern, fix_com=fix_com, fix_orientation=fix_orientation, fix_symmetry=fix_symmetry
-    )  # yapf: disable
+    )  
     update_with_error(molinit, processed)
 
     if verbose >= 2:

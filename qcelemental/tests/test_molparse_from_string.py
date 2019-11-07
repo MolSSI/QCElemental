@@ -16,7 +16,7 @@ no_com
 H 1 ,, 0 \t  0 # stuff-n-nonsense"""
 
 ans1 = {
-    'geom': [0., 0., 0., 1., 0., 0.],
+    'geom': [0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
     'elbl': ['O', 'H'],
     'fix_com': True,
     'fragment_separators': [],
@@ -28,7 +28,7 @@ ans1 = {
 }
 
 fullans1a = {
-    'geom': np.array([0., 0., 0., 1., 0., 0.]),
+    'geom': np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
     'elea': np.array([16, 1]),
     'elez': np.array([8, 1]),
     'elem': np.array(['O', 'H']),
@@ -45,12 +45,9 @@ fullans1a = {
     'molecular_multiplicity': 2,
 }
 fullans1c = copy.deepcopy(fullans1a)
-fullans1c.update({
-    'fragment_charges': [1.],
-    'fragment_multiplicities': [1],
-    'molecular_charge': 1.,
-    'molecular_multiplicity': 1
-})
+fullans1c.update(
+    {'fragment_charges': [1.0], 'fragment_multiplicities': [1], 'molecular_charge': 1.0, 'molecular_multiplicity': 1}
+)
 
 
 def test_psi4_qm_1a():
@@ -59,7 +56,7 @@ def test_psi4_qm_1a():
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-    assert compare_recursive(ans1, intermed, atol=1.e-4)
+    assert compare_recursive(ans1, intermed, atol=1.0e-4)
     assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
 
@@ -72,10 +69,9 @@ def test_psi4_qm_1ab():
     fullans['fix_com'] = False
     fullans['provenance'] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(subject,
-                                                       return_processed=True,
-                                                       fix_orientation=False,
-                                                       fix_com=False)
+    final, intermed = qcelemental.molparse.from_string(
+        subject, return_processed=True, fix_orientation=False, fix_com=False
+    )
     assert compare_recursive(ans, intermed, tnm() + ': intermediate')
     assert compare_molrecs(fullans, final['qm'], tnm() + ': full')
 
@@ -93,7 +89,7 @@ def test_psi4_qm_1b():
 def test_psi4_qm_1c():
     subject = '1 1\n  -- \n' + subject1
     ans = copy.deepcopy(ans1)
-    ans.update({'molecular_charge': 1., 'molecular_multiplicity': 1})
+    ans.update({'molecular_charge': 1.0, 'molecular_multiplicity': 1})
     fullans = copy.deepcopy(fullans1c)
     fullans['provenance'] = _string_prov_stamp
 
@@ -105,7 +101,7 @@ def test_psi4_qm_1c():
 def test_psi4_qm_1d():
     subject = subject1 + '\n1 1'
     ans = copy.deepcopy(ans1)
-    ans.update({'fragment_charges': [1.], 'fragment_multiplicities': [1]})
+    ans.update({'fragment_charges': [1.0], 'fragment_multiplicities': [1]})
     fullans = copy.deepcopy(fullans1c)
     fullans['provenance'] = _string_prov_stamp
 
@@ -124,22 +120,26 @@ def test_psi4_qm_1e():
 
 def test_psi4_qm_1f():
 
-    qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
-                                     elez=np.array([8, 1]),
-                                     units='Angstrom',
-                                     fix_com=True,
-                                     fix_orientation=False)
+    qcelemental.molparse.from_arrays(
+        geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+        elez=np.array([8, 1]),
+        units='Angstrom',
+        fix_com=True,
+        fix_orientation=False,
+    )
 
 
 def test_psi4_qm_iutautoobig_error_1g():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
-                                         elez=np.array([8, 1]),
-                                         input_units_to_au=1.1 / 0.52917721067,
-                                         units='Angstrom',
-                                         fix_com=True,
-                                         fix_orientation=False)
+        qcelemental.molparse.from_arrays(
+            geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+            elez=np.array([8, 1]),
+            input_units_to_au=1.1 / 0.52917721067,
+            units='Angstrom',
+            fix_com=True,
+            fix_orientation=False,
+        )
 
     assert 'No big perturbations to physical constants' in str(e.value)
 
@@ -150,12 +150,14 @@ def test_psi4_qm_iutau_1h():
     fullans['input_units_to_au'] = iutau
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
-                                             elez=np.array([8, 1]),
-                                             input_units_to_au=iutau,
-                                             units='Angstrom',
-                                             fix_com=True,
-                                             fix_orientation=False)
+    final = qcelemental.molparse.from_arrays(
+        geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+        elez=np.array([8, 1]),
+        input_units_to_au=iutau,
+        units='Angstrom',
+        fix_com=True,
+        fix_orientation=False,
+    )
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -175,13 +177,15 @@ def test_psi4_qm_iutau_1i():
     fullans['fix_symmetry'] = 'cs'
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(geom=np.array([0., 0., 0., 1., 0., 0.]),
-                                             elez=np.array([8, 1]),
-                                             input_units_to_au=iutau,
-                                             units='Angstrom',
-                                             fix_symmetry="CS",
-                                             fix_com=True,
-                                             fix_orientation=False)
+    final = qcelemental.molparse.from_arrays(
+        geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+        elez=np.array([8, 1]),
+        input_units_to_au=iutau,
+        units='Angstrom',
+        fix_symmetry="CS",
+        fix_com=True,
+        fix_orientation=False,
+    )
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -207,24 +211,26 @@ def test_psi4_qm_iutau_1i():
             'molecular_charge': 0.0,
             "molecular_multiplicity": 2,
             "real": [True, True],
-            "provenance": _arrays_prov_stamp
-        }
+            "provenance": _arrays_prov_stamp,
+        },
     }
 
-    assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], tnm() + ': sch', atol=1.e-8)
+    assert compare_molrecs(schema14_1_iutau["molecule"], kmol["molecule"], tnm() + ': sch', atol=1.0e-8)
 
 
 subject2 = [
     """
 6Li 0.0 0.0 0.0
   units  a.u.
-H_specIAL@2.014101  100 0 0""", """@Ne 2 4 6""", """h .0,1,2
+H_specIAL@2.014101  100 0 0""",
+    """@Ne 2 4 6""",
+    """h .0,1,2
 Gh(he3) 0 1 3
-noreorient"""
+noreorient""",
 ]
 
 ans2 = {
-    'geom': [0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.],
+    'geom': [0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0],
     'elbl': ['6Li', 'H_specIAL@2.014101', '@Ne', 'h', 'Gh(he3)'],
     'units': 'Bohr',
     'fix_orientation': True,
@@ -237,7 +243,7 @@ ans2 = {
 }
 
 fullans2 = {
-    'geom': np.array([0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.]),
+    'geom': np.array([0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0]),
     'elea': np.array([6, 2, 20, 1, 4]),
     'elez': np.array([3, 1, 10, 1, 2]),
     'elem': np.array(['Li', 'H', 'Ne', 'H', 'He']),
@@ -250,15 +256,17 @@ fullans2 = {
     'fragment_separators': [2, 3],
 }
 fullans2_unnp = copy.deepcopy(fullans2)
-fullans2_unnp.update({
-    'geom': [0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.],
-    'elea': [6, 2, 20, 1, 4],
-    'elez': [3, 1, 10, 1, 2],
-    'elem': ['Li', 'H', 'Ne', 'H', 'He'],
-    'mass': [6.015122794, 2.014101, 19.99244017542, 1.00782503, 4.00260325415],
-    'real': [True, True, False, True, False],
-    'elbl': ['', '_special', '', '', '3'],
-})
+fullans2_unnp.update(
+    {
+        'geom': [0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0],
+        'elea': [6, 2, 20, 1, 4],
+        'elez': [3, 1, 10, 1, 2],
+        'elem': ['Li', 'H', 'Ne', 'H', 'He'],
+        'mass': [6.015122794, 2.014101, 19.99244017542, 1.00782503, 4.00260325415],
+        'real': [True, True, False, True, False],
+        'elbl': ['', '_special', '', '', '3'],
+    }
+)
 
 
 def test_psi4_qm_2a():
@@ -266,10 +274,10 @@ def test_psi4_qm_2a():
     fullans = copy.deepcopy(fullans2)
     fullans_unnp = copy.deepcopy(fullans2_unnp)
     ud = {
-        'molecular_charge': 0.,
+        'molecular_charge': 0.0,
         'molecular_multiplicity': 2,
-        'fragment_charges': [0., 0., 0.],
-        'fragment_multiplicities': [1, 1, 2]
+        'fragment_charges': [0.0, 0.0, 0.0],
+        'fragment_multiplicities': [1, 1, 2],
     }
     fullans.update(ud)
     fullans_unnp.update(ud)
@@ -288,14 +296,16 @@ def test_psi4_qm_2b():
     subject.insert(0, '1 3')
     subject = '\n--\n'.join(subject)
     ans = copy.deepcopy(ans2)
-    ans.update({'molecular_charge': 1., 'molecular_multiplicity': 3})
+    ans.update({'molecular_charge': 1.0, 'molecular_multiplicity': 3})
     fullans = copy.deepcopy(fullans2)
-    fullans.update({
-        'molecular_charge': 1.,
-        'molecular_multiplicity': 3,
-        'fragment_charges': [1., 0., 0.],
-        'fragment_multiplicities': [2, 1, 2]
-    })
+    fullans.update(
+        {
+            'molecular_charge': 1.0,
+            'molecular_multiplicity': 3,
+            'fragment_charges': [1.0, 0.0, 0.0],
+            'fragment_multiplicities': [2, 1, 2],
+        }
+    )
     fullans['provenance'] = _string_prov_stamp
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
@@ -323,7 +333,7 @@ def test_psi4_qm_2d():
         qcelemental.molparse.from_string(subject, return_processed=True)
 
 
-#def test_psi4_qm_2e():
+# def test_psi4_qm_2e():
 #    """empty fragment"""
 #    subject = copy.deepcopy(subject2)
 #    subject.insert(2, '\n')
@@ -371,8 +381,10 @@ efp C6H6 -0.60075437  1.36443336  0.78647823  3.137879 1.557344 -2.568550
 ans5 = {
     'fragment_files': ['C6H6', 'C6H6'],
     'hint_types': ['xyzabc', 'xyzabc'],
-    'geom_hints': [[-0.30448173, -2.24210052, -0.29383131, -0.642499, 7.817407, -0.568147],
-                   [-0.60075437, 1.36443336, 0.78647823, 3.137879, 1.557344, -2.568550]],
+    'geom_hints': [
+        [-0.30448173, -2.24210052, -0.29383131, -0.642499, 7.817407, -0.568147],
+        [-0.60075437, 1.36443336, 0.78647823, 3.137879, 1.557344, -2.568550],
+    ],
     'geom': [],
     'elbl': [],
     'fragment_charges': [None],
@@ -393,9 +405,10 @@ fullans5b['efp']['fragment_files'] = ['c6h6', 'c6h6']
 def test_psi4_efp_5a():
     subject = subject5
 
-    hintsans = [[
-        (val / qcelemental.constants.bohr2angstroms if i < 3 else val) for i, val in enumerate(ans5['geom_hints'][0])
-    ], [(val / qcelemental.constants.bohr2angstroms if i < 3 else val) for i, val in enumerate(ans5['geom_hints'][1])]]
+    hintsans = [
+        [(val / qcelemental.constants.bohr2angstroms if i < 3 else val) for i, val in enumerate(ans5['geom_hints'][0])],
+        [(val / qcelemental.constants.bohr2angstroms if i < 3 else val) for i, val in enumerate(ans5['geom_hints'][1])],
+    ]
     hintsans[0][4] = 1.534222
     fullans = copy.deepcopy(fullans5b)
     fullans['efp']['units'] = 'Angstrom'
@@ -476,22 +489,23 @@ units au
 """
 
 ans6 = {
-    'units':
-    'Bohr',
-    'geom': [0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+    'units': 'Bohr',
+    'geom': [0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
     'elbl': ['O1', 'h2', 'H3'],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [1],
     'fragment_separators': [],
     'fragment_files': ['h2O', 'ammoniA'],
-    'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                   [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+    'geom_hints': [
+        [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+    ],
     'hint_types': ['xyzabc', 'points'],
 }
 
 fullans6 = {
     'qm': {
-        'geom': np.array([0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880]),
+        'geom': np.array([0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880]),
         'elea': np.array([16, 1, 1]),
         'elez': np.array([8, 1, 1]),
         'elem': np.array(['O', 'H', 'H']),
@@ -502,26 +516,24 @@ fullans6 = {
         'fix_com': True,
         'fix_orientation': True,
         'fix_symmetry': 'c1',
-        'fragment_charges': [0.],
+        'fragment_charges': [0.0],
         'fragment_multiplicities': [1],
         'fragment_separators': [],
-        'molecular_charge': 0.,
-        'molecular_multiplicity': 1
+        'molecular_charge': 0.0,
+        'molecular_multiplicity': 1,
     },
     'efp': {
         'fragment_files': ['h2o', 'ammonia'],
-        'geom_hints': [[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                       [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
+        'geom_hints': [
+            [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+            [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+        ],
         'hint_types': ['xyzabc', 'points'],
-        'units':
-        'Bohr',
-        'fix_com':
-        True,
-        'fix_orientation':
-        True,
-        'fix_symmetry':
-        'c1',
-    }
+        'units': 'Bohr',
+        'fix_com': True,
+        'fix_orientation': True,
+        'fix_symmetry': 'c1',
+    },
 }
 
 
@@ -577,12 +589,15 @@ def test_qmefp_array_6d():
 
     final = qcelemental.molparse.from_input_arrays(
         units='Bohr',
-        geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+        geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
         elbl=['O1', 'h2', 'H3'],
         fragment_files=['h2O', 'ammoniA'],
-        geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                    [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-        hint_types=['xyzabc', 'points'])
+        geom_hints=[
+            [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+            [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+        ],
+        hint_types=['xyzabc', 'points'],
+    )
 
     assert compare_molrecs(fullans['efp'], final['efp'], tnm() + ': full efp')
     assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
@@ -593,12 +608,15 @@ def test_qmefp_badhint_error_6e():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'efp1'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'efp1'],
+        )
 
     assert "hint_types not among 'xyzabc', 'points', 'rotmat'" in str(e.value)
 
@@ -608,12 +626,15 @@ def test_qmefp_badefpgeom_error_6f():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, None, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'points'])
+            geom_hints=[
+                [-2.12417561, None, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'points'],
+        )
 
     assert "Un float-able elements in geom_hints" in str(e.value)
 
@@ -623,12 +644,15 @@ def test_qmefp_badhintgeom_error_6g():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['points', 'xyzabc'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['points', 'xyzabc'],
+        )
 
     assert 'EFP hint type points not 9 elements' in str(e.value)
 
@@ -638,12 +662,15 @@ def test_qmefp_badfragfile_error_6h():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 5],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'points'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'points'],
+        )
 
     assert 'fragment_files not strings' in str(e.value)
 
@@ -653,12 +680,15 @@ def test_qmefp_hintlen_error_6i():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'points', 'points'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'points', 'points'],
+        )
 
     assert 'Missing or inconsistent length among efp quantities' in str(e.value)
 
@@ -669,12 +699,15 @@ def test_qmefp_fixcom_error_6j():
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
             fix_com=False,
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'points'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'points'],
+        )
 
     assert 'Invalid fix_com (False) with extern (True)' in str(e.value)
 
@@ -685,49 +718,52 @@ def test_qmefp_fixori_error_6k():
         qcelemental.molparse.from_input_arrays(
             units='Bohr',
             fix_orientation=False,
-            geom=[0., 0., 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
+            geom=[0.0, 0.0, 0.118720, -0.753299, 0.0, -0.474880, 0.753299, 0.0, -0.474880],
             elbl=['O1', 'h2', 'H3'],
             fragment_files=['h2O', 'ammoniA'],
-            geom_hints=[[-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
-                        [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226]],
-            hint_types=['xyzabc', 'points'])
+            geom_hints=[
+                [-2.12417561, 1.22597097, -0.95332054, -2.902133, -4.5481863, -1.953647],
+                [0.98792, 1.87681, 2.85174, 1.68798, 1.18856, 3.09517, 1.45873, 2.55904, 2.27226],
+            ],
+            hint_types=['xyzabc', 'points'],
+        )
 
     assert 'Invalid fix_orientation (False) with extern (True)' in str(e.value)
 
 
-#QCEL@using_pylibefp
-#QCELdef test_psi4_qmefp_6d():
-#QCEL    subject = subject6
-#QCEL
-#QCEL    fullans = copy.deepcopy(fullans6)
-#QCEL    fullans['efp']['geom'] = np.array([-2.22978429,  1.19270015, -0.99721732, -1.85344873,  1.5734809 ,
-#QCEL        0.69660583, -0.71881655,  1.40649303, -1.90657336,  0.98792   ,
-#QCEL        1.87681   ,  2.85174   ,  2.31084386,  0.57620385,  3.31175679,
-#QCEL        1.87761143,  3.16604791,  1.75667803,  0.55253064,  2.78087794,
-#QCEL        4.47837555])
-#QCEL    fullans['efp']['elea'] = np.array([16, 1, 1, 14, 1, 1, 1])
-#QCEL    fullans['efp']['elez'] = np.array([8, 1, 1, 7, 1, 1, 1])
-#QCEL    fullans['efp']['elem'] = np.array(['O', 'H', 'H', 'N', 'H', 'H', 'H'])
-#QCEL    fullans['efp']['mass'] = np.array([15.99491462, 1.00782503, 1.00782503, 14.00307400478, 1.00782503, 1.00782503, 1.00782503])
-#QCEL    fullans['efp']['real'] = np.array([True, True, True, True, True, True, True])
-#QCEL    fullans['efp']['elbl'] = np.array(['_a01o1', '_a02h2', '_a03h3', '_a01n1', '_a02h2', '_a03h3', '_a04h4'])
-#QCEL    fullans['efp']['fragment_separators'] = [3]
-#QCEL    fullans['efp']['fragment_charges'] = [0., 0.]
-#QCEL    fullans['efp']['fragment_multiplicities'] = [1, 1]
-#QCEL    fullans['efp']['molecular_charge'] = 0.
-#QCEL    fullans['efp']['molecular_multiplicity'] = 1
-#QCEL    fullans['efp']['hint_types'] = ['xyzabc', 'xyzabc']
-#QCEL    fullans['efp']['geom_hints'][1] = [1.093116487139866, 1.9296501432128303, 2.9104336205167156, -1.1053108079381473, 2.0333070957565544, -1.488586877218809]
-#QCEL
-#QCEL    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
-#QCEL
-#QCEL    import pylibefp
-#QCEL    efpobj = pylibefp.from_dict(final['efp'])
-#QCEL    efpfinal = efpobj.to_dict()
-#QCEL    efpfinal = qcelemental.molparse.from_arrays(speclabel=False, domain='efp', **efpfinal)
-#QCEL
-#QCEL    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
-#QCEL    assert compare_molrecs(fullans['efp'], efpfinal, tnm() + ': full efp')
+# QCEL@using_pylibefp
+# QCELdef test_psi4_qmefp_6d():
+# QCEL    subject = subject6
+# QCEL
+# QCEL    fullans = copy.deepcopy(fullans6)
+# QCEL    fullans['efp']['geom'] = np.array([-2.22978429,  1.19270015, -0.99721732, -1.85344873,  1.5734809 ,
+# QCEL        0.69660583, -0.71881655,  1.40649303, -1.90657336,  0.98792   ,
+# QCEL        1.87681   ,  2.85174   ,  2.31084386,  0.57620385,  3.31175679,
+# QCEL        1.87761143,  3.16604791,  1.75667803,  0.55253064,  2.78087794,
+# QCEL        4.47837555])
+# QCEL    fullans['efp']['elea'] = np.array([16, 1, 1, 14, 1, 1, 1])
+# QCEL    fullans['efp']['elez'] = np.array([8, 1, 1, 7, 1, 1, 1])
+# QCEL    fullans['efp']['elem'] = np.array(['O', 'H', 'H', 'N', 'H', 'H', 'H'])
+# QCEL    fullans['efp']['mass'] = np.array([15.99491462, 1.00782503, 1.00782503, 14.00307400478, 1.00782503, 1.00782503, 1.00782503])
+# QCEL    fullans['efp']['real'] = np.array([True, True, True, True, True, True, True])
+# QCEL    fullans['efp']['elbl'] = np.array(['_a01o1', '_a02h2', '_a03h3', '_a01n1', '_a02h2', '_a03h3', '_a04h4'])
+# QCEL    fullans['efp']['fragment_separators'] = [3]
+# QCEL    fullans['efp']['fragment_charges'] = [0., 0.]
+# QCEL    fullans['efp']['fragment_multiplicities'] = [1, 1]
+# QCEL    fullans['efp']['molecular_charge'] = 0.
+# QCEL    fullans['efp']['molecular_multiplicity'] = 1
+# QCEL    fullans['efp']['hint_types'] = ['xyzabc', 'xyzabc']
+# QCEL    fullans['efp']['geom_hints'][1] = [1.093116487139866, 1.9296501432128303, 2.9104336205167156, -1.1053108079381473, 2.0333070957565544, -1.488586877218809]
+# QCEL
+# QCEL    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+# QCEL
+# QCEL    import pylibefp
+# QCEL    efpobj = pylibefp.from_dict(final['efp'])
+# QCEL    efpfinal = efpobj.to_dict()
+# QCEL    efpfinal = qcelemental.molparse.from_arrays(speclabel=False, domain='efp', **efpfinal)
+# QCEL
+# QCEL    assert compare_molrecs(fullans['qm'], final['qm'], tnm() + ': full qm')
+# QCEL    assert compare_molrecs(fullans['efp'], efpfinal, tnm() + ': full efp')
 
 subject7 = """\
 5
@@ -740,14 +776,14 @@ Gh(he3) 0 1 3
 """
 
 ans7 = {
-    'geom': [0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.],
+    'geom': [0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0],
     'elbl': ['6Li', 'H_specIAL@2.014101', '@Ne', 'h', 'Gh(he3)'],
     'units': 'Angstrom',
     'geom_hints': [],  # shouldn't be needed
 }
 
 fullans7 = {
-    'geom': np.array([0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.]),
+    'geom': np.array([0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0]),
     'elea': np.array([6, 2, 20, 1, 4]),
     'elez': np.array([3, 1, 10, 1, 2]),
     'elem': np.array(['Li', 'H', 'Ne', 'H', 'He']),
@@ -758,9 +794,9 @@ fullans7 = {
     'fix_com': False,
     'fix_orientation': False,
     'fragment_separators': [],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [2],
-    'molecular_charge': 0.,
+    'molecular_charge': 0.0,
     'molecular_multiplicity': 2,
 }
 
@@ -797,14 +833,14 @@ def test_xyzp_qm_7d():
 
     ans = copy.deepcopy(ans7)
     ans['units'] = 'Bohr'
-    ans['molecular_charge'] = -1.
+    ans['molecular_charge'] = -1.0
     ans['molecular_multiplicity'] = 3
 
     fullans = copy.deepcopy(fullans7)
     fullans['units'] = 'Bohr'
-    fullans['fragment_charges'] = [-1.]
+    fullans['fragment_charges'] = [-1.0]
     fullans['fragment_multiplicities'] = [3]
-    fullans['molecular_charge'] = -1.
+    fullans['molecular_charge'] = -1.0
     fullans['molecular_multiplicity'] = 3
     fullans['provenance'] = _string_prov_stamp
 
@@ -834,14 +870,14 @@ h .0,1,2
 """
 
 ans8 = {
-    'geom': [0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.],
+    'geom': [0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0],
     'elbl': ['Li', '1', 'Ne', 'h', '2'],
     'units': 'Angstrom',
     'geom_hints': [],  # shouldn't be needed
 }
 
 fullans8 = {
-    'geom': np.array([0., 0., 0., 100., 0., 0., 2., 4., 6., 0., 1., 2., 0., 1., 3.]),
+    'geom': np.array([0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 2.0, 4.0, 6.0, 0.0, 1.0, 2.0, 0.0, 1.0, 3.0]),
     'elea': np.array([7, 1, 20, 1, 4]),
     'elez': np.array([3, 1, 10, 1, 2]),
     'elem': np.array(['Li', 'H', 'Ne', 'H', 'He']),
@@ -852,9 +888,9 @@ fullans8 = {
     'fix_com': False,
     'fix_orientation': False,
     'fragment_separators': [],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [2],
-    'molecular_charge': 0.,
+    'molecular_charge': 0.0,
     'molecular_multiplicity': 2,
 }
 
@@ -866,34 +902,34 @@ def test_xyzp_qm_8a():
 
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, dtype='xyz+')
     assert compare_recursive(ans8, intermed, tnm() + ': intermediate')
-    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm', atol=1.e-4)
+    assert compare_molrecs(fullans, final['qm'], tnm() + ': full qm', atol=1.0e-4)
 
 
 fullans10qm = {
-    'geom': np.array([0., 0., 0.]),
+    'geom': np.array([0.0, 0.0, 0.0]),
     'elea': np.array([12]),
     'elez': np.array([6]),
     'elem': np.array(['C']),
-    'mass': np.array([12.]),
+    'mass': np.array([12.0]),
     'real': np.array([True]),
     'elbl': np.array(['']),
     'units': 'Angstrom',
     'fix_com': False,
     'fix_orientation': False,
     'fragment_separators': [],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [1],
-    'molecular_charge': 0.,
-    'molecular_multiplicity': 1
+    'molecular_charge': 0.0,
+    'molecular_multiplicity': 1,
 }
 fullans10efp = {
     'fragment_files': ['cl2'],
     'hint_types': ['xyzabc'],
-    'geom_hints': [[0., 0., 0., 0., 0., 0.]],
+    'geom_hints': [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]],
     'units': 'Angstrom',
     'fix_com': True,
     'fix_orientation': True,
-    'fix_symmetry': 'c1'
+    'fix_symmetry': 'c1',
 }
 blankqm = {
     'geom': np.array([]),
@@ -907,10 +943,10 @@ blankqm = {
     'fix_com': False,
     'fix_orientation': False,
     'fragment_separators': [],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [1],
-    'molecular_charge': 0.,
-    'molecular_multiplicity': 1
+    'molecular_charge': 0.0,
+    'molecular_multiplicity': 1,
 }
 blankefp = {
     'fragment_files': [],
@@ -919,7 +955,7 @@ blankefp = {
     'units': 'Angstrom',
     'fix_com': True,
     'fix_orientation': True,
-    'fix_symmetry': 'c1'
+    'fix_symmetry': 'c1',
 }
 
 
@@ -931,7 +967,7 @@ def test_arrays_10a():
         'hint_types': ['xyzabc'],
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
-        'enable_efp': True
+        'enable_efp': True,
     }
 
     fullans = {'qm': copy.deepcopy(fullans10qm), 'efp': copy.deepcopy(fullans10efp)}
@@ -954,7 +990,7 @@ def test_arrays_10b():
         'hint_types': ['xyzabc'],
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': False,
-        'enable_efp': True
+        'enable_efp': True,
     }
 
     fullans = {'efp': fullans10efp}
@@ -974,7 +1010,7 @@ def test_arrays_10c():
         'hint_types': ['xyzabc'],
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
-        'enable_efp': False
+        'enable_efp': False,
     }
 
     fullans = {'qm': fullans10qm}
@@ -992,7 +1028,7 @@ def test_arrays_10d():
         'elem': ['C'],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'none'
+        'missing_enabled_return_efp': 'none',
     }
 
     fullans = {'qm': fullans10qm}
@@ -1010,7 +1046,7 @@ def test_arrays_10e():
         'elem': ['C'],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'minimal'
+        'missing_enabled_return_efp': 'minimal',
     }
 
     fullans = {'qm': fullans10qm, 'efp': blankefp}
@@ -1028,7 +1064,7 @@ def test_arrays_10f():
         'elem': ['C'],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'error'
+        'missing_enabled_return_efp': 'error',
     }
 
     with pytest.raises(qcelemental.ValidationError):
@@ -1041,7 +1077,7 @@ def test_arrays_10g():
         'elem': ['C'],
         'enable_qm': False,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'none'
+        'missing_enabled_return_efp': 'none',
     }
 
     final = qcelemental.molparse.from_input_arrays(**subject)
@@ -1057,7 +1093,7 @@ def test_arrays_10h():
         'elem': ['C'],
         'enable_qm': False,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'minimal'
+        'missing_enabled_return_efp': 'minimal',
     }
 
     fullans = {'efp': blankefp}
@@ -1075,7 +1111,7 @@ def test_arrays_10i():
         'elem': ['C'],
         'enable_qm': False,
         'enable_efp': True,
-        'missing_enabled_return_efp': 'error'
+        'missing_enabled_return_efp': 'error',
     }
 
     with pytest.raises(qcelemental.ValidationError):
@@ -1101,7 +1137,7 @@ def test_arrays_10k():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_qm': 'none'
+        'missing_enabled_return_qm': 'none',
     }
 
     fullans = {'efp': fullans10efp}
@@ -1120,7 +1156,7 @@ def test_arrays_10l():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_qm': 'minimal'
+        'missing_enabled_return_qm': 'minimal',
     }
 
     fullans = {'qm': copy.deepcopy(blankqm), 'efp': fullans10efp}
@@ -1142,7 +1178,7 @@ def test_arrays_10m():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': True,
-        'missing_enabled_return_qm': 'error'
+        'missing_enabled_return_qm': 'error',
     }
 
     with pytest.raises(qcelemental.ValidationError):
@@ -1155,7 +1191,7 @@ def test_arrays_10n():
         'hint_types': ['xyzabc'],
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': False,
-        'enable_efp': True
+        'enable_efp': True,
     }
 
     fullans = {'efp': fullans10efp}
@@ -1174,7 +1210,7 @@ def test_arrays_10o():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': False,
-        'missing_enabled_return_qm': 'none'
+        'missing_enabled_return_qm': 'none',
     }
 
     final = qcelemental.molparse.from_input_arrays(**subject)
@@ -1191,7 +1227,7 @@ def test_arrays_10p():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': False,
-        'missing_enabled_return_qm': 'minimal'
+        'missing_enabled_return_qm': 'minimal',
     }
 
     fullans = {'qm': blankqm}
@@ -1210,7 +1246,7 @@ def test_arrays_10q():
         'geom_hints': [[0, 0, 0, 0, 0, 0]],
         'enable_qm': True,
         'enable_efp': False,
-        'missing_enabled_return_qm': 'error'
+        'missing_enabled_return_qm': 'error',
     }
 
     with pytest.raises(qcelemental.ValidationError):
@@ -1220,11 +1256,9 @@ def test_arrays_10q():
 def test_strings_10r():
     subject = ''
 
-    final = qcelemental.molparse.from_string(subject,
-                                             enable_qm=True,
-                                             enable_efp=True,
-                                             missing_enabled_return_qm='none',
-                                             missing_enabled_return_efp='none')
+    final = qcelemental.molparse.from_string(
+        subject, enable_qm=True, enable_efp=True, missing_enabled_return_qm='none', missing_enabled_return_efp='none'
+    )
 
     print('final', final)
     with pytest.raises(KeyError):
@@ -1236,11 +1270,13 @@ def test_strings_10r():
 def test_strings_10s():
     subject = ''
 
-    final = qcelemental.molparse.from_string(subject,
-                                             enable_qm=True,
-                                             enable_efp=True,
-                                             missing_enabled_return_qm='minimal',
-                                             missing_enabled_return_efp='minimal')
+    final = qcelemental.molparse.from_string(
+        subject,
+        enable_qm=True,
+        enable_efp=True,
+        missing_enabled_return_qm='minimal',
+        missing_enabled_return_efp='minimal',
+    )
 
     fullans = {'qm': blankqm, 'efp': blankefp}
     fullans['qm']['provenance'] = _string_prov_stamp
@@ -1254,11 +1290,13 @@ def test_strings_10t():
     subject = ''
 
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.from_string(subject,
-                                         enable_qm=True,
-                                         enable_efp=True,
-                                         missing_enabled_return_qm='error',
-                                         missing_enabled_return_efp='error')
+        qcelemental.molparse.from_string(
+            subject,
+            enable_qm=True,
+            enable_efp=True,
+            missing_enabled_return_qm='error',
+            missing_enabled_return_efp='error',
+        )
 
 
 def test_qmol_11c():
@@ -1271,10 +1309,7 @@ def test_qmol_11c():
 
 def test_qmol_11d():
     fullans = copy.deepcopy(fullans1a)
-    fullans.update({
-        'variables': [],
-        'geom_unsettled': [['0', '0', '0'], ['1', '0', '0']],
-    })
+    fullans.update({'variables': [], 'geom_unsettled': [['0', '0', '0'], ['1', '0', '0']]})
     fullans.pop('geom')
     fullans['provenance'] = _string_prov_stamp
 
@@ -1294,7 +1329,7 @@ def test_qmol_11g():
     fullans = copy.deepcopy(fullans1a)
     fullans['provenance'] = _arrays_prov_stamp
 
-    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, verbose=2)
+    asdf = qcelemental.molparse.from_arrays(geom=[0.0, 0.0, 0.0, 1.0, 0.0, 0.0], elez=[8, 1], fix_com=True, verbose=2)
     assert compare_molrecs(fullans, asdf, 4)
 
 
@@ -1326,7 +1361,9 @@ def test_qmol_11p():
     fullans = copy.deepcopy(fullans1a)
     fullans['provenance'] = _arrays_prov_stamp
 
-    asdf = qcelemental.molparse.from_arrays(geom=[0., 0., 0., 1., 0., 0.], elez=[8, 1], fix_com=True, units='AngSTRom')
+    asdf = qcelemental.molparse.from_arrays(
+        geom=[0.0, 0.0, 0.0, 1.0, 0.0, 0.0], elez=[8, 1], fix_com=True, units='AngSTRom'
+    )
     assert compare_molrecs(fullans, asdf, 4)
 
 
@@ -1335,16 +1372,16 @@ def test_qmol_11q():
         qcelemental.molparse.from_string("""2\n\nO 0 0 0 \n1 1 0 0 """, fix_com=True, dtype='psi3')
 
 
-#QCELdef test_qmol_12():
-#QCEL    asdf = qcdb.Molecule(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
-#QCEL    assess_mol_11(asdf, 'qcdb.Molecule(geom, elez)')
-#QCEL
-#QCEL    import json
-#QCEL    smol = json.dumps(asdf.to_dict(np_out=False))
-#QCEL    dmol = json.loads(smol)
-#QCEL
-#QCEL    asdf2 = qcdb.Molecule(dmol)
-#QCEL    assess_mol_11(asdf, 'qcdb.Molecule(jsondict)')
+# QCELdef test_qmol_12():
+# QCEL    asdf = qcdb.Molecule(geom=[ 0.,  0.,  0.,  1.,  0.,  0.], elez=[8, 1], fix_com=True)
+# QCEL    assess_mol_11(asdf, 'qcdb.Molecule(geom, elez)')
+# QCEL
+# QCEL    import json
+# QCEL    smol = json.dumps(asdf.to_dict(np_out=False))
+# QCEL    dmol = json.loads(smol)
+# QCEL
+# QCEL    asdf2 = qcdb.Molecule(dmol)
+# QCEL    assess_mol_11(asdf, 'qcdb.Molecule(jsondict)')
 
 subject12 = """
  0 1
@@ -1373,7 +1410,7 @@ fullans12 = {
     'real': np.array([True, True, True, True]),
     'units': 'Angstrom',
     'variables': [['A', 105.0]],
-    'fix_symmetry': 'c1'
+    'fix_symmetry': 'c1',
 }
 ans12 = {
     'elbl': ['1', '8', 'O', 'H'],
@@ -1385,7 +1422,7 @@ ans12 = {
     'geom_unsettled': [[], ['1', '0.95'], ['2', '1.40', '1', 'A'], ['3', '0.95', '2', 'A', '1', '120.0']],
     'hint_types': [],
     'variables': [('A', '105.0')],
-    'fix_symmetry': 'c1'
+    'fix_symmetry': 'c1',
 }
 
 
@@ -1438,10 +1475,9 @@ def test_steepzmat_error():
 def test_zmatvar_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         elem=['Rn', 'Rn'],
-                                         variables=[['bond', 2.0, 'badextra']],
-                                         geom_unsettled=[[], ['1', 'bond']])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz', elem=['Rn', 'Rn'], variables=[['bond', 2.0, 'badextra']], geom_unsettled=[[], ['1', 'bond']]
+        )
 
     assert 'Variables should come in pairs' in str(e.value)
 
@@ -1449,15 +1485,17 @@ def test_zmatvar_error():
 def test_toomanyfrag_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['ar1', '42AR2'],
-                                         fragment_multiplicities=[3, 3],
-                                         fragment_separators=[1, 2],
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_multiplicities=[3, 3],
+            fragment_separators=[1, 2],
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'zero-length fragment' in str(e.value)
 
@@ -1465,15 +1503,17 @@ def test_toomanyfrag_error():
 def test_fragsep_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['ar1', '42AR2'],
-                                         fragment_multiplicities=[3, 3],
-                                         fragment_separators=np.array(['1']),
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_multiplicities=[3, 3],
+            fragment_separators=np.array(['1']),
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'unable to perform trial np.split on geometry' in str(e.value)
 
@@ -1550,14 +1590,16 @@ def test_natom_error():
 def test_incompletefrag_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['ar1', '42AR2'],
-                                         fragment_multiplicities=[3, 3],
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_multiplicities=[3, 3],
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'Fragment quantities given without separation info' in str(e.value)
 
@@ -1565,15 +1607,17 @@ def test_incompletefrag_error():
 def test_badmult_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['ar1', '42AR2'],
-                                         fragment_multiplicities=[-3, 3],
-                                         fragment_separators=np.array([1]),
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_multiplicities=[-3, 3],
+            fragment_separators=np.array([1]),
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'fragment_multiplicities not among None or positive integer' in str(e.value)
 
@@ -1581,15 +1625,17 @@ def test_badmult_error():
 def test_badchg_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['ar1', '42AR2'],
-                                         fragment_charges=[[], {}],
-                                         fragment_separators=np.array([1]),
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['ar1', '42AR2'],
+            fragment_charges=[[], {}],
+            fragment_separators=np.array([1]),
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'fragment_charges not among None or float' in str(e.value)
 
@@ -1597,15 +1643,17 @@ def test_badchg_error():
 def test_fraglen_error():
 
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(domain='qmvz',
-                                         speclabel=True,
-                                         elbl=['na', 'cl'],
-                                         fragment_charges=[1, -1, 0],
-                                         fragment_separators=np.array([1]),
-                                         geom_unsettled=[[], ['1', 'bond']],
-                                         hint_types=[],
-                                         units='Bohr',
-                                         variables=[('bond', '3')])
+        qcelemental.molparse.from_arrays(
+            domain='qmvz',
+            speclabel=True,
+            elbl=['na', 'cl'],
+            fragment_charges=[1, -1, 0],
+            fragment_separators=np.array([1]),
+            geom_unsettled=[[], ['1', 'bond']],
+            hint_types=[],
+            units='Bohr',
+            variables=[('bond', '3')],
+        )
 
     assert 'mismatch among fragment quantities' in str(e.value)
 
@@ -1614,15 +1662,17 @@ def test_zmatfragarr_14a():
     fullans = copy.deepcopy(fullans14)
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(domain='qmvz',
-                                             speclabel=True,
-                                             elbl=['ar1', '42AR2'],
-                                             fragment_multiplicities=[3, 3],
-                                             fragment_separators=[1],
-                                             geom_unsettled=[[], ['1', 'bond']],
-                                             hint_types=[],
-                                             units='Bohr',
-                                             variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(
+        domain='qmvz',
+        speclabel=True,
+        elbl=['ar1', '42AR2'],
+        fragment_multiplicities=[3, 3],
+        fragment_separators=[1],
+        geom_unsettled=[[], ['1', 'bond']],
+        hint_types=[],
+        units='Bohr',
+        variables=[('bond', '3')],
+    )
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1632,17 +1682,19 @@ def test_zmatfragarr_14b():
     fullans['elbl'] = ['', '']
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(domain='qmvz',
-                                             speclabel=False,
-                                             elez=[18, 18],
-                                             elea=np.array([40, 42]),
-                                             real=[True, True],
-                                             fragment_multiplicities=[3, 3],
-                                             fragment_separators=[1],
-                                             geom_unsettled=[[], ['1', 'bond']],
-                                             hint_types=[],
-                                             units='Bohr',
-                                             variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(
+        domain='qmvz',
+        speclabel=False,
+        elez=[18, 18],
+        elea=np.array([40, 42]),
+        real=[True, True],
+        fragment_multiplicities=[3, 3],
+        fragment_separators=[1],
+        geom_unsettled=[[], ['1', 'bond']],
+        hint_types=[],
+        units='Bohr',
+        variables=[('bond', '3')],
+    )
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1656,21 +1708,23 @@ def test_zmatfragarr_14c():
     fullans['real'] = fullans['real'].tolist()
     fullans['provenance'] = _arrays_prov_stamp
 
-    final = qcelemental.molparse.from_arrays(np_out=False,
-                                             domain='qmvz',
-                                             speclabel=False,
-                                             elez=[18, 18],
-                                             elea=[40, None],
-                                             mass=[None, 41.96304574],
-                                             real=[True, True],
-                                             fragment_multiplicities=[3, 3],
-                                             fragment_separators=[1],
-                                             geom_unsettled=[[], ['1', 'bond']],
-                                             hint_types=[],
-                                             units='Bohr',
-                                             fix_com=True,
-                                             fix_orientation=True,
-                                             variables=[('bond', '3')])
+    final = qcelemental.molparse.from_arrays(
+        np_out=False,
+        domain='qmvz',
+        speclabel=False,
+        elez=[18, 18],
+        elea=[40, None],
+        mass=[None, 41.96304574],
+        real=[True, True],
+        fragment_multiplicities=[3, 3],
+        fragment_separators=[1],
+        geom_unsettled=[[], ['1', 'bond']],
+        hint_types=[],
+        units='Bohr',
+        fix_com=True,
+        fix_orientation=True,
+        variables=[('bond', '3')],
+    )
 
     assert compare_molrecs(fullans, final, tnm() + ': full')
 
@@ -1701,7 +1755,7 @@ fullans14 = {
     'molecular_multiplicity': 5,
     'real': np.array([True, True]),
     'units': 'Bohr',
-    'variables': [['bond', 3.0]]
+    'variables': [['bond', 3.0]],
 }
 
 
@@ -1723,58 +1777,42 @@ def test_badprov0_error():
 
 def test_badprov1_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
-                                         elez=[4],
-                                         provenance={
-                                             'creator': ('psi', 'tuple'),
-                                             'routine': 'buggy',
-                                             'version': '0.1b'
-                                         })
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={'creator': ('psi', 'tuple'), 'routine': 'buggy', 'version': '0.1b'}
+        )
 
     assert """Provenance key 'creator' should be string of creating program's name:""" in str(e.value)
 
 
 def test_badprov2_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
-                                         elez=[4],
-                                         provenance={
-                                             'creator': '',
-                                             'routine': 'buggy',
-                                             'version': 'my.vanity.version.13'
-                                         })
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={'creator': '', 'routine': 'buggy', 'version': 'my.vanity.version.13'}
+        )
 
     assert """Provenance key 'version' should be a valid PEP 440 string:""" in str(e.value)
 
 
 def test_badprov3_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
-                                         elez=[4],
-                                         provenance={
-                                             'creator': '',
-                                             'routine': 5,
-                                             'version': '0.1b'
-                                         })
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={'creator': '', 'routine': 5, 'version': '0.1b'}
+        )
 
     assert """Provenance key 'routine' should be string of creating function's name:""" in str(e.value)
 
 
 def test_badprov4_error():
     with pytest.raises(qcelemental.ValidationError) as e:
-        qcelemental.molparse.from_arrays(geom=[1, 2, 3],
-                                         elez=[4],
-                                         provenance={
-                                             'creators': '',
-                                             'routine': 'buggy',
-                                             'version': '0.1b'
-                                         })
+        qcelemental.molparse.from_arrays(
+            geom=[1, 2, 3], elez=[4], provenance={'creators': '', 'routine': 'buggy', 'version': '0.1b'}
+        )
 
     assert """Provenance keys (['creator', 'routine', 'version']) incorrect:""" in str(e.value)
 
 
 fullans17 = {
-    'geom': np.array([0., 1., 2., 3., 4., 5., 6., 7., 8.]),
+    'geom': np.array([0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]),
     'elea': np.array([1, 32, 1]),
     'elez': np.array([1, 16, 1]),
     'elem': np.array(['H', 'S', 'H']),
@@ -1789,10 +1827,7 @@ fullans17 = {
     'fragment_multiplicities': [1],
     'molecular_charge': -1.0,
     'molecular_multiplicity': 1,
-    'connectivity': [
-        (0, 1, 1.0),
-        (1, 2, 1.0),
-    ],
+    'connectivity': [(0, 1, 1.0), (1, 2, 1.0)],
 }
 
 
@@ -1890,9 +1925,9 @@ def test_connectivity_type_error():
 
 #'geom_unsettled': [[], ['1', '2.'], ['1', '2.', '2', '100.', '3', '35.']],
 
-#final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)
-#import pprint
-#pprint.pprint(final)
-#pprint.pprint(intermed)
+# final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, verbose=2)
+# import pprint
+# pprint.pprint(final)
+# pprint.pprint(intermed)
 
-#assert False
+# assert False

@@ -9,60 +9,68 @@ from qcelemental.testing import compare_molrecs
 _schema_prov_stamp = {'creator': 'QCElemental', 'version': '1.0', 'routine': 'qcelemental.molparse.from_schema'}
 
 
-@pytest.mark.parametrize("inp,expected", [
-    ({
-        'frag_pattern': [[0], [1]],
-        'geom': [0., 0., 0., 1., 0., 0.],
-        'elbl': ['O', 'H']
-    }, {
-        'fragment_separators': np.array([1]),
-        'geom': np.array([0., 0., 0., 1., 0., 0.]),
-        'elbl': np.array(['O', 'H'])
-    }),
-    ({
-        'frag_pattern': [[2, 0], [1]],
-        'geom': np.array([[0., 0., 1.], [0., 0., 2.], [0., 0., 0.]]),
-        'elem': np.array(['Li', 'H', 'He'])
-    }, {
-        'fragment_separators': np.array([2]),
-        'geom': np.array([0., 0., 0., 0., 0., 1., 0., 0., 2.]),
-        'elem': np.array(['He', 'Li', 'H'])
-    }),
-    ({
-        'frag_pattern': [[2, 0], [1]],
-        'elez': [3, 1, 2]
-    }, {
-        'fragment_separators': np.array([2]),
-        'elez': np.array([2, 3, 1])
-    }),
-])
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        (
+            {'frag_pattern': [[0], [1]], 'geom': [0.0, 0.0, 0.0, 1.0, 0.0, 0.0], 'elbl': ['O', 'H']},
+            {
+                'fragment_separators': np.array([1]),
+                'geom': np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+                'elbl': np.array(['O', 'H']),
+            },
+        ),
+        (
+            {
+                'frag_pattern': [[2, 0], [1]],
+                'geom': np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 2.0], [0.0, 0.0, 0.0]]),
+                'elem': np.array(['Li', 'H', 'He']),
+            },
+            {
+                'fragment_separators': np.array([2]),
+                'geom': np.array([0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 2.0]),
+                'elem': np.array(['He', 'Li', 'H']),
+            },
+        ),
+        (
+            {'frag_pattern': [[2, 0], [1]], 'elez': [3, 1, 2]},
+            {'fragment_separators': np.array([2]), 'elez': np.array([2, 3, 1])},
+        ),
+    ],
+)
 def test_contiguize_from_fragment_pattern(inp, expected):
     ans = qcel.molparse.contiguize_from_fragment_pattern(**inp)
 
     # compare_molrecs instead of compare_dicts handles some fragment_separators types issues
-    assert compare_molrecs(expected, ans, atol=1.e-6)
+    assert compare_molrecs(expected, ans, atol=1.0e-6)
 
 
-@pytest.mark.parametrize("inp,expected", [
-    ({
-        'frag_pattern': [[2, 0], [1, 3]],
-        'geom': np.array([[0., 0., 1.], [0., 0., 2.], [0., 0., 0.]]),
-        'elem': np.array(['Li', 'H', 'He'])
-    }, 'dropped atoms'),
-    ({
-        'frag_pattern': [[2, 0], [1, 4]]
-    }, 'Fragmentation pattern skips atoms'),
-    ({
-        'frag_pattern': [[2, 0], [1, 3]],
-        'elem': np.array(['U', 'Li', 'H', 'He']),
-        'elbl': np.array(['Li', 'H', 'He'])
-    }, 'wrong number of atoms in array'),
-    ({
-        'frag_pattern': [[2, 0], [1]],
-        'elez': [3, 1, 2],
-        'throw_reorder': True
-    }, 'reorder atoms to accommodate non-contiguous fragments'),
-])
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        (
+            {
+                'frag_pattern': [[2, 0], [1, 3]],
+                'geom': np.array([[0.0, 0.0, 1.0], [0.0, 0.0, 2.0], [0.0, 0.0, 0.0]]),
+                'elem': np.array(['Li', 'H', 'He']),
+            },
+            'dropped atoms',
+        ),
+        ({'frag_pattern': [[2, 0], [1, 4]]}, 'Fragmentation pattern skips atoms'),
+        (
+            {
+                'frag_pattern': [[2, 0], [1, 3]],
+                'elem': np.array(['U', 'Li', 'H', 'He']),
+                'elbl': np.array(['Li', 'H', 'He']),
+            },
+            'wrong number of atoms in array',
+        ),
+        (
+            {'frag_pattern': [[2, 0], [1]], 'elez': [3, 1, 2], 'throw_reorder': True},
+            'reorder atoms to accommodate non-contiguous fragments',
+        ),
+    ],
+)
 def test_contiguize_from_fragment_pattern_error(inp, expected):
     with pytest.raises(qcel.ValidationError) as e:
         qcel.molparse.contiguize_from_fragment_pattern(**inp)
@@ -82,7 +90,7 @@ schema14_1 = {
     'fix_orientation': False,
     'molecular_charge': 0.0,
     "molecular_multiplicity": 3,
-    "real": [True, False]
+    "real": [True, False],
 }
 
 schema14_psi4_np = {

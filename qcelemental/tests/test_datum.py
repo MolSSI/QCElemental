@@ -11,12 +11,14 @@ from qcelemental.testing import compare_recursive, compare_values
 @pytest.fixture
 def dataset():
     datums = {
-        'decimal': qcel.Datum('a label', 'mdyn/angstrom', Decimal('4.4'), comment='force constant', doi='10.1000/182', numeric=False),
+        'decimal': qcel.Datum(
+            'a label', 'mdyn/angstrom', Decimal('4.4'), comment='force constant', doi='10.1000/182', numeric=False
+        ),
         'ndarray': qcel.Datum('an array', 'cm^-1', np.arange(4, dtype=np.float) * 4 / 3, comment='freqs'),
         'float': qcel.Datum('a float', 'kg', 4.4, doi='10.1000/182'),
         'string': qcel.Datum('ze lbl', 'ze unit', 'ze data', numeric=False),
         'lststr': qcel.Datum('ze lbl', 'ze unit', ['V', 'R', None], numeric=False),
-    }  # yapf: disable
+    }
 
     return datums
 
@@ -46,14 +48,17 @@ def test_creation_error():
     # assert 'Datum data should be float' in str(e)
 
 
-@pytest.mark.parametrize("inp,expected", [
-    (('decimal', None), 4.4),
-    (('decimal', 'N/m'), 440),
-    (('decimal', 'hartree/bohr/bohr'), 0.282614141011),
-    (('ndarray', '1/m'), np.arange(4, dtype=np.float) * 400 / 3),
-])
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        (('decimal', None), 4.4),
+        (('decimal', 'N/m'), 440),
+        (('decimal', 'hartree/bohr/bohr'), 0.282614141011),
+        (('ndarray', '1/m'), np.arange(4, dtype=np.float) * 400 / 3),
+    ],
+)
 def test_units(dataset, inp, expected):
-    assert compare_values(expected, dataset[inp[0]].to_units(inp[1]), atol=1.e-9)
+    assert compare_values(expected, dataset[inp[0]].to_units(inp[1]), atol=1.0e-9)
 
 
 def test_printing(dataset):
@@ -125,7 +130,7 @@ def test_complex_array():
         'label': 'complex array',
         'units': '',
         'data': [complex(0, 1), complex(1, 1), complex(2, 1)],
-        'numeric': True
+        'numeric': True,
     }
 
     dicary = datum1.dict()

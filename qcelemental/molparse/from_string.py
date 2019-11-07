@@ -420,89 +420,21 @@ def _filter_universals(string):
 
     return '\n'.join(reconstitute), processed
 
-
+# fmt: off
 fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
 efpxyzabc = re.compile(
-    r'\A'
-    + r'efp'
-    + SEP
-    + r'(?P<efpfile>(\w+))'
-    + SEP
-    + r'(?P<x>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<y>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<z>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<a>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<b>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<c>'
-    + NUMBER
-    + r')'
-    + ENDL
-    + r'\Z',
-    re.IGNORECASE | re.VERBOSE,
-)  # yapf: disable
+    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + SEP +
+    r'(?P<x>' + NUMBER + r')' + SEP + r'(?P<y>' + NUMBER + r')' + SEP + r'(?P<z>' + NUMBER + r')' + SEP +
+    r'(?P<a>' + NUMBER + r')' + SEP + r'(?P<b>' + NUMBER + r')' + SEP + r'(?P<c>' + NUMBER + r')' + ENDL + r'\Z',
+    re.IGNORECASE | re.VERBOSE)
+
 efppoints = re.compile(
-    r'\A'
-    + r'efp'
-    + SEP
-    + r'(?P<efpfile>(\w+))'
-    + ENDL
-    + r'[\s,]*'
-    + r'(?P<x1>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<y1>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<z1>'
-    + NUMBER
-    + r')'
-    + ENDL
-    + r'[\s,]*'
-    + r'(?P<x2>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<y2>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<z2>'
-    + NUMBER
-    + r')'
-    + ENDL
-    + r'[\s,]*'
-    + r'(?P<x3>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<y3>'
-    + NUMBER
-    + r')'
-    + SEP
-    + r'(?P<z3>'
-    + NUMBER
-    + r')'
-    + ENDL
-    + r'\Z',
-    re.IGNORECASE | re.MULTILINE | re.VERBOSE,
-)  # yapf: disable
+    r'\A' + r'efp' + SEP + r'(?P<efpfile>(\w+))' + ENDL +
+    r'[\s,]*' + r'(?P<x1>' + NUMBER + r')' + SEP + r'(?P<y1>' + NUMBER + r')' + SEP + r'(?P<z1>' + NUMBER + r')' + ENDL +
+    r'[\s,]*' + r'(?P<x2>' + NUMBER + r')' + SEP + r'(?P<y2>' + NUMBER + r')' + SEP + r'(?P<z2>' + NUMBER + r')' + ENDL +
+    r'[\s,]*' + r'(?P<x3>' + NUMBER + r')' + SEP + r'(?P<y3>' + NUMBER + r')' + SEP + r'(?P<z3>' + NUMBER + r')' + ENDL + r'\Z',
+    re.IGNORECASE | re.MULTILINE | re.VERBOSE)
+# fmt: on
 
 
 def _filter_libefp(string):
@@ -518,7 +450,7 @@ def _filter_libefp(string):
                 float(matchobj.group('b')),
                 float(matchobj.group('c')),
             ]
-        )  # yapf: disable
+        )
         return ''
 
     def process_efppoints(matchobj):
@@ -536,7 +468,7 @@ def _filter_libefp(string):
                 float(matchobj.group('y3')),
                 float(matchobj.group('z3')),
             ]
-        )  # yapf: disable
+        )
         return ''
 
     reconstitute = []
@@ -563,106 +495,33 @@ NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
 ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
 ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
 
-atom_cartesian = re.compile(
-    r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
-)
-atom_vcart = re.compile(
-    r'\A'
-    + r'(?P<nucleus>'
-    + NUCLEUS
-    + r')'
-    + SEP
-    + r'(?P<Xval>'
-    + ANCHORVAL
-    + r')'
-    + SEP
-    + r'(?P<Yval>'
-    + ANCHORVAL
-    + r')'
-    + SEP
-    + r'(?P<Zval>'
-    + ANCHORVAL
-    + r')'
-    + r'\Z',
-    re.IGNORECASE | re.VERBOSE,
-)  # yapf: disable
-atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z', re.IGNORECASE | re.VERBOSE)  # yapf: disable
-atom_zmat2 = re.compile(
-    r'\A'
-    + r'(?P<nucleus>'
-    + NUCLEUS
-    + r')'
-    + SEP
-    + r'(?P<Ridx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Rval>'
-    + ANCHORVAL
-    + r')'
-    + r'\Z',
-    re.IGNORECASE | re.VERBOSE,
-)  # yapf: disable
-atom_zmat3 = re.compile(
-    r'\A'
-    + r'(?P<nucleus>'
-    + NUCLEUS
-    + r')'
-    + SEP
-    + r'(?P<Ridx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Rval>'
-    + ANCHORVAL
-    + r')'
-    + SEP
-    + r'(?P<Aidx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Aval>'
-    + ANCHORVAL
-    + r')'
-    + r'\Z',
-    re.IGNORECASE | re.VERBOSE,
-)  # yapf: disable
-atom_zmat4 = re.compile(
-    r'\A'
-    + r'(?P<nucleus>'
-    + NUCLEUS
-    + r')'
-    + SEP
-    + r'(?P<Ridx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Rval>'
-    + ANCHORVAL
-    + r')'
-    + SEP
-    + r'(?P<Aidx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Aval>'
-    + ANCHORVAL
-    + r')'
-    + SEP
-    + r'(?P<Didx>'
-    + ANCHORTO
-    + r')'
-    + SEP
-    + r'(?P<Dval>'
-    + ANCHORVAL
-    + r')'
-    + r'\Z',
-    re.IGNORECASE | re.VERBOSE,
-)  # yapf: disable
+# fmt: on
+atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
+                            re.IGNORECASE | re.VERBOSE)
+atom_vcart = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Xval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Yval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Zval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)
+atom_zmat1 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)
+atom_zmat2 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)
+atom_zmat3 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)
+atom_zmat4 = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
+                        r'(?P<Ridx>' + ANCHORTO + r')' + SEP + r'(?P<Rval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Aidx>' + ANCHORTO + r')' + SEP + r'(?P<Aval>' + ANCHORVAL + r')' + SEP +
+                        r'(?P<Didx>' + ANCHORTO + r')' + SEP + r'(?P<Dval>' + ANCHORVAL + r')' + r'\Z',
+                        re.IGNORECASE | re.VERBOSE)
 variable = re.compile(
     r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
     re.IGNORECASE | re.VERBOSE,
 )
+# fmt: off
 
 
 def _filter_mints(string, unsettled=False):

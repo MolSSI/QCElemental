@@ -31,14 +31,11 @@ schema14_1 = {
         'fix_orientation': False,
         'molecular_charge': 0.0,
         "molecular_multiplicity": 3,
-        "real": [True, False]
-    }
+        "real": [True, False],
+    },
 }
 
-schema14_2 = {
-    'schema_name': 'qcschema_molecule',
-    'schema_version': 2,
-}
+schema14_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
 schema14_2.update(schema14_1['molecule'])
 
 schema14_psi4 = {
@@ -57,7 +54,7 @@ schema14_psi4 = {
     'units': 'Bohr',
     'fragment_separators': [1],
     'elbl': ['', ''],
-    "real": [True, False]
+    "real": [True, False],
 }
 
 
@@ -111,10 +108,7 @@ def test_dtype_error():
     assert "Schema dtype not understood" in str(e.value)
 
 
-@pytest.mark.parametrize("dtype", [
-    1,
-    2,
-])
+@pytest.mark.parametrize("dtype", [1, 2])
 def test_qcschema_ang_error(dtype):
 
     final = qcelemental.molparse.from_string(subject14)
@@ -135,7 +129,8 @@ def test_psi4_nm_error():
 
 twobohrinang = 2.0 * qcelemental.constants.conversion_factor("bohr", "angstrom")
 subject15 = """symmetry cS\nH 0 0 {twobohrinang}\nO 0 0 0\n2H_deut {twobohrinang} 0 0\nno_com\nno_reorient""".format(
-    twobohrinang=twobohrinang)
+    twobohrinang=twobohrinang
+)
 
 schema15_1: Dict = {
     "schema_name": "qc_schema_input",
@@ -158,8 +153,8 @@ schema15_1: Dict = {
         'fix_symmetry': 'cs',
         'molecular_charge': 0.0,
         "molecular_multiplicity": 1,
-        "real": [True, True, True]
-    }
+        "real": [True, True, True],
+    },
 }
 
 schema15_2 = {'schema_name': 'qcschema_molecule', 'schema_version': 2}
@@ -183,7 +178,7 @@ schema15_psi4 = {
     "molecular_multiplicity": 1,
     'units': 'Angstrom',
     'fragment_separators': [],
-    "real": [True, True, True]
+    "real": [True, True, True],
 }
 
 
@@ -240,7 +235,7 @@ schema16_1 = {
     'schema_version': 1,
     'molecule': {
         'validated': True,
-        'geometry': [2., 2., 3.],
+        'geometry': [2.0, 2.0, 3.0],
         'symbols': ['C'],
         'masses': [12.0],
         'atom_labels': [''],
@@ -248,18 +243,14 @@ schema16_1 = {
         'mass_numbers': [12],
         'real': [True],
         'name': 'C',
-        'molecular_charge': 0.,
+        'molecular_charge': 0.0,
         'molecular_multiplicity': 1,
         'fragments': [[0]],
-        'fragment_charges': [0.],
+        'fragment_charges': [0.0],
         'fragment_multiplicities': [1],
         'fix_com': False,
         'fix_orientation': False,
-        'provenance': {
-            'creator': 'Mystery Program',
-            'version': '2018.3',
-            'routine': 'molecule builder',
-        },
+        'provenance': {'creator': 'Mystery Program', 'version': '2018.3', 'routine': 'molecule builder'},
         'connectivity': [(0, 0, 0.0)],
     },
 }
@@ -269,7 +260,7 @@ schema16_2.update(schema16_1['molecule'])
 
 schema16_psi4 = {
     'units': 'Bohr',
-    'geom': np.array([2., 2., 3.]),
+    'geom': np.array([2.0, 2.0, 3.0]),
     'elem': np.array(['C']),
     'mass': np.array([12.0]),
     'elbl': np.array(['']),
@@ -277,18 +268,14 @@ schema16_psi4 = {
     'elea': np.array([12]),
     'real': np.array([True]),
     'name': 'C',
-    'molecular_charge': 0.,
+    'molecular_charge': 0.0,
     'molecular_multiplicity': 1,
     'fragment_separators': [],
-    'fragment_charges': [0.],
+    'fragment_charges': [0.0],
     'fragment_multiplicities': [1],
     'fix_com': False,
     'fix_orientation': False,
-    'provenance': {
-        'creator': 'Mystery Program',
-        'version': '2018.3',
-        'routine': 'molecule builder',
-    },
+    'provenance': {'creator': 'Mystery Program', 'version': '2018.3', 'routine': 'molecule builder'},
     'connectivity': [(0, 0, 0.0)],
 }
 
@@ -301,11 +288,7 @@ def test_froto_1_16a():
             'geometry': [2, 2, 3],
             'symbols': ['C'],
             'connectivity': [(0.0, -0.0, 0)],
-            'provenance': {
-                'creator': 'Mystery Program',
-                'version': '2018.3',
-                'routine': 'molecule builder',
-            },
+            'provenance': {'creator': 'Mystery Program', 'version': '2018.3', 'routine': 'molecule builder'},
         },
     }
 
@@ -323,11 +306,7 @@ def test_froto_2_16a():
         'geometry': [2, 2, 3],
         'symbols': ['C'],
         'connectivity': [(0.0, -0.0, 0)],
-        'provenance': {
-            'creator': 'Mystery Program',
-            'version': '2018.3',
-            'routine': 'molecule builder',
-        },
+        'provenance': {'creator': 'Mystery Program', 'version': '2018.3', 'routine': 'molecule builder'},
     }
 
     fullans = copy.deepcopy(schema16_2)
@@ -337,10 +316,7 @@ def test_froto_2_16a():
     assert compare_molrecs(fullans, roundtrip)
 
 
-@pytest.mark.parametrize("dtype", [
-    1,
-    2,
-])
+@pytest.mark.parametrize("dtype", [1, 2])
 def test_tofro_16b(dtype):
 
     fullans = copy.deepcopy(schema16_psi4)
