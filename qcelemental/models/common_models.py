@@ -69,8 +69,11 @@ class ComputeError(ProtoModel):
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
         None, description="Additional data to ship with the ComputeError object.")
 
-    def __repr_str__(self, join_str: str) -> str:
-        return join_str.join([f"error_type={self.error_type}", "error_message:\n{self.error_message}\n"])
+    class Config:
+        repr_style = ["error_type", "error_message"]
+
+    def __repr_args__(self) -> 'ReprArgs':
+        return [("error_type", self.error_type), ("error_message", self.error_message)]
 
 
 class FailedOperation(ProtoModel):
@@ -102,8 +105,8 @@ class FailedOperation(ProtoModel):
         description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.")
 
-    def __repr_str__(self, join_str: str) -> str:
-        return f"error={self.error}"
+    def __repr_args__(self) -> 'ReprArgs':
+        return [("error", self.error)]
 
 
 qcschema_input_default = "qcschema_input"

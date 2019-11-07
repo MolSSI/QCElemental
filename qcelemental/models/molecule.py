@@ -216,6 +216,8 @@ class Molecule(ProtoModel):
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
+        repr_style = lambda self: [("name", self.name), ("formula", self.get_molecular_formula()),
+                                   ("hash", self.get_hash()[:7])]
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -885,12 +887,8 @@ class Molecule(ProtoModel):
                 break
         return new_geometry
 
-    def __str__(self) -> str:
-        return self.pretty_print()
-
-    def __repr_str__(self, join_str: str) -> str:
-        return join_str.join(
-            ["name='{self.name}'", f"formula='{self.get_molecular_formula()}'", f"hash='{self.get_hash()[:7]}')>"])
+    def __repr_args__(self) -> 'ReprArgs':
+        return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
 
     def _ipython_display_(self, **kwargs) -> None:
         try:
