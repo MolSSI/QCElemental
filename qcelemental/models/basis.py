@@ -10,6 +10,7 @@ class HarmonicType(str, Enum):
     """
     The angular momentum representation of a shell.
     """
+
     spherical = 'spherical'
     cartesian = 'cartesian'
 
@@ -24,8 +25,7 @@ class ElectronShell(ProtoModel):
     exponents: List[float] = Field(..., description="Exponents for this contracted shell.")
     coefficients: List[List[float]] = Field(
         ...,
-        description=
-        "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
+        description="General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients.",
     )
 
     @validator('coefficients')
@@ -77,6 +77,7 @@ class ECPType(str, Enum):
     """
     The type of the ECP potential.
     """
+
     scalar = 'scalar'
     spinorbit = 'spinorbit'
 
@@ -92,8 +93,7 @@ class ECPPotential(ProtoModel):
     gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.")
     coefficients: List[List[float]] = Field(
         ...,
-        description=
-        "General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients."
+        description="General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients.",
     )
 
     @validator('gaussian_exponents')
@@ -118,6 +118,7 @@ class BasisCenter(ProtoModel):
     """
     Data for a single atom/center in a basis set.
     """
+
     electron_shells: List[ElectronShell] = Field(..., description="Electronic shells for this center.")
     ecp_electrons: int = Field(0, description="Number of electrons replace by ECP potentials.")
     ecp_potentials: Optional[List[ECPPotential]] = Field(None, description="ECPs for this center.")
@@ -127,6 +128,7 @@ class BasisSet(ProtoModel):
     """
     A quantum chemistry basis description.
     """
+
     schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
     schema_version: int = 1
 
@@ -134,7 +136,8 @@ class BasisSet(ProtoModel):
     description: Optional[str] = Field(None, description="A brief description of the basis set.")
     center_data: Dict[str, BasisCenter] = Field(..., description="A mapping of all types of centers available.")
     atom_map: List[str] = Field(
-        ..., description="Mapping of all centers in the parent molecule to centers in `center_data`.")
+        ..., description="Mapping of all centers in the parent molecule to centers in `center_data`."
+    )
 
     nbf: Optional[int] = Field(None, description="The number of basis functions.")
 

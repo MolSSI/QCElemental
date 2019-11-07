@@ -18,6 +18,7 @@ class AlignmentMill(ProtoModel):
     then molecular system can be substantively changed by procedure.
 
     """
+
     shift: Array[float]  # type: ignore
     rotation: Array[float]  # type: ignore
     atommap: Array[int]  # type: ignore
@@ -42,8 +43,7 @@ class AlignmentMill(ProtoModel):
             raise ValueError("Rotation must be castable to shape (3, 3)!")
         return v
 
-
-### Non-Pydantic API functions
+    ### Non-Pydantic API functions
 
     def pretty_print(self, label: str = '') -> str:
         width = 40
@@ -59,7 +59,7 @@ class AlignmentMill(ProtoModel):
         text.append('Rotation:')
         text.append('{}'.format(self.rotation))
         text.append('-' * width)
-        return ('\n'.join(x.rstrip() for x in text))
+        return '\n'.join(x.rstrip() for x in text)
 
     def align_coordinates(self, geom, *, reverse=False) -> Array:
         """suitable for geometry or displaced geometry"""
@@ -69,10 +69,10 @@ class AlignmentMill(ProtoModel):
             algeom = algeom.dot(self.rotation)
             algeom = algeom + self.shift
             if self.mirror:
-                algeom[:, 1] *= -1.
+                algeom[:, 1] *= -1.0
         else:
             if self.mirror:
-                algeom[:, 1] *= -1.
+                algeom[:, 1] *= -1.0
             algeom = algeom - self.shift
             algeom = algeom.dot(self.rotation)
         algeom = algeom[self.atommap, :]
@@ -89,8 +89,8 @@ class AlignmentMill(ProtoModel):
         """suitable for vector attached to molecule"""
 
         # sensible? TODO
-        #alvec = np.copy(vec)
-        #if self.mirror:
+        # alvec = np.copy(vec)
+        # if self.mirror:
         #    alvec[:, 1] *= -1
         return vec.dot(self.rotation)
 
@@ -98,8 +98,8 @@ class AlignmentMill(ProtoModel):
         """suitable for vector system attached to atoms"""
 
         # sensible? TODO
-        #algrad = np.copy(grad)
-        #if self.mirror:
+        # algrad = np.copy(grad)
+        # if self.mirror:
         #    algrad[:, 1] *= -1
         algrad = grad.dot(self.rotation)
         algrad = algrad[self.atommap]
@@ -131,13 +131,13 @@ class AlignmentMill(ProtoModel):
         Datom = np.zeros((3, 3))  # atom whose nuclear derivatives are taken
         for at in range(nat):
             Datom.fill(0)
-            Datom[0, :] = mu_x[3 * self.atommap[at]:3 * self.atommap[at] + 3]
-            Datom[1, :] = mu_y[3 * self.atommap[at]:3 * self.atommap[at] + 3]
-            Datom[2, :] = mu_z[3 * self.atommap[at]:3 * self.atommap[at] + 3]
+            Datom[0, :] = mu_x[3 * self.atommap[at] : 3 * self.atommap[at] + 3]
+            Datom[1, :] = mu_y[3 * self.atommap[at] : 3 * self.atommap[at] + 3]
+            Datom[2, :] = mu_z[3 * self.atommap[at] : 3 * self.atommap[at] + 3]
             Datom[:] = np.dot(self.rotation.T, np.dot(Datom, self.rotation))
-            al_mu[0, 3 * at:3 * at + 3] = Datom[0, :]
-            al_mu[1, 3 * at:3 * at + 3] = Datom[1, :]
-            al_mu[2, 3 * at:3 * at + 3] = Datom[2, :]
+            al_mu[0, 3 * at : 3 * at + 3] = Datom[0, :]
+            al_mu[1, 3 * at : 3 * at + 3] = Datom[1, :]
+            al_mu[2, 3 * at : 3 * at + 3] = Datom[2, :]
         return al_mu
 
     def align_system(self, geom, mass, elem, elez, uniq, *, reverse: bool = False):

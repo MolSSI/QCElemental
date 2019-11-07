@@ -99,7 +99,8 @@ class ProtoModel(BaseModel):
         encoding = kwargs.pop("encoding", None)
 
         kwargs["exclude"] = (
-            (kwargs.get("exclude", None) or set()) | self.__config__.serialize_default_excludes)  # type: ignore
+            kwargs.get("exclude", None) or set()
+        ) | self.__config__.serialize_default_excludes  # type: ignore
         kwargs.setdefault("exclude_unset", self.__config__.serialize_skip_defaults)  # type: ignore
         if self.__config__.force_skip_defaults:  # type: ignore
             kwargs["exclude_unset"] = True
@@ -113,12 +114,14 @@ class ProtoModel(BaseModel):
         else:
             raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json'.")
 
-    def serialize(self,
-                  encoding: str,
-                  *,
-                  include: Optional[Set[str]] = None,
-                  exclude: Optional[Set[str]] = None,
-                  exclude_unset: bool = False) -> Union[bytes, str]:
+    def serialize(
+        self,
+        encoding: str,
+        *,
+        include: Optional[Set[str]] = None,
+        exclude: Optional[Set[str]] = None,
+        exclude_unset: bool = False,
+    ) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
         Parameters
