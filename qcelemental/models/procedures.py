@@ -27,7 +27,7 @@ class OptimizationProtocols(ProtoModel):
     """
 
     trajectory: TrajectoryProtocolEnum = Field(TrajectoryProtocolEnum.all,
-                                                description=str(TrajectoryProtocolEnum.__doc__))
+                                               description=str(TrajectoryProtocolEnum.__doc__))
 
     class Config:
         force_skip_defaults = True
@@ -63,9 +63,9 @@ class OptimizationInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
 
-    def __repr_str__(self, join_str: str) -> str:
-        return join_str.join([f"(model='{self.input_specification.model.dict()}'",
-                f"molecule_hash='{self.initial_molecule.get_hash()[:7]}')"])
+    def __repr_args__(self) -> 'ReprArgs':
+        return [("model", self.input_specification.model.dict()),
+                ("molecule_hash", self.initial_molecule.get_hash()[:7])]
 
 
 class Optimization(OptimizationInput):
@@ -73,8 +73,8 @@ class Optimization(OptimizationInput):
         strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
-    trajectory: List[Result] = Field(
-        ..., description="A list of ordered Result objects for each step in the optimization.")
+    trajectory: List[Result] = Field(...,
+                                     description="A list of ordered Result objects for each step in the optimization.")
     energies: List[float] = Field(..., description="A list of ordered energies for each step in the optimization.")
 
     stdout: Optional[str] = Field(None, description="The standard output of the program.")

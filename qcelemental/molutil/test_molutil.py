@@ -316,7 +316,7 @@ Rotation:
  [0. 0. 1.]]
 ----------------------------------------"""
 
-    assert compare(mill_str, mill.__str__(label='eye'))
+    assert compare(mill_str, mill.pretty_print(label='eye'))
 
     mill_dict = {
         'shift': [0., 0., 0.],
@@ -350,7 +350,7 @@ Rotation:
  [ 0.84393258  0.29465774  0.44827962]]
 ----------------------------------------"""
 
-    assert compare(mill_str, mill.__str__())
+    assert compare(mill_str, mill.pretty_print())
 
 
 def test_hessian_align():

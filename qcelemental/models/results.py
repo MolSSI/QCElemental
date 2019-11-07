@@ -93,6 +93,9 @@ class ResultProperties(ProtoModel):
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
+    def __repr_args__(self) -> 'ReprArgs':
+        return [(k, v) for k, v in self.dict().items()]
+
 
 class WavefunctionProperties(ProtoModel):
 
@@ -245,11 +248,8 @@ class ResultInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
 
-    def __str__(self):
-        return (f"{self.__class__.__name__}"
-                f"(driver='{self.driver}' "
-                f"model='{self.model.dict()}' "
-                f"molecule_hash='{self.molecule.get_hash()[:7]}')")
+    def __repr_args__(self) -> 'ReprArgs':
+        return [("driver", self.driver.value), ("model", self.model.dict()), ("molecule_hash", self.molecule.get_hash()[:7])]
 
 
 class Result(ResultInput):
