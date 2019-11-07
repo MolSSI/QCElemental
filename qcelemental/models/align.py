@@ -45,7 +45,7 @@ class AlignmentMill(ProtoModel):
 
 ### Non-Pydantic API functions
 
-    def __str__(self, label: str = '') -> str:
+    def pretty_print(self, label: str = '') -> str:
         width = 40
         text = []
         text.append('-' * width)

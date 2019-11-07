@@ -304,3 +304,23 @@ def test_result_build_stdout_delete(result_data_fixture):
 def test_result_build_stdout(result_data_fixture):
     ret = qcel.models.Result(**result_data_fixture)
     assert ret.stdout == "I ran."
+
+
+def test_failed_operation(result_data_fixture):
+    water = qcel.models.Molecule.from_data("""
+        O 0 0 0
+        H 0 0 2
+        H 0 2 0
+    """)
+
+    failed = qcel.models.FailedOperation(extras={"garbage": water},
+                                         input_data=result_data_fixture,
+                                         error={
+                                             "error_type": "expected_testing_error",
+                                             "error_message": "If you see this, its all good"
+                                         })
+    assert isinstance(failed.error, qcel.models.ComputeError)
+    assert isinstance(failed.dict(), dict)
+    failed_json = failed.json()
+    assert isinstance(failed_json, str)
+    assert 'its all good' in failed_json

@@ -11,20 +11,6 @@ from qcelemental.util import provenance_stamp
 from .addons import serialize_extensions, using_msgpack
 
 
-def test_failed_operation(water, result_input):
-    failed = FailedOperation(extras={"garbage": water},
-                             input_data=result_input,
-                             error={
-                                 "error_type": "expected_testing_error",
-                                 "error_message": "If you see this, its all good"
-                             })
-    assert isinstance(failed.error, ComputeError)
-    assert isinstance(failed.dict(), dict)
-    failed_json = failed.json()
-    assert isinstance(failed_json, str)
-    assert 'its all good' in failed_json
-
-
 def test_result_properties_default_skip():
 
     obj = ResultProperties(scf_one_electron_energy="-5.0")
