@@ -2,6 +2,7 @@ import json
 from typing import Any, Union
 
 import numpy as np
+
 from pydantic.json import pydantic_encoder
 
 from .importing import which_import

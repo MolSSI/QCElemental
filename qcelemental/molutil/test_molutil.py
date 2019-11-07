@@ -2,9 +2,9 @@ import math
 import pprint
 
 import numpy as np
-import pydantic
 import pytest
 
+import pydantic
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values
 

@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel, BaseSettings
 
+from pydantic import BaseModel, BaseSettings
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator

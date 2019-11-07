@@ -1,9 +1,9 @@
 from decimal import Decimal
 
 import numpy as np
-import pydantic
 import pytest
 
+import pydantic
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
 

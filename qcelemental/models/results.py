@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Any, Dict, List, Set, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
+
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp

@@ -51,7 +51,7 @@ def from_input_arrays(
     nonphysical=False,
     mtol=1.0e-3,
     copy=True,
-    verbose=1
+    verbose=1,
 ):
     """Compose a Molecule dict from unvalidated arrays and variables
     in multiple domains.
@@ -170,7 +170,7 @@ def from_arrays(
     nonphysical=False,
     mtol=1.0e-3,
     copy=True,
-    verbose=1
+    verbose=1,
 ):
     """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
@@ -331,27 +331,23 @@ def from_arrays(
         provenance=provenance,
         connectivity=connectivity,
         always_return_iutau=False,
-    )  
+    )
     processed['provenance'] = provenance_stamp(__name__)
     update_with_error(molinit, processed)
 
     if domain == 'efp':
-        processed = validate_and_fill_efp(
-            fragment_files=fragment_files, hint_types=hint_types, geom_hints=geom_hints
-        )  
+        processed = validate_and_fill_efp(fragment_files=fragment_files, hint_types=hint_types, geom_hints=geom_hints)
         update_with_error(molinit, processed)
         extern = bool(len(molinit['geom_hints']))
 
     if domain == 'qm' or (domain == 'efp' and geom is not None) or domain == 'qmvz':
         if domain == 'qmvz':
-            processed = validate_and_fill_unsettled_geometry(
-                geom_unsettled=geom_unsettled, variables=variables
-            )  
+            processed = validate_and_fill_unsettled_geometry(geom_unsettled=geom_unsettled, variables=variables)
             update_with_error(molinit, processed)
             nat = len(molinit['geom_unsettled'])
 
         else:
-            processed = validate_and_fill_geometry(geom=geom, tooclose=tooclose, copy=copy)  
+            processed = validate_and_fill_geometry(geom=geom, tooclose=tooclose, copy=copy)
             update_with_error(molinit, processed)
             nat = molinit['geom'].shape[0] // 3
 
@@ -397,7 +393,7 @@ def from_arrays(
 
     processed = validate_and_fill_frame(
         extern=extern, fix_com=fix_com, fix_orientation=fix_orientation, fix_symmetry=fix_symmetry
-    )  
+    )
     update_with_error(molinit, processed)
 
     if verbose >= 2:

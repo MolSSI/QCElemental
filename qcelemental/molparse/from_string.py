@@ -420,6 +420,7 @@ def _filter_universals(string):
 
     return '\n'.join(reconstitute), processed
 
+
 # fmt: off
 fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
 efpxyzabc = re.compile(
@@ -495,7 +496,7 @@ NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
 ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
 ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
 
-# fmt: on
+# fmt: off
 atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
                             re.IGNORECASE | re.VERBOSE)
 atom_vcart = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP +
@@ -521,7 +522,7 @@ variable = re.compile(
     r'\A' + r'(?P<varname>' + VAR + r')' + r'\s*=\s*' + r'(?P<varvalue>((tda)|(' + NUMBER + r')))' + r'\Z',
     re.IGNORECASE | re.VERBOSE,
 )
-# fmt: off
+# fmt: on
 
 
 def _filter_mints(string, unsettled=False):
