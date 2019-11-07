@@ -10,16 +10,26 @@ from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
-def _proto_repr_style(self, join_str: str) -> str:
+def _proto_repr_args(self) -> str:
     """
     This is required to be __repr_str__ as pydantic decided to rebuild a new base
     """
-    if self.__config__.repr_style == "default":
-        return super().__repr_str__(join_str)
-    elif self.__config__.repr_style == 'dict':
-        return join_str.join(f'{k}={v}' for k, v in self.dict().items())
-    else:
-        raise "Invalid repr_style detected, please edit this classes config."
+
+    repr_style = self.__config__.repr_style
+
+    if callable(repr_style):
+        return repr_style(self)
+    elif repr_style == "dict":
+        ret_keys = tuple(self.dict().keys())
+    elif isinstance(repr_style, (list, tuple)):
+        ret_keys = repr_style
+
+    attrs = ((s, getattr(self, s)) for s in ret_keys)
+    return [(a, v) for a, v in attrs if v is not None]
+
+
+def _repr(self) -> str:
+    return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
 class ProtoModel(BaseModel):
@@ -30,11 +40,19 @@ class ProtoModel(BaseModel):
         serialize_default_excludes: Set = set()
         serialize_skip_defaults: bool = False
         force_skip_defaults: bool = False
-        repr_style: str = 'dict'
+        repr_style: str = None
 
-    def __init_subclass__(cls) -> None:
+    def __init_subclass__(cls, **kwargs) -> None:
+        super().__init_subclass__(**kwargs)
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
-        cls.__repr_str__ = _proto_repr_style
+
+        if cls.__config__.repr_style:
+            cls.__repr_args__ = _proto_repr_args
+        else:
+            pass
+
+        cls.__repr__ = _repr
+        cls.__str__ = _repr
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
