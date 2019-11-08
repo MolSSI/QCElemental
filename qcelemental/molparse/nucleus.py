@@ -6,20 +6,22 @@ from ..exceptions import NotAnElementError, ValidationError
 from ..periodic_table import periodictable
 from .regex import NUCLEUS
 
-_nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
+_nucleus = re.compile(r"\A" + NUCLEUS + r"\Z", re.IGNORECASE | re.VERBOSE)
 
 
 @lru_cache(maxsize=512)
-def reconcile_nucleus(A: int = None,
-                      Z: int = None,
-                      E: str = None,
-                      mass: float = None,
-                      real: bool = None,
-                      label: str = None,
-                      speclabel: bool = True,
-                      nonphysical: bool = False,
-                      mtol: float = 1.e-3,
-                      verbose: int = 1) -> Tuple[int, int, str, float, bool, str]:
+def reconcile_nucleus(
+    A: int = None,
+    Z: int = None,
+    E: str = None,
+    mass: float = None,
+    real: bool = None,
+    label: str = None,
+    speclabel: bool = True,
+    nonphysical: bool = False,
+    mtol: float = 1.0e-3,
+    verbose: int = 1,
+) -> Tuple[int, int, str, float, bool, str]:
     """Forms consistent set of nucleus descriptors from all information
     from arguments, supplemented by the periodic table. At the least,
     must provide element identity somehow. Defaults to most-abundant
@@ -147,15 +149,17 @@ def reconcile_nucleus(A: int = None,
         for candidate in exact:
             assessment = [fn(candidate) for fn in tests]
             if log_text:
-                text.append("""Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment,
-                                                                           all(assessment)))
+                text.append(
+                    """Assess {} candidate {}: {} --> {}""".format(feature, candidate, assessment, all(assessment))
+                )
             if all(assessment):
                 return candidate
 
         err = """Inconsistent or unspecified {}: A: {}, Z: {}, E: {}, mass: {}, real: {}, label: {}""".format(
-            feature, A, Z, E, mass, real, label)
+            feature, A, Z, E, mass, real, label
+        )
         if verbose > -1:
-            print('\n\n' + '\n'.join(text))
+            print("\n\n" + "\n".join(text))
         raise ValidationError(err)
 
     def offer_element_symbol(e):
@@ -191,8 +195,10 @@ def reconcile_nucleus(A: int = None,
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
             if log_text:
                 text.append(
-                    """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".
-                    format(z, z_a2mass_min, z_a2mass_max))
+                    """For A, input Z: {} requires {} < A < {} or -1, the known mass number range for element""".format(
+                        z, z_a2mass_min, z_a2mass_max
+                    )
+                )
 
         m_exact.append(z_mass)
         if nonphysical:
@@ -204,7 +210,9 @@ def reconcile_nucleus(A: int = None,
             if log_text:
                 text.append(
                     """For mass, input Z: {} requires {} < mass < {} +/-{}, the known mass range for element""".format(
-                        z, z_mass2a_min, z_mass2a_max, mmtol))
+                        z, z_mass2a_min, z_mass2a_max, mmtol
+                    )
+                )
 
     def offer_mass_number(z, a):
         """Given a mass number and element, what can be suggested and asserted about A, mass?"""
@@ -262,7 +270,7 @@ def reconcile_nucleus(A: int = None,
 
     # <<< initialize
 
-    text = ['', """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
+    text = ["", """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
 
     Z_exact: List = []  # *_exact are candidates for the final value
     Z_range: List = []  # *_range are tests that the final value must pass to be valid
@@ -273,7 +281,7 @@ def reconcile_nucleus(A: int = None,
 
     r_exact = [True]  # default real/ghost is real
     r_range: List = []
-    l_exact = ['']  # default user label is empty string
+    l_exact = [""]  # default user label is empty string
     l_range: List = []
     mmtol = 0.5  # tolerance for mass outside known masses for element
 
@@ -293,7 +301,7 @@ def reconcile_nucleus(A: int = None,
         if lbl_E is not None:
             offer_element_symbol(lbl_E)
 
-    Z_final = reconcile(Z_exact, Z_range, 'atomic number')
+    Z_final = reconcile(Z_exact, Z_range, "atomic number")
     E_final = periodictable.to_E(Z_final)
 
     # <<< collect more evidence for A/m, then reconcile them
@@ -319,17 +327,20 @@ def reconcile_nucleus(A: int = None,
         else:
             offer_user_label(label)
 
-    mass_final = reconcile(m_exact, m_range, 'mass')
-    A_final = reconcile(A_exact, A_range, 'mass number')
-    real_final = reconcile(r_exact, r_range, 'real/ghost')
-    user_final = reconcile(l_exact, l_range, 'user label')
+    mass_final = reconcile(m_exact, m_range, "mass")
+    A_final = reconcile(A_exact, A_range, "mass number")
+    real_final = reconcile(r_exact, r_range, "real/ghost")
+    user_final = reconcile(l_exact, l_range, "user label")
 
     if log_text:
-        text.append("""<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(
-            A_final, Z_final, E_final, mass_final, real_final, user_final))
+        text.append(
+            """<-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}""".format(
+                A_final, Z_final, E_final, mass_final, real_final, user_final
+            )
+        )
 
     if log_text:
-        print('\n'.join(text))
+        print("\n".join(text))
 
     return (A_final, Z_final, E_final, mass_final, real_final, user_final)
 
@@ -395,29 +406,29 @@ def parse_nucleus_label(label):
     matchobj = _nucleus.match(label)
 
     if matchobj:
-        real = not (matchobj.group('gh1') or matchobj.group('gh2'))
+        real = not (matchobj.group("gh1") or matchobj.group("gh2"))
 
-        if matchobj.group('A'):
-            A = int(matchobj.group('A'))
+        if matchobj.group("A"):
+            A = int(matchobj.group("A"))
         else:
             A = None
 
-        if matchobj.group('Z'):
-            Z = int(matchobj.group('Z'))
+        if matchobj.group("Z"):
+            Z = int(matchobj.group("Z"))
         else:
             Z = None
 
-        E = matchobj.group('E')
+        E = matchobj.group("E")
 
-        if matchobj.group('user1'):
-            user = matchobj.group('user1')
-        elif matchobj.group('user2'):
-            user = matchobj.group('user2')
+        if matchobj.group("user1"):
+            user = matchobj.group("user1")
+        elif matchobj.group("user2"):
+            user = matchobj.group("user2")
         else:
             user = None
 
-        if matchobj.group('mass'):
-            mass = float(matchobj.group('mass'))
+        if matchobj.group("mass"):
+            mass = float(matchobj.group("mass"))
         else:
             mass = None
     else:

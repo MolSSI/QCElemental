@@ -6,8 +6,10 @@ Main init for QCElemental
 from . import covalent_radii, models, molparse, molutil, periodic_table, physical_constants, util, vanderwaals_radii
 from .datum import Datum
 from .exceptions import ChoicesError, DataUnavailableError, MoleculeFormatError, NotAnElementError, ValidationError
+
 # Handle versioneer
 from .extras import get_information
+
 # from .physical_constants import PhysicalConstantsContext, constants
 from .testing import compare, compare_recursive, compare_values
 
@@ -26,6 +28,6 @@ del physical_constants
 del covalent_radii
 del vanderwaals_radii
 
-__version__ = get_information('version')
-__git_revision__ = get_information('git_revision')
+__version__ = get_information("version")
+__git_revision__ = get_information("git_revision")
 del get_information

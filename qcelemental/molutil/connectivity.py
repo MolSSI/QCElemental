@@ -8,11 +8,9 @@ from ..exceptions import NotAnElementError
 __all__ = ["guess_connectivity"]
 
 
-def guess_connectivity(symbols: np.ndarray,
-                       geometry: np.ndarray,
-                       threshold: float = 1.2,
-                       default_connectivity: Optional[float] = None
-                       ) -> List[Union[Tuple[int, int], Tuple[int, int, float]]]:
+def guess_connectivity(
+    symbols: np.ndarray, geometry: np.ndarray, threshold: float = 1.2, default_connectivity: Optional[float] = None
+) -> List[Union[Tuple[int, int], Tuple[int, int, float]]]:
     """
     Finds connected atoms based off of a covalent radii metric.
 
@@ -47,11 +45,11 @@ def guess_connectivity(symbols: np.ndarray,
     # Upper triangular
     con = []
     for x in range(geometry.shape[0]):
-        diffs = geometry[x] - geometry[x + 1:]
-        dists = np.einsum('ij,ij->i', diffs, diffs)
+        diffs = geometry[x] - geometry[x + 1 :]
+        dists = np.einsum("ij,ij->i", diffs, diffs)
         np.sqrt(dists, out=dists)
 
-        cutoff = (radii[x] + radii[x + 1:]) * threshold
+        cutoff = (radii[x] + radii[x + 1 :]) * threshold
         where = np.where(dists < cutoff)[0]
         where += x + 1
 

@@ -45,7 +45,7 @@ def float_prep(array, around):
         # Round array
         array = np.around(array, around)
         # Flip zeros
-        array[np.abs(array) < 5**(-(around + 1))] = 0
+        array[np.abs(array) < 5 ** (-(around + 1))] = 0
 
     elif isinstance(array, (float, int)):
         array = round(array, around)
@@ -85,17 +85,21 @@ class Molecule(ProtoModel):
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = Field(  # type: ignore
         qcschema_molecule_default,
-        description=(f"The QCSchema specification this model conforms to. Explicitly fixed as "
-                     f"{qcschema_molecule_default}."))
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as " f"{qcschema_molecule_default}."
+        ),
+    )
     schema_version: int = Field(  # type: ignore
-        2, description="The version number of ``schema_name`` that this Molecule model conforms to.")
+        2, description="The version number of ``schema_name`` that this Molecule model conforms to."
+    )
     validated: bool = Field(  # type: ignore
         False,
         description="A boolean indicator (for speed purposes) that the input Molecule data has been previously checked "
         "for schema (data layout and type) and physics (e.g., non-overlapping atoms, feasible "
         "multiplicity) compliance. This should be False in most cases. A ``True`` setting "
         "should only ever be set by the constructor for this class itself or other trusted sources such as "
-        "a Fractal Server or previously serialized Molecules.")
+        "a Fractal Server or previously serialized Molecules.",
+    )
 
     # Required data
     symbols: Array[str] = Field(  # type: ignore
@@ -103,7 +107,8 @@ class Molecule(ProtoModel):
         description="An ordered (nat,) array-like object of atomic elemental symbols of shape (nat,). The index of "
         "this attribute sets atomic order for all other per-atom setting like ``real`` and the first "
         "dimension of ``geometry``. Ghost/Virtual atoms must have an entry in this array-like and are "
-        "indicated by the matching the 0-indexed indices in ``real`` field.")
+        "indicated by the matching the 0-indexed indices in ``real`` field.",
+    )
     geometry: Array[float] = Field(  # type: ignore
         ...,
         description="An ordered (nat,3) array-like for XYZ atomic coordinates [a0]. "
@@ -114,20 +119,22 @@ class Molecule(ProtoModel):
         "\n"
         "Can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
         "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
-        "(nat,3) for this attribute.")
+        "(nat,3) for this attribute.",
+    )
 
     # Molecule data
     name: Optional[str] = Field(  # type: ignore
-        None,
-        description="A common or human-readable name to assign to this molecule. Can be arbitrary.")
+        None, description="A common or human-readable name to assign to this molecule. Can be arbitrary."
+    )
     identifiers: Optional[Identifiers] = Field(  # type: ignore
         None,
         description="An optional dictionary of additional identifiers by which this Molecule can be referenced, "
-        "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.")
+        "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.",
+    )
     comment: Optional[str] = Field(  # type: ignore
         None,
-        description="Additional comments for this Molecule. Intended for pure human/user consumption "
-        "and clarity.")
+        description="Additional comments for this Molecule. Intended for pure human/user consumption " "and clarity.",
+    )
     molecular_charge: float = Field(0.0, description="The net electrostatic charge of this Molecule.")  # type: ignore
     molecular_multiplicity: int = Field(1, description="The total multiplicity of this Molecule.")  # type: ignore
 
@@ -138,36 +145,42 @@ class Molecule(ProtoModel):
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. If "
         "this is not provided, the mass of each atom is inferred from their most common isotope. If this "
         "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
-        "standard masses to infer from the same index in the ``symbols`` field.")
+        "standard masses to infer from the same index in the ``symbols`` field.",
+    )
     real: Optional[Array[bool]] = Field(  # type: ignore
         None,
         description="An ordered 1-D array-like object of shape (nat,) indicating if each atom is real (``True``) or "
         "ghost/virtual (``False``). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
         "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
-        "If this is provided, the reality or ghostality of every atom must be specified.")
+        "If this is provided, the reality or ghostality of every atom must be specified.",
+    )
     atom_labels: Optional[Array[str]] = Field(  # type: ignore
         None,
         description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
-        "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.")
+        "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.",
+    )
     atomic_numbers: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-        "Values are inferred from the ``symbols`` list if not explicitly set.")
+        "Values are inferred from the ``symbols`` list if not explicitly set.",
+    )
     mass_numbers: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-        "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set.")
+        "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set.",
+    )
 
     # Fragment and connection data
     connectivity: Optional[List[Tuple[int, int, float]]] = Field(  # type: ignore
         None,
         description="The connectivity information between each atom in the ``symbols`` array. Each entry in this "
         "list is a Tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
-        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``.")
+        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``.",
+    )
     fragments: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
         description="An indication of which sets of atoms are fragments within the Molecule. This is a list of shape "
@@ -176,48 +189,59 @@ class Molecule(ProtoModel):
         "of the list matches the 0-indexed indices of ``fragment_charges`` and "
         "``fragment_multiplicities``. The 1-D array-like objects are sets of atom indices indicating the "
         "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
-        "per-atom settings like ``symbols`` and ``real``.")
+        "per-atom settings like ``symbols`` and ``real``.",
+    )
     fragment_charges: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The total charge of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of rules "
-        "if not provided (and ``fragments`` are specified).")
+        "if not provided (and ``fragments`` are specified).",
+    )
     fragment_multiplicities: Optional[List[int]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of "
-        "rules if not provided (and ``fragments`` are specified).")
+        "rules if not provided (and ``fragments`` are specified).",
+    )
 
     # Orientation
     fix_com: bool = Field(  # type: ignore
         False,
         description="An indicator which prevents pre-processing the Molecule object to translate the Center-of-Mass "
         "to (0,0,0) in euclidean coordinate space. Will result in a different ``geometry`` than the "
-        "one provided if False.")
+        "one provided if False.",
+    )
     fix_orientation: bool = Field(  # type: ignore
         False,
         description="An indicator which prevents pre-processes the Molecule object to orient via the inertia tensor."
-        "Will result in a different ``geometry`` than the one provided if False.")
+        "Will result in a different ``geometry`` than the one provided if False.",
+    )
     fix_symmetry: Optional[str] = Field(  # type: ignore
-        None,
-        description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase.")
+        None, description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase."
+    )
     # Extra
     provenance: Provenance = Field(  # type: ignore
         provenance_stamp(__name__),
         description="The provenance information about how this Molecule (and its attributes) were generated, "
-        "provided, and manipulated.")
+        "provided, and manipulated.",
+    )
     id: Optional[Any] = Field(  # type: ignore
         None,
         description="A unique identifier for this Molecule object. This field exists primarily for Databases "
         "(e.g. Fractal's Server) to track and lookup this specific object and should virtually "
-        "never need to be manually set.")
+        "never need to be manually set.",
+    )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None, description="Extra information to associate with this Molecule.")
+        None, description="Extra information to associate with this Molecule."
+    )
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
-        repr_style = lambda self: [("name", self.name), ("formula", self.get_molecular_formula()),
-                                   ("hash", self.get_hash()[:7])]
+        repr_style = lambda self: [
+            ("name", self.name),
+            ("formula", self.get_molecular_formula()),
+            ("hash", self.get_hash()[:7]),
+        ]
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -284,42 +308,43 @@ class Molecule(ProtoModel):
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
-    @validator('geometry')
+    @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         try:
             v = v.reshape(n, 3)
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
 
-    @validator('masses', 'real')
+    @validator("masses", "real")
     def _must_be_n(cls, v, values, **kwargs):
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
-    @validator('real')
+    @validator("real")
     def _populate_real(cls, v, values, **kwargs):
         # Can't use geometry here since its already been validated and not in values
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         if len(v) == 0:
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator('fragment_charges', 'fragment_multiplicities')
+    @validator("fragment_charges", "fragment_multiplicities")
     def _must_be_n_frag(cls, v, values, **kwargs):
-        if 'fragments' in values:
-            n = len(values['fragments'])
+        if "fragments" in values:
+            n = len(values["fragments"])
             if len(v) != n:
-                raise ValueError("Fragment Charges and Fragment Multiplicities"
-                                 " must be same number of entries as Fragments")
+                raise ValueError(
+                    "Fragment Charges and Fragment Multiplicities" " must be same number of entries as Fragments"
+                )
         else:
             raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities " "without Fragments")
         return v
 
-    @validator('connectivity', each_item=True)
+    @validator("connectivity", each_item=True)
     def _min_zero(cls, v):
         if v < 0:
             raise ValueError("Connectivity entries must be greater than 0")
@@ -328,13 +353,21 @@ class Molecule(ProtoModel):
     @property
     def hash_fields(self):
         return [
-            "symbols", "masses", "molecular_charge", "molecular_multiplicity", "real", "geometry", "fragments",
-            "fragment_charges", "fragment_multiplicities", "connectivity"
+            "symbols",
+            "masses",
+            "molecular_charge",
+            "molecular_multiplicity",
+            "real",
+            "geometry",
+            "fragments",
+            "fragment_charges",
+            "fragment_multiplicities",
+            "connectivity",
         ]
 
-### Non-Pydantic API functions
+    ### Non-Pydantic API functions
 
-    def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> 'nglview.NGLWidget':  # type: ignore
+    def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> "nglview.NGLWidget":  # type: ignore
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
         images (`.png`).
 
@@ -359,12 +392,13 @@ class Molecule(ProtoModel):
         if ngl_kwargs is None:
             ngl_kwargs = {}
 
-        structure = nv.TextStructure(self.orient_molecule().to_string('nglview-sdf'), ext="sdf")
+        structure = nv.TextStructure(self.orient_molecule().to_string("nglview-sdf"), ext="sdf")
         widget = nv.NGLWidget(structure, **ngl_kwargs)
         return widget
 
-    def measure(self, measurements: Union[List[int], List[List[int]]], *,
-                degrees: bool = True) -> Union[float, List[float]]:
+    def measure(
+        self, measurements: Union[List[int], List[List[int]]], *, degrees: bool = True
+    ) -> Union[float, List[float]]:
         """
         Takes a measurement of the moleucle from the indicies provided.
 
@@ -391,8 +425,9 @@ class Molecule(ProtoModel):
         return Molecule(orient=True, **self.dict())
 
     def compare(self, other):
-        warnings.warn("Molecule.compare is deprecated and will be removed in v0.13.0. Use == instead.",
-                      DeprecationWarning)
+        warnings.warn(
+            "Molecule.compare is deprecated and will be removed in v0.13.0. Use == instead.", DeprecationWarning
+        )
         return self == other
 
     def __eq__(self, other):
@@ -419,25 +454,29 @@ class Molecule(ProtoModel):
         text = ""
 
         text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:d}:\n\n""".format(
-            'Angstrom', self.molecular_charge, self.molecular_multiplicity)
+            "Angstrom", self.molecular_charge, self.molecular_multiplicity
+        )
         text += """       Center              X                  Y                   Z       \n"""
         text += """    ------------   -----------------  -----------------  -----------------\n"""
 
         for i in range(len(self.geometry)):
             text += """    {0:8s}{1:4s} """.format(self.symbols[i], "" if self.real[i] else "(Gh)")
             for j in range(3):
-                text += """  {0:17.12f}""".format(self.geometry[i][j] *
-                                                  constants.conversion_factor("bohr", "angstroms"))
+                text += """  {0:17.12f}""".format(
+                    self.geometry[i][j] * constants.conversion_factor("bohr", "angstroms")
+                )
             text += "\n"
         # text += "\n"
 
         return text
 
-    def get_fragment(self,
-                     real: Union[int, List],
-                     ghost: Optional[Union[int, List]] = None,
-                     orient: bool = False,
-                     group_fragments: bool = True) -> 'Molecule':
+    def get_fragment(
+        self,
+        real: Union[int, List],
+        ghost: Optional[Union[int, List]] = None,
+        orient: bool = False,
+        group_fragments: bool = True,
+    ) -> "Molecule":
         """Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
@@ -472,13 +511,14 @@ class Molecule(ProtoModel):
 
         constructor_dict: Dict = {}
 
-        ret_name = (self.name if self.name is not None else '') + " (" + str(real) + "," + str(ghost) + ")"
+        ret_name = (self.name if self.name is not None else "") + " (" + str(real) + "," + str(ghost) + ")"
         constructor_dict["name"] = ret_name
         # ret = Molecule(None, name=ret_name)
 
         if len(set(real) & set(ghost)):
-            raise TypeError("Molecule:get_fragment: real and ghost sets are overlapping! ({0}, {1}).".format(
-                str(real), str(ghost)))
+            raise TypeError(
+                "Molecule:get_fragment: real and ghost sets are overlapping! ({0}, {1}).".format(str(real), str(ghost))
+            )
 
         geom_blocks = []
         symbols = []
@@ -576,15 +616,16 @@ class Molecule(ProtoModel):
         return Molecule(orient=orient, **constructor_dict)
 
     def to_string(  # type: ignore
-            self,
-            dtype: str,
-            units: str = None,
-            *,
-            atom_format: str = None,
-            ghost_format: str = None,
-            width: int = 17,
-            prec: int = 12,
-            return_data: bool = False):
+        self,
+        dtype: str,
+        units: str = None,
+        *,
+        atom_format: str = None,
+        ghost_format: str = None,
+        width: int = 17,
+        prec: int = 12,
+        return_data: bool = False,
+    ):
         """Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
@@ -592,14 +633,16 @@ class Molecule(ProtoModel):
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
         molrec = from_schema(self.dict())
-        return to_string(molrec,
-                         dtype=dtype,
-                         units=units,
-                         atom_format=atom_format,
-                         ghost_format=ghost_format,
-                         width=width,
-                         prec=prec,
-                         return_data=return_data)
+        return to_string(
+            molrec,
+            dtype=dtype,
+            units=units,
+            atom_format=atom_format,
+            ghost_format=ghost_format,
+            width=width,
+            prec=prec,
+            return_data=return_data,
+        )
 
     def get_hash(self):
         """
@@ -668,13 +711,15 @@ class Molecule(ProtoModel):
     ### Constructors
 
     @classmethod
-    def from_data(cls,
-                  data: Union[str, Dict[str, Any], np.array, bytes],
-                  dtype: Optional[str] = None,
-                  *,
-                  orient: bool = False,
-                  validate: bool = None,
-                  **kwargs: Dict[str, Any]) -> 'Molecule':
+    def from_data(
+        cls,
+        data: Union[str, Dict[str, Any], np.array, bytes],
+        dtype: Optional[str] = None,
+        *,
+        orient: bool = False,
+        validate: bool = None,
+        **kwargs: Dict[str, Any],
+    ) -> "Molecule":
         """
         Constructs a molecule object from a data structure.
 
@@ -720,7 +765,7 @@ class Molecule(ProtoModel):
                 "geom": data[:, 1:],
                 "elez": data[:, 0],
                 "units": kwargs.pop("units", "Angstrom"),
-                "fragment_separators": kwargs.pop("frags", [])
+                "fragment_separators": kwargs.pop("frags", []),
             }
             input_dict = to_schema(from_arrays(**data), dtype=2)
             validate = True
@@ -739,9 +784,7 @@ class Molecule(ProtoModel):
         input_dict.update(kwargs)
 
         # if charge/spin options are given, invalidate charge and spin options that are missing
-        charge_spin_opts = {
-            "molecular_charge", "fragment_charges", "molecular_multiplicity", "fragment_multiplicities"
-        }
+        charge_spin_opts = {"molecular_charge", "fragment_charges", "molecular_multiplicity", "fragment_multiplicities"}
         kwarg_keys = set(kwargs.keys())
         if len(charge_spin_opts & kwarg_keys) > 0:
             for key in charge_spin_opts - kwarg_keys:
@@ -866,7 +909,7 @@ class Molecule(ProtoModel):
 
         phase_check = [False, False, False]
 
-        geom_noise = 10**(-GEOMETRY_NOISE)
+        geom_noise = 10 ** (-GEOMETRY_NOISE)
         for num in range(new_geometry.shape[0]):
 
             for x in range(3):
@@ -887,7 +930,7 @@ class Molecule(ProtoModel):
                 break
         return new_geometry
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
 
     def _ipython_display_(self, **kwargs) -> None:
@@ -895,6 +938,7 @@ class Molecule(ProtoModel):
             self.show()._ipython_display_(**kwargs)
         except ModuleNotFoundError:
             from IPython.display import display
+
             display(f"Install nglview for interactive visualization.", f"{repr(self)}")
 
     @staticmethod
@@ -906,9 +950,9 @@ class Molecule(ProtoModel):
         tensor = np.zeros((3, 3))
 
         # Diagonal
-        tensor[0][0] = np.sum(weight * (geom[:, 1]**2.0 + geom[:, 2]**2.0))
-        tensor[1][1] = np.sum(weight * (geom[:, 0]**2.0 + geom[:, 2]**2.0))
-        tensor[2][2] = np.sum(weight * (geom[:, 0]**2.0 + geom[:, 1]**2.0))
+        tensor[0][0] = np.sum(weight * (geom[:, 1] ** 2.0 + geom[:, 2] ** 2.0))
+        tensor[1][1] = np.sum(weight * (geom[:, 0] ** 2.0 + geom[:, 2] ** 2.0))
+        tensor[2][2] = np.sum(weight * (geom[:, 0] ** 2.0 + geom[:, 1] ** 2.0))
 
         # I(alpha, beta)
         # Off diagonal
@@ -936,7 +980,7 @@ class Molecule(ProtoModel):
         if ifr is not None:
             atoms = self.fragments[ifr]
 
-        nre = 0.
+        nre = 0.0
         for iat1, at1 in enumerate(atoms):
             for at2 in atoms[:iat1]:
                 dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
@@ -966,17 +1010,19 @@ class Molecule(ProtoModel):
 
         return int(nel)
 
-    def align(self,
-              ref_mol,
-              *,
-              do_plot=False,
-              verbose=0,
-              atoms_map=False,
-              run_resorting=False,
-              mols_align=False,
-              run_to_completion=False,
-              uno_cutoff=1.e-3,
-              run_mirror=False):
+    def align(
+        self,
+        ref_mol,
+        *,
+        do_plot=False,
+        verbose=0,
+        atoms_map=False,
+        run_resorting=False,
+        mols_align=False,
+        run_to_completion=False,
+        uno_cutoff=1.0e-3,
+        run_mirror=False,
+    ):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -1029,78 +1075,94 @@ class Molecule(ProtoModel):
         from ..molutil.align import B787
 
         rgeom = np.array(ref_mol.geometry)
-        runiq = np.asarray([
-            hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
-            for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
-        ])
+        runiq = np.asarray(
+            [
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
+                for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
+            ]
+        )
         concern_mol = self
         cgeom = np.array(concern_mol.geometry)
         cmass = np.array(concern_mol.masses)
         celem = np.array(concern_mol.symbols)
         celez = np.array(concern_mol.atomic_numbers)
-        cuniq = np.asarray([
-            hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
-            for sym, mas in zip(concern_mol.symbols, concern_mol.masses)
-        ])
+        cuniq = np.asarray(
+            [
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
+                for sym, mas in zip(concern_mol.symbols, concern_mol.masses)
+            ]
+        )
 
-        rmsd, solution = B787(cgeom=cgeom,
-                              rgeom=rgeom,
-                              cuniq=cuniq,
-                              runiq=runiq,
-                              do_plot=do_plot,
-                              verbose=verbose,
-                              atoms_map=atoms_map,
-                              run_resorting=run_resorting,
-                              mols_align=mols_align,
-                              run_to_completion=run_to_completion,
-                              run_mirror=run_mirror,
-                              uno_cutoff=uno_cutoff)
+        rmsd, solution = B787(
+            cgeom=cgeom,
+            rgeom=rgeom,
+            cuniq=cuniq,
+            runiq=runiq,
+            do_plot=do_plot,
+            verbose=verbose,
+            atoms_map=atoms_map,
+            run_resorting=run_resorting,
+            mols_align=mols_align,
+            run_to_completion=run_to_completion,
+            run_mirror=run_mirror,
+            uno_cutoff=uno_cutoff,
+        )
 
         ageom, amass, aelem, aelez, _ = solution.align_system(cgeom, cmass, celem, celez, cuniq, reverse=False)
-        adict = from_arrays(geom=ageom,
-                            mass=amass,
-                            elem=aelem,
-                            elez=aelez,
-                            units='Bohr',
-                            molecular_charge=concern_mol.molecular_charge,
-                            molecular_multiplicity=concern_mol.molecular_multiplicity,
-                            fix_com=True,
-                            fix_orientation=True)
+        adict = from_arrays(
+            geom=ageom,
+            mass=amass,
+            elem=aelem,
+            elez=aelez,
+            units="Bohr",
+            molecular_charge=concern_mol.molecular_charge,
+            molecular_multiplicity=concern_mol.molecular_multiplicity,
+            fix_com=True,
+            fix_orientation=True,
+        )
         amol = Molecule(validate=False, **to_schema(adict, dtype=2))
 
         # TODO -- can probably do more with fragments in amol now that
         #         Mol is something with non-contig frags. frags now discarded.
 
-        assert compare_values(concern_mol.nuclear_repulsion_energy(),
-                              amol.nuclear_repulsion_energy(),
-                              'Q: concern_mol-->returned_mol NRE uncorrupted',
-                              atol=1.e-4,
-                              quiet=(verbose > 1))
+        assert compare_values(
+            concern_mol.nuclear_repulsion_energy(),
+            amol.nuclear_repulsion_energy(),
+            "Q: concern_mol-->returned_mol NRE uncorrupted",
+            atol=1.0e-4,
+            quiet=(verbose > 1),
+        )
         if mols_align:
-            assert compare_values(ref_mol.nuclear_repulsion_energy(),
-                                  amol.nuclear_repulsion_energy(),
-                                  'Q: concern_mol-->returned_mol NRE matches ref_mol',
-                                  atol=1.e-4,
-                                  quiet=(verbose > 1))
-            assert compare(True,
-                           np.allclose(ref_mol.geometry, amol.geometry, atol=4),
-                           'Q: concern_mol-->returned_mol geometry matches ref_mol',
-                           quiet=(verbose > 1))
+            assert compare_values(
+                ref_mol.nuclear_repulsion_energy(),
+                amol.nuclear_repulsion_energy(),
+                "Q: concern_mol-->returned_mol NRE matches ref_mol",
+                atol=1.0e-4,
+                quiet=(verbose > 1),
+            )
+            assert compare(
+                True,
+                np.allclose(ref_mol.geometry, amol.geometry, atol=4),
+                "Q: concern_mol-->returned_mol geometry matches ref_mol",
+                quiet=(verbose > 1),
+            )
 
-        return amol, {'rmsd': rmsd, 'mill': solution}
+        return amol, {"rmsd": rmsd, "mill": solution}
 
-    def scramble(self,
-                 *,
-                 do_shift: bool = True,
-                 do_rotate=True,
-                 do_resort=True,
-                 deflection=1.0,
-                 do_mirror=False,
-                 do_plot=False,
-                 do_test=False,
-                 run_to_completion=False,
-                 run_resorting=False,
-                 verbose=0):
+    def scramble(
+        self,
+        *,
+        do_shift: bool = True,
+        do_rotate=True,
+        do_resort=True,
+        deflection=1.0,
+        do_mirror=False,
+        do_plot=False,
+        do_test=False,
+        run_to_completion=False,
+        run_resorting=False,
+        verbose=0,
+    ):
         """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
@@ -1160,60 +1222,68 @@ class Molecule(ProtoModel):
         rmass = np.array(ref_mol.masses)
         relem = np.array(ref_mol.symbols)
         relez = np.array(ref_mol.atomic_numbers)
-        runiq = np.asarray([
-            hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
-            for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
-        ])
+        runiq = np.asarray(
+            [
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
+                for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
+            ]
+        )
         nat = rgeom.shape[0]
 
-        perturbation = compute_scramble(rgeom.shape[0],
-                                        do_shift=do_shift,
-                                        do_rotate=do_rotate,
-                                        deflection=deflection,
-                                        do_resort=do_resort,
-                                        do_mirror=do_mirror)
+        perturbation = compute_scramble(
+            rgeom.shape[0],
+            do_shift=do_shift,
+            do_rotate=do_rotate,
+            deflection=deflection,
+            do_resort=do_resort,
+            do_mirror=do_mirror,
+        )
         cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
         cmolrec = from_arrays(
             geom=cgeom,
             mass=cmass,
             elem=celem,
             elez=celez,
-            units='Bohr',
+            units="Bohr",
             molecular_charge=ref_mol.molecular_charge,
             molecular_multiplicity=ref_mol.molecular_multiplicity,
             # copying fix_* vals rather than outright True. neither way great
             fix_com=ref_mol.fix_com,
-            fix_orientation=ref_mol.fix_orientation)
+            fix_orientation=ref_mol.fix_orientation,
+        )
         cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
         if verbose >= 1:
-            print('Start RMSD = {:8.4f} [A]'.format(rmsd))
+            print("Start RMSD = {:8.4f} [A]".format(rmsd))
 
         if do_test:
-            _, data = cmol.align(ref_mol,
-                                 do_plot=do_plot,
-                                 atoms_map=(not do_resort),
-                                 run_resorting=run_resorting,
-                                 mols_align=True,
-                                 run_to_completion=run_to_completion,
-                                 run_mirror=do_mirror,
-                                 verbose=verbose)
-            solution = data['mill']
+            _, data = cmol.align(
+                ref_mol,
+                do_plot=do_plot,
+                atoms_map=(not do_resort),
+                run_resorting=run_resorting,
+                mols_align=True,
+                run_to_completion=run_to_completion,
+                run_mirror=do_mirror,
+                verbose=verbose,
+            )
+            solution = data["mill"]
 
-            assert compare(True,
-                           np.allclose(solution.shift, perturbation.shift, atol=6),
-                           'shifts equiv',
-                           quiet=(verbose > 1))
+            assert compare(
+                True, np.allclose(solution.shift, perturbation.shift, atol=6), "shifts equiv", quiet=(verbose > 1)
+            )
             if not do_resort:
-                assert compare(True,
-                               np.allclose(solution.rotation.T, perturbation.rotation),
-                               'rotations transpose',
-                               quiet=(verbose > 1))
+                assert compare(
+                    True,
+                    np.allclose(solution.rotation.T, perturbation.rotation),
+                    "rotations transpose",
+                    quiet=(verbose > 1),
+                )
             if solution.mirror:
-                assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
+                assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
-        return cmol, {'rmsd': rmsd, 'mill': perturbation}
+        return cmol, {"rmsd": rmsd, "mill": perturbation}
 
 
 # auto_gen_docs_on_demand(Molecule)

@@ -26,7 +26,7 @@ def random_rotation_matrix(deflection: float = 1.0, randnums=None) -> np.ndarray
 
     """
     if randnums is None:
-        randnums = np.random.uniform(size=(3, ))
+        randnums = np.random.uniform(size=(3,))
 
     theta, phi, z = randnums
 
@@ -50,7 +50,7 @@ def random_rotation_matrix(deflection: float = 1.0, randnums=None) -> np.ndarray
     ct = np.cos(theta)
 
     R = np.array(((ct, st, 0), (-st, ct, 0), (0, 0, 1)))
-    R_z_pi = np.diag([-1., -1., 1])
+    R_z_pi = np.diag([-1.0, -1.0, 1])
 
     # Construct the rotation matrix  (V Transpose(V) - I) R. * R_z(pi)
     #   which is equivalent to V.S - R.

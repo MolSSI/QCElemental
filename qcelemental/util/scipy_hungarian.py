@@ -92,10 +92,10 @@ def linear_sum_assignment(cost_matrix, return_cost=False):
     """
     cost_matrix = np.asarray(cost_matrix)
     if len(cost_matrix.shape) != 2:
-        raise ValueError("expected a matrix (2-d array), got a %r array" % (cost_matrix.shape, ))
+        raise ValueError("expected a matrix (2-d array), got a %r array" % (cost_matrix.shape,))
 
     if not (np.issubdtype(cost_matrix.dtype, np.number) or cost_matrix.dtype == np.dtype(np.bool)):
-        raise ValueError("expected a matrix containing numerical entries, got %s" % (cost_matrix.dtype, ))
+        raise ValueError("expected a matrix containing numerical entries, got %s" % (cost_matrix.dtype,))
 
     if np.any(np.isinf(cost_matrix) | np.isnan(cost_matrix)):
         raise ValueError("matrix contains invalid numeric entries")
@@ -140,6 +140,7 @@ class _Hungary(object):
     cost_matrix : 2D matrix
         The cost matrix. Must have shape[1] >= shape[0].
     """
+
     def __init__(self, cost_matrix):
         self.C = cost_matrix.copy()
 
@@ -186,7 +187,7 @@ def _step3(state):
     the starred zeros describe a complete set of unique assignments.
     In this case, Go to DONE, otherwise, Go to Step 4.
     """
-    marked = (state.marked == 1)
+    marked = state.marked == 1
     state.col_uncovered[np.any(marked, axis=0)] = False
 
     if marked.sum() < state.C.shape[0]:

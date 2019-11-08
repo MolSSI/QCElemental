@@ -8,7 +8,7 @@ __all__ = ["get_information"]
 
 versions = _version.get_versions()
 
-__info = {"version": versions['version'], "git_revision": versions['full-revisionid']}
+__info = {"version": versions["version"], "git_revision": versions["full-revisionid"]}
 
 
 def get_information(key: str):

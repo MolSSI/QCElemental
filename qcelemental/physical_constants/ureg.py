@@ -25,8 +25,9 @@ def build_units_registry(context):
     ureg.define("avogadro_constant = {} / mol = N_A".format(phys_const["avogadro constant"]["value"]))
     ureg.define("boltzmann_constant = {} * joule / kelvin".format(phys_const["boltzmann constant"]["value"]))
     ureg.define("speed_of_light = {} * meter / second".format(phys_const["speed of light in vacuum"]["value"]))
-    ureg.define("hartree_inverse_meter = {} / hartree / m".format(
-        phys_const["hartree-inverse meter relationship"]["value"]))
+    ureg.define(
+        "hartree_inverse_meter = {} / hartree / m".format(phys_const["hartree-inverse meter relationship"]["value"])
+    )
 
     # Energy
     ureg.define("hartree = {} * joule = E_h = hartree_energy".format(phys_const["hartree energy"]["value"]))
@@ -43,8 +44,9 @@ def build_units_registry(context):
     ureg.define("Angstrom = angstrom")
 
     # Masses
-    ureg.define("atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(
-        phys_const["atomic mass constant"]["value"]))
+    ureg.define(
+        "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"])
+    )
 
     # Coulomb
     ureg.define("statcoulomb = coulomb / 2997924580 = statC")
@@ -54,7 +56,7 @@ def build_units_registry(context):
     _const_rename = {
         "inverse meter": "inverse_meter",
         "atomic mass unit": "atomic_mass_unit",
-        "electron volt": "electron_volt"
+        "electron volt": "electron_volt",
     }
 
     _nist_units = set()
@@ -64,10 +66,11 @@ def build_units_registry(context):
         # Automatically builds the following:
         # electron_volt_to_kelvin = 1.16045221e4 / electron_volt * kelvin
         # hartree_to_atomic_mass_unit = 2.9212623197e-8 / hartree * atomic_mass_unit
-        if not (("-" in k) and ("relationship" in k)): continue
+        if not (("-" in k) and ("relationship" in k)):
+            continue
 
         # Rename where needed
-        left_unit, right_unit = k.split('-')
+        left_unit, right_unit = k.split("-")
         left_unit = _const_rename.get(left_unit, left_unit)
         _nist_units.add(left_unit)
 
@@ -96,7 +99,8 @@ def build_units_registry(context):
         """Converts pint datatypes to NIST datatypes
         """
         for value in unit.to_tuple()[1]:
-            if value[1] < 1: continue
+            if value[1] < 1:
+                continue
             if any(x in value[0] for x in _nist_units):
                 return value[0]
 

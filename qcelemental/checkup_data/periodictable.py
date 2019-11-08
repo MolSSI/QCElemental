@@ -1,11 +1,12 @@
 # from Psi4
 # * https://github.com/psi4/psi4/blob/1.2.x/psi4/driver/qcdb/periodictable.py
 # * https://github.com/psi4/psi4/blob/1.2.x/psi4/include/psi4/masses.h
-    
+
 """Elemental masses (most common isotope), symbols, and atomic numbers from psi4.
 
 """
 
+# fmt: off
 _temp_element = [
     "GHOST", "HYDROGEN", "HELIUM", "LITHIUM", "BERYLLIUM", "BORON", "CARBON", "NITROGEN", "OXYGEN", "FLUORINE", "NEON",
     "SODIUM", "MAGNESIUM", "ALUMINUM", "SILICON", "PHOSPHORUS", "SULFUR", "CHLORINE", "ARGON", "POTASSIUM", "CALCIUM",

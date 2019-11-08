@@ -2,9 +2,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-from pydantic import BaseModel, Field
 
 import qcelemental as qcel
+from pydantic import BaseModel, Field
 from qcelemental.testing import compare_recursive, compare_values
 
 from .addons import serialize_extensions
@@ -14,10 +14,12 @@ from .addons import serialize_extensions
 def doc_fixture():
     class Nest(BaseModel):
         """A nested model"""
+
         n: float = 56
 
     class X(BaseModel):
         """A Pydantic model made up of many, many different combinations of ways of mapping types in Pydantic"""
+
         x: int
         y: str = Field(...)
         n: Nest
@@ -43,50 +45,97 @@ def doc_fixture():
     yield X
 
 
-@pytest.mark.parametrize("inp,expected", [
-    (['AAAABBBCCDAABBB'], 'ABCD'),
-    (['ABBCcAD', str.lower], 'ABCD'),
-])
+@pytest.mark.parametrize("inp,expected", [(["AAAABBBCCDAABBB"], "ABCD"), (["ABBCcAD", str.lower], "ABCD")])
 def test_unique_everseen(inp, expected):
     ue = qcel.util.unique_everseen(*inp)
     assert list(ue) == list(expected)
 
 
-@pytest.mark.parametrize("inp,expected", [
-    (({1:{"a":"A"},2:{"b":"B"}}, {2:{"c":"C"},3:{"d":"D"}}), {1:{"a":"A"},2:{"b":"B","c":"C"},3:{"d":"D"}}),
-    (({1:{"a":"A"},2:{"b":"B","c":None}}, {2:{"c":"C"},3:{"d":"D"}}), {1:{"a":"A"},2:{"b":"B","c":"C"},3:{"d":"D"}}),
-    (({1: [None, 1]}, {1: [2, 1],3:{"d":"D"}}), {1:[2, 1], 3:{"d":"D"}})
-]) # yapf: disable
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        (
+            ({1: {"a": "A"}, 2: {"b": "B"}}, {2: {"c": "C"}, 3: {"d": "D"}}),
+            {1: {"a": "A"}, 2: {"b": "B", "c": "C"}, 3: {"d": "D"}},
+        ),
+        (
+            ({1: {"a": "A"}, 2: {"b": "B", "c": None}}, {2: {"c": "C"}, 3: {"d": "D"}}),
+            {1: {"a": "A"}, 2: {"b": "B", "c": "C"}, 3: {"d": "D"}},
+        ),
+        (({1: [None, 1]}, {1: [2, 1], 3: {"d": "D"}}), {1: [2, 1], 3: {"d": "D"}}),
+    ],
+)
 def test_updatewitherror(inp, expected):
     assert compare_recursive(expected, qcel.util.update_with_error(inp[0], inp[1]))
 
 
-@pytest.mark.parametrize("inp", [
-    ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": "C"}}),
-    ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": None}}),
-    ({1: [None, 1]}, {1: [2, 2], 3: {"d": "D"}}),
-]) # yapf: disable
+@pytest.mark.parametrize(
+    "inp",
+    [
+        ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": "C"}}),
+        ({1: {"a": "A"}, 2: {"b": "B"}}, {1: {"a": "A"}, 2: {"b": None}}),
+        ({1: [None, 1]}, {1: [2, 2], 3: {"d": "D"}}),
+    ],
+)
 def test_updatewitherror_error(inp):
     with pytest.raises(KeyError):
         qcel.util.update_with_error(inp[0], inp[1])
 
 
-@pytest.mark.parametrize("inp,expected", [
-    ({'dicary': {"a":"A", "b":"B"}}, {"a":"A", "b":"B"}),
-    ({'dicary': {"a":np.arange(2), "b":[1, 2]}}, {"a":[0, 1], "b":[1, 2]}),
-    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}}}, {"c":{"a":[0, 1], "b":[1, 2]}}),
-    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}}, 'flat': True}, {"c":{"a":[0, 1], "b":[1, 2]}}),
-    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2, 3))}}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[[0, 1, 2], [3, 4, 5]]}),
-    ({'dicary': {"c":{"a":np.arange(2), "b":[1, 2]}, "d":np.arange(6).reshape((2, 3))}, 'flat': True}, {"c":{"a":[0, 1], "b":[1, 2]}, "d":[0, 1, 2, 3, 4, 5]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}}, {"a": [0, 1], "e": ["mouse", [[0, 1], [2, 3]]]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}}, {"a": [0, 1], "e": ["mouse", {"f": [[0, 1], [2, 3]]}]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}}, {"a": [0, 1], "e": ["mouse", [[[0, 1], [2, 3]], {"f": [[0, 1, 2], [3, 4, 5]], "g": [[11], [12]]}]]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [0, 1, 2, 3]]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", {"f": [0, 1, 2, 3]}]}),
-    ({'dicary': {"a": np.arange(2), "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]]}, 'flat': True}, {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]}),
-]) # yapf: disable
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        ({"dicary": {"a": "A", "b": "B"}}, {"a": "A", "b": "B"}),
+        ({"dicary": {"a": np.arange(2), "b": [1, 2]}}, {"a": [0, 1], "b": [1, 2]}),
+        ({"dicary": {"c": {"a": np.arange(2), "b": [1, 2]}}}, {"c": {"a": [0, 1], "b": [1, 2]}}),
+        ({"dicary": {"c": {"a": np.arange(2), "b": [1, 2]}}, "flat": True}, {"c": {"a": [0, 1], "b": [1, 2]}}),
+        (
+            {"dicary": {"c": {"a": np.arange(2), "b": [1, 2]}, "d": np.arange(6).reshape((2, 3))}},
+            {"c": {"a": [0, 1], "b": [1, 2]}, "d": [[0, 1, 2], [3, 4, 5]]},
+        ),
+        (
+            {"dicary": {"c": {"a": np.arange(2), "b": [1, 2]}, "d": np.arange(6).reshape((2, 3))}, "flat": True},
+            {"c": {"a": [0, 1], "b": [1, 2]}, "d": [0, 1, 2, 3, 4, 5]},
+        ),
+        (
+            {"dicary": {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}},
+            {"a": [0, 1], "e": ["mouse", [[0, 1], [2, 3]]]},
+        ),
+        (
+            {"dicary": {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}},
+            {"a": [0, 1], "e": ["mouse", {"f": [[0, 1], [2, 3]]}]},
+        ),
+        (
+            {
+                "dicary": {
+                    "a": np.arange(2),
+                    "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]],
+                }
+            },
+            {"a": [0, 1], "e": ["mouse", [[[0, 1], [2, 3]], {"f": [[0, 1, 2], [3, 4, 5]], "g": [[11], [12]]}]]},
+        ),
+        (
+            {"dicary": {"a": np.arange(2), "e": ["mouse", np.arange(4).reshape(2, 2)]}, "flat": True},
+            {"a": [0, 1], "e": ["mouse", [0, 1, 2, 3]]},
+        ),
+        (
+            {"dicary": {"a": np.arange(2), "e": ["mouse", {"f": np.arange(4).reshape(2, 2)}]}, "flat": True},
+            {"a": [0, 1], "e": ["mouse", {"f": [0, 1, 2, 3]}]},
+        ),
+        (
+            {
+                "dicary": {
+                    "a": np.arange(2),
+                    "e": ["mouse", [np.arange(4).reshape(2, 2), {"f": np.arange(6).reshape(2, 3), "g": [[11], [12]]}]],
+                },
+                "flat": True,
+            },
+            {"a": [0, 1], "e": ["mouse", [[0, 1, 2, 3], {"f": [0, 1, 2, 3, 4, 5], "g": [[11], [12]]}]]},
+        ),
+    ],
+)
 def test_unnp(inp, expected):
-    assert compare_recursive(expected, qcel.util.unnp(**inp), atol=1.e-4)
+    assert compare_recursive(expected, qcel.util.unnp(**inp), atol=1.0e-4)
 
 
 def test_distance():
@@ -167,10 +216,10 @@ def test_dihedral1():
 
     # Linear checks
     _test_dihedral(p1, p2, p3, [3, 2, 0], 0)
-    _test_dihedral(p1, p2, p3, [3, 2 + 1.e-14, 0], 180)
-    _test_dihedral(p1, p2, p3, [3, 2 - 1.e-14, 0], 0)
-    _test_dihedral(p1, p2, p3, [3, 2, 0 + 1.e-14], -90)
-    _test_dihedral(p1, p2, p3, [3, 2, 0 - 1.e-14], 90)
+    _test_dihedral(p1, p2, p3, [3, 2 + 1.0e-14, 0], 180)
+    _test_dihedral(p1, p2, p3, [3, 2 - 1.0e-14, 0], 0)
+    _test_dihedral(p1, p2, p3, [3, 2, 0 + 1.0e-14], -90)
+    _test_dihedral(p1, p2, p3, [3, 2, 0 - 1.0e-14], 90)
 
 
 def test_dihedral2():
@@ -233,23 +282,26 @@ def test_auto_gen_doc_delete(doc_fixture):
     assert "A Pydantic model" in doc_fixture.__doc__
 
 
-@pytest.mark.parametrize("obj", [
-    5,
-    1.11111,
-    "hello",
-    "\u0394",
-    np.random.rand(4),
-    {"a": 5},
-    {"a": 1.111111111111},
-    {"a": "hello"},
-    {"a": np.random.rand(4), "b": np.array(5.1111111), "c": np.array("hello")},
-    ["12345"],
-    ["hello", "world"],
-    [5, 123.234, "abcdé", "\u0394", "\U00000394"],
-    [5, "B63", np.random.rand(4)],
-    ["abcdé", {"a": np.random.rand(2), "b": np.random.rand(5)}],
-    [np.array(3), np.arange(3, dtype=np.uint16), {"b": np.array(["a", "b"])}],
-]) # yapf: disable
+@pytest.mark.parametrize(
+    "obj",
+    [
+        5,
+        1.11111,
+        "hello",
+        "\u0394",
+        np.random.rand(4),
+        {"a": 5},
+        {"a": 1.111111111111},
+        {"a": "hello"},
+        {"a": np.random.rand(4), "b": np.array(5.1111111), "c": np.array("hello")},
+        ["12345"],
+        ["hello", "world"],
+        [5, 123.234, "abcdé", "\u0394", "\U00000394"],
+        [5, "B63", np.random.rand(4)],
+        ["abcdé", {"a": np.random.rand(2), "b": np.random.rand(5)}],
+        [np.array(3), np.arange(3, dtype=np.uint16), {"b": np.array(["a", "b"])}],
+    ],
+)
 @pytest.mark.parametrize("encoding", serialize_extensions)
 def test_serialization(obj, encoding):
     new_obj = qcel.util.deserialize(qcel.util.serialize(obj, encoding=encoding), encoding=encoding)

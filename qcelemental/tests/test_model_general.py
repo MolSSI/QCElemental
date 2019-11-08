@@ -1,14 +1,17 @@
-from typing import Dict, List
-
-import numpy as np
 import pytest
 
-from qcelemental.models import (ComputeError, FailedOperation, Molecule, Optimization, OptimizationInput, ProtoModel,
-                                Provenance, Result, ResultInput, ResultProperties)
-from qcelemental.models.types import Array
-from qcelemental.util import provenance_stamp
-
-from .addons import serialize_extensions, using_msgpack
+from qcelemental.models import (
+    ComputeError,
+    FailedOperation,
+    Molecule,
+    Optimization,
+    OptimizationInput,
+    ProtoModel,
+    Provenance,
+    Result,
+    ResultInput,
+    ResultProperties,
+)
 
 
 def test_result_properties_default_skip():
@@ -45,22 +48,17 @@ def test_repr_compute_error():
 
 def test_repr_failed_op():
     fail_op = FailedOperation(error=ComputeError(error_type="random_error", error_message="this is bad"))
-    assert str(
-        fail_op) == """FailedOperation(error=ComputeError(error_type='random_error', error_message='this is bad'))"""
+    assert (
+        str(fail_op)
+        == """FailedOperation(error=ComputeError(error_type='random_error', error_message='this is bad'))"""
+    )
 
 
 def test_repr_result():
 
-    result = ResultInput(**{
-        "driver": "gradient",
-        "model": {
-            "method": "UFF"
-        },
-        "molecule": {
-            "symbols": ["He"],
-            "geometry": [0, 0, 0]
-        }
-    })
+    result = ResultInput(
+        **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
+    )
     assert "molecule_hash" in str(result)
     assert "molecule_hash" in repr(result)
     assert "'gradient'" in str(result)
@@ -70,17 +68,10 @@ def test_repr_optimization():
 
     opt = OptimizationInput(
         **{
-            "input_specification": {
-                "driver": "gradient",
-                "model": {
-                    "method": "UFF"
-                },
-            },
-            "initial_molecule": {
-                "symbols": ["He"],
-                "geometry": [0, 0, 0]
-            }
-        })
+            "input_specification": {"driver": "gradient", "model": {"method": "UFF"}},
+            "initial_molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+        }
+    )
 
     assert "molecule_hash" in str(opt)
     assert "molecule_hash" in repr(opt)

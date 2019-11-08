@@ -6,13 +6,13 @@ import pytest
 import qcelemental
 
 
-@pytest.mark.parametrize("inp", ["He100", '-1', -1, -1.0, 'cat', 200, 'Cro'])
+@pytest.mark.parametrize("inp", ["He100", "-1", -1, -1.0, "cat", 200, "Cro"])
 def test_id_resolution_error_bad_element(inp):
     with pytest.raises(qcelemental.NotAnElementError):
         qcelemental.vdwradii.get(inp)
 
 
-@pytest.mark.parametrize("inp", ['X', 'Fe', 100, 'Ru'])
+@pytest.mark.parametrize("inp", ["X", "Fe", 100, "Ru"])
 def test_id_resolution_error(inp):
     with pytest.raises(qcelemental.DataUnavailableError):
         qcelemental.vdwradii.get(inp)
@@ -23,10 +23,10 @@ def test_id_resolution_error(inp):
     with pytest.raises(qcelemental.DataUnavailableError):
         qcelemental.vdwradii.get(inp, return_tuple=True, missing=3.0)
 
-    assert qcelemental.vdwradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.e-9)
+    assert qcelemental.vdwradii.get(inp, missing=4.0) == pytest.approx(4.0, 1.0e-9)
 
 
-a2b = 1. / qcelemental.constants.bohr2angstroms
+a2b = 1.0 / qcelemental.constants.bohr2angstroms
 
 
 @pytest.mark.parametrize(
@@ -37,23 +37,22 @@ a2b = 1. / qcelemental.constants.bohr2angstroms
         ("kr", 2.02),
         ("kr84", 2.02),
         (36, 2.02),
-
         # Deuterium
         ("D", 1.10),
         ("h2", 1.10),
-
         # Germanium
         ("germanium", 2.11),
         ("Ge", 2.11),
-    ])
+    ],
+)
 def test_get(inp, expected):
-    assert qcelemental.vdwradii.get(inp, units='angstrom') == pytest.approx(expected, 1.e-9)
-    assert qcelemental.vdwradii.get(inp) == pytest.approx(a2b * expected, 1.e-9)
+    assert qcelemental.vdwradii.get(inp, units="angstrom") == pytest.approx(expected, 1.0e-9)
+    assert qcelemental.vdwradii.get(inp) == pytest.approx(a2b * expected, 1.0e-9)
 
 
 def test_get_tuple():
-    ref = {'label': 'Mg', 'units': 'angstrom', 'data': Decimal('1.73')}
-    dqca = qcelemental.vdwradii.get('magnesium', return_tuple=True).dict()
+    ref = {"label": "Mg", "units": "angstrom", "data": Decimal("1.73")}
+    dqca = qcelemental.vdwradii.get("magnesium", return_tuple=True).dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]

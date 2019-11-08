@@ -29,8 +29,8 @@ DECIMAL = r"""(
 SEP = r"""[\t ,]+"""
 ENDL = r"""[\t ,]*$"""
 
-CHGMULT = r"""(?P<chg>""" + NUMBER + r')' + SEP + r"""(?P<mult>\d+)"""
-CARTXYZ = r'(?P<x>' + NUMBER + r')' + SEP + r'(?P<y>' + NUMBER + r')' + SEP + r'(?P<z>' + NUMBER + r')'
+CHGMULT = r"""(?P<chg>""" + NUMBER + r")" + SEP + r"""(?P<mult>\d+)"""
+CARTXYZ = r"(?P<x>" + NUMBER + r")" + SEP + r"(?P<y>" + NUMBER + r")" + SEP + r"(?P<z>" + NUMBER + r")"
 
 # PEP 440 valid versions
 # * to avoid dependency on module "packaging", copied from https://github.com/pypa/packaging/blob/master/packaging/version.py#L182-L213

@@ -5,7 +5,7 @@ def blockwise_contract(arr):
     """Undo blockwise_expand, returning `arr` to original 2D array."""
 
     if len(arr.shape) != 4:
-        print('Not appropriate for un_blockwise')
+        print("Not appropriate for un_blockwise")
     gr, gc, lr, lc = arr.shape
     ans = np.reshape(arr, (gr * gc, lr, lc))
 
@@ -20,7 +20,7 @@ def blockwise_contract(arr):
         From: https://stackoverflow.com/a/16873755
         """
         n, nrows, ncols = arr.shape
-        return (arr.reshape(h // nrows, -1, nrows, ncols).swapaxes(1, 2).reshape(h, w))
+        return arr.reshape(h // nrows, -1, nrows, ncols).swapaxes(1, 2).reshape(h, w)
 
     ans = unblockshaped(ans, gr * lr, gc * lc)
     return ans
@@ -78,15 +78,15 @@ def blockwise_expand(a, blockshape, aslist=False, require_aligned_blocks=True):
        [18 19]]]]
 
     """
-    assert a.flags['C_CONTIGUOUS'], "This function relies on the memory layout of the array."
+    assert a.flags["C_CONTIGUOUS"], "This function relies on the memory layout of the array."
     blockshape = tuple(blockshape)
     outershape = tuple(np.array(a.shape) // blockshape)
     view_shape = outershape + blockshape
 
     if require_aligned_blocks:
-        assert (np.mod(a.shape, blockshape) == 0).all(), \
-            "blockshape {} must divide evenly into array shape {}"\
-            .format( blockshape, a.shape )
+        assert (np.mod(a.shape, blockshape) == 0).all(), "blockshape {} must divide evenly into array shape {}".format(
+            blockshape, a.shape
+        )
 
     # inner strides: strides within each block (same as original array)
     intra_block_strides = a.strides

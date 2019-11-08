@@ -10,4 +10,4 @@ def provenance_stamp(routine: str) -> Dict[str, str]:
     generating routine's name is passed in through `routine`.
 
     """
-    return {'creator': 'QCElemental', 'version': get_information('version'), 'routine': routine}
+    return {"creator": "QCElemental", "version": get_information("version"), "routine": routine}

@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Any, Dict, List, Set, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
+
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
@@ -27,73 +28,91 @@ class ResultProperties(ProtoModel):
     # Canonical
     nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy energy.")
     return_energy: Optional[float] = Field(
-        None, description="The energy of the requested method, identical to `return_value` for energy computations.")
+        None, description="The energy of the requested method, identical to `return_value` for energy computations."
+    )
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
-        None, description="The one-electron (core Hamiltonian) energy contribution to the total SCF energy.")
+        None, description="The one-electron (core Hamiltonian) energy contribution to the total SCF energy."
+    )
     scf_two_electron_energy: Optional[float] = Field(
-        None, description="The two-electron energy contribution to the total SCF energy.")
+        None, description="The two-electron energy contribution to the total SCF energy."
+    )
     scf_vv10_energy: Optional[float] = Field(
-        None, description="The VV10 functional energy contribution to the total SCF energy.")
+        None, description="The VV10 functional energy contribution to the total SCF energy."
+    )
     scf_xc_energy: Optional[float] = Field(
-        None, description="The functional (XC) energy contribution to the total SCF energy.")
+        None, description="The functional (XC) energy contribution to the total SCF energy."
+    )
     scf_dispersion_correction_energy: Optional[float] = Field(
         None,
-        description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.")
+        description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
+    )
     scf_dipole_moment: Optional[List[float]] = Field(None, description="The X, Y, and Z dipole components.")
     scf_total_energy: Optional[float] = Field(
-        None, description="The total electronic energy of the SCF stage of the calculation.")
+        None, description="The total electronic energy of the SCF stage of the calculation."
+    )
     scf_iterations: Optional[int] = Field(None, description="The number of SCF iterations taken before convergence.")
 
     # MP2 Keywords
     mp2_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations.")
+        None, description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations."
+    )
     mp2_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations.")
+        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations.",
+    )
     mp2_singles_energy: Optional[float] = Field(
-        None, description="The singles portion of the MP2 correlation energy. Zero except in ROHF.")
+        None, description="The singles portion of the MP2 correlation energy. Zero except in ROHF."
+    )
     mp2_doubles_energy: Optional[float] = Field(
         None,
-        description=
-        "The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.")
+        description="The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.",
+    )
     mp2_total_correlation_energy: Optional[float] = Field(
-        None, description="The MP2 correlation energy.")  # Old name, to be deprecated
+        None, description="The MP2 correlation energy."
+    )  # Old name, to be deprecated
     mp2_correlation_energy: Optional[float] = Field(None, description="The MP2 correlation energy.")
-    mp2_total_energy: Optional[float] = Field(None,
-                                              description="The total MP2 energy (MP2 correlation energy + HF energy).")
+    mp2_total_energy: Optional[float] = Field(
+        None, description="The total MP2 energy (MP2 correlation energy + HF energy)."
+    )
     mp2_dipole_moment: Optional[List[float]] = Field(None, description="The MP2 X, Y, and Z dipole components.")
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations.")
+        None, description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations."
+    )
     ccsd_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations")
+        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations",
+    )
     ccsd_singles_energy: Optional[float] = Field(
-        None, description="The singles portion of the CCSD correlation energy. Zero except in ROHF.")
+        None, description="The singles portion of the CCSD correlation energy. Zero except in ROHF."
+    )
     ccsd_doubles_energy: Optional[float] = Field(
         None,
-        description=
-        "The doubles portion of the CCSD correlation energy including same-spin and opposite-spin correlations.")
+        description="The doubles portion of the CCSD correlation energy including same-spin and opposite-spin correlations.",
+    )
     ccsd_correlation_energy: Optional[float] = Field(None, description="The CCSD correlation energy.")
     ccsd_total_energy: Optional[float] = Field(
-        None, description="The total CCSD energy (CCSD correlation energy + HF energy).")
+        None, description="The total CCSD energy (CCSD correlation energy + HF energy)."
+    )
     ccsd_dipole_moment: Optional[List[float]] = Field(None, description="The CCSD X, Y, and Z dipole components.")
     ccsd_iterations: Optional[int] = Field(None, description="The number of CCSD iterations taken before convergence.")
 
     # CCSD(T) keywords
     ccsd_prt_pr_correlation_energy: Optional[float] = Field(None, description="The CCSD(T) correlation energy.")
     ccsd_prt_pr_total_energy: Optional[float] = Field(
-        None, description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy).")
-    ccsd_prt_pr_dipole_moment: Optional[List[float]] = Field(None,
-                                                             description="The CCSD(T) X, Y, and Z dipole components.")
+        None, description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy)."
+    )
+    ccsd_prt_pr_dipole_moment: Optional[List[float]] = Field(
+        None, description="The CCSD(T) X, Y, and Z dipole components."
+    )
 
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
 
 
@@ -101,8 +120,16 @@ class WavefunctionProperties(ProtoModel):
 
     # Class properties
     _return_results_names: Set[str] = {
-        'orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a', 'eigenvalues_b',
-        'occupations_a', 'occupations_b'
+        "orbitals_a",
+        "orbitals_b",
+        "density_a",
+        "density_b",
+        "fock_a",
+        "fock_b",
+        "eigenvalues_a",
+        "eigenvalues_b",
+        "occupations_a",
+        "occupations_b",
     }
 
     # The full basis set description of the quantities
@@ -110,15 +137,19 @@ class WavefunctionProperties(ProtoModel):
     restricted: bool = Field(
         ...,
         description=str(
-            "If the computation was restricted or not (alpha == beta). If True, all beta quantities are skipped."))
+            "If the computation was restricted or not (alpha == beta). If True, all beta quantities are skipped."
+        ),
+    )
 
     # Core Hamiltonian
     h_core_a: Optional[Array[float]] = Field(None, description="Alpha-spin core (one-electron) Hamiltonian.")
     h_core_b: Optional[Array[float]] = Field(None, description="Beta-spin core (one-electron) Hamiltonian.")
-    h_effective_a: Optional[Array[float]] = Field(None,
-                                                  description="Alpha-spin effective core (one-electron) Hamiltonian.")
-    h_effective_b: Optional[Array[float]] = Field(None,
-                                                  description="Beta-spin effective core (one-electron) Hamiltonian ")
+    h_effective_a: Optional[Array[float]] = Field(
+        None, description="Alpha-spin effective core (one-electron) Hamiltonian."
+    )
+    h_effective_b: Optional[Array[float]] = Field(
+        None, description="Beta-spin effective core (one-electron) Hamiltonian "
+    )
 
     # SCF Results
     scf_orbitals_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin orbitals.")
@@ -139,18 +170,19 @@ class WavefunctionProperties(ProtoModel):
     density_b: Optional[str] = Field(None, description="Index to the beta-spin density of the primary return.")
     fock_a: Optional[str] = Field(None, description="Index to the alpha-spin Fock matrix of the primary return.")
     fock_b: Optional[str] = Field(None, description="Index to the beta-spin Fock matrix of the primary return.")
-    eigenvalues_a: Optional[str] = Field(None,
-                                         description="Index to the alpha-spin eigenvalues of the primary return.")
+    eigenvalues_a: Optional[str] = Field(None, description="Index to the alpha-spin eigenvalues of the primary return.")
     eigenvalues_b: Optional[str] = Field(None, description="Index to the beta-spin eigenvalues of the primary return.")
     occupations_a: Optional[str] = Field(
-        None, description="Index to the alpha-spin orbital eigenvalues of the primary return.")
+        None, description="Index to the alpha-spin orbital eigenvalues of the primary return."
+    )
     occupations_b: Optional[str] = Field(
-        None, description="Index to the beta-spin orbital eigenvalues of the primary return.")
+        None, description="Index to the beta-spin orbital eigenvalues of the primary return."
+    )
 
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
-    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b')
+    @validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     def _assert1d(cls, v, values):
 
         try:
@@ -159,7 +191,7 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Vector must be castable to shape (-1, )!")
         return v
 
-    @validator('scf_orbitals_a', 'scf_orbitals_b')
+    @validator("scf_orbitals_a", "scf_orbitals_b")
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
@@ -174,16 +206,16 @@ class WavefunctionProperties(ProtoModel):
         return v
 
     @validator(
-        'h_core_a',
-        'h_core_b',
-        'h_effective_a',
-        'h_effective_b',
-
+        "h_core_a",
+        "h_core_b",
+        "h_effective_a",
+        "h_effective_b",
         # SCF
-        'scf_density_a',
-        'scf_density_b',
-        'scf_fock_a',
-        'scf_fock_b')
+        "scf_density_a",
+        "scf_density_b",
+        "scf_fock_a",
+        "scf_fock_b",
+    )
     def _assert2d(cls, v, values):
         bas = values.get("basis", None)
 
@@ -197,8 +229,18 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Matrix must be castable to shape (nbf, nbf)!")
         return v
 
-    @validator('orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a',
-               'eigenvalues_b', 'occupations_a', 'occupations_b')
+    @validator(
+        "orbitals_a",
+        "orbitals_b",
+        "density_a",
+        "density_b",
+        "fock_a",
+        "fock_b",
+        "eigenvalues_a",
+        "eigenvalues_b",
+        "occupations_a",
+        "occupations_b",
+    )
     def _assert_exists(cls, v, values):
 
         if values.get(v, None) is None:
@@ -210,6 +252,7 @@ class WavefunctionProtocolEnum(str, Enum):
     """
     Wavefunction to keep from a Result computation.
     """
+
     all = "all"
     orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
     return_results = "return_results"
@@ -221,8 +264,9 @@ class ResultProtocols(ProtoModel):
     Protocols regarding the manipulation of a Result output data.
     """
 
-    wavefunction: WavefunctionProtocolEnum = Field(WavefunctionProtocolEnum.none,
-                                                   description=str(WavefunctionProtocolEnum.__doc__))
+    wavefunction: WavefunctionProtocolEnum = Field(
+        WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
+    )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
 
     class Config:
@@ -234,6 +278,7 @@ class ResultProtocols(ProtoModel):
 
 class ResultInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
+
     id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
     schema_version: int = 1
@@ -248,8 +293,12 @@ class ResultInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
 
-    def __repr_args__(self) -> 'ReprArgs':
-        return [("driver", self.driver.value), ("model", self.model.dict()), ("molecule_hash", self.molecule.get_hash()[:7])]
+    def __repr_args__(self) -> "ReprArgs":
+        return [
+            ("driver", self.driver.value),
+            ("model", self.model.dict()),
+            ("molecule_hash", self.molecule.get_hash()[:7]),
+        ]
 
 
 class Result(ResultInput):
@@ -259,13 +308,15 @@ class Result(ResultInput):
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
-        ..., description="The value requested by the 'driver' attribute.")  # type: ignore
+        ..., description="The value requested by the 'driver' attribute."
+    )  # type: ignore
 
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
     success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank.")
+        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    )
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__base_doc__))
 
@@ -274,8 +325,10 @@ class Result(ResultInput):
         """If qcschema_input is passed in, cast it to output, otherwise no"""
         if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
             return qcschema_output_default
-        raise ValueError("Only {0} or {1} is allowed for schema_name, "
-                         "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default))
+        raise ValueError(
+            "Only {0} or {1} is allowed for schema_name, "
+            "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default)
+        )
 
     @validator("return_result")
     def _validate_return_result(cls, v, values):
@@ -283,12 +336,12 @@ class Result(ResultInput):
             v = np.asarray(v).reshape(-1, 3)
         elif values["driver"] == "hessian":
             v = np.asarray(v)
-            nsq = int(v.size**0.5)
+            nsq = int(v.size ** 0.5)
             v.shape = (nsq, nsq)
 
         return v
 
-    @validator('wavefunction', pre=True)
+    @validator("wavefunction", pre=True)
     def _wavefunction_protocol(cls, value, values):
 
         # We are pre, gotta do extra checks
@@ -299,36 +352,44 @@ class Result(ResultInput):
         elif isinstance(value, WavefunctionProperties):
             wfn = value.dict()
         else:
-            raise ValueError('wavefunction must be None, a dict, or a WavefunctionProperties object.')
+            raise ValueError("wavefunction must be None, a dict, or a WavefunctionProperties object.")
 
         # Do not propagate validation errors
-        if 'protocols' not in values:
+        if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")
 
         # Handle restricted
-        restricted = wfn.get('restricted', None)
+        restricted = wfn.get("restricted", None)
         if restricted is None:
-            raise ValueError('`restricted` is required.')
+            raise ValueError("`restricted` is required.")
 
         if restricted:
             for k in list(wfn.keys()):
-                if k.endswith('_b'):
+                if k.endswith("_b"):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = values['protocols'].wavefunction
+        wfnp = values["protocols"].wavefunction
         return_keep = None
-        if wfnp == 'all':
+        if wfnp == "all":
             pass
-        elif wfnp == 'none':
+        elif wfnp == "none":
             wfn = None
-        elif wfnp == 'return_results':
+        elif wfnp == "return_results":
             return_keep = [
-                'orbitals_a', 'orbitals_b', 'density_a', 'density_b', 'fock_a', 'fock_b', 'eigenvalues_a',
-                'eigenvalues_b', 'occupations_a', 'occupations_b'
+                "orbitals_a",
+                "orbitals_b",
+                "density_a",
+                "density_b",
+                "fock_a",
+                "fock_b",
+                "eigenvalues_a",
+                "eigenvalues_b",
+                "occupations_a",
+                "occupations_b",
             ]
-        elif wfnp == 'orbitals_and_eigenvalues':
-            return_keep = ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'eigenvalues_b']
+        elif wfnp == "orbitals_and_eigenvalues":
+            return_keep = ["orbitals_a", "orbitals_b", "eigenvalues_a", "eigenvalues_b"]
         else:
             raise ValueError(f"Protocol `wavefunction:{wfnp}` is not understood.")
 
@@ -349,14 +410,14 @@ class Result(ResultInput):
         else:
             return wfn
 
-    @validator('stdout')
+    @validator("stdout")
     def _stdout_protocol(cls, value, values):
 
         # Do not propagate validation errors
-        if 'protocols' not in values:
+        if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")
 
-        outp = values['protocols'].stdout
+        outp = values["protocols"].stdout
         if outp is True:
             return value
         elif outp is False:
