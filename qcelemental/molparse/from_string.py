@@ -229,19 +229,19 @@ def from_string(
         try:
             molstr, molinit = parse_as_psi4_ish(molstr, unsettled=False)
             dtype = "psi4"
-        except MoleculeFormatError as err:
+        except MoleculeFormatError:
             try:
                 molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
                 dtype = "xyz"
-            except MoleculeFormatError as err:
+            except MoleculeFormatError:
                 try:
                     molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
                     dtype = "xyz+"
-                except MoleculeFormatError as err:
+                except MoleculeFormatError:
                     try:
                         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
                         dtype = "psi4+"
-                    except MoleculeFormatError as err:
+                    except MoleculeFormatError:
                         raise MoleculeFormatError(
                             """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr)
                         )

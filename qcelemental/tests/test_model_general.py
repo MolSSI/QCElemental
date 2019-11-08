@@ -1,6 +1,3 @@
-from typing import Dict, List
-
-import numpy as np
 import pytest
 
 from qcelemental.models import (
@@ -15,10 +12,6 @@ from qcelemental.models import (
     ResultInput,
     ResultProperties,
 )
-from qcelemental.models.types import Array
-from qcelemental.util import provenance_stamp
-
-from .addons import serialize_extensions, using_msgpack
 
 
 def test_result_properties_default_skip():

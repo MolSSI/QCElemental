@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := all
 isort = isort -rc qcelemental
-black = black qclemental
+black = black qcelemental
+autoflake = autoflake -ir --remove-all-unused-imports --ignore-init-module-imports --remove-unused-variables qcelemental
 
 .PHONY: install
 install:
@@ -8,12 +9,12 @@ install:
 
 .PHONY: format
 format:
+	$(autoflake)
 	$(isort)
 	$(black)
 
 .PHONY: lint
 lint:
-	flake8 qcelemental/ tests/
 	$(isort) --check-only
 	$(black) --check
 

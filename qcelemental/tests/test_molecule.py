@@ -5,7 +5,6 @@ Tests the imports and exports of the Molecule object.
 import numpy as np
 import pytest
 
-import pydantic
 import qcelemental as qcel
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values

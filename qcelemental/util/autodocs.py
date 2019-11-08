@@ -15,8 +15,6 @@ class AutoDocError(ValueError):
     Traps this very specific error and not other ValueErrors
     """
 
-    pass
-
 
 def type_to_string(input_type):
     if type(input_type) is type:
