@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
-
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
@@ -276,7 +275,7 @@ class ResultProtocols(ProtoModel):
 ### Primary models
 
 
-class ResultInput(ProtoModel):
+class AtomicInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
@@ -301,7 +300,7 @@ class ResultInput(ProtoModel):
         ]
 
 
-class Result(ResultInput):
+class AtomicResult(AtomicInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
     properties: ResultProperties = Field(..., description=str(ResultProperties.__base_doc__))
@@ -424,3 +423,17 @@ class Result(ResultInput):
             return None
         else:
             raise ValueError(f"Protocol `stdout:{outp}` is not understood")
+
+
+def ResultInput(*args, **kwargs):
+    from warnings import warn
+
+    warn("ResultInput has been renamed to AtomicInput and will be removed in v0.13.0", DeprecationWarning)
+    return AtomicInput(*args, **kwargs)
+
+
+def Result(*args, **kwargs):
+    from warnings import warn
+
+    warn("Result has been renamed to AtomicResult and will be removed in v0.13.0", DeprecationWarning)
+    return AtomicResult(*args, **kwargs)

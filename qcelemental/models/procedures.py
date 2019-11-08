@@ -15,7 +15,7 @@ from .common_models import (
     qcschema_optimization_output_default,
 )
 from .molecule import Molecule
-from .results import Result
+from .results import AtomicResult
 
 
 class TrajectoryProtocolEnum(str, Enum):
@@ -81,13 +81,13 @@ class OptimizationInput(ProtoModel):
         ]
 
 
-class Optimization(OptimizationInput):
+class OptimizationResult(OptimizationInput):
     schema_name: constr(  # type: ignore
         strip_whitespace=True, regex=qcschema_optimization_output_default
     ) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
-    trajectory: List[Result] = Field(
+    trajectory: List[AtomicResult] = Field(
         ..., description="A list of ordered Result objects for each step in the optimization."
     )
     energies: List[float] = Field(..., description="A list of ordered energies for each step in the optimization.")
@@ -123,3 +123,9 @@ class Optimization(OptimizationInput):
             raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 
         return v
+
+def Optimization(*args, **kwargs):
+    from warnings import warn
+
+    warn("Optimization has been renamed to OptimizationResult and will be removed in v0.13.0", DeprecationWarning)
+    return OptimizationResult(*args, **kwargs)
