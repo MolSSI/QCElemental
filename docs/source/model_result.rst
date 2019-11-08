@@ -1,27 +1,27 @@
-Result
+AtomicResult
 ======
 
 A Python implementation of the `MolSSI QCSchema
-<https://github.com/MolSSI/QCSchema>`_ ``Result`` object.
+<https://github.com/MolSSI/QCSchema>`_ ``AtomicResult`` object.
 
 
-ResultInput
+AtomicInput
 -----------
 
-.. autoclass:: qcelemental.models.ResultInput
+.. autoclass:: qcelemental.models.AtomicInput
 
-Result
+AtomicResult
 ------
 
-.. autoclass:: qcelemental.models.Result
+.. autoclass:: qcelemental.models.AtomicResult
 
 
 API
 ---
 
-.. autoclass:: qcelemental.models.results.ResultProtocols
+.. autoclass:: qcelemental.models.results.AtomicResultProtocols
 
-.. autoclass:: qcelemental.models.results.ResultProperties
+.. autoclass:: qcelemental.models.results.AtomicResultProperties
 
 .. autoclass:: qcelemental.models.results.WavefunctionProperties
 

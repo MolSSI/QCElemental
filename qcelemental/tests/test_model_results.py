@@ -214,25 +214,25 @@ def test_basis_map_raises():
 
 
 def test_result_build(result_data_fixture):
-    ret = qcel.models.Result(**result_data_fixture)
+    ret = qcel.models.AtomicResult(**result_data_fixture)
     assert ret.wavefunction is None
 
 
 def test_result_build_wavefunction_delete(wavefunction_data_fixture):
     del wavefunction_data_fixture["protocols"]
-    ret = qcel.models.Result(**wavefunction_data_fixture)
+    ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
     assert ret.wavefunction is None
 
 
 def test_wavefunction_build(wavefunction_data_fixture):
-    assert qcel.models.Result(**wavefunction_data_fixture)
+    assert qcel.models.AtomicResult(**wavefunction_data_fixture)
 
 
 def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
 
     wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"] = np.random.rand(2, 2)
     with pytest.raises(ValueError) as e:
-        qcel.models.Result(**wavefunction_data_fixture)
+        qcel.models.AtomicResult(**wavefunction_data_fixture)
 
     assert "castable to shape" in str(e.value)
 
@@ -241,7 +241,7 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
 
     del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
     with pytest.raises(ValueError) as e:
-        qcel.models.Result(**wavefunction_data_fixture)
+        qcel.models.AtomicResult(**wavefunction_data_fixture)
 
     assert "does not exist" in str(e.value)
 
@@ -288,7 +288,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
         else:
             wfn_data[scf_name] = np.random.rand(bas.nbf, bas.nbf)
 
-    wfn = qcel.models.Result(**wavefunction_data_fixture)
+    wfn = qcel.models.AtomicResult(**wavefunction_data_fixture)
 
     if len(expected) == 0:
         assert wfn.wavefunction is None
@@ -305,7 +305,7 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
 
     if keep is not None:
         optimization_data_fixture["protocols"] = {"trajectory": keep}
-    opt = qcel.models.Optimization(**optimization_data_fixture)
+    opt = qcel.models.OptimizationResult(**optimization_data_fixture)
 
     assert len(opt.trajectory) == len(indices)
     for result, index in zip(opt.trajectory, indices):
@@ -314,12 +314,12 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
 
 def test_result_build_stdout_delete(result_data_fixture):
     result_data_fixture["protocols"] = {"stdout": False}
-    ret = qcel.models.Result(**result_data_fixture)
+    ret = qcel.models.AtomicResult(**result_data_fixture)
     assert ret.stdout is None
 
 
 def test_result_build_stdout(result_data_fixture):
-    ret = qcel.models.Result(**result_data_fixture)
+    ret = qcel.models.AtomicResult(**result_data_fixture)
     assert ret.stdout == "I ran."
 
 
@@ -342,3 +342,18 @@ def test_failed_operation(result_data_fixture):
     failed_json = failed.json()
     assert isinstance(failed_json, str)
     assert "its all good" in failed_json
+
+
+def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
+
+    with pytest.warns(DeprecationWarning):
+        qcel.models.ResultProperties(scf_one_electron_energy="-5.0")
+
+    with pytest.warns(DeprecationWarning):
+        qcel.models.ResultInput(**{k: result_data_fixture[k] for k in ["molecule", "model", "driver"]})
+
+    with pytest.warns(DeprecationWarning):
+        qcel.models.Result(**result_data_fixture)
+
+    with pytest.warns(DeprecationWarning):
+        qcel.models.Optimization(**optimization_data_fixture)

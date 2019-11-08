@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-
 from pydantic import Field, constr, validator
 
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string

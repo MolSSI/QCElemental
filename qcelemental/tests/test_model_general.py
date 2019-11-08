@@ -1,6 +1,9 @@
 import pytest
 
 from qcelemental.models import (
+    AtomicInput,
+    AtomicResult,
+    AtomicResultProperties,
     ComputeError,
     FailedOperation,
     Molecule,
@@ -8,15 +11,12 @@ from qcelemental.models import (
     OptimizationInput,
     ProtoModel,
     Provenance,
-    Result,
-    ResultInput,
-    ResultProperties,
 )
 
 
 def test_result_properties_default_skip():
 
-    obj = ResultProperties(scf_one_electron_energy="-5.0")
+    obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
 
@@ -24,7 +24,7 @@ def test_result_properties_default_skip():
 
 
 def test_result_properties_default_repr():
-    obj = ResultProperties(scf_one_electron_energy="-5.0")
+    obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
     assert "none" not in str(obj).lower()
     assert "scf_one_electron_energy" in str(obj)
     assert len(str(obj)) < 100
@@ -56,7 +56,7 @@ def test_repr_failed_op():
 
 def test_repr_result():
 
-    result = ResultInput(
+    result = AtomicInput(
         **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
     )
     assert "molecule_hash" in str(result)

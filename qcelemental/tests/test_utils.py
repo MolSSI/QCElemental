@@ -2,9 +2,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
+from pydantic import BaseModel, Field
 
 import qcelemental as qcel
-from pydantic import BaseModel, Field
 from qcelemental.testing import compare_recursive, compare_values
 
 from .addons import serialize_extensions

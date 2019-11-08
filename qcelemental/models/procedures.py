@@ -124,6 +124,7 @@ class OptimizationResult(OptimizationInput):
 
         return v
 
+
 def Optimization(*args, **kwargs):
     from warnings import warn
 

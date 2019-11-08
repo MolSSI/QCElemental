@@ -12,5 +12,5 @@ from .basemodels import AutodocBaseSettings, ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
 from .molecule import Molecule
-from .procedures import Optimization, OptimizationInput
-from .results import Result, ResultInput, ResultProperties
+from .procedures import Optimization, OptimizationInput, OptimizationResult
+from .results import AtomicInput, AtomicResult, AtomicResultProperties, Result, ResultInput, ResultProperties

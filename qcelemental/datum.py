@@ -6,7 +6,6 @@ from decimal import Decimal
 from typing import Any, Dict, Optional
 
 import numpy as np
-
 from pydantic import BaseModel, validator
 
 
