@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 isort = isort -rc qcelemental
-black = black -S -l 120 --target-version py37 qcelemental --exclude "checkup_data|data"
+black = black qclemental
 
 .PHONY: install
 install:

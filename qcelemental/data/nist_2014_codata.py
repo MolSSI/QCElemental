@@ -9,6 +9,7 @@ Access Date: 2018-09-26 22:11:02.928442 UTC
 File Authors: QCElemental Authors
 """
 
+# fmt: off
 nist_2014_codata = {
     'title':
     'NIST-CODATA Internationally Recommended 2014 Values of the Fundamental Physical Constants - SRD 121',

@@ -4,6 +4,7 @@ This is a file transcribed from Table 2 of the journal article below.
 File Authors: QCElemental Authors
 """
 
+# fmt: off
 alvarez_2008_covalent_radii = {
     'title':
     'Covalent radii revisited',
