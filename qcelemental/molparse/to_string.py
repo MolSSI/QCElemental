@@ -334,7 +334,7 @@ def to_string(
         for real, sym, xyz in zip(molrec["real"], molrec["elem"], geom):
             if bool(real) is False:
                 sym = ghost_format
-            smol.append(f"   {xyz[0]: .4f}   {xyz[1]: .4f}   {xyz[2]: .4f} {sym:2s}  0  0     0  0  0  0  0  0")
+            smol.append(f"{xyz[0]:10.4f}{xyz[1]:10.4f}{xyz[2]:10.4f}{sym:>3s}  0  0     0  0  0  0  0  0")
 
         for a1, a2, b in connectivity:
             smol.append(f" {(a1 + 1):2d} {(a2 + 1):2d}  {int(b):1d}  0  0  0  0")
