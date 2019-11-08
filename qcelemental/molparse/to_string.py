@@ -275,9 +275,7 @@ def to_string(
         split_atoms = np.split(atoms, molrec["fragment_separators"])
         for ifr, fr in enumerate(split_atoms):
             if len(split_atoms) > 1:  # harmless to include but tidier to exclude
-                smol.extend(
-                    ["--", f"""{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"""]
-                )
+                smol.extend(["--", f"{int(molrec['fragment_charges'][ifr])} {molrec['fragment_multiplicities'][ifr]}"])
             smol.extend(fr.tolist())
 
         # append units and any other non-default molecule keywords
