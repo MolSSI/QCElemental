@@ -51,7 +51,7 @@ def parse_type_str(prop) -> str:
         prop_type_str = type_to_string(prop)
     elif issubclass(prop.type_.__class__, Enum) or issubclass(prop.type_.__class__, EnumMeta):
         # Enumerate, have to do the __class__ or issubclass(prop.type_) throws issues later.
-        prop_type_str = '{' + ','.join([str(x.value) for x in prop.type_]) + '}'
+        prop_type_str = "{" + ",".join([str(x.value) for x in prop.type_]) + "}"
     elif type(prop.type_) is type and prop.shape == fields.SHAPE_SINGLETON:
         # Native Python type buried in a Field
         prop_type_str = type_to_string(prop.type_)
@@ -71,12 +71,12 @@ def parse_type_str(prop) -> str:
             if len(parsed_types) == 1:
                 prop_type_str = parsed_types[0]
             else:
-                prop_type_str = "Union[" + ', '.join(parsed_types) + ']'
+                prop_type_str = "Union[" + ", ".join(parsed_types) + "]"
         elif prop.shape == fields.SHAPE_MAPPING:
-            prop_type_str = "Dict[" + parse_type_str(key_field) + ', ' + parse_type_str(prop.type_) + ']'
+            prop_type_str = "Dict[" + parse_type_str(key_field) + ", " + parse_type_str(prop.type_) + "]"
         elif sub_fields is not None:
             # Not "optional", but iterable
-            prop_type_str = typing_map[prop.shape] + '[' + ', '.join([parse_type_str(sf) for sf in sub_fields]) + ']'
+            prop_type_str = typing_map[prop.shape] + "[" + ", ".join([parse_type_str(sf) for sf in sub_fields]) + "]"
         elif prop.type_ is Any:
             prop_type_str = "Any"
     elif "ConstrainedInt" in prop.type_.__name__:
@@ -90,10 +90,10 @@ def parse_type_str(prop) -> str:
                 # A bit of a catch-all
                 prop_type_str = prop.type_.__name__
             else:
-                prop_type_str = typing_map[prop.shape] + '[' + parse_type_str(prop.type_) + ']'
+                prop_type_str = typing_map[prop.shape] + "[" + parse_type_str(prop.type_) + "]"
         else:
             prop_type_str = (
-                typing_map[prop.shape] + '[' + ', '.join([parse_type_str(sf) for sf in prop.sub_fields]) + ']'
+                typing_map[prop.shape] + "[" + ", ".join([parse_type_str(sf) for sf in prop.sub_fields]) + "]"
             )
     else:
         # Finally, with nothing else to do...
@@ -113,15 +113,15 @@ def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool 
 
     # Convert the None to regex-parsable string
     if base_docs is None:
-        doc_edit = ''
+        doc_edit = ""
     else:
         doc_edit = base_docs
 
     # Is pydantic and not already formatted
-    if is_pydantic(target_object) and not re.search(r'^\s*Parameters\n', doc_edit, re.MULTILINE):
+    if is_pydantic(target_object) and not re.search(r"^\s*Parameters\n", doc_edit, re.MULTILINE):
         try:
             # Add the white space
-            if not doc_edit.endswith('\n\n'):
+            if not doc_edit.endswith("\n\n"):
                 doc_edit += "\n\n"
             # Add Parameters separate
             new_doc = dedent(doc_edit) + "Parameters\n----------\n"
@@ -138,7 +138,7 @@ def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool 
                 # Combine in the following format:
                 # name : type(, Optional, Default)
                 #   description
-                first_line = prop_name + ' : ' + prop_type_str
+                first_line = prop_name + " : " + prop_type_str
                 if not prop.required and (prop.default is None or is_pydantic(prop.default)):
                     first_line += ", Optional"
                 elif prop.default is not None:

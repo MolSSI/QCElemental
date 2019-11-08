@@ -112,7 +112,7 @@ class ResultProperties(ProtoModel):
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
 
 
@@ -120,16 +120,16 @@ class WavefunctionProperties(ProtoModel):
 
     # Class properties
     _return_results_names: Set[str] = {
-        'orbitals_a',
-        'orbitals_b',
-        'density_a',
-        'density_b',
-        'fock_a',
-        'fock_b',
-        'eigenvalues_a',
-        'eigenvalues_b',
-        'occupations_a',
-        'occupations_b',
+        "orbitals_a",
+        "orbitals_b",
+        "density_a",
+        "density_b",
+        "fock_a",
+        "fock_b",
+        "eigenvalues_a",
+        "eigenvalues_b",
+        "occupations_a",
+        "occupations_b",
     }
 
     # The full basis set description of the quantities
@@ -182,7 +182,7 @@ class WavefunctionProperties(ProtoModel):
     class Config(ProtoModel.Config):
         force_skip_defaults = True
 
-    @validator('scf_eigenvalues_a', 'scf_eigenvalues_b', 'scf_occupations_a', 'scf_occupations_b')
+    @validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     def _assert1d(cls, v, values):
 
         try:
@@ -191,7 +191,7 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError("Vector must be castable to shape (-1, )!")
         return v
 
-    @validator('scf_orbitals_a', 'scf_orbitals_b')
+    @validator("scf_orbitals_a", "scf_orbitals_b")
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
 
@@ -206,15 +206,15 @@ class WavefunctionProperties(ProtoModel):
         return v
 
     @validator(
-        'h_core_a',
-        'h_core_b',
-        'h_effective_a',
-        'h_effective_b',
+        "h_core_a",
+        "h_core_b",
+        "h_effective_a",
+        "h_effective_b",
         # SCF
-        'scf_density_a',
-        'scf_density_b',
-        'scf_fock_a',
-        'scf_fock_b',
+        "scf_density_a",
+        "scf_density_b",
+        "scf_fock_a",
+        "scf_fock_b",
     )
     def _assert2d(cls, v, values):
         bas = values.get("basis", None)
@@ -230,16 +230,16 @@ class WavefunctionProperties(ProtoModel):
         return v
 
     @validator(
-        'orbitals_a',
-        'orbitals_b',
-        'density_a',
-        'density_b',
-        'fock_a',
-        'fock_b',
-        'eigenvalues_a',
-        'eigenvalues_b',
-        'occupations_a',
-        'occupations_b',
+        "orbitals_a",
+        "orbitals_b",
+        "density_a",
+        "density_b",
+        "fock_a",
+        "fock_b",
+        "eigenvalues_a",
+        "eigenvalues_b",
+        "occupations_a",
+        "occupations_b",
     )
     def _assert_exists(cls, v, values):
 
@@ -293,7 +293,7 @@ class ResultInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [
             ("driver", self.driver.value),
             ("model", self.model.dict()),
@@ -341,7 +341,7 @@ class Result(ResultInput):
 
         return v
 
-    @validator('wavefunction', pre=True)
+    @validator("wavefunction", pre=True)
     def _wavefunction_protocol(cls, value, values):
 
         # We are pre, gotta do extra checks
@@ -352,44 +352,44 @@ class Result(ResultInput):
         elif isinstance(value, WavefunctionProperties):
             wfn = value.dict()
         else:
-            raise ValueError('wavefunction must be None, a dict, or a WavefunctionProperties object.')
+            raise ValueError("wavefunction must be None, a dict, or a WavefunctionProperties object.")
 
         # Do not propagate validation errors
-        if 'protocols' not in values:
+        if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")
 
         # Handle restricted
-        restricted = wfn.get('restricted', None)
+        restricted = wfn.get("restricted", None)
         if restricted is None:
-            raise ValueError('`restricted` is required.')
+            raise ValueError("`restricted` is required.")
 
         if restricted:
             for k in list(wfn.keys()):
-                if k.endswith('_b'):
+                if k.endswith("_b"):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = values['protocols'].wavefunction
+        wfnp = values["protocols"].wavefunction
         return_keep = None
-        if wfnp == 'all':
+        if wfnp == "all":
             pass
-        elif wfnp == 'none':
+        elif wfnp == "none":
             wfn = None
-        elif wfnp == 'return_results':
+        elif wfnp == "return_results":
             return_keep = [
-                'orbitals_a',
-                'orbitals_b',
-                'density_a',
-                'density_b',
-                'fock_a',
-                'fock_b',
-                'eigenvalues_a',
-                'eigenvalues_b',
-                'occupations_a',
-                'occupations_b',
+                "orbitals_a",
+                "orbitals_b",
+                "density_a",
+                "density_b",
+                "fock_a",
+                "fock_b",
+                "eigenvalues_a",
+                "eigenvalues_b",
+                "occupations_a",
+                "occupations_b",
             ]
-        elif wfnp == 'orbitals_and_eigenvalues':
-            return_keep = ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'eigenvalues_b']
+        elif wfnp == "orbitals_and_eigenvalues":
+            return_keep = ["orbitals_a", "orbitals_b", "eigenvalues_a", "eigenvalues_b"]
         else:
             raise ValueError(f"Protocol `wavefunction:{wfnp}` is not understood.")
 
@@ -410,14 +410,14 @@ class Result(ResultInput):
         else:
             return wfn
 
-    @validator('stdout')
+    @validator("stdout")
     def _stdout_protocol(cls, value, values):
 
         # Do not propagate validation errors
-        if 'protocols' not in values:
+        if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")
 
-        outp = values['protocols'].stdout
+        outp = values["protocols"].stdout
         if outp is True:
             return value
         elif outp is False:

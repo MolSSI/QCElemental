@@ -30,7 +30,7 @@ class ProtoModel(BaseModel):
         cls.__str__ = _repr
 
     @classmethod
-    def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
+    def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> "ProtoModel":  # type: ignore
         """
         Parses raw string or bytes into a Model object.
 
@@ -55,7 +55,7 @@ class ProtoModel(BaseModel):
             else:
                 raise TypeError("Input is neither str nor bytes, please specify an encoding.")
 
-        if encoding.endswith(('json', 'javascript', 'pickle')):
+        if encoding.endswith(("json", "javascript", "pickle")):
             return super().parse_raw(data, content_type=encoding)
         elif encoding in ["msgpack-ext", "json-ext"]:
             obj = deserialize(data, encoding)
@@ -65,7 +65,7 @@ class ProtoModel(BaseModel):
         return cls.parse_obj(obj)
 
     @classmethod
-    def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> 'ProtoModel':  # type: ignore
+    def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> "ProtoModel":  # type: ignore
         """Parses a file into a Model object.
 
         Parameters
@@ -144,7 +144,7 @@ class ProtoModel(BaseModel):
 
         return serialize(data, encoding=encoding)
 
-    def compare(self, other: Union['ProtoModel', BaseModel], **kwargs) -> bool:
+    def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
         """Compares the current object to the provided object recursively.
 
         Parameters

@@ -17,10 +17,10 @@ def _handle_return(passfail: bool, label: str, message: str, return_message: boo
 
     if not quiet:
         if passfail:
-            logging.info(f'    {label:.<53}PASSED')
+            logging.info(f"    {label:.<53}PASSED")
         else:
-            logging.error(f'    {label:.<53}FAILED')
-            logging.error(f'    {message:.<53}')
+            logging.error(f"    {label:.<53}FAILED")
+            logging.error(f"    {message:.<53}")
 
     if return_message:
         return passfail, message
@@ -97,7 +97,7 @@ def compare_values(
 
     """
     label = label or sys._getframe().f_back.f_code.co_name
-    pass_message = f'\t{label:.<66}PASSED'
+    pass_message = f"\t{label:.<66}PASSED"
     if return_handler is None:
         return_handler = _handle_return
 
@@ -127,9 +127,9 @@ def compare_values(
         )  # lgtm: [py/syntax-error]
 
     digits1 = abs(int(np.log10(atol))) + 2
-    digits_str = f'to atol={atol}'
+    digits_str = f"to atol={atol}"
     if rtol > 1.0e-12:
-        digits_str += f', rtol={rtol}'
+        digits_str += f", rtol={rtol}"
 
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
     allclose = bool(np.all(isclose))
@@ -139,27 +139,27 @@ def compare_values(
 
     else:
         if xptd.shape == ():
-            xptd_str = f'{float(xptd):.{digits1}f}'
+            xptd_str = f"{float(xptd):.{digits1}f}"
         else:
             xptd_str = np.array_str(xptd, max_line_width=120, precision=12, suppress_small=True)
-            xptd_str = '\n'.join('    ' + ln for ln in xptd_str.splitlines())
+            xptd_str = "\n".join("    " + ln for ln in xptd_str.splitlines())
 
         if cptd.shape == ():
-            cptd_str = f'{float(cptd):.{digits1}f}'
+            cptd_str = f"{float(cptd):.{digits1}f}"
         else:
             cptd_str = np.array_str(cptd, max_line_width=120, precision=12, suppress_small=True)
-            cptd_str = '\n'.join('    ' + ln for ln in cptd_str.splitlines())
+            cptd_str = "\n".join("    " + ln for ln in cptd_str.splitlines())
 
         diff = cptd - xptd
         if xptd.shape == ():
-            diff_str = f'{float(diff):.{digits1}f}'
+            diff_str = f"{float(diff):.{digits1}f}"
             message = """\t{}: computed value ({}) does not match ({}) {} by difference ({}).""".format(
                 label, cptd_str, xptd_str, digits_str, diff_str
             )
         else:
             diff[isclose] = 0.0
             diff_str = np.array_str(diff, max_line_width=120, precision=12, suppress_small=False)
-            diff_str = '\n'.join('    ' + ln for ln in diff_str.splitlines())
+            diff_str = "\n".join("    " + ln for ln in diff_str.splitlines())
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
                 label, digits_str, xptd_str, cptd_str, diff_str
             )
@@ -208,7 +208,7 @@ def compare(
 
     """
     label = label or sys._getframe().f_back.f_code.co_name
-    pass_message = f'\t{label:.<66}PASSED'
+    pass_message = f"\t{label:.<66}PASSED"
     if return_handler is None:
         return_handler = _handle_return
 
@@ -234,27 +234,27 @@ def compare(
 
     else:
         if xptd.shape == ():
-            xptd_str = f'{xptd}'
+            xptd_str = f"{xptd}"
         else:
             xptd_str = np.array_str(xptd, max_line_width=120, precision=12, suppress_small=True)
-            xptd_str = '\n'.join('    ' + ln for ln in xptd_str.splitlines())
+            xptd_str = "\n".join("    " + ln for ln in xptd_str.splitlines())
 
         if cptd.shape == ():
-            cptd_str = f'{cptd}'
+            cptd_str = f"{cptd}"
         else:
             cptd_str = np.array_str(cptd, max_line_width=120, precision=12, suppress_small=True)
-            cptd_str = '\n'.join('    ' + ln for ln in cptd_str.splitlines())
+            cptd_str = "\n".join("    " + ln for ln in cptd_str.splitlines())
 
         try:
             diff = cptd - xptd
         except TypeError:
-            diff_str = '(n/a)'
+            diff_str = "(n/a)"
         else:
             if xptd.shape == ():
-                diff_str = f'{diff}'
+                diff_str = f"{diff}"
             else:
                 diff_str = np.array_str(diff, max_line_width=120, precision=12, suppress_small=False)
-                diff_str = '\n'.join('    ' + ln for ln in diff_str.splitlines())
+                diff_str = "\n".join("    " + ln for ln in diff_str.splitlines())
 
         if xptd.shape == ():
             message = """\t{}: computed value ({}) does not match ({}) by difference ({}).""".format(
@@ -328,8 +328,8 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
 
 
 def compare_recursive(
-    expected: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
-    computed: Union[Dict, BaseModel, 'ProtoModel'],  # type: ignore
+    expected: Union[Dict, BaseModel, "ProtoModel"],  # type: ignore
+    computed: Union[Dict, BaseModel, "ProtoModel"],  # type: ignore
     label: str = None,
     *,
     atol: float = 1.0e-6,
@@ -377,7 +377,7 @@ def compare_recursive(
     label = label or sys._getframe().f_back.f_code.co_name
     if atol >= 1:
         raise ValueError(
-            'Prior to v0.4.0, ``compare_recursive`` used to 10**-atol any atol >=1. That has ceased, so please express your atol literally.'
+            "Prior to v0.4.0, ``compare_recursive`` used to 10**-atol any atol >=1. That has ceased, so please express your atol literally."
         )
     if return_handler is None:
         return_handler = _handle_return
@@ -387,7 +387,7 @@ def compare_recursive(
     if forgive is None:
         forgive = []
     else:
-        forgive = [(fg if fg.startswith('root.') else 'root.' + fg) for fg in forgive]
+        forgive = [(fg if fg.startswith("root.") else "root." + fg) for fg in forgive]
     forgiven = []
 
     for nomatch in sorted(errors):
@@ -422,7 +422,7 @@ def compare_molrecs(
     rtol: float = 1.0e-16,
     forgive=None,
     verbose: int = 1,
-    relative_geoms='exact',
+    relative_geoms="exact",
     return_message: bool = False,
     return_handler: Callable = None,
 ) -> bool:
@@ -440,41 +440,41 @@ def compare_molrecs(
         #     dicary['fix_symmetry'] = str(dicary['fix_symmetry'])
         # if 'units' in dicary:
         #     dicary['units'] = str(dicary['units'])
-        if 'fragment_files' in dicary:
-            dicary['fragment_files'] = [str(f) for f in dicary['fragment_files']]
+        if "fragment_files" in dicary:
+            dicary["fragment_files"] = [str(f) for f in dicary["fragment_files"]]
         # and about int vs long errors
         # if 'molecular_multiplicity' in dicary:
         #     dicary['molecular_multiplicity'] = int(dicary['molecular_multiplicity'])
         # if 'fragment_multiplicities' in dicary:
         #     dicary['fragment_multiplicities'] = [(m if m is None else int(m))
         #                                          for m in dicary['fragment_multiplicities']]
-        if 'fragment_separators' in dicary:
-            dicary['fragment_separators'] = [(s if s is None else int(s)) for s in dicary['fragment_separators']]
+        if "fragment_separators" in dicary:
+            dicary["fragment_separators"] = [(s if s is None else int(s)) for s in dicary["fragment_separators"]]
         # forgive generator version changes
-        if 'provenance' in dicary:
-            dicary['provenance'].pop('version')
+        if "provenance" in dicary:
+            dicary["provenance"].pop("version")
         # regularize connectivity ordering
-        if 'connectivity' in dicary:
-            conn = [(min(at1, at2), max(at1, at2), bo) for (at1, at2, bo) in dicary['connectivity']]
+        if "connectivity" in dicary:
+            conn = [(min(at1, at2), max(at1, at2), bo) for (at1, at2, bo) in dicary["connectivity"]]
             conn.sort(key=lambda tup: tup[0])
-            dicary['connectivity'] = conn
+            dicary["connectivity"] = conn
 
         return dicary
 
     xptd = massage_dicts(xptd)
     cptd = massage_dicts(cptd)
 
-    if relative_geoms == 'exact':
+    if relative_geoms == "exact":
         pass
-    elif relative_geoms == 'align':
+    elif relative_geoms == "align":
         # can't just expect geometries to match, so we'll align them, check that
         #   they overlap and that the translation/rotation arrays jibe with
         #   fix_com/orientation, then attach the oriented geom to computed before the
         #   recursive dict comparison.
         from .molutil.align import B787
 
-        cgeom = np.array(cptd['geom']).reshape((-1, 3))
-        rgeom = np.array(xptd['geom']).reshape((-1, 3))
+        cgeom = np.array(cptd["geom"]).reshape((-1, 3))
+        rgeom = np.array(xptd["geom"]).reshape((-1, 3))
         rmsd, mill = B787(
             rgeom=rgeom,
             cgeom=cgeom,
@@ -485,26 +485,26 @@ def compare_molrecs(
             run_mirror=False,
             verbose=0,
         )
-        if cptd['fix_com']:
+        if cptd["fix_com"]:
             return compare(
                 True,
                 np.allclose(np.zeros((3)), mill.shift, atol=atol),
-                'null shift',
+                "null shift",
                 quiet=(verbose == 0),
                 return_message=return_message,
                 return_handler=return_handler,
             )
-        if cptd['fix_orientation']:
+        if cptd["fix_orientation"]:
             return compare(
                 True,
                 np.allclose(np.identity(3), mill.rotation, atol=atol),
-                'null rotation',
+                "null rotation",
                 quiet=(verbose == 0),
                 return_message=return_message,
                 return_handler=return_handler,
             )
         ageom = mill.align_coordinates(cgeom)
-        cptd['geom'] = ageom.reshape((-1))
+        cptd["geom"] = ageom.reshape((-1))
 
     return compare_recursive(
         xptd,

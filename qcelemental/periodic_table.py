@@ -88,7 +88,7 @@ class PeriodicTable:
             assert isinstance(atom, str)
             return atom.capitalize()
 
-    def to_mass(self, atom: Union[int, str], *, return_decimal: bool = False) -> Union[float, 'Decimal']:
+    def to_mass(self, atom: Union[int, str], *, return_decimal: bool = False) -> Union[float, "Decimal"]:
         """Get atomic mass of `atom`.
 
         Parameters
@@ -326,17 +326,17 @@ class PeriodicTable:
         try:
             from . import checkup_data
         except ImportError:  # pragma: no cover
-            print('Info for comparison (directory checkup_data) not installed. Run from source.')
+            print("Info for comparison (directory checkup_data) not installed. Run from source.")
 
         class bcolors:
-            HEADER = '\033[95m'
-            OKBLUE = '\033[94m'
-            OKGREEN = '\033[92m'
-            WARNING = '\033[93m'
-            FAIL = '\033[91m'
-            ENDC = '\033[0m'
-            BOLD = '\033[1m'
-            UNDERLINE = '\033[4m'
+            HEADER = "\033[95m"
+            OKBLUE = "\033[94m"
+            OKGREEN = "\033[92m"
+            WARNING = "\033[93m"
+            FAIL = "\033[91m"
+            ENDC = "\033[0m"
+            BOLD = "\033[1m"
+            UNDERLINE = "\033[4m"
 
         # print(bcolors.OKBLUE + '\nChecking z2element vs. Psi4 ...' + bcolors.ENDC)
         # for zz in self._z2element:
@@ -346,70 +346,70 @@ class PeriodicTable:
         #        zz].capitalize(), 'Element {} differs from {} for Z={}'.format(
         #            z_to_element[zz], checkup_data.periodictable.z2element[zz].capitalize(), zz)
 
-        print(bcolors.OKBLUE + '\nChecking z2el vs. Psi4 ...' + bcolors.ENDC)
+        print(bcolors.OKBLUE + "\nChecking z2el vs. Psi4 ..." + bcolors.ENDC)
         for zz in self._z2el:
             if 0 < zz < 108:
                 assert (
                     self._z2el[zz] == checkup_data.periodictable.z2el[zz].capitalize()
-                ), 'Element {} differs from {} for Z={}'.format(
+                ), "Element {} differs from {} for Z={}".format(
                     self._z2el[zz], checkup_data.periodictable.z2el[zz].capitalize(), zz
                 )
 
-        print(bcolors.OKBLUE + '\nChecking el2z vs. Psi4 ...' + bcolors.ENDC)
+        print(bcolors.OKBLUE + "\nChecking el2z vs. Psi4 ..." + bcolors.ENDC)
         for el in self._el2z:
             if self._el2z[el] > 107:
                 break
-            if el not in ['X', 'Gh']:
+            if el not in ["X", "Gh"]:
                 assert (
                     self._el2z[el] == checkup_data.periodictable.el2z[el.upper()]
-                ), 'Element {} differs from {}'.format(self._el2z[el], checkup_data.periodictable.el2z[el.upper()])
+                ), "Element {} differs from {}".format(self._el2z[el], checkup_data.periodictable.el2z[el.upper()])
 
-        translate = {'UUB': 'Cn', 'UUT': 'Nh', 'UUQ': 'Fl', 'UUP': 'Mc', 'UUH': 'Lv', 'UUS': 'Ts', 'UUO': 'Og'}
+        translate = {"UUB": "Cn", "UUT": "Nh", "UUQ": "Fl", "UUP": "Mc", "UUH": "Lv", "UUS": "Ts", "UUO": "Og"}
         translate = {v: k for k, v in translate.items()}
 
         tol = 1.0e-5
-        print(bcolors.OKBLUE + '\nChecking ({}) el2mass vs. Psi4 ...'.format(tol))
+        print(bcolors.OKBLUE + "\nChecking ({}) el2mass vs. Psi4 ...".format(tol))
         for el in self.E:
             ptel = translate.get(el, el.upper())
-            if el not in ['X', 'Gh']:
+            if el not in ["X", "Gh"]:
                 ref = self._eliso2mass[el]
                 val = checkup_data.periodictable.el2mass[ptel]
                 diff = abs(float(ref) - val)
                 if diff > 1.0e-2:
                     print(
                         bcolors.FAIL
-                        + 'Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val)
+                        + "Element {} differs by {:12.8f}: {} (this) vs {} (psi)".format(el, diff, ref, val)
                         + bcolors.ENDC
                     )
                 elif diff > tol:
-                    print('Element {} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
+                    print("Element {} differs by {:12.8f}: {} (this) vs {} (psi)".format(el, diff, ref, val))
 
         tol = 1.0e-5
-        print(bcolors.OKBLUE + '\nChecking ({}) el2mass vs. Cfour ...'.format(tol) + bcolors.ENDC)
+        print(bcolors.OKBLUE + "\nChecking ({}) el2mass vs. Cfour ...".format(tol) + bcolors.ENDC)
         for el in self.E:
             zz = self._el2z[el]
             if zz > 112:
                 break
-            if el not in ['X', 'Gh']:
+            if el not in ["X", "Gh"]:
                 ref = self._eliso2mass[el]
                 val = checkup_data.cfour_primary_masses[zz - 1]
                 diff = abs(float(ref) - val)
                 if diff > 1.0e-2:
                     print(
                         bcolors.FAIL
-                        + 'Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val)
+                        + "Element {} differs by {:12.8f}: {} (this) vs {} (cfour)".format(el, diff, ref, val)
                         + bcolors.ENDC
                     )
                 elif diff > tol:
-                    print('Element {} differs by {:12.8f}: {} (this) vs {} (cfour)'.format(el, diff, ref, val))
+                    print("Element {} differs by {:12.8f}: {} (this) vs {} (cfour)".format(el, diff, ref, val))
 
         tol = 1.0e-3
-        print(bcolors.OKBLUE + '\nChecking ({}) eliso2mass vs. Psi4 ...'.format(tol) + bcolors.ENDC)
+        print(bcolors.OKBLUE + "\nChecking ({}) eliso2mass vs. Psi4 ...".format(tol) + bcolors.ENDC)
         for el in self._eliso2mass:
             ptel = translate.get(el, el.upper())
-            if el not in ['X', 'Gh']:
+            if el not in ["X", "Gh"]:
                 if ptel not in checkup_data.periodictable.eliso2mass:
-                    print('Element {:6} missing from Psi4'.format(el))
+                    print("Element {:6} missing from Psi4".format(el))
                     continue
                 ref = self._eliso2mass[el]
                 val = checkup_data.periodictable.eliso2mass[ptel]
@@ -417,13 +417,13 @@ class PeriodicTable:
                 if diff > 1.0e-2:
                     print(
                         bcolors.FAIL
-                        + 'Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val)
+                        + "Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)".format(el, diff, ref, val)
                         + bcolors.ENDC
                     )
                 elif diff > tol:
-                    print('Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)'.format(el, diff, ref, val))
+                    print("Element {:6} differs by {:12.8f}: {} (this) vs {} (psi)".format(el, diff, ref, val))
 
-    def write_c_header(self, filename: str = 'masses.h') -> None:
+    def write_c_header(self, filename: str = "masses.h") -> None:
         """Write C header file defining arrays of mass and element information.
 
         Parameters
@@ -433,34 +433,34 @@ class PeriodicTable:
         """
 
         text = [
-            '#ifndef _qcelemental_masses_h_',
-            '#define _qcelemental_masses_h_',
-            '',
-            '/* This file is autogenerated from the QCElemental python module */',
-            '',
-            'static const char *atomic_labels[]={',
+            "#ifndef _qcelemental_masses_h_",
+            "#define _qcelemental_masses_h_",
+            "",
+            "/* This file is autogenerated from the QCElemental python module */",
+            "",
+            "static const char *atomic_labels[]={",
             '"' + '","'.join(e.upper() for e in self.E) + '"',
-            '};',
-            '',
-            'static const double an2masses[]={',
-            ','.join(str(self._eliso2mass[e]) for e in self.E),
-            '};',
-            '',
-            'static const char *mass_labels[]={',
-            '"' + '","'.join(e.upper() for e in self.EA if e not in ['Gh', 'X', 'X0']) + '"',
-            '};',
-            '',
-            'static const double atomic_masses[]={',
-            ','.join(str(self._eliso2mass[e]) for e in self.EA if e not in ['Gh', 'X', 'X0']),
-            '};',
-            '',
-            '#endif /* header guard */',
-            '',
+            "};",
+            "",
+            "static const double an2masses[]={",
+            ",".join(str(self._eliso2mass[e]) for e in self.E),
+            "};",
+            "",
+            "static const char *mass_labels[]={",
+            '"' + '","'.join(e.upper() for e in self.EA if e not in ["Gh", "X", "X0"]) + '"',
+            "};",
+            "",
+            "static const double atomic_masses[]={",
+            ",".join(str(self._eliso2mass[e]) for e in self.EA if e not in ["Gh", "X", "X0"]),
+            "};",
+            "",
+            "#endif /* header guard */",
+            "",
         ]  # yapf: disable
 
-        with open(filename, 'w') as handle:
-            handle.write('\n'.join(text))
-        print('File written ({}). Remember to add license and clang-format it.'.format(filename))
+        with open(filename, "w") as handle:
+            handle.write("\n".join(text))
+        print("File written ({}). Remember to add license and clang-format it.".format(filename))
 
 
 # el2mass["GH"] = 0.  # note that ghost atoms in Cfour have mass 100.

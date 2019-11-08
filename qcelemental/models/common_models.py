@@ -50,14 +50,14 @@ class DriverEnum(str, Enum):
     """Allowed quantum chemistry driver values.
     """
 
-    energy = 'energy'
-    gradient = 'gradient'
-    hessian = 'hessian'
-    properties = 'properties'
+    energy = "energy"
+    gradient = "gradient"
+    hessian = "hessian"
+    properties = "properties"
 
     def derivative_int(self):
-        egh = ['energy', 'gradient', 'hessian', 'third', 'fourth', 'fifth']
-        if self == 'properties':
+        egh = ["energy", "gradient", "hessian", "third", "fourth", "fifth"]
+        if self == "properties":
             return 0
         else:
             return egh.index(self)
@@ -82,7 +82,7 @@ class ComputeError(ProtoModel):
     class Config:
         repr_style = ["error_type", "error_message"]
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]
 
 
@@ -121,7 +121,7 @@ class FailedOperation(ProtoModel):
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
 
 

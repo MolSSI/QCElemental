@@ -28,6 +28,6 @@ del physical_constants
 del covalent_radii
 del vanderwaals_radii
 
-__version__ = get_information('version')
-__git_revision__ = get_information('git_revision')
+__version__ = get_information("version")
+__git_revision__ = get_information("git_revision")
 del get_information

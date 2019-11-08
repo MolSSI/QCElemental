@@ -46,7 +46,7 @@ def update_with_error(a: Dict, b: Dict, path=None) -> Dict:
             ):  # yapf: disable
                 a[key] = b[key]
             else:
-                raise KeyError('Conflict at {}: {} vs. {}'.format('.'.join(path + [str(key)]), a[key], b[key]))
+                raise KeyError("Conflict at {}: {} vs. {}".format(".".join(path + [str(key)]), a[key], b[key]))
         else:
             a[key] = b[key]
     return a
@@ -68,7 +68,7 @@ def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> L
         else:
             return radang
 
-    if units == 'Angstrom':
+    if units == "Angstrom":
         iutau = 1.0 / constants.bohr2angstroms
     else:
         iutau = 1.0
@@ -89,7 +89,7 @@ def standardize_efp_angles_units(units: str, geom_hints: List[List[float]]) -> L
 def filter_comments(string: str) -> str:
     """Remove from `string` any Python-style comments ('#' to end of line)."""
 
-    return re.sub(r'(^|[^\\])#.*', '', string)
+    return re.sub(r"(^|[^\\])#.*", "", string)
 
 
 def unnp(dicary: Dict, _path=None, *, flat: bool = False) -> Dict:

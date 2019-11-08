@@ -65,12 +65,12 @@ def which(
 
     """
     if env is None:
-        lenv = {'PATH': os.pathsep + os.environ.get('PATH', '') + os.path.dirname(sys.executable)}
+        lenv = {"PATH": os.pathsep + os.environ.get("PATH", "") + os.path.dirname(sys.executable)}
     else:
-        lenv = {'PATH': os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ''])}
+        lenv = {"PATH": os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ""])}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
-    ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv['PATH'])
+    ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv["PATH"])
 
     if raise_error and ans is None:
         raise ModuleNotFoundError(

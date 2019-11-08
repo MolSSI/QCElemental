@@ -16,8 +16,8 @@ def from_input_arrays(
     *,
     enable_qm=True,
     enable_efp=True,
-    missing_enabled_return_qm='error',
-    missing_enabled_return_efp='error',
+    missing_enabled_return_qm="error",
+    missing_enabled_return_efp="error",
     # qm
     geom=None,
     elea=None,
@@ -27,7 +27,7 @@ def from_input_arrays(
     real=None,
     elbl=None,
     name=None,
-    units='Angstrom',
+    units="Angstrom",
     input_units_to_au=None,
     fix_com=None,
     fix_orientation=None,
@@ -63,13 +63,13 @@ def from_input_arrays(
     """
     molinit = {}
     if enable_qm:
-        molinit['qm'] = {}
+        molinit["qm"] = {}
     if enable_efp:
-        molinit['efp'] = {}
+        molinit["efp"] = {}
 
     if enable_efp:
         processed = from_arrays(
-            domain='efp',
+            domain="efp",
             missing_enabled_return=missing_enabled_return_efp,
             units=units,
             input_units_to_au=input_units_to_au,
@@ -82,18 +82,18 @@ def from_input_arrays(
             # which other processing details needed?
             verbose=verbose,
         )
-        update_with_error(molinit, {'efp': processed})
-        if molinit['efp'] == {}:
-            del molinit['efp']
+        update_with_error(molinit, {"efp": processed})
+        if molinit["efp"] == {}:
+            del molinit["efp"]
 
-    efp_present = enable_efp and 'efp' in molinit and bool(len(molinit['efp']['geom_hints']))
+    efp_present = enable_efp and "efp" in molinit and bool(len(molinit["efp"]["geom_hints"]))
     if efp_present:
         fix_com = True
         fix_orientation = True
-        fix_symmetry = 'c1'
+        fix_symmetry = "c1"
 
     if enable_qm:
-        dm = 'qmvz' if geom_unsettled else 'qm'
+        dm = "qmvz" if geom_unsettled else "qm"
         processed = from_arrays(
             domain=dm,
             missing_enabled_return=missing_enabled_return_qm,
@@ -126,9 +126,9 @@ def from_input_arrays(
             copy=copy,
             verbose=1,
         )
-        update_with_error(molinit, {'qm': processed})
-        if molinit['qm'] == {}:
-            del molinit['qm']
+        update_with_error(molinit, {"qm": processed})
+        if molinit["qm"] == {}:
+            del molinit["qm"]
 
     return molinit
 
@@ -143,7 +143,7 @@ def from_arrays(
     real=None,
     elbl=None,
     name=None,
-    units='Angstrom',
+    units="Angstrom",
     input_units_to_au=None,
     fix_com=None,
     fix_orientation=None,
@@ -161,8 +161,8 @@ def from_arrays(
     geom_hints=None,
     geom_unsettled=None,
     variables=None,
-    domain='qm',
-    missing_enabled_return='error',
+    domain="qm",
+    missing_enabled_return="error",
     np_out=True,
     speclabel=True,
     tooclose=0.1,
@@ -297,23 +297,23 @@ def from_arrays(
 
     """
     # <<  domain sorting  >>
-    available_domains = ['qm', 'efp', 'qmvz']
+    available_domains = ["qm", "efp", "qmvz"]
     if domain not in available_domains:
         raise ValidationError(
-            'Topology domain {} not available for processing. Choose among {}'.format(domain, available_domains)
+            "Topology domain {} not available for processing. Choose among {}".format(domain, available_domains)
         )
 
-    if domain == 'qm' and (geom is None or np.asarray(geom).size == 0):
-        if missing_enabled_return == 'none':
+    if domain == "qm" and (geom is None or np.asarray(geom).size == 0):
+        if missing_enabled_return == "none":
             return {}
-        elif missing_enabled_return == 'minimal':
+        elif missing_enabled_return == "minimal":
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == 'efp' and (geom_hints is None or np.asarray(geom_hints).size == 0):
-        if missing_enabled_return == 'none':
+    if domain == "efp" and (geom_hints is None or np.asarray(geom_hints).size == 0):
+        if missing_enabled_return == "none":
             return {}
-        elif missing_enabled_return == 'minimal':
+        elif missing_enabled_return == "minimal":
             geom_hints = []
             fragment_files = []
             hint_types = []
@@ -332,24 +332,24 @@ def from_arrays(
         connectivity=connectivity,
         always_return_iutau=False,
     )
-    processed['provenance'] = provenance_stamp(__name__)
+    processed["provenance"] = provenance_stamp(__name__)
     update_with_error(molinit, processed)
 
-    if domain == 'efp':
+    if domain == "efp":
         processed = validate_and_fill_efp(fragment_files=fragment_files, hint_types=hint_types, geom_hints=geom_hints)
         update_with_error(molinit, processed)
-        extern = bool(len(molinit['geom_hints']))
+        extern = bool(len(molinit["geom_hints"]))
 
-    if domain == 'qm' or (domain == 'efp' and geom is not None) or domain == 'qmvz':
-        if domain == 'qmvz':
+    if domain == "qm" or (domain == "efp" and geom is not None) or domain == "qmvz":
+        if domain == "qmvz":
             processed = validate_and_fill_unsettled_geometry(geom_unsettled=geom_unsettled, variables=variables)
             update_with_error(molinit, processed)
-            nat = len(molinit['geom_unsettled'])
+            nat = len(molinit["geom_unsettled"])
 
         else:
             processed = validate_and_fill_geometry(geom=geom, tooclose=tooclose, copy=copy)
             update_with_error(molinit, processed)
-            nat = molinit['geom'].shape[0] // 3
+            nat = molinit["geom"].shape[0] // 3
 
         processed = validate_and_fill_nuclei(
             nat,
@@ -374,22 +374,22 @@ def from_arrays(
         )
         update_with_error(molinit, processed)
 
-        Z_available = molinit['elez'] * molinit['real'] * 1.0
+        Z_available = molinit["elez"] * molinit["real"] * 1.0
         processed = validate_and_fill_chgmult(
             zeff=Z_available,
-            fragment_separators=molinit['fragment_separators'],
+            fragment_separators=molinit["fragment_separators"],
             molecular_charge=molecular_charge,
-            fragment_charges=molinit['fragment_charges'],
+            fragment_charges=molinit["fragment_charges"],
             molecular_multiplicity=molecular_multiplicity,
-            fragment_multiplicities=molinit['fragment_multiplicities'],
+            fragment_multiplicities=molinit["fragment_multiplicities"],
             zero_ghost_fragments=zero_ghost_fragments,
             verbose=verbose,
         )
-        del molinit['fragment_charges']  # sometimes safe update is too picky about overwriting v_a_f_fragments values
-        del molinit['fragment_multiplicities']
+        del molinit["fragment_charges"]  # sometimes safe update is too picky about overwriting v_a_f_fragments values
+        del molinit["fragment_multiplicities"]
         update_with_error(molinit, processed)
 
-    extern = domain == 'efp'
+    extern = domain == "efp"
 
     processed = validate_and_fill_frame(
         extern=extern, fix_com=fix_com, fix_orientation=fix_orientation, fix_symmetry=fix_symmetry
@@ -397,7 +397,7 @@ def from_arrays(
     update_with_error(molinit, processed)
 
     if verbose >= 2:
-        print('RETURN FROM qcel.molparse.from_arrays(domain={})'.format(domain.upper()))
+        print("RETURN FROM qcel.molparse.from_arrays(domain={})".format(domain.upper()))
         pprint.pprint(molinit)
 
     if not np_out:
@@ -408,7 +408,7 @@ def from_arrays(
 
 def validate_and_fill_units(
     name=None,
-    units='Angstrom',
+    units="Angstrom",
     input_units_to_au=None,
     comment=None,
     provenance=None,
@@ -418,44 +418,44 @@ def validate_and_fill_units(
     molinit = {}
 
     if name is not None:
-        molinit['name'] = name
+        molinit["name"] = name
 
     if comment is not None:
-        molinit['comment'] = comment
+        molinit["comment"] = comment
 
     def validate_provenance(dicary):
-        expected_prov_keys = ['creator', 'routine', 'version']
+        expected_prov_keys = ["creator", "routine", "version"]
         try:
             prov_keys = sorted(dicary.keys())
         except AttributeError:
             raise ValidationError("Provenance entry is not dictionary: {}".format(dicary))
 
         if prov_keys == expected_prov_keys:
-            if not isinstance(dicary['creator'], str):
+            if not isinstance(dicary["creator"], str):
                 raise ValidationError(
                     """Provenance key 'creator' should be string of creating program's name: {}""".format(
-                        dicary['creator']
+                        dicary["creator"]
                     )
                 )
-            if not re.fullmatch(VERSION_PATTERN, dicary['version'], re.VERBOSE):
+            if not re.fullmatch(VERSION_PATTERN, dicary["version"], re.VERBOSE):
                 raise ValidationError(
-                    """Provenance key 'version' should be a valid PEP 440 string: {}""".format(dicary['version'])
+                    """Provenance key 'version' should be a valid PEP 440 string: {}""".format(dicary["version"])
                 )
-            if not isinstance(dicary['routine'], str):
+            if not isinstance(dicary["routine"], str):
                 raise ValidationError(
                     """Provenance key 'routine' should be string of creating function's name: {}""".format(
-                        dicary['routine']
+                        dicary["routine"]
                     )
                 )
             return True
         else:
-            raise ValidationError('Provenance keys ({}) incorrect: {}'.format(expected_prov_keys, prov_keys))
+            raise ValidationError("Provenance keys ({}) incorrect: {}".format(expected_prov_keys, prov_keys))
 
     if provenance is None:
-        molinit['provenance'] = {}
+        molinit["provenance"] = {}
     else:
         if validate_provenance(provenance):
-            molinit['provenance'] = deepcopy(provenance)
+            molinit["provenance"] = deepcopy(provenance)
 
     if connectivity is not None:
         conn = []
@@ -469,20 +469,20 @@ def validate_and_fill_units(
                     raise ValidationError("""Connectivity bond order should be float [0, 5]: {}""".format(bondorder))
                 conn.append((int(min(at1, at2)), int(max(at1, at2)), float(bondorder)))
             conn.sort(key=lambda tup: tup[0])
-            molinit['connectivity'] = conn
+            molinit["connectivity"] = conn
         except ValueError:
             raise ValidationError(
                 "Connectivity entry is not of form [(at1, at2, bondorder), ...]: {}".format(connectivity)
             )
 
-    if units.capitalize() in ['Angstrom', 'Bohr']:
-        molinit['units'] = units.capitalize()
+    if units.capitalize() in ["Angstrom", "Bohr"]:
+        molinit["units"] = units.capitalize()
     else:
-        raise ValidationError('Invalid molecule geometry units: {}'.format(units))
+        raise ValidationError("Invalid molecule geometry units: {}".format(units))
 
-    if molinit['units'] == 'Bohr':
+    if molinit["units"] == "Bohr":
         iutau = 1.0
-    elif molinit['units'] == 'Angstrom':
+    elif molinit["units"] == "Angstrom":
         iutau = 1.0 / constants.bohr2angstroms
 
     if input_units_to_au is not None:
@@ -494,7 +494,7 @@ def validate_and_fill_units(
             )
 
     if always_return_iutau or input_units_to_au is not None:
-        molinit['input_units_to_au'] = iutau
+        molinit["input_units_to_au"] = iutau
 
     return molinit
 
@@ -505,43 +505,43 @@ def validate_and_fill_frame(extern, fix_com=None, fix_orientation=None, fix_symm
         com = True
     elif fix_com is False:
         if extern:
-            raise ValidationError('Invalid fix_com ({}) with extern ({})'.format(fix_com, extern))
+            raise ValidationError("Invalid fix_com ({}) with extern ({})".format(fix_com, extern))
         else:
             com = False
     elif fix_com is None:
         com = extern
     else:
-        raise ValidationError('Invalid fix_com: {}'.format(fix_com))
+        raise ValidationError("Invalid fix_com: {}".format(fix_com))
 
     if fix_orientation is True:
         orient = True
     elif fix_orientation is False:
         if extern:
-            raise ValidationError('Invalid fix_orientation ({}) with extern ({})'.format(fix_orientation, extern))
+            raise ValidationError("Invalid fix_orientation ({}) with extern ({})".format(fix_orientation, extern))
         else:
             orient = False
     elif fix_orientation is None:
         orient = extern
     else:
-        raise ValidationError('Invalid fix_orientation: {}'.format(fix_orientation))
+        raise ValidationError("Invalid fix_orientation: {}".format(fix_orientation))
 
     symm = None
     if extern:
         if fix_symmetry is None:
-            symm = 'c1'
-        elif fix_symmetry.lower() == 'c1':
-            symm = 'c1'
+            symm = "c1"
+        elif fix_symmetry.lower() == "c1":
+            symm = "c1"
         else:
-            raise ValidationError('Invalid (non-C1) fix_symmetry ({}) with extern ({})'.format(fix_symmetry, extern))
+            raise ValidationError("Invalid (non-C1) fix_symmetry ({}) with extern ({})".format(fix_symmetry, extern))
     else:
         if fix_symmetry is not None:
             symm = fix_symmetry.lower()
 
     molinit = {}
-    molinit['fix_com'] = com
-    molinit['fix_orientation'] = orient
+    molinit["fix_com"] = com
+    molinit["fix_orientation"] = orient
     if symm:
-        molinit['fix_symmetry'] = symm
+        molinit["fix_symmetry"] = symm
 
     return molinit
 
@@ -570,13 +570,13 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
     except AttributeError:
         raise ValidationError("""fragment_files not strings: {}""".format(fragment_files))
 
-    if all(f in ['xyzabc', 'points', 'rotmat'] for f in hint_types):
+    if all(f in ["xyzabc", "points", "rotmat"] for f in hint_types):
         types = hint_types
     else:
         raise ValidationError("""hint_types not among 'xyzabc', 'points', 'rotmat': {}""".format(hint_types))
 
     hints = []
-    hlen = {'xyzabc': 6, 'points': 9, 'rotmat': 12}
+    hlen = {"xyzabc": 6, "points": 9, "rotmat": 12}
     for ifr, fr in enumerate(geom_hints):
         try:
             hint = [float(f) for f in fr]
@@ -589,7 +589,7 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
         else:
             raise ValidationError("""EFP hint type {} not {} elements: {}""".format(htype, hlen[htype], hint))
 
-    return {'fragment_files': files, 'hint_types': types, 'geom_hints': hints}
+    return {"fragment_files": files, "hint_types": types, "geom_hints": hints}
 
 
 def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
@@ -602,7 +602,7 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     tooclose_inds = []
     for x in range(npgeom.shape[0]):
         diffs = npgeom[x] - npgeom[x + 1 :]
-        dists = np.einsum('ij,ij->i', diffs, diffs)
+        dists = np.einsum("ij,ij->i", diffs, diffs)
 
         # Record issues
         if np.any(dists < metric):
@@ -614,7 +614,7 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
             """Following atoms are too close: {}""".format([(i, j, dist) for i, j, dist in tooclose_inds])
         )
 
-    return {'geom': npgeom.reshape((-1))}
+    return {"geom": npgeom.reshape((-1))}
 
 
 def validate_and_fill_nuclei(
@@ -694,12 +694,12 @@ def validate_and_fill_nuclei(
     else:
         A = Z = E = mass = real = label = []
     return {
-        'elea': np.array(A, dtype=np.int),
-        'elez': np.array(Z, dtype=np.int),
-        'elem': np.array(E),
-        'mass': np.array(mass, dtype=np.float),
-        'real': np.array(real, dtype=np.bool),
-        'elbl': np.array(label),
+        "elea": np.array(A, dtype=np.int),
+        "elez": np.array(Z, dtype=np.int),
+        "elem": np.array(E),
+        "mass": np.array(mass, dtype=np.float),
+        "real": np.array(real, dtype=np.bool),
+        "elbl": np.array(label),
     }
 
 
@@ -768,7 +768,7 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
             )
         )
 
-    return {'fragment_separators': list(frs), 'fragment_charges': frc, 'fragment_multiplicities': frm}
+    return {"fragment_separators": list(frs), "fragment_charges": frc, "fragment_multiplicities": frm}
 
 
 def validate_and_fill_unsettled_geometry(geom_unsettled, variables):
@@ -797,4 +797,4 @@ def validate_and_fill_unsettled_geometry(geom_unsettled, variables):
 
     vvars = [[str(v[0]), float(v[1])] for v in variables]
 
-    return {'geom_unsettled': geom_unsettled, 'variables': vvars}
+    return {"geom_unsettled": geom_unsettled, "variables": vvars}

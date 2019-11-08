@@ -308,34 +308,34 @@ class Molecule(ProtoModel):
                 else:
                     raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
-    @validator('geometry')
+    @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         try:
             v = v.reshape(n, 3)
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
 
-    @validator('masses', 'real')
+    @validator("masses", "real")
     def _must_be_n(cls, v, values, **kwargs):
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
-    @validator('real')
+    @validator("real")
     def _populate_real(cls, v, values, **kwargs):
         # Can't use geometry here since its already been validated and not in values
-        n = len(values['symbols'])
+        n = len(values["symbols"])
         if len(v) == 0:
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator('fragment_charges', 'fragment_multiplicities')
+    @validator("fragment_charges", "fragment_multiplicities")
     def _must_be_n_frag(cls, v, values, **kwargs):
-        if 'fragments' in values:
-            n = len(values['fragments'])
+        if "fragments" in values:
+            n = len(values["fragments"])
             if len(v) != n:
                 raise ValueError(
                     "Fragment Charges and Fragment Multiplicities" " must be same number of entries as Fragments"
@@ -344,7 +344,7 @@ class Molecule(ProtoModel):
             raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities " "without Fragments")
         return v
 
-    @validator('connectivity', each_item=True)
+    @validator("connectivity", each_item=True)
     def _min_zero(cls, v):
         if v < 0:
             raise ValueError("Connectivity entries must be greater than 0")
@@ -367,7 +367,7 @@ class Molecule(ProtoModel):
 
     ### Non-Pydantic API functions
 
-    def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> 'nglview.NGLWidget':  # type: ignore
+    def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> "nglview.NGLWidget":  # type: ignore
         """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
         images (`.png`).
 
@@ -392,7 +392,7 @@ class Molecule(ProtoModel):
         if ngl_kwargs is None:
             ngl_kwargs = {}
 
-        structure = nv.TextStructure(self.orient_molecule().to_string('nglview-sdf'), ext="sdf")
+        structure = nv.TextStructure(self.orient_molecule().to_string("nglview-sdf"), ext="sdf")
         widget = nv.NGLWidget(structure, **ngl_kwargs)
         return widget
 
@@ -454,7 +454,7 @@ class Molecule(ProtoModel):
         text = ""
 
         text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:d}:\n\n""".format(
-            'Angstrom', self.molecular_charge, self.molecular_multiplicity
+            "Angstrom", self.molecular_charge, self.molecular_multiplicity
         )
         text += """       Center              X                  Y                   Z       \n"""
         text += """    ------------   -----------------  -----------------  -----------------\n"""
@@ -476,7 +476,7 @@ class Molecule(ProtoModel):
         ghost: Optional[Union[int, List]] = None,
         orient: bool = False,
         group_fragments: bool = True,
-    ) -> 'Molecule':
+    ) -> "Molecule":
         """Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
@@ -511,7 +511,7 @@ class Molecule(ProtoModel):
 
         constructor_dict: Dict = {}
 
-        ret_name = (self.name if self.name is not None else '') + " (" + str(real) + "," + str(ghost) + ")"
+        ret_name = (self.name if self.name is not None else "") + " (" + str(real) + "," + str(ghost) + ")"
         constructor_dict["name"] = ret_name
         # ret = Molecule(None, name=ret_name)
 
@@ -719,7 +719,7 @@ class Molecule(ProtoModel):
         orient: bool = False,
         validate: bool = None,
         **kwargs: Dict[str, Any],
-    ) -> 'Molecule':
+    ) -> "Molecule":
         """
         Constructs a molecule object from a data structure.
 
@@ -930,7 +930,7 @@ class Molecule(ProtoModel):
                 break
         return new_geometry
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
 
     def _ipython_display_(self, **kwargs) -> None:
@@ -1077,7 +1077,7 @@ class Molecule(ProtoModel):
         rgeom = np.array(ref_mol.geometry)
         runiq = np.asarray(
             [
-                hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
                 for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
             ]
         )
@@ -1088,7 +1088,7 @@ class Molecule(ProtoModel):
         celez = np.array(concern_mol.atomic_numbers)
         cuniq = np.asarray(
             [
-                hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
                 for sym, mas in zip(concern_mol.symbols, concern_mol.masses)
             ]
         )
@@ -1114,7 +1114,7 @@ class Molecule(ProtoModel):
             mass=amass,
             elem=aelem,
             elez=aelez,
-            units='Bohr',
+            units="Bohr",
             molecular_charge=concern_mol.molecular_charge,
             molecular_multiplicity=concern_mol.molecular_multiplicity,
             fix_com=True,
@@ -1128,7 +1128,7 @@ class Molecule(ProtoModel):
         assert compare_values(
             concern_mol.nuclear_repulsion_energy(),
             amol.nuclear_repulsion_energy(),
-            'Q: concern_mol-->returned_mol NRE uncorrupted',
+            "Q: concern_mol-->returned_mol NRE uncorrupted",
             atol=1.0e-4,
             quiet=(verbose > 1),
         )
@@ -1136,18 +1136,18 @@ class Molecule(ProtoModel):
             assert compare_values(
                 ref_mol.nuclear_repulsion_energy(),
                 amol.nuclear_repulsion_energy(),
-                'Q: concern_mol-->returned_mol NRE matches ref_mol',
+                "Q: concern_mol-->returned_mol NRE matches ref_mol",
                 atol=1.0e-4,
                 quiet=(verbose > 1),
             )
             assert compare(
                 True,
                 np.allclose(ref_mol.geometry, amol.geometry, atol=4),
-                'Q: concern_mol-->returned_mol geometry matches ref_mol',
+                "Q: concern_mol-->returned_mol geometry matches ref_mol",
                 quiet=(verbose > 1),
             )
 
-        return amol, {'rmsd': rmsd, 'mill': solution}
+        return amol, {"rmsd": rmsd, "mill": solution}
 
     def scramble(
         self,
@@ -1224,7 +1224,7 @@ class Molecule(ProtoModel):
         relez = np.array(ref_mol.atomic_numbers)
         runiq = np.asarray(
             [
-                hashlib.sha1((sym + str(mas)).encode('utf-8')).hexdigest()
+                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
                 for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
             ]
         )
@@ -1244,7 +1244,7 @@ class Molecule(ProtoModel):
             mass=cmass,
             elem=celem,
             elez=celez,
-            units='Bohr',
+            units="Bohr",
             molecular_charge=ref_mol.molecular_charge,
             molecular_multiplicity=ref_mol.molecular_multiplicity,
             # copying fix_* vals rather than outright True. neither way great
@@ -1255,7 +1255,7 @@ class Molecule(ProtoModel):
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
         if verbose >= 1:
-            print('Start RMSD = {:8.4f} [A]'.format(rmsd))
+            print("Start RMSD = {:8.4f} [A]".format(rmsd))
 
         if do_test:
             _, data = cmol.align(
@@ -1268,22 +1268,22 @@ class Molecule(ProtoModel):
                 run_mirror=do_mirror,
                 verbose=verbose,
             )
-            solution = data['mill']
+            solution = data["mill"]
 
             assert compare(
-                True, np.allclose(solution.shift, perturbation.shift, atol=6), 'shifts equiv', quiet=(verbose > 1)
+                True, np.allclose(solution.shift, perturbation.shift, atol=6), "shifts equiv", quiet=(verbose > 1)
             )
             if not do_resort:
                 assert compare(
                     True,
                     np.allclose(solution.rotation.T, perturbation.rotation),
-                    'rotations transpose',
+                    "rotations transpose",
                     quiet=(verbose > 1),
                 )
             if solution.mirror:
-                assert compare(True, do_mirror, 'mirror allowed', quiet=(verbose > 1))
+                assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
-        return cmol, {'rmsd': rmsd, 'mill': perturbation}
+        return cmol, {"rmsd": rmsd, "mill": perturbation}
 
 
 # auto_gen_docs_on_demand(Molecule)

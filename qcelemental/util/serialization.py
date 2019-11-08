@@ -42,7 +42,7 @@ def msgpackext_encode(obj: Any) -> Any:
         if obj.shape:
             data = {b"_nd_": True, b"dtype": obj.dtype.str, b"data": np.ascontiguousarray(obj).tobytes()}
             if len(obj.shape) > 1:
-                data[b'shape'] = obj.shape
+                data[b"shape"] = obj.shape
             return data
 
         else:
@@ -128,7 +128,7 @@ class JSONExtArrayEncoder(json.JSONEncoder):
             if obj.shape:
                 data = {"_nd_": True, "dtype": obj.dtype.str, "data": np.ascontiguousarray(obj).tobytes().hex()}
                 if len(obj.shape) > 1:
-                    data['shape'] = obj.shape
+                    data["shape"] = obj.shape
                 return data
 
             else:

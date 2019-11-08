@@ -61,9 +61,9 @@ def test_molecule_data_constructor_dict():
     assert water_psi == water_from_json
     assert water_psi == Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4")
 
-    assert water_psi.get_hash() == '3c4b98f515d64d1adc1648fe1fe1d6789e978d34'  # copied from schema_version=1
+    assert water_psi.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"  # copied from schema_version=1
     assert water_psi.schema_version == 2
-    assert water_psi.schema_name == 'qcschema_molecule'
+    assert water_psi.schema_name == "qcschema_molecule"
 
 
 def test_molecule_data_constructor_error():
@@ -114,13 +114,13 @@ def test_molecule_compare():
 def test_water_minima_data():
     # Give it a name
     mol_dict = water_dimer_minima.dict()
-    mol_dict['name'] = "water dimer"
+    mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
 
     assert len(mol.pretty_print()) == 661
     assert len(mol.to_string("psi4")) == 479
 
-    assert sum(x == y for x, y in zip(mol.symbols, ['O', 'H', 'H', 'O', 'H', 'H'])) == mol.geometry.shape[0]
+    assert sum(x == y for x, y in zip(mol.symbols, ["O", "H", "H", "O", "H", "H"])) == mol.geometry.shape[0]
     assert mol.name == "water dimer"
     assert mol.molecular_charge == 0
     assert mol.molecular_multiplicity == 1
@@ -399,10 +399,10 @@ def test_charged_fragment():
 def test_get_fragment(group_fragments, orient):
     mol = Molecule(
         **{
-            'fragments': [[0], [1, 2, 3], [4, 5, 6]],
-            'symbols': ["he", "o", "h", "h", "o", "h", "h"],
+            "fragments": [[0], [1, 2, 3], [4, 5, 6]],
+            "symbols": ["he", "o", "h", "h", "o", "h", "h"],
             # same geom as test_water_orient but with He at origin
-            'geometry': np.array(
+            "geometry": np.array(
                 [
                     [0.0, 0.0, 0.0],
                     [-1.551007, -0.114520, 0.000000],
@@ -426,7 +426,7 @@ def test_get_fragment(group_fragments, orient):
     monomers = [mol.get_fragment(ifr, group_fragments=group_fragments, orient=orient) for ifr in range(3)]
     for fr in range(3):
         assert monomers[fr].nelectrons() == monomers_nelectrons[fr]
-        assert compare_values(monomers[fr].nuclear_repulsion_energy(), monomers_nre[fr], 'monomer nre', atol=1.0e-5)
+        assert compare_values(monomers[fr].nuclear_repulsion_energy(), monomers_nre[fr], "monomer nre", atol=1.0e-5)
 
     idimers = [(0, 1), (0, 2), (1, 2), (1, 0), (2, 0), (2, 1)]
     dimers_nelectrons = [12, 12, 20, 12, 12, 20]
@@ -434,8 +434,8 @@ def test_get_fragment(group_fragments, orient):
     dimers = [mol.get_fragment(rl, group_fragments=group_fragments, orient=orient) for rl in idimers]
     for ifr in range(len(idimers)):
         # print('dd', ifr, idimers[ifr], dimers[ifr].nuclear_repulsion_energy(), dimers[ifr].get_hash())
-        assert dimers[ifr].nelectrons() == dimers_nelectrons[ifr], 'dimer nelec'
-        assert compare_values(dimers[ifr].nuclear_repulsion_energy(), dimers_nre[ifr], 'dimer nre', atol=1.0e-5)
+        assert dimers[ifr].nelectrons() == dimers_nelectrons[ifr], "dimer nelec"
+        assert compare_values(dimers[ifr].nuclear_repulsion_energy(), dimers_nre[ifr], "dimer nre", atol=1.0e-5)
     if group_fragments and orient:
         assert dimers[0].get_hash() != dimers[3].get_hash()  # atoms out of order
         assert dimers[1].get_hash() != dimers[4].get_hash()  # atoms out of order
@@ -452,8 +452,8 @@ def test_get_fragment(group_fragments, orient):
     ghdimers = [mol.get_fragment(rl, gh, group_fragments=group_fragments, orient=orient) for rl, gh in idimers]
     for ifr in range(len(idimers)):
         # print('gh', ifr, idimers[ifr], ghdimers[ifr].nuclear_repulsion_energy(), ghdimers[ifr].get_hash())
-        assert ghdimers[ifr].nelectrons() == ghdimers_nelectrons[ifr], 'gh dimer nelec'
-        assert compare_values(ghdimers[ifr].nuclear_repulsion_energy(), ghdimers_nre[ifr], 'gh dimer nre', atol=1.0e-5)
+        assert ghdimers[ifr].nelectrons() == ghdimers_nelectrons[ifr], "gh dimer nelec"
+        assert compare_values(ghdimers[ifr].nuclear_repulsion_energy(), ghdimers_nre[ifr], "gh dimer nre", atol=1.0e-5)
 
     if group_fragments and orient:
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
@@ -472,8 +472,8 @@ def test_molecule_repeated_hashing():
 
     mol = Molecule(
         **{
-            'symbols': ['H', 'O', 'O', 'H'],
-            'geometry': [
+            "symbols": ["H", "O", "O", "H"],
+            "geometry": [
                 [1.7317, 1.2909, 1.037100000000001],
                 [1.3156, -0.0074, -0.2807],
                 [-1.3143, 0.0084, -0.2741],
@@ -506,8 +506,8 @@ def test_measurements(measure, result):
 
     Molecule(
         **{
-            'symbols': ['H', 'O', 'O', 'H'],
-            'geometry': [
+            "symbols": ["H", "O", "O", "H"],
+            "geometry": [
                 [1.7317, 1.2909, 1.0371],
                 [1.3156, -0.0074, -0.2807],
                 [-1.3143, 0.0084, -0.2741],
@@ -581,25 +581,25 @@ def test_nuclearrepulsionenergy_nelectrons():
     """
     )
 
-    assert compare_values(34.60370459, mol.nuclear_repulsion_energy(), 'D', atol=1.0e-5)
-    assert compare_values(4.275210518, mol.nuclear_repulsion_energy(ifr=0), 'M1', atol=1.0e-5)
-    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=1), 'M2', atol=1.0e-5)
+    assert compare_values(34.60370459, mol.nuclear_repulsion_energy(), "D", atol=1.0e-5)
+    assert compare_values(4.275210518, mol.nuclear_repulsion_energy(ifr=0), "M1", atol=1.0e-5)
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=1), "M2", atol=1.0e-5)
 
-    assert compare(20, mol.nelectrons(), 'D')
-    assert compare(10, mol.nelectrons(ifr=0), 'M1')
-    assert compare(10, mol.nelectrons(ifr=1), 'M2')
+    assert compare(20, mol.nelectrons(), "D")
+    assert compare(10, mol.nelectrons(ifr=0), "M1")
+    assert compare(10, mol.nelectrons(ifr=1), "M2")
 
     mol = mol.get_fragment([1], 0, group_fragments=False)
     # Notice the 0th/1st fragments change if default group_fragments=True.
     ifr0 = 0
     ifr1 = 1
-    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(), 'D', atol=1.0e-5)
-    assert compare_values(0.0, mol.nuclear_repulsion_energy(ifr=ifr0), 'M1', atol=1.0e-5)
-    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=ifr1), 'M2', atol=1.0e-5)
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(), "D", atol=1.0e-5)
+    assert compare_values(0.0, mol.nuclear_repulsion_energy(ifr=ifr0), "M1", atol=1.0e-5)
+    assert compare_values(16.04859029, mol.nuclear_repulsion_energy(ifr=ifr1), "M2", atol=1.0e-5)
 
-    assert compare(10, mol.nelectrons(), 'D')
-    assert compare(0, mol.nelectrons(ifr=ifr0), 'M1')
-    assert compare(10, mol.nelectrons(ifr=ifr1), 'M2')
+    assert compare(10, mol.nelectrons(), "D")
+    assert compare(0, mol.nelectrons(ifr=ifr0), "M1")
+    assert compare(10, mol.nelectrons(ifr=ifr1), "M2")
 
 
 @using_nglview

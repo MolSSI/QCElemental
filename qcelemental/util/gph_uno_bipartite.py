@@ -57,12 +57,12 @@ def _formDirected(g, match):
 
     for ee in g.edges():
         if ee in match or (ee[1], ee[0]) in match:
-            if g.nodes[ee[0]]['bipartite'] == 0:
+            if g.nodes[ee[0]]["bipartite"] == 0:
                 d.add_edge(ee[0], ee[1])
             else:
                 d.add_edge(ee[1], ee[0])
         else:
-            if g.nodes[ee[0]]['bipartite'] == 0:
+            if g.nodes[ee[0]]["bipartite"] == 0:
                 d.add_edge(ee[1], ee[0])
             else:
                 d.add_edge(ee[0], ee[1])
@@ -105,7 +105,7 @@ def _enumMaximumMatching(g, starter_match=None):
     # ---------------Re-orient match arcs---------------
     match2 = []
     for kk, vv in match.items():
-        if g.nodes[kk]['bipartite'] == 0:
+        if g.nodes[kk]["bipartite"] == 0:
             match2.append((kk, vv))
     match = match2
     all_matches.append(match)
@@ -199,10 +199,10 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
         new_match = []
         for ee in d.edges():
             if ee in len2path:
-                if g.nodes[ee[1]]['bipartite'] == 0:
+                if g.nodes[ee[1]]["bipartite"] == 0:
                     new_match.append((ee[1], ee[0]))
             else:
-                if g.nodes[ee[0]]['bipartite'] == 0:
+                if g.nodes[ee[0]]["bipartite"] == 0:
                     new_match.append(ee)
 
         if add_e is not None:
@@ -240,10 +240,10 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
         new_match = []
         for ee in d.edges():
             if ee in cycle:
-                if g.nodes[ee[1]]['bipartite'] == 0:
+                if g.nodes[ee[1]]["bipartite"] == 0:
                     new_match.append((ee[1], ee[0]))
             else:
-                if g.nodes[ee[0]]['bipartite'] == 0:
+                if g.nodes[ee[0]]["bipartite"] == 0:
                     new_match.append(ee)
 
         if add_e is not None:
@@ -298,7 +298,7 @@ def _enumMaximumMatching2(g):
     import networkx as nx
     from scipy import sparse
 
-    s1 = set(n for n, d in g.nodes(data=True) if d['bipartite'] == 0)
+    s1 = set(n for n, d in g.nodes(data=True) if d["bipartite"] == 0)
     s2 = set(g) - s1
     n1 = len(s1)
     nodes = list(s1) + list(s2)
@@ -309,7 +309,7 @@ def _enumMaximumMatching2(g):
     # ----------------Find one matching----------------
     match = nx.bipartite.hopcroft_karp_matching(g)
 
-    matchadj = np.zeros(adj.shape).astype('int')
+    matchadj = np.zeros(adj.shape).astype("int")
     for kk, vv in match.items():
         matchadj[nodes.index(kk), nodes.index(vv)] = 1
     matchadj = sparse.lil_matrix(matchadj)
@@ -329,7 +329,7 @@ def _enumMaximumMatching2(g):
 
         all_matches2.append(match_list)
 
-    print('got all')
+    print("got all")
     return all_matches2
 
 
@@ -524,16 +524,16 @@ def uno(edges, match=None, verbose=1):
 
     p_edges = [[(1, e[0]), (0, e[1])] for e in edges]
     if verbose >= 2:
-        print('Edges:')
+        print("Edges:")
         for e in p_edges:
-            print('\t', e)
+            print("\t", e)
 
     g = nx.Graph()
     for e in p_edges:
         g.add_node(e[0], bipartite=0)
         g.add_node(e[1], bipartite=1)
         if verbose >= 2:
-            print('  Node:', e[0], e[1])
+            print("  Node:", e[0], e[1])
     g.add_edges_from(p_edges)
 
     all_matches = _enumMaximumMatching(g, starter_match=p_match)

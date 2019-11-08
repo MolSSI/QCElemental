@@ -6,13 +6,13 @@ import pytest
 import qcelemental
 
 
-@pytest.mark.parametrize("inp", ["He100", '-1', -1, -1.0, 'cat', 200, 'Cr_highspin'])
+@pytest.mark.parametrize("inp", ["He100", "-1", -1, -1.0, "cat", 200, "Cr_highspin"])
 def test_id_resolution_error_bad_element(inp):
     with pytest.raises(qcelemental.NotAnElementError):
         qcelemental.covalentradii.get(inp)
 
 
-@pytest.mark.parametrize("inp", ['X', 'Bk', 100])
+@pytest.mark.parametrize("inp", ["X", "Bk", 100])
 def test_id_resolution_error(inp):
     with pytest.raises(qcelemental.DataUnavailableError):
         qcelemental.covalentradii.get(inp)
@@ -48,13 +48,13 @@ a2b = 1.0 / qcelemental.constants.bohr2angstroms
     ],
 )
 def test_get(inp, expected):
-    assert qcelemental.covalentradii.get(inp, units='angstrom') == pytest.approx(expected, 1.0e-9)
+    assert qcelemental.covalentradii.get(inp, units="angstrom") == pytest.approx(expected, 1.0e-9)
     assert qcelemental.covalentradii.get(inp) == pytest.approx(a2b * expected, 1.0e-9)
 
 
 def test_get_tuple():
-    ref = {'label': 'Mn', 'units': 'angstrom', 'data': Decimal('1.61')}
-    dqca = qcelemental.covalentradii.get('manganese', return_tuple=True).dict()
+    ref = {"label": "Mn", "units": "angstrom", "data": Decimal("1.61")}
+    dqca = qcelemental.covalentradii.get("manganese", return_tuple=True).dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]

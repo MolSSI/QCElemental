@@ -73,7 +73,7 @@ def test_example4(alg=1):
     #    _check('Example 4a (internal match)', ans, ref, verbose=2)
 
     ans = uno(edges, verbose=2, match=match)
-    _check('Example 4b (provided match)', ans, ref, verbose=2)
+    _check("Example 4b (provided match)", ans, ref, verbose=2)
 
 
 @using_networkx
@@ -106,10 +106,10 @@ def test_example3(alg=1):
     # fmt: on
 
     ans = uno(edges, verbose=2)
-    _check('Example 3a (internal match)', ans, ref)
+    _check("Example 3a (internal match)", ans, ref)
 
     ans = uno(edges, verbose=2, match=match)
-    _check('Example 3b (provided match)', ans, ref, verbose=2)
+    _check("Example 3b (provided match)", ans, ref, verbose=2)
 
 
 def _check(msg, ans, ref, verbose=1):
@@ -120,9 +120,9 @@ def _check(msg, ans, ref, verbose=1):
     missd_answers = set(tref).difference(set(tans))
     if verbose >= 2:
         for a in tans:
-            print('Computed:', a)
+            print("Computed:", a)
         for a in tref:
-            print('Supplied:', a)
+            print("Supplied:", a)
 
     assert extra_answers == set()
     assert missd_answers == set()
@@ -207,14 +207,14 @@ def test_example2(alg):
         ans = sorted([(ii[0][1], ii[1][1]) for ii in mm])
         if ans in ref:
             ref.remove(ans)
-        print('Match2:', ans)
+        print("Match2:", ans)
         g_match = nx.Graph()
         for ii in mm:
             g_match.add_edge(ii[0], ii[1])
         # plotGraph(g_match)
 
     assert ref == []
-    print('Example 2 passed')
+    print("Example 2 passed")
 
 
 # Apparently, an AmbiguousSolution

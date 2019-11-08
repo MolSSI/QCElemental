@@ -41,7 +41,7 @@ def B787(
     run_resorting=False,
     mols_align=False,
     run_to_completion=False,
-    algorithm='hungarian_uno',
+    algorithm="hungarian_uno",
     uno_cutoff=1.0e-3,
     run_mirror=False,
 ):
@@ -108,8 +108,8 @@ def B787(
         raise ValidationError("""natom doesn't match: {} != {}""".format(rgeom.shape, cgeom.shape))
     nat = rgeom.shape[0]
     if atoms_map and runiq is None and cuniq is None:
-        runiq = np.array([''] * nat)
-        cuniq = np.array([''] * nat)
+        runiq = np.array([""] * nat)
+        cuniq = np.array([""] * nat)
     if sorted(runiq) != sorted(cuniq):
         raise ValidationError("""atom subclasses unequal:\n  {}\n  {}""".format(runiq, cuniq))
 
@@ -135,7 +135,7 @@ def B787(
         superimposable = mrmsd < exact
         if verbose >= 1 and superimposable:
             print(
-                'Not testing for mirror-image matches (despite `run_mirror`) since system and its mirror are superimposable'
+                "Not testing for mirror-image matches (despite `run_mirror`) since system and its mirror are superimposable"
             )
 
     # initialization
@@ -154,21 +154,21 @@ def B787(
     atomfmt2 = """  {} {:16.8f} {:16.8f} {:16.8f}"""
 
     if verbose >= 2:
-        print('<<<  Reference:')
+        print("<<<  Reference:")
         for at, _ in enumerate(runiq):
             print(atomfmt2.format(runiq[at][:6], *rgeom[at]))
 
-        print('<<<  Concern:')
+        print("<<<  Concern:")
         for at, _ in enumerate(cuniq):
             print(atomfmt2.format(cuniq[at][:6], *cgeom[at]))
 
     # start_rmsd is nonsense if not atoms_map
     start_rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
     if verbose >= 1:
-        print('Start RMSD = {:8.4f} [A] (naive)'.format(start_rmsd))
+        print("Start RMSD = {:8.4f} [A] (naive)".format(start_rmsd))
 
     def _plausible_atom_orderings_wrapper(
-        runiq, cuniq, rgeom, cgeom, run_resorting, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.0e-3
+        runiq, cuniq, rgeom, cgeom, run_resorting, algorithm="hungarian_uno", verbose=1, uno_cutoff=1.0e-3
     ):
         """Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when
         atoms of R & C known to be ordered. Easier to put logic here because _plausible is generator.
@@ -194,7 +194,7 @@ def B787(
         temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=False)
         tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
         if verbose >= 4:
-            print('temp geom diff\n', tgeom - rgeom)
+            print("temp geom diff\n", tgeom - rgeom)
         temp_rmsd = np.linalg.norm(tgeom - rgeom) * constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
         temp_rmsd = np.around(temp_rmsd, decimals=8)
         t2 = time.time()
@@ -204,12 +204,12 @@ def B787(
             best_rmsd = temp_rmsd
             hold_solution = temp_solution
             if verbose >= 1:
-                print('<<<  trial {:8}  {} yields RMSD {}  >>>'.format(ocount, npordd, temp_rmsd))
+                print("<<<  trial {:8}  {} yields RMSD {}  >>>".format(ocount, npordd, temp_rmsd))
             if not run_to_completion and best_rmsd < a_convergence:
                 break
         else:
             if verbose >= 3:
-                print('     trial {:8}  {} yields RMSD {}'.format(ocount, npordd, temp_rmsd))
+                print("     trial {:8}  {} yields RMSD {}".format(ocount, npordd, temp_rmsd))
 
         if run_mirror and not superimposable:
             t1 = time.time()
@@ -221,7 +221,7 @@ def B787(
             temp_solution = AlignmentMill(shift=TT, rotation=RR, atommap=npordd, mirror=True)
             tgeom = temp_solution.align_coordinates(cgeom, reverse=False)
             if verbose >= 4:
-                print('temp geom diff\n', tgeom - rgeom)
+                print("temp geom diff\n", tgeom - rgeom)
             temp_rmsd = np.linalg.norm(tgeom - rgeom) * constants.bohr2angstroms / np.sqrt(rgeom.shape[0])
             temp_rmsd = np.around(temp_rmsd, decimals=8)
             t2 = time.time()
@@ -231,45 +231,45 @@ def B787(
                 best_rmsd = temp_rmsd
                 hold_solution = temp_solution
                 if verbose >= 1:
-                    print('<<<  trial {:8}m {} yields RMSD {}  >>>'.format(ocount - 1, npordd, temp_rmsd))
+                    print("<<<  trial {:8}m {} yields RMSD {}  >>>".format(ocount - 1, npordd, temp_rmsd))
                 if not run_to_completion and best_rmsd < a_convergence:
                     break
             else:
                 if verbose >= 3:
-                    print('     trial {:8}m {} yields RMSD {}'.format(ocount - 1, npordd, temp_rmsd))
+                    print("     trial {:8}m {} yields RMSD {}".format(ocount - 1, npordd, temp_rmsd))
 
     t3 = time.time()
     if verbose >= 1:
-        print('Total time [s] for {:6} iterations: {:.3}'.format(ocount, t3 - t0))
-        print('Hungarian time [s] for atom ordering: {:.3}'.format(t3 - t0 - tc))
-        print('Kabsch time [s] for mol alignment:    {:.3}'.format(tc))
+        print("Total time [s] for {:6} iterations: {:.3}".format(ocount, t3 - t0))
+        print("Hungarian time [s] for atom ordering: {:.3}".format(t3 - t0 - tc))
+        print("Kabsch time [s] for mol alignment:    {:.3}".format(tc))
 
     ageom, auniq = hold_solution.align_mini_system(cgeom, cuniq, reverse=False)
     final_rmsd = np.linalg.norm(ageom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
     assert abs(best_rmsd - final_rmsd) < 1.0e-3
 
     if verbose >= 1:
-        print('Final RMSD = {:8.4f} [A]'.format(final_rmsd))
-        print('Mirror match:', hold_solution.mirror)
+        print("Final RMSD = {:8.4f} [A]".format(final_rmsd))
+        print("Mirror match:", hold_solution.mirror)
         print(hold_solution)
 
     # final presentation & plotting
     if verbose >= 2:
-        print('<<<  Aligned:')
+        print("<<<  Aligned:")
         for at, hsh in enumerate(auniq):
             print(atomfmt2.format(auniq[at][:6], *ageom[at]))
-        print('<<<  Aligned Diff:')
+        print("<<<  Aligned Diff:")
         for at, hsh in enumerate(auniq):
             print(atomfmt2.format(auniq[at][:6], *[ageom[at][i] - rgeom[at][i] for i in range(3)]))
 
     if do_plot:
-        plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment='Final RMSD = {:8.4f}'.format(final_rmsd))
+        plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment="Final RMSD = {:8.4f}".format(final_rmsd))
 
     # sanity checks
     assert compare_values(
         _pseudo_nre(cuniq, cgeom),
         _pseudo_nre(auniq, ageom),
-        'D: concern_mol-->returned_mol pNRE uncorrupted',
+        "D: concern_mol-->returned_mol pNRE uncorrupted",
         atol=1.0e-4,
         quiet=(verbose < 2),
     )
@@ -278,19 +278,19 @@ def B787(
         assert compare_values(
             _pseudo_nre(runiq, rgeom),
             _pseudo_nre(auniq, ageom),
-            'D: concern_mol-->returned_mol pNRE matches ref_mol',
+            "D: concern_mol-->returned_mol pNRE matches ref_mol",
             atol=1.0e-4,
             quiet=(verbose < 2),
         )
         assert compare_values(
-            rgeom, ageom, 'D: concern_mol-->returned_mol geometry matches ref_mol', atol=1.0e-4, quiet=(verbose < 2)
+            rgeom, ageom, "D: concern_mol-->returned_mol geometry matches ref_mol", atol=1.0e-4, quiet=(verbose < 2)
         )
-        assert compare_values(0.0, final_rmsd, 'D: null RMSD', atol=1.0e-4, quiet=(verbose < 2))
+        assert compare_values(0.0, final_rmsd, "D: null RMSD", atol=1.0e-4, quiet=(verbose < 2))
 
     return final_rmsd, hold_solution
 
 
-def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_uno', verbose=1, uno_cutoff=1.0e-3):
+def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm="hungarian_uno", verbose=1, uno_cutoff=1.0e-3):
     """
 
     Parameters
@@ -309,7 +309,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
     """
     if sorted(ref) != sorted(current):
         raise ValidationError(
-            """ref and current can't map to each other.\n""" + 'R:  ' + str(ref) + '\nC:  ' + str(current)
+            """ref and current can't map to each other.\n""" + "R:  " + str(ref) + "\nC:  " + str(current)
         )
 
     where = collections.defaultdict(list)
@@ -337,7 +337,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
             cncn = [ccdistmat[first, second] for first, second in zip(pm, pm[1:])]
             if np.allclose(bnbn, cncn, atol=1.0):
                 if verbose >= 1:
-                    print('Candidate:', rgp, '<--', pm)
+                    print("Candidate:", rgp, "<--", pm)
                 yield pm
 
     def filter_hungarian_uno(rgp, cgp):
@@ -363,7 +363,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
             for i in range(cost.shape[0]):
                 cost[i, j] = (sumCC[i] - sumRR[j]) ** 2
         if verbose >= 2:
-            print('Cost:\n', cost)
+            print("Cost:\n", cost)
         costcopy = np.copy(cost)  # other one gets manipulated by hungarian call
 
         # find _a_ best match btwn R & C atoms through Kuhn-Munkres (Hungarian) algorithm
@@ -375,16 +375,16 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
         sumCR = costcopy[row_ind, col_ind].sum()
         t01 = time.time()
         if verbose >= 2:
-            print('Reduced cost:\n', cost)
+            print("Reduced cost:\n", cost)
         if verbose >= 1:
-            print('Hungarian time [s] for space:         {:.3}'.format(t01 - t00))
+            print("Hungarian time [s] for space:         {:.3}".format(t01 - t00))
 
         # find _all_ best matches btwn R & C atoms through Uno algorithm, seeded from Hungarian sol'n
         edges = np.argwhere(reducedcost < uno_cutoff)
         gooduns = uno(edges, ptsCR)
         t02 = time.time()
         if verbose >= 1:
-            print('Uno time [s] for space:               {:.3}'.format(t02 - t01))
+            print("Uno time [s] for space:               {:.3}".format(t02 - t01))
 
         for gu in gooduns:
             gu2 = gu[:]
@@ -393,18 +393,18 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
 
             ans = tuple(npcgp[np.array(subans)])
             if verbose >= 3:
-                print('Best Candidate ({:6.3}):'.format(sumCR), rgp, '<--', ans, '     from', cgp, subans)
+                print("Best Candidate ({:6.3}):".format(sumCR), rgp, "<--", ans, "     from", cgp, subans)
             yield ans
 
-    if algorithm == 'permutative':
+    if algorithm == "permutative":
         ccdistmat = distance_matrix(cgeom, cgeom)
         rrdistmat = distance_matrix(rgeom, rgeom)
         algofn = filter_permutative
 
-    if algorithm == 'hungarian_uno':
+    if algorithm == "hungarian_uno":
         ccdistmat = distance_matrix(cgeom, cgeom)
         rrdistmat = distance_matrix(rgeom, rgeom)
-        with np.errstate(divide='ignore'):
+        with np.errstate(divide="ignore"):
             ccnremat = np.reciprocal(ccdistmat)
             rrnremat = np.reciprocal(rrdistmat)
         ccnremat[ccnremat == np.inf] = 0.0
@@ -412,7 +412,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm='hungarian_u
         algofn = filter_hungarian_uno
 
         # Ensure (optional dependency) networkx exists
-        if not which_import('networkx', return_bool=True):
+        if not which_import("networkx", return_bool=True):
             raise ModuleNotFoundError(
                 """Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`"""
             )  # pragma: no cover

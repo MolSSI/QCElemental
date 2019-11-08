@@ -40,7 +40,7 @@ class PhysicalConstantsContext:
         The year the context was created.
     """
 
-    _transtable = str.maketrans(' -/{', '__p_', '.,()}')
+    _transtable = str.maketrans(" -/{", "__p_", ".,()}")
 
     # Alias Typing
     h: float
@@ -74,7 +74,7 @@ class PhysicalConstantsContext:
 
         if context == "CODATA2014":
             self.doi = nist_2014_codata["doi"]
-            self.raw_codata = nist_2014_codata['constants']
+            self.raw_codata = nist_2014_codata["constants"]
 
             # physical constant loop
             for k, v in self.raw_codata.items():
@@ -82,7 +82,7 @@ class PhysicalConstantsContext:
                     v["quantity"],
                     v["unit"],
                     Decimal(v["value"]),
-                    comment='uncertainty={}'.format(v["uncertainty"]),
+                    comment="uncertainty={}".format(v["uncertainty"]),
                     doi=self.doi,
                 )
         else:
@@ -93,8 +93,8 @@ class PhysicalConstantsContext:
         self._ureg = None
 
         # Extra relationships
-        self.pc['calorie-joule relationship'] = Datum(
-            'calorie-joule relationship', 'J', Decimal('4.184'), comment='uncertainty=(exact)'
+        self.pc["calorie-joule relationship"] = Datum(
+            "calorie-joule relationship", "J", Decimal("4.184"), comment="uncertainty=(exact)"
         )
 
         # fmt: off
@@ -145,7 +145,7 @@ class PhysicalConstantsContext:
         return "PhysicalConstantsContext(context='{}')".format(self.name)
 
     @property
-    def ureg(self) -> 'UnitRegistry':
+    def ureg(self) -> "UnitRegistry":
         """Returns the internal Pint units registry.
 
         Returns
@@ -208,7 +208,7 @@ class PhysicalConstantsContext:
     #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
     #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def Quantity(self, data: str) -> 'quantity._Quantity':
+    def Quantity(self, data: str) -> "quantity._Quantity":
         """Returns a Pint Quantity.
         """
 
@@ -216,7 +216,7 @@ class PhysicalConstantsContext:
 
     @lru_cache()
     def conversion_factor(
-        self, base_unit: Union[str, 'quantity._Quantity'], conv_unit: Union[str, 'quantity._Quantity']
+        self, base_unit: Union[str, "quantity._Quantity"], conv_unit: Union[str, "quantity._Quantity"]
     ) -> float:
         """Provides the conversion factor from one unit to another.
 
@@ -283,23 +283,23 @@ class PhysicalConstantsContext:
         try:
             from .. import checkup_data
         except ImportError:  # pragma: no cover
-            print('Info for comparison (directory checkup_data) not installed. Run from source.')
+            print("Info for comparison (directory checkup_data) not installed. Run from source.")
             raise
 
         class bcolors:
-            HEADER = '\033[95m'
-            OKBLUE = '\033[94m'
-            OKGREEN = '\033[92m'
-            WARNING = '\033[93m'
-            FAIL = '\033[91m'
-            ENDC = '\033[0m'
-            BOLD = '\033[1m'
-            UNDERLINE = '\033[4m'
+            HEADER = "\033[95m"
+            OKBLUE = "\033[94m"
+            OKGREEN = "\033[92m"
+            WARNING = "\033[93m"
+            FAIL = "\033[91m"
+            ENDC = "\033[0m"
+            BOLD = "\033[1m"
+            UNDERLINE = "\033[4m"
 
         tol = 1.0e-8
-        print(bcolors.OKBLUE + '\nChecking ({}) physconst vs. Psi4 ...'.format(tol) + bcolors.ENDC)
+        print(bcolors.OKBLUE + "\nChecking ({}) physconst vs. Psi4 ...".format(tol) + bcolors.ENDC)
         for pc in dir(checkup_data.physconst):
-            if not pc.startswith('__'):
+            if not pc.startswith("__"):
                 ref = self.get(pc)
                 val = getattr(checkup_data.physconst, pc)
                 assert isinstance(ref, (int, float))
@@ -307,19 +307,19 @@ class PhysicalConstantsContext:
                 if rat > 1.0e-4:
                     print(
                         bcolors.FAIL
-                        + 'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                        + "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(
                             pc, rat, ref, val
                         )
                         + bcolors.ENDC
                     )
                 if rat > tol:
                     print(
-                        'Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)'.format(
+                        "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(
                             pc, rat, ref, val
                         )
                     )
 
-    def _get_pi(self, from_scratch: bool = False) -> 'Decimal':
+    def _get_pi(self, from_scratch: bool = False) -> "Decimal":
         """Get pi to 36 digits (or more with mpmath).
 
         Parameters
@@ -339,44 +339,44 @@ class PhysicalConstantsContext:
             mp.dps = 36
             return mp.pi
         else:
-            return Decimal('3.14159265358979323846264338327950288')
+            return Decimal("3.14159265358979323846264338327950288")
 
-    def write_c_header(self, filename='physconst.h'):
+    def write_c_header(self, filename="physconst.h"):
         """Write C header file defining physical constants and pi, all with ``pc_`` prefix."""
 
         pi = self._get_pi(from_scratch=False)
         tau = 2 * pi
 
         text = [
-            '#ifndef _qcelemental_physconst_h_',
-            '#define _qcelemental_physconst_h_',
-            '',
-            '/* This file is autogenerated from the QCElemental python module */',
-            '',
-            '/* clang-format off */',
-            '#define pc_pi {}'.format(pi),
-            '#define pc_twopi {}'.format(tau),
+            "#ifndef _qcelemental_physconst_h_",
+            "#define _qcelemental_physconst_h_",
+            "",
+            "/* This file is autogenerated from the QCElemental python module */",
+            "",
+            "/* clang-format off */",
+            "#define pc_pi {}".format(pi),
+            "#define pc_twopi {}".format(tau),
         ]
 
         for pc, qca in self.pc.items():
             callname = qca.label.translate(self._transtable)
-            noncomment = '#define pc_{} {}'.format(callname, qca.data)
-            text.append('{:80}  /*- {} [{}] {} -*/'.format(noncomment, qca.label, qca.units, qca.comment))
-        text.append('/* clang-format on */')
+            noncomment = "#define pc_{} {}".format(callname, qca.data)
+            text.append("{:80}  /*- {} [{}] {} -*/".format(noncomment, qca.label, qca.units, qca.comment))
+        text.append("/* clang-format on */")
 
-        text.append('')
-        text.append('/* For Cray X1 compilers */')
-        text.append('#ifndef M_PI')
-        text.append('#define M_PI 3.14159265358979323846')
-        text.append('#endif')
-        text.append('')
+        text.append("")
+        text.append("/* For Cray X1 compilers */")
+        text.append("#ifndef M_PI")
+        text.append("#define M_PI 3.14159265358979323846")
+        text.append("#endif")
+        text.append("")
 
-        text.append('#endif /* header guard */')
-        text.append('')
+        text.append("#endif /* header guard */")
+        text.append("")
 
-        with open(filename, 'w') as handle:
-            handle.write('\n'.join(text))
-        print('File written ({}). Remember to add license and clang-format it.'.format(filename))
+        with open(filename, "w") as handle:
+            handle.write("\n".join(text))
+        print("File written ({}). Remember to add license and clang-format it.".format(filename))
 
 
 # singleton

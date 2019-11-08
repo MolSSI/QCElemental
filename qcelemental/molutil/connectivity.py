@@ -46,7 +46,7 @@ def guess_connectivity(
     con = []
     for x in range(geometry.shape[0]):
         diffs = geometry[x] - geometry[x + 1 :]
-        dists = np.einsum('ij,ij->i', diffs, diffs)
+        dists = np.einsum("ij,ij->i", diffs, diffs)
         np.sqrt(dists, out=dists)
 
         cutoff = (radii[x] + radii[x + 1 :]) * threshold

@@ -6,7 +6,7 @@ from ..exceptions import NotAnElementError, ValidationError
 from ..periodic_table import periodictable
 from .regex import NUCLEUS
 
-_nucleus = re.compile(r'\A' + NUCLEUS + r'\Z', re.IGNORECASE | re.VERBOSE)
+_nucleus = re.compile(r"\A" + NUCLEUS + r"\Z", re.IGNORECASE | re.VERBOSE)
 
 
 @lru_cache(maxsize=512)
@@ -159,7 +159,7 @@ def reconcile_nucleus(
             feature, A, Z, E, mass, real, label
         )
         if verbose > -1:
-            print('\n\n' + '\n'.join(text))
+            print("\n\n" + "\n".join(text))
         raise ValidationError(err)
 
     def offer_element_symbol(e):
@@ -270,7 +270,7 @@ def reconcile_nucleus(
 
     # <<< initialize
 
-    text = ['', """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
+    text = ["", """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
 
     Z_exact: List = []  # *_exact are candidates for the final value
     Z_range: List = []  # *_range are tests that the final value must pass to be valid
@@ -281,7 +281,7 @@ def reconcile_nucleus(
 
     r_exact = [True]  # default real/ghost is real
     r_range: List = []
-    l_exact = ['']  # default user label is empty string
+    l_exact = [""]  # default user label is empty string
     l_range: List = []
     mmtol = 0.5  # tolerance for mass outside known masses for element
 
@@ -301,7 +301,7 @@ def reconcile_nucleus(
         if lbl_E is not None:
             offer_element_symbol(lbl_E)
 
-    Z_final = reconcile(Z_exact, Z_range, 'atomic number')
+    Z_final = reconcile(Z_exact, Z_range, "atomic number")
     E_final = periodictable.to_E(Z_final)
 
     # <<< collect more evidence for A/m, then reconcile them
@@ -327,10 +327,10 @@ def reconcile_nucleus(
         else:
             offer_user_label(label)
 
-    mass_final = reconcile(m_exact, m_range, 'mass')
-    A_final = reconcile(A_exact, A_range, 'mass number')
-    real_final = reconcile(r_exact, r_range, 'real/ghost')
-    user_final = reconcile(l_exact, l_range, 'user label')
+    mass_final = reconcile(m_exact, m_range, "mass")
+    A_final = reconcile(A_exact, A_range, "mass number")
+    real_final = reconcile(r_exact, r_range, "real/ghost")
+    user_final = reconcile(l_exact, l_range, "user label")
 
     if log_text:
         text.append(
@@ -340,7 +340,7 @@ def reconcile_nucleus(
         )
 
     if log_text:
-        print('\n'.join(text))
+        print("\n".join(text))
 
     return (A_final, Z_final, E_final, mass_final, real_final, user_final)
 
@@ -406,29 +406,29 @@ def parse_nucleus_label(label):
     matchobj = _nucleus.match(label)
 
     if matchobj:
-        real = not (matchobj.group('gh1') or matchobj.group('gh2'))
+        real = not (matchobj.group("gh1") or matchobj.group("gh2"))
 
-        if matchobj.group('A'):
-            A = int(matchobj.group('A'))
+        if matchobj.group("A"):
+            A = int(matchobj.group("A"))
         else:
             A = None
 
-        if matchobj.group('Z'):
-            Z = int(matchobj.group('Z'))
+        if matchobj.group("Z"):
+            Z = int(matchobj.group("Z"))
         else:
             Z = None
 
-        E = matchobj.group('E')
+        E = matchobj.group("E")
 
-        if matchobj.group('user1'):
-            user = matchobj.group('user1')
-        elif matchobj.group('user2'):
-            user = matchobj.group('user2')
+        if matchobj.group("user1"):
+            user = matchobj.group("user1")
+        elif matchobj.group("user2"):
+            user = matchobj.group("user2")
         else:
             user = None
 
-        if matchobj.group('mass'):
-            mass = float(matchobj.group('mass'))
+        if matchobj.group("mass"):
+            mass = float(matchobj.group("mass"))
         else:
             mass = None
     else:

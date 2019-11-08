@@ -25,59 +25,59 @@ def from_schema(molschema, *, verbose: int = 1) -> Dict:
     """
 
     if (
-        molschema.get('schema_name', '').startswith('qc_schema')
-        or molschema.get('schema_name', '').startswith('qcschema')
-    ) and (molschema.get('schema_version', '') == 1):
-        ms = molschema['molecule']
-    elif molschema.get('schema_name', '').startswith('qcschema_molecule') and molschema.get('schema_version', '') == 2:
+        molschema.get("schema_name", "").startswith("qc_schema")
+        or molschema.get("schema_name", "").startswith("qcschema")
+    ) and (molschema.get("schema_version", "") == 1):
+        ms = molschema["molecule"]
+    elif molschema.get("schema_name", "").startswith("qcschema_molecule") and molschema.get("schema_version", "") == 2:
         ms = molschema
     else:
         raise ValidationError(
             """Schema not recognized, schema_name/schema_version: {}/{} """.format(
-                molschema.get('schema_name', '(none)'), molschema.get('schema_version', '(none)')
+                molschema.get("schema_name", "(none)"), molschema.get("schema_version", "(none)")
             )
         )
 
-    if 'fragments' in ms:
-        frag_pattern = ms['fragments']
+    if "fragments" in ms:
+        frag_pattern = ms["fragments"]
     else:
-        frag_pattern = [np.arange(len(ms['symbols']))]
+        frag_pattern = [np.arange(len(ms["symbols"]))]
 
     dcontig = contiguize_from_fragment_pattern(
         frag_pattern,
-        geom=ms['geometry'],
-        elea=ms.get('mass_numbers', None),
-        elez=ms.get('atomic_numbers', None),
-        elem=ms['symbols'],
-        mass=ms.get('masses', None),
-        real=ms.get('real', None),
-        elbl=ms.get('atom_labels', None),
+        geom=ms["geometry"],
+        elea=ms.get("mass_numbers", None),
+        elez=ms.get("atomic_numbers", None),
+        elem=ms["symbols"],
+        mass=ms.get("masses", None),
+        real=ms.get("real", None),
+        elbl=ms.get("atom_labels", None),
         throw_reorder=True,
     )
 
     molrec = from_arrays(
-        geom=dcontig['geom'],
-        elea=dcontig['elea'],
-        elez=dcontig['elez'],
-        elem=dcontig['elem'],
-        mass=dcontig['mass'],
-        real=dcontig['real'],
-        elbl=dcontig['elbl'],
-        name=ms.get('name', None),
-        units='Bohr',
+        geom=dcontig["geom"],
+        elea=dcontig["elea"],
+        elez=dcontig["elez"],
+        elem=dcontig["elem"],
+        mass=dcontig["mass"],
+        real=dcontig["real"],
+        elbl=dcontig["elbl"],
+        name=ms.get("name", None),
+        units="Bohr",
         input_units_to_au=None,
-        fix_com=ms.get('fix_com', None),
-        fix_orientation=ms.get('fix_orientation', None),
-        fix_symmetry=ms.get('fix_symmetry', None),
-        fragment_separators=dcontig['fragment_separators'],
-        fragment_charges=ms.get('fragment_charges', None),
-        fragment_multiplicities=ms.get('fragment_multiplicities', None),
-        molecular_charge=ms.get('molecular_charge', None),
-        molecular_multiplicity=ms.get('molecular_multiplicity', None),
-        comment=ms.get('comment', None),
-        provenance=ms.get('provenance', None),
-        connectivity=ms.get('connectivity', None),
-        domain='qm',
+        fix_com=ms.get("fix_com", None),
+        fix_orientation=ms.get("fix_orientation", None),
+        fix_symmetry=ms.get("fix_symmetry", None),
+        fragment_separators=dcontig["fragment_separators"],
+        fragment_charges=ms.get("fragment_charges", None),
+        fragment_multiplicities=ms.get("fragment_multiplicities", None),
+        molecular_charge=ms.get("molecular_charge", None),
+        molecular_multiplicity=ms.get("molecular_multiplicity", None),
+        comment=ms.get("comment", None),
+        provenance=ms.get("provenance", None),
+        connectivity=ms.get("connectivity", None),
+        domain="qm",
         # missing_enabled_return=missing_enabled_return,
         speclabel=False,
         # tooclose=tooclose,
@@ -88,7 +88,7 @@ def from_schema(molschema, *, verbose: int = 1) -> Dict:
     )
 
     # replace from_arrays stamp with from_schema stamp
-    molrec['provenance'] = provenance_stamp(__name__)
+    molrec["provenance"] = provenance_stamp(__name__)
 
     return molrec
 
@@ -141,9 +141,9 @@ def contiguize_from_fragment_pattern(
 
     # Nothing to do for len =1 and ordered
     if (len(fragment_separators) == 0) and np.all(np.diff(frag_pattern[0]) == 1):
-        returns = {'fragment_separators': fragment_separators}
+        returns = {"fragment_separators": fragment_separators}
         if geom is not None:
-            returns.update({'geom': geom.copy()})
+            returns.update({"geom": geom.copy()})
         extras = {k: v for k, v in kwargs.items()}
         returns.update(extras)
 
@@ -178,9 +178,9 @@ def contiguize_from_fragment_pattern(
             raise ValidationError("""wrong number of atoms in array: nat = {} != {}""".format(nat, len(arr)))
         return np.concatenate([np.array(arr)[fr] for fr in frag_pattern], axis=0)
 
-    returns = {'fragment_separators': fragment_separators}
+    returns = {"fragment_separators": fragment_separators}
     if geom is not None:
-        returns.update({'geom': geom})
+        returns.update({"geom": geom})
     extras = {k: (None if v is None else reorder(v)) for k, v in kwargs.items()}
     returns.update(extras)
 

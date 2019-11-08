@@ -28,7 +28,7 @@ class AlignmentMill(ProtoModel):
     class Config:
         force_skip_defaults = True
 
-    @validator('shift')
+    @validator("shift")
     def _must_be_3(cls, v, values, **kwargs):
         try:
             v = v.reshape(3)
@@ -36,7 +36,7 @@ class AlignmentMill(ProtoModel):
             raise ValueError("Shift must be castable to shape (3,)!")
         return v
 
-    @validator('rotation')
+    @validator("rotation")
     def _must_be_33(cls, v, values, **kwargs):
         try:
             v = v.reshape(3, 3)
@@ -46,21 +46,21 @@ class AlignmentMill(ProtoModel):
 
     ### Non-Pydantic API functions
 
-    def pretty_print(self, label: str = '') -> str:
+    def pretty_print(self, label: str = "") -> str:
         width = 40
         text = []
-        text.append('-' * width)
-        text.append('{:^{width}}'.format('AlignmentMill', width=width))
+        text.append("-" * width)
+        text.append("{:^{width}}".format("AlignmentMill", width=width))
         if label:
-            text.append('{:^{width}}'.format(label, width=width))
-        text.append('-' * width)
-        text.append('Mirror:   {}'.format(self.mirror))
-        text.append('Atom Map: {}'.format(self.atommap))
-        text.append('Shift:    {}'.format(self.shift))
-        text.append('Rotation:')
-        text.append('{}'.format(self.rotation))
-        text.append('-' * width)
-        return '\n'.join(x.rstrip() for x in text)
+            text.append("{:^{width}}".format(label, width=width))
+        text.append("-" * width)
+        text.append("Mirror:   {}".format(self.mirror))
+        text.append("Atom Map: {}".format(self.atommap))
+        text.append("Shift:    {}".format(self.shift))
+        text.append("Rotation:")
+        text.append("{}".format(self.rotation))
+        text.append("-" * width)
+        return "\n".join(x.rstrip() for x in text)
 
     def align_coordinates(self, geom, *, reverse=False) -> Array:
         """suitable for geometry or displaced geometry"""

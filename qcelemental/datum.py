@@ -36,9 +36,9 @@ class Datum(BaseModel):
     label: str
     units: str
     data: Any
-    comment: str = ''
+    comment: str = ""
     doi: Optional[str] = None
-    glossary: str = ''
+    glossary: str = ""
 
     class Config:
         extra = "forbid"
@@ -46,46 +46,46 @@ class Datum(BaseModel):
         json_encoders = {np.ndarray: lambda v: v.flatten().tolist(), complex: lambda v: (v.real, v.imag)}
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
-        kwargs = {'label': label, 'units': units, 'data': data, 'numeric': numeric}
+        kwargs = {"label": label, "units": units, "data": data, "numeric": numeric}
         if comment is not None:
-            kwargs['comment'] = comment
+            kwargs["comment"] = comment
         if doi is not None:
-            kwargs['doi'] = doi
+            kwargs["doi"] = doi
         if glossary is not None:
-            kwargs['glossary'] = glossary
+            kwargs["glossary"] = glossary
 
         super().__init__(**kwargs)
 
-    @validator('data')
+    @validator("data")
     def must_be_numerical(cls, v, values, **kwargs):
         try:
             1.0 * v
         except TypeError:
             try:
-                Decimal('1.0') * v
+                Decimal("1.0") * v
             except TypeError:
-                if values['numeric']:
-                    raise ValueError(f'Datum data should be float, Decimal, or np.ndarray, not {type(v)}.')
+                if values["numeric"]:
+                    raise ValueError(f"Datum data should be float, Decimal, or np.ndarray, not {type(v)}.")
             else:
-                values['numeric'] = True
+                values["numeric"] = True
         else:
-            values['numeric'] = True
+            values["numeric"] = True
 
         return v
 
-    def __str__(self, label=''):
+    def __str__(self, label=""):
         width = 40
-        text = ['-' * width, '{:^{width}}'.format('Datum ' + self.label, width=width)]
+        text = ["-" * width, "{:^{width}}".format("Datum " + self.label, width=width)]
         if label:
-            text.append('{:^{width}}'.format(label, width=width))
-        text.append('-' * width)
-        text.append('Data:     {}'.format(self.data))
-        text.append('Units:    [{}]'.format(self.units))
-        text.append('doi:      {}'.format(self.doi))
-        text.append('Comment:  {}'.format(self.comment))
-        text.append('Glossary: {}'.format(self.glossary))
-        text.append('-' * width)
-        return '\n'.join(text)
+            text.append("{:^{width}}".format(label, width=width))
+        text.append("-" * width)
+        text.append("Data:     {}".format(self.data))
+        text.append("Units:    [{}]".format(self.units))
+        text.append("doi:      {}".format(self.doi))
+        text.append("Comment:  {}".format(self.comment))
+        text.append("Glossary: {}".format(self.glossary))
+        text.append("-" * width)
+        return "\n".join(text)
 
     def dict(self, *args, **kwargs):
         return super().dict(*args, **{**kwargs, **{"exclude_unset": True}})
@@ -102,7 +102,7 @@ class Datum(BaseModel):
             return factor * self.data
 
 
-def print_variables(qcvars: Dict[str, 'Datum']) -> str:
+def print_variables(qcvars: Dict[str, "Datum"]) -> str:
     """Form a printable representation of qcvariables.
 
     Parameters
@@ -116,17 +116,17 @@ def print_variables(qcvars: Dict[str, 'Datum']) -> str:
         Printable string representation of label, data, and unit in Datum-s.
 
     """
-    text = ['\n  Variable Map:', '  ----------------------------------------------------------------------------']
+    text = ["\n  Variable Map:", "  ----------------------------------------------------------------------------"]
 
     if len(qcvars) == 0:
-        text.append('  (none)')
-        return '\n'.join(text)
+        text.append("  (none)")
+        return "\n".join(text)
 
     largest_key = max(len(k) for k in qcvars) + 2  # for quotation marks
     largest_characteristic = 8
     for k, v in qcvars.items():
         try:
-            exp = int(str(v.data).split('E')[1])
+            exp = int(str(v.data).split("E")[1])
         except IndexError:
             pass
         else:
@@ -138,10 +138,10 @@ def print_variables(qcvars: Dict[str, 'Datum']) -> str:
 
         if isinstance(qca.data, np.ndarray):
             data = np.array_str(qca.data, max_line_width=120, precision=8, suppress_small=True)
-            data = '\n'.join('        ' + ln for ln in data.splitlines())
+            data = "\n".join("        " + ln for ln in data.splitlines())
             text.append(
                 """  {:{keywidth}} => {:{width}} [{}]""".format(
-                    '"' + k + '"', '', qca.units, keywidth=largest_key, width=largest_characteristic + 14
+                    '"' + k + '"', "", qca.units, keywidth=largest_key, width=largest_characteristic + 14
                 )
             )
             text.append(data)
@@ -164,5 +164,5 @@ def print_variables(qcvars: Dict[str, 'Datum']) -> str:
                 )
             )
 
-    text.append('')
-    return '\n'.join(text)
+    text.append("")
+    return "\n".join(text)

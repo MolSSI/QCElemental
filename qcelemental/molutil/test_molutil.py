@@ -54,11 +54,11 @@ def test_relative_geoms_align_free():
 
         rmolrec = qcel.molparse.from_schema(s22_12.dict())
         cmolrec = qcel.molparse.from_schema(cmol.dict())
-        assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms='align')
+        assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
 def test_relative_geoms_align_fixed():
-    s22_12 = qcel.models.Molecule.from_data(ss22_12 + 'nocom\nnoreorient\n')
+    s22_12 = qcel.models.Molecule.from_data(ss22_12 + "nocom\nnoreorient\n")
 
     for trial in range(3):
         cmol, _ = s22_12.scramble(
@@ -67,7 +67,7 @@ def test_relative_geoms_align_fixed():
 
         rmolrec = qcel.molparse.from_schema(s22_12.dict())
         cmolrec = qcel.molparse.from_schema(cmol.dict())
-        assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms='align')
+        assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
 chiral = qcel.models.Molecule.from_data(
@@ -142,7 +142,7 @@ def test_error_bins_b787():
     with pytest.raises(qcel.ValidationError) as e:
         oco12.align(oco10, verbose=0)
 
-    assert 'atom subclasses unequal' in str(e.value)
+    assert "atom subclasses unequal" in str(e.value)
 
 
 @using_networkx
@@ -175,20 +175,20 @@ def test_b787():
     oco10 = qcel.molparse.from_string(soco10)
     oco12 = qcel.molparse.from_string(sooc12)
 
-    oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
-    oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco10_geom_au = oco10["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco12_geom_au = oco12["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
     rmsd, mill = qcel.molutil.B787(
         oco10_geom_au,
         oco12_geom_au,
-        np.array(['O', 'C', 'O']),
-        np.array(['O', 'O', 'C']),
-        algorithm='permutative',
+        np.array(["O", "C", "O"]),
+        np.array(["O", "O", "C"]),
+        algorithm="permutative",
         verbose=4,
         do_plot=False,
     )
 
-    assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.0e-6)
+    assert compare_values(ref_rmsd, rmsd, "known rmsd B787", atol=1.0e-6)
 
 
 @using_networkx
@@ -196,12 +196,12 @@ def test_b787_atomsmap():
     oco10 = qcel.molparse.from_string(soco10)
     oco12 = qcel.molparse.from_string(soco12)
 
-    oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
-    oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco10_geom_au = oco10["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco12_geom_au = oco12["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
     rmsd, mill = qcel.molutil.B787(oco10_geom_au, oco12_geom_au, None, None, atoms_map=True)
 
-    assert compare_values(ref_rmsd, rmsd, 'known rmsd B787', atol=1.0e-6)
+    assert compare_values(ref_rmsd, rmsd, "known rmsd B787", atol=1.0e-6)
 
 
 @using_networkx
@@ -211,7 +211,7 @@ def test_model_b787():
 
     mol, data = oco12.align(oco10, verbose=4)
 
-    assert compare_values(ref_rmsd, data['rmsd'], 'known rmsd qcel.models.Molecule.align', atol=1.0e-6)
+    assert compare_values(ref_rmsd, data["rmsd"], "known rmsd qcel.models.Molecule.align", atol=1.0e-6)
 
 
 def test_error_kabsch():
@@ -226,14 +226,14 @@ def test_kabsch_identity():
     oco10 = qcel.molparse.from_string(soco10)
     oco12 = qcel.molparse.from_string(soco10)
 
-    oco10_geom_au = oco10['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
-    oco12_geom_au = oco12['qm']['geom'].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco10_geom_au = oco10["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
+    oco12_geom_au = oco12["qm"]["geom"].reshape((-1, 3)) / qcel.constants.bohr2angstroms
 
     rmsd, rot, shift = qcel.molutil.kabsch_align(oco10_geom_au, oco12_geom_au)
 
-    assert compare_values(0.0, rmsd, 'identical')
-    assert compare_values(np.identity(3), rot, 'identity rotation matrix')
-    assert compare_values(np.zeros(3), shift, 'identical COM')
+    assert compare_values(0.0, rmsd, "identical")
+    assert compare_values(np.identity(3), rot, "identity rotation matrix")
+    assert compare_values(np.zeros(3), shift, "identical COM")
 
 
 trop_cs = qcel.models.Molecule.from_data(
@@ -282,7 +282,7 @@ trop_gs_c2v = qcel.models.Molecule.from_data(
 @using_networkx
 def test_tropolone_b787():
     mol, data = trop_cs.align(trop_gs_c2v, do_plot=False, verbose=0, uno_cutoff=0.5)
-    assert compare_values(0.1413, data['rmsd'], 'cs<-->c2v tropolones align', atol=1.0e-2)
+    assert compare_values(0.1413, data["rmsd"], "cs<-->c2v tropolones align", atol=1.0e-2)
 
 
 def test_scramble_identity():
@@ -303,17 +303,17 @@ Rotation:
  [0. 0. 1.]]
 ----------------------------------------"""
 
-    assert compare(mill_str, mill.pretty_print(label='eye'))
+    assert compare(mill_str, mill.pretty_print(label="eye"))
 
     mill_dict = {
-        'shift': [0.0, 0.0, 0.0],
-        'rotation': [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
-        'atommap': [0, 1, 2, 3],
-        'mirror': False,
+        "shift": [0.0, 0.0, 0.0],
+        "rotation": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]],
+        "atommap": [0, 1, 2, 3],
+        "mirror": False,
     }
 
     assert compare_recursive(mill_dict, mill.dict())
-    mill_dict['rotation'] = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+    mill_dict["rotation"] = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
     assert compare_recursive(mill_dict, mill.dict(encoding="json"))
 
 
@@ -459,7 +459,7 @@ Rotation:
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
     aqmol, data = p4mol.align(c4mol, atoms_map=True, mols_align=True, verbose=4)
-    mill = data['mill']
+    mill = data["mill"]
 
     assert compare([0, 1, 2, 3], mill.atommap)
     assert compare_values(
@@ -543,7 +543,7 @@ def test_vector_gradient_align():
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
     aqmol, data = p4mol.align(c4mol, atoms_map=False, mols_align=True, verbose=4)
-    mill = data['mill']
+    mill = data["mill"]
 
     assert compare([0, 3, 1, 2], mill.atommap)
 

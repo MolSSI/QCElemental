@@ -251,23 +251,23 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
 @pytest.mark.parametrize(
     "protocol, restricted, provided, expected",
     [
-        ('none', True, ['orbitals_a', 'orbitals_b'], []),
-        (None, True, ['orbitals_a', 'orbitals_b'], []),
-        ('all', False, ['orbitals_a', 'orbitals_b'], ['orbitals_a', 'orbitals_b']),
-        ('all', True, ['orbitals_a', 'orbitals_b'], ['orbitals_a']),
+        ("none", True, ["orbitals_a", "orbitals_b"], []),
+        (None, True, ["orbitals_a", "orbitals_b"], []),
+        ("all", False, ["orbitals_a", "orbitals_b"], ["orbitals_a", "orbitals_b"]),
+        ("all", True, ["orbitals_a", "orbitals_b"], ["orbitals_a"]),
         (
-            'orbitals_and_eigenvalues',
+            "orbitals_and_eigenvalues",
             False,
-            ['orbitals_a', 'orbitals_b', 'fock_a', 'fock_b'],
-            ['orbitals_a', 'orbitals_b'],
+            ["orbitals_a", "orbitals_b", "fock_a", "fock_b"],
+            ["orbitals_a", "orbitals_b"],
         ),
         (
-            'orbitals_and_eigenvalues',
+            "orbitals_and_eigenvalues",
             True,
-            ['orbitals_a', 'orbitals_b', 'eigenvalues_a', 'fock_a', 'fock_b'],
-            ['orbitals_a', 'eigenvalues_a'],
+            ["orbitals_a", "orbitals_b", "eigenvalues_a", "fock_a", "fock_b"],
+            ["orbitals_a", "eigenvalues_a"],
         ),
-        ('return_results', True, ['orbitals_a', 'fock_a', 'fock_b'], ['orbitals_a', 'fock_a']),
+        ("return_results", True, ["orbitals_a", "fock_a", "fock_b"], ["orbitals_a", "fock_a"]),
     ],
 )
 def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture):
@@ -301,7 +301,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
 
 @pytest.mark.parametrize(
     "keep, indices",
-    [(None, [0, 1, 2, 3, 4]), ('all', [0, 1, 2, 3, 4]), ('initial_and_final', [0, 4]), ('final', [4]), ('none', [])],
+    [(None, [0, 1, 2, 3, 4]), ("all", [0, 1, 2, 3, 4]), ("initial_and_final", [0, 4]), ("final", [4]), ("none", [])],
 )
 def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
 
@@ -343,4 +343,4 @@ def test_failed_operation(result_data_fixture):
     assert isinstance(failed.dict(), dict)
     failed_json = failed.json()
     assert isinstance(failed_json, str)
-    assert 'its all good' in failed_json
+    assert "its all good" in failed_json

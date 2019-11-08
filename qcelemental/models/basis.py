@@ -11,8 +11,8 @@ class HarmonicType(str, Enum):
     The angular momentum representation of a shell.
     """
 
-    spherical = 'spherical'
-    cartesian = 'cartesian'
+    spherical = "spherical"
+    cartesian = "cartesian"
 
 
 class ElectronShell(ProtoModel):
@@ -28,7 +28,7 @@ class ElectronShell(ProtoModel):
         description="General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients.",
     )
 
-    @validator('coefficients')
+    @validator("coefficients")
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["exponents"])
         for row in v:
@@ -37,7 +37,7 @@ class ElectronShell(ProtoModel):
 
         return v
 
-    @validator('coefficients')
+    @validator("coefficients")
     def _check_general_contraction_or_fused(cls, v, values):
         if len(values["angular_momentum"]) > 1:
             if len(values["angular_momentum"]) != len(v):
@@ -55,7 +55,7 @@ class ElectronShell(ProtoModel):
             The number of basis functions on this shell.
         """
 
-        if self.harmonic_type == 'spherical':
+        if self.harmonic_type == "spherical":
             return sum((2 * L + 1) for L in self.angular_momentum)
         else:
             return sum(((L + 1) * (L + 2) // 2) for L in self.angular_momentum)
@@ -78,8 +78,8 @@ class ECPType(str, Enum):
     The type of the ECP potential.
     """
 
-    scalar = 'scalar'
-    spinorbit = 'spinorbit'
+    scalar = "scalar"
+    spinorbit = "spinorbit"
 
 
 class ECPPotential(ProtoModel):
@@ -96,7 +96,7 @@ class ECPPotential(ProtoModel):
         description="General contraction coefficients for this shell, individual list components will be the individual segment contraction coefficients.",
     )
 
-    @validator('gaussian_exponents')
+    @validator("gaussian_exponents")
     def _check_gaussian_exponentst_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         if len(v) != len_exp:
@@ -104,7 +104,7 @@ class ECPPotential(ProtoModel):
 
         return v
 
-    @validator('coefficients')
+    @validator("coefficients")
     def _check_coefficient_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         for row in v:
@@ -141,7 +141,7 @@ class BasisSet(ProtoModel):
 
     nbf: Optional[int] = Field(None, description="The number of basis functions.")
 
-    @validator('atom_map')
+    @validator("atom_map")
     def _check_atom_map(cls, v, values):
         sv = set(v)
         missing = sv - values["center_data"].keys()
@@ -151,7 +151,7 @@ class BasisSet(ProtoModel):
 
         return v
 
-    @validator('nbf', always=True)
+    @validator("nbf", always=True)
     def _check_nbf(cls, v, values):
 
         # Bad construction, pass on errors

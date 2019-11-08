@@ -70,7 +70,7 @@ def build_units_registry(context):
             continue
 
         # Rename where needed
-        left_unit, right_unit = k.split('-')
+        left_unit, right_unit = k.split("-")
         left_unit = _const_rename.get(left_unit, left_unit)
         _nist_units.add(left_unit)
 

@@ -5,7 +5,7 @@ def blockwise_contract(arr):
     """Undo blockwise_expand, returning `arr` to original 2D array."""
 
     if len(arr.shape) != 4:
-        print('Not appropriate for un_blockwise')
+        print("Not appropriate for un_blockwise")
     gr, gc, lr, lc = arr.shape
     ans = np.reshape(arr, (gr * gc, lr, lc))
 
@@ -78,7 +78,7 @@ def blockwise_expand(a, blockshape, aslist=False, require_aligned_blocks=True):
        [18 19]]]]
 
     """
-    assert a.flags['C_CONTIGUOUS'], "This function relies on the memory layout of the array."
+    assert a.flags["C_CONTIGUOUS"], "This function relies on the memory layout of the array."
     blockshape = tuple(blockshape)
     outershape = tuple(np.array(a.shape) // blockshape)
     view_shape = outershape + blockshape

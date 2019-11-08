@@ -74,7 +74,7 @@ class OptimizationInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
 
-    def __repr_args__(self) -> 'ReprArgs':
+    def __repr_args__(self) -> "ReprArgs":
         return [
             ("model", self.input_specification.model.dict()),
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
@@ -101,15 +101,15 @@ class Optimization(OptimizationInput):
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    @validator('trajectory', each_item=False)
+    @validator("trajectory", each_item=False)
     def _trajectory_protocol(cls, v, values):
 
         # Do not propogate validation errors
-        if 'protocols' not in values:
+        if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")
 
-        keep_enum = values['protocols'].trajectory
-        if keep_enum == 'all':
+        keep_enum = values["protocols"].trajectory
+        if keep_enum == "all":
             pass
         elif keep_enum == "initial_and_final":
             if len(v) != 2:

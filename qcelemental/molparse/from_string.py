@@ -8,7 +8,7 @@ from . import pubchem
 from .from_arrays import from_input_arrays
 from .regex import CARTXYZ, CHGMULT, ENDL, NUCLEUS, NUMBER, SEP
 
-__all__ = ['from_string']
+__all__ = ["from_string"]
 
 
 def from_string(
@@ -22,8 +22,8 @@ def from_string(
     return_processed=False,
     enable_qm=True,
     enable_efp=True,
-    missing_enabled_return_qm='none',
-    missing_enabled_return_efp='none',
+    missing_enabled_return_qm="none",
+    missing_enabled_return_efp="none",
     verbose=1,
 ) -> Union[Dict, Tuple[Dict, Dict]]:
     """Construct a molecule dictionary from any recognized string format.
@@ -168,7 +168,7 @@ def from_string(
 
     """
     if verbose >= 2:
-        print('<<< FROM_STRING\n', molstr, '\n>>>')
+        print("<<< FROM_STRING\n", molstr, "\n>>>")
 
     # << 1 >>  str-->str -- discard comments
     molstr = filter_comments(molstr.strip())
@@ -213,34 +213,34 @@ def from_string(
 
         return molstr, molinit
 
-    if dtype == 'xyz':
+    if dtype == "xyz":
         molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
 
-    elif dtype == 'xyz+':
+    elif dtype == "xyz+":
         molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
 
-    elif dtype == 'psi4':
+    elif dtype == "psi4":
         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=False)
 
-    elif dtype == 'psi4+':
+    elif dtype == "psi4+":
         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
 
     elif dtype is None:
         try:
             molstr, molinit = parse_as_psi4_ish(molstr, unsettled=False)
-            dtype = 'psi4'
+            dtype = "psi4"
         except MoleculeFormatError as err:
             try:
                 molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
-                dtype = 'xyz'
+                dtype = "xyz"
             except MoleculeFormatError as err:
                 try:
                     molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
-                    dtype = 'xyz+'
+                    dtype = "xyz+"
                 except MoleculeFormatError as err:
                     try:
                         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
-                        dtype = 'psi4+'
+                        dtype = "psi4+"
                     except MoleculeFormatError as err:
                         raise MoleculeFormatError(
                             """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr)
@@ -253,9 +253,9 @@ def from_string(
     molinit.update(processed)
 
     if verbose >= 2:
-        print('\nFROM_STRING (', dtype, ') --> FROM_INPUT_ARRAYS <<<')
+        print("\nFROM_STRING (", dtype, ") --> FROM_INPUT_ARRAYS <<<")
         pprint.pprint(molinit)
-        print('>>>\n')
+        print(">>>\n")
 
     # << 4 >>  dict-->molspec
     molrec = from_input_arrays(
@@ -268,13 +268,13 @@ def from_string(
     )
 
     # replace from_arrays stamp with from_string stamp
-    if 'qm' in molrec and molrec['qm']:
-        molrec['qm']['provenance'] = provenance_stamp(__name__)
-    if 'efp' in molrec and molrec['efp']:
-        molrec['efp']['provenance'] = provenance_stamp(__name__)
+    if "qm" in molrec and molrec["qm"]:
+        molrec["qm"]["provenance"] = provenance_stamp(__name__)
+    if "efp" in molrec and molrec["efp"]:
+        molrec["efp"]["provenance"] = provenance_stamp(__name__)
 
     if verbose >= 2:
-        print('\nFROM_STRING MOLREC <<<', molrec, '>>>\n')
+        print("\nFROM_STRING MOLREC <<<", molrec, ">>>\n")
 
     if return_processed:
         return molrec, molinit
@@ -288,7 +288,7 @@ def from_string(
 #        # N.B. Anything starting with PubchemError will be handled correctly by the molecule parser
 #        # in libmints, which will just print the rest of the string and exit gracefully.
 
-pubchemre = re.compile(r'\Apubchem' + r'\s*:\s*' + r'(?P<pubsearch>(([\S ]+)))\Z', re.IGNORECASE)
+pubchemre = re.compile(r"\Apubchem" + r"\s*:\s*" + r"(?P<pubsearch>(([\S ]+)))\Z", re.IGNORECASE)
 
 
 def _filter_pubchem(string):
@@ -300,7 +300,7 @@ def _filter_pubchem(string):
     """
 
     def process_pubchem(matchobj):
-        pubsearch = matchobj.group('pubsearch')
+        pubsearch = matchobj.group("pubsearch")
 
         # search pubchem for the provided string
         try:
@@ -308,14 +308,14 @@ def _filter_pubchem(string):
         except Exception as e:
             raise ValidationError(e.message)
 
-        if pubsearch.endswith('*'):
+        if pubsearch.endswith("*"):
             pubsearch = pubsearch[:-1]
         if len(results) == 1:
             # There's only 1 result - use it
             xyz = results[0].get_molecule_string()
-            processed['name'] = 'IUPAC {}'.format(results[0].name())
-            processed['molecular_charge'] = float(results[0].molecular_charge)
-            if 'Input Error' in xyz:
+            processed["name"] = "IUPAC {}".format(results[0].name())
+            processed["molecular_charge"] = float(results[0].molecular_charge)
+            if "Input Error" in xyz:
                 raise ValidationError(xyz)
         else:
             # There are multiple results -- print and exit
@@ -332,38 +332,38 @@ def _filter_pubchem(string):
             raise ChoicesError(msg, ematches)
 
         # remove PubchemInput first line and assert [A]
-        xyz = xyz.replace('PubchemInput', 'units ang')
+        xyz = xyz.replace("PubchemInput", "units ang")
         return xyz
 
     reconstitute = []
     processed = {}
 
-    for line in string.split('\n'):
+    for line in string.split("\n"):
         line = re.sub(pubchemre, process_pubchem, line.strip())
         if line:
             reconstitute.append(line)
 
-    return '\n'.join(reconstitute), processed
+    return "\n".join(reconstitute), processed
 
 
 def _filter_kwargs(name, fix_com, fix_orientation, fix_symmetry):
     processed = {}
     if name is not None:
-        processed['name'] = name
+        processed["name"] = name
     if fix_com is not None:
-        processed['fix_com'] = fix_com
+        processed["fix_com"] = fix_com
     if fix_orientation is not None:
-        processed['fix_orientation'] = fix_orientation
+        processed["fix_orientation"] = fix_orientation
     if fix_symmetry is not None:
-        processed['fix_symmetry'] = fix_symmetry
+        processed["fix_symmetry"] = fix_symmetry
 
     return processed
 
 
-com = re.compile(r'\A(no_com|nocom)\Z', re.IGNORECASE)
-orient = re.compile(r'\A(no_reorient|noreorient)\Z', re.IGNORECASE)
-bohrang = re.compile(r'\Aunits?[\s=]+((?P<ubohr>(bohr|au|a.u.))|(?P<uang>(ang|angstrom)))\Z', re.IGNORECASE)
-symmetry = re.compile(r'\Asymmetry[\s=]+(?P<pg>\w+)\Z', re.IGNORECASE)
+com = re.compile(r"\A(no_com|nocom)\Z", re.IGNORECASE)
+orient = re.compile(r"\A(no_reorient|noreorient)\Z", re.IGNORECASE)
+bohrang = re.compile(r"\Aunits?[\s=]+((?P<ubohr>(bohr|au|a.u.))|(?P<uang>(ang|angstrom)))\Z", re.IGNORECASE)
+symmetry = re.compile(r"\Asymmetry[\s=]+(?P<pg>\w+)\Z", re.IGNORECASE)
 
 
 def _filter_universals(string):
@@ -380,23 +380,23 @@ def _filter_universals(string):
     """
 
     def process_com(matchobj):
-        processed['fix_com'] = True
-        return ''
+        processed["fix_com"] = True
+        return ""
 
     def process_orient(matchobj):
-        processed['fix_orientation'] = True
-        return ''
+        processed["fix_orientation"] = True
+        return ""
 
     def process_bohrang(matchobj):
-        if matchobj.group('uang'):
-            processed['units'] = 'Angstrom'
-        elif matchobj.group('ubohr'):
-            processed['units'] = 'Bohr'
-        return ''
+        if matchobj.group("uang"):
+            processed["units"] = "Angstrom"
+        elif matchobj.group("ubohr"):
+            processed["units"] = "Bohr"
+        return ""
 
     def process_symmetry(matchobj):
-        processed['fix_symmetry'] = matchobj.group('pg').lower()
-        return ''
+        processed["fix_symmetry"] = matchobj.group("pg").lower()
+        return ""
 
     reconstitute = []
     processed = {}
@@ -405,7 +405,7 @@ def _filter_universals(string):
     bohrang_found = False
     symmetry_found = False
 
-    for line in string.split('\n'):
+    for line in string.split("\n"):
         line = line.strip()
         if not com_found:
             line, com_found = re.subn(com, process_com, line)
@@ -418,7 +418,7 @@ def _filter_universals(string):
         if line:
             reconstitute.append(line)
 
-    return '\n'.join(reconstitute), processed
+    return "\n".join(reconstitute), processed
 
 
 # fmt: off
@@ -440,43 +440,43 @@ efppoints = re.compile(
 
 def _filter_libefp(string):
     def process_efpxyzabc(matchobj):
-        processed['fragment_files'].append(matchobj.group('efpfile'))
-        processed['hint_types'].append('xyzabc')
-        processed['geom_hints'].append(
+        processed["fragment_files"].append(matchobj.group("efpfile"))
+        processed["hint_types"].append("xyzabc")
+        processed["geom_hints"].append(
             [
-                float(matchobj.group('x')),
-                float(matchobj.group('y')),
-                float(matchobj.group('z')),
-                float(matchobj.group('a')),
-                float(matchobj.group('b')),
-                float(matchobj.group('c')),
+                float(matchobj.group("x")),
+                float(matchobj.group("y")),
+                float(matchobj.group("z")),
+                float(matchobj.group("a")),
+                float(matchobj.group("b")),
+                float(matchobj.group("c")),
             ]
         )
-        return ''
+        return ""
 
     def process_efppoints(matchobj):
-        processed['fragment_files'].append(matchobj.group('efpfile'))
-        processed['hint_types'].append('points')
-        processed['geom_hints'].append(
+        processed["fragment_files"].append(matchobj.group("efpfile"))
+        processed["hint_types"].append("points")
+        processed["geom_hints"].append(
             [
-                float(matchobj.group('x1')),
-                float(matchobj.group('y1')),
-                float(matchobj.group('z1')),
-                float(matchobj.group('x2')),
-                float(matchobj.group('y2')),
-                float(matchobj.group('z2')),
-                float(matchobj.group('x3')),
-                float(matchobj.group('y3')),
-                float(matchobj.group('z3')),
+                float(matchobj.group("x1")),
+                float(matchobj.group("y1")),
+                float(matchobj.group("z1")),
+                float(matchobj.group("x2")),
+                float(matchobj.group("y2")),
+                float(matchobj.group("z2")),
+                float(matchobj.group("x3")),
+                float(matchobj.group("y3")),
+                float(matchobj.group("z3")),
             ]
         )
-        return ''
+        return ""
 
     reconstitute = []
     processed = {}
-    processed['fragment_files'] = []
-    processed['hint_types'] = []
-    processed['geom_hints'] = []
+    processed["fragment_files"] = []
+    processed["hint_types"] = []
+    processed["geom_hints"] = []
 
     # handle `--`-demarcated blocks
     for frag in re.split(fragment_marker, string):
@@ -485,16 +485,16 @@ def _filter_libefp(string):
         if frag:
             reconstitute.append(frag)
 
-    return '\n--\n'.join(reconstitute), processed
+    return "\n--\n".join(reconstitute), processed
 
 
-fragment_marker = re.compile(r'^\s*--\s*$', re.MULTILINE)
-cgmp = re.compile(r'\A' + CHGMULT + r'\Z', re.VERBOSE)
+fragment_marker = re.compile(r"^\s*--\s*$", re.MULTILINE)
+cgmp = re.compile(r"\A" + CHGMULT + r"\Z", re.VERBOSE)
 
-VAR = r'(-?[a-z][a-z0-9_]*)'  # slight cheat to allow neg in `variable`
-NUCLABEL = r'([A-Z]{1,3}((_\w+)|(\d+))?)'
-ANCHORTO = r'((\d+)|' + NUCLABEL + r')'
-ANCHORVAL = r'(' + NUMBER + r'|' + VAR + ')'
+VAR = r"(-?[a-z][a-z0-9_]*)"  # slight cheat to allow neg in `variable`
+NUCLABEL = r"([A-Z]{1,3}((_\w+)|(\d+))?)"
+ANCHORTO = r"((\d+)|" + NUCLABEL + r")"
+ANCHORVAL = r"(" + NUMBER + r"|" + VAR + ")"
 
 # fmt: off
 atom_cartesian = re.compile(r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z',
@@ -555,9 +555,9 @@ def _filter_mints(string, unsettled=False):
     def process_system_cgmp(matchobj):
         """Handles optional special first fragment with sole contents overall chg/mult."""
 
-        processed['molecular_charge'] = float(matchobj.group('chg'))
-        processed['molecular_multiplicity'] = int(matchobj.group('mult'))
-        return ''
+        processed["molecular_charge"] = float(matchobj.group("chg"))
+        processed["molecular_multiplicity"] = int(matchobj.group("mult"))
+        return ""
 
     def filter_fragment(fstring):
         """Handles extraction from everything within a fragment marker "--" of a
@@ -566,47 +566,47 @@ def _filter_mints(string, unsettled=False):
         """
 
         def process_fragment_cgmp(matchobj):
-            processed['fragment_charges'].append(float(matchobj.group('chg')))
-            processed['fragment_multiplicities'].append(int(matchobj.group('mult')))
-            return ''
+            processed["fragment_charges"].append(float(matchobj.group("chg")))
+            processed["fragment_multiplicities"].append(int(matchobj.group("mult")))
+            return ""
 
         def process_atom_cartesian(matchobj):
-            processed['elbl'].append(matchobj.group('nucleus'))
-            processed['geom'].append(float(matchobj.group('x')))
-            processed['geom'].append(float(matchobj.group('y')))
-            processed['geom'].append(float(matchobj.group('z')))
-            return ''
+            processed["elbl"].append(matchobj.group("nucleus"))
+            processed["geom"].append(float(matchobj.group("x")))
+            processed["geom"].append(float(matchobj.group("y")))
+            processed["geom"].append(float(matchobj.group("z")))
+            return ""
 
         def process_atom_unsettled(matchobj):
-            processed['elbl'].append(matchobj.group('nucleus'))
+            processed["elbl"].append(matchobj.group("nucleus"))
             geo = []
-            if 'Xval' in matchobj.groupdict():
-                geo.append(matchobj.group('Xval'))
-                geo.append(matchobj.group('Yval'))
-                geo.append(matchobj.group('Zval'))
-            if 'Rval' in matchobj.groupdict():
-                geo.append(matchobj.group('Ridx'))
-                geo.append(matchobj.group('Rval'))
-            if 'Aval' in matchobj.groupdict():
-                geo.append(matchobj.group('Aidx'))
-                geo.append(matchobj.group('Aval'))
-            if 'Dval' in matchobj.groupdict():
-                geo.append(matchobj.group('Didx'))
-                geo.append(matchobj.group('Dval'))
-            processed['geom_unsettled'].append(geo)
-            return ''
+            if "Xval" in matchobj.groupdict():
+                geo.append(matchobj.group("Xval"))
+                geo.append(matchobj.group("Yval"))
+                geo.append(matchobj.group("Zval"))
+            if "Rval" in matchobj.groupdict():
+                geo.append(matchobj.group("Ridx"))
+                geo.append(matchobj.group("Rval"))
+            if "Aval" in matchobj.groupdict():
+                geo.append(matchobj.group("Aidx"))
+                geo.append(matchobj.group("Aval"))
+            if "Dval" in matchobj.groupdict():
+                geo.append(matchobj.group("Didx"))
+                geo.append(matchobj.group("Dval"))
+            processed["geom_unsettled"].append(geo)
+            return ""
 
         def process_variable(matchobj):
-            processed['variables'].append((matchobj.group('varname'), matchobj.group('varvalue')))
-            return ''
+            processed["variables"].append((matchobj.group("varname"), matchobj.group("varvalue")))
+            return ""
 
         freconstitute = []
         start_atom = len(processed["elbl"])
         if start_atom > 0:
-            processed['fragment_separators'].append(start_atom)
+            processed["fragment_separators"].append(start_atom)
 
         fcgmp_found = False
-        for iln, line in enumerate(fstring.split('\n')):
+        for iln, line in enumerate(fstring.split("\n")):
             line = line.strip()
             if not fcgmp_found:
                 line, fcgmp_found = re.subn(cgmp, process_fragment_cgmp, line)
@@ -623,22 +623,22 @@ def _filter_mints(string, unsettled=False):
                 freconstitute.append(line)
 
         if not fcgmp_found:
-            processed['fragment_charges'].append(None)
-            processed['fragment_multiplicities'].append(None)
+            processed["fragment_charges"].append(None)
+            processed["fragment_multiplicities"].append(None)
 
-        return '\n'.join(freconstitute), processed
+        return "\n".join(freconstitute), processed
 
     reconstitute = []
     processed = {}
-    processed['elbl'] = []
-    processed['fragment_separators'] = []
-    processed['fragment_charges'] = []
-    processed['fragment_multiplicities'] = []
+    processed["elbl"] = []
+    processed["fragment_separators"] = []
+    processed["fragment_charges"] = []
+    processed["fragment_multiplicities"] = []
     if unsettled:
-        processed['geom_unsettled'] = []
-        processed['variables'] = []
+        processed["geom_unsettled"] = []
+        processed["variables"] = []
     else:
-        processed['geom'] = []
+        processed["geom"] = []
 
     # handle `--`-demarcated blocks
     for ifr, frag in enumerate(re.split(fragment_marker, string)):
@@ -650,19 +650,19 @@ def _filter_mints(string, unsettled=False):
         if frag:
             reconstitute.append(frag)
 
-    return '\n--\n'.join(reconstitute), processed
+    return "\n--\n".join(reconstitute), processed
 
 
-xyz1strict = re.compile(r'\A' + r'(?P<nat>\d+)' + r'\Z')
+xyz1strict = re.compile(r"\A" + r"(?P<nat>\d+)" + r"\Z")
 SIMPLENUCLEUS = r"""((?P<E>[A-Z]{1,3})|(?P<Z>\d{1,3}))"""
 atom_cartesian_strict = re.compile(
-    r'\A' + r'(?P<nucleus>' + SIMPLENUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
+    r"\A" + r"(?P<nucleus>" + SIMPLENUCLEUS + r")" + SEP + CARTXYZ + r"\Z", re.IGNORECASE | re.VERBOSE
 )
 
-xyz1 = re.compile(r'\A' + r'(?P<nat>\d+)' + r'[\s,]*' + r'((?P<ubohr>(bohr|au))|(?P<uang>ang))?' + r'\Z', re.IGNORECASE)
-xyz2 = re.compile(r'\A' + CHGMULT, re.VERBOSE)
+xyz1 = re.compile(r"\A" + r"(?P<nat>\d+)" + r"[\s,]*" + r"((?P<ubohr>(bohr|au))|(?P<uang>ang))?" + r"\Z", re.IGNORECASE)
+xyz2 = re.compile(r"\A" + CHGMULT, re.VERBOSE)
 atom_cartesian = re.compile(
-    r'\A' + r'(?P<nucleus>' + NUCLEUS + r')' + SEP + CARTXYZ + r'\Z', re.IGNORECASE | re.VERBOSE
+    r"\A" + r"(?P<nucleus>" + NUCLEUS + r")" + SEP + CARTXYZ + r"\Z", re.IGNORECASE | re.VERBOSE
 )
 
 
@@ -693,36 +693,36 @@ def _filter_xyz(string, strict):
     """
 
     def process_bohrang(matchobj):
-        nat = matchobj.group('nat')  # lgtm[py/unused-local-variable]
-        if matchobj.group('uang'):
-            processed['units'] = 'Angstrom'
-        elif matchobj.group('ubohr'):
-            processed['units'] = 'Bohr'
-        return ''
+        nat = matchobj.group("nat")  # lgtm[py/unused-local-variable]
+        if matchobj.group("uang"):
+            processed["units"] = "Angstrom"
+        elif matchobj.group("ubohr"):
+            processed["units"] = "Bohr"
+        return ""
 
     def process_system_cgmp(matchobj):
-        processed['molecular_charge'] = float(matchobj.group('chg'))
-        processed['molecular_multiplicity'] = int(matchobj.group('mult'))
-        return ''
+        processed["molecular_charge"] = float(matchobj.group("chg"))
+        processed["molecular_multiplicity"] = int(matchobj.group("mult"))
+        return ""
 
     def process_atom_cartesian(matchobj):
-        processed['elbl'].append(matchobj.group('nucleus'))
-        processed['geom'].append(float(matchobj.group('x')))
-        processed['geom'].append(float(matchobj.group('y')))
-        processed['geom'].append(float(matchobj.group('z')))
-        return ''
+        processed["elbl"].append(matchobj.group("nucleus"))
+        processed["geom"].append(float(matchobj.group("x")))
+        processed["geom"].append(float(matchobj.group("y")))
+        processed["geom"].append(float(matchobj.group("z")))
+        return ""
 
     # nat = 0
     reconstitute = []
     processed = {}
-    processed['geom'] = []
-    processed['elbl'] = []
+    processed["geom"] = []
+    processed["elbl"] = []
 
     if strict:
-        for iln, line in enumerate(string.split('\n')):
+        for iln, line in enumerate(string.split("\n")):
             line = line.strip()
             if iln == 0:
-                line = re.sub(xyz1strict, '', line)
+                line = re.sub(xyz1strict, "", line)
             elif iln == 1:
                 continue
             else:
@@ -730,7 +730,7 @@ def _filter_xyz(string, strict):
             if line:
                 reconstitute.append(line)
     else:
-        for iln, line in enumerate(string.split('\n')):
+        for iln, line in enumerate(string.split("\n")):
             line = line.strip()
             if iln == 0:
                 line = re.sub(xyz1, process_bohrang, line)
@@ -741,11 +741,11 @@ def _filter_xyz(string, strict):
             if line and iln != 1:
                 reconstitute.append(line)
 
-    if 'units' not in processed:
-        processed['units'] = 'Angstrom'
+    if "units" not in processed:
+        processed["units"] = "Angstrom"
 
     # if len(processed['geom']) != nat:
     #    raise ValidationError
-    processed['geom_hints'] = []  # no EFP
+    processed["geom_hints"] = []  # no EFP
 
-    return '\n'.join(reconstitute), processed
+    return "\n".join(reconstitute), processed
