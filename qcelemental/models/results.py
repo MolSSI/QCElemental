@@ -427,31 +427,39 @@ class AtomicResult(AtomicInput):
             raise ValueError(f"Protocol `stdout:{outp}` is not understood")
 
 
-def ResultProtocols(*args, **kwargs):
-    from warnings import warn
+class ResultProperties(AtomicResultProperties):
+    def __init__(self, *args, **kwargs):
+        from warnings import warn
 
-    warn("ResultProtocols has been renamed to AtomicResultProtocols and will be removed in v0.13.0", DeprecationWarning)
-    return AtomicResultProtocols(*args, **kwargs)
-
-
-def ResultProperties(*args, **kwargs):
-    from warnings import warn
-
-    warn(
-        "ResultProperties has been renamed to AtomicResultProperties and will be removed in v0.13.0", DeprecationWarning
-    )
-    return AtomicResultProperties(*args, **kwargs)
+        warn(
+            "ResultProperties has been renamed to AtomicResultProperties and will be removed in v0.13.0",
+            DeprecationWarning,
+        )
+        super().__init__(*args, **kwargs)
 
 
-def ResultInput(*args, **kwargs):
-    from warnings import warn
+class ResultProtocols(AtomicResultProtocols):
+    def __init__(self, *args, **kwargs):
+        from warnings import warn
 
-    warn("ResultInput has been renamed to AtomicInput and will be removed in v0.13.0", DeprecationWarning)
-    return AtomicInput(*args, **kwargs)
+        warn(
+            "ResultProtocols has been renamed to AtomicResultProtocols and will be removed in v0.13.0",
+            DeprecationWarning,
+        )
+        super().__init__(*args, **kwargs)
 
 
-def Result(*args, **kwargs):
-    from warnings import warn
+class ResultInput(AtomicInput):
+    def __init__(self, *args, **kwargs):
+        from warnings import warn
 
-    warn("Result has been renamed to AtomicResult and will be removed in v0.13.0", DeprecationWarning)
-    return AtomicResult(*args, **kwargs)
+        warn("ResultInput has been renamed to AtomicInput and will be removed in v0.13.0", DeprecationWarning)
+        super().__init__(*args, **kwargs)
+
+
+class Result(AtomicResult):
+    def __init__(self, *args, **kwargs):
+        from warnings import warn
+
+        warn("Result has been renamed to AtomicResult and will be removed in v0.13.0", DeprecationWarning)
+        super().__init__(*args, **kwargs)
