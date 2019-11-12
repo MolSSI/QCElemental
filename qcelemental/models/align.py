@@ -1,5 +1,4 @@
 import numpy as np
-
 from pydantic import validator
 
 from ..util import blockwise_contract, blockwise_expand

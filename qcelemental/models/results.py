@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Union
 
 import numpy as np
-
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
@@ -13,7 +12,7 @@ from .molecule import Molecule
 from .types import Array
 
 
-class ResultProperties(ProtoModel):
+class AtomicResultProperties(ProtoModel):
     """
     Named properties of quantum chemistry computations following the MolSSI QCSchema.
     """
@@ -259,7 +258,7 @@ class WavefunctionProtocolEnum(str, Enum):
     none = "none"
 
 
-class ResultProtocols(ProtoModel):
+class AtomicResultProtocols(ProtoModel):
     """
     Protocols regarding the manipulation of a Result output data.
     """
@@ -276,7 +275,7 @@ class ResultProtocols(ProtoModel):
 ### Primary models
 
 
-class ResultInput(ProtoModel):
+class AtomicInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
@@ -287,7 +286,9 @@ class ResultInput(ProtoModel):
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__base_doc__))
     keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
-    protocols: ResultProtocols = Field(ResultProtocols(), description=str(ResultProtocols.__base_doc__))
+    protocols: AtomicResultProtocols = Field(
+        AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
+    )
 
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
@@ -301,10 +302,10 @@ class ResultInput(ProtoModel):
         ]
 
 
-class Result(ResultInput):
+class AtomicResult(AtomicInput):
     schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
 
-    properties: ResultProperties = Field(..., description=str(ResultProperties.__base_doc__))
+    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__base_doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
@@ -424,3 +425,33 @@ class Result(ResultInput):
             return None
         else:
             raise ValueError(f"Protocol `stdout:{outp}` is not understood")
+
+
+def ResultProtocols(*args, **kwargs):
+    from warnings import warn
+
+    warn("ResultProtocols has been renamed to AtomicResultProtocols and will be removed in v0.13.0", DeprecationWarning)
+    return AtomicResultProtocols(*args, **kwargs)
+
+
+def ResultProperties(*args, **kwargs):
+    from warnings import warn
+
+    warn(
+        "ResultProperties has been renamed to AtomicResultProperties and will be removed in v0.13.0", DeprecationWarning
+    )
+    return AtomicResultProperties(*args, **kwargs)
+
+
+def ResultInput(*args, **kwargs):
+    from warnings import warn
+
+    warn("ResultInput has been renamed to AtomicInput and will be removed in v0.13.0", DeprecationWarning)
+    return AtomicInput(*args, **kwargs)
+
+
+def Result(*args, **kwargs):
+    from warnings import warn
+
+    warn("Result has been renamed to AtomicResult and will be removed in v0.13.0", DeprecationWarning)
+    return AtomicResult(*args, **kwargs)
