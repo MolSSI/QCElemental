@@ -75,3 +75,27 @@ def test_repr_optimization():
 
     assert "molecule_hash" in str(opt)
     assert "molecule_hash" in repr(opt)
+
+def test_model_custom_repr():
+
+    class Model(ProtoModel):
+        a: int
+
+        def __repr__(self) -> str:
+            return "Hello world!"
+
+
+    m = Model(a=5)
+    assert repr(m) == "Hello world!"
+    assert "Model(" in str(m)
+
+
+    class Model2(ProtoModel):
+        a: int
+
+        def __str__(self) -> str:
+            return "Hello world!"
+
+    m = Model2(a=5)
+    assert "Model2(" in repr(m)
+    assert str(m) == "Hello world!"
