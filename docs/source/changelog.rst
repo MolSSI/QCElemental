@@ -13,8 +13,8 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-X.Y.0 / 2019-MM-DD
-------------------
+0.12.0 / 2019-11-13
+-------------------
 
 New Features
 ++++++++++++
@@ -25,13 +25,18 @@ Enhancements
 - (:pr:`157`) ``molparse.to_string`` Q-Chem dtype developed. Psi4 dtype now includes label and doesn't have extraneous info for single fragment systems.
 - (:pr:`162`) New protocol ``stdout`` added to ``ResultProtocols`` controlling whether ``stdout`` field (which generally
   contains the primary logfile, whether a program writes it to file or stdout) is returned.
+- (:pr:`165`) The code base is now Black formatted.
 
 Deprecations
 ++++++++++++
 - (:pr:`156`) ``Molecule.compare`` is deprecated and will be removed in v0.13.0.
+- (:pr:`167`, :pr:`168`) ``ResultInput``, ``Result``, ``Optimization`` have been removed in favor of ``AtomicInput``, ``AtomicResult``, and ``OptimizationResult`` and will be removed in v0.13.0.
 
 Bug Fixes
 +++++++++
+- (:pr:`170`) ``ProtoModel`` subclasses now correctly allow custom ``__repr__`` and ``__str__`` methods.
+- (:pr:`164`, :pr:`166`) ``nglview-sdf`` molecule string format now correctly uses correct sdf format widths fixing some issues with very large molecules.
+
 
 0.11.1 / 2019-10-28
 -------------------
