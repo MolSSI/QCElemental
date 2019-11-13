@@ -26,8 +26,12 @@ class ProtoModel(BaseModel):
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
-        cls.__repr__ = _repr
-        cls.__str__ = _repr
+
+        if "pydantic" in cls.__repr__.__module__:
+            cls.__repr__ = _repr
+
+        if "pydantic" in cls.__str__.__module__:
+            cls.__str__ = _repr
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> "ProtoModel":  # type: ignore
