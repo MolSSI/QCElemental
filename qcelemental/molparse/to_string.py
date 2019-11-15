@@ -24,7 +24,8 @@ def to_string(
     ----------
     molrec : Dict
         Psi4 json Molecule spec.
-    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'turbomole', 'qchem'}
+    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'orca', 'turbomole',
+                  'qchem'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -73,6 +74,7 @@ def to_string(
     default_units = {
         "xyz": "Angstrom",
         "xyz+": "Angstrom",
+        "orca": "Angstrom",
         "nglview-sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
@@ -136,6 +138,24 @@ def to_string(
         smol.append(f"{int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']} {name}")
 
         smol.extend(atoms)
+
+    if dtype == "orca":
+        # Notes
+        # * if units not in umap (e.g., nm), can't be read back in by from_string()
+
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "@{elem}" if ghost_format is None else ghost_format
+        umap = {"bohr": "au", "angstrom": ""}
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+        nat = len(atoms)
+
+        first_line = """"""
+        smol = [first_line.rstrip()]
+        smol.append(f"{'*xyz '} {int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}")
+
+        smol.extend(atoms)
+        smol.append("*")
 
     elif dtype == "cfour":
         # Notes
