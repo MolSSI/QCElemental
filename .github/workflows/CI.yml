@@ -1,0 +1,52 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        conda-env: [base, minimal]
+        python-version: [3.6, 3.7]
+    env:
+      PYVER: ${{ matrix.python-version }}
+      CONDA_ENV: ${{ matrix.conda-env }}
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup Information
+      shell: bash
+      run: |
+        uname -a
+        df -h
+        ulimit -a
+        conda --version
+
+    - name: Create Environment
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate
+        python devtools/scripts/create_conda_env.py -n=test -p=$PYVER devtools/conda-envs/$CONDA_ENV.yaml
+
+    - name: Install
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
+        python -m pip install . --no-deps
+
+    - name: PyTest
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
+        pytest -v --cov=qcelemental --cov-report=xml qcelemental/tests/
+
+    - name: CodeCov  
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        yml: ./.codecov.yml 
