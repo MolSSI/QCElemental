@@ -1,13 +1,10 @@
+<!-- Thank you for your contribution! -->
+
 ## Description
-Provide a brief description of the PR's purpose here.
+<!-- Provide a brief description of the PR's purpose here. -->
 
-## Todos
-Notable points that this PR has either accomplished or will accomplish.
-  - [ ] TODO 1
-
-## Questions
-- [ ] Question1
+## Changelog description
+<!-- Provide a brief single sentence for the changelog. -->
 
 ## Status
-- [ ] Changelog updated
 - [ ] Ready to go
