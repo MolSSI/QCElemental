@@ -285,11 +285,14 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             errors.append((name, "Value {} did not match {}.".format(expected, computed)))
 
     elif isinstance(expected, (list, tuple)):
-        if len(expected) != len(computed):
-            errors.append((name, "Iterable lengths did not match"))
-        else:
-            for i, item1, item2 in zip(range(len(expected)), expected, computed):
-                errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol))
+        try:
+            if len(expected) != len(computed):
+                errors.append((name, "Iterable lengths did not match"))
+            else:
+                for i, item1, item2 in zip(range(len(expected)), expected, computed):
+                    errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol))
+        except TypeError:
+            errors.append((name, "Expected computed to have a __len__()"))
 
     elif isinstance(expected, dict):
         expected_extra = computed.keys() - expected.keys()
