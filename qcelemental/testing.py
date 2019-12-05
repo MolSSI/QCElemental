@@ -285,7 +285,9 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
             errors.append((name, "Value {} did not match {}.".format(expected, computed)))
 
     elif isinstance(expected, (list, tuple)):
-        if len(expected) != len(computed):
+        if not isinstance(computed, (list, tuple)):
+            errors.append((name, "Expected computed to be a list or tuple"))
+        elif len(expected) != len(computed):
             errors.append((name, "Iterable lengths did not match"))
         else:
             for i, item1, item2 in zip(range(len(expected)), expected, computed):
