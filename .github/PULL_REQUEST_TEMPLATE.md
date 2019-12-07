@@ -7,5 +7,6 @@
 <!-- Provide a brief single sentence for the changelog. -->
 
 ## Status
-- [ ] `make format` run on the codebase (may have to `conda install black isort autoflake -c conda-forge` or `pip install black isort autoflake`)
+<!-- Please `pip install .[lint]; make format` in the base folder. -->
+- [ ] Code base linted
 - [ ] Ready to go
