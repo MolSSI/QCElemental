@@ -49,6 +49,11 @@ if __name__ == "__main__":
             'viz': [
                 'nglview',
             ],
+            'lint': [
+                'autoflake',
+                'black',
+                'isort',
+            ],
         },
         tests_require=[
             'pytest >= 3.9.1',

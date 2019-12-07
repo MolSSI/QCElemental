@@ -7,4 +7,6 @@
 <!-- Provide a brief single sentence for the changelog. -->
 
 ## Status
+<!-- Please `pip install .[lint]; make format` in the base folder. -->
+- [ ] Code base linted
 - [ ] Ready to go
