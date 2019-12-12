@@ -1,10 +1,7 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from pydantic import Field, constr, validator
-
-if TYPE_CHECKING:
-    from pydantic.typing import ReprArgs
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
@@ -19,6 +16,9 @@ from .common_models import (
 )
 from .molecule import Molecule
 from .results import AtomicResult
+
+if TYPE_CHECKING:
+    from pydantic.typing import ReprArgs
 
 
 class TrajectoryProtocolEnum(str, Enum):

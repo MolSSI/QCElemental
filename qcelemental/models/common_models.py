@@ -1,13 +1,14 @@
 from enum import Enum
-from typing import Any, Dict, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import numpy as np
 from pydantic import Field
 
+from .basemodels import ProtoModel
+
 if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
 
-from .basemodels import ProtoModel
 
 # Encoders, to be deprecated
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}

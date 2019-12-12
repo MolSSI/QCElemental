@@ -3,8 +3,8 @@ from typing import Dict, List, Optional
 
 from pydantic import Field, constr, validator
 
-from .basemodels import ProtoModel
 from ..exceptions import ValidationError
+from .basemodels import ProtoModel
 
 
 class HarmonicType(str, Enum):
