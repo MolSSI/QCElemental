@@ -1,8 +1,11 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, TYPE_CHECKING
 
 import numpy as np
 from pydantic import Field, constr, validator
+
+if TYPE_CHECKING:
+    from pydantic.typing import ReprArgs
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel

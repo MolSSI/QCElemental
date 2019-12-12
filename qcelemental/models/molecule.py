@@ -7,10 +7,12 @@ import hashlib
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union, TYPE_CHECKING
 
 import numpy as np
 from pydantic import Field, constr, validator
+if TYPE_CHECKING:
+    from pydantic.typing import ReprArgs
 
 from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
 from ..periodic_table import periodictable
