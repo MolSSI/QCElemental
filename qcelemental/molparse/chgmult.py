@@ -69,7 +69,7 @@ def validate_and_fill_chgmult(
         value should be ``fragment_charges=[None, None]``.
     molecular_multiplicity : int or None
         Total multiplicity for molecular system.
-    fragment_multiplicity : list of int or None
+    fragment_multiplicities : list of int or None
         (nfr,) known fragment charges with `None` as placeholder for
         unknown. Expected pre-defaulted so even if nothing known, if
         `fragment_separators` breaks `zeff` into `nfr=2` fragments, input

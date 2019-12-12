@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Union
 
 import numpy as np
 from pydantic import Field, constr, validator
@@ -10,6 +10,9 @@ from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
 from .types import Array
+
+if TYPE_CHECKING:
+    from pydantic.typing import ReprArgs
 
 
 class AtomicResultProperties(ProtoModel):
