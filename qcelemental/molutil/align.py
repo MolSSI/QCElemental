@@ -263,6 +263,7 @@ def B787(
             print(atomfmt2.format(auniq[at][:6], *[ageom[at][i] - rgeom[at][i] for i in range(3)]))
 
     if do_plot:
+        # TODO Missing import
         plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment="Final RMSD = {:8.4f}".format(final_rmsd))
 
     # sanity checks

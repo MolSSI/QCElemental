@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 from pydantic import Field, constr, validator
 
 from .basemodels import ProtoModel
+from ..exceptions import ValidationError
 
 
 class HarmonicType(str, Enum):
@@ -97,7 +98,7 @@ class ECPPotential(ProtoModel):
     )
 
     @validator("gaussian_exponents")
-    def _check_gaussian_exponentst_length(cls, v, values):
+    def _check_gaussian_exponents_length(cls, v, values):
         len_exp = len(values["r_exponents"])
         if len(v) != len_exp:
             raise ValueError("The length of gaussian_exponents does not match the length of `r` exponents.")
