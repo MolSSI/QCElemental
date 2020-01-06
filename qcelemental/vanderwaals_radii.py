@@ -60,7 +60,7 @@ class VanderWaalsRadii:
 
     def get(
         self, atom: Union[int, str], *, return_tuple: bool = False, units: str = "bohr", missing: float = None
-    ) -> Union[float, "Datum"]:
+    ) -> Union[float, "Datum"]:  # lgtm [py/similar-function]
         """
         Access a van der Waals radius for species ``atom``.
 
@@ -128,7 +128,7 @@ class VanderWaalsRadii:
 
         return print_variables(self.vdwr)
 
-    def write_c_header(self, filename: str = "vdwrad.h", missing: float = 2.0) -> None:
+    def write_c_header(self, filename: str = "vdwrad.h", missing: float = 2.0) -> None:  # lgtm [py/similar-function]
         """Write C header file defining Van der Waals radii array.
 
         Parameters

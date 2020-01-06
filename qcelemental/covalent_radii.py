@@ -74,7 +74,7 @@ class CovalentRadii:
 
     def get(
         self, atom: Union[int, str], *, return_tuple: bool = False, units: str = "bohr", missing: float = None
-    ) -> Union[float, "Datum"]:
+    ) -> Union[float, "Datum"]:  # lgtm [py/similar-function]
         """
         Access a covalent radius for species `atom`.
 
@@ -144,7 +144,7 @@ class CovalentRadii:
 
         return print_variables(self.cr)
 
-    def write_c_header(self, filename: str = "covrad.h", missing: float = 2.0) -> None:
+    def write_c_header(self, filename: str = "covrad.h", missing: float = 2.0) -> None:  # lgtm[py/similar-function]
         """Write C header file defining covalent radii array.
 
         Parameters
