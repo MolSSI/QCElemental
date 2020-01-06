@@ -7,7 +7,7 @@ dependencies:
   - numpy
   - nomkl
   - python
-  - pint
+  - pint>=0.10.0
   - pydantic>=1.0.0
 
     # Optional depends
