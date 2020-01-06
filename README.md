@@ -1,6 +1,6 @@
 # QCElemental
 
-[![Build Status](https://github.com/MolSSI/QCElemental/workflows/CI/badge.svg?branch=master)](https://travis-ci.org/MolSSI/QCElemental/actions)
+[![Build Status](https://github.com/MolSSI/QCElemental/workflows/CI/badge.svg?branch=master)](https://github.com/MolSSI/QCElemental/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/MolSSI/QCElemental/branch/master/graph/badge.svg)](https://codecov.io/gh/MolSSI/QCElemental)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MolSSI/QCElemental.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MolSSI/QCElemental/context:python)
 [![Documentation Status](https://readthedocs.org/projects/qcelemental/badge/?version=latest)](https://qcelemental.readthedocs.io/en/latest/?badge=latest)
