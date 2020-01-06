@@ -19,7 +19,7 @@ Changelog
 
 New Features
 ++++++++++++
-- (:pr:`175`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
+- (:pr:`179`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
 
 Enhancements
 ++++++++++++
