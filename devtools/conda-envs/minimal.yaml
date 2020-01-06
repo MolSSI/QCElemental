@@ -11,6 +11,6 @@ dependencies:
   - pydantic=1.2.0  # technically, qcel works with 1.0.0 but c-f doesn't have py38 builds for it
 
     # Testing
-  - pytest=4.0.0
+  - pytest=4.0.2  # technically, qcel works with 4.0.0 but c-f doesn't have py38 builds for it
   - pytest-cov
   - codecov
