@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2019-MM-DD
+.. X.Y.0 / 2020-MM-DD
 .. ------------------
 ..
 .. New Features
@@ -12,6 +12,23 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
+
+
+0.13.0 / 2020-01-DD
+------------------
+
+New Features
+++++++++++++
+- (:pr:`175`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
+
+Enhancements
+++++++++++++
+- (:pr:`172`, :pr:`173`) Contribution workflow improvements, including GitHub Actions checking and ``make format`` guidance.
+
+Bug Fixes
++++++++++
+- (:pr:`174`) Fix ``compare_recursive`` for when expected is a list but computed is not.
+
 
 0.12.0 / 2019-11-13
 -------------------

@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         conda-env: [base, minimal]
-        python-version: [3.6, 3.7]
+        python-version: [3.6, 3.7, 3.8]
     env:
       PYVER: ${{ matrix.python-version }}
       CONDA_ENV: ${{ matrix.conda-env }}
