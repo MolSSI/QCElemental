@@ -51,7 +51,7 @@ class CovalentRadii:
             for cr in alvarez_2008_covalent_radii["covalent_radii"]:  # type: ignore
                 self.cr[cr[0]] = Datum(cr[0], self.native_units, Decimal(cr[1]), comment=cr[2], doi=self.doi)
         else:
-            raise KeyError("Context set as '{}', only contexts {'ALVAREZ2008', } are currently supported")
+            raise KeyError(f"Context set as '{context}', " + "only contexts {'ALVAREZ2008', } are currently supported")
 
         self.name = context
         self.year = int(alvarez_2008_covalent_radii["date"][:4])  # type: ignore

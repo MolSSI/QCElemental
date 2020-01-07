@@ -3,7 +3,17 @@ Main init for QCElemental
 """
 
 # Handle singletons, not their classes or modules
-from . import covalent_radii, models, molparse, molutil, periodic_table, physical_constants, util, vanderwaals_radii
+from . import (
+    covalent_radii,
+    dft_functional_info,
+    models,
+    molparse,
+    molutil,
+    periodic_table,
+    physical_constants,
+    util,
+    vanderwaals_radii,
+)
 from .datum import Datum
 from .exceptions import ChoicesError, DataUnavailableError, MoleculeFormatError, NotAnElementError, ValidationError
 
@@ -21,6 +31,8 @@ CovalentRadii = covalent_radii.CovalentRadii
 covalentradii = covalent_radii.covalentradii
 VanderWaalsRadii = vanderwaals_radii.VanderWaalsRadii
 vdwradii = vanderwaals_radii.vdwradii
+dftfunctionalinfo = dft_functional_info.dftfunctionalinfo
+DFTFunctionalInfo = dft_functional_info.DFTFunctionalInfo
 
 # Remove singleton-providing modules from known imported objects
 del periodic_table

@@ -109,7 +109,7 @@ masses.h
 physconst.h
 
 # nist_data
-nist_data/nist_*
+devtools/nist_data/nist_*
 
 # Parsl
 ipengine.*
