@@ -270,6 +270,12 @@ class AtomicResultProtocols(ProtoModel):
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
+    error_correction_retries: int = Field(
+        2,
+        description="How many times to attempt to correct recoverable errors"
+        " for harnesses that support error correction.",
+        ge=0,
+    )
 
     class Config:
         force_skip_defaults = True

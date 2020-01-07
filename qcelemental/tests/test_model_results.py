@@ -312,6 +312,15 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
         assert result.return_result == index
 
 
+@pytest.mark.parametrize("number, result", [(None, 2), (0, 0)])
+def test_error_correction_protocol(number, result, result_data_fixture):
+    if number is not None:
+        result_data_fixture["protocols"] = {"error_correction_retries": number}
+    res = qcel.models.AtomicResult(**result_data_fixture)
+
+    assert res.protocols.error_correction_retries == result
+
+
 def test_result_build_stdout_delete(result_data_fixture):
     result_data_fixture["protocols"] = {"stdout": False}
     ret = qcel.models.AtomicResult(**result_data_fixture)
