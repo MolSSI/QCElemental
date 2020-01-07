@@ -12,7 +12,7 @@ from .models import ProtoModel
 class DFTFunctional(ProtoModel):
     ansatz: int = Field(..., description="SuperFunctional rung.")
     deriv: int = Field(..., description="Maximum derivative to compute.")
-    c_hybrid: bool = Field(..., description="Requires MP2 correlation?")
+    c_hybrid: bool = Field(..., description="Requires wavefunction correlation?")
     x_hybrid: bool = Field(..., description="Requires exact exchange?")
     c_lrc: bool = Field(..., description="Contains range-separated correlation?")
     x_lrc: bool = Field(..., description="Contains range-separated exchange?")
