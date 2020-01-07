@@ -19,7 +19,8 @@ Changelog
 
 New Features
 ++++++++++++
-- (:pr:`179`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
+- (:pr:`179`, :pr:`181`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
+  Pint 0.10 has optional NumPy dependency of >=1.12.0, so QCElemental that requires both NumPy and pint needs this constraint.
 
 Enhancements
 ++++++++++++

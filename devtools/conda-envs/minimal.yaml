@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
     # Base depends
-  - numpy
+  - numpy=1.14  # technically, pint has an optional >=1.12.0 numpy dep but c-f doesn't have py38 builds for it
   - nomkl
   - python
   - pint=0.10.0  # technically, qcel has no lower bound for pint version for py36,37 but needs 0.10 for 38

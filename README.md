@@ -1,7 +1,7 @@
 # QCElemental
 
 [![Build Status](https://github.com/MolSSI/QCElemental/workflows/CI/badge.svg?branch=master)](https://github.com/MolSSI/QCElemental/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/MolSSI/QCElemental/branch/master/graph/badge.svg)](https://codecov.io/gh/MolSSI/QCElemental)
+[![codecov](https://img.shields.io/codecov/c/github/MolSSI/QCElemental.svg?logo=Codecov&logoColor=white)](https://codecov.io/gh/MolSSI/QCElemental)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MolSSI/QCElemental.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MolSSI/QCElemental/context:python)
 [![Documentation Status](https://readthedocs.org/projects/qcelemental/badge/?version=latest)](https://qcelemental.readthedocs.io/en/latest/?badge=latest)
 [![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM)
