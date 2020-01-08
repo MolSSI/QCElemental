@@ -41,7 +41,7 @@ class DFTFunctionalInfo:
 
     def __init__(self, context: str = "PSI4"):
         if context != "PSI4":
-            raise KeyError(f"Context set as '{context}', only contexts {'PSI4'} are currently supported")
+            raise KeyError(f"Context set as '{context}'," + " only contexts {'PSI4'} are currently supported")
 
         from .data import psi4_dft_info
 
