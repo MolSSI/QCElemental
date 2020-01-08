@@ -73,6 +73,9 @@ class Identifiers(ProtoModel):
     canonical_isomeric_explicit_hydrogen_smiles: Optional[str] = None
     canonical_isomeric_smiles: Optional[str] = None
     canonical_smiles: Optional[str] = None
+    pubchem_cid: Optional[str] = Field(None, description="PubChem Compound ID")
+    pubchem_sid: Optional[str] = Field(None, description="PubChem Substance ID")
+    pubchem_conformerid: Optional[str] = Field(None, description="PubChem Conformer ID")
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
