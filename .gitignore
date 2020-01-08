@@ -108,9 +108,6 @@ venv.bak/
 masses.h
 physconst.h
 
-# nist_data
-raw_data/nist_*
-
 # Parsl
 ipengine.*
 parsl_scripts/*
