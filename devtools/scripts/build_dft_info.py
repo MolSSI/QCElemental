@@ -2,9 +2,30 @@ import psi4
 import json
 import black
 
-dft_info = {'version': psi4.__version__, "functionals": {}}
+dft_info = {"version": psi4.__version__, "functionals": {}}
 
-empirical_dispersion_suffixes = {"-nl", "-d", "-d2", "-d3", "-d3(bj)", "-d3bj", "-d3zero", "-d3m", "-d3mzero", "-d3mbj", "-d3m(bj)", "-chg", "-das2009", "-das2010", "-d09", "-d10", "-atmgr", "-dmp2"}
+empirical_dispersion_suffixes = {
+    "-nl",
+    "-d",
+    "-d2",
+    "-d3",
+    "-d3(bj)",
+    "-d3bj",
+    "-d3zero",
+    "-d3m",
+    "-d3mzero",
+    "-d3mbj",
+    "-d3m(bj)",
+    "-chg",
+    "-das2009",
+    "-das2010",
+    "-d09",
+    "-d10",
+    "+d09",
+    "+d10",
+    "-atmgr",
+    "-dmp2",
+}
 
 for functional in psi4.driver.proc.dft.functionals:
     if any(functional.endswith(suffix) for suffix in empirical_dispersion_suffixes):

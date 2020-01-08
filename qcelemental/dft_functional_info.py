@@ -1,5 +1,5 @@
 """
-Contains covalent radii
+Contains metadata about density functionals
 """
 
 from typing import Dict
