@@ -4,7 +4,12 @@ import black
 
 dft_info = {'version': psi4.__version__, "functionals": {}}
 
+empirical_dispersion_suffixes = {"-nl", "-d", "-d2", "-d3", "-d3(bj)", "-d3bj", "-d3zero", "-d3m", "-d3mzero", "-d3mbj", "-d3m(bj)"}
+
 for functional in psi4.driver.proc.dft.functionals:
+    if any(functional.endswith(suffix) for suffix in empirical_dispersion_suffixes):
+        continue
+
     a = psi4.driver.proc.dft.build_superfunctional(functional, False)[0]
     info = {}
     info["ansatz"] = a.ansatz()

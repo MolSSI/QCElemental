@@ -12,7 +12,7 @@ from .models import ProtoModel
 class DFTFunctional(ProtoModel):
     ansatz: int = Field(
         ...,
-        description="SuperFunctional rung (is what Psi4 claims this is. In actuality, this is 2 for meta-GGAs, 1 for GGAs and 0 otherwise.)",
+        description="Maximum functional derivative with respect to the density. This is 2 for meta-GGAs, 1 for GGAs, and 0 otherwise.)",
     )
     deriv: int = Field(..., description="Maximum derivative to compute.")
     c_hybrid: bool = Field(..., description="Requires wavefunction correlation?")
