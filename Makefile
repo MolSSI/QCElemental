@@ -32,6 +32,12 @@ mypy:
 test:
 	pytest -v --cov=qcelemental/
 
+.PHONY: data
+data:
+	#(cd devtools/scripts; python build_periodic_table.py; mv nist_*_atomic_weights.py ../../qcelemental/data/)
+	#(cd devtools/scripts; python build_physical_constants.py; mv nist_*_codata.py ../../qcelemental/data/)
+	(cd devtools/scripts; python build_dft_info.py; mv psi4_dft_info.py ../../qcelemental/data/)
+
 .PHONY: clean
 clean:
 	rm -rf `find . -name __pycache__`

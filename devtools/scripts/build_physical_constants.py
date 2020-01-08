@@ -7,7 +7,7 @@ import datetime
 import requests
 from yapf.yapflib.yapf_api import FormatCode
 
-metadata_file = "srd121_nist-codata-fundamental-physical-constants-2014-metadata.json"
+metadata_file = "../../raw_data/srd121_nist-codata-fundamental-physical-constants-2014-metadata.json"
 with open(metadata_file, "r") as handle:
     metadata = json.load(handle)
 
