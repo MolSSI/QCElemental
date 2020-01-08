@@ -10,7 +10,10 @@ from .models import ProtoModel
 
 
 class DFTFunctional(ProtoModel):
-    ansatz: int = Field(..., description="SuperFunctional rung.")
+    ansatz: int = Field(
+        ...,
+        description="SuperFunctional rung (is what Psi4 claims this is. In actuality, this is 2 for meta-GGAs, 1 for GGAs and 0 otherwise.)",
+    )
     deriv: int = Field(..., description="Maximum derivative to compute.")
     c_hybrid: bool = Field(..., description="Requires wavefunction correlation?")
     x_hybrid: bool = Field(..., description="Requires exact exchange?")

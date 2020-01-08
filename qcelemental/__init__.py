@@ -39,6 +39,7 @@ del periodic_table
 del physical_constants
 del covalent_radii
 del vanderwaals_radii
+del dft_functional_info
 
 __version__ = get_information("version")
 __git_revision__ = get_information("git_revision")
