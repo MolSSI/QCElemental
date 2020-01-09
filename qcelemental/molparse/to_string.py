@@ -145,7 +145,7 @@ def to_string(
 
         atom_format = "{elem}" if atom_format is None else atom_format
         ghost_format = "@{elem}" if ghost_format is None else ghost_format
-        umap = {"bohr": "! Bohrs", "angstrom":None}
+        umap = {"bohr": "! Bohrs", "angstrom": None}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
         nat = len(atoms)
