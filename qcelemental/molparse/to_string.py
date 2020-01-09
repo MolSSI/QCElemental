@@ -74,7 +74,7 @@ def to_string(
     default_units = {
         "xyz": "Angstrom",
         "xyz+": "Angstrom",
-        "orca": "Angstrom",
+        "orca": "Bohr",
         "nglview-sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
@@ -145,13 +145,16 @@ def to_string(
 
         atom_format = "{elem}" if atom_format is None else atom_format
         ghost_format = "@{elem}" if ghost_format is None else ghost_format
-        umap = {"bohr": "au", "angstrom": ""}
+        umap = {"bohr": "! Bohrs", "angstrom":None}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
         nat = len(atoms)
 
         first_line = """"""
+
         smol = [first_line.rstrip()]
+        smol.append(umap.get(units.lower()))
+
         smol.append(f"{'*xyz '} {int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}")
 
         smol.extend(atoms)
