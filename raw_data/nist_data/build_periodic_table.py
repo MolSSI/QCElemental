@@ -294,7 +294,6 @@ atomic_weights_json["mass"] = masses
 output += "nist_{}_atomic_weights = {}".format(year, json.dumps(atomic_weights_json))
 
 # output = FormatCode(output)[0]
-
 fn = "nist_{}_atomic_weights.py".format(year)
 with open(fn, "w") as handle:
     handle.write(output)
