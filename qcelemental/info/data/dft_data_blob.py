@@ -6,7 +6,7 @@ File Authors: QCElemental Authors
 """
 
 
-psi4_dft_info = {
+data_blob = {
     "version": "1.4a2.dev138",
     "functionals": {
         "teter93": {

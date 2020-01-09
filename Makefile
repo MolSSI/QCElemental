@@ -9,7 +9,7 @@ install:
 
 .PHONY: format
 format:
-	$(autoflake)
+#	$(autoflake)
 	$(isort)
 	$(black)
 

@@ -54,10 +54,10 @@ File Authors: QCElemental Authors
 
 '''
 
-output += f"psi4_dft_info = {json.dumps(dft_info)}".replace("true", "True").replace("false", "False")
+output += f"data_blob = {json.dumps(dft_info)}".replace("true", "True").replace("false", "False")
 
 output = black.format_str(output, mode=black.FileMode())
 
-fn = "psi4_dft_info.py"
+fn = "dft_data_blob.py"
 with open(fn, "w") as handle:
     handle.write(output)

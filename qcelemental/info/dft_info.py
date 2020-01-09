@@ -6,7 +6,7 @@ from typing import Dict
 
 from pydantic import Field
 
-from .models import ProtoModel
+from ..models import ProtoModel
 
 
 class DFTFunctional(ProtoModel):
@@ -39,14 +39,14 @@ class DFTFunctionalInfo:
         The name of the context ('PSI4')
     """
 
-    def __init__(self, context: str = "PSI4"):
-        if context != "PSI4":
-            raise KeyError(f"Context set as '{context}'," + " only contexts {'PSI4'} are currently supported")
+    def __init__(self, context: str = "defualt"):
+        if context != "default":
+            raise KeyError(f"Context set as '{context}'," + " only contexts {'default'} are currently supported")
 
-        from .data import psi4_dft_info
+        from .data import dft_data_blob
 
         self.functionals: Dict[str, DFTFunctional] = {
-            name: DFTFunctional(**data) for name, data in psi4_dft_info["functionals"].items()
+            name: DFTFunctional(**data) for name, data in dft_data_blob.data_blob["functionals"].items()
         }
 
         self.name = context
@@ -56,4 +56,11 @@ class DFTFunctionalInfo:
 
 
 # singleton
-dftfunctionalinfo = DFTFunctionalInfo("PSI4")
+dftfunctionalinfo = DFTFunctionalInfo("default")
+
+
+def get(name):
+
+    name = name.lower().split("-d")[0].split("-nlc")[0]
+
+    return dftfunctionalinfo.functionals[name].copy()
