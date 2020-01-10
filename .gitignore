@@ -118,3 +118,4 @@ runinfo/*
 
 # VSCode
 .vscode/
+raw_data/**/*_blob.py
