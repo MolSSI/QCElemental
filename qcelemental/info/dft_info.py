@@ -9,7 +9,7 @@ from pydantic import Field
 from ..models import ProtoModel
 
 
-class DFTFunctional(ProtoModel):
+class DFTFunctionalInfo(ProtoModel):
     ansatz: int = Field(
         ...,
         description="Maximum functional derivative with respect to the density. This is 2 for meta-GGAs, 1 for GGAs, and 0 otherwise.)",
@@ -22,21 +22,21 @@ class DFTFunctional(ProtoModel):
     nlc: bool = Field(..., description="Does this functional need non-local correlation?")
 
 
-class DFTFunctionalInfo:
+class DFTFunctionalContext:
     """Information about DFT functionals.
 
     Parameters
     ----------
-    context : {'PSI4'}
+    context : {'default'}
         Origin of loaded data.
 
     Attributes
     ----------
-    functionals : Dict[str, DftFunctional]
+    functionals : Dict[str, DFTFunctionalInfo]
         dictionary of (lower-case) functional name to info
 
     name : str
-        The name of the context ('PSI4')
+        The name of the context ('default')
     """
 
     def __init__(self, context: str = "defualt"):
@@ -45,21 +45,21 @@ class DFTFunctionalInfo:
 
         from .data import dft_data_blob
 
-        self.functionals: Dict[str, DFTFunctional] = {
-            name: DFTFunctional(**data) for name, data in dft_data_blob.data_blob["functionals"].items()
+        self.functionals: Dict[str, DFTFunctionalInfo] = {
+            name: DFTFunctionalInfo(**data) for name, data in dft_data_blob.data_blob["functionals"].items()
         }
 
         self.name = context
 
     def __str__(self) -> str:
-        return "DFTFunctionalInfo(context='{}')".format(self.name)
+        return "DFTFunctionalContext(context='{}')".format(self.name)
 
 
 # singleton
-dftfunctionalinfo = DFTFunctionalInfo("default")
+dftfunctionalinfo = DFTFunctionalContext("default")
 
 
-def get(name):
+def get(name: str) -> DFTFunctionalInfo:
 
     name = name.lower().split("-d")[0].split("-nlc")[0]
 
