@@ -1,7 +1,6 @@
 import pandas as pd
 import black
 import json
-import numpy as np
 
 
 with open("intel_cpu_database.json", "r") as handle:
@@ -236,7 +235,7 @@ output += f"data_rows = {to_python_str([tuple(x[1].values) for x in df.iterrows(
 output += f"data_columns = {to_python_str(list(df.columns))}\n"
 output += "data_blob = [{k: v for k, v in zip(data_columns, row)} for row in data_rows]\n"
 
-#output = black.format_str(output, mode=black.FileMode())
+output = black.format_str(output, mode=black.FileMode())
 
 fn = "cpu_data_blob.py"
 with open(fn, "w") as handle:

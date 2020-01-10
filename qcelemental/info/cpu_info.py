@@ -5,7 +5,7 @@ Contains metadata about Processors
 import difflib
 import re
 from enum import Enum
-from typing import Dict, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -13,7 +13,7 @@ from ..models import ProtoModel
 
 
 class VendorEnum(str, Enum):
-    """Allowed quantum chemistry driver values.
+    """Allowed processor vendors, used for validation.
     """
 
     amd = "amd"
@@ -23,6 +23,9 @@ class VendorEnum(str, Enum):
 
 
 class InstructionSetEnum(Enum):
+    """Allowed instruction sets for CPUs in an ordinal enum.
+    """
+
     none = 0
     sse = 1
     avx = 2
@@ -84,7 +87,7 @@ class ProcessorContext:
     def process_names(self, name):
         name = name.lower()
         name = name.replace("(tm)", "").replace("(r)", "").replace("™", "")
-        name = name.replace("  ", " ").replace("\t", " ")
+        name = " ".join(name.split())
         name = name.strip()
         return name
 
