@@ -33,7 +33,7 @@ def parse_amd_clock(name):
     else:
         raise KeyError
 
-    return coef * float(name.lower().replace(repl, "").strip())
+    return int(coef * float(name.lower().replace(repl, "").strip()))
 
 
 def parse_amd_launch(d):
@@ -90,8 +90,6 @@ amd.loc[amd_raw["Supported Technologies"].str.contains("AVX2"), "instructions"] 
 
 amd.loc[amd_raw["Supported Technologies"].str.contains("Zen"), "instructions"] = "avx2"
 
-print(amd.head())
-
 
 ### Intel Data
 
@@ -111,7 +109,7 @@ for row in list(intel_raw.values())[100:]:
 
     try:
         proc = {
-            "ncores": row["Performance"]["# of Cores"],
+            "ncores": int(row["Performance"]["# of Cores"]),
             "nthreads": row["Performance"].get("# of Threads", None),
             "base_clock": row["Performance"]["Processor Base Frequency"],
             "boost_clock": row["Performance"].get("Max Turbo Frequency", None),
@@ -123,16 +121,20 @@ for row in list(intel_raw.values())[100:]:
             "microarchitecture": row["Essentials"].get("Code Name"),
             "instructions": row.get("Advanced Technologies", {}).get("Instruction Set Extensions"),
         }
+        intel_rows.append(proc)
     except:
         print(row)
         raise
 
-    intel_rows.append(proc)
 
 
 def parse_intel_clock(name):
 
+    if name is None:
+        return None
+
     name = name.lower()
+
 
     if "mhz" in name:
         repl = "mhz"
@@ -146,7 +148,7 @@ def parse_intel_clock(name):
 
     name = name.replace(repl, "").strip()
 
-    return coef * float(name)
+    return int(coef * float(name))
 
 
 def parse_instructions(inst):
@@ -173,13 +175,49 @@ def parse_date(d):
 
 intel = pd.DataFrame(intel_rows)
 intel["base_clock"] = intel["base_clock"].apply(parse_intel_clock)
+intel["boost_clock"] = intel["boost_clock"].apply(parse_intel_clock)
 intel["microarchitecture"] = [x.replace("Products formerly ", "") if x else x for x in intel["microarchitecture"]]
 intel["instructions"] = intel["instructions"].apply(parse_instructions)
 intel["launch_date"] = intel["launch_date"].apply(parse_date)
 intel["type"] = "cpu"
 
-
 df = pd.concat([amd, intel], sort=True)
+df.dropna(how="all", inplace=True)
+
+# Munge instructions
+df["instructions"] = df["instructions"].str.lower()
+df.loc[df["instructions"] == "avx-512", "instructions"] = "avx512"
+df.loc[df["instructions"].isnull(), "instructions"] = "none"
+
+translation = {"none": 0, "sse": 1, "avx": 2, "avx2": 3, "avx512": 4}
+df["instructions"] = df["instructions"].apply(lambda x: translation[x])
+
+
+# Print some data for posterity
+print(df[df["vendor"] == "intel"].tail())
+print(df[df["vendor"] == "amd"].tail())
+print('---')
+
+# Handle nthreads == ncore bugs
+mask = (df["nthreads"] == "") | df["nthreads"].isnull()
+df.loc[mask, "nthreads"] = df.loc[mask, "ncores"]
+
+mask = (df["nthreads"] != "") & df["nthreads"].notnull()
+#print(df[~mask])
+cnt = df.shape[0]
+df = df[mask]
+print(f"Dropped {cnt - df.shape[0]} / {cnt} processors without ncores")
+
+# Strip out bad models
+
+cnt = df.shape[0]
+df = df[~(df["model"].isnull() & (df["launch_date"].isnull() | df["launch_date"] < 2008))]
+print(f"Dropped {cnt - df.shape[0]} / {cnt} processors without model numers")
+
+
+df.sort_values(["vendor", "model", "launch_date"], inplace=True)
+df.drop_duplicates(subset=["vendor", "model"], keep="last", inplace=True)
+
 
 
 output = f'''
@@ -194,11 +232,11 @@ File Authors: QCElemental Authors
 def to_python_str(data):
     return json.dumps(data, indent=2).replace("true", "True").replace("false", "False").replace("NaN", "None").replace("null", "None")
 
-output += f"data_rows = {to_python_str([tuple(x[1].values) for x in intel.iterrows()])}\n" 
-output += f"data_columns = {to_python_str(list(intel.columns))}\n"
-output += "data_blob = [{k: v for k, v in zip(data_columsn, row)} for row in data_rows]\n"
+output += f"data_rows = {to_python_str([tuple(x[1].values) for x in df.iterrows()])}\n" 
+output += f"data_columns = {to_python_str(list(df.columns))}\n"
+output += "data_blob = [{k: v for k, v in zip(data_columns, row)} for row in data_rows]\n"
 
-output = black.format_str(output, mode=black.FileMode())
+#output = black.format_str(output, mode=black.FileMode())
 
 fn = "cpu_data_blob.py"
 with open(fn, "w") as handle:
