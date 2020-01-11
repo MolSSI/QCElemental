@@ -132,20 +132,20 @@ class PhysicalConstantsContext:
             ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avogadro's number"),
             ('me',                   'kg',             self.pc['electron mass'].data,                                        'Electron rest mass (in kg)'),
         ]
-        # fmt: on
 
         if context == "CODATA2014":
             aliases.extend([
             ('kcalmol2wavenumbers',  'kcal cm mol^-1', Decimal('10') * self.pc['calorie-joule relationship'].data / self.pc['molar planck constant times c'].data,
-                                                                                                                             'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor'),
+                                                                                                                             'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor',),
             ('e0',                   'F m^-1',         self.pc['electric constant'].data,                                    'Vacuum permittivity (Fm$^{-1}$)'),
             ])
         elif context == "CODATA2018":
             aliases.extend([
-            ('kcalmol2wavenumbers',  'kcal cm mol^-1', Decimal('10') * self.pc['calorie-joule relationship'].data / (self.pc['molar planck constant'].data *
-                                                       self.pc['speed of light in vacuum'].data),                            'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor'),
-            ('e0',                   'F m^-1',         self.pc['vacuum electric permittivity'].data,                         'Vacuum permittivity (Fm$^{-1}$)'),
+            ("kcalmol2wavenumbers",  "kcal cm mol^-1", Decimal("10") * self.pc["calorie-joule relationship"].data / (self.pc["molar planck constant"].data *
+                                                       self.pc["speed of light in vacuum"].data),                            "kcal mol$^{-1}$ to cm$^{-1}$ conversion factor",),
+            ("e0",                   "F m^-1",         self.pc["vacuum electric permittivity"].data,                         "Vacuum permittivity (Fm$^{-1}$)"),
             ])
+        # fmt: on
 
         # add alternate names for constants or derived values to help QC programs
         for alias in aliases:

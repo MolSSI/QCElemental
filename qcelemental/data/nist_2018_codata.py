@@ -10,6 +10,7 @@ File Authors: QCElemental Authors
 """
 
 
+# fmt: off
 nist_2018_codata = {
     "title": "NIST-CODATA Internationally Recommended 2018 Values of the Fundamental Physical Constants - SRD 121",
     "date": "2019-05-20",
@@ -2137,3 +2138,4 @@ nist_2018_codata = {
         },
     },
 }
+# fmt: on
