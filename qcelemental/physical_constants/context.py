@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 
 
 class PhysicalConstantsContext:
-    """CODATA 2014 physical constants set from NIST.
+    """CODATA physical constants set from NIST.
 
     Parameters
     ----------
-    context : {'CODATA2014'}
+    context : {'CODATA2014', 'CODATA2018'}
         Origin of loaded data.
 
     Attributes
@@ -70,23 +70,29 @@ class PhysicalConstantsContext:
     def __init__(self, context="CODATA2014"):
         self.pc = collections.OrderedDict()
 
-        from ..data import nist_2014_codata
-
         if context == "CODATA2014":
+            from ..data import nist_2014_codata
+
             self.doi = nist_2014_codata["doi"]
             self.raw_codata = nist_2014_codata["constants"]
+        elif context == "CODATA2018":
+            from ..data import nist_2018_codata
 
-            # physical constant loop
-            for k, v in self.raw_codata.items():
-                self.pc[k] = Datum(
-                    v["quantity"],
-                    v["unit"],
-                    Decimal(v["value"]),
-                    comment="uncertainty={}".format(v["uncertainty"]),
-                    doi=self.doi,
-                )
+            self.doi = nist_2018_codata["doi"]
+            self.raw_codata = nist_2018_codata["constants"]
+
         else:
-            raise KeyError("Context set as '{}', only contexts {'CODATA2014', } are currently supported")
+            raise KeyError("Context set as '{}', only contexts {'CODATA2014', 'CODATA2018', } are currently supported")
+
+        # physical constant loop
+        for k, v in self.raw_codata.items():
+            self.pc[k] = Datum(
+                v["quantity"],
+                v["unit"],
+                Decimal(v["value"]),
+                comment="uncertainty={}".format(v["uncertainty"]),
+                doi=self.doi,
+            )
 
         self.name = context
         self.year = int(context.replace("CODATA", ""))
@@ -123,12 +129,22 @@ class PhysicalConstantsContext:
                                                                                                                              'Hartree to kcal mol$^{-1}$ conversion factor'),
             ('hartree2kJmol',        'kJ mol^-1',      self.pc['hartree energy'].data * self.pc['avogadro constant'].data * Decimal('0.001'), 'Hartree to kilojoule mol$^{-1}$ conversion factor'),
             ('hartree2MHz',          'MHz',            self.pc['hartree-hertz relationship'].data * Decimal('1.E-6'),        'Hartree to MHz conversion factor'),
-            ('kcalmol2wavenumbers',  'kcal cm mol^-1', Decimal('10') * self.pc['calorie-joule relationship'].data / self.pc['molar planck constant times c'].data,
-                                                                                                                             'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor'),
-            ('e0',                   'F m^-1',         self.pc['electric constant'].data,                                    'Vacuum permittivity (Fm$^{-1}$)'),
             ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avogadro's number"),
             ('me',                   'kg',             self.pc['electron mass'].data,                                        'Electron rest mass (in kg)'),
         ]
+
+        if context == "CODATA2014":
+            aliases.extend([
+            ('kcalmol2wavenumbers',  'kcal cm mol^-1', Decimal('10') * self.pc['calorie-joule relationship'].data / self.pc['molar planck constant times c'].data,
+                                                                                                                             'kcal mol$^{-1}$ to cm$^{-1}$ conversion factor',),
+            ('e0',                   'F m^-1',         self.pc['electric constant'].data,                                    'Vacuum permittivity (Fm$^{-1}$)'),
+            ])
+        elif context == "CODATA2018":
+            aliases.extend([
+            ("kcalmol2wavenumbers",  "kcal cm mol^-1", Decimal("10") * self.pc["calorie-joule relationship"].data / (self.pc["molar planck constant"].data *
+                                                       self.pc["speed of light in vacuum"].data),                            "kcal mol$^{-1}$ to cm$^{-1}$ conversion factor",),
+            ("e0",                   "F m^-1",         self.pc["vacuum electric permittivity"].data,                         "Vacuum permittivity (Fm$^{-1}$)"),
+            ])
         # fmt: on
 
         # add alternate names for constants or derived values to help QC programs
