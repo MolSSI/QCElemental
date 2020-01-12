@@ -167,7 +167,7 @@ class Molecule(ProtoModel):
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
         "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.",
     )
-    atomic_numbers: Optional[Array[np.int16]] = Field(  # type: ignore
+    atomic_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
@@ -248,6 +248,7 @@ class Molecule(ProtoModel):
             ("formula", self.get_molecular_formula()),
             ("hash", self.get_hash()[:7]),
         ]
+        fields = {"atomic_numbers_": "atomic_numbers"}
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -270,6 +271,7 @@ class Molecule(ProtoModel):
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
             schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"], copy=False, np_out=True)
+            schema = _filter_defaults(schema)
 
             kwargs["validated"] = True
             kwargs = {**kwargs, **schema}  # Allow any extra fields
@@ -370,6 +372,13 @@ class Molecule(ProtoModel):
             "fragment_multiplicities",
             "connectivity",
         ]
+
+    @property
+    def atomic_numbers(self) -> Array[np.int16]:
+        atomic_numbers = self.__dict__.get("atomic_numbers_")
+        if atomic_numbers is None:
+            atomic_numbers = np.array([periodictable.to_Z(x) for x in self.symbols])
+        return atomic_numbers
 
     ### Non-Pydantic API functions
 
@@ -1290,6 +1299,22 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+
+def _filter_defaults(dicary):
+    default_mass = np.array([periodictable.to_mass(z) for z in dicary["atomic_numbers"]])
+    if np.allclose(default_mass, dicary["masses"]):
+        dicary.pop("mass_numbers")
+        dicary.pop("atomic_numbers")
+        dicary.pop("masses")
+
+    if all(dicary["real"]):
+        dicary.pop("real")
+
+    if dicary["atom_labels"].tolist() == len(dicary["symbols"]) * [""]:
+        dicary.pop("atom_labels")
+
+    return dicary
 
 
 # auto_gen_docs_on_demand(Molecule)
