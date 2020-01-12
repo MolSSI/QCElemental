@@ -91,8 +91,8 @@ def test_str():
     assert "PhysicalConstantsContext(" in str(qcelemental.constants)
 
 
-def test_codata2018():
+def test_codata2022():
     with pytest.raises(KeyError) as e:
-        qcelemental.PhysicalConstantsContext("CODATA2018")
+        qcelemental.PhysicalConstantsContext("CODATA2022")
 
-    assert "only contexts {'CODATA2014', } are currently supported" in str(e.value)
+    assert "only contexts {'CODATA2014', 'CODATA2018', } are currently supported" in str(e.value)

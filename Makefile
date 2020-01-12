@@ -35,8 +35,9 @@ test:
 .PHONY: data
 data:
 	#(cd devtools/scripts; python build_periodic_table.py; mv nist_*_atomic_weights.py ../../qcelemental/data/)
-	#(cd devtools/scripts; python build_physical_constants.py; mv nist_*_codata.py ../../qcelemental/data/)
+	#(cd devtools/scripts; python build_physical_constants_2014.py; mv nist_*_codata.py ../../qcelemental/data/)
 	(cd devtools/scripts; python build_dft_info.py; mv psi4_dft_info.py ../../qcelemental/data/)
+	(cd devtools/scripts; python build_physical_constants_2018.py; mv nist_*_codata.py ../../qcelemental/data/)
 
 .PHONY: clean
 clean:
