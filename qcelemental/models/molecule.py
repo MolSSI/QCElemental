@@ -461,6 +461,10 @@ class Molecule(ProtoModel):
 
         return self.get_hash() == other.get_hash()
 
+    def dict(self, *args, **kwargs):
+        kwargs.setdefault("by_alias", True)
+        return super().dict(*args, **kwargs)
+
     def pretty_print(self):
         """Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
         (method name in libmints is print_in_angstrom)
