@@ -4,10 +4,31 @@ from qcelemental.info import cpu_info, dft_info
 
 
 @pytest.mark.parametrize(
-    "functional,ansatz", [("svwn", 0), ("b3lyp", 1), ("b3lyp-d3", 1), ("b3lyp-nlc", 1), ("dsd-blyp", 1)]
+    "functional,base_name",
+    [
+        ("svwn", "svwn"),
+        ("b3lyp", "b3lyp"),
+        ("b3lyp-d3", "b3lyp"),
+        ("b3lyp-d3zero", "b3lyp"),
+        ("b3lyp-d3mbj", "b3lyp"),
+        ("b3lyp-nl", "b3lyp"),
+        ("dsd-blyp", "dsd-blyp"),
+        ("core-dsd-blyp", "core-dsd-blyp"),
+        ("core-dsd-blyp-d3bj", "core-dsd-blyp"),
+        ("pbe0-dh", "pbe0-dh"),
+        ("m06-2x-d3bj", "m06-2x"),
+    ],
 )
-def test_dft_info_names(functional, ansatz):
-    assert dft_info.get(functional).ansatz == ansatz
+def test_dft_info_get(functional, base_name):
+    assert dft_info.get(functional).name == base_name
+
+
+def test_dft_info_data():
+    dft = dft_info.get("core-dsd-blyp")
+    assert dft.name == "core-dsd-blyp"
+    assert dft.deriv == 1
+    assert dft.c_hybrid is True
+    assert dft.x_hybrid is True
 
 
 def test_cpu_info_index_lengths():

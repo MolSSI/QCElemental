@@ -26,6 +26,7 @@ empirical_dispersion_suffixes = {
     "-atmgr",
     "-dmp2",
 }
+dft_info["empirical_dispersion_suffixes"] = list(empirical_dispersion_suffixes)
 
 for functional in psi4.driver.proc.dft.functionals:
     if any(functional.endswith(suffix) for suffix in empirical_dispersion_suffixes):

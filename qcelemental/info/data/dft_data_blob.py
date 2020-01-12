@@ -1,13 +1,13 @@
 """
 This is a automatically generated file from Psi4's density functional metadata.
-Psi4 Version: 1.4a2.dev138
+Psi4 Version: 1.4a2.dev215
 
 File Authors: QCElemental Authors
 """
 
 
 data_blob = {
-    "version": "1.4a2.dev138",
+    "version": "1.4a2.dev215",
     "functionals": {
         "teter93": {
             "ansatz": 0,
@@ -1900,4 +1900,26 @@ data_blob = {
             "deriv": 1,
         },
     },
+    "empirical_dispersion_suffixes": [
+        "-chg",
+        "-d2",
+        "-d3mbj",
+        "+d09",
+        "-d3zero",
+        "+d10",
+        "-atmgr",
+        "-d10",
+        "-das2010",
+        "-d09",
+        "-d3mzero",
+        "-d",
+        "-dmp2",
+        "-d3m(bj)",
+        "-d3(bj)",
+        "-nl",
+        "-d3bj",
+        "-d3m",
+        "-d3",
+        "-das2009",
+    ],
 }

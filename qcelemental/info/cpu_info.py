@@ -58,11 +58,15 @@ class ProcessorContext:
 
     Attributes
     ----------
-    functionals : Dict[str, ProcessorInfo]
-        dictionary of (lower-case) functional name to info
-
+    processors : List[ProcessorInfo]
+        A list of all processors known
+    index : Dict[(str, str): ProcessorInfo]
+        A (vendor, model) index to the processor information
+    index_vendor : Dict[str, Dict[str, ProcessorInfo]]
+        A vendor, model nested dictionary index for processor information
     name : str
         The name of the context ('default')
+
     """
 
     def __init__(self, context: str = "defualt"):

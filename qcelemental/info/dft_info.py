@@ -10,6 +10,7 @@ from ..models import ProtoModel
 
 
 class DFTFunctionalInfo(ProtoModel):
+    name: str = Field(..., description="The name of the functional.")
     ansatz: int = Field(
         ...,
         description="Maximum functional derivative with respect to the density. This is 2 for meta-GGAs, 1 for GGAs, and 0 otherwise.)",
@@ -45,8 +46,9 @@ class DFTFunctionalContext:
 
         from .data import dft_data_blob
 
+        self.suffixes = dft_data_blob.data_blob["empirical_dispersion_suffixes"]
         self.functionals: Dict[str, DFTFunctionalInfo] = {
-            name: DFTFunctionalInfo(**data) for name, data in dft_data_blob.data_blob["functionals"].items()
+            name: DFTFunctionalInfo(name=name, **data) for name, data in dft_data_blob.data_blob["functionals"].items()
         }
 
         self.name = context
@@ -61,6 +63,10 @@ dftfunctionalinfo = DFTFunctionalContext("default")
 
 def get(name: str) -> DFTFunctionalInfo:
 
-    name = name.lower().split("-d")[0].split("-nlc")[0]
+    name = name.lower()
+    for x in dftfunctionalinfo.suffixes:
+        if name.endswith(x):
+            name = name.replace(x, "")
+            break
 
     return dftfunctionalinfo.functionals[name].copy()
