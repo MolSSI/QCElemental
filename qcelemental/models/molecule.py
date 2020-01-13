@@ -304,23 +304,23 @@ class Molecule(ProtoModel):
         elif validate:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
-#        # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-#        if values["fragments"] is None:
-#            values["fragments"] = [np.arange(natoms, dtype=np.int32)]
-#            values["fragment_charges"] = [values["molecular_charge"]]
-#            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
-#        else:
-#            if values["fragment_charges"] is None:
-#                if np.isclose(values["molecular_charge"], 0.0):
-#                    values["fragment_charges"] = [0 for _ in values["fragments"]]
-#                else:
-#                    raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
-#
-#            if values["fragment_multiplicities"] is None:
-#                if values["molecular_multiplicity"] == 1:
-#                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
-#                else:
-#                    raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
+        #        # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
+        #        if values["fragments"] is None:
+        #            values["fragments"] = [np.arange(natoms, dtype=np.int32)]
+        #            values["fragment_charges"] = [values["molecular_charge"]]
+        #            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
+        #        else:
+        #            if values["fragment_charges"] is None:
+        #                if np.isclose(values["molecular_charge"], 0.0):
+        #                    values["fragment_charges"] = [0 for _ in values["fragments"]]
+        #                else:
+        #                    raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
+        #
+        #            if values["fragment_multiplicities"] is None:
+        #                if values["molecular_multiplicity"] == 1:
+        #                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
+        #                else:
+        #                    raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
         if "masses" in values:
             values["masses_"] = values["masses"]
@@ -444,8 +444,7 @@ class Molecule(ProtoModel):
     @property
     def connectivity(self) -> List[Tuple[int, int, float]]:
         connectivity = self.__dict__.get("connectivity_")
-        if connectivity is None:
-            connectivity = []
+        # default is None, not []
         return connectivity
 
     @property
@@ -766,16 +765,9 @@ class Molecule(ProtoModel):
         m = hashlib.sha1()
         concat = ""
 
-        print(self.masses)
-        tmp_dict = super().dict(exclude_unset=False, by_alias=True)
-        print("superdict")
-        for k, v in tmp_dict.items():
-            print(k, v)
-
         np.set_printoptions(precision=16)
         for field in self.hash_fields:
-            data = tmp_dict[field]
-            print(field, data)
+            data = getattr(self, field)
             if field == "geometry":
                 data = float_prep(data, GEOMETRY_NOISE)
             elif field == "fragment_charges":
@@ -1423,9 +1415,11 @@ def _filter_defaults(dicary):
     if "connectivity" in dicary and dicary["connectivity"] == []:
         dicary.pop("connectivity")
 
-    if ((dicary["fragments"] == [list(np.arange(nat))]) and
-         all([fr == 0.0  for fr in dicary["fragment_charges"]]) and
-         all([fr == 1  for fr in dicary["fragment_multiplicities"]])):
+    if (
+        (dicary["fragments"] == [list(np.arange(nat))])
+        and all([fr == 0.0 for fr in dicary["fragment_charges"]])
+        and all([fr == 1 for fr in dicary["fragment_multiplicities"]])
+    ):
         dicary.pop("fragments")
         dicary.pop("fragment_charges")
         dicary.pop("fragment_multiplicities")
