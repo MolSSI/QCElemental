@@ -161,7 +161,7 @@ class Molecule(ProtoModel):
         "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
         "If this is provided, the reality or ghostality of every atom must be specified.",
     )
-    atom_labels: Optional[Array[str]] = Field(  # type: ignore
+    atom_labels_: Optional[Array[str]] = Field(  # type: ignore
         None,
         description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
@@ -173,7 +173,7 @@ class Molecule(ProtoModel):
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
         "Values are inferred from the ``symbols`` list if not explicitly set.",
     )
-    mass_numbers: Optional[Array[np.int16]] = Field(  # type: ignore
+    mass_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
@@ -248,7 +248,11 @@ class Molecule(ProtoModel):
             ("formula", self.get_molecular_formula()),
             ("hash", self.get_hash()[:7]),
         ]
-        fields = {"atomic_numbers_": "atomic_numbers"}
+        fields = {
+            "atom_labels_": "atom_labels",
+            "atomic_numbers_": "atomic_numbers",
+            "mass_numbers_": "mass_numbers",
+        }
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -374,11 +378,25 @@ class Molecule(ProtoModel):
         ]
 
     @property
+    def atom_labels(self) -> Array[str]:
+        atom_labels = self.__dict__.get("atom_labels_")
+        if atom_labels is None:
+            atom_labels = np.array(["" for x in self.symbols])
+        return atom_labels
+
+    @property
     def atomic_numbers(self) -> Array[np.int16]:
         atomic_numbers = self.__dict__.get("atomic_numbers_")
         if atomic_numbers is None:
             atomic_numbers = np.array([periodictable.to_Z(x) for x in self.symbols])
         return atomic_numbers
+
+    @property
+    def mass_numbers(self) -> Array[np.int16]:
+        mass_numbers = self.__dict__.get("mass_numbers_")
+        if mass_numbers is None:
+            mass_numbers = np.array([periodictable.to_A(x) for x in self.symbols])
+        return mass_numbers
 
     ### Non-Pydantic API functions
 
