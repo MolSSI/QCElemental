@@ -5,7 +5,7 @@ Contains metadata about Processors
 import difflib
 import re
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import Field
 
@@ -119,6 +119,8 @@ def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
 
         if "xeon" in name:
             name = name.replace(" v", "v")
+            if name.endswith(" 0"):
+                name = name[:-2]
 
         name = name.replace("intel", "").replace("cpu", "")
         name = name.replace("core", "").replace("xeon", "")
