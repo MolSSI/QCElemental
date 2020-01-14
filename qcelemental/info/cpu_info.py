@@ -5,8 +5,8 @@ Contains metadata about Processors
 import difflib
 import re
 from enum import Enum
-from typing import List, Optional
 from functools import lru_cache
+from typing import List, Optional
 
 from pydantic import Field
 
@@ -35,6 +35,7 @@ class InstructionSetEnum(int, Enum):
 
 
 class ProcessorInfo(ProtoModel):
+    name: str = Field(..., description="Name of the processor.")
     ncores: int = Field(..., description="The number of physical cores on the chip.")
     nthreads: Optional[int] = Field(..., description="The maximum number of concurrent threads.")
     base_clock: float = Field(..., description="The base clock frequency (GHz).")
@@ -140,3 +141,7 @@ def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
         return index[matches[0]]
     else:
         raise KeyError(f"Could not find processor {vendor}: {name}.")
+
+
+def list_names():
+    return sorted([cpu.name for cpu in context.processors])
