@@ -5,7 +5,8 @@ Contains metadata about Processors
 import difflib
 import re
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
+from functools import lru_cache
 
 from pydantic import Field
 
@@ -22,7 +23,7 @@ class VendorEnum(str, Enum):
     arm = "arm"
 
 
-class InstructionSetEnum(Enum):
+class InstructionSetEnum(int, Enum):
     """Allowed instruction sets for CPUs in an ordinal enum.
     """
 
@@ -99,6 +100,7 @@ class ProcessorContext:
 context = ProcessorContext("default")
 
 
+@lru_cache(maxsize=1024)
 def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
 
     name = context.process_names(name.split("@")[0])
@@ -119,6 +121,8 @@ def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
 
         if "xeon" in name:
             name = name.replace(" v", "v")
+            if name.endswith(" 0"):
+                name = name[:-2]
 
         name = name.replace("intel", "").replace("cpu", "")
         name = name.replace("core", "").replace("xeon", "")

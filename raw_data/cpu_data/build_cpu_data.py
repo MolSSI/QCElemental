@@ -103,7 +103,11 @@ for row in list(intel_raw.values())[100:]:
     if "Performance" not in row:
         continue
 
-    if row["Essentials"]["Vertical Segment"] == "Mobile":
+    # Some processors are classified as "Mobile", which are almost certainly in laptops not phones
+    # Excluding atom procs instead, since they're the ones the break the parser
+    #if row["Essentials"]["Vertical Segment"] == "Mobile":
+    #    continue
+    if "Intel Atom " in row["name"]:
         continue
 
     try:
@@ -192,6 +196,15 @@ translation = {"none": 0, "sse": 1, "avx": 2, "avx2": 3, "avx512": 4}
 df["instructions"] = df["instructions"].apply(lambda x: translation[x])
 
 
+# add extra data
+import extra_cpus
+for i in extra_cpus.extra_cpus:
+    df = df.append(i, ignore_index=True)
+
+for (vendor, model), fix in extra_cpus.fixes.items():
+    idx = df[(df["vendor"] == vendor) & (df["model"] == model)].index
+    for k, v in fix.items():
+        df.loc[idx, k] = v
 # Print some data for posterity
 print(df[df["vendor"] == "intel"].tail())
 print(df[df["vendor"] == "amd"].tail())

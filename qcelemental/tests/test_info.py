@@ -48,9 +48,15 @@ def test_cpu_info_index_lengths():
         ("Intel(R) Xeon(R) CPU E5-2683 v4 @ 2.10GHz", "E5-2683V4"),
         ("Intel(R) Xeon(R) CPU           X5660  @ 2.80GHz", "X5660"),
         ("Intel(R) Xeon(R) CPU E7-8867 v4 @ 2.40GHz", "E7-8867V4"),
-        # Not yet in our database
-        # ("Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz", "asdf"),
-        # ("Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz", "asdf"),
+        ("Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz", "E5-2670"),
+        ("Intel(R) Xeon(R) CPU E5-2660 0 @ 2.60GHz", "E5-2660"),
+        ("Intel(R) Xeon(R) CPU E5-2690 0 @ 2.60GHz", "E5-2690"),
+        ("AMD Opteron(tm) Processor 6168", "6168"),
+        ("AMD Opteron(tm) Processor 6174", "6174"),
+        ("Intel(R) Xeon(R) CPU E5-2673 v3 @ 2.40GHz", "E5-2673V3"),
+        ("Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz", "i7-7820HQ"),
+        ("Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz", "i5-7360U"),
+        ("Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz", "i5-8279U"),
     ],
 )
 def test_cpu_info_search(name, model):
@@ -65,13 +71,31 @@ def test_cpu_info_errors():
     with pytest.raises(KeyError) as exc:
         cpu_info.get("E7-8867 V4")
 
-    assert "not determine vendor" in str(exc)
+    assert "not determine vendor" in exc.value.args[0], exc.value.args[0]
 
     with pytest.raises(KeyError) as exc:
         cpu_info.get("Intel E0-9999 V4")
 
-    assert "intel: e0-9999" in str(exc)
+    assert "intel: e0-9999" in exc.value.args[0], exc.value.args[0]
 
 
 def test_cpu_info_matches():
     assert cpu_info.get("E7-8867 V4", vendor="intel").model == "E7-8867V4"
+
+
+@pytest.mark.parametrize(
+    "name, fixes",
+    [
+        ("AMD EPYC 7551P 32-Core Processor", {"launch_date": 2017}),
+        ("AMD Opteron(tm) Processor 6376", {"launch_date": 2012}),
+        ("AMD Opteron(TM) Processor 6276", {"launch_date": 2011}),
+        ("AMD EPYC 7401P 24-Core Processor", {"launch_date": 2017}),
+        ("AMD EPYC 7601 32-Core Processor", {"launch_date": 2017}),
+        ("AMD Opteron(TM) Processor 6274", {"launch_date": 2011}),
+    ],
+)
+def test_cpu_fixes(name, fixes):
+    info = cpu_info.get(name)
+    print(info)
+    for k, v in fixes.items():
+        assert getattr(info, k) == v
