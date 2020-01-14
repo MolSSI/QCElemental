@@ -201,6 +201,10 @@ import extra_cpus
 for i in extra_cpus.extra_cpus:
     df = df.append(i, ignore_index=True)
 
+for (vendor, model), fix in extra_cpus.fixes.items():
+    idx = df[(df["vendor"] == vendor) & (df["model"] == model)].index
+    for k, v in fix.items():
+        df.loc[idx, k] = v
 # Print some data for posterity
 print(df[df["vendor"] == "intel"].tail())
 print(df[df["vendor"] == "amd"].tail())

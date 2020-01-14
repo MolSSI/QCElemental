@@ -57,3 +57,12 @@ extra_cpus.append(
         "vendor": "intel",
     }
 )
+
+fixes = {
+    ("amd", "AMD EPYC\u2122 7551P"): {"launch_date": 2017},
+    ("amd", 6376): {"launch_date": 2012},
+    ("amd", 6276): {"launch_date": 2011},
+    ("amd", "AMD EPYC\u2122 7401P"): {"launch_date": 2017},
+    ("amd", "AMD EPYC\u2122 7601"): {"launch_date": 2017},
+    ("amd", 6274): {"launch_date": 2011}
+}

@@ -81,3 +81,21 @@ def test_cpu_info_errors():
 
 def test_cpu_info_matches():
     assert cpu_info.get("E7-8867 V4", vendor="intel").model == "E7-8867V4"
+
+
+@pytest.mark.parametrize(
+    "name, fixes",
+    [
+        ("AMD EPYC 7551P 32-Core Processor", {"launch_date": 2017}),
+        ("AMD Opteron(tm) Processor 6376", {"launch_date": 2012}),
+        ("AMD Opteron(TM) Processor 6276", {"launch_date": 2011}),
+        ("AMD EPYC 7401P 24-Core Processor", {"launch_date": 2017}),
+        ("AMD EPYC 7601 32-Core Processor", {"launch_date": 2017}),
+        ("AMD Opteron(TM) Processor 6274", {"launch_date": 2011}),
+    ],
+)
+def test_cpu_fixes(name, fixes):
+    info = cpu_info.get(name)
+    print(info)
+    for k, v in fixes.items():
+        assert getattr(info, k) == v
