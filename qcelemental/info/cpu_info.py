@@ -22,7 +22,7 @@ class VendorEnum(str, Enum):
     arm = "arm"
 
 
-class InstructionSetEnum(Enum):
+class InstructionSetEnum(int, Enum):
     """Allowed instruction sets for CPUs in an ordinal enum.
     """
 
