@@ -6,6 +6,7 @@ import difflib
 import re
 from enum import Enum
 from typing import List, Optional
+from functools import lru_cache
 
 from pydantic import Field
 
@@ -99,6 +100,7 @@ class ProcessorContext:
 context = ProcessorContext("default")
 
 
+@lru_cache(maxsize=1024)
 def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
 
     name = context.process_names(name.split("@")[0])
