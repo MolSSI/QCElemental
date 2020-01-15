@@ -4,10 +4,60 @@ import numpy as np
 import pytest
 
 import qcelemental
-from qcelemental.testing import compare, compare_molrecs, compare_recursive, tnm
+from qcelemental.models import Molecule
+from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values, tnm
 
 _arrays_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_arrays"}
 _string_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_string"}
+
+_trans_molrec_to_model = {
+    "geometry": "geom",
+    "mass_numbers": "elea",
+    "atomic_numbers": "elez",
+    "symbols": "elem",
+    "masses": "mass",
+    "real": "real",
+    "atom_labels": "elbl",
+    "fix_com": "fix_com",
+    "fix_orientation": "fix_orientation",
+    "fragment_charges": "fragment_charges",
+    "fragment_multiplicities": "fragment_multiplicities",
+    "molecular_charge": "molecular_charge",
+    "molecular_multiplicity": "molecular_multiplicity",
+}
+
+
+def _check_eq_molrec_minimal_model(keepers, model, molrec=None):
+    usual_stored = set(
+        ["geometry", "symbols", "molecular_charge", "molecular_multiplicity", "fix_com", "fix_orientation"]
+    )
+    usual_filtered = set(
+        [
+            "masses",
+            "mass_numbers",
+            "real",
+            "atomic_numbers",
+            "atom_labels",
+            "connectivity",
+            "fragments",
+            "fragment_charges",
+            "fragment_multiplicities",
+        ]
+    )
+
+    for field in usual_filtered.difference(keepers):
+        assert field not in model, f"Field '{field}' stragely present: {model[field]}"
+
+    for field in usual_stored.union(keepers):
+        assert field in model, f"Field '{field}' stragely absent"
+        if molrec and field not in ["geometry", "fragments"]:
+            skf = model[field]
+            mrf = molrec[_trans_molrec_to_model[field]]
+            if field in ["molecular_charge", "fragment_charges", "geometry", "masses"]:
+                assert compare_values(mrf, skf, field, atol=1.0e-6)  # MASS_NOISE
+            else:
+                assert compare(mrf, skf, field)  # MASS_NOISE
+
 
 subject1 = """O 0 0   0
 no_com
@@ -58,6 +108,9 @@ def test_psi4_qm_1a():
     assert compare_recursive(ans1, intermed, atol=1.0e-4)
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
+    kmol = Molecule.from_data(subject)
+    _check_eq_molrec_minimal_model([], kmol.dict(), fullans)
+
 
 def test_psi4_qm_1ab():
     subject = subject1
@@ -95,6 +148,9 @@ def test_psi4_qm_1c():
     final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_recursive(ans, intermed, tnm() + ": intermediate")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
+
+    kmol = Molecule.from_data(subject)
+    _check_eq_molrec_minimal_model([], kmol.dict(), fullans)
 
 
 def test_psi4_qm_1d():
@@ -288,6 +344,24 @@ def test_psi4_qm_2a():
     final_unnp = qcelemental.util.unnp(final["qm"])
     assert compare_molrecs(fullans_unnp, final_unnp, tnm() + ": full unnp")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
+
+    kmol = Molecule.from_data(subject)
+    _check_eq_molrec_minimal_model(
+        [
+            "fix_com",
+            "fix_orientation",
+            "fragments",
+            "fragment_charges",
+            "fragment_multiplicities",
+            "mass_numbers",
+            "masses",
+            "atom_labels",
+            "real",
+            "atomic_numbers",
+        ],
+        kmol.dict(),
+        fullans,
+    )
 
 
 def test_psi4_qm_2b():

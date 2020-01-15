@@ -259,6 +259,7 @@ class Molecule(ProtoModel):
             "fragment_charges_": "fragment_charges",
             "fragment_multiplicities_": "fragment_multiplicities",
         }
+        force_skip_defaults: bool = True
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -293,7 +294,6 @@ class Molecule(ProtoModel):
         # All attributes set below are equivalent to the default set.
         values = self.__dict__
 
-        natoms = values["geometry"].shape[0]
         if validate:
             values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
 
@@ -305,11 +305,7 @@ class Molecule(ProtoModel):
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
         #        # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-        #        if values["fragments"] is None:
-        #            values["fragments"] = [np.arange(natoms, dtype=np.int32)]
-        #            values["fragment_charges"] = [values["molecular_charge"]]
-        #            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
-        #        else:
+        #        if values["fragments"] is not None:
         #            if values["fragment_charges"] is None:
         #                if np.isclose(values["molecular_charge"], 0.0):
         #                    values["fragment_charges"] = [0 for _ in values["fragments"]]
@@ -375,14 +371,12 @@ class Molecule(ProtoModel):
 
     @validator("fragment_charges_", "fragment_multiplicities_")
     def _must_be_n_frag(cls, v, values, **kwargs):
-        if "fragments_" in values:
+        if "fragments_" in values and values["fragments_"] is not None:
             n = len(values["fragments_"])
             if len(v) != n:
                 raise ValueError(
                     "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
                 )
-        else:
-            raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities without Fragments")
         return v
 
     @validator("connectivity_", each_item=True)
@@ -458,14 +452,14 @@ class Molecule(ProtoModel):
     def fragment_charges(self) -> List[float]:
         fragment_charges = self.__dict__.get("fragment_charges_")
         if fragment_charges is None:
-            fragment_charges = [0.0 for _ in self.fragments]
+            fragment_charges = [self.molecular_charge]
         return fragment_charges
 
     @property
     def fragment_multiplicities(self) -> List[int]:
         fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
         if fragment_multiplicities is None:
-            fragment_multiplicities = [1 for _ in self.fragments]
+            fragment_multiplicities = [self.molecular_multiplicity]
         return fragment_multiplicities
 
     ### Non-Pydantic API functions
@@ -868,8 +862,9 @@ class Molecule(ProtoModel):
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
             mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
-            input_dict = to_schema(mol_dict["qm"], dtype=2)
-            validate = True
+            input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
+            input_dict = _filter_defaults(input_dict)
+            input_dict["validated"] = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -878,8 +873,9 @@ class Molecule(ProtoModel):
                 "units": kwargs.pop("units", "Angstrom"),
                 "fragment_separators": kwargs.pop("frags", []),
             }
-            input_dict = to_schema(from_arrays(**data), dtype=2)
-            validate = True
+            input_dict = to_schema(from_arrays(**data), dtype=2, np_out=True)
+            input_dict = _filter_defaults(input_dict)
+            input_dict["validated"] = True
         elif dtype == "msgpack":
             assert isinstance(data, bytes)
             input_dict = msgpackext_loads(data)
@@ -899,7 +895,8 @@ class Molecule(ProtoModel):
         kwarg_keys = set(kwargs.keys())
         if len(charge_spin_opts & kwarg_keys) > 0:
             for key in charge_spin_opts - kwarg_keys:
-                input_dict[key] = None
+                input_dict.pop(key, None)
+            input_dict.pop("validated", None)
 
         return cls(orient=orient, validate=validate, **input_dict)
 
@@ -1415,11 +1412,7 @@ def _filter_defaults(dicary):
     if "connectivity" in dicary and dicary["connectivity"] == []:
         dicary.pop("connectivity")
 
-    if (
-        (dicary["fragments"] == [list(np.arange(nat))])
-        and all([fr == 0.0 for fr in dicary["fragment_charges"]])
-        and all([fr == 1 for fr in dicary["fragment_multiplicities"]])
-    ):
+    if dicary["fragments"] == [list(np.arange(nat))]:
         dicary.pop("fragments")
         dicary.pop("fragment_charges")
         dicary.pop("fragment_multiplicities")

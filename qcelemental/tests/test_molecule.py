@@ -264,6 +264,19 @@ def test_from_data_kwargs():
     assert mol.fragment_charges[0] == 1
     assert mol.fragment_multiplicities[0] == 2
 
+    with pytest.raises(qcel.ValidationError) as e:
+        mol = Molecule.from_data(
+            """
+            O 0 0 0
+            H 0 1.5 0
+            H 0 0 1.5
+            """,
+            molecular_charge=1,
+            molecular_multiplicity=2,
+            fragment_charges=[2],
+        )
+    assert "Inconsistent or unspecified chg/mult" in str(e.value)
+
 
 def test_water_orient():
     # These are identical molecules, should find the correct results
