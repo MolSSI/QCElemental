@@ -347,18 +347,7 @@ def test_psi4_qm_2a():
 
     kmol = Molecule.from_data(subject)
     _check_eq_molrec_minimal_model(
-        [
-            "fix_com",
-            "fix_orientation",
-            "fragments",
-            "fragment_charges",
-            "fragment_multiplicities",
-            "mass_numbers",
-            "masses",
-            "atom_labels",
-            "real",
-            "atomic_numbers",
-        ],
+        ["fragments", "fragment_charges", "fragment_multiplicities", "mass_numbers", "masses", "atom_labels", "real",],
         kmol.dict(),
         fullans,
     )

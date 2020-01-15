@@ -1395,12 +1395,14 @@ class Molecule(ProtoModel):
 
 
 def _filter_defaults(dicary):
+    #    print("\nfilter pree:", sorted(dicary))
     nat = len(dicary["symbols"])
+    default_mass = np.array([periodictable.to_mass(e) for e in dicary["symbols"]])
 
-    default_mass = np.array([periodictable.to_mass(z) for z in dicary["atomic_numbers"]])
+    dicary.pop("atomic_numbers")
+
     if np.allclose(default_mass, dicary["masses"]):
         dicary.pop("mass_numbers")
-        dicary.pop("atomic_numbers")
         dicary.pop("masses")
 
     if all(dicary["real"]):
