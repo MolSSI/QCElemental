@@ -105,31 +105,31 @@ class PhysicalConstantsContext:
 
         rename_2018_from_2014 = {
             "atomic unit of momentum": "atomic unit of mom.um",
-            "reduced planck constant": "planck constant over 2 pi",
-            "reduced planck constant in ev s": "planck constant over 2 pi in ev s",
-            "reduced planck constant times c in mev fm": "planck constant over 2 pi times c in mev fm",
+            "reduced Planck constant": "Planck constant over 2 pi",
+            "reduced Planck constant in eV s": "Planck constant over 2 pi in eV s",
+            "reduced Planck constant times c in MeV fm": "Planck constant over 2 pi times c in MeV fm",
             "natural unit of momentum": "natural unit of mom.um",
-            "natural unit of momentum in mev/c": "natural unit of mom.um in mev/c",
-            "electron gyromag. ratio in mhz/t": "electron gyromag. ratio over 2 pi",
+            "natural unit of momentum in MeV/c": "natural unit of mom.um in MeV/c",
+            "electron gyromag. ratio in MHz/T": "electron gyromag. ratio over 2 pi",
             "vacuum mag. permeability": "mag. constant",
-            "lattice spacing of ideal si (220)": "{220} lattice spacing of silicon",
-            "planck constant in ev/hz": "planck constant in ev s",
-            "bohr magneton in inverse meter per tesla": "bohr magneton in inverse meters per tesla",
-            "boltzmann constant in inverse meter per kelvin": "boltzmann constant in inverse meters per kelvin",
-            "copper x unit": "cu x unit",
-            "molybdenum x unit": "mo x unit",
-            "proton gyromag. ratio in mhz/t": "proton gyromag. ratio over 2 pi",
-            "shielded proton gyromag. ratio in mhz/t": "shielded proton gyromag. ratio over 2 pi",
-            "reduced proton compton wavelength": "proton compton wavelength over 2 pi",
-            "reduced tau compton wavelength": "tau compton wavelength over 2 pi",
+            "lattice spacing of ideal Si (220)": "{220} lattice spacing of silicon",
+            "Planck constant in eV/Hz": "Planck constant in eV s",
+            "Bohr magneton in inverse meter per tesla": "Bohr magneton in inverse meters per tesla",
+            "Boltzmann constant in inverse meter per kelvin": "Boltzmann constant in inverse meters per kelvin",
+            "Copper x unit": "Cu x unit",
+            "Molybdenum x unit": "Mo x unit",
+            "proton gyromag. ratio in MHz/T": "proton gyromag. ratio over 2 pi",
+            "shielded proton gyromag. ratio in MHz/T": "shielded proton gyromag. ratio over 2 pi",
+            "reduced proton Compton wavelength": "proton Compton wavelength over 2 pi",
+            "reduced tau Compton wavelength": "tau Compton wavelength over 2 pi",
             "tau energy equivalent": "tau mass energy equivalent in mev",
-            "reduced neutron compton wavelength": "neutron compton wavelength over 2 pi",
-            "neutron gyromag. ratio in mhz/t": "neutron gyromag. ratio over 2 pi",
+            "reduced neutron Compton wavelength": "neutron Compton wavelength over 2 pi",
+            "neutron gyromag. ratio in MHz/T": "neutron gyromag. ratio over 2 pi",
             "nuclear magneton in inverse meter per tesla": "nuclear magneton in inverse meters per tesla",
-            "shielded helion gyromag. ratio in mhz/t": "shielded helion gyromag. ratio over 2 pi",
-            "reduced compton wavelength": "compton wavelength over 2 pi",
+            "shielded helion gyromag. ratio in MHz/T": "shielded helion gyromag. ratio over 2 pi",
+            "reduced Compton wavelength": "Compton wavelength over 2 pi",
             "vacuum electric permittivity": "electric constant",
-            "reduced muon compton wavelength": "muon compton wavelength over 2 pi",
+            "reduced muon Compton wavelength": "muon Compton wavelength over 2 pi",
         }
 
         # fmt: off
@@ -137,13 +137,14 @@ class PhysicalConstantsContext:
             aliases = []
 
         elif context == "CODATA2018":
-            for new, old in rename_2018_from_2014.items():
-                self.pc[old] = self.pc[new]
+            for new_name, old_name in rename_2018_from_2014.items():
+                dm = self.pc[new_name.lower()]
+                self.pc[old_name.lower()] = Datum(old_name, dm.units, dm.data, comment=dm.comment, doi=dm.doi)
 
             aliases = [
-                ("molar planck constant times c",                      "J m mol^-1", self.pc["molar planck constant"].data * self.pc["speed of light in vacuum"].data,     ""),
-                ("faraday constant for conventional electric current", "C_90 mol^-1", self.pc["faraday constant"].data / self.pc["conventional value of coulomb-90"].data, ""),
-                ("elementary charge over h",                           "A J^-1", self.pc["elementary charge over h-bar"].data / (2 * self._get_pi(from_scratch=False)),    ""),
+                ("molar Planck constant times c",                      "J m mol^{-1}", self.pc["molar planck constant"].data * self.pc["speed of light in vacuum"].data,     ""),
+                ("Faraday constant for conventional electric current", "C_{90} mol^{-1}", self.pc["faraday constant"].data / self.pc["conventional value of coulomb-90"].data, ""),
+                ("elementary charge over h",                           "A J^{-1}", self.pc["elementary charge over h-bar"].data / (2 * self._get_pi(from_scratch=False)),    ""),
             ]
 
         aliases.extend([
@@ -422,6 +423,15 @@ class PhysicalConstantsContext:
                         f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
                     )
 
+                refu = self.pc[pc].units
+                valu = other.pc[pc].units
+                if refu != valu:
+                    print(
+                        bcolors.BOLD
+                        + f"Physical Constant {pc} units differs: {refu} (this, {self.name}) vs {valu} ({other.name})"
+                        + bcolors.ENDC
+                    )
+
     def _get_pi(self, from_scratch: bool = False) -> "Decimal":
         """Get pi to 36 digits (or more with mpmath).
 
@@ -454,14 +464,14 @@ class PhysicalConstantsContext:
             "#ifndef _qcelemental_physconst_h_",
             "#define _qcelemental_physconst_h_",
             "",
-            "/* This file is autogenerated from the QCElemental python module */",
+            f"/* This file is autogenerated from the QCElemental python module from {self.name} */",
             "",
             "/* clang-format off */",
-            "#define pc_pi {}".format(pi),
-            "#define pc_twopi {}".format(tau),
+            f"#define pc_pi {pi}",
+            f"#define pc_twopi {tau}",
         ]
 
-        for pc, qca in self.pc.items():
+        for pc, qca in sorted(self.pc.items()):
             callname = qca.label.translate(self._transtable)
             noncomment = "#define pc_{} {}".format(callname, qca.data)
             text.append("{:80}  /*- {} [{}] {} -*/".format(noncomment, qca.label, qca.units, qca.comment))

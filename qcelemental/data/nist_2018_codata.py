@@ -4,7 +4,7 @@ Title: NIST-CODATA Internationally Recommended 2018 Values of the Fundamental Ph
 Date: 2019-05-20
 DOI: 
 URL: https://physics.nist.gov/cuu/Constants/Table/allascii.txt
-Access Date: 2020-01-16 16:58:23.847439 UTC
+Access Date: 2020-01-16 23:03:16.193457 UTC
 
 File Authors: QCElemental Authors
 """
@@ -16,7 +16,7 @@ nist_2018_codata = {
     "date": "2019-05-20",
     "doi": "",
     "url": "https://physics.nist.gov/cuu/Constants/Table/allascii.txt",
-    "access_data": "2020-01-16 16:58:23.847439",
+    "access_data": "2020-01-16 23:03:16.193457",
     "constants": {
         "alpha particle-electron mass ratio": {
             "quantity": "alpha particle-electron mass ratio",
@@ -50,7 +50,7 @@ nist_2018_codata = {
         },
         "alpha particle molar mass": {
             "quantity": "alpha particle molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "4.0015061777e-3",
             "uncertainty": "0.000 000 0012 e-3",
         },
@@ -110,7 +110,7 @@ nist_2018_codata = {
         },
         "atomic mass unit-inverse meter relationship": {
             "quantity": "atomic mass unit-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "7.5130066104e14",
             "uncertainty": "0.000 000 0023 e14",
         },
@@ -134,13 +134,13 @@ nist_2018_codata = {
         },
         "atomic unit of 1st hyperpolarizability": {
             "quantity": "atomic unit of 1st hyperpolarizability",
-            "unit": "C^3 m^3 J^-2",
+            "unit": "C^3 m^3 J^{-2}",
             "value": "3.2063613061e-53",
             "uncertainty": "0.000 000 0015 e-53",
         },
         "atomic unit of 2nd hyperpolarizability": {
             "quantity": "atomic unit of 2nd hyperpolarizability",
-            "unit": "C^4 m^4 J^-3",
+            "unit": "C^4 m^4 J^{-3}",
             "value": "6.2353799905e-65",
             "uncertainty": "0.000 000 0038 e-65",
         },
@@ -158,7 +158,7 @@ nist_2018_codata = {
         },
         "atomic unit of charge density": {
             "quantity": "atomic unit of charge density",
-            "unit": "C m^-3",
+            "unit": "C m^{-3}",
             "value": "1.08120238457e12",
             "uncertainty": "0.000 000 000 49 e12",
         },
@@ -176,19 +176,19 @@ nist_2018_codata = {
         },
         "atomic unit of electric field": {
             "quantity": "atomic unit of electric field",
-            "unit": "V m^-1",
+            "unit": "V m^{-1}",
             "value": "5.14220674763e11",
             "uncertainty": "0.000 000 000 78 e11",
         },
         "atomic unit of electric field gradient": {
             "quantity": "atomic unit of electric field gradient",
-            "unit": "V m^-2",
+            "unit": "V m^{-2}",
             "value": "9.7173624292e21",
             "uncertainty": "0.000 000 0029 e21",
         },
         "atomic unit of electric polarizability": {
             "quantity": "atomic unit of electric polarizability",
-            "unit": "C^2 m^2 J^-1",
+            "unit": "C^2 m^2 J^{-1}",
             "value": "1.64877727436e-41",
             "uncertainty": "0.000 000 000 50 e-41",
         },
@@ -224,7 +224,7 @@ nist_2018_codata = {
         },
         "atomic unit of mag. dipole mom.": {
             "quantity": "atomic unit of mag. dipole mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "1.85480201566e-23",
             "uncertainty": "0.000 000 000 56 e-23",
         },
@@ -236,7 +236,7 @@ nist_2018_codata = {
         },
         "atomic unit of magnetizability": {
             "quantity": "atomic unit of magnetizability",
-            "unit": "J T^-2",
+            "unit": "J T^{-2}",
             "value": "7.8910366008e-29",
             "uncertainty": "0.000 000 0048 e-29",
         },
@@ -248,13 +248,13 @@ nist_2018_codata = {
         },
         "atomic unit of momentum": {
             "quantity": "atomic unit of momentum",
-            "unit": "kg m s^-1",
+            "unit": "kg m s^{-1}",
             "value": "1.99285191410e-24",
             "uncertainty": "0.000 000 000 30 e-24",
         },
         "atomic unit of permittivity": {
             "quantity": "atomic unit of permittivity",
-            "unit": "F m^-1",
+            "unit": "F m^{-1}",
             "value": "1.11265005545e-10",
             "uncertainty": "0.000 000 000 17 e-10",
         },
@@ -266,43 +266,43 @@ nist_2018_codata = {
         },
         "atomic unit of velocity": {
             "quantity": "atomic unit of velocity",
-            "unit": "m s^-1",
+            "unit": "m s^{-1}",
             "value": "2.18769126364e6",
             "uncertainty": "0.000 000 000 33 e6",
         },
         "avogadro constant": {
             "quantity": "Avogadro constant",
-            "unit": "mol^-1",
+            "unit": "mol^{-1}",
             "value": "6.02214076e23",
             "uncertainty": "(exact)",
         },
         "bohr magneton": {
             "quantity": "Bohr magneton",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "9.2740100783e-24",
             "uncertainty": "0.000 000 0028 e-24",
         },
         "bohr magneton in ev/t": {
             "quantity": "Bohr magneton in eV/T",
-            "unit": "eV T^-1",
+            "unit": "eV T^{-1}",
             "value": "5.7883818060e-5",
             "uncertainty": "0.000 000 0017 e-5",
         },
         "bohr magneton in hz/t": {
             "quantity": "Bohr magneton in Hz/T",
-            "unit": "Hz T^-1",
+            "unit": "Hz T^{-1}",
             "value": "1.39962449361e10",
             "uncertainty": "0.000 000 000 42 e10",
         },
         "bohr magneton in inverse meter per tesla": {
             "quantity": "Bohr magneton in inverse meter per tesla",
-            "unit": "m^-1 T^-1",
+            "unit": "m^{-1} T^{-1}",
             "value": "46.686447783",
             "uncertainty": "0.000 000 014",
         },
         "bohr magneton in k/t": {
             "quantity": "Bohr magneton in K/T",
-            "unit": "K T^-1",
+            "unit": "K T^{-1}",
             "value": "0.67171381563",
             "uncertainty": "0.000 000 000 20",
         },
@@ -314,25 +314,25 @@ nist_2018_codata = {
         },
         "boltzmann constant": {
             "quantity": "Boltzmann constant",
-            "unit": "J K^-1",
+            "unit": "J K^{-1}",
             "value": "1.380649e-23",
             "uncertainty": "(exact)",
         },
         "boltzmann constant in ev/k": {
             "quantity": "Boltzmann constant in eV/K",
-            "unit": "eV K^-1",
+            "unit": "eV K^{-1}",
             "value": "8.617333262e-5",
             "uncertainty": "(exact)",
         },
         "boltzmann constant in hz/k": {
             "quantity": "Boltzmann constant in Hz/K",
-            "unit": "Hz K^-1",
+            "unit": "Hz K^{-1}",
             "value": "2.083661912e10",
             "uncertainty": "(exact)",
         },
         "boltzmann constant in inverse meter per kelvin": {
             "quantity": "Boltzmann constant in inverse meter per kelvin",
-            "unit": "m^-1 K^-1",
+            "unit": "m^{-1} K^{-1}",
             "value": "69.50348004",
             "uncertainty": "(exact)",
         },
@@ -386,7 +386,7 @@ nist_2018_codata = {
         },
         "conventional value of josephson constant": {
             "quantity": "conventional value of Josephson constant",
-            "unit": "Hz V^-1",
+            "unit": "Hz V^{-1}",
             "value": "483597.9e9",
             "uncertainty": "(exact)",
         },
@@ -440,7 +440,7 @@ nist_2018_codata = {
         },
         "deuteron mag. mom.": {
             "quantity": "deuteron mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "4.330735094e-27",
             "uncertainty": "0.000 000 011 e-27",
         },
@@ -482,7 +482,7 @@ nist_2018_codata = {
         },
         "deuteron molar mass": {
             "quantity": "deuteron molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "2.01355321205e-3",
             "uncertainty": "0.000 000 000 61 e-3",
         },
@@ -518,7 +518,7 @@ nist_2018_codata = {
         },
         "electron charge to mass quotient": {
             "quantity": "electron charge to mass quotient",
-            "unit": "C kg^-1",
+            "unit": "C kg^{-1}",
             "value": "-1.75882001076e11",
             "uncertainty": "0.000 000 000 53 e11",
         },
@@ -542,13 +542,13 @@ nist_2018_codata = {
         },
         "electron gyromag. ratio": {
             "quantity": "electron gyromag. ratio",
-            "unit": "s^-1 T^-1",
+            "unit": "s^{-1} T^{-1}",
             "value": "1.76085963023e11",
             "uncertainty": "0.000 000 000 53 e11",
         },
         "electron gyromag. ratio in mhz/t": {
             "quantity": "electron gyromag. ratio in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "28024.9514242",
             "uncertainty": "0.000 0085",
         },
@@ -560,7 +560,7 @@ nist_2018_codata = {
         },
         "electron mag. mom.": {
             "quantity": "electron mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "-9.2847647043e-24",
             "uncertainty": "0.000 000 0028 e-24",
         },
@@ -608,7 +608,7 @@ nist_2018_codata = {
         },
         "electron molar mass": {
             "quantity": "electron molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "5.4857990888e-7",
             "uncertainty": "0.000 000 0017 e-7",
         },
@@ -710,7 +710,7 @@ nist_2018_codata = {
         },
         "electron volt-inverse meter relationship": {
             "quantity": "electron volt-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "8.065543937e5",
             "uncertainty": "(exact)",
         },
@@ -740,19 +740,19 @@ nist_2018_codata = {
         },
         "elementary charge over h-bar": {
             "quantity": "elementary charge over h-bar",
-            "unit": "A J^-1",
+            "unit": "A J^{-1}",
             "value": "1.519267447e15",
             "uncertainty": "(exact)",
         },
         "faraday constant": {
             "quantity": "Faraday constant",
-            "unit": "C mol^-1",
+            "unit": "C mol^{-1}",
             "value": "96485.33212",
             "uncertainty": "(exact)",
         },
         "fermi coupling constant": {
             "quantity": "Fermi coupling constant",
-            "unit": "GeV^-2",
+            "unit": "GeV^{-2}",
             "value": "1.1663787e-5",
             "uncertainty": "0.000 0006 e-5",
         },
@@ -770,7 +770,7 @@ nist_2018_codata = {
         },
         "first radiation constant for spectral radiance": {
             "quantity": "first radiation constant for spectral radiance",
-            "unit": "W m^2 sr^-1",
+            "unit": "W m^2 sr^{-1}",
             "value": "1.191042972e-16",
             "uncertainty": "(exact)",
         },
@@ -806,7 +806,7 @@ nist_2018_codata = {
         },
         "hartree-inverse meter relationship": {
             "quantity": "hartree-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "2.1947463136320e7",
             "uncertainty": "0.000 000 000 0043 e7",
         },
@@ -842,7 +842,7 @@ nist_2018_codata = {
         },
         "helion mag. mom.": {
             "quantity": "helion mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "-1.074617532e-26",
             "uncertainty": "0.000 000 013 e-26",
         },
@@ -884,7 +884,7 @@ nist_2018_codata = {
         },
         "helion molar mass": {
             "quantity": "helion molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "3.01493224613e-3",
             "uncertainty": "0.000 000 000 91 e-3",
         },
@@ -926,7 +926,7 @@ nist_2018_codata = {
         },
         "hertz-inverse meter relationship": {
             "quantity": "hertz-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "3.335640951e-9",
             "uncertainty": "(exact)",
         },
@@ -1010,7 +1010,7 @@ nist_2018_codata = {
         },
         "josephson constant": {
             "quantity": "Josephson constant",
-            "unit": "Hz V^-1",
+            "unit": "Hz V^{-1}",
             "value": "483597.8484e9",
             "uncertainty": "(exact)",
         },
@@ -1040,7 +1040,7 @@ nist_2018_codata = {
         },
         "joule-inverse meter relationship": {
             "quantity": "joule-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "5.034116567e24",
             "uncertainty": "(exact)",
         },
@@ -1082,7 +1082,7 @@ nist_2018_codata = {
         },
         "kelvin-inverse meter relationship": {
             "quantity": "kelvin-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "69.50348004",
             "uncertainty": "(exact)",
         },
@@ -1124,7 +1124,7 @@ nist_2018_codata = {
         },
         "kilogram-inverse meter relationship": {
             "quantity": "kilogram-inverse meter relationship",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "4.524438335e41",
             "uncertainty": "(exact)",
         },
@@ -1154,19 +1154,19 @@ nist_2018_codata = {
         },
         "loschmidt constant (273.15 k, 100 kpa)": {
             "quantity": "Loschmidt constant (273.15 K, 100 kPa)",
-            "unit": "m^-3",
+            "unit": "m^{-3}",
             "value": "2.651645804e25",
             "uncertainty": "(exact)",
         },
         "loschmidt constant (273.15 k, 101.325 kpa)": {
             "quantity": "Loschmidt constant (273.15 K, 101.325 kPa)",
-            "unit": "m^-3",
+            "unit": "m^{-3}",
             "value": "2.686780111e25",
             "uncertainty": "(exact)",
         },
         "luminous efficacy": {
             "quantity": "luminous efficacy",
-            "unit": "lm W^-1",
+            "unit": "lm W^{-1}",
             "value": "683",
             "uncertainty": "(exact)",
         },
@@ -1178,43 +1178,43 @@ nist_2018_codata = {
         },
         "molar gas constant": {
             "quantity": "molar gas constant",
-            "unit": "J mol^-1 K^-1",
+            "unit": "J mol^{-1} K^{-1}",
             "value": "8.314462618",
             "uncertainty": "(exact)",
         },
         "molar mass constant": {
             "quantity": "molar mass constant",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "0.99999999965e-3",
             "uncertainty": "0.000 000 000 30 e-3",
         },
         "molar mass of carbon-12": {
             "quantity": "molar mass of carbon-12",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "11.9999999958e-3",
             "uncertainty": "0.000 000 0036 e-3",
         },
         "molar planck constant": {
             "quantity": "molar Planck constant",
-            "unit": "J Hz^-1 mol^-1",
+            "unit": "J Hz^{-1} mol^{-1}",
             "value": "3.990312712e-10",
             "uncertainty": "(exact)",
         },
         "molar volume of ideal gas (273.15 k, 100 kpa)": {
             "quantity": "molar volume of ideal gas (273.15 K, 100 kPa)",
-            "unit": "m^3 mol^-1",
+            "unit": "m^3 mol^{-1}",
             "value": "22.71095464e-3",
             "uncertainty": "(exact)",
         },
         "molar volume of ideal gas (273.15 k, 101.325 kpa)": {
             "quantity": "molar volume of ideal gas (273.15 K, 101.325 kPa)",
-            "unit": "m^3 mol^-1",
+            "unit": "m^3 mol^{-1}",
             "value": "22.41396954e-3",
             "uncertainty": "(exact)",
         },
         "molar volume of silicon": {
             "quantity": "molar volume of silicon",
-            "unit": "m^3 mol^-1",
+            "unit": "m^3 mol^{-1}",
             "value": "1.205883199e-5",
             "uncertainty": "0.000 000 060 e-5",
         },
@@ -1244,7 +1244,7 @@ nist_2018_codata = {
         },
         "muon mag. mom.": {
             "quantity": "muon mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "-4.49044830e-26",
             "uncertainty": "0.000 000 10 e-26",
         },
@@ -1292,7 +1292,7 @@ nist_2018_codata = {
         },
         "muon molar mass": {
             "quantity": "muon molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "1.134289259e-4",
             "uncertainty": "0.000 000 025 e-4",
         },
@@ -1358,7 +1358,7 @@ nist_2018_codata = {
         },
         "natural unit of momentum": {
             "quantity": "natural unit of momentum",
-            "unit": "kg m s^-1",
+            "unit": "kg m s^{-1}",
             "value": "2.73092453075e-22",
             "uncertainty": "0.000 000 000 82 e-22",
         },
@@ -1376,7 +1376,7 @@ nist_2018_codata = {
         },
         "natural unit of velocity": {
             "quantity": "natural unit of velocity",
-            "unit": "m s^-1",
+            "unit": "m s^{-1}",
             "value": "299792458",
             "uncertainty": "(exact)",
         },
@@ -1406,19 +1406,19 @@ nist_2018_codata = {
         },
         "neutron gyromag. ratio": {
             "quantity": "neutron gyromag. ratio",
-            "unit": "s^-1 T^-1",
+            "unit": "s^{-1} T^{-1}",
             "value": "1.83247171e8",
             "uncertainty": "0.000 000 43 e8",
         },
         "neutron gyromag. ratio in mhz/t": {
             "quantity": "neutron gyromag. ratio in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "29.1646931",
             "uncertainty": "0.000 0069",
         },
         "neutron mag. mom.": {
             "quantity": "neutron mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "-9.6623651e-27",
             "uncertainty": "0.000 0023 e-27",
         },
@@ -1460,7 +1460,7 @@ nist_2018_codata = {
         },
         "neutron molar mass": {
             "quantity": "neutron molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "1.00866491560e-3",
             "uncertainty": "0.000 000 000 57 e-3",
         },
@@ -1526,55 +1526,55 @@ nist_2018_codata = {
         },
         "newtonian constant of gravitation": {
             "quantity": "Newtonian constant of gravitation",
-            "unit": "m^3 kg^-1 s^-2",
+            "unit": "m^3 kg^{-1} s^{-2}",
             "value": "6.67430e-11",
             "uncertainty": "0.000 15 e-11",
         },
         "newtonian constant of gravitation over h-bar c": {
             "quantity": "Newtonian constant of gravitation over h-bar c",
-            "unit": "(GeV/c^2)^-2",
+            "unit": "(GeV/c^2)^{-2}",
             "value": "6.70883e-39",
             "uncertainty": "0.000 15 e-39",
         },
         "nuclear magneton": {
             "quantity": "nuclear magneton",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "5.0507837461e-27",
             "uncertainty": "0.000 000 0015 e-27",
         },
         "nuclear magneton in ev/t": {
             "quantity": "nuclear magneton in eV/T",
-            "unit": "eV T^-1",
+            "unit": "eV T^{-1}",
             "value": "3.15245125844e-8",
             "uncertainty": "0.000 000 000 96 e-8",
         },
         "nuclear magneton in inverse meter per tesla": {
             "quantity": "nuclear magneton in inverse meter per tesla",
-            "unit": "m^-1 T^-1",
+            "unit": "m^{-1} T^{-1}",
             "value": "2.54262341353e-2",
             "uncertainty": "0.000 000 000 78 e-2",
         },
         "nuclear magneton in k/t": {
             "quantity": "nuclear magneton in K/T",
-            "unit": "K T^-1",
+            "unit": "K T^{-1}",
             "value": "3.6582677756e-4",
             "uncertainty": "0.000 000 0011 e-4",
         },
         "nuclear magneton in mhz/t": {
             "quantity": "nuclear magneton in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "7.6225932291",
             "uncertainty": "0.000 000 0023",
         },
         "planck constant": {
             "quantity": "Planck constant",
-            "unit": "J Hz^-1",
+            "unit": "J Hz^{-1}",
             "value": "6.62607015e-34",
             "uncertainty": "(exact)",
         },
         "planck constant in ev/hz": {
             "quantity": "Planck constant in eV/Hz",
-            "unit": "eV Hz^-1",
+            "unit": "eV Hz^{-1}",
             "value": "4.135667696e-15",
             "uncertainty": "(exact)",
         },
@@ -1610,7 +1610,7 @@ nist_2018_codata = {
         },
         "proton charge to mass quotient": {
             "quantity": "proton charge to mass quotient",
-            "unit": "C kg^-1",
+            "unit": "C kg^{-1}",
             "value": "9.5788331560e7",
             "uncertainty": "0.000 000 0029 e7",
         },
@@ -1634,19 +1634,19 @@ nist_2018_codata = {
         },
         "proton gyromag. ratio": {
             "quantity": "proton gyromag. ratio",
-            "unit": "s^-1 T^-1",
+            "unit": "s^{-1} T^{-1}",
             "value": "2.6752218744e8",
             "uncertainty": "0.000 000 0011 e8",
         },
         "proton gyromag. ratio in mhz/t": {
             "quantity": "proton gyromag. ratio in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "42.577478518",
             "uncertainty": "0.000 000 018",
         },
         "proton mag. mom.": {
             "quantity": "proton mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "1.41060679736e-26",
             "uncertainty": "0.000 000 000 60 e-26",
         },
@@ -1694,7 +1694,7 @@ nist_2018_codata = {
         },
         "proton molar mass": {
             "quantity": "proton molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "1.00727646627e-3",
             "uncertainty": "0.000 000 000 31 e-3",
         },
@@ -1736,13 +1736,13 @@ nist_2018_codata = {
         },
         "quantum of circulation": {
             "quantity": "quantum of circulation",
-            "unit": "m^2 s^-1",
+            "unit": "m^2 s^{-1}",
             "value": "3.6369475516e-4",
             "uncertainty": "0.000 000 0011 e-4",
         },
         "quantum of circulation times 2": {
             "quantity": "quantum of circulation times 2",
-            "unit": "m^2 s^-1",
+            "unit": "m^2 s^{-1}",
             "value": "7.2738951032e-4",
             "uncertainty": "0.000 000 0022 e-4",
         },
@@ -1796,7 +1796,7 @@ nist_2018_codata = {
         },
         "rydberg constant": {
             "quantity": "Rydberg constant",
-            "unit": "m^-1",
+            "unit": "m^{-1}",
             "value": "10973731.568160",
             "uncertainty": "0.000 021",
         },
@@ -1838,19 +1838,19 @@ nist_2018_codata = {
         },
         "shielded helion gyromag. ratio": {
             "quantity": "shielded helion gyromag. ratio",
-            "unit": "s^-1 T^-1",
+            "unit": "s^{-1} T^{-1}",
             "value": "2.037894569e8",
             "uncertainty": "0.000 000 024 e8",
         },
         "shielded helion gyromag. ratio in mhz/t": {
             "quantity": "shielded helion gyromag. ratio in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "32.43409942",
             "uncertainty": "0.000 000 38",
         },
         "shielded helion mag. mom.": {
             "quantity": "shielded helion mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "-1.074553090e-26",
             "uncertainty": "0.000 000 013 e-26",
         },
@@ -1880,19 +1880,19 @@ nist_2018_codata = {
         },
         "shielded proton gyromag. ratio": {
             "quantity": "shielded proton gyromag. ratio",
-            "unit": "s^-1 T^-1",
+            "unit": "s^{-1} T^{-1}",
             "value": "2.675153151e8",
             "uncertainty": "0.000 000 029 e8",
         },
         "shielded proton gyromag. ratio in mhz/t": {
             "quantity": "shielded proton gyromag. ratio in MHz/T",
-            "unit": "MHz T^-1",
+            "unit": "MHz T^{-1}",
             "value": "42.57638474",
             "uncertainty": "0.000 000 46",
         },
         "shielded proton mag. mom.": {
             "quantity": "shielded proton mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "1.410570560e-26",
             "uncertainty": "0.000 000 015 e-26",
         },
@@ -1922,13 +1922,13 @@ nist_2018_codata = {
         },
         "speed of light in vacuum": {
             "quantity": "speed of light in vacuum",
-            "unit": "m s^-1",
+            "unit": "m s^{-1}",
             "value": "299792458",
             "uncertainty": "(exact)",
         },
         "standard acceleration of gravity": {
             "quantity": "standard acceleration of gravity",
-            "unit": "m s^-2",
+            "unit": "m s^{-2}",
             "value": "9.80665",
             "uncertainty": "(exact)",
         },
@@ -1946,7 +1946,7 @@ nist_2018_codata = {
         },
         "stefan-boltzmann constant": {
             "quantity": "Stefan-Boltzmann constant",
-            "unit": "W m^-2 K^-4",
+            "unit": "W m^{-2} K^{-4}",
             "value": "5.670374419e-8",
             "uncertainty": "(exact)",
         },
@@ -1988,7 +1988,7 @@ nist_2018_codata = {
         },
         "tau molar mass": {
             "quantity": "tau molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "1.90754e-3",
             "uncertainty": "0.000 13 e-3",
         },
@@ -2030,7 +2030,7 @@ nist_2018_codata = {
         },
         "triton mag. mom.": {
             "quantity": "triton mag. mom.",
-            "unit": "J T^-1",
+            "unit": "J T^{-1}",
             "value": "1.5046095202e-26",
             "uncertainty": "0.000 000 0030 e-26",
         },
@@ -2072,7 +2072,7 @@ nist_2018_codata = {
         },
         "triton molar mass": {
             "quantity": "triton molar mass",
-            "unit": "kg mol^-1",
+            "unit": "kg mol^{-1}",
             "value": "3.01550071517e-3",
             "uncertainty": "0.000 000 000 92 e-3",
         },
@@ -2102,13 +2102,13 @@ nist_2018_codata = {
         },
         "vacuum electric permittivity": {
             "quantity": "vacuum electric permittivity",
-            "unit": "F m^-1",
+            "unit": "F m^{-1}",
             "value": "8.8541878128e-12",
             "uncertainty": "0.000 000 0013 e-12",
         },
         "vacuum mag. permeability": {
             "quantity": "vacuum mag. permeability",
-            "unit": "N A^-2",
+            "unit": "N A^{-2}",
             "value": "1.25663706212e-6",
             "uncertainty": "0.000 000 000 19 e-6",
         },
@@ -2126,7 +2126,7 @@ nist_2018_codata = {
         },
         "wien frequency displacement law constant": {
             "quantity": "Wien frequency displacement law constant",
-            "unit": "Hz K^-1",
+            "unit": "Hz K^{-1}",
             "value": "5.878925757e10",
             "uncertainty": "(exact)",
         },

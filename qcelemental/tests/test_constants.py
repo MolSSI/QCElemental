@@ -99,7 +99,7 @@ def test_codata2022():
 
 
 def test_codata_comparison():
-    old = qcelemental.constants
+    old = qcelemental.PhysicalConstantsContext("CODATA2014")
     new = qcelemental.PhysicalConstantsContext("CODATA2018")
 
     old.run_internal_comparison(new)
