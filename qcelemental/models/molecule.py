@@ -145,7 +145,7 @@ class Molecule(ProtoModel):
     molecular_multiplicity: int = Field(1, description="The total multiplicity of this Molecule.")  # type: ignore
 
     # Atom data
-    masses: Optional[Array[float]] = Field(  # type: ignore
+    masses_: Optional[Array[float]] = Field(  # type: ignore
         None,
         description="An ordered 1-D array-like object of atomic masses [u] of shape (nat,). Index order "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. If "
@@ -153,7 +153,7 @@ class Molecule(ProtoModel):
         "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
         "standard masses to infer from the same index in the ``symbols`` field.",
     )
-    real: Optional[Array[bool]] = Field(  # type: ignore
+    real_: Optional[Array[bool]] = Field(  # type: ignore
         None,
         description="An ordered 1-D array-like object of shape (nat,) indicating if each atom is real (``True``) or "
         "ghost/virtual (``False``). Index "
@@ -161,7 +161,7 @@ class Molecule(ProtoModel):
         "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
         "If this is provided, the reality or ghostality of every atom must be specified.",
     )
-    atom_labels: Optional[Array[str]] = Field(  # type: ignore
+    atom_labels_: Optional[Array[str]] = Field(  # type: ignore
         None,
         description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
@@ -173,7 +173,7 @@ class Molecule(ProtoModel):
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
         "Values are inferred from the ``symbols`` list if not explicitly set.",
     )
-    mass_numbers: Optional[Array[np.int16]] = Field(  # type: ignore
+    mass_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
@@ -181,13 +181,13 @@ class Molecule(ProtoModel):
     )
 
     # Fragment and connection data
-    connectivity: Optional[List[Tuple[int, int, float]]] = Field(  # type: ignore
+    connectivity_: Optional[List[Tuple[int, int, float]]] = Field(  # type: ignore
         None,
         description="The connectivity information between each atom in the ``symbols`` array. Each entry in this "
         "list is a Tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``.",
     )
-    fragments: Optional[List[Array[np.int32]]] = Field(  # type: ignore
+    fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
         description="An indication of which sets of atoms are fragments within the Molecule. This is a list of shape "
         "(nfr) of 1-D array-like objects of arbitrary length. Each entry in the list indicates a new "
@@ -197,13 +197,13 @@ class Molecule(ProtoModel):
         "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
         "per-atom settings like ``symbols`` and ``real``.",
     )
-    fragment_charges: Optional[List[float]] = Field(  # type: ignore
+    fragment_charges_: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The total charge of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of rules "
         "if not provided (and ``fragments`` are specified).",
     )
-    fragment_multiplicities: Optional[List[int]] = Field(  # type: ignore
+    fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of "
@@ -248,7 +248,17 @@ class Molecule(ProtoModel):
             ("formula", self.get_molecular_formula()),
             ("hash", self.get_hash()[:7]),
         ]
-        fields = {"atomic_numbers_": "atomic_numbers"}
+        fields = {
+            "masses_": "masses",
+            "real_": "real",
+            "atom_labels_": "atom_labels",
+            "atomic_numbers_": "atomic_numbers",
+            "mass_numbers_": "mass_numbers",
+            "connectivity_": "connectivity",
+            "fragments_": "fragments",
+            "fragment_charges_": "fragment_charges",
+            "fragment_multiplicities_": "fragment_multiplicities",
+        }
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -280,41 +290,16 @@ class Molecule(ProtoModel):
         super().__init__(**kwargs)
 
         # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected
-        # All attributes set bellow are equivalent to the default set.
+        # All attributes set below are equivalent to the default set.
         values = self.__dict__
 
-        natoms = values["geometry"].shape[0]
         if validate:
             values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
-
-        if values["masses"] is None:  # Setup masses before fixing the orientation
-            values["masses"] = np.array([periodictable.to_mass(x) for x in values["symbols"]])
-
-        if values["real"] is None:
-            values["real"] = np.ones(natoms, dtype=bool)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
         elif validate:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
-
-        # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-        if values["fragments"] is None:
-            values["fragments"] = [np.arange(natoms, dtype=np.int32)]
-            values["fragment_charges"] = [values["molecular_charge"]]
-            values["fragment_multiplicities"] = [values["molecular_multiplicity"]]
-        else:
-            if values["fragment_charges"] is None:
-                if np.isclose(values["molecular_charge"], 0.0):
-                    values["fragment_charges"] = [0 for _ in values["fragments"]]
-                else:
-                    raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
-
-            if values["fragment_multiplicities"] is None:
-                if values["molecular_multiplicity"] == 1:
-                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
-                else:
-                    raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
 
     @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
@@ -325,14 +310,14 @@ class Molecule(ProtoModel):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
 
-    @validator("masses", "real")
+    @validator("masses_", "real_")
     def _must_be_n(cls, v, values, **kwargs):
         n = len(values["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
-    @validator("real")
+    @validator("real_")
     def _populate_real(cls, v, values, **kwargs):
         # Can't use geometry here since its already been validated and not in values
         n = len(values["symbols"])
@@ -340,19 +325,17 @@ class Molecule(ProtoModel):
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator("fragment_charges", "fragment_multiplicities")
+    @validator("fragment_charges_", "fragment_multiplicities_")
     def _must_be_n_frag(cls, v, values, **kwargs):
-        if "fragments" in values:
-            n = len(values["fragments"])
+        if "fragments_" in values and values["fragments_"] is not None:
+            n = len(values["fragments_"])
             if len(v) != n:
                 raise ValueError(
-                    "Fragment Charges and Fragment Multiplicities" " must be same number of entries as Fragments"
+                    "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
                 )
-        else:
-            raise ValueError("Cannot have Fragment Charges or Fragment Multiplicities " "without Fragments")
         return v
 
-    @validator("connectivity", each_item=True)
+    @validator("connectivity_", each_item=True)
     def _min_zero(cls, v):
         if v < 0:
             raise ValueError("Connectivity entries must be greater than 0")
@@ -374,11 +357,66 @@ class Molecule(ProtoModel):
         ]
 
     @property
+    def masses(self) -> Array[float]:
+        masses = self.__dict__.get("masses_")
+        if masses is None:
+            masses = np.array([periodictable.to_mass(x) for x in self.symbols])
+        return masses
+
+    @property
+    def real(self) -> Array[bool]:
+        real = self.__dict__.get("real_")
+        if real is None:
+            real = np.array([True for x in self.symbols])
+        return real
+
+    @property
+    def atom_labels(self) -> Array[str]:
+        atom_labels = self.__dict__.get("atom_labels_")
+        if atom_labels is None:
+            atom_labels = np.array(["" for x in self.symbols])
+        return atom_labels
+
+    @property
     def atomic_numbers(self) -> Array[np.int16]:
         atomic_numbers = self.__dict__.get("atomic_numbers_")
         if atomic_numbers is None:
             atomic_numbers = np.array([periodictable.to_Z(x) for x in self.symbols])
         return atomic_numbers
+
+    @property
+    def mass_numbers(self) -> Array[np.int16]:
+        mass_numbers = self.__dict__.get("mass_numbers_")
+        if mass_numbers is None:
+            mass_numbers = np.array([periodictable.to_A(x) for x in self.symbols])
+        return mass_numbers
+
+    @property
+    def connectivity(self) -> List[Tuple[int, int, float]]:
+        connectivity = self.__dict__.get("connectivity_")
+        # default is None, not []
+        return connectivity
+
+    @property
+    def fragments(self) -> List[Array[np.int32]]:
+        fragments = self.__dict__.get("fragments_")
+        if fragments is None:
+            fragments = [np.arange(len(self.symbols), dtype=np.int32)]
+        return fragments
+
+    @property
+    def fragment_charges(self) -> List[float]:
+        fragment_charges = self.__dict__.get("fragment_charges_")
+        if fragment_charges is None:
+            fragment_charges = [self.molecular_charge]
+        return fragment_charges
+
+    @property
+    def fragment_multiplicities(self) -> List[int]:
+        fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
+        if fragment_multiplicities is None:
+            fragment_multiplicities = [self.molecular_multiplicity]
+        return fragment_multiplicities
 
     ### Non-Pydantic API functions
 
@@ -464,10 +502,6 @@ class Molecule(ProtoModel):
     def dict(self, *args, **kwargs):
         kwargs.setdefault("by_alias", True)
         return super().dict(*args, **kwargs)
-
-    def json(self, *args, **kwargs):
-        kwargs.setdefault("by_alias", True)
-        return super().json(*args, **kwargs)
 
     def pretty_print(self):
         """Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
@@ -675,11 +709,9 @@ class Molecule(ProtoModel):
         m = hashlib.sha1()
         concat = ""
 
-        tmp_dict = super().dict(exclude_unset=False)
-
         np.set_printoptions(precision=16)
         for field in self.hash_fields:
-            data = tmp_dict[field]
+            data = getattr(self, field)
             if field == "geometry":
                 data = float_prep(data, GEOMETRY_NOISE)
             elif field == "fragment_charges":
@@ -780,8 +812,9 @@ class Molecule(ProtoModel):
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
             mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
-            input_dict = to_schema(mol_dict["qm"], dtype=2)
-            validate = True
+            input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
+            input_dict = _filter_defaults(input_dict)
+            input_dict["validated"] = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -790,8 +823,9 @@ class Molecule(ProtoModel):
                 "units": kwargs.pop("units", "Angstrom"),
                 "fragment_separators": kwargs.pop("frags", []),
             }
-            input_dict = to_schema(from_arrays(**data), dtype=2)
-            validate = True
+            input_dict = to_schema(from_arrays(**data), dtype=2, np_out=True)
+            input_dict = _filter_defaults(input_dict)
+            input_dict["validated"] = True
         elif dtype == "msgpack":
             assert isinstance(data, bytes)
             input_dict = msgpackext_loads(data)
@@ -811,7 +845,8 @@ class Molecule(ProtoModel):
         kwarg_keys = set(kwargs.keys())
         if len(charge_spin_opts & kwarg_keys) > 0:
             for key in charge_spin_opts - kwarg_keys:
-                input_dict[key] = None
+                input_dict.pop(key, None)
+            input_dict.pop("validated", None)
 
         return cls(orient=orient, validate=validate, **input_dict)
 
@@ -1310,17 +1345,28 @@ class Molecule(ProtoModel):
 
 
 def _filter_defaults(dicary):
-    default_mass = np.array([periodictable.to_mass(z) for z in dicary["atomic_numbers"]])
+    nat = len(dicary["symbols"])
+    default_mass = np.array([periodictable.to_mass(e) for e in dicary["symbols"]])
+
+    dicary.pop("atomic_numbers")
+
     if np.allclose(default_mass, dicary["masses"]):
         dicary.pop("mass_numbers")
-        dicary.pop("atomic_numbers")
         dicary.pop("masses")
 
     if all(dicary["real"]):
         dicary.pop("real")
 
-    if dicary["atom_labels"].tolist() == len(dicary["symbols"]) * [""]:
+    if dicary["atom_labels"].tolist() == nat * [""]:
         dicary.pop("atom_labels")
+
+    if dicary.get("connectivity", "N/A") is None:
+        dicary.pop("connectivity")
+
+    if dicary["fragments"] == [list(np.arange(nat))]:
+        dicary.pop("fragments")
+        dicary.pop("fragment_charges")
+        dicary.pop("fragment_multiplicities")
 
     return dicary
 

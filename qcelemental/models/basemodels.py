@@ -124,7 +124,7 @@ class ProtoModel(BaseModel):
         *,
         include: Optional[Set[str]] = None,
         exclude: Optional[Set[str]] = None,
-        exclude_unset: bool = False,
+        exclude_unset: Optional[bool] = None,
     ) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
@@ -136,7 +136,7 @@ class ProtoModel(BaseModel):
             Fields to be included in the serialization.
         exclude : Optional[Set[str]], optional
             Fields to be excluded in the serialization.
-        exclude_unset : bool, optional
+        exclude_unset : Optional[bool], optional
             If True, skips fields that have default values provided.
 
         Returns
@@ -144,9 +144,22 @@ class ProtoModel(BaseModel):
         Union[bytes, str]
             The serialized model.
         """
-        data = self.dict(include=include, exclude=exclude, exclude_unset=exclude_unset)
+
+        kwargs = {}
+        if include:
+            kwargs["include"] = include
+        if exclude:
+            kwargs["exclude"] = exclude
+        if exclude_unset:
+            kwargs["exclude_unset"] = exclude_unset
+
+        data = self.dict(**kwargs)
 
         return serialize(data, encoding=encoding)
+
+    def json(self, **kwargs):
+        # Alias JSON here from BaseModel to reflect dict changes
+        return self.serialize("json", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
         """Compares the current object to the provided object recursively.
