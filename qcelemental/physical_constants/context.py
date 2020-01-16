@@ -103,6 +103,39 @@ class PhysicalConstantsContext:
             "calorie-joule relationship", "J", Decimal("4.184"), comment="uncertainty=(exact)"
         )
 
+        rename_2018_from_2014 = {
+            "atomic unit of momentum": "atomic unit of mom.um",
+            "reduced planck constant": "planck constant over 2 pi",
+            "reduced planck constant in ev s": "planck constant over 2 pi in ev s",
+            "reduced planck constant times c in mev fm": "planck constant over 2 pi times c in mev fm",
+            "natural unit of momentum": "natural unit of mom.um",
+            "natural unit of momentum in mev/c": "natural unit of mom.um in mev/c",
+            "electron gyromag. ratio in mhz/t": "electron gyromag. ratio over 2 pi",
+            "vacuum mag. permeability": "mag. constant",
+            "lattice spacing of ideal si (220)": "{220} lattice spacing of silicon",
+            "planck constant in ev/hz": "planck constant in ev s",
+            "bohr magneton in inverse meter per tesla": "bohr magneton in inverse meters per tesla",
+            "boltzmann constant in inverse meter per kelvin": "boltzmann constant in inverse meters per kelvin",
+            "copper x unit": "cu x unit",
+            "molybdenum x unit": "mo x unit",
+            "proton gyromag. ratio in mhz/t": "proton gyromag. ratio over 2 pi",
+            "shielded proton gyromag. ratio in mhz/t": "shielded proton gyromag. ratio over 2 pi",
+            "reduced proton compton wavelength": "proton compton wavelength over 2 pi",
+            "reduced tau compton wavelength": "tau compton wavelength over 2 pi",
+            "tau energy equivalent": "tau mass energy equivalent in mev",
+            "reduced neutron compton wavelength": "neutron compton wavelength over 2 pi",
+            "neutron gyromag. ratio in mhz/t": "neutron gyromag. ratio over 2 pi",
+            "nuclear magneton in inverse meter per tesla": "nuclear magneton in inverse meters per tesla",
+            "shielded helion gyromag. ratio in mhz/t": "shielded helion gyromag. ratio over 2 pi",
+            "reduced compton wavelength": "compton wavelength over 2 pi",
+            "vacuum electric permittivity": "electric constant",
+            "reduced muon compton wavelength": "muon compton wavelength over 2 pi",
+        }
+
+        if context == "CODATA2018":
+            for new, old in rename_2018_from_2014.items():
+                self.pc[old] = self.pc[new]
+
         # fmt: off
         aliases = [
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
@@ -333,6 +366,51 @@ class PhysicalConstantsContext:
                         "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(
                             pc, rat, ref, val
                         )
+                    )
+
+    def run_internal_comparison(self, other) -> None:
+        """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`.
+        Specialized use."""
+
+        class bcolors:
+            HEADER = "\033[95m"
+            OKBLUE = "\033[94m"
+            OKGREEN = "\033[92m"
+            WARNING = "\033[93m"
+            FAIL = "\033[91m"
+            ENDC = "\033[0m"
+            BOLD = "\033[1m"
+            UNDERLINE = "\033[4m"
+
+        both = set(self.pc.keys()).intersection(other.pc.keys())
+
+        self_only = set(self.pc.keys()).difference(both)
+        print(bcolors.WARNING + f"\nPhysConst in old {self.name} missing in new {other.name} ..." + bcolors.ENDC)
+        for pc in sorted(self_only):
+            print(pc, self.get(pc))
+
+        other_only = set(other.pc.keys()).difference(both)
+        print(bcolors.WARNING + f"\nPhysConst in new {other.name} missing in old {self.name} ..." + bcolors.ENDC)
+        for pc in sorted(other_only):
+            print(pc, other.get(pc))
+
+        tol = 1.0e-8
+        print(bcolors.OKBLUE + f"\nChecking ({tol}) physconst {self.name} vs. {other.name} ..." + bcolors.ENDC)
+        for pc in sorted(both):
+            if not pc.startswith("__"):
+                ref = self.get(pc)
+                val = other.get(pc)
+                assert isinstance(ref, (int, float))
+                rat = abs(1.0 - float(ref) / val)
+                if rat > 1.0e-4:
+                    print(
+                        bcolors.FAIL
+                        + f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
+                        + bcolors.ENDC
+                    )
+                if rat > tol:
+                    print(
+                        f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
                     )
 
     def _get_pi(self, from_scratch: bool = False) -> "Decimal":

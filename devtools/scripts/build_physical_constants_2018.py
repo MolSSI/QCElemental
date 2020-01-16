@@ -25,7 +25,7 @@ constants = requests.get(url).text
 constants_without_header = constants.splitlines()[9] + "\n" + "\n".join(constants.splitlines()[11:])
 with open("localtable", "w") as fp:
     fp.write(constants_without_header)
-    data_also = pd.read_fwf("localtable", colspecs="infer")
+    data_also = pd.read_fwf("localtable", colspecs="infer", infer_nrows=400)
 os.unlink("localtable")
 
 constants = data_also.to_dict("index")

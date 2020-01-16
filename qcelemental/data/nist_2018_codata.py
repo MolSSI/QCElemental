@@ -4,7 +4,7 @@ Title: NIST-CODATA Internationally Recommended 2018 Values of the Fundamental Ph
 Date: 2019-05-20
 DOI: 
 URL: https://physics.nist.gov/cuu/Constants/Table/allascii.txt
-Access Date: 2020-01-11 20:08:03.994640 UTC
+Access Date: 2020-01-16 06:26:30.685022 UTC
 
 File Authors: QCElemental Authors
 """
@@ -16,7 +16,7 @@ nist_2018_codata = {
     "date": "2019-05-20",
     "doi": "",
     "url": "https://physics.nist.gov/cuu/Constants/Table/allascii.txt",
-    "access_data": "2020-01-11 20:08:03.994640",
+    "access_data": "2020-01-16 06:26:30.685022",
     "constants": {
         "alpha particle-electron mass ratio": {
             "quantity": "alpha particle-electron mass ratio",
@@ -1178,7 +1178,7 @@ nist_2018_codata = {
         },
         "molar gas constant": {
             "quantity": "molar gas constant",
-            "unit": "J mol^-1 K^-",
+            "unit": "J mol^-1 K^-1",
             "value": "8.314462618",
             "uncertainty": "(exact)",
         },
@@ -1196,7 +1196,7 @@ nist_2018_codata = {
         },
         "molar planck constant": {
             "quantity": "molar Planck constant",
-            "unit": "J Hz^-1 mol^",
+            "unit": "J Hz^-1 mol^-1",
             "value": "3.990312712e-10",
             "uncertainty": "(exact)",
         },
@@ -1206,8 +1206,8 @@ nist_2018_codata = {
             "value": "22.71095464e-3",
             "uncertainty": "(exact)",
         },
-        "molar volume of ideal gas (273.15 k, 101.325 k": {
-            "quantity": "molar volume of ideal gas (273.15 K, 101.325 k",
+        "molar volume of ideal gas (273.15 k, 101.325 kpa)": {
+            "quantity": "molar volume of ideal gas (273.15 K, 101.325 kPa)",
             "unit": "m^3 mol^-1",
             "value": "22.41396954e-3",
             "uncertainty": "(exact)",
@@ -1482,8 +1482,14 @@ nist_2018_codata = {
             "value": "2.30557435e-30",
             "uncertainty": "0.000 000 82 e-30",
         },
-        "neutron-proton mass difference energy equivale": {
-            "quantity": "neutron-proton mass difference energy equivale",
+        "neutron-proton mass difference energy equivalent": {
+            "quantity": "neutron-proton mass difference energy equivalent",
+            "unit": "J",
+            "value": "2.07214689e-13",
+            "uncertainty": "0.000 000 74 e-13",
+        },
+        "neutron-proton mass difference energy equivalent in": {
+            "quantity": "neutron-proton mass difference energy equivalent in",
             "unit": "MeV",
             "value": "1.29333236",
             "uncertainty": "0.000 000 46",
@@ -1520,7 +1526,7 @@ nist_2018_codata = {
         },
         "newtonian constant of gravitation": {
             "quantity": "Newtonian constant of gravitation",
-            "unit": "m^3 kg^-1 s^",
+            "unit": "m^3 kg^-1 s^-2",
             "value": "6.67430e-11",
             "uncertainty": "0.000 15 e-11",
         },
@@ -1848,14 +1854,14 @@ nist_2018_codata = {
             "value": "-1.074553090e-26",
             "uncertainty": "0.000 000 013 e-26",
         },
-        "shielded helion mag. mom. to bohr magneton rat": {
-            "quantity": "shielded helion mag. mom. to Bohr magneton rat",
+        "shielded helion mag. mom. to bohr magneton ratio": {
+            "quantity": "shielded helion mag. mom. to Bohr magneton ratio",
             "unit": "",
             "value": "-1.158671471e-3",
             "uncertainty": "0.000 000 014 e-3",
         },
-        "shielded helion mag. mom. to nuclear magneton": {
-            "quantity": "shielded helion mag. mom. to nuclear magneton",
+        "shielded helion mag. mom. to nuclear magneton ratio": {
+            "quantity": "shielded helion mag. mom. to nuclear magneton ratio",
             "unit": "",
             "value": "-2.127497719",
             "uncertainty": "0.000 000 025",
@@ -1866,8 +1872,8 @@ nist_2018_codata = {
             "value": "-0.7617665618",
             "uncertainty": "0.000 000 0089",
         },
-        "shielded helion to shielded proton mag. mom. r": {
-            "quantity": "shielded helion to shielded proton mag. mom. r",
+        "shielded helion to shielded proton mag. mom. ratio": {
+            "quantity": "shielded helion to shielded proton mag. mom. ratio",
             "unit": "",
             "value": "-0.7617861313",
             "uncertainty": "0.000 000 0033",
@@ -1890,14 +1896,14 @@ nist_2018_codata = {
             "value": "1.410570560e-26",
             "uncertainty": "0.000 000 015 e-26",
         },
-        "shielded proton mag. mom. to bohr magneton rat": {
-            "quantity": "shielded proton mag. mom. to Bohr magneton rat",
+        "shielded proton mag. mom. to bohr magneton ratio": {
+            "quantity": "shielded proton mag. mom. to Bohr magneton ratio",
             "unit": "",
             "value": "1.520993128e-3",
             "uncertainty": "0.000 000 017 e-3",
         },
-        "shielded proton mag. mom. to nuclear magneton": {
-            "quantity": "shielded proton mag. mom. to nuclear magneton",
+        "shielded proton mag. mom. to nuclear magneton ratio": {
+            "quantity": "shielded proton mag. mom. to nuclear magneton ratio",
             "unit": "",
             "value": "2.792775599",
             "uncertainty": "0.000 000 030",

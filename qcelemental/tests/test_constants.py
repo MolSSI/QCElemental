@@ -96,3 +96,10 @@ def test_codata2022():
         qcelemental.PhysicalConstantsContext("CODATA2022")
 
     assert "only contexts {'CODATA2014', 'CODATA2018', } are currently supported" in str(e.value)
+
+
+def test_codata_comparison():
+    old = qcelemental.constants
+    new = qcelemental.PhysicalConstantsContext("CODATA2018")
+
+    old.run_internal_comparison(new)
