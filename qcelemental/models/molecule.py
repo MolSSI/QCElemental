@@ -302,47 +302,6 @@ class Molecule(ProtoModel):
         elif validate:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
-        #        # Cleanup un-initialized variables  (more complex than Pydantic Validators allow)
-        #        if values["fragments"] is not None:
-        #            if values["fragment_charges"] is None:
-        #                if np.isclose(values["molecular_charge"], 0.0):
-        #                    values["fragment_charges"] = [0 for _ in values["fragments"]]
-        #                else:
-        #                    raise KeyError("Fragments passed in, but not fragment charges for a charged molecule.")
-        #
-        #            if values["fragment_multiplicities"] is None:
-        #                if values["molecular_multiplicity"] == 1:
-        #                    values["fragment_multiplicities"] = [1 for _ in values["fragments"]]
-        #                else:
-        #                    raise KeyError("Fragments passed in, but not fragment multiplicities for a non-singlet molecule.")
-
-        if "masses" in values:
-            values["masses_"] = values["masses"]
-
-        if "real" in values:
-            values["real_"] = values["real"]
-
-        if "atom_labels" in values:
-            values["atom_labels_"] = values["atom_labels"]
-
-        if "atomic_numbers" in values:
-            values["atomic_numbers_"] = values["atomic_numbers"]
-
-        if "mass_numbers" in values:
-            values["mass_numbers_"] = values["mass_numbers"]
-
-        if "connectivity" in values:
-            values["connectivity_"] = values["connectivity"]
-
-        if "fragments" in values:
-            values["fragments_"] = values["fragments"]
-
-        if "fragment_charges" in values:
-            values["fragment_charges_"] = values["fragment_charges"]
-
-        if "fragment_multiplicities" in values:
-            values["fragment_multiplicities_"] = values["fragment_multiplicities"]
-
     @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
         n = len(values["symbols"])
@@ -1409,7 +1368,7 @@ def _filter_defaults(dicary):
     if dicary["atom_labels"].tolist() == nat * [""]:
         dicary.pop("atom_labels")
 
-    if "connectivity" in dicary and dicary["connectivity"] == []:
+    if dicary.get("connectivity", "N/A") is None:
         dicary.pop("connectivity")
 
     if dicary["fragments"] == [list(np.arange(nat))]:
