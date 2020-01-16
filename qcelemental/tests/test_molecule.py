@@ -641,3 +641,49 @@ def test_orient_nomasses():
 
     assert mol.__dict__["masses_"] is None
     assert compare_values([[2, 0, 0], [-2, 0, 0]], mol.geometry)
+
+
+@pytest.mark.parametrize(
+    "mol_string, extra_keys",
+    [
+        ("He 0 0 0", None),
+        ("He 0 0 0\n--\nHe 0 0 5", {"fragments", "fragment_charges", "fragment_multiplicities"}),
+        ("He 0 0 0\n--\n@He 0 0 5", {"fragments", "fragment_charges", "fragment_multiplicities", "real"}),
+        ("He4 0 0 0", {"atom_labels"}),
+        ("He@3.14 0 0 0", {"masses", "mass_numbers"}),
+    ],
+)
+def test_sparse_molecule_fields(mol_string, extra_keys):
+
+    expected_keys = {
+        "schema_name",
+        "schema_version",
+        "validated",
+        "symbols",
+        "geometry",
+        "name",
+        "molecular_charge",
+        "molecular_multiplicity",
+        "fix_com",
+        "fix_orientation",
+        "provenance",
+    }
+    mol = Molecule.from_data(mol_string)
+
+    if extra_keys is not None:
+        expected_keys |= extra_keys
+
+    diff_keys = mol.dict().keys() ^ expected_keys
+    assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
+
+
+def test_sparse_molecule_connectivity():
+    """
+    A bit of a weird test, but because we set connectivity it should carry through.
+    """
+    mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
+    assert "connectivity" in mol.dict()
+    assert mol.dict()["connectivity"] is None
+
+    mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
+    assert "connectivity" not in mol.dict()
