@@ -201,6 +201,18 @@ import extra_cpus
 for i in extra_cpus.extra_cpus:
     df = df.append(i, ignore_index=True)
 
+def name(vendor, family, model, clock_speed):
+    if vendor.lower() in family.lower():
+        vendor = ""
+    if family in str(model):
+        family = ""
+    if family.endswith("Processors") and family[:-len("Processors")] in str(model):
+        family = ""
+
+    return f"{vendor} {family} {model} @ {clock_speed/1_000_000_000:.1f} GHz"
+
+df["name"] = df.apply(lambda row: name(row["vendor"], row["family"], row["model"], row["base_clock"]), axis=1)
+
 for (vendor, model), fix in extra_cpus.fixes.items():
     idx = df[(df["vendor"] == vendor) & (df["model"] == model)].index
     for k, v in fix.items():
