@@ -630,3 +630,14 @@ def test_molecule_connectivity():
     connectivity[0][0] = -1
     with pytest.raises(ValueError):
         mol = Molecule(**data, connectivity=connectivity)
+
+
+def test_orient_nomasses():
+    """
+    Masses must be auto generated on the fly
+    """
+
+    mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], orient=True, validated=True)
+
+    assert mol.__dict__["masses_"] is None
+    assert compare_values([[2, 0, 0], [-2, 0, 0]], mol.geometry)

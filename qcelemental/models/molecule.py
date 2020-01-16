@@ -298,8 +298,6 @@ class Molecule(ProtoModel):
             values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
 
         if orient:
-            if "masses" not in values:  # Setup masses before fixing the orientation
-                values["masses"] = np.array([periodictable.to_mass(x) for x in values["symbols"]])
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
         elif validate:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
