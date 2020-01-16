@@ -4,7 +4,7 @@ Title: NIST-CODATA Internationally Recommended 2018 Values of the Fundamental Ph
 Date: 2019-05-20
 DOI: 
 URL: https://physics.nist.gov/cuu/Constants/Table/allascii.txt
-Access Date: 2020-01-16 06:26:30.685022 UTC
+Access Date: 2020-01-16 16:58:23.847439 UTC
 
 File Authors: QCElemental Authors
 """
@@ -16,7 +16,7 @@ nist_2018_codata = {
     "date": "2019-05-20",
     "doi": "",
     "url": "https://physics.nist.gov/cuu/Constants/Table/allascii.txt",
-    "access_data": "2020-01-16 06:26:30.685022",
+    "access_data": "2020-01-16 16:58:23.847439",
     "constants": {
         "alpha particle-electron mass ratio": {
             "quantity": "alpha particle-electron mass ratio",
@@ -1488,8 +1488,8 @@ nist_2018_codata = {
             "value": "2.07214689e-13",
             "uncertainty": "0.000 000 74 e-13",
         },
-        "neutron-proton mass difference energy equivalent in": {
-            "quantity": "neutron-proton mass difference energy equivalent in",
+        "neutron-proton mass difference energy equivalent in mev": {
+            "quantity": "neutron-proton mass difference energy equivalent in MeV",
             "unit": "MeV",
             "value": "1.29333236",
             "uncertainty": "0.000 000 46",

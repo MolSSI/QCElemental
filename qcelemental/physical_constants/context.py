@@ -132,12 +132,21 @@ class PhysicalConstantsContext:
             "reduced muon compton wavelength": "muon compton wavelength over 2 pi",
         }
 
-        if context == "CODATA2018":
+        # fmt: off
+        if context == "CODATA2014":
+            aliases = []
+
+        elif context == "CODATA2018":
             for new, old in rename_2018_from_2014.items():
                 self.pc[old] = self.pc[new]
 
-        # fmt: off
-        aliases = [
+            aliases = [
+                ("molar planck constant times c",                      "J m mol^-1", self.pc["molar planck constant"].data * self.pc["speed of light in vacuum"].data,     ""),
+                ("faraday constant for conventional electric current", "C_90 mol^-1", self.pc["faraday constant"].data / self.pc["conventional value of coulomb-90"].data, ""),
+                ("elementary charge over h",                           "A J^-1", self.pc["elementary charge over h-bar"].data / (2 * self._get_pi(from_scratch=False)),    ""),
+            ]
+
+        aliases.extend([
             ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
             ('c',                    'Hz',             self.pc['inverse meter-hertz relationship'].data,                     'Speed of light (ms$^{-1}$)'),
             ('kb',                   'J',              self.pc['kelvin-joule relationship'].data,                            'The Boltzmann constant (JK$^{-1}$)'),
@@ -164,7 +173,7 @@ class PhysicalConstantsContext:
             ('hartree2MHz',          'MHz',            self.pc['hartree-hertz relationship'].data * Decimal('1.E-6'),        'Hartree to MHz conversion factor'),
             ('na',                   'mol^-1',         self.pc['avogadro constant'].data,                                    "Avogadro's number"),
             ('me',                   'kg',             self.pc['electron mass'].data,                                        'Electron rest mass (in kg)'),
-        ]
+        ])
 
         if context == "CODATA2014":
             aliases.extend([

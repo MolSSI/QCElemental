@@ -22,10 +22,10 @@ url = table_url
 access_date = str(datetime.datetime.utcnow())
 
 constants = requests.get(url).text
-constants_without_header = constants.splitlines()[9] + "\n" + "\n".join(constants.splitlines()[11:])
 with open("localtable", "w") as fp:
-    fp.write(constants_without_header)
-    data_also = pd.read_fwf("localtable", colspecs="infer", infer_nrows=400)
+    fp.write(constants)
+    # Warning: colspecs="infer" or infer_nrows=400 still misses some ends of names
+    data_also = pd.read_fwf("localtable", widths=[60, 25, 24, 20], skiprows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10])
 os.unlink("localtable")
 
 constants = data_also.to_dict("index")
