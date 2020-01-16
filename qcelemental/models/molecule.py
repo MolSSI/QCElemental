@@ -259,7 +259,6 @@ class Molecule(ProtoModel):
             "fragment_charges_": "fragment_charges",
             "fragment_multiplicities_": "fragment_multiplicities",
         }
-        force_skip_defaults: bool = True
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.
@@ -501,14 +500,8 @@ class Molecule(ProtoModel):
         return self.get_hash() == other.get_hash()
 
     def dict(self, *args, **kwargs):
-        kwargs.setdefault("exclude_unset", True)
         kwargs.setdefault("by_alias", True)
         return super().dict(*args, **kwargs)
-
-    def json(self, *args, **kwargs):
-        kwargs.setdefault("exclude_unset", True)
-        kwargs.setdefault("by_alias", True)
-        return super().json(*args, **kwargs)
 
     def pretty_print(self):
         """Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
@@ -1352,7 +1345,6 @@ class Molecule(ProtoModel):
 
 
 def _filter_defaults(dicary):
-    #    print("\nfilter pree:", sorted(dicary))
     nat = len(dicary["symbols"])
     default_mass = np.array([periodictable.to_mass(e) for e in dicary["symbols"]])
 
