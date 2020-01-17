@@ -22,10 +22,10 @@ url = table_url
 access_date = str(datetime.datetime.utcnow())
 
 constants = requests.get(url).text
-constants_without_header = constants.splitlines()[9] + "\n" + "\n".join(constants.splitlines()[11:])
 with open("localtable", "w") as fp:
-    fp.write(constants_without_header)
-    data_also = pd.read_fwf("localtable", colspecs="infer")
+    fp.write(constants)
+    # Warning: colspecs="infer" or infer_nrows=400 still misses some ends of names
+    data_also = pd.read_fwf("localtable", widths=[60, 25, 24, 20], skiprows=[0, 1, 2, 3, 4, 5, 6, 7, 8, 10])
 os.unlink("localtable")
 
 constants = data_also.to_dict("index")
@@ -62,7 +62,7 @@ for pc in constants.values():
 
     constants_json["constants"][pc["Quantity"].lower()] = {
         "quantity": pc["Quantity"],
-        "unit": str(pc["Unit"]).replace("nan", ""),
+        "unit": str(pc["Unit"]).replace("nan", "").replace("^-1", "^{-1}").replace("^-2", "^{-2}").replace("^-3", "^{-3}").replace("^-4", "^{-4}").replace("_90", "_{90}"),
         "value": value.replace(" ", ""),
         "uncertainty": uncertainty,
     }

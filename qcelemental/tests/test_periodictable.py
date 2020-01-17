@@ -165,10 +165,14 @@ def test_to_group(inp, expected):
 
 
 def test_c_header():
-    qcelemental.periodictable.write_c_header("header.h")
+    from qcelemental.periodic_table import write_c_header
+
+    write_c_header("header.h")
     os.remove("header.h")
 
 
 @pytest.mark.xfail(True, reason="comparison data not available for installed repository", run=True, strict=False)
 def test_periodic_table_comparison():
-    qcelemental.periodictable.run_comparison()
+    from qcelemental.periodic_table import run_comparison
+
+    run_comparison()

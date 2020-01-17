@@ -10,7 +10,6 @@ from .exceptions import ChoicesError, DataUnavailableError, MoleculeFormatError,
 # Handle versioneer
 from .extras import get_information
 
-# from .physical_constants import PhysicalConstantsContext, constants
 from .testing import compare, compare_recursive, compare_values
 
 # Expose singletons from the modules
