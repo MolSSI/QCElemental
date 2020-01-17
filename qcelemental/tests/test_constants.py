@@ -106,4 +106,3 @@ def test_codata_comparison():
     from qcelemental.physical_constants.context import run_internal_comparison
 
     run_internal_comparison("CODATA2014", "CODATA2018")
-
