@@ -312,13 +312,19 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
         assert result.return_result == index
 
 
-@pytest.mark.parametrize("protocol, result", [(None, "all"), ("whitelist", "whitelist")])
-def test_error_correction_protocol(protocol, result, result_data_fixture):
-    if protocol is not None:
-        result_data_fixture["protocols"] = {"error_correction_policy": protocol}
+@pytest.mark.parametrize("default, defined, default_result, defined_result",
+                         [(None, None, True, None), (False, {'a': True}, False, {'a': True})])
+def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture):
+    policy = {}
+    if default is not None:
+        policy["error_correction_default_policy"] = default
+    if defined is not None:
+        policy["error_correction_policy"] = defined
+    result_data_fixture["protocols"] = policy
     res = qcel.models.AtomicResult(**result_data_fixture)
 
-    assert res.protocols.error_correction_policy.name == result
+    assert res.protocols.error_correction_default_policy == default_result
+    assert res.protocols.error_correction_policy == defined_result
 
 
 def test_result_build_stdout_delete(result_data_fixture):

@@ -261,17 +261,6 @@ class WavefunctionProtocolEnum(str, Enum):
     none = "none"
 
 
-class ErrorCorrectionEnum(str, Enum):
-    """
-    Protocols presets that define how error correction routines are handled
-    """
-
-    all = "all"  # Allow all error corrections to proceed
-    whitelist = "whitelist"  # Allow only pre-designated error corrections
-    blacklist = "blacklist"  # Disallow only pre-designated error corrections"
-    none = "none"  # Allow no error corrections to proceed
-
-
 class AtomicResultProtocols(ProtoModel):
     """
     Protocols regarding the manipulation of a Result output data.
@@ -281,13 +270,14 @@ class AtomicResultProtocols(ProtoModel):
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
-    error_correction_policy: ErrorCorrectionEnum = Field(
-        ErrorCorrectionEnum.all, description="Policy used to determine which error correction routines to use"
+    error_correction_default_policy: bool = Field(
+        True, description="Whether to allow error corrections to be used "
+                          "if not directly specified in `error_correction_policy`"
     )
-    error_correction_settings: Optional[Dict[str, bool]] = Field(
+    error_correction_policy: Optional[Dict[str, bool]] = Field(
         None,
         description="Settings that define whether specific error corrections are allowed. "
-        "Keys are the name of a known error annd values are whether it is allowed to be used.",
+        "Keys are the name of a known error and values are whether it is allowed to be used.",
     )
 
     class Config:
