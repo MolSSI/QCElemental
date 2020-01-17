@@ -271,8 +271,9 @@ class AtomicResultProtocols(ProtoModel):
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
     error_correction_default_policy: bool = Field(
-        True, description="Whether to allow error corrections to be used "
-                          "if not directly specified in `error_correction_policy`"
+        True,
+        description="Whether to allow error corrections to be used "
+        "if not directly specified in `error_correction_policy`",
     )
     error_correction_policy: Optional[Dict[str, bool]] = Field(
         None,

@@ -312,8 +312,10 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
         assert result.return_result == index
 
 
-@pytest.mark.parametrize("default, defined, default_result, defined_result",
-                         [(None, None, True, None), (False, {'a': True}, False, {'a': True})])
+@pytest.mark.parametrize(
+    "default, defined, default_result, defined_result",
+    [(None, None, True, None), (False, {"a": True}, False, {"a": True})],
+)
 def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture):
     policy = {}
     if default is not None:
