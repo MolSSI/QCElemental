@@ -74,13 +74,17 @@ def test_access_2g():
 
 
 def test_c_header():
-    qcelemental.constants.write_c_header("header.h")
+    from qcelemental.physical_constants.context import write_c_header
+
+    write_c_header("CODATA2018", "header.h")
     os.remove("header.h")
 
 
 @pytest.mark.xfail(True, reason="comparison data not available for installed repository", run=True, strict=False)
 def test_constants_comparison():
-    qcelemental.constants.run_comparison()
+    from qcelemental.physical_constants.context import run_comparison
+
+    run_comparison("CODATA2014")
 
 
 def test_representation():
@@ -99,7 +103,7 @@ def test_codata2022():
 
 
 def test_codata_comparison():
-    old = qcelemental.PhysicalConstantsContext("CODATA2014")
-    new = qcelemental.PhysicalConstantsContext("CODATA2018")
+    from qcelemental.physical_constants.context import run_internal_comparison
 
-    old.run_internal_comparison(new)
+    run_internal_comparison("CODATA2014", "CODATA2018")
+

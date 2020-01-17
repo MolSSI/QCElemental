@@ -46,10 +46,10 @@ def _check_eq_molrec_minimal_model(keepers, model, molrec=None):
     )
 
     for field in usual_filtered.difference(keepers):
-        assert field not in model, f"Field '{field}' stragely present: {model[field]}"
+        assert field not in model, f"Field '{field}' strangely present: {model[field]}"
 
     for field in usual_stored.union(keepers):
-        assert field in model, f"Field '{field}' stragely absent"
+        assert field in model, f"Field '{field}' strangely absent"
         if molrec and field not in ["geometry", "fragments"]:
             skf = model[field]
             mrf = molrec[_trans_molrec_to_model[field]]

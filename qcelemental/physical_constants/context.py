@@ -144,7 +144,7 @@ class PhysicalConstantsContext:
             aliases = [
                 ("molar Planck constant times c",                      "J m mol^{-1}", self.pc["molar planck constant"].data * self.pc["speed of light in vacuum"].data,     ""),
                 ("Faraday constant for conventional electric current", "C_{90} mol^{-1}", self.pc["faraday constant"].data / self.pc["conventional value of coulomb-90"].data, ""),
-                ("elementary charge over h",                           "A J^{-1}", self.pc["elementary charge over h-bar"].data / (2 * self._get_pi(from_scratch=False)),    ""),
+                ("elementary charge over h",                           "A J^{-1}", self.pc["elementary charge over h-bar"].data / (2 * _get_pi(from_scratch=False)),    ""),
             ]
 
         aliases.extend([
@@ -335,161 +335,165 @@ class PhysicalConstantsContext:
 
         return print_variables(self.pc)
 
-    def run_comparison(self) -> None:
-        """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`.
-        Specialized use."""
 
-        try:
-            from .. import checkup_data
-        except ImportError:  # pragma: no cover
-            print("Info for comparison (directory checkup_data) not installed. Run from source.")
-            raise
+def run_comparison(context: str) -> None:
+    """Compare the existing physical constant information for Psi4 (in checkup_data folder) to object instantiation from
+    `context`. Specialized use."""
 
-        class bcolors:
-            HEADER = "\033[95m"
-            OKBLUE = "\033[94m"
-            OKGREEN = "\033[92m"
-            WARNING = "\033[93m"
-            FAIL = "\033[91m"
-            ENDC = "\033[0m"
-            BOLD = "\033[1m"
-            UNDERLINE = "\033[4m"
+    self = PhysicalConstantsContext(context)
 
-        tol = 1.0e-8
-        print(bcolors.OKBLUE + "\nChecking ({}) physconst vs. Psi4 ...".format(tol) + bcolors.ENDC)
-        for pc in dir(checkup_data.physconst):
-            if not pc.startswith("__"):
-                ref = self.get(pc)
-                val = getattr(checkup_data.physconst, pc)
-                assert isinstance(ref, (int, float))
-                rat = abs(1.0 - float(ref) / val)
-                if rat > 1.0e-4:
-                    print(
-                        bcolors.FAIL
-                        + "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(
-                            pc, rat, ref, val
-                        )
-                        + bcolors.ENDC
-                    )
-                if rat > tol:
-                    print(
-                        "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(
-                            pc, rat, ref, val
-                        )
-                    )
+    try:
+        from .. import checkup_data
+    except ImportError:  # pragma: no cover
+        print("Info for comparison (directory checkup_data) not installed. Run from source.")
+        raise
 
-    def run_internal_comparison(self, other) -> None:
-        """Compare the existing physical constant information for Psi4 (in checkup_data folder) to `self`.
-        Specialized use."""
+    class bcolors:
+        HEADER = "\033[95m"
+        OKBLUE = "\033[94m"
+        OKGREEN = "\033[92m"
+        WARNING = "\033[93m"
+        FAIL = "\033[91m"
+        ENDC = "\033[0m"
+        BOLD = "\033[1m"
+        UNDERLINE = "\033[4m"
 
-        class bcolors:
-            HEADER = "\033[95m"
-            OKBLUE = "\033[94m"
-            OKGREEN = "\033[92m"
-            WARNING = "\033[93m"
-            FAIL = "\033[91m"
-            ENDC = "\033[0m"
-            BOLD = "\033[1m"
-            UNDERLINE = "\033[4m"
+    tol = 1.0e-8
+    print(bcolors.OKBLUE + "\nChecking ({}) physconst vs. Psi4 ...".format(tol) + bcolors.ENDC)
+    for pc in dir(checkup_data.physconst):
+        if not pc.startswith("__"):
+            ref = self.get(pc)
+            val = getattr(checkup_data.physconst, pc)
+            assert isinstance(ref, (int, float))
+            rat = abs(1.0 - float(ref) / val)
+            if rat > 1.0e-4:
+                print(
+                    bcolors.FAIL
+                    + "Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(pc, rat, ref, val)
+                    + bcolors.ENDC
+                )
+            if rat > tol:
+                print("Physical Constant {} ratio differs by {:12.8f}: {} (this) vs {} (psi)".format(pc, rat, ref, val))
 
-        both = set(self.pc.keys()).intersection(other.pc.keys())
 
-        self_only = set(self.pc.keys()).difference(both)
-        print(bcolors.WARNING + f"\nPhysConst in old {self.name} missing in new {other.name} ..." + bcolors.ENDC)
-        for pc in sorted(self_only):
-            print(pc, self.get(pc))
+def run_internal_comparison(old_context: str, new_context: str) -> None:
+    """Compare two physical constant versions. Useful when adding new version."""
 
-        other_only = set(other.pc.keys()).difference(both)
-        print(bcolors.WARNING + f"\nPhysConst in new {other.name} missing in old {self.name} ..." + bcolors.ENDC)
-        for pc in sorted(other_only):
-            print(pc, other.get(pc))
+    self = PhysicalConstantsContext(old_context)
+    other = PhysicalConstantsContext(new_context)
 
-        tol = 1.0e-8
-        print(bcolors.OKBLUE + f"\nChecking ({tol}) physconst {self.name} vs. {other.name} ..." + bcolors.ENDC)
-        for pc in sorted(both):
-            if not pc.startswith("__"):
-                ref = self.get(pc)
-                val = other.get(pc)
-                assert isinstance(ref, (int, float))
-                rat = abs(1.0 - float(ref) / val)
-                if rat > 1.0e-4:
-                    print(
-                        bcolors.FAIL
-                        + f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
-                        + bcolors.ENDC
-                    )
-                if rat > tol:
-                    print(
-                        f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
-                    )
+    class bcolors:
+        HEADER = "\033[95m"
+        OKBLUE = "\033[94m"
+        OKGREEN = "\033[92m"
+        WARNING = "\033[93m"
+        FAIL = "\033[91m"
+        ENDC = "\033[0m"
+        BOLD = "\033[1m"
+        UNDERLINE = "\033[4m"
 
-                refu = self.pc[pc].units
-                valu = other.pc[pc].units
-                if refu != valu:
-                    print(
-                        bcolors.BOLD
-                        + f"Physical Constant {pc} units differs: {refu} (this, {self.name}) vs {valu} ({other.name})"
-                        + bcolors.ENDC
-                    )
+    both = set(self.pc.keys()).intersection(other.pc.keys())
 
-    def _get_pi(self, from_scratch: bool = False) -> "Decimal":
-        """Get pi to 36 digits (or more with mpmath).
+    self_only = set(self.pc.keys()).difference(both)
+    print(bcolors.WARNING + f"\nPhysConst in old {self.name} missing in new {other.name} ..." + bcolors.ENDC)
+    for pc in sorted(self_only):
+        print(pc, self.get(pc))
 
-        Parameters
-        ----------
-        from_scratch : bool, optional
-            If True, recomputes Pi from mpmath.
+    other_only = set(other.pc.keys()).difference(both)
+    print(bcolors.WARNING + f"\nPhysConst in new {other.name} missing in old {self.name} ..." + bcolors.ENDC)
+    for pc in sorted(other_only):
+        print(pc, other.get(pc))
 
-        Returns
-        -------
-        Decimal
-            A representation of Pi
-        """
+    tol = 1.0e-8
+    print(bcolors.OKBLUE + f"\nChecking ({tol}) physconst {self.name} vs. {other.name} ..." + bcolors.ENDC)
+    for pc in sorted(both):
+        if not pc.startswith("__"):
+            ref = self.get(pc)
+            val = other.get(pc)
+            assert isinstance(ref, (int, float))
+            rat = abs(1.0 - float(ref) / val)
+            if rat > 1.0e-4:
+                print(
+                    bcolors.FAIL
+                    + f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
+                    + bcolors.ENDC
+                )
+            if rat > tol:
+                print(
+                    f"Physical Constant {pc} ratio differs by {rat:12.8f}: {ref} (this, {self.name}) vs {val} ({other.name})"
+                )
 
-        if from_scratch:  # pragma: no cover
-            from mpmath import mp
+            refu = self.pc[pc].units
+            valu = other.pc[pc].units
+            if refu != valu:
+                print(
+                    bcolors.BOLD
+                    + f"Physical Constant {pc} units differs: {refu} (this, {self.name}) vs {valu} ({other.name})"
+                    + bcolors.ENDC
+                )
 
-            mp.dps = 36
-            return mp.pi
-        else:
-            return Decimal("3.14159265358979323846264338327950288")
 
-    def write_c_header(self, filename="physconst.h"):
-        """Write C header file defining physical constants and pi, all with ``pc_`` prefix."""
+def _get_pi(from_scratch: bool = False) -> "Decimal":
+    """Get pi to 36 digits (or more with mpmath).
 
-        pi = self._get_pi(from_scratch=False)
-        tau = 2 * pi
+    Parameters
+    ----------
+    from_scratch : bool, optional
+        If True, recomputes Pi from mpmath.
 
-        text = [
-            "#ifndef _qcelemental_physconst_h_",
-            "#define _qcelemental_physconst_h_",
-            "",
-            f"/* This file is autogenerated from the QCElemental python module from {self.name} */",
-            "",
-            "/* clang-format off */",
-            f"#define pc_pi {pi}",
-            f"#define pc_twopi {tau}",
-        ]
+    Returns
+    -------
+    Decimal
+        A representation of Pi
+    """
 
-        for pc, qca in sorted(self.pc.items()):
-            callname = qca.label.translate(self._transtable)
-            noncomment = "#define pc_{} {}".format(callname, qca.data)
-            text.append("{:80}  /*- {} [{}] {} -*/".format(noncomment, qca.label, qca.units, qca.comment))
-        text.append("/* clang-format on */")
+    if from_scratch:  # pragma: no cover
+        from mpmath import mp
 
-        text.append("")
-        text.append("/* For Cray X1 compilers */")
-        text.append("#ifndef M_PI")
-        text.append("#define M_PI 3.14159265358979323846")
-        text.append("#endif")
-        text.append("")
+        mp.dps = 36
+        return mp.pi
+    else:
+        return Decimal("3.14159265358979323846264338327950288")
 
-        text.append("#endif /* header guard */")
-        text.append("")
 
-        with open(filename, "w") as handle:
-            handle.write("\n".join(text))
-        print("File written ({}). Remember to add license and clang-format it.".format(filename))
+def write_c_header(context, filename="physconst.h"):
+    """Write C header file defining physical constants and pi, all with ``pc_`` prefix."""
+
+    self = PhysicalConstantsContext(context)
+
+    pi = _get_pi(from_scratch=False)
+    tau = 2 * pi
+
+    text = [
+        "#ifndef _qcelemental_physconst_h_",
+        "#define _qcelemental_physconst_h_",
+        "",
+        f"/* This file is autogenerated from the QCElemental python module from {self.name} */",
+        "",
+        "/* clang-format off */",
+        f"#define pc_pi {pi}",
+        f"#define pc_twopi {tau}",
+    ]
+
+    for pc, qca in sorted(self.pc.items()):
+        callname = qca.label.translate(self._transtable)
+        noncomment = "#define pc_{} {}".format(callname, qca.data)
+        text.append("{:80}  /*- {} [{}] {} -*/".format(noncomment, qca.label, qca.units, qca.comment))
+    text.append("/* clang-format on */")
+
+    text.append("")
+    text.append("/* For Cray X1 compilers */")
+    text.append("#ifndef M_PI")
+    text.append("#define M_PI 3.14159265358979323846")
+    text.append("#endif")
+    text.append("")
+
+    text.append("#endif /* header guard */")
+    text.append("")
+
+    with open(filename, "w") as handle:
+        handle.write("\n".join(text))
+    print("File written ({}). Remember to add license and clang-format it.".format(filename))
 
 
 # singleton
