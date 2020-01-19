@@ -5,8 +5,8 @@ Contains metadata about Processors
 import difflib
 import re
 from enum import Enum
-from typing import List, Optional
 from functools import lru_cache
+from typing import List, Optional
 
 from pydantic import Field
 

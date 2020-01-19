@@ -43,6 +43,9 @@ def build_units_registry(context):
     ureg.define("wavenumber = 1 / centimeter")
     ureg.define("Angstrom = angstrom")
 
+    # Time
+    ureg.define(f"au_time = {phys_const['atomic unit of time']['value']} * {phys_const['atomic unit of time']['unit']}")
+
     # Masses
     ureg.define(
         "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"])
