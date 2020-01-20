@@ -43,6 +43,8 @@ def build_units_registry(context):
     # Charge
     ureg.define("elementary_charge = {} * coulomb = e = au_charge".format(phys_const["elementary charge"]["value"]))
     ureg.define("statcoulomb = coulomb / 2997924580 = statC")
+
+    # Dipole moment
     ureg.define("debye = 1e-18 * statcoulomb * cm = D")
 
     # Distance
