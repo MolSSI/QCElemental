@@ -78,3 +78,14 @@ def test_quantities_smoke():
     Smoke test to ensure Quantities are correctly returned
     """
     assert 5 == qcelemental.constants.Quantity("5 kcal").magnitude
+
+
+def test_speed_of_light():
+    assert (
+        pytest.approx(
+            qcelemental.constants.speed_of_light_in_vacuum
+            * qcelemental.constants.conversion_factor("m/s", "bohr/au_time"),
+            1e-8,
+        )
+        == qcelemental.constants.c_au
+    )
