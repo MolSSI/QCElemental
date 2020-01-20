@@ -148,9 +148,10 @@ class PhysicalConstantsContext:
             ]
 
         aliases.extend([
-            ('h',                    'J',              self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
-            ('c',                    'Hz',             self.pc['inverse meter-hertz relationship'].data,                     'Speed of light (ms$^{-1}$)'),
-            ('kb',                   'J',              self.pc['kelvin-joule relationship'].data,                            'The Boltzmann constant (JK$^{-1}$)'),
+            ('h',                    'J s',            self.pc['hertz-joule relationship'].data,                             'The Planck constant (Js)'),
+            ('hbar',                 'J s',            self.pc['planck constant over 2 pi'].data,                            'Reduced Planck constant (Js)'),
+            ('c',                    'm s^-1',         self.pc['inverse meter-hertz relationship'].data,                     'Speed of light (ms$^{-1}$)'),
+            ('kb',                   'J K^-1',         self.pc['kelvin-joule relationship'].data,                            'The Boltzmann constant (JK$^{-1}$)'),
             ('R',                    'J mol^-1 K^-1',  self.pc['molar gas constant'].data,                                   'Universal gas constant (JK$^{-1}$mol$^{-1}$)'),
             ('bohr2angstroms',       'AA',             self.pc['bohr radius'].data * Decimal('1.E10'),                       'Bohr to Angstroms conversion factor'),
             ('bohr2m',               'm',              self.pc['bohr radius'].data,                                          'Bohr to meters conversion factor'),
@@ -164,7 +165,7 @@ class PhysicalConstantsContext:
             ('dipmom_au2si',         'C m',            self.pc['atomic unit of electric dipole mom.'].data,                  'Atomic units to SI units (Cm) conversion factor for dipoles'),
             ('dipmom_au2debye',      '???',            self.pc['atomic unit of electric dipole mom.'].data * Decimal('1.E21') / self.pc['hertz-inverse meter relationship'].data,
                                                                                                                              'Atomic units to Debye conversion factor for dipoles'),
-            ('dipmom_debye2si',      '???',            self.pc['hertz-inverse meter relationship'].data * Decimal('1.E-21'), 'Debye to SI units (Cm) conversion factor for dipoles'),
+            ('dipmom_debye2si',      'C m',            self.pc['hertz-inverse meter relationship'].data * Decimal('1.E-21'), 'Debye to SI units (Cm) conversion factor for dipoles'),
             ('c_au',                 '',               self.pc['inverse fine-structure constant'].data,                      'Speed of light in atomic units'),
             ('hartree2ev',           'eV',             self.pc['hartree energy in ev'].data,                                 'Hartree to eV conversion factor'),
             ('hartree2wavenumbers',  'cm^-1',          self.pc['hartree-inverse meter relationship'].data * Decimal('0.01'), 'Hartree to cm$^{-1}$ conversion factor'),
