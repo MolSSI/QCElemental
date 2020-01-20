@@ -32,8 +32,7 @@ import qcelemental
     ],
 )
 def test_unit_conversion_nist(from_unit, to_unit, expected):
-    assert str(qcelemental.constants.ureg.Unit(from_unit)) == from_unit
-    assert str(qcelemental.constants.ureg.Unit(to_unit)) == to_unit
+
     # Build values and quantize to the tolerance
     expected = Decimal(expected)
     from_to_value = Decimal(qcelemental.constants.conversion_factor(from_unit, to_unit)).quantize(expected)
@@ -78,8 +77,6 @@ def test_unit_conversion_nist(from_unit, to_unit, expected):
     ],
 )
 def test_unit_conversion_other(from_unit, to_unit, expected):
-    assert str(qcelemental.constants.ureg.Unit(from_unit)) == from_unit
-    assert str(qcelemental.constants.ureg.Unit(to_unit)) == to_unit
 
     # Build values and quantize to the tolerance
     expected = Decimal(expected)
