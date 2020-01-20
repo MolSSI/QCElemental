@@ -73,6 +73,7 @@ def test_unit_conversion_nist(from_unit, to_unit, expected):
         ("au_permittivity", "au_charge**2 / (au_length * au_energy)", "1.0"),
         ("au_time", "au_action / au_energy", "1.0"),
         ("au_velocity", "au_length * au_energy / au_action", "1.0"),
+        ("au_pressure", "J / m^3", "2.94210e13"),  # note precision loss due to absence in CODATA
     ],
 )
 def test_unit_conversion_other(from_unit, to_unit, expected):

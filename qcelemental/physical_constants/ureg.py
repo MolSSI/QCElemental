@@ -75,6 +75,8 @@ def build_units_registry(context):
     for k, v in phys_const_map.items():
         ureg.define(f"{k} = {phys_const[v]['value']} * {phys_const[v]['unit']}")
 
+    ureg.define(f"au_pressure = au_energy / au_length**3")  # not in CODATA
+
     # Define relationships
     _const_rename = {
         "inverse meter": "inverse_meter",
