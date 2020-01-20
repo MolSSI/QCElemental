@@ -22,7 +22,8 @@ def build_units_registry(context):
     # Explicitly update relevant 2014 codata
 
     # Definitions
-    ureg.define("avogadro_constant = {} / mol = N_A".format(phys_const["avogadro constant"]["value"]))
+    ureg.define("avogadro_constant = {} / mol".format(phys_const["avogadro constant"]["value"]))
+    ureg.define("N_A = avogadro_constant")
     ureg.define("boltzmann_constant = {} * joule / kelvin".format(phys_const["boltzmann constant"]["value"]))
     ureg.define("speed_of_light = {} * meter / second".format(phys_const["speed of light in vacuum"]["value"]))
     ureg.define(
@@ -31,22 +32,42 @@ def build_units_registry(context):
     ureg.define("plancks_constant = {} * joule * s".format(phys_const["planck constant"]["value"]))
 
     # Energy
-    ureg.define("hartree = {} * joule = E_h = hartree_energy = au_energy".format(phys_const["hartree energy"]["value"]))
-    ureg.define("electron_volt = {} * J = eV".format(phys_const["electron volt-joule relationship"]["value"]))
+    ureg.define("hartree = {} * joule".format(phys_const["hartree energy"]["value"]))
+    ureg.define("au_energy = hartree")
+    ureg.define("hartree_energy = hartree")
+    ureg.define("E_h = hartree")
+
+    ureg.define("electron_volt = {} * J".format(phys_const["electron volt-joule relationship"]["value"]))
+    ureg.define("eV = electron_volt")
 
     # Mass
-    ureg.define("electron_mass = {} * kg = au_mass".format(phys_const["electron mass"]["value"]))
+    ureg.define("electron_mass = {} * kg".format(phys_const["electron mass"]["value"]))
+    ureg.define("au_mass = electron_mass")
     ureg.define(
-        "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"])
+        "atomic_mass_unit = {} * kilogram".format(phys_const["atomic mass constant"]["value"])
     )
+    ureg.define("u = atomic_mass_unit")
+    ureg.define("amu = atomic_mass_unit")
+    ureg.define("dalton = atomic_mass_unit")
+    ureg.define("Da = atomic_mass_unit")
 
     # Charge
-    ureg.define("elementary_charge = {} * coulomb = e = au_charge".format(phys_const["elementary charge"]["value"]))
-    ureg.define("statcoulomb = coulomb / 2997924580 = statC")
+    ureg.define("elementary_charge = {} * coulomb".format(phys_const["elementary charge"]["value"]))
+    ureg.define("au_charge = elementary_charge")
+    ureg.define("e = elementary_charge")
+    ureg.define("statcoulomb = coulomb / 2997924580")
+    ureg.define("statC = statcoulomb")
+
+    # Dipole moment
     ureg.define("debye = 1e-18 * statcoulomb * cm = D")
+    ureg.define("D = debye")
 
     # Distance
-    ureg.define("bohr = {} * meter = bohr_radius = Bohr = au_length".format(phys_const["bohr radius"]["value"]))
+    ureg.define("bohr = {} * meter".format(phys_const["bohr radius"]["value"]))
+    ureg.define("au_length = bohr")
+    ureg.define("Bohr = bohr")
+    ureg.define("bohr_radius = bohr")
+
     ureg.define("wavenumber = 1 / centimeter")
     ureg.define("Angstrom = angstrom")
 
