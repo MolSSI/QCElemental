@@ -28,32 +28,57 @@ def build_units_registry(context):
     ureg.define(
         "hartree_inverse_meter = {} / hartree / m".format(phys_const["hartree-inverse meter relationship"]["value"])
     )
-
-    # Energy
-    ureg.define("hartree = {} * joule = E_h = hartree_energy".format(phys_const["hartree energy"]["value"]))
-    ureg.define("electron_volt = {} * J = eV".format(phys_const["electron volt-joule relationship"]["value"]))
-
-    # Constants
-    ureg.define("electron_mass = {} * kg".format(phys_const["electron mass"]["value"]))
-    ureg.define("elementary_charge = {} * coulomb = e".format(phys_const["elementary charge"]["value"]))
+    ureg.define("plank_constant = planks_constant")
     ureg.define("plancks_constant = {} * joule * s".format(phys_const["planck constant"]["value"]))
 
-    # Distance
-    ureg.define("bohr = {} * meter = bohr_radius = Bohr".format(phys_const["bohr radius"]["value"]))
-    ureg.define("wavenumber = 1 / centimeter")
-    ureg.define("Angstrom = angstrom")
+    # Energy
+    ureg.define("hartree = {} * joule = E_h = hartree_energy = au_energy".format(phys_const["hartree energy"]["value"]))
+    ureg.define("electron_volt = {} * J = eV".format(phys_const["electron volt-joule relationship"]["value"]))
 
-    # Time
-    ureg.define(f"au_time = {phys_const['atomic unit of time']['value']} * {phys_const['atomic unit of time']['unit']}")
-
-    # Masses
+    # Mass
+    ureg.define("electron_mass = {} * kg = au_mass".format(phys_const["electron mass"]["value"]))
     ureg.define(
         "atomic_mass_unit = {} * kilogram = u = amu = dalton = Da".format(phys_const["atomic mass constant"]["value"])
     )
 
-    # Coulomb
+    # Charge
+    ureg.define("elementary_charge = {} * coulomb = e = au_charge".format(phys_const["elementary charge"]["value"]))
     ureg.define("statcoulomb = coulomb / 2997924580 = statC")
+
+    # Dipole moment
     ureg.define("debye = 1e-18 * statcoulomb * cm = D")
+
+    # Distance
+    ureg.define("bohr = {} * meter = bohr_radius = Bohr = au_length".format(phys_const["bohr radius"]["value"]))
+    ureg.define("wavenumber = 1 / centimeter")
+    ureg.define("Angstrom = angstrom")
+
+    # Miscellaneous atomic units (https://en.wikipedia.org/wiki/Hartree_atomic_units)
+    phys_const_map = {
+        "au_1st_hyperpolarizability": "atomic unit of 1st hyperpolarizability",
+        "au_2nd_hyperpolarizability": "atomic unit of 2nd hyperpolarizability",
+        "au_action": "atomic unit of action",
+        "au_charge_density": "atomic unit of charge density",
+        "au_current": "atomic unit of current",
+        "au_electric_dipole_moment": "atomic unit of electric dipole mom.",
+        "au_electric_field": "atomic unit of electric field",
+        "au_electric_field_gradient": "atomic unit of electric field gradient",
+        "au_electric_polarizability": "atomic unit of electric polarizability",
+        "au_electric_potential": "atomic unit of electric potential",
+        "au_electric_quadrupole_moment": "atomic unit of electric quadrupole mom.",
+        "au_force": "atomic unit of force",
+        "au_magnetic_dipole_moment": "atomic unit of mag. dipole mom.",
+        "au_magnetic_flux_density": "atomic unit of mag. flux density",
+        "au_magnetizability": "atomic unit of magnetizability",
+        "au_momentum": "atomic unit of mom.um",
+        "au_permittivity": "atomic unit of permittivity",
+        "au_time": "atomic unit of time",
+        "au_velocity": "atomic unit of velocity",
+    }
+    for k, v in phys_const_map.items():
+        ureg.define(f"{k} = {phys_const[v]['value']} * {phys_const[v]['unit']}")
+
+    ureg.define(f"au_pressure = au_energy / au_length**3")  # not in CODATA
 
     # Define relationships
     _const_rename = {
