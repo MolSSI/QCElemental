@@ -323,6 +323,22 @@ def test_result_build_stdout(result_data_fixture):
     assert ret.stdout == "I ran."
 
 
+def test_moldict(result_data_fixture):
+    #mret = qcel.models.Molecule(**result_data_fixture['molecule'])
+    mret = result_data_fixture['molecule']
+    print(mret.dict())
+
+    # Molecule model builds back from dict
+    mret = qcel.models.Molecule(**result_data_fixture['molecule'].dict())
+    print(mret.dict())
+
+    # AtomicResult model with Molecule inside does not
+    ares = qcel.models.AtomicResult(**result_data_fixture)
+    print(ares.dict())
+    model = qcel.models.AtomicResult(**ares.dict())
+    print(model.dict())
+
+
 def test_failed_operation(result_data_fixture):
     water = qcel.models.Molecule.from_data(
         """
