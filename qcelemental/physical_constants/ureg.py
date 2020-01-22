@@ -28,8 +28,8 @@ def build_units_registry(context):
     ureg.define(
         "hartree_inverse_meter = {} / hartree / m".format(phys_const["hartree-inverse meter relationship"]["value"])
     )
-    ureg.define("plancks_constant = {} * joule * s".format(phys_const["planck constant"]["value"]))
     ureg.define("plank_constant = planks_constant")
+    ureg.define("plancks_constant = {} * joule * s".format(phys_const["planck constant"]["value"]))
 
     # Energy
     ureg.define("hartree = {} * joule = E_h = hartree_energy = au_energy".format(phys_const["hartree energy"]["value"]))
