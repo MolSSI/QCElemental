@@ -297,11 +297,6 @@ class AtomicInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
 
-    #def dict(self, *args, **kwargs):
-    #    kwargs.setdefault("by_alias", True)
-    #    kwargs.setdefault("skip_defaults", True)
-    #    return super().dict(*args, **kwargs)
-
     def __repr_args__(self) -> "ReprArgs":
         return [
             ("driver", self.driver.value),

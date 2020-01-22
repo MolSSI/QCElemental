@@ -500,7 +500,8 @@ class Molecule(ProtoModel):
         return self.get_hash() == other.get_hash()
 
     def dict(self, *args, **kwargs):
-        kwargs.setdefault("by_alias", True)
+        kwargs["by_alias"] = True
+        kwargs["skip_defaults"] = True
         return super().dict(*args, **kwargs)
 
     def pretty_print(self):

@@ -324,12 +324,12 @@ def test_result_build_stdout(result_data_fixture):
 
 
 def test_moldict(result_data_fixture):
-    #mret = qcel.models.Molecule(**result_data_fixture['molecule'])
-    mret = result_data_fixture['molecule']
+    # mret = qcel.models.Molecule(**result_data_fixture['molecule'])
+    mret = result_data_fixture["molecule"]
     print(mret.dict())
 
     # Molecule model builds back from dict
-    mret = qcel.models.Molecule(**result_data_fixture['molecule'].dict())
+    mret = qcel.models.Molecule(**result_data_fixture["molecule"].dict())
     print(mret.dict())
 
     # AtomicResult model with Molecule inside does not
