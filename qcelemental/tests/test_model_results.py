@@ -344,6 +344,35 @@ def test_failed_operation(result_data_fixture):
     assert "its all good" in failed_json
 
 
+@pytest.mark.parametrize(
+    "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
+)
+def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
+
+    if smodel == "molecule":
+        model = qcel.models.Molecule
+        data = result_data_fixture["molecule"].dict()
+
+    elif smodel == "atomicresultproperties":
+        model = qcel.models.AtomicResultProperties
+        data = {"scf_one_electron_energy": "-5.0"}
+
+    elif smodel == "atomicinput":
+        model = qcel.models.AtomicInput
+        data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
+
+    elif smodel == "atomicresult":
+        model = qcel.models.AtomicResult
+        data = result_data_fixture
+
+    elif smodel == "optimizationresult":
+        model = qcel.models.OptimizationResult
+        data = optimization_data_fixture
+
+    instance = model(**data)
+    assert model(**instance.dict())
+
+
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
 
     with pytest.warns(DeprecationWarning):
