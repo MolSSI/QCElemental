@@ -501,7 +501,7 @@ class Molecule(ProtoModel):
 
     def dict(self, *args, **kwargs):
         kwargs["by_alias"] = True
-        kwargs["skip_defaults"] = True
+        kwargs["exclude_unset"] = True
         return super().dict(*args, **kwargs)
 
     def pretty_print(self):

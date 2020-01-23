@@ -323,22 +323,6 @@ def test_result_build_stdout(result_data_fixture):
     assert ret.stdout == "I ran."
 
 
-def test_moldict(result_data_fixture):
-    # mret = qcel.models.Molecule(**result_data_fixture['molecule'])
-    mret = result_data_fixture["molecule"]
-    print(mret.dict())
-
-    # Molecule model builds back from dict
-    mret = qcel.models.Molecule(**result_data_fixture["molecule"].dict())
-    print(mret.dict())
-
-    # AtomicResult model with Molecule inside does not
-    ares = qcel.models.AtomicResult(**result_data_fixture)
-    print(ares.dict())
-    model = qcel.models.AtomicResult(**ares.dict())
-    print(model.dict())
-
-
 def test_failed_operation(result_data_fixture):
     water = qcel.models.Molecule.from_data(
         """
@@ -358,6 +342,35 @@ def test_failed_operation(result_data_fixture):
     failed_json = failed.json()
     assert isinstance(failed_json, str)
     assert "its all good" in failed_json
+
+
+@pytest.mark.parametrize(
+    "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
+)
+def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
+
+    if smodel == "molecule":
+        model = qcel.models.Molecule
+        data = result_data_fixture["molecule"].dict()
+
+    elif smodel == "atomicresultproperties":
+        model = qcel.models.AtomicResultProperties
+        data = {"scf_one_electron_energy": "-5.0"}
+
+    elif smodel == "atomicinput":
+        model = qcel.models.AtomicInput
+        data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
+
+    elif smodel == "atomicresult":
+        model = qcel.models.AtomicResult
+        data = result_data_fixture
+
+    elif smodel == "optimizationresult":
+        model = qcel.models.OptimizationResult
+        data = optimization_data_fixture
+
+    instance = model(**data)
+    assert model(**instance.dict())
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
