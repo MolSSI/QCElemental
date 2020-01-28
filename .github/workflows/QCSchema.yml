@@ -64,7 +64,6 @@ jobs:
         cd qcel
         make qcschema
         ls -l qcschema
-        cd ..
         #git clone https://github.com/loriab/QCSchema.git
         #cd QCSchema
         #git checkout py2json
@@ -73,10 +72,12 @@ jobs:
         #pwd
         #cp -p ../../QCElemental/qcschema/* .
         #git diff
-        cd qcsk
+        cd ../qcsk/qcschema_json
         ls -l
-        cp -p ../../QCElemental/qcschema/* .
+        cp -p ../../qcel/qcschema/* .
         git diff
+        # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
+        #       rather than the python module of the current repo
 
 
 #    - name: CodeCov  
