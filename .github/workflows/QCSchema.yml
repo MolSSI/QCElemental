@@ -1,0 +1,68 @@
+name: QCSchema
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        conda-env: [base]
+        python-version: [3.7]
+    env:
+      PYVER: ${{ matrix.python-version }}
+      CONDA_ENV: ${{ matrix.conda-env }}
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Python Setup
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Create Environment
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate
+        python devtools/scripts/create_conda_env.py -n=test -p=$PYVER devtools/conda-envs/$CONDA_ENV.yaml
+
+    - name: Install
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
+        python -m pip install . --no-deps
+
+    - name: Environment Information
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
+        conda list --show-channel-urls
+
+    - name: QCSchema
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
+        make qcschema
+        cd ..
+        git clone https://github.com/loriab/QCSchema.git
+        cd QCSchema
+        git checkout py2json
+        cd qcschema_json
+        ls -l
+        pwd
+        cp -p ../../qcschema/* .
+        git diff
+
+#    - name: CodeCov  
+#      uses: codecov/codecov-action@v1
+#      with:
+#        token: ${{ secrets.CODECOV_TOKEN }}
+#        file: ./coverage.xml
+#        flags: unittests
+#        yml: ./.codecov.yml 
+#
+
+#####
+#   pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+#####
