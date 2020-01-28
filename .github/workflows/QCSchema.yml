@@ -45,6 +45,7 @@ jobs:
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
         make qcschema
+        ls -l qcschema
         cd ..
         git clone https://github.com/loriab/QCSchema.git
         cd QCSchema
@@ -52,7 +53,7 @@ jobs:
         cd qcschema_json
         ls -l
         pwd
-        cp -p ../../qcschema/* .
+        cp -p ../../QCElemental/qcschema/* .
         git diff
 
 #    - name: CodeCov  
