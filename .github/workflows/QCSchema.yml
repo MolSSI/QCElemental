@@ -52,33 +52,30 @@ jobs:
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
         conda list --show-channel-urls
-        pwd
-        ls -l
 
-    - name: QCSchema
+    - name: QCSchema from QCElemental
       shell: bash
+      working-directory: ./qcel
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
-        pwd
-        ls -l
-        cd qcel
+        #cd qcel
         make qcschema
         ls -l qcschema
-        #git clone https://github.com/loriab/QCSchema.git
-        #cd QCSchema
-        #git checkout py2json
-        #cd qcschema_json
-        #ls -l
-        #pwd
-        #cp -p ../../QCElemental/qcschema/* .
+        cp -p qcschema/* ../qcsk/qcschema_json/
+        #cd ../qcsk/qcschema_json
+        #cp -p ../../qcel/qcschema/* .
         #git diff
-        cd ../qcsk/qcschema_json
-        ls -l
-        cp -p ../../qcel/qcschema/* .
-        git diff
         # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
         #       rather than the python module of the current repo
 
+    - name ASDF
+      shell: bash
+      working-directory: ./qcsk
+      run: |
+        git diff
+        echo ${GITHUB_REF}
+        pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        echo ${pull_number}
 
 #    - name: CodeCov  
 #      uses: codecov/codecov-action@v1
