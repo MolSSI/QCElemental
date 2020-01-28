@@ -20,7 +20,7 @@ class Provenance(ProtoModel):
     """
 
     creator: str = Field(..., description="The creator of the object.")
-    version: Optional[str] = Field(None, description="The version of the creator.")
+    version: Optional[str] = Field(None, description="The version of the creator, which should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).")
     routine: Optional[str] = Field(None, description="The routine of the creator.")
 
     class Config(ProtoModel.Config):
