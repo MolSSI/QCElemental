@@ -14,7 +14,19 @@ jobs:
       CONDA_ENV: ${{ matrix.conda-env }}
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        path: qcel
+
+    - name: Checkout schema repo
+      uses: actions/checkout@v2
+      with:
+        repository: loriab/QCSchema
+        #repository: MolSSI/QCSchema
+        path: qcsk
+        ref: py2json
+        #ref: master
 
     - name: Python Setup
       uses: actions/setup-python@v1
@@ -39,22 +51,31 @@ jobs:
         eval "$(conda shell.bash hook)" && conda activate test
         conda list --show-channel-urls
         pwd
+        ls -l
 
     - name: QCSchema
       shell: bash
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
+        pwd
+        ls -l
+        cd qcel
         make qcschema
         ls -l qcschema
         cd ..
-        git clone https://github.com/loriab/QCSchema.git
-        cd QCSchema
-        git checkout py2json
-        cd qcschema_json
+        #git clone https://github.com/loriab/QCSchema.git
+        #cd QCSchema
+        #git checkout py2json
+        #cd qcschema_json
+        #ls -l
+        #pwd
+        #cp -p ../../QCElemental/qcschema/* .
+        #git diff
+        cd qcsk
         ls -l
-        pwd
         cp -p ../../QCElemental/qcschema/* .
         git diff
+
 
 #    - name: CodeCov  
 #      uses: codecov/codecov-action@v1
