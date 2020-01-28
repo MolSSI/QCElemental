@@ -43,6 +43,11 @@ data: cpu_data
 cpu_data:
 	(cd raw_data/cpu_data; python build_cpu_data.py; mv cpu_data_blob.py ../../qcelemental/info/data/)
 
+.PHONY: qcschema
+qcschema: #install
+	mkdir -p qcschema
+	echo -e "import qcelemental as qcel\nfrom pathlib import Path\nfor md in [qcel.models.Provenance, qcel.models.AtomicResultProperties]:\n\tmfile = (Path('qcschema') / md.__name__).with_suffix('.json')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))" | python
+
 .PHONY: clean
 clean:
 	rm -rf `find . -name __pycache__`
