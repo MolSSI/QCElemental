@@ -1,21 +1,17 @@
 # QCElemental
 
 QCElemental is a project collecting fundamental tools for computational 
-molecular sciences (CMS) into a lightweight, light-dependency Python
-interface. It is superintended by the Molecular Sciences Software
+molecular sciences (CMS) into a lightweight Python
+interface. It is matained by the Molecular Sciences Software
 Institute (MolSSI) and contributed to by a number of community CMS code 
 developers and users.
 
-The project welcomes new contributions and comments! However, it 
-needs to remain lightweight and stable for downstream dependencies, so
-contributions are subject to several testing coverage, static analysis,
-and formatting tools, as well as dependency and content curation.
-If you've a contribution idea beyond a simple enhancement, please ask
-here in an issue or follow the "chat on slack" badge on
+The project welcomes new contributions and comments!
+Pull requested are tested and linted to ensure code integrity and quality.
+New features are encouraged to first open a new issue or follow the
+"chat on slack" badge on the
 [README.md](https://github.com/MolSSI/QCElemental/blob/master/README.md)
-to the QCElemental user group. QCElemental is part of a software
-ecosystem at MolSSI, so it may be that even if your plan
-doesn't fit in this repository, we can suggest a place it will.
+to the QCArchive worksapce.
 
 # How to contribute
 
