@@ -28,7 +28,7 @@ Enhancements
 - (:pr:`179`, :pr:`181`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
   Pint 0.10 has optional NumPy dependency of >=1.12.0, so QCElemental that requires both NumPy and pint needs this constraint.
 - (:pr:`172`, :pr:`173`, :pr:`202`) Contribution workflow improvements, including GitHub Actions checking and ``make format`` guidance.
-- (:pr:`189`, :pr:`196`) Constants and unit conversion are now based on 2018 CODATA (previously 2014).
+- (:pr:`189`, :pr:`196`) Constants and unit conversion based on 2018 CODATA are available (but 2014 remains the default).
 - (:pr:`197`, :pr:`199`, :pr:`200`) Added more atomic units and aliases (e.g. ``au_length = bohr``).
 - (:pr:`190`, :pr:`191`, :pr:`201`) Slim molecules. Many fields in ``Molecule`` objects may be optionally inferred.
 
