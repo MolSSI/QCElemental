@@ -14,21 +14,29 @@ Changelog
 .. +++++++++
 
 
-0.13.0 / 2020-01-DD
+0.13.0 / 2020-01-29
 -------------------
 
 New Features
 ++++++++++++
 - (:pr:`179`, :pr:`181`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
   Pint 0.10 has optional NumPy dependency of >=1.12.0, so QCElemental that requires both NumPy and pint needs this constraint.
+- (:pr:`183`, :pr:`187`) Added metadata about DFT functionals (``qcelemental.info.dftfunctionalinfo``).
+- (:pr:`184`) Optional PubChem identifiers were added to molecules.
+- (:pr:`187`, :pr:`192`, :pr:`195`) Added metadata about CPUs (``qcelemental.info.cpu_info``).
 
 Enhancements
 ++++++++++++
-- (:pr:`172`, :pr:`173`) Contribution workflow improvements, including GitHub Actions checking and ``make format`` guidance.
+- (:pr:`172`, :pr:`173`, :pr:`202`) Contribution workflow improvements, including GitHub Actions checking and ``make format`` guidance.
+- (:pr:`189`, :pr:`196`) Constants and unit conversion are now based on 2018 CODATA (previously 2014).
+- (:pr:`197`, :pr:`199`, :pr:`200`) Added more atomic units and aliases (e.g. ``au_length = bohr``).
+- (:pr:`190`, :pr:`191`, :pr:`201`) Slim molecules. Many field in ``Molecule`` objects may be optionally inferred.
 
 Bug Fixes
 +++++++++
 - (:pr:`174`) Fix ``compare_recursive`` for when expected is a list but computed is not.
+- (:pr:`177`) Spelling and type hint fixes.
+- (:pr:`180`) Better test coverage.
 
 
 0.12.0 / 2019-11-13
