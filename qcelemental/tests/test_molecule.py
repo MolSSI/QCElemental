@@ -69,12 +69,14 @@ def test_molecule_data_constructor_numpy():
     ],
 )
 def test_order_molecular_formula(input, order, expected):
-    assert Molecule.order_molecular_formula(input, order) == expected
+    assert Molecule.order_molecular_formula(input, order=order) == expected
 
 
 def test_bad_formula_order():
     with pytest.raises(ValueError):
-        Molecule.order_molecular_formula("CH4", "disorder")
+        Molecule.order_molecular_formula("CH4", order="disorder")
+    with pytest.raises(ValueError):
+        Molecule.order_molecular_formula("ch4")
 
 
 def test_molecule_data_constructor_dict():

@@ -735,7 +735,12 @@ class Molecule(ProtoModel):
         Pararmeters
         -----------
         order: str, optional
-            sorting order of the formula. Valid choices are "alphabetical" and "hill".
+            Sorting order of the formula. Valid choices are "alphabetical" and "hill".
+
+        Returns
+        -------
+        str
+            The molecular formula.
 
         Examples
         --------
@@ -758,7 +763,7 @@ class Molecule(ProtoModel):
         ClH
 
         """
-        return self._formula_from_symbols(self.symbols, order)
+        return self._formula_from_symbols(symbols=self.symbols, order=order)
 
     @staticmethod
     def _formula_from_symbols(symbols: List[str], order: str = "alphabetical") -> str:
@@ -770,21 +775,22 @@ class Molecule(ProtoModel):
         symbols: List[str]
             List of chemical symbols
         order: str, optional
-            sorting order of the formula. Valid choices are "alphabetical" and "hill".
+            Sorting order of the formula. Valid choices are "alphabetical" and "hill".
 
         Returns
         -------
         str
-            The molecular formula
+            The molecular formula.
         """
 
         supported_orders = ["alphabetical", "hill"]
-        if order.lower() not in supported_orders:
+        order = order.lower()
+        if order not in supported_orders:
             raise ValueError(f"Unsupported molecular formula order: {order}. Supported orders are f{supported_orders}.")
         count = collections.Counter(x.title() for x in symbols)
         element_order = sorted(count.keys())
 
-        if order.lower() == "hill" and "C" in element_order:
+        if order == "hill" and "C" in element_order:
             if "H" in element_order:
                 element_order.insert(0, element_order.pop(element_order.index("H")))
             element_order.insert(0, element_order.pop(element_order.index("C")))
@@ -808,18 +814,20 @@ class Molecule(ProtoModel):
         formula: str
             A molecular formula
         order: str, optional
-            sorting order of the formula. Valid choices are "alphabetical" and "hill".
+            Sorting order of the formula. Valid choices are "alphabetical" and "hill".
 
         Returns
         -------
         str
-            The molecular formula
+            The molecular formula.
         """
 
-        matches = re.findall("[A-Z][^A-Z]*", formula)
+        matches = re.findall(r"[A-Z][^A-Z]*", formula)
+        if not "".join(matches) == formula:
+            raise ValueError(f"{formula} is not a valid molecular formula.")
         count = collections.defaultdict(int)
         for match in matches:
-            match_n = re.match("(\D+)(\d*)", match)
+            match_n = re.match(r"(\D+)(\d*)", match)
             assert match_n
             if match_n.group(2) == "":
                 n = 1
