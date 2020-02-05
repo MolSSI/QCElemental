@@ -811,7 +811,6 @@ class Molecule(ProtoModel):
         str
             The molecular formula
         """
-        """Converts a chemical formula to alphabetical order, matching behavior in qcel"""
 
         matches = re.findall("[A-Z][^A-Z]*", formula)
         count = collections.defaultdict(int)
