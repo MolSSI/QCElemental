@@ -6,7 +6,7 @@ import pytest
 import qcelemental
 from qcelemental.testing import compare_molrecs, tnm
 
-from .addons import using_web
+from .addons import using_web, xfail_on_pubchem_busy
 
 _string_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_string"}
 
@@ -72,7 +72,8 @@ def test_pubchem_4a():
     fullans = copy.deepcopy(fullans4)
     fullans["provenance"] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    with xfail_on_pubchem_busy():
+        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans4, intermed, tnm() + ": intermediate")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
@@ -83,7 +84,8 @@ def test_pubchem_4b():
     subject = subject4 + "\nunits au"
 
     with pytest.raises(qcelemental.MoleculeFormatError):
-        qcelemental.molparse.from_string(subject, return_processed=True)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 @using_web
@@ -97,7 +99,8 @@ pubchem  : 241
     fullans["name"] = "benzene"
     fullans["provenance"] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name="benzene", verbose=2)
+    with xfail_on_pubchem_busy():
+        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True, name="benzene", verbose=2)
     assert compare_molrecs(ans, intermed, tnm() + ": intermediate")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
@@ -108,7 +111,8 @@ def test_pubchem_error_d():
 """
 
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.from_string(subject, return_processed=True)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 def test_pubchem_error_e():
@@ -119,7 +123,8 @@ pubchem : sodium benzenesulfonate
 """
 
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.from_string(subject)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject)
 
 
 def test_pubchem_error_f():
@@ -128,7 +133,8 @@ def test_pubchem_error_f():
 """
 
     with pytest.raises(qcelemental.ValidationError):
-        qcelemental.molparse.from_string(subject, return_processed=True)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject, return_processed=True)
 
 
 @using_web
@@ -141,10 +147,12 @@ def test_pubchem_multiout_g():
 """
 
     with pytest.raises(qcelemental.ChoicesError) as e:
-        qcelemental.molparse.from_string(subject, return_processed=True)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject, return_processed=True)
 
     try:
-        qcelemental.molparse.from_string(subject, return_processed=True)
+        with xfail_on_pubchem_busy():
+            qcelemental.molparse.from_string(subject, return_processed=True)
     except qcelemental.ChoicesError as e:
         assert e.choices[10789] == "2-hydroxycyclohepta-2,4,6-trien-1-one"
         assert e.choices[193687] == "2-hydroxy-3-iodo-6-propan-2-ylcyclohepta-2,4,6-trien-1-one"
@@ -202,7 +210,8 @@ def test_pubchem_13h():
     fullans = copy.deepcopy(fullans13)
     fullans["provenance"] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    with xfail_on_pubchem_busy():
+        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans13, intermed, tnm() + ": intermediate")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
@@ -213,6 +222,7 @@ def test_pubchem_13i():
     fullans = copy.deepcopy(fullans13)
     fullans["provenance"] = _string_prov_stamp
 
-    final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
+    with xfail_on_pubchem_busy():
+        final, intermed = qcelemental.molparse.from_string(subject, return_processed=True)
     assert compare_molrecs(ans13, intermed, tnm() + ": intermediate")
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
