@@ -2,7 +2,6 @@
 Molecule Object Model
 """
 
-import collections
 import hashlib
 import json
 import warnings
@@ -729,10 +728,19 @@ class Molecule(ProtoModel):
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
 
-    def get_molecular_formula(self):
+    def get_molecular_formula(self, order: str = "alphabetical") -> str:
         """
-        Returns the molecular formula for a molecule. Atom symbols are sorted from
-        A-Z.
+        Returns the molecular formula for a molecule.
+
+        Pararmeters
+        -----------
+        order: str, optional
+            Sorting order of the formula. Valid choices are "alphabetical" and "hill".
+
+        Returns
+        -------
+        str
+            The molecular formula.
 
         Examples
         --------
@@ -755,16 +763,10 @@ class Molecule(ProtoModel):
         ClH
 
         """
-        count = collections.Counter(x.title() for x in self.symbols)
 
-        ret = []
-        for k in sorted(count.keys()):
-            c = count[k]
-            ret.append(k)
-            if c > 1:
-                ret.append(str(c))
+        from ..molutil import molecular_formula_from_symbols
 
-        return "".join(ret)
+        return molecular_formula_from_symbols(symbols=self.symbols, order=order)
 
     ### Constructors
 

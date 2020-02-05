@@ -47,6 +47,8 @@ def test_molecule_data_constructor_numpy():
     water_from_np = Molecule.from_data(npwater, name="water dimer", frags=[3])
     assert water_psi == water_from_np
     assert water_psi.get_molecular_formula() == "H4O2"
+    assert water_psi.get_molecular_formula(order="alphabetical") == "H4O2"
+    assert water_psi.get_molecular_formula(order="hill") == "H4O2"
 
 
 def test_molecule_data_constructor_dict():
