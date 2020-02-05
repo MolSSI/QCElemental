@@ -5,6 +5,7 @@ Molecule Object Model
 import collections
 import hashlib
 import json
+import re
 import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
@@ -727,10 +728,14 @@ class Molecule(ProtoModel):
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
 
-    def get_molecular_formula(self):
+    def get_molecular_formula(self, order: str = "alphabetical") -> str:
         """
-        Returns the molecular formula for a molecule. Atom symbols are sorted from
-        A-Z.
+        Returns the molecular formula for a molecule.
+
+        Pararmeters
+        -----------
+        order: str, optional
+            sorting order of the formula. Valid choices are "alphabetical" and "hill".
 
         Examples
         --------
@@ -753,16 +758,73 @@ class Molecule(ProtoModel):
         ClH
 
         """
-        count = collections.Counter(x.title() for x in self.symbols)
+        return self._formula_from_symbols(self.symbols, order)
+
+    @staticmethod
+    def _formula_from_symbols(symbols: List[str], order: str = "alphabetical") -> str:
+        """
+        Returns the molecular formula for a list of symbols.
+
+        Pararmeters
+        -----------
+        symbols: List[str]
+            List of chemical symbols
+        order: str, optional
+            sorting order of the formula. Valid choices are "alphabetical" and "hill".
+
+        Returns
+        -------
+        str
+            The molecular formula
+        """
+        count = collections.Counter(x.title() for x in symbols)
+        element_order = sorted(count.keys())
+
+        if order.lower() == "hill" and "C" in element_order:
+            if "H" in element_order:
+                element_order.insert(0, element_order.pop(element_order.index("H")))
+            element_order.insert(0, element_order.pop(element_order.index("C")))
 
         ret = []
-        for k in sorted(count.keys()):
+        for k in element_order:
             c = count[k]
             ret.append(k)
             if c > 1:
                 ret.append(str(c))
 
         return "".join(ret)
+
+    @staticmethod
+    def order_molecular_formula(formula: str, order: str = "alphabetical") -> str:
+        """
+        Reorders a molecular formula.
+
+        Pararmeters
+        -----------
+        formula: str
+            A molecular formula
+        order: str, optional
+            sorting order of the formula. Valid choices are "alphabetical" and "hill".
+
+        Returns
+        -------
+        str
+            The molecular formula
+        """
+        """Converts a chemical formula to alphabetical order, matching behavior in qcel"""
+
+        matches = re.findall("[A-Z][^A-Z]*", formula)
+        count = collections.defaultdict(int)
+        for match in matches:
+            match_n = re.match("(\D+)(\d*)", match)
+            assert match_n
+            if match_n.group(2) == "":
+                n = 1
+            else:
+                n = int(match_n.group(2))
+            count[match_n.group(1)] += n
+        symbols = [k for k, v in count.items() for i in range(v)]
+        return Molecule._formula_from_symbols(symbols=symbols, order=order)
 
     ### Constructors
 
