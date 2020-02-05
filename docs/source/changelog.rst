@@ -13,6 +13,17 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.13.1 / 2020-02-05
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`209`) Added the option to Hill-order molecular formulas.
+
+Bug Fixes
++++++++++
+- (:pr:`208`) Fixes a Molecule hashing issue due to order of operations changes in ``Molecule.from_data``.
+
 
 0.13.0 / 2020-01-29
 -------------------
