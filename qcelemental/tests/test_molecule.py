@@ -72,6 +72,11 @@ def test_order_molecular_formula(input, order, expected):
     assert Molecule.order_molecular_formula(input, order) == expected
 
 
+def test_bad_formula_order():
+    with pytest.raises(ValueError):
+        Molecule.order_molecular_formula("CH4", "disorder")
+
+
 def test_molecule_data_constructor_dict():
     water_psi = water_dimer_minima.copy()
 

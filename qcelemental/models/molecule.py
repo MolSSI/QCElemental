@@ -777,6 +777,10 @@ class Molecule(ProtoModel):
         str
             The molecular formula
         """
+
+        supported_orders = ["alphabetical", "hill"]
+        if order.lower() not in supported_orders:
+            raise ValueError(f"Unsupported molecular formula order: {order}. Supported orders are f{supported_orders}.")
         count = collections.Counter(x.title() for x in symbols)
         element_order = sorted(count.keys())
 
