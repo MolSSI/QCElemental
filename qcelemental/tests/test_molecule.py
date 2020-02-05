@@ -73,6 +73,32 @@ def test_molecule_data_constructor_error():
         Molecule.from_data({}, dtype="bad")
 
 
+def test_hash_canary():
+    water_dimer_minima = Molecule.from_data(
+        """
+    0 1
+    O  -1.551007  -0.114520   0.000000
+    H  -1.934259   0.762503   0.000000
+    H  -0.599677   0.040712   0.000000
+    --
+    O   1.350625   0.111469   0.000000
+    H   1.680398  -0.373741  -0.758561
+    H   1.680398  -0.373741   0.758561
+    """,
+        dtype="psi4",
+    )
+    assert water_dimer_minima.get_hash() == "42f3ac52af52cf2105c252031334a2ad92aa911c"
+
+    # Check orientation
+    mol = water_dimer_minima.orient_molecule()
+    assert mol.get_hash() == "632490a0601500bfc677e9277275f82fbc45affe"
+
+    frag_0 = mol.get_fragment(0, orient=True)
+    frag_1 = mol.get_fragment(1, orient=True)
+    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"
+    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"
+
+
 def test_molecule_np_constructors():
     """
     Neon tetramer fun

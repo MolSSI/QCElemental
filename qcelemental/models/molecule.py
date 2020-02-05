@@ -275,6 +275,8 @@ class Molecule(ProtoModel):
         if validate is None:
             validate = not kwargs.get("validated", False)
 
+        geometry_prep = kwargs.pop("_geometry_prep", False)
+
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
@@ -298,7 +300,7 @@ class Molecule(ProtoModel):
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
-        elif validate:
+        elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
     @validator("geometry")
@@ -816,6 +818,7 @@ class Molecule(ProtoModel):
             input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
+            input_dict["_geometry_prep"] = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -827,6 +830,7 @@ class Molecule(ProtoModel):
             input_dict = to_schema(from_arrays(**data), dtype=2, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
+            input_dict["_geometry_prep"] = True
         elif dtype == "msgpack":
             assert isinstance(data, bytes)
             input_dict = msgpackext_loads(data)
