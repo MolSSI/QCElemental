@@ -572,3 +572,31 @@ def test_guess_connectivity(args, kwargs, ans):
 
     computed = qcel.molutil.guess_connectivity(*args, **kwargs)
     assert compare(computed, ans)
+
+
+@pytest.mark.parametrize(
+    "input,order,expected",
+    [
+        ("NH3", "alphabetical", "H3N"),
+        ("NH3", "hill", "H3N"),
+        ("CH4", "alphabetical", "CH4"),
+        ("CH4", "hill", "CH4"),
+        ("IBr", "alphabetical", "BrI"),
+        ("IBr", "hill", "BrI"),
+        ("CCl4", "alphabetical", "CCl4"),
+        ("CCl4", "hill", "CCl4"),
+        ("CBr4", "alphabetical", "Br4C"),
+        ("CBr4", "hill", "CBr4"),
+        ("CBrH3", "alphabetical", "BrCH3"),
+        ("CBrH3", "hill", "CH3Br"),
+    ],
+)
+def test_order_molecular_formula(input, order, expected):
+    assert qcel.molutil.order_molecular_formula(input, order=order) == expected
+
+
+def test_bad_formula_order():
+    with pytest.raises(ValueError):
+        qcel.molutil.order_molecular_formula("CH4", order="disorder")
+    with pytest.raises(ValueError):
+        qcel.molutil.order_molecular_formula("ch4")

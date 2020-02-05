@@ -51,34 +51,6 @@ def test_molecule_data_constructor_numpy():
     assert water_psi.get_molecular_formula(order="hill") == "H4O2"
 
 
-@pytest.mark.parametrize(
-    "input,order,expected",
-    [
-        ("NH3", "alphabetical", "H3N"),
-        ("NH3", "hill", "H3N"),
-        ("CH4", "alphabetical", "CH4"),
-        ("CH4", "hill", "CH4"),
-        ("IBr", "alphabetical", "BrI"),
-        ("IBr", "hill", "BrI"),
-        ("CCl4", "alphabetical", "CCl4"),
-        ("CCl4", "hill", "CCl4"),
-        ("CBr4", "alphabetical", "Br4C"),
-        ("CBr4", "hill", "CBr4"),
-        ("CBrH3", "alphabetical", "BrCH3"),
-        ("CBrH3", "hill", "CH3Br"),
-    ],
-)
-def test_order_molecular_formula(input, order, expected):
-    assert Molecule.order_molecular_formula(input, order=order) == expected
-
-
-def test_bad_formula_order():
-    with pytest.raises(ValueError):
-        Molecule.order_molecular_formula("CH4", order="disorder")
-    with pytest.raises(ValueError):
-        Molecule.order_molecular_formula("ch4")
-
-
 def test_molecule_data_constructor_dict():
     water_psi = water_dimer_minima.copy()
 
