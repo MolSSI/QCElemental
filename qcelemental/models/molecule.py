@@ -2,10 +2,8 @@
 Molecule Object Model
 """
 
-import collections
 import hashlib
 import json
-import re
 import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
