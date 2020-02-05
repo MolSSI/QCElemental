@@ -732,8 +732,8 @@ class Molecule(ProtoModel):
         """
         Returns the molecular formula for a molecule.
 
-        Pararmeters
-        -----------
+        Parameters
+        ----------
         order: str, optional
             Sorting order of the formula. Valid choices are "alphabetical" and "hill".
 

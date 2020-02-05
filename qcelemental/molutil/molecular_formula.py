@@ -7,8 +7,8 @@ def order_molecular_formula(formula: str, order: str = "alphabetical") -> str:
     """
     Reorders a molecular formula.
 
-    Pararmeters
-    -----------
+    Parameters
+    ----------
     formula: str
         A molecular formula
     order: str, optional
@@ -40,8 +40,8 @@ def molecular_formula_from_symbols(symbols: List[str], order: str = "alphabetica
     """
     Returns the molecular formula for a list of symbols.
 
-    Pararmeters
-    -----------
+    Parameters
+    ----------
     symbols: List[str]
         List of chemical symbols
     order: str, optional
