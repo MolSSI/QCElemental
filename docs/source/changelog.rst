@@ -23,6 +23,9 @@ New Features
 Bug Fixes
 +++++++++
 - (:pr:`208`) Fixes a Molecule hashing issue due to order of operations changes in ``Molecule.from_data``.
+  The order of operations changed in ``Molecule.from_data`` and occasionally resulted in different hashes for Molecules
+  undergoing orient operations. This issue was introduced in 0.13.0 and is unlikely to have any serious negative effects
+  as this did not affect hash integrity.
 
 
 0.13.0 / 2020-01-29
