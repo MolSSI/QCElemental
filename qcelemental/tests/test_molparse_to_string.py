@@ -162,6 +162,21 @@ dummy,2
 set,charge=0.0
 set,spin=2
 """,
+    "ans2_orca_au": """
+! Bohrs
+*xyz 0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+*
+""",
+    "ans2_orca_ang": """
+*xyz 0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+*
+""",
     "ans2_turbomole_au": """$coord
    0.000000000000     0.000000000000     0.000000000000  co
    2.000000000000     0.000000000000     0.000000000000  h
@@ -202,6 +217,8 @@ QCElemental
         (("subject2", {"dtype": "psi4", "units": "bohr"}), "ans2_psi4_au"),
         (("subject2", {"dtype": "molpro", "units": "bohr"}), "ans2_molpro_au"),
         (("subject2", {"dtype": "molpro", "units": "angstrom"}), "ans2_molpro_ang"),
+        (("subject2", {"dtype": "orca", "units": "bohr"}), "ans2_orca_au"),
+        (("subject2", {"dtype": "orca", "units": "angstrom"}), "ans2_orca_ang"),
         (("subject2", {"dtype": "turbomole", "units": "bohr"}), "ans2_turbomole_au"),
         (("subject2", {"dtype": "nglview-sdf"}), "ans2_ngslviewsdf"),
         (("subject2", {"dtype": "qchem", "units": "bohr"}), "ans2_qchem_au"),
