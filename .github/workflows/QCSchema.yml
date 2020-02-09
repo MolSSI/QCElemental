@@ -1,6 +1,6 @@
 name: QCSchema
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -70,9 +70,7 @@ jobs:
       run: |
         git diff --color-words
         pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        echo ${pull_number}
         branch=qcel-${pull_number}
-        echo ${branch}
         git checkout -b ${branch}
         git remote -v
         git config --global user.email "lori.burns@gmail.com"
@@ -81,15 +79,3 @@ jobs:
         git commit -m "auto-generated from QCElemental"
         git push origin ${branch}
 
-#    - name: CodeCov  
-#      uses: codecov/codecov-action@v1
-#      with:
-#        token: ${{ secrets.CODECOV_TOKEN }}
-#        file: ./coverage.xml
-#        flags: unittests
-#        yml: ./.codecov.yml 
-#
-
-#####
-#   pull_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-#####
