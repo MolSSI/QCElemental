@@ -51,7 +51,9 @@ class AtomicResultProperties(ProtoModel):
         description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
     )
     scf_dipole_moment: Optional[Array[float]] = Field(None, description="The X, Y, and Z dipole components.")
-    scf_quadrupole_moment: Optional[Array[float]] = Field(None, description="The (3, 3) quadrupole components (redundant; 6 unique).")
+    scf_quadrupole_moment: Optional[Array[float]] = Field(
+        None, description="The (3, 3) quadrupole components (redundant; 6 unique)."
+    )
     scf_total_energy: Optional[float] = Field(
         None, description="The total electronic energy of the SCF stage of the calculation."
     )
