@@ -1,4 +1,4 @@
-name: Lint
+name: Format
 
 on: [push, pull_request]
 
@@ -21,7 +21,7 @@ jobs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -e '.[lint]'
+        python -m pip install black
 
     - name: Lint
       shell: bash
