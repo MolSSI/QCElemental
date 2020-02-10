@@ -261,6 +261,25 @@ class WavefunctionProtocolEnum(str, Enum):
     none = "none"
 
 
+class ErrorCorrectionProtocol(ProtoModel):
+    """Configuration for how QCEngine handles error correction"""
+
+    default_policy: bool = Field(
+        True, description="Whether to allow error corrections to be used " "if not directly specified in `policies`"
+    )
+    # TODO (wardlt): Consider support for common policies (e.g., 'only increase iterations') as strings (see #182)
+    policies: Optional[Dict[str, bool]] = Field(
+        None,
+        description="Settings that define whether specific error corrections are allowed. "
+        "Keys are the name of a known error and values are whether it is allowed to be used.",
+    )
+
+    def allows(self, policy: str):
+        if self.policies is None:
+            return self.default_policy
+        return self.policies.get(policy, self.default_policy)
+
+
 class AtomicResultProtocols(ProtoModel):
     """
     Protocols regarding the manipulation of a Result output data.
@@ -270,15 +289,8 @@ class AtomicResultProtocols(ProtoModel):
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
-    error_correction_default_policy: bool = Field(
-        True,
-        description="Whether to allow error corrections to be used "
-        "if not directly specified in `error_correction_policy`",
-    )
-    error_correction_policy: Optional[Dict[str, bool]] = Field(
-        None,
-        description="Settings that define whether specific error corrections are allowed. "
-        "Keys are the name of a known error and values are whether it is allowed to be used.",
+    error_correction: ErrorCorrectionProtocol = Field(
+        ErrorCorrectionProtocol(), description="Policies for error correction"
     )
 
     class Config:
