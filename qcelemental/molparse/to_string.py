@@ -148,7 +148,6 @@ def to_string(
         umap = {"bohr": "! Bohrs", "angstrom": None}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
-        nat = len(atoms)
 
         first_line = """"""
 
