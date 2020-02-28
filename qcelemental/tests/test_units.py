@@ -111,7 +111,7 @@ def test_unit_conversion_other(from_unit, to_unit, expecteds, constantss, contex
 
     # Expected to a relative tolerance as the number of digits plus one for rounding
     # Using float comparisons as we are taking an (1 / float) inverse in the conversion code
-    rel_tol = float("10e-{}".format(len(expected.as_tuple().digits) + 1))
+    rel_tol = float("10e-{}".format(len(expected.as_tuple().digits)))
     assert pytest.approx(float(inv_expected), rel_tol) == float(to_from_value)
 
 
