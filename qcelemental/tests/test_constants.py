@@ -5,8 +5,7 @@ import pytest
 
 import qcelemental
 
-_pc_default = "2014"
-_ctxt = ["default", "2014", "2018"]
+_pc_default = qcelemental.constants.name[-4:]
 
 
 @pytest.fixture(scope="module")
@@ -18,32 +17,29 @@ def constantss():
     }
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1a(constantss, context):
     assert constantss[context].c == 299792458
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1b(constantss, context):
     assert constantss[context].speed_of_light_in_vacuum == 299792458
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1c(constantss, context):
     assert constantss[context].pc["speed of light in vacuum"].data == 299792458
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1d(constantss, context):
     assert constantss[context].get("speed of light in vacuum") == 299792458
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1e(constantss, context):
-    if context == "2014" or (context == "default" and _pc_default == "2014"):
-        doi = "10.18434/T4WW24"
-    elif context == "2018" or (context == "default" and _pc_default == "2018"):
-        doi = ""
+    _, doi, _ = _eV_by_context(context)
 
     qca = constantss[context].get("speed of light in vacuum", return_tuple=True)
 
@@ -53,48 +49,45 @@ def test_access_1e(constantss, context):
     assert qca.data == 299792458
 
 
-@pytest.mark.parametrize("context", _ctxt)
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
 def test_access_1f(constantss, context):
     assert constantss[context].get("speed of LIGHT in vacuum") == 299792458
 
 
-_eV_2014 = "27.21138602"
-_eV_2018 = "27.211386245988"
-_eV_ans = [
-    ("default", {"2014": _eV_2014, "2018": _eV_2018}[_pc_default]),
-    ("2014", _eV_2014),
-    ("2018", _eV_2018),
-]
+def _eV_by_context(context):
+    if context == "2014" or (context == "default" and _pc_default == "2014"):
+        return ("27.21138602", "10.18434/T4WW24", "uncertainty=0.000 000 17")
+    elif context == "2018" or (context == "default" and _pc_default == "2018"):
+        return ("27.211386245988", "", "uncertainty=0.000 000 000 053")
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2a(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2a(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     assert constantss[context].Hartree_energy_in_eV == float(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2b(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2b(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     assert constantss[context].hartree2ev == float(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2c(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2c(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     assert constantss[context].pc["hartree energy in ev"].data == Decimal(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2d(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2d(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     assert constantss[context].get("hartree energy in ev") == float(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2e(constantss, context, ans):
-    if context == "2014" or (context == "default" and _pc_default == "2014"):
-        doi = "10.18434/T4WW24"
-        comment = "uncertainty=0.000 000 17"
-    elif context == "2018" or (context == "default" and _pc_default == "2018"):
-        doi = ""
-        comment = "uncertainty=0.000 000 000 053"
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2e(constantss, context):
+    ans, doi, comment = _eV_by_context(context)
 
     qca = constantss[context].get("Hartree energy in eV", return_tuple=True)
     print(qca)
@@ -105,13 +98,15 @@ def test_access_2e(constantss, context, ans):
     assert qca.data == Decimal(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2f(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2f(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     assert constantss[context].get("hARTREE energy in eV") == float(ans)
 
 
-@pytest.mark.parametrize("context,ans", _eV_ans)
-def test_access_2g(constantss, context, ans):
+@pytest.mark.parametrize("context", ["default", "2014", "2018"])
+def test_access_2g(constantss, context):
+    ans, _, _ = _eV_by_context(context)
     ref = {"label": "Hartree energy in eV", "units": "eV", "data": Decimal(ans)}
     dqca = constantss[context].get("Hartree energy in eV", return_tuple=True).dict()
 

@@ -115,7 +115,7 @@ def test_qcschema_ang_error(dtype):
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final["qm"], dtype=dtype, units="Angstrom")
 
-    assert f"QC_JSON_Schema {dtype} allows only 'Bohr' coordinates" in str(e.value)
+    assert f"QCSchema {dtype} allows only 'Bohr' coordinates" in str(e.value)
 
 
 def test_psi4_nm_error():

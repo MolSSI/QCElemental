@@ -64,7 +64,7 @@ def to_schema(
 
     elif dtype in [1, 2]:
         if units != "Bohr":
-            raise ValidationError("""QC_JSON_Schema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
+            raise ValidationError("""QCSchema {} allows only 'Bohr' coordinates, not {}.""".format(dtype, units))
 
         molecule: Dict = {}
         molecule["validated"] = True
