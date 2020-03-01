@@ -5,43 +5,46 @@ import pytest
 
 import qcelemental
 
-_pc_default = qcelemental.constants.name[-4:]
+
+@pytest.fixture(scope="module", params=[None, "CODATA2014", "CODATA2018"])
+def contexts(request):
+    if request.param:
+        constants = qcelemental.PhysicalConstantsContext(request.param)
+        context = request.param
+    else:
+        constants = qcelemental.constants
+        context = constants.name
+
+    if context == "CODATA2014":
+        return (constants, "27.21138602", "10.18434/T4WW24", "uncertainty=0.000 000 17")
+    elif context == "CODATA2018":
+        return (constants, "27.211386245988", "", "uncertainty=0.000 000 000 053")
 
 
-@pytest.fixture(scope="module")
-def constantss():
-    return {
-        "default": qcelemental.constants,
-        "2014": qcelemental.PhysicalConstantsContext("CODATA2014"),
-        "2018": qcelemental.PhysicalConstantsContext("CODATA2018"),
-    }
+def test_access_1a(contexts):
+    constants, _, _, _ = contexts
+    assert constants.c == 299792458
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1a(constantss, context):
-    assert constantss[context].c == 299792458
+def test_access_1b(contexts):
+    constants, _, _, _ = contexts
+    assert constants.speed_of_light_in_vacuum == 299792458
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1b(constantss, context):
-    assert constantss[context].speed_of_light_in_vacuum == 299792458
+def test_access_1c(contexts):
+    constants, _, _, _ = contexts
+    assert constants.pc["speed of light in vacuum"].data == 299792458
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1c(constantss, context):
-    assert constantss[context].pc["speed of light in vacuum"].data == 299792458
+def test_access_1d(contexts):
+    constants, _, _, _ = contexts
+    assert constants.get("speed of light in vacuum") == 299792458
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1d(constantss, context):
-    assert constantss[context].get("speed of light in vacuum") == 299792458
+def test_access_1e(contexts, request):
+    constants, _, doi, _ = contexts
 
-
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1e(constantss, context):
-    _, doi, _ = _eV_by_context(context)
-
-    qca = constantss[context].get("speed of light in vacuum", return_tuple=True)
+    qca = constants.get("speed of light in vacuum", return_tuple=True)
 
     assert qca.units == "m s^{-1}"
     assert qca.comment == "uncertainty=(exact)"
@@ -49,47 +52,35 @@ def test_access_1e(constantss, context):
     assert qca.data == 299792458
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_1f(constantss, context):
-    assert constantss[context].get("speed of LIGHT in vacuum") == 299792458
+def test_access_1f(contexts):
+    constants, _, _, _ = contexts
+    assert constants.get("speed of LIGHT in vacuum") == 299792458
 
 
-def _eV_by_context(context):
-    if context == "2014" or (context == "default" and _pc_default == "2014"):
-        return ("27.21138602", "10.18434/T4WW24", "uncertainty=0.000 000 17")
-    elif context == "2018" or (context == "default" and _pc_default == "2018"):
-        return ("27.211386245988", "", "uncertainty=0.000 000 000 053")
+def test_access_2a(contexts):
+    constants, ans, _, _ = contexts
+    assert constants.Hartree_energy_in_eV == float(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2a(constantss, context):
-    ans, _, _ = _eV_by_context(context)
-    assert constantss[context].Hartree_energy_in_eV == float(ans)
+def test_access_2b(contexts):
+    constants, ans, _, _ = contexts
+    assert constants.hartree2ev == float(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2b(constantss, context):
-    ans, _, _ = _eV_by_context(context)
-    assert constantss[context].hartree2ev == float(ans)
+def test_access_2c(contexts):
+    constants, ans, _, _ = contexts
+    assert constants.pc["hartree energy in ev"].data == Decimal(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2c(constantss, context):
-    ans, _, _ = _eV_by_context(context)
-    assert constantss[context].pc["hartree energy in ev"].data == Decimal(ans)
+def test_access_2d(contexts):
+    constants, ans, _, _ = contexts
+    assert constants.get("hartree energy in ev") == float(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2d(constantss, context):
-    ans, _, _ = _eV_by_context(context)
-    assert constantss[context].get("hartree energy in ev") == float(ans)
+def test_access_2e(contexts):
+    constants, ans, doi, comment = contexts
 
-
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2e(constantss, context):
-    ans, doi, comment = _eV_by_context(context)
-
-    qca = constantss[context].get("Hartree energy in eV", return_tuple=True)
+    qca = constants.get("Hartree energy in eV", return_tuple=True)
     print(qca)
 
     assert qca.units == "eV"
@@ -98,17 +89,15 @@ def test_access_2e(constantss, context):
     assert qca.data == Decimal(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2f(constantss, context):
-    ans, _, _ = _eV_by_context(context)
-    assert constantss[context].get("hARTREE energy in eV") == float(ans)
+def test_access_2f(contexts):
+    constants, ans, _, _ = contexts
+    assert constants.get("hARTREE energy in eV") == float(ans)
 
 
-@pytest.mark.parametrize("context", ["default", "2014", "2018"])
-def test_access_2g(constantss, context):
-    ans, _, _ = _eV_by_context(context)
+def test_access_2g(contexts):
+    constants, ans, _, _ = contexts
     ref = {"label": "Hartree energy in eV", "units": "eV", "data": Decimal(ans)}
-    dqca = constantss[context].get("Hartree energy in eV", return_tuple=True).dict()
+    dqca = constants.get("Hartree energy in eV", return_tuple=True).dict()
 
     for itm in ref:
         assert ref[itm] == dqca[itm]
