@@ -1,6 +1,6 @@
 name: QCSchema
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -27,9 +27,9 @@ jobs:
         path: qcsk
         ref: py2json
         #ref: master
-        #persist-credentials: false
+        persist-credentials: false
         fetch-depth: 0
-        token: ${{ secrets.QCSK_TOKEN }}
+        #token: ${{ secrets.QCSK_TOKEN }}
 
     - name: Python Setup
       uses: actions/setup-python@v1
@@ -67,7 +67,7 @@ jobs:
         # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
         #       rather than the python module of the current repo
 
-    - name: ASDF
+    - name: Generated vs. Stable
       shell: bash
       working-directory: ./qcsk
       run: |
