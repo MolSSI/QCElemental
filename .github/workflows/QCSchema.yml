@@ -79,17 +79,20 @@ jobs:
         git config --global user.name "Lori A. Burns"
         git add -A
         git commit -m "auto-generated from QCElemental"
-#        git push origin ${branch}
+        git push origin ${branch}
 
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        directory: ./qcsk
-        repository: loriab/QCSchema
-#        branch: ${branch}
-        branch: "qcel-204"
-        github_token: ${{ secrets.QCSK_TOKEN }}
+    #- name: Push changes
+    #  uses: ad-m/github-push-action@master
+    #  with:
+    #    directory: ./qcsk
+    #    repository: loriab/QCSchema
+#   #     branch: ${branch}
+    #    branch: "qcel-204"
+    #    github_token: ${{ secrets.QCSK_TOKEN }}
 
+#remote_repo="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
+
+#git push "${remote_repo}" HEAD:${INPUT_BRANCH} --follow-tags $_FORCE_OPTION $_TAGS;
 
 #Push to branch ${branch}
 #remote: Not Found
