@@ -83,9 +83,15 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         directory: ./qcsk
-        repository: https://github.com/loriab/QCSchema.git
-        branch: ${branch}
+        repository: loriab/QCSchema
+#        branch: ${branch}
+        branch: "qcel-204"
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
+#Push to branch ${branch}
+#remote: Not Found
+#fatal: repository 'https://github.com/https://github.com/loriab/QCSchema.git.git/' not found
 
 #github_token    string      Token for the repo. Can be passed in using ${{ secrets.GITHUB_TOKEN }}.
 #branch  string  'master'    Destination branch to push changes.
