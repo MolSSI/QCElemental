@@ -77,5 +77,38 @@ jobs:
         git config --global user.name "Lori A. Burns"
         git add -A
         git commit -m "auto-generated from QCElemental"
-        git push origin ${branch}
+#        git push origin ${branch}
 
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        directory: ./qcsk
+        repository: https://github.com/loriab/QCSchema.git
+        branch: ${branch}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+#github_token    string      Token for the repo. Can be passed in using ${{ secrets.GITHUB_TOKEN }}.
+#branch  string  'master'    Destination branch to push changes.
+#force   boolean false   Determines if force push is used.
+#tags    boolean false   Determines if --tags is used.
+#directory   string  '.' Directory to change to before pushing.
+#repository  string  ''  Repository name. Default or empty repository name represents current github repository. If you want to push to other repository, you should make a personal access token and use it as the github_token input.
+
+
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@master
+#    - name: Create local changes
+#      run: |
+#        ...
+#    - name: Commit files
+#      run: |
+#        git config --local user.email "action@github.com"
+#        git config --local user.name "GitHub Action"
+#        git commit -m "Add changes" -a
+#    - name: Push changes
+#      uses: ad-m/github-push-action@master
+#      with:
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
