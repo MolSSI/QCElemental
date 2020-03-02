@@ -86,7 +86,7 @@ jobs:
         repository: loriab/QCSchema
 #        branch: ${branch}
         branch: "qcel-204"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.QCSK_TOKEN }}
 
 
 #Push to branch ${branch}
