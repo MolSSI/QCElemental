@@ -53,7 +53,7 @@ def test_creation_error():
     [
         (("decimal", None), 4.4),
         (("decimal", "N/m"), 440),
-        (("decimal", "hartree/bohr/bohr"), 0.282614141011),
+        (("decimal", "hartree/bohr/bohr"), 0.282614141011 if qcel.constants.name == "CODATA2014" else 0.28261413658),
         (("ndarray", "1/m"), np.arange(4, dtype=np.float) * 400 / 3),
     ],
 )

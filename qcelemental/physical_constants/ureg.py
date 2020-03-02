@@ -75,6 +75,11 @@ def build_units_registry(context):
         "au_time": "atomic unit of time",
         "au_velocity": "atomic unit of velocity",
     }
+
+    # Accessing raw_codata here, so aliases in context.py not active
+    if context.name == "CODATA2018":
+        phys_const_map["au_momentum"] = "atomic unit of momentum"
+
     for k, v in phys_const_map.items():
         ureg.define(f"{k} = {phys_const[v]['value']} * {phys_const[v]['unit']}")
 

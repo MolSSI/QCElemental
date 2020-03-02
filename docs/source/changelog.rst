@@ -13,6 +13,22 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+X.Y.0 / 2020-MM-DD
+-------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`211`) Improve testing reliability by excusing PubChem when internet flaky.
+- (:pr:`216`) "CODATA2018" constants now tested.
+
+Bug Fixes
++++++++++
+- (:pr:`216`) Fixes a bug where "CODATA2018" constants could not be used with ``conversion_factor``.
+
+
 0.13.1 / 2020-02-05
 -------------------
 
