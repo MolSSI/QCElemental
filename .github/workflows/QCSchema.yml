@@ -15,12 +15,14 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      #uses: actions/checkout@v2
+      uses: actions/checkout@v1
       with:
         path: qcel
 
     - name: Checkout schema repo
-      uses: actions/checkout@v2
+      #uses: actions/checkout@v2
+      uses: actions/checkout@v1
       with:
         repository: loriab/QCSchema
         #repository: MolSSI/QCSchema
@@ -79,16 +81,25 @@ jobs:
         git config --global user.name "Lori A. Burns"
         git add -A
         git commit -m "auto-generated from QCElemental"
-        git push origin ${branch}
+#        git push origin ${branch}
 
-    #- name: Push changes
-    #  uses: ad-m/github-push-action@master
-    #  with:
-    #    directory: ./qcsk
-    #    repository: loriab/QCSchema
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        directory: ./qcsk
+        repository: loriab/QCSchema
 #   #     branch: ${branch}
-    #    branch: "qcel-204"
-    #    github_token: ${{ secrets.QCSK_TOKEN }}
+        branch: "qcel-204"
+        github_token: ${{ secrets.QCSK_TOKEN }}
+
+
+#        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+#git pull github ${GITHUB_REF} --ff-only
+#
+#git add ...
+#
+#git commit -m "Update native model"
+#git push github HEAD:${GITHUB_REF}
 
 #remote_repo="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
 
