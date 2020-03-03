@@ -80,16 +80,20 @@ jobs:
         git config --global user.name "Lori A. Burns"
         git add -A
         git commit -m "auto-generated from QCElemental"
-#        git push origin ${branch}
+        ::set-env name=branch::${branch}
 
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         directory: ./qcsk
         repository: loriab/QCSchema
-#   #     branch: ${branch}
-        branch: "qcel-204"
+        branch: ${branch}
+        #branch: "qcel-204"
         github_token: ${{ secrets.QCSK_TOKEN }}
+
+
+#echo "::set-env name=action_state::yellow"
+
 
 
 #        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
