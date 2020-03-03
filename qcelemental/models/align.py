@@ -1,5 +1,7 @@
+from typing import Optional
+
 import numpy as np
-from pydantic import validator
+from pydantic import Field, validator
 
 from ..util import blockwise_contract, blockwise_expand
 from .basemodels import ProtoModel
@@ -19,10 +21,18 @@ class AlignmentMill(ProtoModel):
 
     """
 
-    shift: Array[float]  # type: ignore
-    rotation: Array[float]  # type: ignore
-    atommap: Array[int]  # type: ignore
-    mirror: bool = False
+    shift: Optional[Array[float]] = Field(  # type: ignore
+        None, description="Translation array (3,) for coordinates.",
+    )
+    rotation: Optional[Array[float]] = Field(  # type: ignore
+        None, description="Rotation array (3, 3) for coordinates.",
+    )
+    atommap: Optional[Array[int]] = Field(  # type: ignore
+        None, description="Atom exchange map (nat,) for coordinates.",
+    )
+    mirror: bool = Field(
+        False, description="Do mirror invert coordinates?",
+    )
 
     class Config:
         force_skip_defaults = True
