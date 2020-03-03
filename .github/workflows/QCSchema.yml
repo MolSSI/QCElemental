@@ -25,7 +25,8 @@ jobs:
         repository: loriab/QCSchema
         #repository: MolSSI/QCSchema
         path: qcsk
-        ref: py2json
+        #ref: py2json
+        ref: json_files
         #ref: master
         persist-credentials: false
         fetch-depth: 0
@@ -62,7 +63,8 @@ jobs:
         eval "$(conda shell.bash hook)" && conda activate test
         make qcschema
         ls -l qcschema
-        cp -p qcschema/* ../qcsk/qcschema_json/
+        #cp -p qcschema/* ../qcsk/qcschema_json/
+        cp -p qcschema/* ../qcsk/qcschema/
         # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
         #       rather than the python module of the current repo
 
@@ -89,3 +91,4 @@ jobs:
         #repository: MolSSI/QCSchema
         branch: ${{ env.prbranch }}
         github_token: ${{ secrets.QCSK_TOKEN }}
+        force: true
