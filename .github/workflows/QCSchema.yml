@@ -80,7 +80,7 @@ jobs:
         git config --global user.name "Lori A. Burns"
         git add -A
         git commit -m "auto-generated from QCElemental"
-        ::set-env name=branch::${branch}
+        echo "::set-env name=branch::${branch}"
 
     - name: Push changes
       uses: ad-m/github-push-action@master
