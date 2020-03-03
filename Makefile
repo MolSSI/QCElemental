@@ -46,7 +46,7 @@ cpu_data:
 .PHONY: qcschema
 qcschema: #install
 	mkdir -p qcschema
-	python -c "exec(\"import qcelemental as qcel\nfrom pathlib import Path\nfor md in [qcel.models.Provenance, qcel.models.AtomicResultProperties]:\n\tmfile = (Path('qcschema') / md.__name__).with_suffix('.json')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))\")"
+	python -c "exec(\"import qcelemental as qcel\nfrom pathlib import Path\nfor md in qcel.models.qcschema_models():\n\tmfile = (Path('qcschema') / md.__name__).with_suffix('.json')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))\")"
 
 .PHONY: clean
 clean:

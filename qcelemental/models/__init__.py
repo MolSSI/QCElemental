@@ -14,3 +14,19 @@ from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
 from .molecule import Molecule
 from .procedures import Optimization, OptimizationInput, OptimizationResult
 from .results import AtomicInput, AtomicResult, AtomicResultProperties, Result, ResultInput, ResultProperties
+
+
+def qcschema_models():
+    return [
+        AtomicInput,
+        AtomicResult,
+        AtomicResultProperties,
+        basis.BasisCenter,
+        BasisSet,
+        basis.ElectronShell,
+        basis.ECPPotential,
+        common_models.Model,
+        Molecule,
+        Provenance,
+        results.WavefunctionProperties,
+    ]
