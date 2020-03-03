@@ -66,7 +66,7 @@ jobs:
         # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
         #       rather than the python module of the current repo
 
-    - name: Generated vs. Stable
+    - name: Compare Schemas (generated vs. community)
       shell: bash
       working-directory: ./qcsk
       run: |
@@ -79,33 +79,13 @@ jobs:
         git config --local user.name "GitHub Action"
         git add -A
         git commit -m "auto-generated from QCElemental"
-        echo "::set-env name=branch::${branch}"
+        echo "::set-env name=prbranch::${branch}"
 
-    - name: Push changes
+    - name: Propose changes
       uses: ad-m/github-push-action@master
       with:
         directory: ./qcsk
         repository: loriab/QCSchema
-        branch: ${{ env.branch }}
+        #repository: MolSSI/QCSchema
+        branch: ${{ env.prbranch }}
         github_token: ${{ secrets.QCSK_TOKEN }}
-
-
-
-
-#jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@master
-#    - name: Create local changes
-#      run: |
-#        ...
-#    - name: Commit files
-#      run: |
-#        git config --local user.email "action@github.com"
-#        git config --local user.name "GitHub Action"
-#        git commit -m "Add changes" -a
-#    - name: Push changes
-#      uses: ad-m/github-push-action@master
-#      with:
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
