@@ -20,6 +20,7 @@ def qcschema_models():
     return [
         AtomicInput,
         AtomicResult,
+        AtomicResultProperties,
         BasisSet,
         Molecule,
         Provenance,
