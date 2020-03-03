@@ -87,7 +87,7 @@ jobs:
       with:
         directory: ./qcsk
         repository: loriab/QCSchema
-        branch: ${branch}
+        branch: ${{ env.branch }}
         #branch: "qcel-204"
         github_token: ${{ secrets.QCSK_TOKEN }}
 
