@@ -1,6 +1,6 @@
 name: QCSchema
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   build:
@@ -29,7 +29,6 @@ jobs:
         #ref: master
         persist-credentials: false
         fetch-depth: 0
-        #token: ${{ secrets.QCSK_TOKEN }}
 
     - name: Python Setup
       uses: actions/setup-python@v1
@@ -76,8 +75,8 @@ jobs:
         branch=qcel-${pull_number}
         git checkout -b ${branch}
         git remote -v
-        git config --global user.email "lori.burns@gmail.com"
-        git config --global user.name "Lori A. Burns"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add -A
         git commit -m "auto-generated from QCElemental"
         echo "::set-env name=branch::${branch}"
@@ -88,36 +87,9 @@ jobs:
         directory: ./qcsk
         repository: loriab/QCSchema
         branch: ${{ env.branch }}
-        #branch: "qcel-204"
         github_token: ${{ secrets.QCSK_TOKEN }}
 
 
-#echo "::set-env name=action_state::yellow"
-
-
-
-#        git remote add github "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git"
-#git pull github ${GITHUB_REF} --ff-only
-#
-#git add ...
-#
-#git commit -m "Update native model"
-#git push github HEAD:${GITHUB_REF}
-
-#remote_repo="https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
-
-#git push "${remote_repo}" HEAD:${INPUT_BRANCH} --follow-tags $_FORCE_OPTION $_TAGS;
-
-#Push to branch ${branch}
-#remote: Not Found
-#fatal: repository 'https://github.com/https://github.com/loriab/QCSchema.git.git/' not found
-
-#github_token    string      Token for the repo. Can be passed in using ${{ secrets.GITHUB_TOKEN }}.
-#branch  string  'master'    Destination branch to push changes.
-#force   boolean false   Determines if force push is used.
-#tags    boolean false   Determines if --tags is used.
-#directory   string  '.' Directory to change to before pushing.
-#repository  string  ''  Repository name. Default or empty repository name represents current github repository. If you want to push to other repository, you should make a personal access token and use it as the github_token input.
 
 
 #jobs:
