@@ -120,6 +120,16 @@ class AtomicResultProperties(ProtoModel):
     def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
 
+    @validator("scf_dipole_moment", "mp2_dipole_moment", "ccsd_dipole_moment", "ccsd_prt_pr_dipole_moment")
+    def _validate_dipoles(cls, v, values):
+        shape = tuple([3] * 1)
+        return np.asarray(v).reshape(shape)
+
+    @validator("scf_quadrupole_moment")
+    def _validate_quadrupoles(cls, v, values):
+        shape = tuple([3] * 2)
+        return np.asarray(v).reshape(shape)
+
 
 class WavefunctionProperties(ProtoModel):
 
