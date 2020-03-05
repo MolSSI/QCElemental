@@ -128,6 +128,9 @@ class AtomicResultProperties(ProtoModel):
         "scf_quadrupole_moment",
     )
     def _validate_poles(cls, v, values, field):
+        if v is None:
+            return v
+
         if field.name.endswith("_dipole_moment"):
             order = 1
         elif field.name.endswith("_quadrupole_moment"):

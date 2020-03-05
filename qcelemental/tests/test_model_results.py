@@ -371,7 +371,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
     elif smodel == "atomicresultproperties":
         model = qcel.models.AtomicResultProperties
-        data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3]}
+        data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
 
     elif smodel == "atomicinput":
         model = qcel.models.AtomicInput
