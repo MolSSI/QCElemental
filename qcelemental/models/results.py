@@ -120,15 +120,25 @@ class AtomicResultProperties(ProtoModel):
     def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
 
-    @validator("scf_dipole_moment", "mp2_dipole_moment", "ccsd_dipole_moment", "ccsd_prt_pr_dipole_moment")
-    def _validate_dipoles(cls, v, values):
-        shape = tuple([3] * 1)
+    @validator(
+        "scf_dipole_moment",
+        "mp2_dipole_moment",
+        "ccsd_dipole_moment",
+        "ccsd_prt_pr_dipole_moment",
+        "scf_quadrupole_moment",
+    )
+    def _validate_poles(cls, v, values, field):
+        if field.name.endswith("_dipole_moment"):
+            order = 1
+        elif field.name.endswith("_quadrupole_moment"):
+            order = 2
+
+        shape = tuple([3] * order)
         return np.asarray(v).reshape(shape)
 
-    @validator("scf_quadrupole_moment")
-    def _validate_quadrupoles(cls, v, values):
-        shape = tuple([3] * 2)
-        return np.asarray(v).reshape(shape)
+    def dict(self, *args, **kwargs):
+        kwargs["encoding"] = "json"
+        return super().dict(*args, **kwargs)
 
 
 class WavefunctionProperties(ProtoModel):
