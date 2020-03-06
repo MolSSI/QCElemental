@@ -140,6 +140,7 @@ class AtomicResultProperties(ProtoModel):
         return np.asarray(v).reshape(shape)
 
     def dict(self, *args, **kwargs):
+        # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
         kwargs["encoding"] = "json"
         return super().dict(*args, **kwargs)
 
