@@ -344,6 +344,22 @@ def test_failed_operation(result_data_fixture):
     assert "its all good" in failed_json
 
 
+def test_result_properties_array():
+    lquad = [1, 2, 3, 2, 4, 5, 3, 5, 6]
+
+    obj = qcel.models.AtomicResultProperties(
+        scf_one_electron_energy="-5.0", scf_dipole_moment=[1, 2, 3], scf_quadrupole_moment=lquad
+    )
+
+    assert pytest.approx(obj.scf_one_electron_energy) == -5.0
+    assert obj.scf_dipole_moment.shape == (3,)
+    assert obj.scf_quadrupole_moment.shape == (3, 3)
+
+    assert obj.dict().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
+    assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
+    assert obj.dict()["scf_quadrupole_moment"] == lquad
+
+
 @pytest.mark.parametrize(
     "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
 )
@@ -355,7 +371,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
     elif smodel == "atomicresultproperties":
         model = qcel.models.AtomicResultProperties
-        data = {"scf_one_electron_energy": "-5.0"}
+        data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
 
     elif smodel == "atomicinput":
         model = qcel.models.AtomicInput

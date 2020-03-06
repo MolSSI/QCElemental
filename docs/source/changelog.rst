@@ -13,7 +13,8 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-X.Y.0 / 2020-MM-DD
+
+0.14.0 / 2020-03-DD
 -------------------
 
 New Features
@@ -23,10 +24,13 @@ Enhancements
 ++++++++++++
 - (:pr:`211`) Improve testing reliability by excusing PubChem when internet flaky.
 - (:pr:`216`) "CODATA2018" constants now tested.
+- (:pr:`207`) Multipoles exist in ``AtomicResultProperties`` as ndarray with order-dimensional shape.
+  Property ``scf_quadrupole_moment`` defined.
 
 Bug Fixes
 +++++++++
 - (:pr:`216`) Fixes a bug where "CODATA2018" constants could not be used with ``conversion_factor``.
+- (:pr:`217`) Can now run ``.schema()`` on pydantic classes containing ``Array`` fields (allowing ndarray in place of List).
 
 
 0.13.1 / 2020-02-05
