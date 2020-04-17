@@ -1,7 +1,9 @@
 import socket
+from contextlib import contextmanager
 
 import pytest
 
+import qcelemental
 from qcelemental.util import which_import
 
 
@@ -36,3 +38,14 @@ using_nglview = pytest.mark.skipif(
 )
 
 serialize_extensions = ["json", "json-ext", pytest.param("msgpack-ext", marks=using_msgpack)]
+
+
+@contextmanager
+def xfail_on_pubchem_busy():
+    try:
+        yield
+    except qcelemental.ValidationError as e:
+        if "HTTP Error 503: PUGREST.ServerBusy" in e.message:
+            pytest.xfail("Pubchem server busy")
+        else:
+            raise e

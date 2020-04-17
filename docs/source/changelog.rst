@@ -14,21 +14,64 @@ Changelog
 .. +++++++++
 
 
-0.13.0 / 2020-01-DD
+0.14.0 / 2020-03-06
 -------------------
 
 New Features
 ++++++++++++
-- (:pr:`179`, :pr:`181`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
-  Pint 0.10 has optional NumPy dependency of >=1.12.0, so QCElemental that requires both NumPy and pint needs this constraint.
 
 Enhancements
 ++++++++++++
-- (:pr:`172`, :pr:`173`) Contribution workflow improvements, including GitHub Actions checking and ``make format`` guidance.
+- (:pr:`211`) Improve testing reliability by excusing PubChem when internet flaky.
+- (:pr:`216`) "CODATA2018" constants now tested.
+- (:pr:`207`) Multipoles exist in ``AtomicResultProperties`` as ndarray with order-dimensional shape.
+  Property ``scf_quadrupole_moment`` defined.
 
 Bug Fixes
 +++++++++
-- (:pr:`174`) Fix ``compare_recursive`` for when expected is a list but computed is not.
+- (:pr:`216`) Fixes a bug where "CODATA2018" constants could not be used with ``conversion_factor``.
+- (:pr:`217`) Can now run ``.schema()`` on pydantic classes containing ``Array`` fields (allowing ndarray in place of List).
+
+
+0.13.1 / 2020-02-05
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`209`) Added the option to Hill-order molecular formulas.
+
+Bug Fixes
++++++++++
+- (:pr:`208`) Fixes a Molecule hashing issue due to order of operations changes in ``Molecule.from_data``.
+  The order of operations changed in ``Molecule.from_data`` and occasionally resulted in different hashes for Molecules
+  undergoing orient operations. This issue was introduced in 0.13.0 and is unlikely to have any serious negative effects
+  as this did not affect hash integrity.
+
+
+0.13.0 / 2020-01-29
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`183`, :pr:`187`) Added metadata about DFT functionals (``qcelemental.info.dftfunctionalinfo``).
+- (:pr:`184`) Optional PubChem identifiers were added to molecules.
+- (:pr:`187`, :pr:`192`, :pr:`195`) Added metadata about CPUs (``qcelemental.info.cpu_info``).
+
+Enhancements
+++++++++++++
+- (:pr:`179`, :pr:`181`) QCElemental works with Python 3.8 at the expense of needing a new 0.10 pint (rather than generic install).
+  Pint 0.10 has optional NumPy dependency of >=1.12.0, so QCElemental that requires both NumPy and pint needs this constraint.
+- (:pr:`172`, :pr:`173`, :pr:`202`, :pr:`203`) Contribution improvements, including GitHub Actions checking, ``make format``
+  guidance, and updated ``CONTRIBUTING.md``.
+- (:pr:`189`, :pr:`196`) Constants and unit conversion based on 2018 CODATA are available (but 2014 remains the default).
+- (:pr:`197`, :pr:`199`, :pr:`200`) Added more atomic units and aliases (e.g. ``au_length = bohr``).
+- (:pr:`190`, :pr:`191`, :pr:`201`) Slim molecules. Many fields in ``Molecule`` objects may be optionally inferred.
+
+Bug Fixes
++++++++++
+- (:pr:`174`) Fix ``compare_recursive`` for when ``expected`` is a list but ``computed`` is not.
+- (:pr:`177`) Spelling and type hint fixes.
+- (:pr:`180`) Better test coverage.
 
 
 0.12.0 / 2019-11-13

@@ -2,7 +2,6 @@
 Molecule Object Model
 """
 
-import collections
 import hashlib
 import json
 import warnings
@@ -275,6 +274,8 @@ class Molecule(ProtoModel):
         if validate is None:
             validate = not kwargs.get("validated", False)
 
+        geometry_prep = kwargs.pop("_geometry_prep", False)
+
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
@@ -298,7 +299,7 @@ class Molecule(ProtoModel):
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
-        elif validate:
+        elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
 
     @validator("geometry")
@@ -500,7 +501,8 @@ class Molecule(ProtoModel):
         return self.get_hash() == other.get_hash()
 
     def dict(self, *args, **kwargs):
-        kwargs.setdefault("by_alias", True)
+        kwargs["by_alias"] = True
+        kwargs["exclude_unset"] = True
         return super().dict(*args, **kwargs)
 
     def pretty_print(self):
@@ -726,10 +728,19 @@ class Molecule(ProtoModel):
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
 
-    def get_molecular_formula(self):
+    def get_molecular_formula(self, order: str = "alphabetical") -> str:
         """
-        Returns the molecular formula for a molecule. Atom symbols are sorted from
-        A-Z.
+        Returns the molecular formula for a molecule.
+
+        Parameters
+        ----------
+        order: str, optional
+            Sorting order of the formula. Valid choices are "alphabetical" and "hill".
+
+        Returns
+        -------
+        str
+            The molecular formula.
 
         Examples
         --------
@@ -752,16 +763,10 @@ class Molecule(ProtoModel):
         ClH
 
         """
-        count = collections.Counter(x.title() for x in self.symbols)
 
-        ret = []
-        for k in sorted(count.keys()):
-            c = count[k]
-            ret.append(k)
-            if c > 1:
-                ret.append(str(c))
+        from ..molutil import molecular_formula_from_symbols
 
-        return "".join(ret)
+        return molecular_formula_from_symbols(symbols=self.symbols, order=order)
 
     ### Constructors
 
@@ -815,6 +820,7 @@ class Molecule(ProtoModel):
             input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
+            input_dict["_geometry_prep"] = True
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {
@@ -826,6 +832,7 @@ class Molecule(ProtoModel):
             input_dict = to_schema(from_arrays(**data), dtype=2, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
+            input_dict["_geometry_prep"] = True
         elif dtype == "msgpack":
             assert isinstance(data, bytes)
             input_dict = msgpackext_loads(data)

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
 from pydantic import Field, constr, validator
@@ -50,7 +50,10 @@ class AtomicResultProperties(ProtoModel):
         None,
         description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
     )
-    scf_dipole_moment: Optional[List[float]] = Field(None, description="The X, Y, and Z dipole components.")
+    scf_dipole_moment: Optional[Array[float]] = Field(None, description="The X, Y, and Z dipole components.")
+    scf_quadrupole_moment: Optional[Array[float]] = Field(
+        None, description="The (3, 3) quadrupole components (redundant; 6 unique)."
+    )
     scf_total_energy: Optional[float] = Field(
         None, description="The total electronic energy of the SCF stage of the calculation."
     )
@@ -78,7 +81,7 @@ class AtomicResultProperties(ProtoModel):
     mp2_total_energy: Optional[float] = Field(
         None, description="The total MP2 energy (MP2 correlation energy + HF energy)."
     )
-    mp2_dipole_moment: Optional[List[float]] = Field(None, description="The MP2 X, Y, and Z dipole components.")
+    mp2_dipole_moment: Optional[Array[float]] = Field(None, description="The MP2 X, Y, and Z dipole components.")
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: Optional[float] = Field(
@@ -99,7 +102,7 @@ class AtomicResultProperties(ProtoModel):
     ccsd_total_energy: Optional[float] = Field(
         None, description="The total CCSD energy (CCSD correlation energy + HF energy)."
     )
-    ccsd_dipole_moment: Optional[List[float]] = Field(None, description="The CCSD X, Y, and Z dipole components.")
+    ccsd_dipole_moment: Optional[Array[float]] = Field(None, description="The CCSD X, Y, and Z dipole components.")
     ccsd_iterations: Optional[int] = Field(None, description="The number of CCSD iterations taken before convergence.")
 
     # CCSD(T) keywords
@@ -107,7 +110,7 @@ class AtomicResultProperties(ProtoModel):
     ccsd_prt_pr_total_energy: Optional[float] = Field(
         None, description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy)."
     )
-    ccsd_prt_pr_dipole_moment: Optional[List[float]] = Field(
+    ccsd_prt_pr_dipole_moment: Optional[Array[float]] = Field(
         None, description="The CCSD(T) X, Y, and Z dipole components."
     )
 
@@ -116,6 +119,30 @@ class AtomicResultProperties(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
+
+    @validator(
+        "scf_dipole_moment",
+        "mp2_dipole_moment",
+        "ccsd_dipole_moment",
+        "ccsd_prt_pr_dipole_moment",
+        "scf_quadrupole_moment",
+    )
+    def _validate_poles(cls, v, values, field):
+        if v is None:
+            return v
+
+        if field.name.endswith("_dipole_moment"):
+            order = 1
+        elif field.name.endswith("_quadrupole_moment"):
+            order = 2
+
+        shape = tuple([3] * order)
+        return np.asarray(v).reshape(shape)
+
+    def dict(self, *args, **kwargs):
+        # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
+        kwargs["encoding"] = "json"
+        return super().dict(*args, **kwargs)
 
 
 class WavefunctionProperties(ProtoModel):

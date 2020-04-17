@@ -8,11 +8,16 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        conda-env: [base, minimal]
-        python-version: [3.6, 3.8]
+        cfg:
+          - conda-env: minimal
+            python-version: 3.6
+          - conda-env: base
+            python-version: 3.6
+          - conda-env: base
+            python-version: 3.8
     env:
-      PYVER: ${{ matrix.python-version }}
-      CONDA_ENV: ${{ matrix.conda-env }}
+      PYVER: ${{ matrix.cfg.python-version }}
+      CONDA_ENV: ${{ matrix.cfg.conda-env }}
 
     steps:
     - uses: actions/checkout@v1
@@ -51,8 +56,3 @@ jobs:
 
     - name: CodeCov  
       uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage.xml
-        flags: unittests
-        yml: ./.codecov.yml 
