@@ -159,7 +159,7 @@ def test_unit_conversion_other_2018(from_unit, to_unit, expected, constants2018)
     [
         ("Bohr", "bohr", "1.0"),
         ("Angstrom", "Angstrom", "1.0"),
-        ("coulomb", "statC", "2997924580",),
+        ("coulomb", "statC", "2997924580"),
         # Derived atomic units (https://en.wikipedia.org/wiki/Hartree_atomic_units)
         ("au_1st_hyperpolarizability", "au_charge**3 * au_length**3 / au_energy**2", "1.0"),
         ("au_2nd_hyperpolarizability", "au_charge**4 * au_length**4 / au_energy**3", "1.0"),
@@ -198,6 +198,6 @@ def test_quantities_smoke():
 
 def test_speed_of_light(contexts):
     assert (
-        pytest.approx(contexts.speed_of_light_in_vacuum * contexts.conversion_factor("m/s", "bohr/au_time"), 1e-8,)
+        pytest.approx(contexts.speed_of_light_in_vacuum * contexts.conversion_factor("m/s", "bohr/au_time"), 1e-8)
         == contexts.c_au
     )
