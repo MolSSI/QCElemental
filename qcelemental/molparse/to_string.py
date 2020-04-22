@@ -205,7 +205,7 @@ def to_string(
         atom_format = "{elem}"
         ghost_format = "GH"
         # TODO handle which units valid
-        umap = {"atomic": "atomic", "angstrom": "angstroms", "nm": "nanometers", "pm": "picometers"}
+        umap = {"bohr": "bohr", "angstrom": "angstroms", "nm": "nanometers", "pm": "picometers"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
