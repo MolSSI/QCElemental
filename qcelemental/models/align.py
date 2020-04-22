@@ -22,15 +22,15 @@ class AlignmentMill(ProtoModel):
     """
 
     shift: Optional[Array[float]] = Field(  # type: ignore
-        None, description="Translation array (3,) for coordinates.",
+        None, description="Translation array (3,) for coordinates."
     )
     rotation: Optional[Array[float]] = Field(  # type: ignore
-        None, description="Rotation array (3, 3) for coordinates.",
+        None, description="Rotation array (3, 3) for coordinates."
     )
     atommap: Optional[Array[int]] = Field(  # type: ignore
-        None, description="Atom exchange map (nat,) for coordinates.",
+        None, description="Atom exchange map (nat,) for coordinates."
     )
-    mirror: bool = Field(False, description="Do mirror invert coordinates?",)
+    mirror: bool = Field(False, description="Do mirror invert coordinates?")
 
     class Config:
         force_skip_defaults = True
