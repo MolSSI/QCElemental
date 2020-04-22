@@ -18,6 +18,7 @@ class AlignmentMill(ProtoModel):
     transform the geometry, element list, gradient, etc. to the
     AlignmentRecipe. When `mirror` attribute (defaults to False) active,
     then molecular system can be substantively changed by procedure.
+    poke
 
     """
 
