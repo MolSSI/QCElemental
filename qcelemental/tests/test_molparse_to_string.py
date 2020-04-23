@@ -88,6 +88,20 @@ H                    -{au2:.12f}     0.000000000000     0.000000000000
 
 end
 """,
+    "ans2_madness_au": f"""geometry
+units au
+Co                    0.000000000000     0.000000000000     0.000000000000
+GH                    2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+end
+""",
+    "ans2_madness_ang": f"""geometry
+units angstrom
+Co                    0.000000000000     0.000000000000     0.000000000000
+GH                    {au2:.12f}     0.000000000000     0.000000000000
+H                    -{au2:.12f}     0.000000000000     0.000000000000
+end
+""",
     "ans2_terachem_au": """3 au
 CoH2
 Co                    0.000000000000     0.000000000000     0.000000000000
@@ -180,6 +194,8 @@ QCElemental
         (("subject2", {"dtype": "xyz", "units": "angstrom", "ghost_format": ""}), "ans2c_ang"),
         (("subject2", {"dtype": "cfour", "units": "angstrom"}), "ans2_cfour_ang"),
         (("subject2", {"dtype": "nwchem", "units": "angstrom"}), "ans2_nwchem_ang"),
+        (("subject2", {"dtype": "madness", "units": "bohr"}), "ans2_madness_au"),
+        (("subject2", {"dtype": "madness", "units": "angstrom"}), "ans2_madness_ang"),
         (("subject1", {"dtype": "xyz", "units": "nm", "prec": 8, "atom_format": "{elea}{elem}{elbl}"}), "ans1c_nm"),
         (("subject2", {"dtype": "terachem", "units": "angstrom"}), "ans2_terachem_ang"),
         (("subject2", {"dtype": "terachem"}), "ans2_terachem_au"),
