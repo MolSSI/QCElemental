@@ -1,4 +1,6 @@
 import os
+import sys
+from pathlib import Path
 
 import pytest
 
@@ -66,6 +68,36 @@ def test_which_import_f_submodule_altsyntax():
 
 def test_which_import_f_bool_submodule():
     ans = qcel.util.which_import("evilpint.util", return_bool=True)
+    assert ans is False
+
+
+def test_which_import_t_namespacemodule():
+    testdir = Path(__file__).parent
+    sys.path.append(str(testdir))  # brings to Py's notice a non-Py dir that qualifies as a namespace package
+    ans = qcel.util.which_import("namespacemodule", namespace_ok=True)
+    sys.path.pop()
+    assert len(ans) == 1
+    assert str(ans[0]) == str(testdir / "namespacemodule")
+
+
+def test_which_import_t_bool_namespacemodule():
+    sys.path.append(str(Path(__file__).parent))
+    ans = qcel.util.which_import("namespacemodule", return_bool=True, namespace_ok=True)
+    sys.path.pop()
+    assert ans is True
+
+
+def test_which_import_f_namespacemodule():
+    sys.path.append(str(Path(__file__).parent))
+    ans = qcel.util.which_import("namespacemodule", namespace_ok=False)
+    sys.path.pop()
+    assert ans is None
+
+
+def test_which_import_f_bool_namespacemodule():
+    sys.path.append(str(Path(__file__).parent))
+    ans = qcel.util.which_import("namespacemodule", return_bool=True, namespace_ok=False)
+    sys.path.pop()
     assert ans is False
 
 
