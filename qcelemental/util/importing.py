@@ -37,7 +37,8 @@ def which_import(
     except ModuleNotFoundError:
         module_spec = None
 
-    namespace_package = module_spec is not None and module_spec.origin is None
+    # module_spec.origin is 'namespace' for py36, None for >=py37
+    namespace_package = module_spec is not None and module_spec.origin in [None, "namespace"]
 
     if (module_spec is None) or (namespace_package and not namespace_ok):
         if raise_error:

@@ -77,7 +77,7 @@ def test_which_import_t_namespacemodule():
     ans = qcel.util.which_import("namespacemodule", namespace_ok=True)
     sys.path.pop()
     assert len(ans) == 1
-    assert str(ans[0]) == str(testdir / "namespacemodule")
+    assert str(next(iter(ans))) == str(testdir / "namespacemodule")
 
 
 def test_which_import_t_bool_namespacemodule():
