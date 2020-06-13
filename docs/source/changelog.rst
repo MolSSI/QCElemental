@@ -14,6 +14,21 @@ Changelog
 .. +++++++++
 
 
+0.15.0 / 2020-06-DD
+-------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`223`) ``molparse.to_string`` MADNESS dtype developed.
+- (:pr:`226`) Allow ``which_import`` to distinguish between ordinary and namespace packages.
+
+Bug Fixes
++++++++++
+
+
 0.14.0 / 2020-03-06
 -------------------
 
