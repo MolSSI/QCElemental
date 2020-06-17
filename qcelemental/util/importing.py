@@ -5,31 +5,42 @@ from typing import Union
 
 
 def which_import(
-    module: str, *, return_bool: bool = False, raise_error: bool = False, raise_msg: str = None, package: str = None
+    module: str,
+    *,
+    return_bool: bool = False,
+    raise_error: bool = False,
+    raise_msg: str = None,
+    package: str = None,
+    namespace_ok: bool = False,
 ) -> Union[bool, None, str]:
     """Tests to see if a Python module is available.
 
     Returns
     -------
     str or None
-        By default, returns `__init__.py`-like path if module found or `None` if not.
+        By default, returns `__init__.py`-like path if `module` found or `None` if not.
+        For namespace packages and if `namespace_ok=True`, returns the list of pieces locations if `module` found or `None` if not.
     bool
         When `return_bool=True`, returns whether or not found.
+        Namespace packages only `True` if `namespace_ok=True`.
 
     Raises
     ------
     ModuleNotFoundError
-        When `raises_error=True` and module not found. Raises generic message plus any `raise_msg`.
+        When `raise_error=True` and module not found. Raises generic message plus any `raise_msg`.
 
     """
-    import importlib
+    from importlib import util
 
     try:
-        module_spec = importlib.util.find_spec(module, package=package)
+        module_spec = util.find_spec(module, package=package)
     except ModuleNotFoundError:
         module_spec = None
 
-    if module_spec is None:
+    # module_spec.origin is 'namespace' for py36, None for >=py37
+    namespace_package = module_spec is not None and module_spec.origin in [None, "namespace"]
+
+    if (module_spec is None) or (namespace_package and not namespace_ok):
         if raise_error:
             raise ModuleNotFoundError(
                 f"Python module '{module}' not found in envvar PYTHONPATH.{' ' + raise_msg if raise_msg else ''}"
@@ -42,7 +53,10 @@ def which_import(
         if return_bool:
             return True
         else:
-            return module_spec.origin
+            if namespace_package:
+                return module_spec.submodule_search_locations
+            else:
+                return module_spec.origin
 
 
 def which(
