@@ -289,7 +289,10 @@ class WavefunctionProtocolEnum(str, Enum):
 
 
 class ErrorCorrectionProtocol(ProtoModel):
-    """Configuration for how QCEngine handles error correction"""
+    """Configuration for how QCEngine handles error correction
+    
+    WARNING: These protocols are currently experimental and only supported by NWChem tasks
+    """
 
     default_policy: bool = Field(
         True, description="Whether to allow error corrections to be used " "if not directly specified in `policies`"
