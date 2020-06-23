@@ -90,6 +90,7 @@ the ``from_data`` function or by passing explicit fragments in the
     >>>       Ne 0.000000 0.000000 0.000000
     >>>       --
     >>>       Ne 3.100000 0.000000 0.000000
+    >>>       units au
     >>>       """)
 
     >>> mol = qcel.models.Molecule(
