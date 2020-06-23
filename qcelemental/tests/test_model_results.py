@@ -312,6 +312,42 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
         assert result.return_result == index
 
 
+@pytest.mark.parametrize(
+    "default, defined, default_result, defined_result",
+    [(None, None, True, None), (False, {"a": True}, False, {"a": True})],
+)
+def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture):
+    policy = {}
+    if default is not None:
+        policy["default_policy"] = default
+    if defined is not None:
+        policy["policies"] = defined
+    result_data_fixture["protocols"] = {"error_correction": policy}
+    res = qcel.models.AtomicResult(**result_data_fixture)
+
+    assert res.protocols.error_correction.default_policy == default_result
+    assert res.protocols.error_correction.policies == defined_result
+
+
+def test_error_correction_logic():
+    # Make sure we are permissive by default
+    correction_policy = qcel.models.results.ErrorCorrectionProtocol()
+    assert correction_policy.allows("a")
+
+    # Add ability to turn off error correction
+    correction_policy = qcel.models.results.ErrorCorrectionProtocol(policies={"a": False})
+    correction_policy.policies["a"] = False
+    assert not correction_policy.allows("a")
+
+    # Try no execution by default
+    correction_policy = qcel.models.results.ErrorCorrectionProtocol(default_policy=False)
+    assert not correction_policy.allows("a")
+
+    # Make sure it is still overridable
+    correction_policy = qcel.models.results.ErrorCorrectionProtocol(default_policy=False, policies={"a": True})
+    assert correction_policy.allows("a")
+
+
 def test_result_build_stdout_delete(result_data_fixture):
     result_data_fixture["protocols"] = {"stdout": False}
     ret = qcel.models.AtomicResult(**result_data_fixture)
