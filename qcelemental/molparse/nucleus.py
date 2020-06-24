@@ -165,7 +165,7 @@ def reconcile_nucleus(
     def offer_element_symbol(e):
         """Given an element, what can be suggested and asserted about Z, A, mass?"""
 
-        _Z = periodictable.to_Z(e)
+        _Z = periodictable.to_Z(e, strict=True)
         offer_atomic_number(_Z)
 
     def offer_atomic_number(z):
