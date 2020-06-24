@@ -15,25 +15,25 @@ Co 0 0 0
 H  2 0 0
 h_OTher -2 0 0
 """,
-    "ans1_au": """3 au
+    "ans1_xyz_au": """3 au
 0 2 CoH2
 Co                    0.000000000000     0.000000000000     0.000000000000
 H                     2.000000000000     0.000000000000     0.000000000000
 H                    -2.000000000000     0.000000000000     0.000000000000
 """,
-    "ans1_ang": f"""3
+    "ans1_xyz_ang": f"""3
 0 2 CoH2
 Co                    0.000000000000     0.000000000000     0.000000000000
 H                     {au2:.12f}     0.000000000000     0.000000000000
 H                    -{au2:.12f}     0.000000000000     0.000000000000
 """,
-    "ans1c_ang": """3
+    "ans1c_xyz_ang": """3
 0 2 CoH2
 59Co                      0.00000000         0.00000000         0.00000000
 1H                        1.05835442         0.00000000         0.00000000
 1H_other                 -1.05835442         0.00000000         0.00000000
 """,
-    "ans1c_nm": """3 nm
+    "ans1c_xyz_nm": """3 nm
 0 2 CoH2
 59Co                      0.00000000         0.00000000         0.00000000
 1H                        0.10583544         0.00000000         0.00000000
@@ -51,6 +51,14 @@ Co                    0.000000000000     0.000000000000     0.000000000000
 H                     {au2:.12f}     0.000000000000     0.000000000000
 H                    -{au2:.12f}     0.000000000000     0.000000000000
 $end
+""",
+    "ans1_orca_ang": f"""!
+
+*xyz 0 2
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     {au2:.12f}     0.000000000000     0.000000000000
+H                    -{au2:.12f}     0.000000000000     0.000000000000
+*
 """,
     "subject2": f"""
 Co 0 0 0
@@ -162,18 +170,19 @@ dummy,2
 set,charge=0.0
 set,spin=2
 """,
-    "ans2_orca_au": """
-! Bohrs
-*xyz 0 2
+    "ans2_orca_au": """! Bohrs
+
+*xyz 0 3
 Co                    0.000000000000     0.000000000000     0.000000000000
-H                     2.000000000000     0.000000000000     0.000000000000
+H:                    2.000000000000     0.000000000000     0.000000000000
 H                    -2.000000000000     0.000000000000     0.000000000000
 *
 """,
-    "ans2_orca_ang": """
-*xyz 0 2
+    "ans2_orca_ang": """!
+
+*xyz 0 3
 Co                    0.000000000000     0.000000000000     0.000000000000
-H                     1.058354421340     0.000000000000     0.000000000000
+H:                    1.058354421340     0.000000000000     0.000000000000
 H                    -1.058354421340     0.000000000000     0.000000000000
 *
 """,
@@ -199,11 +208,13 @@ QCElemental
 @pytest.mark.parametrize(
     "inp,expected",
     [
-        (("subject1", {"dtype": "xyz", "units": "Bohr"}), "ans1_au"),
-        (("subject1", {"dtype": "xyz", "units": "Angstrom"}), "ans1_ang"),
-        (("subject1", {"dtype": "xyz", "prec": 8, "atom_format": "{elea}{elem}{elbl}"}), "ans1c_ang"),
+        (("subject1", {"dtype": "xyz", "units": "Bohr"}), "ans1_xyz_au"),
+        (("subject1", {"dtype": "xyz", "units": "Angstrom"}), "ans1_xyz_ang"),
+        (("subject1", {"dtype": "xyz", "prec": 8, "atom_format": "{elea}{elem}{elbl}"}), "ans1c_xyz_ang"),
+        (("subject1", {"dtype": "xyz", "units": "nm", "prec": 8, "atom_format": "{elea}{elem}{elbl}"}), "ans1c_xyz_nm"),
         (("subject1", {"dtype": "psi4", "units": "angstrom"}), "ans1_psi4_ang"),
         (("subject1", {"dtype": "qchem", "units": "angstrom"}), "ans1_qchem_ang"),
+        (("subject1", {"dtype": "orca", "units": "angstrom"}), "ans1_orca_ang"),
         (("subject2", {"dtype": "xyz", "units": "Bohr"}), "ans2_au"),
         (("subject2", {"dtype": "xyz", "units": "Angstrom", "ghost_format": "Gh({elez})"}), "ans2_ang"),
         (("subject2", {"dtype": "xyz", "units": "angstrom", "ghost_format": ""}), "ans2c_ang"),
@@ -211,7 +222,6 @@ QCElemental
         (("subject2", {"dtype": "nwchem", "units": "angstrom"}), "ans2_nwchem_ang"),
         (("subject2", {"dtype": "madness", "units": "bohr"}), "ans2_madness_au"),
         (("subject2", {"dtype": "madness", "units": "angstrom"}), "ans2_madness_ang"),
-        (("subject1", {"dtype": "xyz", "units": "nm", "prec": 8, "atom_format": "{elea}{elem}{elbl}"}), "ans1c_nm"),
         (("subject2", {"dtype": "terachem", "units": "angstrom"}), "ans2_terachem_ang"),
         (("subject2", {"dtype": "terachem"}), "ans2_terachem_au"),
         (("subject2", {"dtype": "psi4", "units": "bohr"}), "ans2_psi4_au"),

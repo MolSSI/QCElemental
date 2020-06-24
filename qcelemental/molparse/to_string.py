@@ -74,12 +74,12 @@ def to_string(
     default_units = {
         "xyz": "Angstrom",
         "xyz+": "Angstrom",
-        "orca": "Bohr",
         "nglview-sdf": "Angstrom",
         "cfour": "Bohr",
         "gamess": "Bohr",
         "molpro": "Bohr",
         "nwchem": "Bohr",
+        "orca": "Bohr",
         "psi4": "Bohr",
         "qchem": "Bohr",
         "terachem": "Bohr",
@@ -139,23 +139,18 @@ def to_string(
 
         smol.extend(atoms)
 
-    if dtype == "orca":
-        # Notes
-        # * if units not in umap (e.g., nm), can't be read back in by from_string()
+    elif dtype == "orca":
 
-        atom_format = "{elem}" if atom_format is None else atom_format
-        ghost_format = "@{elem}" if ghost_format is None else ghost_format
-        umap = {"bohr": "! Bohrs", "angstrom": None}
+        atom_format = "{elem}"
+        ghost_format = "{elem}:"
+        umap = {"bohr": "! Bohrs", "angstrom": "!"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
-        first_line = """"""
-
-        smol = [first_line.rstrip()]
-        smol.append(umap.get(units.lower()))
-
-        smol.append(f"{'*xyz '} {int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}")
-
+        smol = []
+        smol.append(umap[units.lower()])
+        smol.append("")
+        smol.append(f"*xyz {int(molrec['molecular_charge'])} {molrec['molecular_multiplicity']}")
         smol.extend(atoms)
         smol.append("*")
 
