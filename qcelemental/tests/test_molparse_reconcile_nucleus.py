@@ -63,14 +63,21 @@ def test_reconcile_nucleus_assertionerror(inp):
         assert co_dominant_shortmass == qcelemental.molparse.reconcile_nucleus(**inp)
 
 
-@pytest.mark.parametrize("inp", [{"A": 80, "Z": 27}, {"Z": -27, "mass": 200, "nonphysical": True}])
+@pytest.mark.parametrize(
+    "inp",
+    [{"A": 80, "Z": 27}, {"Z": -27, "mass": 200, "nonphysical": True}, {"A": 100, "E": "He", "nonphysical": True}],
+)
 def test_reconcile_nucleus_notanelementerror(inp):
     with pytest.raises(qcelemental.NotAnElementError):
         qcelemental.molparse.reconcile_nucleus(**inp)
 
 
 def test_reconcile_nucleus_41():
-    qcelemental.molparse.reconcile_nucleus(Z=27, mass=200, nonphysical=True)
+    ans = qcelemental.molparse.reconcile_nucleus(Z=27, mass=200, nonphysical=True)
+    assert ans == (-1, 27, "Co", 200.0, True, "")
+
+    ans = qcelemental.molparse.reconcile_nucleus(A=None, Z=None, E="He", mass=100, label=None, nonphysical=True)
+    assert ans == (-1, 2, "He", 100.0, True, "")
 
 
 @pytest.mark.parametrize(

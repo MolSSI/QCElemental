@@ -65,28 +65,37 @@ class PeriodicTable:
         for EE, m, A in zip(self._EE, self.mass, self.A):
             self._el2a2mass[EE][A] = float(m)
 
-    def _resolve_atom_to_key(self, atom: Union[int, str]) -> str:
+    def _resolve_atom_to_key(self, atom: Union[int, str], strict: bool = False) -> str:
         """Given `atom` as element name, element symbol, nuclide symbol, atomic number, or atomic number string,
         return valid `self._eliso2mass` key, regardless of case. Raises `NotAnElementError` if unidentifiable.
 
         """
-        try:
-            self._eliso2mass[atom.capitalize()]  # type: ignore
-        except (KeyError, AttributeError):
+
+        def resolve_eliso(atom):
             try:
-                E = self._z2el[int(atom)]
-            except (KeyError, ValueError):
+                self._eliso2mass[atom.capitalize()]  # type: ignore
+            except (KeyError, AttributeError):
                 try:
-                    E = self._element2el[atom.capitalize()]  # type: ignore
-                except (KeyError, AttributeError):
-                    raise NotAnElementError(atom)
+                    E = self._z2el[int(atom)]
+                except (KeyError, ValueError):
+                    try:
+                        E = self._element2el[atom.capitalize()]  # type: ignore
+                    except (KeyError, AttributeError):
+                        raise NotAnElementError(atom)
+                    else:
+                        return E
                 else:
                     return E
             else:
-                return E
-        else:
-            assert isinstance(atom, str)
-            return atom.capitalize()
+                assert isinstance(atom, str)
+                return atom.capitalize()
+
+        eliso = resolve_eliso(atom)
+
+        if strict and eliso not in self.E:
+            raise NotAnElementError(eliso, strict=strict)
+
+        return eliso
 
     def to_mass(self, atom: Union[int, str], *, return_decimal: bool = False) -> Union[float, "Decimal"]:
         """Get atomic mass of `atom`.
@@ -147,7 +156,7 @@ class PeriodicTable:
         identifier = self._resolve_atom_to_key(atom)
         return self._eliso2a[identifier]
 
-    def to_Z(self, atom: Union[int, str]) -> int:
+    def to_Z(self, atom: Union[int, str], strict: bool = False) -> int:
         """Get atomic number of `atom`.
 
         Functions :py:func:`to_Z` and :py:func:`to_atomic_number` are aliases.
@@ -156,6 +165,8 @@ class PeriodicTable:
         ----------
         atom : int or str
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+        strict
+            Allow only element identification in `atom`, not nuclide.
 
         Returns
         -------
@@ -166,12 +177,13 @@ class PeriodicTable:
         ------
         NotAnElementError
             If `atom` cannot be resolved into an element or nuclide.
+            If `strict=True` and `atom` resolves into nuclide, not element.
 
         """
-        identifier = self._resolve_atom_to_key(atom)
+        identifier = self._resolve_atom_to_key(atom, strict=strict)
         return self._el2z[self._eliso2el[identifier]]
 
-    def to_E(self, atom: Union[int, str]) -> str:
+    def to_E(self, atom: Union[int, str], strict: bool = False) -> str:
         """Get element symbol of `atom`.
 
         Functions :py:func:`to_E` and :py:func:`to_symbol` are aliases.
@@ -180,16 +192,25 @@ class PeriodicTable:
         ----------
         atom : Union[int, str]
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+        strict
+            Allow only element identification in `atom`, not nuclide.
 
         Returns
         -------
         str
             Element symbol, capitalized.
+
+        Raises
+        ------
+        NotAnElementError
+            If `atom` cannot be resolved into an element or nuclide.
+            If `strict=True` and `atom` resolves into nuclide, not element.
+
         """
-        identifier = self._resolve_atom_to_key(atom)
+        identifier = self._resolve_atom_to_key(atom, strict=strict)
         return self._eliso2el[identifier]
 
-    def to_element(self, atom: Union[int, str]) -> str:
+    def to_element(self, atom: Union[int, str], strict: bool = False) -> str:
         """Get element name of `atom`.
 
         Functions :py:func:`to_element` and :py:func:`to_name` are aliases.
@@ -198,6 +219,8 @@ class PeriodicTable:
         ----------
         atom : int or str
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
+        strict
+            Allow only element identification in `atom`, not nuclide.
 
         Returns
         -------
@@ -208,9 +231,10 @@ class PeriodicTable:
         ------
         NotAnElementError
             If `atom` cannot be resolved into an element or nuclide.
+            If `strict=True` and `atom` resolves into nuclide, not element.
 
         """
-        identifier = self._resolve_atom_to_key(atom)
+        identifier = self._resolve_atom_to_key(atom, strict=strict)
         return self._el2element[self._eliso2el[identifier]]
 
     to_mass_number = to_A

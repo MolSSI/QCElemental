@@ -7,13 +7,15 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, *, verbose: int = 1) -> Dict:
+def from_schema(molschema, *, nonphysical: bool = False, verbose: int = 1) -> Dict:
     """Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
     ----------
     molschema : dict
         Dictionary form of Molecule following known schema.
+    nonphysical : bool, optional
+        Do allow masses outside an element's natural range to pass validation?
     verbose : int, optional
         Amount of printing.
 
@@ -82,7 +84,7 @@ def from_schema(molschema, *, verbose: int = 1) -> Dict:
         speclabel=False,
         # tooclose=tooclose,
         # zero_ghost_fragments=zero_ghost_fragments,
-        # nonphysical=nonphysical,
+        nonphysical=nonphysical,
         # mtol=mtol,
         verbose=verbose,
     )

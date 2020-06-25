@@ -188,6 +188,7 @@ def from_arrays(
     tooclose : float, optional
         Interatom distance (native `geom` units) nearer than which atoms not allowed.
     nonphysical : bool, optional
+        Do allow masses outside an element's natural range to pass validation?
     speclabel : bool, optional
         If `True`, interpret `elbl` as potentially full nucleus spec including
         ghosting, isotope, mass, tagging information, e.g., `@13C_mine` or

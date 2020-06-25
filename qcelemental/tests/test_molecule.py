@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 
 import qcelemental as qcel
+from qcelemental.exceptions import NotAnElementError
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
 
@@ -715,3 +716,21 @@ def test_sparse_molecule_connectivity():
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
     assert "connectivity" not in mol.dict()
+
+
+def test_bad_isotope_spec():
+    with pytest.raises(NotAnElementError) as e:
+        qcel.models.Molecule(symbols=["He3"], geometry=[0, 0, 0])
+
+
+def test_good_isotope_spec():
+    assert compare_values(
+        [3.01602932], qcel.models.Molecule(symbols=["He"], mass_numbers=[3], geometry=[0, 0, 0]).masses, "nonstd mass"
+    )
+
+
+def test_nonphysical_spec():
+    mol = qcel.models.Molecule(symbols=["He"], masses=[100], geometry=[0, 0, 0], nonphysical=True)
+    assert compare_values([100.0], mol.masses, "nonphysical mass")
+
+    print(mol.to_string(dtype="psi4"))

@@ -4,19 +4,34 @@ from decimal import Decimal
 import pytest
 
 import qcelemental
+from qcelemental.exceptions import NotAnElementError
 
 
 @pytest.mark.parametrize(
-    "inp,expected", [("He", "He"), ("He", "He"), ("He4", "He"), ("he", "He"), ("2", "He"), (2, "He"), (2.0, "He")]
+    "inp,expected",
+    [("He", "He"), ("heliuM", "He"), ("He4", "He4"), ("he", "He"), ("2", "He"), (2, "He"), (2.0, "He"), ("D", "D")],
 )
 def test_id_resolution(inp, expected):
-    assert qcelemental.periodictable._resolve_atom_to_key("He") == "He"
+    assert qcelemental.periodictable._resolve_atom_to_key(inp) == expected
 
 
 @pytest.mark.parametrize("inp", ["He100", "-1", -1, -1.0, "cat", 200])
 def test_id_resolution_error(inp):
-    with pytest.raises(qcelemental.exceptions.NotAnElementError):
+    with pytest.raises(NotAnElementError):
         qcelemental.periodictable._resolve_atom_to_key(inp)
+
+
+@pytest.mark.parametrize(
+    "inp,expected", [("He", "He"), ("heliuM", "He"), ("he", "He"), ("2", "He"), (2, "He"), (2.0, "He")]
+)
+def test_id_resolution_strict(inp, expected):
+    assert qcelemental.periodictable._resolve_atom_to_key(inp, strict=True) == expected
+
+
+@pytest.mark.parametrize("inp", ["He100", "-1", -1, -1.0, "cat", 200, "He4", "D"])
+def test_id_resolution_strict_error(inp):
+    with pytest.raises(NotAnElementError):
+        qcelemental.periodictable._resolve_atom_to_key(inp, strict=True)
 
 
 # TODO test ghost
@@ -89,6 +104,32 @@ def test_to_atomic_number(inp, expected):
     "inp,expected",
     [
         # Kr 84
+        ("kr", 36),
+        ("KRYPTON", 36),
+        ("kr84", None),
+        (36, 36),
+        # Kr 86
+        ("kr86", None),
+        # Deuterium
+        ("D", None),
+        ("h2", None),
+    ],
+)
+def test_to_atomic_number_strict(inp, expected):
+    if expected is None:
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_Z(inp, strict=True)
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_atomic_number(inp, strict=True)
+    else:
+        assert qcelemental.periodictable.to_Z(inp, strict=True) == expected
+        assert qcelemental.periodictable.to_atomic_number(inp, strict=True) == expected
+
+
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        # Kr 84
         ("kr", "Kr"),
         ("KRYPTON", "Kr"),
         ("kr84", "Kr"),
@@ -109,6 +150,32 @@ def test_to_symbol(inp, expected):
     "inp,expected",
     [
         # Kr 84
+        ("kr", "Kr"),
+        ("KRYPTON", "Kr"),
+        ("kr84", None),
+        (36, "Kr"),
+        # Kr 86
+        ("kr86", None),
+        # Deuterium
+        ("D", None),
+        ("h2", None),
+    ],
+)
+def test_to_symbol_strict(inp, expected):
+    if expected is None:
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_E(inp, strict=True)
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_symbol(inp, strict=True)
+    else:
+        assert qcelemental.periodictable.to_E(inp, strict=True) == expected
+        assert qcelemental.periodictable.to_symbol(inp, strict=True) == expected
+
+
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        # Kr 84
         ("kr", "Krypton"),
         ("KRYPTON", "Krypton"),
         ("kr84", "Krypton"),
@@ -123,6 +190,32 @@ def test_to_symbol(inp, expected):
 def test_to_element(inp, expected):
     assert qcelemental.periodictable.to_element(inp) == expected
     assert qcelemental.periodictable.to_name(inp) == expected
+
+
+@pytest.mark.parametrize(
+    "inp,expected",
+    [
+        # Kr 84
+        ("kr", "Krypton"),
+        ("KRYPTON", "Krypton"),
+        ("kr84", None),
+        (36, "Krypton"),
+        # Kr 86
+        ("kr86", None),
+        # Deuterium
+        ("D", None),
+        ("h2", None),
+    ],
+)
+def test_to_element_strict(inp, expected):
+    if expected is None:
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_element(inp, strict=True)
+        with pytest.raises(NotAnElementError):
+            qcelemental.periodictable.to_name(inp, strict=True)
+    else:
+        assert qcelemental.periodictable.to_element(inp, strict=True) == expected
+        assert qcelemental.periodictable.to_name(inp, strict=True) == expected
 
 
 @pytest.mark.parametrize(

@@ -281,7 +281,10 @@ class Molecule(ProtoModel):
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
-            schema = to_schema(from_schema(kwargs), dtype=kwargs["schema_version"], copy=False, np_out=True)
+            nonphysical = kwargs.pop("nonphysical", False)
+            schema = to_schema(
+                from_schema(kwargs, nonphysical=nonphysical), dtype=kwargs["schema_version"], copy=False, np_out=True
+            )
             schema = _filter_defaults(schema)
 
             kwargs["validated"] = True
@@ -691,7 +694,7 @@ class Molecule(ProtoModel):
 
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
-        molrec = from_schema(self.dict())
+        molrec = from_schema(self.dict(), nonphysical=True)
         return to_string(
             molrec,
             dtype=dtype,
