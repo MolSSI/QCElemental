@@ -14,19 +14,27 @@ Changelog
 .. +++++++++
 
 
-0.15.0 / 2020-06-DD
+0.15.0 / 2020-06-25
 -------------------
 
 New Features
 ++++++++++++
+- (:pr:`182`) Added experimental protocol for controlling autocorrection attemps. (That is, when a calculation throws a
+  known error that QCEngine thinks it can tweak the input and rerun.) Currently in trial for NWChem.
 
 Enhancements
 ++++++++++++
-- (:pr:`223`) ``molparse.to_string`` MADNESS dtype developed.
+- (:pr:`186`, :pr:`223`) ``molparse.to_string`` Orca and MADNESS dtypes developed.
 - (:pr:`226`) Allow ``which_import`` to distinguish between ordinary and namespace packages.
+- (:pr:`227`) Add non-default ``strict`` argument to ``periodictable.to_Z``, ``to_symbol``, and ``to_element`` that fails when isotope information is given.
+- (:pr:`227`) Allow nonphysical masses to pass validation in ``molparse.from_schema(..., nonphysical=True)``.
+  Also allowed in forming ``qcel.models.Molecule(..., nonphysical=True)``.
 
 Bug Fixes
 +++++++++
+- (:pr:`227`) Fixed deception described in issue 225 where ``qcel.models.Molecule(..., symbols=["O18"])`` accepted "O18"
+  but did not influence the isotope, as user might have expected. That now raises ``NotAnElementError``, and an example
+  of correctly setting isotope/masses has been added. This error now caught at ``qcel.molparse.from_arrays`` so general.
 
 
 0.14.0 / 2020-03-06
