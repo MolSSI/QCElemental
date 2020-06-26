@@ -14,6 +14,14 @@ Changelog
 .. +++++++++
 
 
+0.15.1 / 2020-06-25
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`228`) Fix testing bug for installed module, which was missing a dummy directory.
+
+
 0.15.0 / 2020-06-25
 -------------------
 
