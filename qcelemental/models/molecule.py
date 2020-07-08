@@ -1080,16 +1080,16 @@ class Molecule(ProtoModel):
 
     def align(
         self,
-        ref_mol,
+        ref_mol: "Molecule",
         *,
-        do_plot=False,
-        verbose=0,
-        atoms_map=False,
-        run_resorting=False,
-        mols_align=False,
-        run_to_completion=False,
-        uno_cutoff=1.0e-3,
-        run_mirror=False,
+        do_plot: bool = False,
+        verbose: int = 0,
+        atoms_map: bool = False,
+        run_resorting: bool = False,
+        mols_align: Union[bool, float] = False,
+        run_to_completion: bool = False,
+        uno_cutoff: float = 1.0e-3,
+        run_mirror: bool = False,
     ):
         """Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
@@ -1100,18 +1100,18 @@ class Molecule(ProtoModel):
 
         Parameters
         ----------
-        concern_mol : qcel.models.Molecule
-            Molecule of concern, to be shifted, rotated, and reordered into
-            best coincidence with `ref_mol`.
         ref_mol : qcel.models.Molecule
             Molecule to match.
         atoms_map : bool, optional
             Whether atom1 of `ref_mol` corresponds to atom1 of `concern_mol`, etc.
             If true, specifying `True` can save much time.
-        mols_align : bool, optional
-            Whether `ref_mol` and `concern_mol` have identical geometries by eye
+        mols_align : bool or float, optional
+            Whether ref_mol and concern_mol have identical geometries
             (barring orientation or atom mapping) and expected final RMSD = 0.
             If `True`, procedure is truncated when RMSD condition met, saving time.
+            If float, RMSD tolerance at which search for alignment stops. If provided,
+            the alignment routine will throw an error if it fails to align
+            the molecule within the specified RMSD tolerance.
         do_plot : bool, optional
             Pops up a mpl plot showing before, after, and ref geometries.
         run_to_completion : bool, optional
