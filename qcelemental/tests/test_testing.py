@@ -8,6 +8,7 @@ import qcelemental as qcel
 _arrs = {
     "a1234_14": np.arange(4),
     "blip14": np.arange(4) + [0.0, 0.02, 0.005, 0.02],
+    "nblip14": -np.arange(4) + [0.0, 0.02, 0.005, 0.02],
     "a1234_22": np.arange(4).reshape((2, 2)),
     "blip22": (np.arange(4) + [0.0, 0.02, 0.005, 0.02]).reshape((2, 2)),
     "iblip14": np.arange(4) + [0, 1, 0, 1],
@@ -20,6 +21,7 @@ _dcts = {
     "ellnone": {"a": _arrs["a1234_14"], "b": {"ba": _arrs["a1234_14"], "bb": _arrs["a1234_22"], "bc": None}},
     "ellshort": {"a": np.arange(3), "b": {"ba": _arrs["a1234_14"], "bb": _arrs["a1234_22"]}},
     "blipell": {"a": _arrs["blip14"], "b": {"ba": _arrs["a1234_14"], "bb": _arrs["blip22"]}},
+    "nnell": {"a": -_arrs["a1234_14"], "b": {"ba": _arrs["a1234_14"], "bb": -_arrs["a1234_22"]}},
 }
 
 _pass_message = "\t{:.<66}PASSED"
@@ -69,6 +71,31 @@ _pass_message = "\t{:.<66}PASSED"
             ),
         ),
         (_arrs["a1234_14"], _arrs["blip14"], 1.0e-1, {}, True, (None, _pass_message.format("test_compare_values"))),
+        (
+            _arrs["a1234_14"],
+            _arrs["nblip14"],
+            1.0e-1,
+            {"equal_phase": False},
+            False,
+            (
+                None,
+                """test_compare_values: computed value does not match to atol=0.1.
+  Expected:
+    [0. 1. 2. 3.]
+  Observed:
+    [ 0.    -0.98  -1.995 -2.98 ]
+  Difference (passed elements are zeroed):
+    [ 0.    -1.98  -3.995 -5.98 ]""",
+            ),
+        ),
+        (
+            _arrs["a1234_14"],
+            _arrs["nblip14"],
+            1.0e-1,
+            {"equal_phase": True},
+            True,
+            (None, _pass_message.format("test_compare_values")),
+        ),
         (
             _arrs["a1234_14"],
             _arrs["blip14"],
@@ -198,6 +225,14 @@ def test_compare_values(ref, cpd, tol, kw, boool, msg):
             "cat",
             "mouse",
             {},
+            False,
+            (None, "test_compare: computed value (mouse) does not match (cat) by difference ((n/a))."),
+        ),
+        ("cat", "cat", {"equal_phase": True}, True, (None, _pass_message.format("test_compare"))),
+        (
+            "cat",
+            "mouse",
+            {"equal_phase": True},
             False,
             (None, "test_compare: computed value (mouse) does not match (cat) by difference ((n/a))."),
         ),
@@ -395,6 +430,78 @@ root.b.ba.2
     Value 3 did not match 4.""",
             ),
         ),
+        (
+            _dcts["ell"],
+            _dcts["nnell"],
+            {},
+            False,
+            (
+                None,
+                """root.a
+    Arrays differ.\t_compare_recursive: computed value does not match.
+  Expected:
+    [0 1 2 3]
+  Observed:
+    [ 0 -1 -2 -3]
+  Difference:
+    [ 0 -2 -4 -6]
+
+root.b.bb
+    Arrays differ.\t_compare_recursive: computed value does not match.
+  Expected:
+    [[0 1]
+     [2 3]]
+  Observed:
+    [[ 0 -1]
+     [-2 -3]]
+  Difference:
+    [[ 0 -2]
+     [-4 -6]]
+""",
+            ),
+        ),
+        (
+            _dcts["ell"],
+            _dcts["nnell"],
+            {"equal_phase": ["a"]},
+            False,
+            (
+                None,
+                """root.b.bb
+    Arrays differ.\t_compare_recursive: computed value does not match.
+  Expected:
+    [[0 1]
+     [2 3]]
+  Observed:
+    [[ 0 -1]
+     [-2 -3]]
+  Difference:
+    [[ 0 -2]
+     [-4 -6]]
+""",
+            ),
+        ),
+        (_dcts["ell"], _dcts["nnell"], {"forgive": ["a"], "equal_phase": ["b"]}, True, (None, "")),
+        (
+            _dcts["ell"],
+            _dcts["nnell"],
+            {"equal_phase": ["b.bb"]},
+            False,
+            (
+                None,
+                """root.a
+    Arrays differ.\t_compare_recursive: computed value does not match.
+  Expected:
+    [0 1 2 3]
+  Observed:
+    [ 0 -1 -2 -3]
+  Difference:
+    [ 0 -2 -4 -6]
+""",
+            ),
+        ),
+        (_dcts["ell"], _dcts["nnell"], {"equal_phase": ["a", "b.bb"]}, True, (None, "")),
+        (_dcts["ell"], _dcts["nnell"], {"equal_phase": True}, True, (None, "")),
     ],
 )
 def test_compare_recursive(ref, cpd, kw, boool, msg):

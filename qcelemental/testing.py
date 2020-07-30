@@ -42,6 +42,7 @@ def compare_values(
     atol: float = 1.0e-6,
     rtol: float = 1.0e-16,
     equal_nan: bool = False,
+    equal_phase: bool = False,
     passnone: bool = False,
     quiet: bool = False,
     return_message: bool = False,
@@ -63,6 +64,8 @@ def compare_values(
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
     equal_nan : bool, optional
         Passed to np.isclose. Compare NaN's as equal.
+    equal_phase : bool, optional
+        Compare computed *or its opposite* as equal.
     passnone : bool, optional
         Return True when both expected and computed are None.
     quiet : bool, optional
@@ -133,6 +136,10 @@ def compare_values(
     isclose = np.isclose(cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
     allclose = bool(np.all(isclose))
 
+    if not allclose and equal_phase and hasattr(cptd, "__neg__"):
+        n_isclose = np.isclose(-cptd, xptd, rtol=rtol, atol=atol, equal_nan=equal_nan)
+        allclose = bool(np.all(n_isclose))
+
     if allclose:
         message = pass_message
 
@@ -171,6 +178,7 @@ def compare(
     computed,
     label: str = None,
     *,
+    equal_phase: bool = False,
     quiet: bool = False,
     return_message: bool = False,
     return_handler: Callable = None,
@@ -185,6 +193,8 @@ def compare(
         Input value to compare against `expected`.
     label : str, optional
         Label for passed and error messages. Defaults to calling function name.
+    equal_phase : bool, optional
+        Compare computed *or its opposite* as equal.
 
     Returns
     -------
@@ -228,6 +238,14 @@ def compare(
     isclose = np.asarray(xptd == cptd)
     allclose = bool(isclose.all())
 
+    if not allclose and equal_phase:
+        try:
+            n_isclose = np.asarray(xptd == -cptd)
+        except TypeError:
+            pass
+        else:
+            allclose = bool(n_isclose.all())
+
     if allclose:
         message = pass_message
 
@@ -267,7 +285,7 @@ def compare(
     return return_handler(allclose, label, message, return_message, quiet)
 
 
-def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
+def _compare_recursive(expected, computed, atol, rtol, _prefix=False, equal_phase=False):
 
     errors = []
     name = _prefix or "root"
@@ -290,7 +308,11 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
                 errors.append((name, "Iterable lengths did not match"))
             else:
                 for i, item1, item2 in zip(range(len(expected)), expected, computed):
-                    errors.extend(_compare_recursive(item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol))
+                    errors.extend(
+                        _compare_recursive(
+                            item1, item2, _prefix=prefix + str(i), atol=atol, rtol=rtol, equal_phase=equal_phase
+                        )
+                    )
         except TypeError:
             errors.append((name, "Expected computed to have a __len__()"))
 
@@ -304,18 +326,26 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False):
 
         for k in expected.keys() & computed.keys():
             name = prefix + str(k)
-            errors.extend(_compare_recursive(expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol))
+            errors.extend(
+                _compare_recursive(
+                    expected[k], computed[k], _prefix=name, atol=atol, rtol=rtol, equal_phase=equal_phase
+                )
+            )
 
     elif isinstance(expected, (float, np.number)):
-        passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
+        passfail, msg = compare_values(
+            expected, computed, atol=atol, rtol=rtol, equal_phase=equal_phase, return_message=True, quiet=True
+        )
         if not passfail:
             errors.append((name, "Arrays differ." + msg))
 
     elif isinstance(expected, np.ndarray):
         if np.issubdtype(expected.dtype, np.floating):
-            passfail, msg = compare_values(expected, computed, atol=atol, rtol=rtol, return_message=True, quiet=True)
+            passfail, msg = compare_values(
+                expected, computed, atol=atol, rtol=rtol, equal_phase=equal_phase, return_message=True, quiet=True
+            )
         else:
-            passfail, msg = compare(expected, computed, return_message=True, quiet=True)
+            passfail, msg = compare(expected, computed, equal_phase=equal_phase, return_message=True, quiet=True)
         if not passfail:
             errors.append((name, "Arrays differ." + msg))
 
@@ -337,6 +367,7 @@ def compare_recursive(
     atol: float = 1.0e-6,
     rtol: float = 1.0e-16,
     forgive: List[str] = None,
+    equal_phase: Union[bool, List] = False,
     quiet: bool = False,
     return_message: bool = False,
     return_handler: Callable = None,
@@ -360,6 +391,8 @@ def compare_recursive(
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
     forgive : list, optional
         Keys in top level which may change between `expected` and `computed` without triggering failure.
+    equal_phase : bool, optional
+        Compare computed *or its opposite* as equal.
 
     Returns
     -------
@@ -385,6 +418,25 @@ def compare_recursive(
         return_handler = _handle_return
 
     errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol)
+
+    if errors and equal_phase:
+        n_errors = _compare_recursive(expected, computed, atol=atol, rtol=rtol, equal_phase=True)
+        n_errors = dict(n_errors)
+
+        if equal_phase is False:
+            equal_phase = []
+        elif equal_phase is True:
+            equal_phase = list(dict(errors).keys())
+        else:
+            equal_phase = [(ep if ep.startswith("root.") else "root." + ep) for ep in equal_phase]
+        phased = []
+
+        for nomatch in sorted(errors):
+            for ep in equal_phase or []:
+                if nomatch[0].startswith(ep):
+                    if nomatch[0] not in n_errors:
+                        phased.append(nomatch)
+                        errors.remove(nomatch)
 
     if forgive is None:
         forgive = []
