@@ -651,14 +651,14 @@ def test_show():
 
 def test_molecule_connectivity():
     data = {"geometry": np.random.rand(5, 3), "symbols": ["he"] * 5, "validate": False}
-    mol = Molecule(**data, connectivity=None)
+    Molecule(**data, connectivity=None)
 
     connectivity = [[n, n + 1, 1] for n in range(4)]
-    mol = Molecule(**data, connectivity=connectivity)
+    Molecule(**data, connectivity=connectivity)
 
     connectivity[0][0] = -1
     with pytest.raises(ValueError):
-        mol = Molecule(**data, connectivity=connectivity)
+        Molecule(**data, connectivity=connectivity)
 
 
 def test_orient_nomasses():
@@ -719,7 +719,7 @@ def test_sparse_molecule_connectivity():
 
 
 def test_bad_isotope_spec():
-    with pytest.raises(NotAnElementError) as e:
+    with pytest.raises(NotAnElementError):
         qcel.models.Molecule(symbols=["He3"], geometry=[0, 0, 0])
 
 

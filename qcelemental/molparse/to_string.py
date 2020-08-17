@@ -384,7 +384,7 @@ def to_string(
 
         atom_format = "{elem}"
         ghost_format = "@{elem}"
-        umap = {"bohr": True, "angstrom": False}
+        umap = {"bohr": "True", "angstrom": "False"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 

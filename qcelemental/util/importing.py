@@ -1,7 +1,7 @@
 import os
 import shutil
 import sys
-from typing import Union
+from typing import List, Union
 
 
 def which_import(
@@ -12,7 +12,7 @@ def which_import(
     raise_msg: str = None,
     package: str = None,
     namespace_ok: bool = False,
-) -> Union[bool, None, str]:
+) -> Union[bool, None, str, List[str]]:
     """Tests to see if a Python module is available.
 
     Returns
