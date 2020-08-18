@@ -5,13 +5,19 @@ Molecule Object Model
 import hashlib
 import json
 import warnings
+from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, cast, Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import numpy as np
 from pydantic import Field, constr, validator
 
-from ..molparse import from_arrays, from_schema, from_string, to_schema, to_string
+# molparse imports separated b/c https://github.com/python/mypy/issues/7203
+from ..molparse.from_arrays import from_arrays
+from ..molparse.from_schema import from_schema
+from ..molparse.from_string import from_string
+from ..molparse.to_schema import to_schema
+from ..molparse.to_string import to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
@@ -22,7 +28,6 @@ from .types import Array
 
 if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
-
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -225,8 +230,8 @@ class Molecule(ProtoModel):
         None, description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase."
     )
     # Extra
-    provenance: Provenance = Field(  # type: ignore
-        provenance_stamp(__name__),
+    provenance: Provenance = Field(
+        default_factory=partial(provenance_stamp, __name__),
         description="The provenance information about how this Molecule (and its attributes) were generated, "
         "provided, and manipulated.",
     )
@@ -242,10 +247,10 @@ class Molecule(ProtoModel):
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
-        repr_style = lambda self: [
-            ("name", self.name),
-            ("formula", self.get_molecular_formula()),
-            ("hash", self.get_hash()[:7]),
+        repr_style = lambda ins: [
+            ("name", ins.name),
+            ("formula", ins.get_molecular_formula()),
+            ("hash", ins.get_hash()[:7]),
         ]
         fields = {
             "masses_": "masses",
@@ -1042,7 +1047,7 @@ class Molecule(ProtoModel):
         Nuclear repulsion energy in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
         atoms = list(range(self.geometry.shape[0]))
 
         if ifr is not None:
@@ -1068,7 +1073,7 @@ class Molecule(ProtoModel):
         Number of electrons in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(self.atomic_numbers, self.real)]
+        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
 
         if ifr is None:
             nel = sum(Zeff) - self.molecular_charge
@@ -1146,7 +1151,7 @@ class Molecule(ProtoModel):
         runiq = np.asarray(
             [
                 hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
-                for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
+                for sym, mas in zip(cast(Iterable[str], ref_mol.symbols), ref_mol.masses)
             ]
         )
         concern_mol = self
@@ -1157,7 +1162,7 @@ class Molecule(ProtoModel):
         cuniq = np.asarray(
             [
                 hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
-                for sym, mas in zip(concern_mol.symbols, concern_mol.masses)
+                for sym, mas in zip(cast(Iterable[str], concern_mol.symbols), concern_mol.masses)
             ]
         )
 
@@ -1293,7 +1298,7 @@ class Molecule(ProtoModel):
         runiq = np.asarray(
             [
                 hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
-                for sym, mas in zip(ref_mol.symbols, ref_mol.masses)
+                for sym, mas in zip(cast(Iterable[str], ref_mol.symbols), ref_mol.masses)
             ]
         )
         nat = rgeom.shape[0]

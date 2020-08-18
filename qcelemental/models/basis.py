@@ -130,7 +130,7 @@ class BasisSet(ProtoModel):
     A quantum chemistry basis description.
     """
 
-    schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"
+    schema_name: constr(strip_whitespace=True, regex="qcschema_basis") = "qcschema_basis"  # type: ignore
     schema_version: int = 1
 
     name: str = Field(..., description="A standard basis name if available (e.g., 'cc-pVDZ').")

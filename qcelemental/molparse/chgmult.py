@@ -360,8 +360,8 @@ def validate_and_fill_chgmult(
     cgmp_rules.append("4")
     for ifr in range(nfr):
         cgmp_range.append(
-            lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr])
-        )  # type: ignore
+            lambda c, fc, m, fm, ifr=ifr: _sufficient_electrons_for_mult(fzel[ifr], fc[ifr], fm[ifr])  # type: ignore
+        )
         cgmp_rules.append("4-" + str(ifr))
 
     #   * (R5) require total parity consistent among neutral_electrons, chg, and mult

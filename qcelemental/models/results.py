@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
@@ -347,7 +348,9 @@ class AtomicInput(ProtoModel):
 
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
+    provenance: Provenance = Field(
+        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
+    )
 
     def __repr_args__(self) -> "ReprArgs":
         return [
