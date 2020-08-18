@@ -7,7 +7,7 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, cast, Any, Dict, Iterable, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
 
 import numpy as np
 from pydantic import Field, constr, validator
@@ -247,10 +247,10 @@ class Molecule(ProtoModel):
 
     class Config(ProtoModel.Config):
         serialize_skip_defaults = True
-        repr_style = lambda ins: [
-            ("name", ins.name),
-            ("formula", ins.get_molecular_formula()),
-            ("hash", ins.get_hash()[:7]),
+        repr_style = lambda self: [
+            ("name", self.name),
+            ("formula", self.get_molecular_formula()),
+            ("hash", self.get_hash()[:7]),
         ]
         fields = {
             "masses_": "masses",
