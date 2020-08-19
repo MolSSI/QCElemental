@@ -14,7 +14,7 @@ Changelog
 .. +++++++++
 
 
-0.16.0 / 2020-MM-DD
+0.16.0 / 2020-08-19
 -------------------
 
 New Features
@@ -22,12 +22,13 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:``) ``compare``, ``compare_values``, and ``compare_recursive`` learned new keyword ``equal_phase`` that when
+- (:pr:`231`) ``compare``, ``compare_values``, and ``compare_recursive`` learned new keyword ``equal_phase`` that when
   ``True`` allows either ``computed`` or ``-computed`` to pass the comparison. For ``compare_recursive``, the leniency
   can be restricted to specific leaves of the iterable by passing a list of allowed leaves.
 
 Bug Fixes
 +++++++++
+- (:pr:`229`) ``Molecule.align`` told the full truth in its documentation that the ``mol_align`` argument can take a float.
 
 
 0.15.1 / 2020-06-25
