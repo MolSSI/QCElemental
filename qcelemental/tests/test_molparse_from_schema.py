@@ -6,6 +6,8 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare_molrecs
 
+from .addons import drop_qcsk
+
 _schema_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_schema"}
 
 
@@ -131,9 +133,10 @@ def test_from_schema_1p5_14e():
     assert compare_molrecs(schema14_psi4_np, ans, 4)
 
 
-def test_from_schema_2_14e():
+def test_from_schema_2_14e(request):
     schema = copy.deepcopy(schema14_1)
     schema.update({"schema_name": "qcschema_molecule", "schema_version": 2})
+    drop_qcsk(schema, request.node.name, "Molecule")
 
     ans = qcel.molparse.from_schema(schema)
     assert compare_molrecs(schema14_psi4_np, ans, 4)

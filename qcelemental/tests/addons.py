@@ -1,5 +1,7 @@
+import json
 import socket
 from contextlib import contextmanager
+from pathlib import Path
 
 import pytest
 
@@ -49,3 +51,20 @@ def xfail_on_pubchem_busy():
             pytest.xfail("Pubchem server busy")
         else:
             raise e
+
+
+_data_path = Path(__file__).parent.resolve() / "qcschema_instances"
+
+
+def drop_qcsk(instance, tnm: str, schema_name: str = None):
+    if isinstance(instance, qcelemental.models.ProtoModel) and schema_name is None:
+        schema_name = type(instance).__name__
+    drop = (_data_path / schema_name / tnm).with_suffix(".json")
+
+    with open(drop, "w") as fp:
+        if isinstance(instance, qcelemental.models.ProtoModel):
+            fp.write(instance.json(exclude_none=True))
+        elif isinstance(instance, dict):
+            json.dump(instance, fp, sort_keys=True, indent=2)
+        else:
+            raise TypeError

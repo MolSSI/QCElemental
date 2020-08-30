@@ -13,10 +13,13 @@ from qcelemental.models import (
     Provenance,
 )
 
+from .addons import drop_qcsk
 
-def test_result_properties_default_skip():
+
+def test_result_properties_default_skip(request):
 
     obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
+    drop_qcsk(obj, request.node.name)
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
 
@@ -31,9 +34,10 @@ def test_result_properties_default_repr():
     assert len(repr(obj)) < 100
 
 
-def test_repr_provenance():
+def test_repr_provenance(request):
 
     prov = Provenance(creator="qcel", version="v0.3.2")
+    drop_qcsk(prov, request.node.name)
 
     assert "qcel" in str(prov)
     assert "qcel" in repr(prov)
@@ -54,11 +58,12 @@ def test_repr_failed_op():
     )
 
 
-def test_repr_result():
+def test_repr_result(request):
 
     result = AtomicInput(
         **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
     )
+    drop_qcsk(result, request.node.name)
     assert "molecule_hash" in str(result)
     assert "molecule_hash" in repr(result)
     assert "'gradient'" in str(result)

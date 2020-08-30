@@ -6,7 +6,7 @@ import numpy as np
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
@@ -51,7 +51,7 @@ class AtomicResultProperties(ProtoModel):
         None,
         description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
     )
-    scf_dipole_moment: Optional[Array[float]] = Field(None, description="The X, Y, and Z dipole components.")
+    scf_dipole_moment: Optional[Array[float]] = Field(None, description="The SCF X, Y, and Z dipole components.")
     scf_quadrupole_moment: Optional[Array[float]] = Field(
         None, description="The (3, 3) quadrupole components (redundant; 6 unique)."
     )
@@ -62,11 +62,12 @@ class AtomicResultProperties(ProtoModel):
 
     # MP2 Keywords
     mp2_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations."
+        None,
+        description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
     )
     mp2_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations.",
+        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
     )
     mp2_singles_energy: Optional[float] = Field(
         None, description="The singles portion of the MP2 correlation energy. Zero except in ROHF."
@@ -86,11 +87,12 @@ class AtomicResultProperties(ProtoModel):
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations."
+        None,
+        description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
     )
     ccsd_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations",
+        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
     )
     ccsd_singles_energy: Optional[float] = Field(
         None, description="The singles portion of the CCSD correlation energy. Zero except in ROHF."
@@ -113,6 +115,26 @@ class AtomicResultProperties(ProtoModel):
     )
     ccsd_prt_pr_dipole_moment: Optional[Array[float]] = Field(
         None, description="The CCSD(T) X, Y, and Z dipole components."
+    )
+
+    # CCSDT keywords
+    ccsdt_correlation_energy: Optional[float] = Field(None, description="The CCSDT correlation energy.")
+    ccsdt_total_energy: Optional[float] = Field(
+        None, description="The total CCSDT energy (CCSDT correlation energy + HF energy)."
+    )
+    ccsdt_dipole_moment: Optional[Array[float]] = Field(None, description="The CCSDT X, Y, and Z dipole components.")
+    ccsdt_iterations: Optional[int] = Field(
+        None, description="The number of CCSDT iterations taken before convergence."
+    )
+
+    # CCSDTQ keywords
+    ccsdtq_correlation_energy: Optional[float] = Field(None, description="The CCSDTQ correlation energy.")
+    ccsdtq_total_energy: Optional[float] = Field(
+        None, description="The total CCSDTQ energy (CCSDTQ correlation energy + HF energy)."
+    )
+    ccsdtq_dipole_moment: Optional[Array[float]] = Field(None, description="The CCSDTQ X, Y, and Z dipole components.")
+    ccsdtq_iterations: Optional[int] = Field(
+        None, description="The number of CCSDTQ iterations taken before convergence."
     )
 
     class Config(ProtoModel.Config):
@@ -147,6 +169,7 @@ class AtomicResultProperties(ProtoModel):
 
 
 class WavefunctionProperties(ProtoModel):
+    """Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order."""
 
     # Class properties
     _return_results_names: Set[str] = {
@@ -172,41 +195,118 @@ class WavefunctionProperties(ProtoModel):
     )
 
     # Core Hamiltonian
-    h_core_a: Optional[Array[float]] = Field(None, description="Alpha-spin core (one-electron) Hamiltonian.")
-    h_core_b: Optional[Array[float]] = Field(None, description="Beta-spin core (one-electron) Hamiltonian.")
+    h_core_a: Optional[Array[float]] = Field(
+        None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+    )
+    h_core_b: Optional[Array[float]] = Field(
+        None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+    )
     h_effective_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin effective core (one-electron) Hamiltonian."
+        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
     )
     h_effective_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin effective core (one-electron) Hamiltonian "
+        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis", shape=["nao", "nao"]
     )
 
     # SCF Results
-    scf_orbitals_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin orbitals.")
-    scf_orbitals_b: Optional[Array[float]] = Field(None, description="SCF beta-spin orbitals.")
-    scf_density_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin density matrix.")
-    scf_density_b: Optional[Array[float]] = Field(None, description="SCF beta-spin density matrix.")
-    scf_fock_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin Fock matrix.")
-    scf_fock_b: Optional[Array[float]] = Field(None, description="SCF beta-spin Fock matrix.")
-    scf_eigenvalues_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin eigenvalues.")
-    scf_eigenvalues_b: Optional[Array[float]] = Field(None, description="SCF beta-spin eigenvalues.")
-    scf_occupations_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin occupations.")
-    scf_occupations_b: Optional[Array[float]] = Field(None, description="SCF beta-spin occupations.")
+    scf_orbitals_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+    )
+    scf_orbitals_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+    )
+    scf_density_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin density matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_density_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin density matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_fock_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_fock_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_eigenvalues_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbital eigenvalues.", shape=["nmo"]
+    )
+    scf_eigenvalues_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbital eigenvalues.", shape=["nmo"]
+    )
+    scf_occupations_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbital occupations.", shape=["nmo"]
+    )
+    scf_occupations_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbital occupations.", shape=["nmo"]
+    )
+
+    # BELOW from qcsk
+    scf_coulomb_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_coulomb_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_exchange_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_exchange_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+    )
+
+    # Localized-orbital SCF wavefunction quantities
+    localized_orbitals_a: Optional[Array[float]] = Field(
+        None,
+        description="Localized alpha-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nao", "nmo"],
+    )
+    localized_orbitals_b: Optional[Array[float]] = Field(
+        None,
+        description="Localized beta-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nao", "nmo"],
+    )
+    localized_fock_a: Optional[Array[float]] = Field(
+        None,
+        description="Alpha-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nmo", "nmo"],
+    )
+    localized_fock_b: Optional[Array[float]] = Field(
+        None,
+        description="Beta-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nmo", "nmo"],
+    )
+    # ABOVE from qcsk
 
     # Return results, must be defined last
-    orbitals_a: Optional[str] = Field(None, description="Index to the alpha-spin orbitals of the primary return.")
-    orbitals_b: Optional[str] = Field(None, description="Index to the beta-spin orbitals of the primary return.")
-    density_a: Optional[str] = Field(None, description="Index to the alpha-spin density of the primary return.")
-    density_b: Optional[str] = Field(None, description="Index to the beta-spin density of the primary return.")
-    fock_a: Optional[str] = Field(None, description="Index to the alpha-spin Fock matrix of the primary return.")
-    fock_b: Optional[str] = Field(None, description="Index to the beta-spin Fock matrix of the primary return.")
-    eigenvalues_a: Optional[str] = Field(None, description="Index to the alpha-spin eigenvalues of the primary return.")
-    eigenvalues_b: Optional[str] = Field(None, description="Index to the beta-spin eigenvalues of the primary return.")
-    occupations_a: Optional[str] = Field(
+    orbitals_a: Optional[str] = Field(
+        None, description="Index to the alpha-spin orbitals of the primary return in the AO basis."
+    )
+    orbitals_b: Optional[str] = Field(
+        None, description="Index to the beta-spin orbitals of the primary return in the AO basis."
+    )
+    density_a: Optional[str] = Field(
+        None, description="Index to the alpha-spin density of the primary return in the AO basis."
+    )
+    density_b: Optional[str] = Field(
+        None, description="Index to the beta-spin density of the primary return in the AO basis."
+    )
+    fock_a: Optional[str] = Field(
+        None, description="Index to the alpha-spin Fock matrix of the primary return in the AO basis."
+    )
+    fock_b: Optional[str] = Field(
+        None, description="Index to the beta-spin Fock matrix of the primary return in the AO basis."
+    )
+    eigenvalues_a: Optional[str] = Field(
         None, description="Index to the alpha-spin orbital eigenvalues of the primary return."
     )
-    occupations_b: Optional[str] = Field(
+    eigenvalues_b: Optional[str] = Field(
         None, description="Index to the beta-spin orbital eigenvalues of the primary return."
+    )
+    occupations_a: Optional[str] = Field(
+        None, description="Index to the alpha-spin orbital occupations of the primary return."
+    )
+    occupations_b: Optional[str] = Field(
+        None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
     class Config(ProtoModel.Config):
@@ -335,22 +435,33 @@ class AtomicInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1
+    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
+        qcschema_input_default,
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
+        ),
+    )
+    schema_version: int = Field(1, description="The version number of ``schema_name`` to which this model conforms.")
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__base_doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
     protocols: AtomicResultProtocols = Field(
         AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
     )
 
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    extras: Dict[str, Any] = Field(
+        {}, description="Extra fields not part of the schema. Used for schema development and scratch space.",
+    )
 
     provenance: Provenance = Field(
         default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
     )
+
+    class Config(ProtoModel.Config):
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
     def __repr_args__(self) -> "ReprArgs":
         return [
@@ -361,13 +472,17 @@ class AtomicInput(ProtoModel):
 
 
 class AtomicResult(AtomicInput):
-    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
-
+    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
+        qcschema_output_default,
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
+        ),
+    )
     properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__base_doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
-        ..., description="The value requested by the 'driver' attribute."
+        ..., description="The primary specified return requested by the 'driver' attribute."
     )  # type: ignore
 
     stdout: Optional[str] = Field(None, description="The standard output of the program.")

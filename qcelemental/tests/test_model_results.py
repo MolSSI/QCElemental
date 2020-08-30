@@ -4,6 +4,8 @@ import pytest
 import qcelemental as qcel
 from qcelemental.models import basis
 
+from .addons import drop_qcsk
+
 center_data = {
     "bs_sto3g_h": {
         "electron_shells": [
@@ -20,8 +22,8 @@ center_data = {
             {
                 "harmonic_type": "spherical",
                 "angular_momentum": [0],
-                "exponents": [130.70939, 23.808861, 6.4436089],
-                "coefficients": [[0.15432899, 0.53532814, 0.44463454]],
+                "exponents": [130.70939, "23.808861", 6.4436089],
+                "coefficients": [[0.15432899, "0.53532814", 0.44463454]],
             },
             {
                 "harmonic_type": "cartesian",
@@ -154,12 +156,13 @@ def test_basis_shell_centers(center_name):
     assert basis.BasisCenter(**center_data[center_name])
 
 
-def test_basis_set_build():
+def test_basis_set_build(request):
     bas = basis.BasisSet(
         name="custom_basis",
         center_data=center_data,
         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"],
     )
+    drop_qcsk(bas, request.node.name)
 
     assert len(bas.center_data) == 3
     assert len(bas.atom_map) == 4
@@ -169,6 +172,9 @@ def test_basis_set_build():
     assert es[0].is_contracted() is False
     assert es[1].is_contracted() is False
     assert es[2].is_contracted()
+
+    assert es[0].exponents == [130.70939, 23.808861, 6.4436089]
+    assert es[0].coefficients == [[0.15432899, 0.53532814, 0.44463454]]
 
 
 def test_basis_electron_center_raises():
@@ -213,19 +219,23 @@ def test_basis_map_raises():
         assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
 
 
-def test_result_build(result_data_fixture):
+def test_result_build(result_data_fixture, request):
     ret = qcel.models.AtomicResult(**result_data_fixture)
+    drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
 
 
-def test_result_build_wavefunction_delete(wavefunction_data_fixture):
+def test_result_build_wavefunction_delete(wavefunction_data_fixture, request):
     del wavefunction_data_fixture["protocols"]
     ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
+    drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
 
 
-def test_wavefunction_build(wavefunction_data_fixture):
-    assert qcel.models.AtomicResult(**wavefunction_data_fixture)
+def test_wavefunction_build(wavefunction_data_fixture, request):
+    ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
+    drop_qcsk(ret, request.node.name)
+    assert ret
 
 
 def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
@@ -268,7 +278,7 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
         ("return_results", True, ["orbitals_a", "fock_a", "fock_b"], ["orbitals_a", "fock_a"]),
     ],
 )
-def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture):
+def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture, request):
 
     wfn_data = wavefunction_data_fixture["wavefunction"]
 
@@ -289,6 +299,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
             wfn_data[scf_name] = np.random.rand(bas.nbf, bas.nbf)
 
     wfn = qcel.models.AtomicResult(**wavefunction_data_fixture)
+    drop_qcsk(wfn, request.node.name)
 
     if len(expected) == 0:
         assert wfn.wavefunction is None
@@ -316,7 +327,7 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
     "default, defined, default_result, defined_result",
     [(None, None, True, None), (False, {"a": True}, False, {"a": True})],
 )
-def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture):
+def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture, request):
     policy = {}
     if default is not None:
         policy["default_policy"] = default
@@ -324,6 +335,7 @@ def test_error_correction_protocol(default, defined, default_result, defined_res
         policy["policies"] = defined
     result_data_fixture["protocols"] = {"error_correction": policy}
     res = qcel.models.AtomicResult(**result_data_fixture)
+    drop_qcsk(res, request.node.name)
 
     assert res.protocols.error_correction.default_policy == default_result
     assert res.protocols.error_correction.policies == defined_result
@@ -348,18 +360,20 @@ def test_error_correction_logic():
     assert correction_policy.allows("a")
 
 
-def test_result_build_stdout_delete(result_data_fixture):
+def test_result_build_stdout_delete(result_data_fixture, request):
     result_data_fixture["protocols"] = {"stdout": False}
     ret = qcel.models.AtomicResult(**result_data_fixture)
+    drop_qcsk(ret, request.node.name)
     assert ret.stdout is None
 
 
-def test_result_build_stdout(result_data_fixture):
+def test_result_build_stdout(result_data_fixture, request):
     ret = qcel.models.AtomicResult(**result_data_fixture)
+    drop_qcsk(ret, request.node.name)
     assert ret.stdout == "I ran."
 
 
-def test_failed_operation(result_data_fixture):
+def test_failed_operation(result_data_fixture, request):
     water = qcel.models.Molecule.from_data(
         """
         O 0 0 0
@@ -367,6 +381,7 @@ def test_failed_operation(result_data_fixture):
         H 0 2 0
     """
     )
+    drop_qcsk(water, request.node.name)
 
     failed = qcel.models.FailedOperation(
         extras={"garbage": water},
@@ -380,12 +395,13 @@ def test_failed_operation(result_data_fixture):
     assert "its all good" in failed_json
 
 
-def test_result_properties_array():
+def test_result_properties_array(request):
     lquad = [1, 2, 3, 2, 4, 5, 3, 5, 6]
 
     obj = qcel.models.AtomicResultProperties(
         scf_one_electron_energy="-5.0", scf_dipole_moment=[1, 2, 3], scf_quadrupole_moment=lquad
     )
+    drop_qcsk(obj, request.node.name)
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
     assert obj.scf_dipole_moment.shape == (3,)

@@ -44,9 +44,10 @@ cpu_data:
 	(cd raw_data/cpu_data; python build_cpu_data.py; mv cpu_data_blob.py ../../qcelemental/info/data/)
 
 .PHONY: qcschema
-qcschema: #install
+qcschema:
 	mkdir -p qcschema
-	python -c "exec(\"import qcelemental as qcel\nfrom pathlib import Path\nfor md in qcel.models.qcschema_models():\n\tmfile = (Path('qcschema') / md.__name__).with_suffix('.json')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))\")"
+	python -c "exec(\"import pathlib, qcelemental\nfor md in qcelemental.models.qcschema_models():\n\tmfile = (pathlib.Path('qcschema') / md.__name__).with_suffix('.schema')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))\")"
+	python -c "exec(\"import json, pathlib, pydantic, qcelemental\nwith open((pathlib.Path('qcschema') / 'QCSchema').with_suffix('.schema'), 'w') as fp:\n\tjson.dump(pydantic.schema.schema(qcelemental.models.qcschema_models(), title='QCSchema'), fp, indent=4)\")"
 
 .PHONY: clean
 clean:
