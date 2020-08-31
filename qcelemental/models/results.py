@@ -421,7 +421,7 @@ class AtomicResultProtocols(ProtoModel):
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
     error_correction: ErrorCorrectionProtocol = Field(
-        ErrorCorrectionProtocol(), description="Policies for error correction"
+        default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
     )
 
     class Config:

@@ -1,6 +1,5 @@
 import json
 
-import jsonschema
 import pytest
 
 import qcelemental as qcel
@@ -19,6 +18,7 @@ ids = [fl.parent.stem + "_" + fl.stem[5:] for fl in files]
 
 @pytest.mark.parametrize("fl", files, ids=ids)
 def test_qcschema(fl, qcschema_models):
+    import jsonschema
     model = fl.parent.stem
     instance = json.loads(fl.read_text())
 
