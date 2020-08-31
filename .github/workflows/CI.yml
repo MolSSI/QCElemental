@@ -53,6 +53,11 @@ jobs:
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
         pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml qcelemental/
+
+    - name: PyTest B
+      shell: bash
+      run: |
+        eval "$(conda shell.bash hook)" && conda activate test
         pytest -rws -v --validate qcelemental/
 
     - name: CodeCov  
