@@ -11,8 +11,7 @@ pp = pprint.PrettyPrinter(width=120)
 
 
 def _handle_return(passfail: bool, label: str, message: str, return_message: bool, quiet: bool = False):
-    """Function to print a '*label*...PASSED' line to log.
-    """
+    """Function to print a '*label*...PASSED' line to log."""
 
     if not quiet:
         if passfail:
@@ -28,8 +27,7 @@ def _handle_return(passfail: bool, label: str, message: str, return_message: boo
 
 
 def tnm() -> str:
-    """Returns the name of the calling function, usually name of test case.
-    """
+    """Returns the name of the calling function, usually name of test case."""
 
     return sys._getframe().f_back.f_code.co_name
 
@@ -480,11 +478,7 @@ def compare_molrecs(
     return_message: bool = False,
     return_handler: Callable = None,
 ) -> bool:
-    """Function to compare Molecule dictionaries. Prints
-#    :py:func:`util.success` when elements of `computed` match elements of
-#    `expected` to `tol` number of digits (for float arrays).
-
-    """
+    """Function to compare Molecule dictionaries."""
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
     cptd = copy.deepcopy(computed)

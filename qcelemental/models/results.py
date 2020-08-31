@@ -391,7 +391,7 @@ class WavefunctionProtocolEnum(str, Enum):
 
 class ErrorCorrectionProtocol(ProtoModel):
     """Configuration for how QCEngine handles error correction
-    
+
     WARNING: These protocols are currently experimental and only supported by NWChem tasks
     """
 
@@ -452,7 +452,8 @@ class AtomicInput(ProtoModel):
     )
 
     extras: Dict[str, Any] = Field(
-        {}, description="Extra fields not part of the schema. Used for schema development and scratch space.",
+        {},
+        description="Extra fields not part of the schema. Used for schema development and scratch space.",
     )
 
     provenance: Provenance = Field(

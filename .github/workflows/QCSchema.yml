@@ -64,7 +64,8 @@ jobs:
         make qcschema
         ls -l qcschema
         #cp -p qcschema/* ../qcsk/qcschema_json/
-        cp -p qcschema/* ../qcsk/qcschema/
+        cp -p qcschema/* ../qcsk/qcschema/data/vdev/
+        mv ../qcsk/qcschema/data/vdev/QCSchema.schema ../qcsk/qcschema/dev/
         # Note: `qcschema_json` is a folder in the py2json branch containing plain JSON files of the schema,
         #       rather than the python module of the current repo
 

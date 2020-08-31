@@ -46,7 +46,7 @@ cpu_data:
 .PHONY: qcschema
 qcschema:
 	mkdir -p qcschema
-	python -c "exec(\"import pathlib, qcelemental\nfor md in qcelemental.models.qcschema_models():\n\tmfile = (pathlib.Path('qcschema') / md.__name__).with_suffix('.schema')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=4))\")"
+	python -c "exec(\"import pathlib, qcelemental\nfor md in qcelemental.models.qcschema_models():\n\tmfile = (pathlib.Path('qcschema') / md.__name__).with_suffix('.schema')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=None))\")"
 	python -c "exec(\"import json, pathlib, pydantic, qcelemental\nwith open((pathlib.Path('qcschema') / 'QCSchema').with_suffix('.schema'), 'w') as fp:\n\tjson.dump(pydantic.schema.schema(qcelemental.models.qcschema_models(), title='QCSchema'), fp, indent=4)\")"
 
 .PHONY: clean

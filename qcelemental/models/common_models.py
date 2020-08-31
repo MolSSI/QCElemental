@@ -63,8 +63,7 @@ class Model(ProtoModel):
 
 
 class DriverEnum(str, Enum):
-    """Allowed computation driver values.
-    """
+    """Allowed computation driver values."""
 
     energy = "energy"
     gradient = "gradient"
