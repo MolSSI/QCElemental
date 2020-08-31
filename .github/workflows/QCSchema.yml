@@ -26,8 +26,8 @@ jobs:
         path: qcsk
         ref: qcsk_export_2
         #ref: master
-        persist-credentials: false
-        fetch-depth: 0
+#        persist-credentials: false
+#        fetch-depth: 0
 
     - name: Python Setup
       uses: actions/setup-python@v1
