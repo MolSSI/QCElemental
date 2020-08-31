@@ -11,10 +11,13 @@ jobs:
         cfg:
           - conda-env: minimal
             python-version: 3.6
+            id: mindep
           - conda-env: base
             python-version: 3.6
+            id: minpy
           - conda-env: base
             python-version: 3.8
+            id: fancy
     env:
       PYVER: ${{ matrix.cfg.python-version }}
       CONDA_ENV: ${{ matrix.cfg.conda-env }}
@@ -56,6 +59,7 @@ jobs:
 
     - name: PyTest B
       shell: bash
+      if: matrix.cfg.id == "fancy"
       run: |
         eval "$(conda shell.bash hook)" && conda activate test
         pytest -rws -v --validate qcelemental/

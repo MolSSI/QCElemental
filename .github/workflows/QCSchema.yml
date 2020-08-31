@@ -85,6 +85,6 @@ jobs:
         directory: ./qcsk
         repository: MolSSI/QCSchema
         branch: ${{ env.prbranch }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-#        github_token: ${{ secrets.QCSCHEMA_FROM_QCELEMENTAL }}
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.qcschema_from_qcelemental }}
         force: true
