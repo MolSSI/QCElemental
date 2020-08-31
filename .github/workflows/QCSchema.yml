@@ -26,8 +26,8 @@ jobs:
         path: qcsk
         ref: qcsk_export_2
         #ref: master
-#        persist-credentials: false
-#        fetch-depth: 0
+        persist-credentials: false
+        fetch-depth: 0
 
     - name: Python Setup
       uses: actions/setup-python@v1
@@ -85,6 +85,6 @@ jobs:
         directory: ./qcsk
         repository: MolSSI/QCSchema
         branch: ${{ env.prbranch }}
-#        github_token: ${{ secrets.GITHUB_TOKEN }}
-        github_token: ${{ secrets.qcschema_from_qcelemental }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+#        github_token: ${{ secrets.qcschema_from_qcelemental }}
         force: true
