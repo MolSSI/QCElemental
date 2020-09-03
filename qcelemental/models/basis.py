@@ -12,18 +12,14 @@ class NonnegativeInt(ConstrainedInt):
 
 
 class HarmonicType(str, Enum):
-    """
-    The angular momentum representation of a shell.
-    """
+    """The angular momentum representation of a shell."""
 
     spherical = "spherical"
     cartesian = "cartesian"
 
 
 class ElectronShell(ProtoModel):
-    """
-    Information for a single electronic shell
-    """
+    """Information for a single electronic shell."""
 
     angular_momentum: List[NonnegativeInt] = Field(
         ..., description="Angular momentum for the shell as an array of integers.", min_items=1
@@ -34,7 +30,7 @@ class ElectronShell(ProtoModel):
     exponents: List[float] = Field(..., description="Exponents for the contracted shell.", min_items=1)
     coefficients: List[List[float]] = Field(
         ...,
-        description="General contraction coefficients for the shell, individual list components will be the individual segment contraction coefficients.",
+        description="General contraction coefficients for the shell; individual list components will be the individual segment contraction coefficients.",
         min_items=1,
     )
 
@@ -91,18 +87,14 @@ class ElectronShell(ProtoModel):
 
 
 class ECPType(str, Enum):
-    """
-    The type of the ECP potential.
-    """
+    """The type of the ECP potential."""
 
     scalar = "scalar"
     spinorbit = "spinorbit"
 
 
 class ECPPotential(ProtoModel):
-    """
-    Information for a single ECP potential.
-    """
+    """Information for a single ECP potential."""
 
     ecp_type: ECPType = Field(..., description=str(ECPType.__doc__))
     angular_momentum: List[NonnegativeInt] = Field(
@@ -112,7 +104,7 @@ class ECPPotential(ProtoModel):
     gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.", min_items=1)
     coefficients: List[List[float]] = Field(
         ...,
-        description="General contraction coefficients for the potential, individual list components will be the individual segment contraction coefficients.",
+        description="General contraction coefficients for the potential; individual list components will be the individual segment contraction coefficients.",
         min_items=1,
     )
 
@@ -142,9 +134,7 @@ class ECPPotential(ProtoModel):
 
 
 class BasisCenter(ProtoModel):
-    """
-    Data for a single atom/center in a basis set.
-    """
+    """Data for a single atom/center in a basis set."""
 
     electron_shells: List[ElectronShell] = Field(..., description="Electronic shells for this center.", min_items=1)
     ecp_electrons: int = Field(0, description="Number of electrons replaced by ECP, MCP, or other field potentials.")
@@ -171,16 +161,16 @@ class BasisSet(ProtoModel):
         1, description="The version number of ``schema_name`` to which this model conforms."
     )
 
-    name: str = Field(..., description="A standard basis name if available (e.g., 'cc-pVDZ').")
-    description: Optional[str] = Field(None, description="A brief description of the basis set.")
+    name: str = Field(..., description="The standard basis name if available (e.g., 'cc-pVDZ').")
+    description: Optional[str] = Field(None, description="Brief description of the basis set.")
     center_data: Dict[str, BasisCenter] = Field(
         ..., description="Shared basis data for all atoms/centers in the parent molecule"
     )
     atom_map: List[str] = Field(
-        ..., description="Mapping of all atoms/centers in the parent molecule to centers in `center_data`."
+        ..., description="Mapping of all atoms/centers in the parent molecule to centers in ``center_data``."
     )
 
-    nbf: Optional[int] = Field(None, description="The number of basis functions.")
+    nbf: Optional[int] = Field(None, description="The number of basis functions. Use for convenience or as checksum")
 
     class Config(ProtoModel.Config):
         def schema_extra(schema, model):

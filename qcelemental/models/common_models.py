@@ -16,9 +16,7 @@ ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
 class Provenance(ProtoModel):
-    """
-    Provenance information.
-    """
+    """Provenance information."""
 
     # compared to qcsk v2:
     #   this has defaults for version & routine, and those aren't required.
@@ -40,9 +38,7 @@ class Provenance(ProtoModel):
 
 
 class Model(ProtoModel):
-    """
-    The computational molecular sciences model to run.
-    """
+    """The computational molecular sciences model to run."""
 
     method: str = Field(  # type: ignore
         ...,
@@ -79,7 +75,7 @@ class DriverEnum(str, Enum):
 
 
 class ComputeError(ProtoModel):
-    """A complete description of the error."""
+    """Complete description of the error from an unsuccessful program execution."""
 
     error_type: str = Field(  # type: ignore
         ...,  # Error enumeration not yet strict
@@ -87,11 +83,12 @@ class ComputeError(ProtoModel):
     )
     error_message: str = Field(  # type: ignore
         ...,
-        description="Text associated with the thrown error, often the backtrace, but can contain additional "
+        description="Text associated with the thrown error. This is often the backtrace, but it can contain additional "
         "information as well.",
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
-        None, description="Additional data to ship with the error object."
+        None,
+        description="Additional information to bundle with the error.",
     )
 
     class Config:
@@ -102,11 +99,7 @@ class ComputeError(ProtoModel):
 
 
 class FailedOperation(ProtoModel):
-    """
-    A record indicating that a given operation (compute, procedure, etc.) has failed and contains the reason and
-    input data which generated the failure.
-
-    """
+    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure."""
 
     id: str = Field(  # type: ignore
         None,
@@ -132,7 +125,7 @@ class FailedOperation(ProtoModel):
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
         None,
-        description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
+        description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )
 

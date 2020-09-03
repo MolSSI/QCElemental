@@ -102,6 +102,14 @@ class Molecule(ProtoModel):
     data for symbols, geometry, connectivity, charges, fragmentation, etc while also supporting a wide array of I/O and manipulation capabilities.
 
     Molecule objects geometry, masses, and charges are truncated to 8, 6, and 4 decimal places respectively to assist with duplicate detection.
+
+    Notes
+    -----
+    All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
+        nat: number of atomic = calcinfo_natom
+        nfr: number of fragments
+        <varies>: irregular dimension not systematically reshapable
+
     """
 
     schema_name: constr(strip_whitespace=True, regex="^(qcschema_molecule)$") = Field(  # type: ignore
@@ -125,15 +133,15 @@ class Molecule(ProtoModel):
     # Required data
     symbols: Array[str] = Field(  # type: ignore
         ...,
-        description="An ordered (nat,) array-like object of atomic elemental symbols in title case. The index of "
-        "this attribute sets atomic order for all other per-atom fields like ``real`` and the first "
-        "dimension of ``geometry``. Ghost/Virtual atoms must have an entry here in ``symbols``; ghostedness is "
+        description="The ordered array of atomic elemental symbols in title case. This field's index "
+        "sets atomic order for all other per-atom fields like ``real`` and the first dimension of "
+        "``geometry``. Ghost/virtual atoms must have an entry here in ``symbols``; ghostedness is "
         "indicated through the ``real`` field.",
         shape=["nat"],
     )
     geometry: Array[float] = Field(  # type: ignore
         ...,
-        description="An ordered (nat,3) array-like for XYZ atomic coordinates [a0]. "
+        description="The ordered array for Cartesian XYZ atomic coordinates [a0]. "
         "Atom ordering is fixed; that is, a consumer who shuffles atoms must not reattach the input "
         "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-atom results "
         "(e.g., gradient). Index of the first dimension matches the 0-indexed indices of all other "
@@ -144,37 +152,40 @@ class Molecule(ProtoModel):
         "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
         "(nat,3) for this attribute.",
         shape=["nat", 3],
+        units="a0",
     )
 
     # Molecule data
     name: Optional[str] = Field(  # type: ignore
-        None, description="A common or human-readable name to assign to this molecule. Can be arbitrary."
+        None,
+        description="Common or human-readable name to assign to this molecule. This field can be arbitrary; see ``identifiers`` for well-defined labels.",
     )
     identifiers: Optional[Identifiers] = Field(  # type: ignore
         None,
-        description="An optional dictionary of additional identifiers by which this Molecule can be referenced, "
+        description="An optional dictionary of additional identifiers by which this molecule can be referenced, "
         "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.",
     )
     comment: Optional[str] = Field(  # type: ignore
         None,
-        description="Additional comments for this Molecule. Intended for pure human/user consumption and clarity.",
+        description="Additional comments for this molecule. Intended for pure human/user consumption and clarity.",
     )
-    molecular_charge: float = Field(0.0, description="The net electrostatic charge of the Molecule.")  # type: ignore
-    molecular_multiplicity: int = Field(1, description="The total multiplicity of the Molecule.")  # type: ignore
+    molecular_charge: float = Field(0.0, description="The net electrostatic charge of the molecule.")  # type: ignore
+    molecular_multiplicity: int = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
 
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
         None,
-        description="An ordered 1-D array-like object of atomic masses [u] of shape (nat,). Index order "
+        description="The ordered array of atomic masses. Index order "
         "matches the 0-indexed indices of all other per-atom fields like ``symbols`` and ``real``. If "
-        "this is not provided, the mass of each atom is inferred from their most common isotope. If this "
+        "this is not provided, the mass of each atom is inferred from its most common isotope. If this "
         "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
         "standard masses to infer from the same index in the ``symbols`` field.",
         shape=["nat"],
+        units="u",
     )
     real_: Optional[Array[bool]] = Field(  # type: ignore
         None,
-        description="An ordered 1-D array-like object of shape (nat,) indicating if each atom is real (``True``) or "
+        description="The ordered array indicating if each atom is real (``True``) or "
         "ghost/virtual (``False``). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
         "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
@@ -183,9 +194,9 @@ class Molecule(ProtoModel):
     )
     atom_labels_: Optional[Array[str]] = Field(  # type: ignore
         None,
-        description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
+        description="Additional per-atom labels as an array of strings. Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
-        "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.",
+        "assigned. See the ``comments`` field for general human-consumable text to affix to the molecule.",
         shape=["nat"],
     )
     atomic_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
@@ -216,26 +227,24 @@ class Molecule(ProtoModel):
     )
     fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
-        description="List of indices grouping atoms (0-indexed) into molecular fragments within the Molecule. This is a list of shape "
-        "(nfr) of 1-D array-like objects of arbitrary length. Each entry in the list indicates a new "
-        "fragment. The index "
-        "of the list matches the 0-indexed indices of ``fragment_charges`` and "
-        "``fragment_multiplicities``. The 1-D array-like objects are sets of atom indices indicating the "
-        "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
-        "per-atom settings like ``symbols`` and ``real``. "
-        "Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the input (pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment results (e.g., n-body energy arrays).",
+        description="List of indices grouping atoms (0-indexed) into molecular fragments within the molecule. "
+        "Each entry in the outer list is a new fragment; index matches the ordering in ``fragment_charges`` and "
+        "``fragment_multiplicities``. Inner lists are 0-indexed atoms which compose the fragment; every atom must "
+        "be in exactly one inner list. Noncontiguous fragments are allowed, though no QM program is known to support them. "
+        "Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the input "
+        "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment results (e.g., n-body energy arrays).",
         shape=["nfr", "<varies>"],
     )
     fragment_charges_: Optional[List[float]] = Field(  # type: ignore
         None,
-        description="The total charge of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
+        description="The total charge of each fragment in the ``fragments`` list. The index of this "
         "list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of rules "
         "if not provided (and ``fragments`` are specified).",
         shape=["nfr"],
     )
     fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
         None,
-        description="The multiplicity of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
+        description="The multiplicity of each fragment in the ``fragments`` list. The index of this "
         "list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of "
         "rules if not provided (and ``fragments`` are specified).",
         shape=["nfr"],
@@ -273,7 +282,8 @@ class Molecule(ProtoModel):
         "never need to be manually set.",
     )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None, description="Extra information to associate with this Molecule."
+        None,
+        description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
     class Config(ProtoModel.Config):
