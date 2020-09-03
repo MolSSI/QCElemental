@@ -49,7 +49,7 @@ def build_units_registry(context):
     ureg.define("debye = 1e-18 * statcoulomb * cm = D")
 
     # Distance
-    ureg.define("bohr = {} * meter = bohr_radius = Bohr = au_length".format(phys_const["bohr radius"]["value"]))
+    ureg.define("bohr = {} * meter = bohr_radius = Bohr = a0 = au_length".format(phys_const["bohr radius"]["value"]))
     ureg.define("wavenumber = 1 / centimeter")
     ureg.define("Angstrom = angstrom")
 
