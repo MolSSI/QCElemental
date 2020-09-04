@@ -125,6 +125,8 @@ class ProtoModel(BaseModel):
         include: Optional[Set[str]] = None,
         exclude: Optional[Set[str]] = None,
         exclude_unset: Optional[bool] = None,
+        exclude_defaults: Optional[bool] = None,
+        exclude_none: Optional[bool] = None,
     ) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
@@ -138,6 +140,10 @@ class ProtoModel(BaseModel):
             Fields to be excluded in the serialization.
         exclude_unset : Optional[bool], optional
             If True, skips fields that have default values provided.
+        exclude_defaults: Optional[bool], optional
+            If True, skips fields that have set or defaulted values equal to the default.
+        exclude_none: Optional[bool], optional
+            If True, skips fields that have value ``None``.
 
         Returns
         -------
@@ -152,6 +158,10 @@ class ProtoModel(BaseModel):
             kwargs["exclude"] = exclude
         if exclude_unset:
             kwargs["exclude_unset"] = exclude_unset
+        if exclude_defaults:
+            kwargs["exclude_defaults"] = exclude_defaults
+        if exclude_none:
+            kwargs["exclude_none"] = exclude_none
 
         data = self.dict(**kwargs)
 
