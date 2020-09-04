@@ -1,6 +1,12 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
@@ -11,10 +17,13 @@ jobs:
         cfg:
           - conda-env: minimal
             python-version: 3.6
+            label: mindep
           - conda-env: base
             python-version: 3.6
+            label: minpy
           - conda-env: base
             python-version: 3.8
+            label: full
     env:
       PYVER: ${{ matrix.cfg.python-version }}
       CONDA_ENV: ${{ matrix.cfg.conda-env }}
