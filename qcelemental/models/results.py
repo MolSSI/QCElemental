@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
@@ -320,7 +321,7 @@ class AtomicResultProtocols(ProtoModel):
     )
     stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
     error_correction: ErrorCorrectionProtocol = Field(
-        ErrorCorrectionProtocol(), description="Policies for error correction"
+        default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
     )
 
     class Config:
@@ -347,7 +348,13 @@ class AtomicInput(ProtoModel):
 
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
+    provenance: Provenance = Field(
+        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
+    )
+
+    class Config(ProtoModel.Config):
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
     def __repr_args__(self) -> "ReprArgs":
         return [

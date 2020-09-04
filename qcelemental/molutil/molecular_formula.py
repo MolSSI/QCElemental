@@ -1,6 +1,6 @@
 import collections
 import re
-from typing import List
+from typing import Dict, List
 
 
 def order_molecular_formula(formula: str, order: str = "alphabetical") -> str:
@@ -23,7 +23,7 @@ def order_molecular_formula(formula: str, order: str = "alphabetical") -> str:
     matches = re.findall(r"[A-Z][^A-Z]*", formula)
     if not "".join(matches) == formula:
         raise ValueError(f"{formula} is not a valid molecular formula.")
-    count = collections.defaultdict(int)
+    count: Dict[str, int] = collections.defaultdict(int)
     for match in matches:
         match_n = re.match(r"(\D+)(\d*)", match)
         assert match_n
