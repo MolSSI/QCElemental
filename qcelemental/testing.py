@@ -478,11 +478,7 @@ def compare_molrecs(
     return_message: bool = False,
     return_handler: Callable = None,
 ) -> bool:
-    """Function to compare Molecule dictionaries. Prints
-    #    :py:func:`util.success` when elements of `computed` match elements of
-    #    `expected` to `tol` number of digits (for float arrays).
-
-    """
+    """Function to compare Molecule dictionaries."""
     # Need to manipulate the dictionaries a bit, so hold values
     xptd = copy.deepcopy(expected)
     cptd = copy.deepcopy(computed)

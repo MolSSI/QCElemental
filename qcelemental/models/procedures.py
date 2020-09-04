@@ -57,7 +57,10 @@ class QCInputSpecification(ProtoModel):
     model: Model = Field(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
 
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
 
 class OptimizationInput(ProtoModel):

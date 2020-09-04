@@ -17,8 +17,7 @@ if TYPE_CHECKING:
 
 
 class AtomicResultProperties(ProtoModel):
-    """
-    Named properties of quantum chemistry computations following the MolSSI QCSchema.
+    """Named properties of quantum chemistry computations following the MolSSI QCSchema.
 
     Notes
     -----
@@ -257,6 +256,7 @@ class AtomicResultProperties(ProtoModel):
 
 
 class WavefunctionProperties(ProtoModel):
+    """Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
 
     # Class properties
     _return_results_names: Set[str] = {
@@ -454,9 +454,7 @@ class WavefunctionProperties(ProtoModel):
 
 
 class WavefunctionProtocolEnum(str, Enum):
-    """
-    Wavefunction to keep from a Result computation.
-    """
+    """Wavefunction to keep from a computation."""
 
     all = "all"
     orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
@@ -487,14 +485,12 @@ class ErrorCorrectionProtocol(ProtoModel):
 
 
 class AtomicResultProtocols(ProtoModel):
-    """
-    Protocols regarding the manipulation of a Result output data.
-    """
+    """Protocols regarding the manipulation of computational result data."""
 
     wavefunction: WavefunctionProtocolEnum = Field(
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
-    stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
+    stdout: bool = Field(True, description="Primary output file to keep from the computation")
     error_correction: ErrorCorrectionProtocol = Field(
         default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
     )
@@ -509,7 +505,7 @@ class AtomicResultProtocols(ProtoModel):
 class AtomicInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
 
-    id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
+    id: Optional[str] = Field(None, description="The optional ID for the computation.")
     schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
         qcschema_input_default,
         description=(
@@ -521,12 +517,15 @@ class AtomicInput(ProtoModel):
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__base_doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
     protocols: AtomicResultProtocols = Field(
         AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
     )
 
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
     provenance: Provenance = Field(
         default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
@@ -545,7 +544,7 @@ class AtomicInput(ProtoModel):
 
 
 class AtomicResult(AtomicInput):
-    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
+    """Results from a CMS program execution."""
 
     schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
         qcschema_output_default,
@@ -557,15 +556,17 @@ class AtomicResult(AtomicInput):
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
-        ..., description="The value requested by the 'driver' attribute."
+        ...,
+        description="The primary return specified by the ``driver`` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
 
-    stdout: Optional[str] = Field(None, description="The standard output of the program.")
-    stderr: Optional[str] = Field(None, description="The standard error of the program.")
-
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    stdout: Optional[str] = Field(
+        None,
+        description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
     )
+    stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
+
+    success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__base_doc__))
 
