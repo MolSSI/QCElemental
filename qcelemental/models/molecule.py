@@ -64,6 +64,15 @@ def float_prep(array, around):
     return array
 
 
+class NonnegativeInt(ConstrainedInt):
+    ge = 0
+
+
+class BondOrderFloat(ConstrainedFloat):
+    ge = 0
+    le = 5
+
+
 class Identifiers(ProtoModel):
     """Canonical chemical identifiers"""
 
@@ -93,7 +102,7 @@ class Molecule(ProtoModel):
     Molecule objects geometry, masses, and charges are truncated to 8, 6, and 4 decimal places respectively to assist with duplicate detection.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, regex="^(qcschema_molecule)$") = Field(  # type: ignore
         qcschema_molecule_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as " f"{qcschema_molecule_default}."
@@ -118,6 +127,7 @@ class Molecule(ProtoModel):
         "this attribute sets atomic order for all other per-atom setting like ``real`` and the first "
         "dimension of ``geometry``. Ghost/Virtual atoms must have an entry in this array-like and are "
         "indicated by the matching the 0-indexed indices in ``real`` field.",
+        shape=["nat"],
     )
     geometry: Array[float] = Field(  # type: ignore
         ...,
@@ -130,6 +140,8 @@ class Molecule(ProtoModel):
         "Can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
         "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
         "(nat,3) for this attribute.",
+        shape=["nat", 3],
+        units="a0",
     )
 
     # Molecule data
@@ -156,6 +168,8 @@ class Molecule(ProtoModel):
         "this is not provided, the mass of each atom is inferred from their most common isotope. If this "
         "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
         "standard masses to infer from the same index in the ``symbols`` field.",
+        shape=["nat"],
+        units="u",
     )
     real_: Optional[Array[bool]] = Field(  # type: ignore
         None,
@@ -164,32 +178,37 @@ class Molecule(ProtoModel):
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
         "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
         "If this is provided, the reality or ghostality of every atom must be specified.",
+        shape=["nat"],
     )
     atom_labels_: Optional[Array[str]] = Field(  # type: ignore
         None,
         description="Additional per-atom labels as a 1-D array-like of of strings of shape (nat,). Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
         "assigned. See the ``comments`` field for general human-consumable text to affix to the Molecule.",
+        shape=["nat"],
     )
     atomic_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
         "Values are inferred from the ``symbols`` list if not explicitly set.",
+        shape=["nat"],
     )
     mass_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
         "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set.",
+        shape=["nat"],
     )
 
     # Fragment and connection data
-    connectivity_: Optional[List[Tuple[int, int, float]]] = Field(  # type: ignore
+    connectivity_: Optional[List[Tuple[NonnegativeInt, NonnegativeInt, BondOrderFloat]]] = Field(  # type: ignore
         None,
         description="The connectivity information between each atom in the ``symbols`` array. Each entry in this "
         "list is a Tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
         "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``.",
+        min_items=1,
     )
     fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
@@ -200,18 +219,21 @@ class Molecule(ProtoModel):
         "``fragment_multiplicities``. The 1-D array-like objects are sets of atom indices indicating the "
         "atoms which compose the fragment. The atom indices match the 0-indexed indices of all other "
         "per-atom settings like ``symbols`` and ``real``.",
+        shape=["nfr", "<varies>"],
     )
     fragment_charges_: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The total charge of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of rules "
         "if not provided (and ``fragments`` are specified).",
+        shape=["nfr"],
     )
     fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the ``fragments`` list of shape (nfr,). The index of this "
         "list matches the 0-index indices of ``fragment`` list. Will be filled in based on a set of "
         "rules if not provided (and ``fragments`` are specified).",
+        shape=["nfr"],
     )
 
     # Orientation

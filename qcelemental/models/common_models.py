@@ -1,10 +1,11 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 import numpy as np
 from pydantic import Field
 
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
+from .basis import BasisSet
 
 if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
@@ -20,12 +21,19 @@ class Provenance(ProtoModel):
     """
 
     creator: str = Field(..., description="The creator of the object.")
-    version: Optional[str] = Field(None, description="The version of the creator.")
-    routine: Optional[str] = Field(None, description="The routine of the creator.")
+
+    version: str = Field(
+        "",
+        description="The version of the creator, blank otherwise. This should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).",
+    )
+    routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
     class Config(ProtoModel.Config):
         canonical_repr = True
-        extra = "allow"
+        extra: str = "allow"
+
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
 
 class Model(ProtoModel):
@@ -36,7 +44,7 @@ class Model(ProtoModel):
     method: str = Field(  # type: ignore
         ..., description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...)."
     )
-    basis: Optional[str] = Field(  # type: ignore
+    basis: Optional[Union[str, BasisSet]] = Field(  # type: ignore
         None,
         description="The quantum chemistry basis set to evaluate (e.g., 6-31g, cc-pVDZ, ...). Can be ``None`` for "
         "methods without basis sets.",
@@ -46,7 +54,7 @@ class Model(ProtoModel):
 
     class Config(ProtoModel.Config):
         canonical_repr = True
-        extra = "allow"
+        extra: str = "allow"
 
 
 class DriverEnum(str, Enum):
