@@ -5,7 +5,7 @@ import numpy as np
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule

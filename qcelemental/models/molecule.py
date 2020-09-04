@@ -16,7 +16,7 @@ from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
 
@@ -258,6 +258,10 @@ class Molecule(ProtoModel):
             "fragment_charges_": "fragment_charges",
             "fragment_multiplicities_": "fragment_multiplicities",
         }
+
+        def schema_extra(schema, model):
+            # below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .
+            schema["$schema"] = qcschema_draft
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         """Initializes the molecule object from dictionary-like values.

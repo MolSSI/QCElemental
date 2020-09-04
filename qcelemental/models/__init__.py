@@ -12,5 +12,18 @@ from .basemodels import AutodocBaseSettings, ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
 from .molecule import Molecule
-from .procedures import Optimization, OptimizationInput, OptimizationResult
-from .results import AtomicInput, AtomicResult, AtomicResultProperties, Result, ResultInput, ResultProperties
+from .procedures import OptimizationInput, OptimizationResult
+from .procedures import Optimization  # scheduled for removal
+from .results import AtomicInput, AtomicResult, AtomicResultProperties
+from .results import Result, ResultInput, ResultProperties  # scheduled for removal
+
+
+def qcschema_models():
+    return [
+        AtomicInput,
+        AtomicResult,
+        AtomicResultProperties,
+        BasisSet,
+        Molecule,
+        Provenance,
+    ]
