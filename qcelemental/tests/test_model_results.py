@@ -22,8 +22,8 @@ center_data = {
             {
                 "harmonic_type": "spherical",
                 "angular_momentum": [0],
-                "exponents": [130.70939, 23.808861, 6.4436089],
-                "coefficients": [[0.15432899, 0.53532814, 0.44463454]],
+                "exponents": [130.70939, "23.808861", 6.4436089],
+                "coefficients": [[0.15432899, "0.53532814", 0.44463454]],
             },
             {
                 "harmonic_type": "cartesian",
@@ -172,6 +172,9 @@ def test_basis_set_build(request):
     assert es[0].is_contracted() is False
     assert es[1].is_contracted() is False
     assert es[2].is_contracted()
+
+    assert es[0].exponents == [130.70939, 23.808861, 6.4436089]
+    assert es[0].coefficients == [[0.15432899, 0.53532814, 0.44463454]]
 
 
 def test_basis_electron_center_raises():

@@ -18,7 +18,6 @@ ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 class Provenance(ProtoModel):
     """Provenance information."""
 
-
     creator: str = Field(..., description="The name of the program, library, or person who created the object.")
     version: str = Field(
         "",
