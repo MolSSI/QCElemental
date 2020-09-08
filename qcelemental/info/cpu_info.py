@@ -14,8 +14,7 @@ from ..models import ProtoModel
 
 
 class VendorEnum(str, Enum):
-    """Allowed processor vendors, used for validation.
-    """
+    """Allowed processor vendors, used for validation."""
 
     amd = "amd"
     intel = "intel"
@@ -24,8 +23,7 @@ class VendorEnum(str, Enum):
 
 
 class InstructionSetEnum(int, Enum):
-    """Allowed instruction sets for CPUs in an ordinal enum.
-    """
+    """Allowed instruction sets for CPUs in an ordinal enum."""
 
     none = 0
     sse = 1

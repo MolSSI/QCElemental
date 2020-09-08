@@ -290,7 +290,7 @@ class WavefunctionProtocolEnum(str, Enum):
 
 class ErrorCorrectionProtocol(ProtoModel):
     """Configuration for how QCEngine handles error correction
-    
+
     WARNING: These protocols are currently experimental and only supported by NWChem tasks
     """
 

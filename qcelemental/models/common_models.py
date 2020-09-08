@@ -50,8 +50,7 @@ class Model(ProtoModel):
 
 
 class DriverEnum(str, Enum):
-    """Allowed quantum chemistry driver values.
-    """
+    """Allowed quantum chemistry driver values."""
 
     energy = "energy"
     gradient = "gradient"
