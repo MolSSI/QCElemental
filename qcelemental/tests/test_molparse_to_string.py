@@ -110,6 +110,28 @@ GH                    {au2:.12f}     0.000000000000     0.000000000000
 H                    -{au2:.12f}     0.000000000000     0.000000000000
 end
 """,
+    "ans2_mrchem_au": """Molecule {
+charge = 0
+multiplicity = 3
+translate = False
+$coords
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     2.000000000000     0.000000000000     0.000000000000
+H                    -2.000000000000     0.000000000000     0.000000000000
+$end
+}
+""",
+    "ans2_mrchem_ang": f"""Molecule {{
+charge = 0
+multiplicity = 3
+translate = False
+$coords
+Co                    0.000000000000     0.000000000000     0.000000000000
+H                     {au2:.12f}     0.000000000000     0.000000000000
+H                    -{au2:.12f}     0.000000000000     0.000000000000
+$end
+}}
+""",
     "ans2_terachem_au": """3 au
 CoH2
 Co                    0.000000000000     0.000000000000     0.000000000000
@@ -222,6 +244,8 @@ QCElemental
         (("subject2", {"dtype": "nwchem", "units": "angstrom"}), "ans2_nwchem_ang"),
         (("subject2", {"dtype": "madness", "units": "bohr"}), "ans2_madness_au"),
         (("subject2", {"dtype": "madness", "units": "angstrom"}), "ans2_madness_ang"),
+        (("subject2", {"dtype": "mrchem", "units": "bohr"}), "ans2_mrchem_au"),
+        (("subject2", {"dtype": "mrchem", "units": "angstrom"}), "ans2_mrchem_ang"),
         (("subject2", {"dtype": "terachem", "units": "angstrom"}), "ans2_terachem_ang"),
         (("subject2", {"dtype": "terachem"}), "ans2_terachem_au"),
         (("subject2", {"dtype": "psi4", "units": "bohr"}), "ans2_psi4_au"),

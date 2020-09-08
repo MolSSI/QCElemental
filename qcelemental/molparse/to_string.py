@@ -85,6 +85,7 @@ def to_string(
         "terachem": "Bohr",
         "turbomole": "Bohr",
         "madness": "Bohr",  # madness by default reads au and optionally can read angs/angstrom
+        "mrchem": "Bohr",  # MRChem by default reads au and optionally can read angs/angstrom
     }
     if dtype not in default_units:
         raise KeyError(f"dtype '{dtype}' not understood.")
@@ -423,6 +424,32 @@ def to_string(
         if "fix_symmetry" in molrec.keys() and molrec["fix_symmetry"] == "c1":
             data.keywords["sym_ignore"] = True
             data.keywords["symmetry"] = False
+
+    elif dtype == "mrchem":
+        atom_format = "{elem}"
+        ghost_format = "{elem}"
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+
+        smol = (
+            [
+                "Molecule {",
+                f"charge = {int(molrec['molecular_charge'])}",
+                f"multiplicity = {molrec['molecular_multiplicity']}",
+                f"translate = {molrec['fix_com']}",
+                "$coords",
+            ]
+            + atoms
+            + ["$end\n}"]
+        )
+
+        # this is what we are actually interested in:
+        # when dtype="mrchem", we always want to set return_data=True
+        data.keywords = {
+            "charge": int(molrec["molecular_charge"]),
+            "multiplicity": molrec["molecular_multiplicity"],
+            "translate": molrec["fix_com"],
+            "coords": "\n".join(atoms),
+        }
 
     else:
         raise KeyError(f"dtype '{dtype}' not understood.")
