@@ -427,7 +427,7 @@ def to_string(
 
     elif dtype == "mrchem":
         atom_format = "{elem}"
-        ghost_format = "@{elem}"
+        ghost_format = "{elem}"
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
         smol = (
