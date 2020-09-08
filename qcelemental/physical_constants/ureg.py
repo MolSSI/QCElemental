@@ -129,8 +129,7 @@ def build_units_registry(context):
     # Add contexts
 
     def _find_nist_unit(unit):
-        """Converts pint datatypes to NIST datatypes
-        """
+        """Converts pint datatypes to NIST datatypes"""
         for value in unit.to_tuple()[1]:
             if value[1] < 1:
                 continue

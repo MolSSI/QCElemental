@@ -45,10 +45,10 @@ def _formDirected(g, match):
     Returns
     -------
     networkx.DiGraph
-	    Directed graph, with edges in `match` pointing from set-0
-	    (bipartite attribute==0) to set-1 (bipartite attrbiute==1), and
-	    the other edges in `g` but not in `match` pointing from set-1 to
-	    set-0.
+        Directed graph, with edges in `match` pointing from set-0
+        (bipartite attribute==0) to set-1 (bipartite attrbiute==1), and
+        the other edges in `g` but not in `match` pointing from set-1 to
+        set-0.
 
     """
     import networkx as nx
@@ -127,8 +127,8 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
     match :
         List of edges forming one maximum matching of `g`.
     all_matches :
-	    List, each is a list of edges forming a maximum matching of `g`.
-	    Newly found matchings will be appended into this list.
+        List, each is a list of edges forming a maximum matching of `g`.
+        Newly found matchings will be appended into this list.
     add_e : tuple, optional
         Edge used to form subproblems. If not `None`, will be added to each
         newly found matchings.
@@ -335,19 +335,19 @@ def _enumMaximumMatching2(g):
 
 def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_cycle=True):
     """Recurively search maximum matchings.
-    Similar to _enumMaximumMatching but implemented using adjacency matrix
-    of graph for a slight speed boost.
+       Similar to _enumMaximumMatching but implemented using adjacency matrix
+       of graph for a slight speed boost.
 
     Parameters
     ----------
-#    g :
-#        Undirected bipartite graph. Nodes are separated by their
-#        'bipartite' attribute.
-#    match :
-#        List of edges forming one maximum matching of `g`.
-#    all_matches :
-#	    List, each is a list of edges forming a maximum matching of `g`.
-#	    Newly found matchings will be appended into this list.
+    # g :
+    #     Undirected bipartite graph. Nodes are separated by their
+    #     'bipartite' attribute.
+    # match :
+    #     List of edges forming one maximum matching of `g`.
+    # all_matches :
+    #     List, each is a list of edges forming a maximum matching of `g`.
+    #     Newly found matchings will be appended into this list.
     add_e : tuple, optional
         Edge used to form subproblems. If not `None`, will be added to each
         newly found matchings.

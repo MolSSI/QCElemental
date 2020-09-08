@@ -269,8 +269,7 @@ class PhysicalConstantsContext:
     #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
     def Quantity(self, data: str) -> "quantity._Quantity":
-        """Returns a Pint Quantity.
-        """
+        """Returns a Pint Quantity."""
 
         return self.ureg.Quantity(data)
 
