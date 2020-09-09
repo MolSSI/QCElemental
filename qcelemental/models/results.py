@@ -105,9 +105,6 @@ class AtomicResultProperties(ProtoModel):
         description="The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.",
         units="E_h",
     )
-    mp2_total_correlation_energy: Optional[float] = Field(
-        None, description="The MP2 correlation energy."
-    )  # Old name, to be deprecated
     mp2_correlation_energy: Optional[float] = Field(
         None,
         description="The MP2 correlation energy.",

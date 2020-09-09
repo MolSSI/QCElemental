@@ -135,3 +135,14 @@ def test_complex_array():
 
     dicary = datum1.dict()
     assert compare_recursive(ans, dicary, 9)
+
+
+def test_qc_units():
+    au2D = 2.541746451895025916414946904
+    au2Q = au2D * 0.52917721067
+
+    onedebye = qcel.Datum("CC dipole", "e a0", np.array([0, 0, 1 / au2D]))
+    onebuckingham = qcel.Datum("CC quadrupole", "e a0^2", np.array([0, 0, 1 / au2Q, 0, 0, 0, 0, 0, 0]).reshape((3, 3)))
+
+    assert compare_values(np.array([0, 0, 1.0]), onedebye.to_units("D"))
+    assert compare_values(np.array([[0, 0, 1.0], [0, 0, 0], [0, 0, 0]]), onebuckingham.to_units("D Å"))
