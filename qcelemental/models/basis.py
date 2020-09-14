@@ -7,6 +7,7 @@ from ..exceptions import ValidationError
 from .basemodels import ProtoModel
 
 
+
 class HarmonicType(str, Enum):
     """
     The angular momentum representation of a shell.
