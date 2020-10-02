@@ -14,6 +14,14 @@ Changelog
 .. +++++++++
 
 
+0.17.0 / 2020-10-01
+-------------------
+
+Enhancements
+++++++++++++
+- (:pr:`238`) ``molparse.to_string`` MRChem dtype developed.
+
+
 0.16.0 / 2020-08-19
 -------------------
 
