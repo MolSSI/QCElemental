@@ -8,13 +8,8 @@ conda installation, and other development tools not directly related to the codi
 
 ### Continuous Integration
 
-You should test your code, but do not feel compelled to use these specific programs. You also may not need Unix and 
-Windows testing if you only plan to deploy on specific platforms. These are just to help you get started
-
-* `travis-ci`: Linux and OSX based testing through [Travis-CI](https://about.travis-ci.com/) 
-  * `install.sh`: Pip/Miniconda installation script for Travis
-* `appveyor`: Windows based testing through [AppVeyor](https://www.appveyor.com/)
-  * `install_conda.ps1` Powershell installation script of Conda components
+GitHub Actions (GHA) is used to run the tests on the minimum and maximum supported Python versions.
+A formatting check is also run through GHA. It can be run locally on Linux or Mac with `make format`.
 
 ## How to contribute changes
 - Clone the repository if you have write access to the main repo, fork the repository if you are a collaborator.
