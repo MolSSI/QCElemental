@@ -145,7 +145,12 @@ class BasisSet(ProtoModel):
     @validator("atom_map")
     def _check_atom_map(cls, v, values):
         sv = set(v)
-        missing = sv - values["center_data"].keys()
+
+        # Center_data validation error, skipping
+        try:
+            missing = sv - values["center_data"].keys()
+        except KeyError:
+            return v
 
         if missing:
             raise ValueError(f"'atom_map' contains unknown keys to 'center_data': {missing}.")
