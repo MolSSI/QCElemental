@@ -5,6 +5,7 @@ File Authors: QCElemental Authors
 """
 
 # fmt: off
+
 alvarez_2008_covalent_radii = {
     'title':
     'Covalent radii revisited',

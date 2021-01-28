@@ -5,7 +5,6 @@ Psi4 Version: 1.4a2.dev215
 File Authors: QCElemental Authors
 """
 
-
 data_blob = {
     "version": "1.4a2.dev215",
     "functionals": {

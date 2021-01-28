@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2020-MM-DD
+.. X.Y.0 / 2021-MM-DD
 .. -------------------
 ..
 .. New Features
@@ -12,6 +12,22 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
+
+
+0.18.0 / 2021-MM-DD
+-------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`246`) Removes types deprecated in NumPy v1.20.0.
+
+Bug Fixes
++++++++++
+- (:pr:`244`) Fixes where in code validation throws if ``center_data`` missing from ``BasisSet`` model.
+- (:pr:`1000`) Fixes web tests that weren't marked.
 
 
 0.17.0 / 2020-10-01

@@ -9,6 +9,7 @@ File Authors: QCElemental Authors
 """
 
 # fmt: off
+
 mantina_2009_vanderwaals_radii = {
     'title':
     'Consistent van der Waals Radii for the Whole Main Group',

@@ -36,9 +36,9 @@ class PubChemObj:
 
     def get_sdf(self):
         """Function to return the SDF (structure-data file) of the PubChem object."""
-        from urllib.request import urlopen, Request
-        from urllib.parse import quote
         from urllib.error import URLError
+        from urllib.parse import quote
+        from urllib.request import Request, urlopen
 
         if len(self.dataSDF) == 0:
             url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{}/SDF?record_type=3d".format(
@@ -125,9 +125,9 @@ def get_pubchem_results(name):
     input string. Builds a PubChemObj object if found.
 
     """
-    from urllib.request import urlopen
-    from urllib.parse import quote
     from urllib.error import URLError
+    from urllib.parse import quote
+    from urllib.request import urlopen
 
     if name.isdigit():
         print("\tSearching PubChem database for CID {}".format(name))
