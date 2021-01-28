@@ -311,7 +311,7 @@ def from_arrays(
             geom = []
         else:
             raise ValidationError("""For domain 'qm', `geom` must be provided.""")
-    if domain == "efp" and (geom_hints is None or np.asarray(geom_hints).size == 0):
+    if domain == "efp" and (geom_hints is None or np.asarray(geom_hints, dtype=object).size == 0):
         if missing_enabled_return == "none":
             return {}
         elif missing_enabled_return == "minimal":
