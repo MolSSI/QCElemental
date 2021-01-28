@@ -108,7 +108,7 @@ def compare_values(
     if np.iscomplexobj(expected):
         dtype = np.complex
     else:
-        dtype = np.float
+        dtype = float
 
     try:
         xptd, cptd = np.array(expected, dtype=dtype), np.array(computed, dtype=dtype)

@@ -596,7 +596,7 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
 def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     """Check `geom` for overlapping atoms. Return flattened"""
 
-    npgeom = np.array(geom, copy=copy, dtype=np.float).reshape((-1, 3))
+    npgeom = np.array(geom, copy=copy, dtype=float).reshape((-1, 3))
 
     # Upper triangular
     metric = tooclose ** 2
@@ -695,11 +695,11 @@ def validate_and_fill_nuclei(
     else:
         A = Z = E = mass = real = label = []
     return {
-        "elea": np.array(A, dtype=np.int),
-        "elez": np.array(Z, dtype=np.int),
+        "elea": np.array(A, dtype=int),
+        "elez": np.array(Z, dtype=int),
         "elem": np.array(E),
-        "mass": np.array(mass, dtype=np.float),
-        "real": np.array(real, dtype=np.bool),
+        "mass": np.array(mass, dtype=float),
+        "real": np.array(real, dtype=bool),
         "elbl": np.array(label),
     }
 
@@ -712,7 +712,7 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
     """
     if fragment_separators is None:
         if fragment_charges is None and fragment_multiplicities is None:
-            frs = []  # np.array([], dtype=np.int)  # if empty, needs to be both ndarray and int
+            frs = []  # np.array([], dtype=int)  # if empty, needs to be both ndarray and int
             frc = [None]
             frm = [None]
         else:

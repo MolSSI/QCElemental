@@ -14,7 +14,7 @@ def dataset():
         "decimal": qcel.Datum(
             "a label", "mdyn/angstrom", Decimal("4.4"), comment="force constant", doi="10.1000/182", numeric=False
         ),
-        "ndarray": qcel.Datum("an array", "cm^-1", np.arange(4, dtype=np.float) * 4 / 3, comment="freqs"),
+        "ndarray": qcel.Datum("an array", "cm^-1", np.arange(4, dtype=float) * 4 / 3, comment="freqs"),
         "float": qcel.Datum("a float", "kg", 4.4, doi="10.1000/182"),
         "string": qcel.Datum("ze lbl", "ze unit", "ze data", numeric=False),
         "lststr": qcel.Datum("ze lbl", "ze unit", ["V", "R", None], numeric=False),
@@ -54,7 +54,7 @@ def test_creation_error():
         (("decimal", None), 4.4),
         (("decimal", "N/m"), 440),
         (("decimal", "hartree/bohr/bohr"), 0.282614141011 if qcel.constants.name == "CODATA2014" else 0.28261413658),
-        (("ndarray", "1/m"), np.arange(4, dtype=np.float) * 400 / 3),
+        (("ndarray", "1/m"), np.arange(4, dtype=float) * 400 / 3),
     ],
 )
 def test_units(dataset, inp, expected):
