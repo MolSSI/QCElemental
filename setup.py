@@ -42,6 +42,7 @@ if __name__ == "__main__":
             'tests': [
                 'pytest >= 4.0.0',
                 'pytest-cov',
+                # 'jsonschema',  # needed for speciality `pytest --validate`
             ],
             'align': [
                 'networkx>=2.4.0',
@@ -56,8 +57,9 @@ if __name__ == "__main__":
             ],
         },
         tests_require=[
-            'pytest >= 3.9.1',
+            'pytest >= 4.0.0',
             'pytest-cov',
+            # 'jsonschema',  # needed for speciality `pytest --validate`
         ],
         classifiers=[
             'Development Status :: 4 - Beta',

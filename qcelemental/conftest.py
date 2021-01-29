@@ -27,3 +27,14 @@ def pytest_runtest_setup(item):
         pytest.skip("can't run with --validate option")
     elif item.config.getoption("--validate", default=False) and not item.name.startswith("test_qcschema"):
         pytest.skip("need --validate option to run")
+
+
+# Uncomment below to probe for tests needing `@using_web`
+
+# import socket
+#
+# class block_network(socket.socket):
+#    def __init__(self, *args, **kwargs):
+#        raise Exception("Network call blocked")
+#
+# socket.socket = block_network
