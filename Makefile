@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-isort = isort -rc qcelemental
+isort = isort --float-to-top qcelemental
 black = black qcelemental
 autoflake = autoflake -ir --remove-all-unused-imports --ignore-init-module-imports --remove-unused-variables qcelemental
 

@@ -1,6 +1,7 @@
 # DATA ATMSS from ~line 150 of cfour/joda/pertable.f
 
 # fmt: off
+
 cfour_primary_masses = [
     1.007825035E+00,
     4.00260324E+00,

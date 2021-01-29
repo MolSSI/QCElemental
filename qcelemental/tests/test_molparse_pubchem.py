@@ -105,6 +105,7 @@ pubchem  : 241
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
 
+@using_web
 def test_pubchem_error_d():
     subject = """
     pubchem:-55
@@ -115,6 +116,7 @@ def test_pubchem_error_d():
             qcelemental.molparse.from_string(subject, return_processed=True)
 
 
+@using_web
 def test_pubchem_error_e():
     # no 3D structure available
     subject = """
@@ -127,6 +129,7 @@ pubchem : sodium benzenesulfonate
             qcelemental.molparse.from_string(subject)
 
 
+@using_web
 def test_pubchem_error_f():
     subject = """
     pubchem: 100000000000000
