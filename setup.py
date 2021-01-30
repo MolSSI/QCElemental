@@ -31,7 +31,7 @@ if __name__ == "__main__":
         package_data={'': [os.path.join('qcelemental', 'data', '*.json')]},
         setup_requires=[] + pytest_runner,
         python_requires='>=3.6',
-        install_requires=['numpy >= 1.12.0', 'pint >= 0.10.0', 'pydantic >= 1.0.0'],
+        install_requires=["numpy >= 1.12.0", "pint >= 0.10.0", "pydantic >=1.5.0,!=1.6.0"],
         extras_require={
             'docs': [
                 'numpydoc',
@@ -42,6 +42,7 @@ if __name__ == "__main__":
             'tests': [
                 'pytest >= 4.0.0',
                 'pytest-cov',
+                # 'jsonschema',  # needed for speciality `pytest --validate`
             ],
             'align': [
                 'networkx>=2.4.0',
@@ -56,8 +57,9 @@ if __name__ == "__main__":
             ],
         },
         tests_require=[
-            'pytest >= 3.9.1',
+            'pytest >= 4.0.0',
             'pytest-cov',
+            # 'jsonschema',  # needed for speciality `pytest --validate`
         ],
         classifiers=[
             'Development Status :: 4 - Beta',

@@ -8,9 +8,10 @@ dependencies:
   - nomkl
   - python
   - pint=0.10.0  # technically, qcel has no lower bound for pint version for py36,37 but needs 0.10 for 38
-  - pydantic=1.2.0  # technically, qcel works with 1.0.0 but c-f doesn't have py38 builds for it
+  - pydantic=1.5.0
 
     # Testing
   - pytest=4.6.4  # technically, qcel works with 4.0.0 but c-f doesn't have py38 builds for it
   - pytest-cov
   - codecov
+  - jsonschema

@@ -1,11 +1,12 @@
 from enum import Enum
+from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
 from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
@@ -16,8 +17,13 @@ if TYPE_CHECKING:
 
 
 class AtomicResultProperties(ProtoModel):
-    """
-    Named properties of quantum chemistry computations following the MolSSI QCSchema.
+    """Named properties of quantum chemistry computations following the MolSSI QCSchema.
+
+    Notes
+    -----
+    All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
+        nao: number of atomic orbitals = calcinfo_nbasis
+        nmo: number of molecular orbitals
     """
 
     # Calcinfo
@@ -28,90 +34,191 @@ class AtomicResultProperties(ProtoModel):
     calcinfo_natom: Optional[int] = Field(None, description="The number of atoms in the computation.")
 
     # Canonical
-    nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy energy.")
+    nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy.")
     return_energy: Optional[float] = Field(
-        None, description="The energy of the requested method, identical to `return_value` for energy computations."
+        None,
+        description="The energy of the requested method, identical to ``return_result`` for ``driver=energy`` computations.",
     )
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
-        None, description="The one-electron (core Hamiltonian) energy contribution to the total SCF energy."
+        None,
+        description="The one-electron (core Hamiltonian) energy contribution to the total SCF energy.",
+        units="E_h",
     )
     scf_two_electron_energy: Optional[float] = Field(
-        None, description="The two-electron energy contribution to the total SCF energy."
+        None,
+        description="The two-electron energy contribution to the total SCF energy.",
+        units="E_h",
     )
     scf_vv10_energy: Optional[float] = Field(
-        None, description="The VV10 functional energy contribution to the total SCF energy."
+        None,
+        description="The VV10 functional energy contribution to the total SCF energy.",
+        units="E_h",
     )
     scf_xc_energy: Optional[float] = Field(
-        None, description="The functional (XC) energy contribution to the total SCF energy."
+        None,
+        description="The functional (XC) energy contribution to the total SCF energy.",
+        units="E_h",
     )
     scf_dispersion_correction_energy: Optional[float] = Field(
         None,
         description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
+        units="E_h",
     )
-    scf_dipole_moment: Optional[Array[float]] = Field(None, description="The X, Y, and Z dipole components.")
+    scf_dipole_moment: Optional[Array[float]] = Field(
+        None,
+        description="The SCF X, Y, and Z dipole components",
+        units="e a0",
+    )
     scf_quadrupole_moment: Optional[Array[float]] = Field(
-        None, description="The (3, 3) quadrupole components (redundant; 6 unique)."
+        None,
+        description="The quadrupole components (redundant; 6 unique).",
+        shape=[3, 3],
+        units="e a0^2",
     )
     scf_total_energy: Optional[float] = Field(
-        None, description="The total electronic energy of the SCF stage of the calculation."
+        None,
+        description="The total electronic energy of the SCF stage of the calculation.",
+        units="E_h",
     )
     scf_iterations: Optional[int] = Field(None, description="The number of SCF iterations taken before convergence.")
 
     # MP2 Keywords
     mp2_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations."
+        None,
+        description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
+        units="E_h",
     )
     mp2_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations.",
+        description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
+        units="E_h",
     )
     mp2_singles_energy: Optional[float] = Field(
-        None, description="The singles portion of the MP2 correlation energy. Zero except in ROHF."
+        None,
+        description="The singles portion of the MP2 correlation energy. Zero except in ROHF.",
+        units="E_h",
     )
     mp2_doubles_energy: Optional[float] = Field(
         None,
         description="The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.",
+        units="E_h",
     )
-    mp2_total_correlation_energy: Optional[float] = Field(
-        None, description="The MP2 correlation energy."
-    )  # Old name, to be deprecated
-    mp2_correlation_energy: Optional[float] = Field(None, description="The MP2 correlation energy.")
+    mp2_correlation_energy: Optional[float] = Field(
+        None,
+        description="The MP2 correlation energy.",
+        units="E_h",
+    )
     mp2_total_energy: Optional[float] = Field(
-        None, description="The total MP2 energy (MP2 correlation energy + HF energy)."
+        None,
+        description="The total MP2 energy (MP2 correlation energy + HF energy).",
+        units="E_h",
     )
-    mp2_dipole_moment: Optional[Array[float]] = Field(None, description="The MP2 X, Y, and Z dipole components.")
+    mp2_dipole_moment: Optional[Array[float]] = Field(
+        None,
+        description="The MP2 X, Y, and Z dipole components.",
+        shape=[3],
+        units="e a0",
+    )
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: Optional[float] = Field(
-        None, description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations."
+        None,
+        description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
+        units="E_h",
     )
     ccsd_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
-        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations",
+        description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
+        units="E_h",
     )
     ccsd_singles_energy: Optional[float] = Field(
-        None, description="The singles portion of the CCSD correlation energy. Zero except in ROHF."
+        None,
+        description="The singles portion of the CCSD correlation energy. Zero except in ROHF.",
+        units="E_h",
     )
     ccsd_doubles_energy: Optional[float] = Field(
         None,
         description="The doubles portion of the CCSD correlation energy including same-spin and opposite-spin correlations.",
+        units="E_h",
     )
-    ccsd_correlation_energy: Optional[float] = Field(None, description="The CCSD correlation energy.")
+    ccsd_correlation_energy: Optional[float] = Field(
+        None,
+        description="The CCSD correlation energy.",
+        units="E_h",
+    )
     ccsd_total_energy: Optional[float] = Field(
-        None, description="The total CCSD energy (CCSD correlation energy + HF energy)."
+        None,
+        description="The total CCSD energy (CCSD correlation energy + HF energy).",
+        units="E_h",
     )
-    ccsd_dipole_moment: Optional[Array[float]] = Field(None, description="The CCSD X, Y, and Z dipole components.")
+    ccsd_dipole_moment: Optional[Array[float]] = Field(
+        None,
+        description="The CCSD X, Y, and Z dipole components.",
+        shape=[3],
+        units="e a0",
+    )
     ccsd_iterations: Optional[int] = Field(None, description="The number of CCSD iterations taken before convergence.")
 
     # CCSD(T) keywords
-    ccsd_prt_pr_correlation_energy: Optional[float] = Field(None, description="The CCSD(T) correlation energy.")
+    ccsd_prt_pr_correlation_energy: Optional[float] = Field(
+        None,
+        description="The CCSD(T) correlation energy.",
+        units="E_h",
+    )
     ccsd_prt_pr_total_energy: Optional[float] = Field(
-        None, description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy)."
+        None,
+        description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy).",
+        units="E_h",
     )
     ccsd_prt_pr_dipole_moment: Optional[Array[float]] = Field(
-        None, description="The CCSD(T) X, Y, and Z dipole components."
+        None,
+        description="The CCSD(T) X, Y, and Z dipole components.",
+        shape=[3],
+        units="e a0",
+    )
+
+    # CCSDT keywords
+    ccsdt_correlation_energy: Optional[float] = Field(
+        None,
+        description="The CCSDT correlation energy.",
+        units="E_h",
+    )
+    ccsdt_total_energy: Optional[float] = Field(
+        None,
+        description="The total CCSDT energy (CCSDT correlation energy + HF energy).",
+        units="E_h",
+    )
+    ccsdt_dipole_moment: Optional[Array[float]] = Field(
+        None,
+        description="The CCSDT X, Y, and Z dipole components.",
+        shape=[3],
+        units="e a0",
+    )
+    ccsdt_iterations: Optional[int] = Field(
+        None, description="The number of CCSDT iterations taken before convergence."
+    )
+
+    # CCSDTQ keywords
+    ccsdtq_correlation_energy: Optional[float] = Field(
+        None,
+        description="The CCSDTQ correlation energy.",
+        units="E_h",
+    )
+    ccsdtq_total_energy: Optional[float] = Field(
+        None,
+        description="The total CCSDTQ energy (CCSDTQ correlation energy + HF energy).",
+        units="E_h",
+    )
+    ccsdtq_dipole_moment: Optional[Array[float]] = Field(
+        None,
+        description="The CCSDTQ X, Y, and Z dipole components.",
+        shape=[3],
+        units="e a0",
+    )
+    ccsdtq_iterations: Optional[int] = Field(
+        None, description="The number of CCSDTQ iterations taken before convergence."
     )
 
     class Config(ProtoModel.Config):
@@ -146,6 +253,7 @@ class AtomicResultProperties(ProtoModel):
 
 
 class WavefunctionProperties(ProtoModel):
+    """Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
 
     # Class properties
     _return_results_names: Set[str] = {
@@ -171,26 +279,87 @@ class WavefunctionProperties(ProtoModel):
     )
 
     # Core Hamiltonian
-    h_core_a: Optional[Array[float]] = Field(None, description="Alpha-spin core (one-electron) Hamiltonian.")
-    h_core_b: Optional[Array[float]] = Field(None, description="Beta-spin core (one-electron) Hamiltonian.")
+    h_core_a: Optional[Array[float]] = Field(
+        None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+    )
+    h_core_b: Optional[Array[float]] = Field(
+        None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+    )
     h_effective_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin effective core (one-electron) Hamiltonian."
+        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
     )
     h_effective_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin effective core (one-electron) Hamiltonian "
+        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis", shape=["nao", "nao"]
     )
 
     # SCF Results
-    scf_orbitals_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin orbitals.")
-    scf_orbitals_b: Optional[Array[float]] = Field(None, description="SCF beta-spin orbitals.")
-    scf_density_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin density matrix.")
-    scf_density_b: Optional[Array[float]] = Field(None, description="SCF beta-spin density matrix.")
-    scf_fock_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin Fock matrix.")
-    scf_fock_b: Optional[Array[float]] = Field(None, description="SCF beta-spin Fock matrix.")
-    scf_eigenvalues_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin eigenvalues.")
-    scf_eigenvalues_b: Optional[Array[float]] = Field(None, description="SCF beta-spin eigenvalues.")
-    scf_occupations_a: Optional[Array[float]] = Field(None, description="SCF alpha-spin occupations.")
-    scf_occupations_b: Optional[Array[float]] = Field(None, description="SCF beta-spin occupations.")
+    scf_orbitals_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+    )
+    scf_orbitals_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+    )
+    scf_density_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin density matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_density_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin density matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_fock_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_fock_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_eigenvalues_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbital eigenvalues.", shape=["nmo"]
+    )
+    scf_eigenvalues_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbital eigenvalues.", shape=["nmo"]
+    )
+    scf_occupations_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin orbital occupations.", shape=["nmo"]
+    )
+    scf_occupations_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin orbital occupations.", shape=["nmo"]
+    )
+
+    # BELOW from qcsk
+    scf_coulomb_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_coulomb_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_exchange_a: Optional[Array[float]] = Field(
+        None, description="SCF alpha-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+    )
+    scf_exchange_b: Optional[Array[float]] = Field(
+        None, description="SCF beta-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+    )
+
+    # Localized-orbital SCF wavefunction quantities
+    localized_orbitals_a: Optional[Array[float]] = Field(
+        None,
+        description="Localized alpha-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nao", "nmo"],
+    )
+    localized_orbitals_b: Optional[Array[float]] = Field(
+        None,
+        description="Localized beta-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nao", "nmo"],
+    )
+    localized_fock_a: Optional[Array[float]] = Field(
+        None,
+        description="Alpha-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nmo", "nmo"],
+    )
+    localized_fock_b: Optional[Array[float]] = Field(
+        None,
+        description="Beta-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
+        shape=["nmo", "nmo"],
+    )
+    # ABOVE from qcsk
 
     # Return results, must be defined last
     orbitals_a: Optional[str] = Field(None, description="Index to the alpha-spin orbitals of the primary return.")
@@ -199,13 +368,17 @@ class WavefunctionProperties(ProtoModel):
     density_b: Optional[str] = Field(None, description="Index to the beta-spin density of the primary return.")
     fock_a: Optional[str] = Field(None, description="Index to the alpha-spin Fock matrix of the primary return.")
     fock_b: Optional[str] = Field(None, description="Index to the beta-spin Fock matrix of the primary return.")
-    eigenvalues_a: Optional[str] = Field(None, description="Index to the alpha-spin eigenvalues of the primary return.")
-    eigenvalues_b: Optional[str] = Field(None, description="Index to the beta-spin eigenvalues of the primary return.")
-    occupations_a: Optional[str] = Field(
+    eigenvalues_a: Optional[str] = Field(
         None, description="Index to the alpha-spin orbital eigenvalues of the primary return."
     )
-    occupations_b: Optional[str] = Field(
+    eigenvalues_b: Optional[str] = Field(
         None, description="Index to the beta-spin orbital eigenvalues of the primary return."
+    )
+    occupations_a: Optional[str] = Field(
+        None, description="Index to the alpha-spin orbital occupations of the primary return."
+    )
+    occupations_b: Optional[str] = Field(
+        None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
     class Config(ProtoModel.Config):
@@ -278,9 +451,7 @@ class WavefunctionProperties(ProtoModel):
 
 
 class WavefunctionProtocolEnum(str, Enum):
-    """
-    Wavefunction to keep from a Result computation.
-    """
+    """Wavefunction to keep from a computation."""
 
     all = "all"
     orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
@@ -311,16 +482,14 @@ class ErrorCorrectionProtocol(ProtoModel):
 
 
 class AtomicResultProtocols(ProtoModel):
-    """
-    Protocols regarding the manipulation of a Result output data.
-    """
+    """Protocols regarding the manipulation of computational result data."""
 
     wavefunction: WavefunctionProtocolEnum = Field(
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
-    stdout: bool = Field(True, description="Primary output file to keep from a Result computation")
+    stdout: bool = Field(True, description="Primary output file to keep from the computation")
     error_correction: ErrorCorrectionProtocol = Field(
-        ErrorCorrectionProtocol(), description="Policies for error correction"
+        default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
     )
 
     class Config:
@@ -333,21 +502,35 @@ class AtomicResultProtocols(ProtoModel):
 class AtomicInput(ProtoModel):
     """The MolSSI Quantum Chemistry Schema"""
 
-    id: Optional[str] = Field(None, description="An optional ID of the ResultInput object.")
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1
+    id: Optional[str] = Field(None, description="The optional ID for the computation.")
+    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
+        qcschema_input_default,
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
+        ),
+    )
+    schema_version: int = Field(1, description="The version number of ``schema_name`` to which this model conforms.")
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__base_doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
     protocols: AtomicResultProtocols = Field(
         AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
     )
 
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__base_doc__))
+    provenance: Provenance = Field(
+        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
+    )
+
+    class Config(ProtoModel.Config):
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
     def __repr_args__(self) -> "ReprArgs":
         return [
@@ -358,21 +541,29 @@ class AtomicInput(ProtoModel):
 
 
 class AtomicResult(AtomicInput):
-    schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
+    """Results from a CMS program execution."""
 
+    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
+        qcschema_output_default,
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
+        ),
+    )
     properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__base_doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
-        ..., description="The value requested by the 'driver' attribute."
+        ...,
+        description="The primary return specified by the ``driver`` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
 
-    stdout: Optional[str] = Field(None, description="The standard output of the program.")
-    stderr: Optional[str] = Field(None, description="The standard error of the program.")
-
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    stdout: Optional[str] = Field(
+        None,
+        description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
     )
+    stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
+
+    success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__base_doc__))
 

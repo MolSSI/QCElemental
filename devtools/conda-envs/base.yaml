@@ -8,7 +8,7 @@ dependencies:
   - nomkl
   - python
   - pint>=0.10.0
-  - pydantic>=1.0.0
+  - pydantic>=1.5.0,!=1.6.0
 
     # Optional depends
   - msgpack-python
@@ -20,3 +20,4 @@ dependencies:
   - pytest-cov
   - codecov
   - scipy  # tests an aspect of a helper fn not used by qcel functionality
+  - jsonschema

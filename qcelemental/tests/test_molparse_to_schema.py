@@ -7,6 +7,8 @@ import pytest
 import qcelemental
 from qcelemental.testing import compare_molrecs
 
+from .addons import drop_qcsk
+
 _string_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_string"}
 _schema_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_schema"}
 
@@ -58,12 +60,13 @@ schema14_psi4 = {
 }
 
 
-def test_1_14a():
+def test_1_14a(request):
     fullans = copy.deepcopy(schema14_1)
     fullans["molecule"]["provenance"] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=1)
+    drop_qcsk(kmol["molecule"], request.node.name, "Molecule")
     assert compare_molrecs(fullans["molecule"], kmol["molecule"])
 
     fullans = copy.deepcopy(schema14_psi4)
@@ -74,12 +77,13 @@ def test_1_14a():
     assert compare_molrecs(fullans, molrec)
 
 
-def test_2_14b():
+def test_2_14b(request):
     fullans = copy.deepcopy(schema14_2)
     fullans["provenance"] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=2)
+    drop_qcsk(kmol, request.node.name, "Molecule")
     assert compare_molrecs(fullans, kmol)
 
     fullans = copy.deepcopy(schema14_psi4)
@@ -109,7 +113,7 @@ def test_dtype_error():
 
 
 @pytest.mark.parametrize("dtype", [1, 2])
-def test_qcschema_ang_error(dtype):
+def test_atomic_units_qcschema_ang_error(dtype):
 
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
@@ -182,13 +186,14 @@ schema15_psi4 = {
 }
 
 
-def test_1_15a():
+def test_1_15a(request):
     fullans = copy.deepcopy(schema15_1)
     fullans["molecule"]["provenance"] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject15)
     final["qm"]["comment"] = "I has a comment"
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=1)
+    drop_qcsk(kmol["molecule"], request.node.name, "Molecule")
     assert compare_molrecs(fullans["molecule"], kmol["molecule"])
 
     fullans = copy.deepcopy(schema15_psi4)
@@ -201,13 +206,14 @@ def test_1_15a():
     assert compare_molrecs(fullans, molrec)
 
 
-def test_2_15b():
+def test_2_15b(request):
     fullans = copy.deepcopy(schema15_2)
     fullans["provenance"] = _string_prov_stamp
 
     final = qcelemental.molparse.from_string(subject15)
     final["qm"]["comment"] = "I has a comment"
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=2)
+    drop_qcsk(kmol, request.node.name, "Molecule")
     assert compare_molrecs(fullans, kmol)
 
     fullans = copy.deepcopy(schema15_psi4)
@@ -280,7 +286,7 @@ schema16_psi4 = {
 }
 
 
-def test_froto_1_16a():
+def test_froto_1_16a(request):
     basic = {
         "schema_name": "qc_schema_output",
         "schema_version": 1,
@@ -296,10 +302,11 @@ def test_froto_1_16a():
     fullans["molecule"]["provenance"] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=1)
+    drop_qcsk(roundtrip["molecule"], request.node.name, "Molecule")
     assert compare_molrecs(fullans["molecule"], roundtrip["molecule"])
 
 
-def test_froto_2_16a():
+def test_froto_2_16a(request):
     basic = {
         "schema_name": "qcschema_molecule",
         "schema_version": 2,
@@ -313,14 +320,18 @@ def test_froto_2_16a():
     fullans["provenance"] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=2)
+    drop_qcsk(roundtrip, request.node.name, "Molecule")
     assert compare_molrecs(fullans, roundtrip)
 
 
 @pytest.mark.parametrize("dtype", [1, 2])
-def test_tofro_16b(dtype):
+def test_tofro_16b(dtype, request):
 
     fullans = copy.deepcopy(schema16_psi4)
     fullans["provenance"] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=dtype))
+    qcsk = qcelemental.molparse.to_schema(schema16_psi4, dtype=dtype)
+    qcsk = qcsk["molecule"] if dtype == 1 else qcsk
+    drop_qcsk(qcsk, request.node.name, "Molecule")
     assert compare_molrecs(fullans, roundtrip)

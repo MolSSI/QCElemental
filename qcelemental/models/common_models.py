@@ -1,10 +1,11 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 import numpy as np
 from pydantic import Field
 
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, qcschema_draft
+from .basis import BasisSet
 
 if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
@@ -15,42 +16,46 @@ ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
 class Provenance(ProtoModel):
-    """
-    Provenance information.
-    """
+    """Provenance information."""
 
-    creator: str = Field(..., description="The creator of the object.")
-    version: Optional[str] = Field(None, description="The version of the creator.")
-    routine: Optional[str] = Field(None, description="The routine of the creator.")
+    creator: str = Field(..., description="The name of the program, library, or person who created the object.")
+    version: str = Field(
+        "",
+        description="The version of the creator, blank otherwise. This should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).",
+    )
+    routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
     class Config(ProtoModel.Config):
         canonical_repr = True
-        extra = "allow"
+        extra: str = "allow"
+
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
 
 class Model(ProtoModel):
-    """
-    The quantum chemistry model specification for a given operation to compute against
-    """
+    """The computational molecular sciences model to run."""
 
     method: str = Field(  # type: ignore
-        ..., description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...)."
+        ...,
+        description="The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...). "
+        "For MM, name of the force field.",
     )
-    basis: Optional[str] = Field(  # type: ignore
+    basis: Optional[Union[str, BasisSet]] = Field(  # type: ignore
         None,
         description="The quantum chemistry basis set to evaluate (e.g., 6-31g, cc-pVDZ, ...). Can be ``None`` for "
-        "methods without basis sets.",
+        "methods without basis sets. For molecular mechanics, name of the atom-typer.",
     )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
 
     class Config(ProtoModel.Config):
         canonical_repr = True
-        extra = "allow"
+        extra: str = "allow"
 
 
 class DriverEnum(str, Enum):
-    """Allowed quantum chemistry driver values."""
+    """Allowed computation driver values."""
 
     energy = "energy"
     gradient = "gradient"
@@ -66,19 +71,20 @@ class DriverEnum(str, Enum):
 
 
 class ComputeError(ProtoModel):
-    """A complete description of the error."""
+    """Complete description of the error from an unsuccessful program execution."""
 
     error_type: str = Field(  # type: ignore
         ...,  # Error enumeration not yet strict
-        description="The type of error which was thrown. Restrict this field short classifiers e.g. 'input_error'.",
+        description="The type of error which was thrown. Restrict this field to short classifiers e.g. 'input_error'. Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py",
     )
     error_message: str = Field(  # type: ignore
         ...,
-        description="Text associated with the thrown error, often the backtrace, but can contain additional "
+        description="Text associated with the thrown error. This is often the backtrace, but it can contain additional "
         "information as well.",
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
-        None, description="Additional data to ship with the ComputeError object."
+        None,
+        description="Additional information to bundle with the error.",
     )
 
     class Config:
@@ -89,11 +95,7 @@ class ComputeError(ProtoModel):
 
 
 class FailedOperation(ProtoModel):
-    """
-    A record indicating that a given operation (compute, procedure, etc.) has failed and contains the reason and
-    input data which generated the failure.
-
-    """
+    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure."""
 
     id: str = Field(  # type: ignore
         None,
@@ -119,7 +121,7 @@ class FailedOperation(ProtoModel):
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
         None,
-        description="Additional information to bundle with this Failed Operation. Details which pertain specifically "
+        description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )
 

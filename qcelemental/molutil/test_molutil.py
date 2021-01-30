@@ -8,7 +8,7 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values
 
-from ..tests.addons import using_networkx
+from ..tests.addons import drop_qcsk, using_networkx
 
 pp = pprint.PrettyPrinter(width=120)
 
@@ -44,8 +44,9 @@ def test_scramble_descrambles_plain():
         s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_test=True)
 
 
-def test_relative_geoms_align_free():
+def test_relative_geoms_align_free(request):
     s22_12 = qcel.models.Molecule.from_data(ss22_12)
+    drop_qcsk(s22_12, request.node.name)
 
     for trial in range(3):
         cmol, _ = s22_12.scramble(
@@ -57,8 +58,9 @@ def test_relative_geoms_align_free():
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
-def test_relative_geoms_align_fixed():
+def test_relative_geoms_align_fixed(request):
     s22_12 = qcel.models.Molecule.from_data(ss22_12 + "nocom\nnoreorient\n")
+    drop_qcsk(s22_12, request.node.name)
 
     for trial in range(3):
         cmol, _ = s22_12.scramble(
@@ -344,7 +346,7 @@ Rotation:
     assert compare(mill_str, mill.pretty_print())
 
 
-def test_hessian_align():
+def test_hessian_align(request):
     # from Psi4 test test_hessian_vs_cfour[HOOH_TS-H_analytic]
 
     # fmt: off
@@ -458,6 +460,7 @@ Rotation:
 
     p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
     c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
+    drop_qcsk(c4mol, request.node.name)
     aqmol, data = p4mol.align(c4mol, atoms_map=True, mols_align=True, verbose=4)
     mill = data["mill"]
 

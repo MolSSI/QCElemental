@@ -119,3 +119,7 @@ runinfo/*
 # VSCode
 .vscode/
 raw_data/**/*_blob.py
+
+# autogen
+qcschema/*.schema
+qcelemental/tests/qcschema_instances/*/*.json

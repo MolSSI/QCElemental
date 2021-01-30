@@ -43,6 +43,12 @@ data: cpu_data
 cpu_data:
 	(cd raw_data/cpu_data; python build_cpu_data.py; mv cpu_data_blob.py ../../qcelemental/info/data/)
 
+.PHONY: qcschema
+qcschema:
+	mkdir -p qcschema
+	python -c "exec(\"import pathlib, qcelemental\nfor md in qcelemental.models.qcschema_models():\n\tmfile = (pathlib.Path('qcschema') / md.__name__).with_suffix('.schema')\n\twith open(mfile, 'w') as fp:\n\t\tfp.write(md.schema_json(indent=None))\")"
+	python -c "exec(\"import json, pathlib, pydantic, qcelemental\nwith open((pathlib.Path('qcschema') / 'QCSchema').with_suffix('.schema'), 'w') as fp:\n\tjson.dump(pydantic.schema.schema(qcelemental.models.qcschema_models(), title='QCSchema'), fp, indent=4)\")"
+
 .PHONY: clean
 clean:
 	rm -rf `find . -name __pycache__`
