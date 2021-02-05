@@ -19,17 +19,17 @@ Changelog
 
 New Features
 ++++++++++++
-- (:pr:`247`) Exports models to JSON Schema with ``make schema``.
-- (:pr:`247`) Build bank of JSON examples from Pydantic models defined in tests. Test that bank against exported schema with ``pytest --validate qcelemental/``.
-- (:pr:`247`) Many model descriptions edited, dimensions added to array properties, ``AtomicInput.model.basis`` now takes
+- (:pr:`237`) Exports models to JSON Schema with ``make schema``.
+- (:pr:`237`) Build bank of JSON examples from Pydantic models defined in tests. Test that bank against exported schema with ``pytest --validate qcelemental/``.
+- (:pr:`237`) Many model descriptions edited, dimensions added to array properties, ``AtomicInput.model.basis`` now takes
   ``BasisSet`` object not just string, several properties added to match QCSchema, several limitations on number and
   uniqueness imposed.
 
 Enhancements
 ++++++++++++
-- (:pr:`247`) Improve mypy conformance including dynamic provenance. Necessitates Pydantic >=1.5.
-- (:pr:`247`) ``a0`` without underscore added as computable pint unit.
-- (:pr:`246`) Removes types deprecated in NumPy v1.20.0.
+- (:pr:`237`) Improve mypy conformance including dynamic provenance. Necessitates Pydantic >=1.5.
+- (:pr:`237`) ``a0`` without underscore added as computable pint unit.
+- (:pr:`246`, :pr:`250`) Removes types deprecated in NumPy v1.20.0.
 
 Bug Fixes
 +++++++++
