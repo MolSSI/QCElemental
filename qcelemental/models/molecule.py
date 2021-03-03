@@ -389,12 +389,6 @@ class Molecule(ProtoModel):
                 )
         return v
 
-    @validator("connectivity_", each_item=True)
-    def _min_zero(cls, v):
-        if v < 0:
-            raise ValueError("Connectivity entries must be greater than 0")
-        return v
-
     @property
     def hash_fields(self):
         return [
