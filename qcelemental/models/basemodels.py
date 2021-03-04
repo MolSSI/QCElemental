@@ -6,7 +6,7 @@ import numpy as np
 from pydantic import BaseModel, BaseSettings
 
 from qcelemental.testing import compare_recursive
-from qcelemental.util import deserialize, serialize
+from qcelemental.util import deserialize, serialize, which_import
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
@@ -19,7 +19,6 @@ class ProtoModel(BaseModel):
         allow_mutation: bool = False
         extra: str = "forbid"
         json_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
-        yaml_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes: Set = set()
         serialize_skip_defaults: bool = False
         force_skip_defaults: bool = False
@@ -131,17 +130,14 @@ class ProtoModel(BaseModel):
         elif encoding == "json":
             return json.loads(serialize(data, encoding=encoding, **ser_kwargs))
         elif encoding == "yaml":
-            try:
-                import yaml
-            except ModuleNotFoundError:  # pragma: no cover
-                raise ModuleNotFoundError(
-                    "Serialization to YAML requires PyYAML. Solve by installing it: "
-                    "`conda install pyyaml` or `pip install pyyaml`"
-                )
-            for key, val in data.items():
-                if isinstance(val, np.ndarray):
-                    data[key] = self.Config.yaml_encoders[np.ndarray](val)
-            return yaml.load(serialize(data, encoding=encoding, **ser_kwargs))
+            which_import(
+                "yaml",
+                raise_error=True,
+                raise_msg="PyYAML is required. Solve by installing it: `conda install pyyaml` or `pip install pyyaml`",
+            )
+            import yaml
+
+            return yaml.safe_load(serialize(data, encoding=encoding, **ser_kwargs))
         else:
             raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json', 'yaml'.")
 
@@ -194,11 +190,6 @@ class ProtoModel(BaseModel):
             fdargs["exclude_none"] = exclude_none
 
         data = self.dict(**fdargs)
-
-        if encoding == "yaml":
-            for key, val in data.items():
-                if isinstance(val, np.ndarray):
-                    data[key] = self.Config.yaml_encoders[np.ndarray](val)
 
         return serialize(data, encoding=encoding, **kwargs)
 
