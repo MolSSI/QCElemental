@@ -10,7 +10,7 @@ from qcelemental.exceptions import NotAnElementError
 from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_values
 
-from .addons import serialize_extensions, using_msgpack, using_nglview
+from .addons import serialize_extensions, using_msgpack, using_pyyaml, using_nglview
 
 water_molecule = Molecule.from_data(
     """
@@ -206,7 +206,13 @@ def test_to_string():
 
 @pytest.mark.parametrize(
     "dtype, filext",
-    [("json", "json"), ("xyz", "xyz"), ("numpy", "npy"), pytest.param("msgpack", "msgpack", marks=using_msgpack)],
+    [
+        ("json", "json"),
+        ("xyz", "xyz"),
+        ("numpy", "npy"),
+        pytest.param("msgpack", "msgpack", marks=using_msgpack),
+        pytest.param("yaml", "yaml", marks=using_pyyaml),
+    ],
 )
 def test_to_from_file_simple(tmp_path, dtype, filext):
 
@@ -237,7 +243,13 @@ def test_to_from_file_complex(tmp_path, dtype):
 
 
 @pytest.mark.parametrize(
-    "dtype, filext", [("json", "json"), ("xyz+", "xyz"), pytest.param("msgpack", "msgpack", marks=using_msgpack)]
+    "dtype, filext",
+    [
+        ("json", "json"),
+        ("xyz+", "xyz"),
+        pytest.param("msgpack", "msgpack", marks=using_msgpack),
+        pytest.param("yaml", "yaml", marks=using_pyyaml),
+    ],
 )
 def test_to_from_file_charge_spin(tmp_path, dtype, filext):
 

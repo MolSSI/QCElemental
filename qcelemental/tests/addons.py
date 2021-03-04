@@ -24,6 +24,11 @@ using_msgpack = pytest.mark.skipif(
     reason="Not detecting module msgpack. Install package if necessary and add to envvar PYTHONPATH",
 )
 
+using_pyyaml = pytest.mark.skipif(
+    which_import("yaml", return_bool=True) is False,
+    reason="Not detecting module pyyaml. Install package if necessary and add to envvar PYTHONPATH",
+)
+
 using_networkx = pytest.mark.skipif(
     which_import("networkx", return_bool=True) is False,
     reason="Not detecting module networkx. Install package if necessary and add to envvar PYTHONPATH",
@@ -39,7 +44,12 @@ using_nglview = pytest.mark.skipif(
     reason="Not detecting module py3Dmol. Install package if necessary and add to envvar PYTHONPATH",
 )
 
-serialize_extensions = ["json", "json-ext", pytest.param("msgpack-ext", marks=using_msgpack)]
+serialize_extensions = [
+    "json",
+    "json-ext",
+    pytest.param("msgpack-ext", marks=using_msgpack),
+    pytest.param("yaml", marks=using_pyyaml),
+]
 
 
 @contextmanager
