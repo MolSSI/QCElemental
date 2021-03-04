@@ -19,6 +19,7 @@ class ProtoModel(BaseModel):
         allow_mutation: bool = False
         extra: str = "forbid"
         json_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
+        yaml_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
         serialize_default_excludes: Set = set()
         serialize_skip_defaults: bool = False
         force_skip_defaults: bool = False
@@ -53,7 +54,7 @@ class ProtoModel(BaseModel):
 
         if encoding is None:
             if isinstance(data, str):
-                encoding = "json"
+                encoding = "json"  # Choose JSON over YAML by default
             elif isinstance(data, bytes):
                 encoding = "msgpack-ext"
             else:
@@ -61,7 +62,7 @@ class ProtoModel(BaseModel):
 
         if encoding.endswith(("json", "javascript", "pickle")):
             return super().parse_raw(data, content_type=encoding)
-        elif encoding in ["msgpack-ext", "json-ext"]:
+        elif encoding in ["msgpack-ext", "json-ext", "yaml"]:
             obj = deserialize(data, encoding)
         else:
             raise TypeError(f"Content type '{encoding}' not understood.")
@@ -99,7 +100,21 @@ class ProtoModel(BaseModel):
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
-    def dict(self, **kwargs) -> Dict[str, Any]:
+    def dict(self, *, ser_kwargs: Dict[str, Any] = {}, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Returns object fields as a dictionary.
+
+        Parameters
+        ----------
+        ser_kwargs: Optional[Dict[str, Any]]
+            Additional keyword arguments to pass to serialize.
+        **kwargs: Optional[Dict[str, Any]]
+            Additional keyword arguments, allow which fields to include, exclude, etc.
+
+        Returns
+        -------
+        Dict[str, Any]
+            Fields as a dictionary.
+        """
         encoding = kwargs.pop("encoding", None)
 
         kwargs["exclude"] = (
@@ -114,9 +129,21 @@ class ProtoModel(BaseModel):
         if encoding is None:
             return data
         elif encoding == "json":
-            return json.loads(serialize(data, encoding="json"))
+            return json.loads(serialize(data, encoding=encoding, **ser_kwargs))
+        elif encoding == "yaml":
+            try:
+                import yaml
+            except ModuleNotFoundError:  # pragma: no cover
+                raise ModuleNotFoundError(
+                    "Serialization to YAML requires PyYAML. Solve by installing it: "
+                    "`conda install pyyaml` or `pip install pyyaml`"
+                )
+            for key, val in data.items():
+                if isinstance(val, np.ndarray):
+                    data[key] = self.Config.yaml_encoders[np.ndarray](val)
+            return yaml.load(serialize(data, encoding=encoding, **ser_kwargs))
         else:
-            raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json'.")
+            raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json', 'yaml'.")
 
     def serialize(
         self,
@@ -127,6 +154,7 @@ class ProtoModel(BaseModel):
         exclude_unset: Optional[bool] = None,
         exclude_defaults: Optional[bool] = None,
         exclude_none: Optional[bool] = None,
+        **kwargs: Optional[Dict[str, Any]],
     ) -> Union[bytes, str]:
         """Generates a serialized representation of the model
 
@@ -144,6 +172,8 @@ class ProtoModel(BaseModel):
             If True, skips fields that have set or defaulted values equal to the default.
         exclude_none: Optional[bool], optional
             If True, skips fields that have value ``None``.
+        **kwargs: Optional[Dict[str, Any]]
+            Additional keyword arguments to pass to serialize.
 
         Returns
         -------
@@ -151,25 +181,33 @@ class ProtoModel(BaseModel):
             The serialized model.
         """
 
-        kwargs = {}
+        fdargs = {}
         if include:
-            kwargs["include"] = include
+            fdargs["include"] = include
         if exclude:
-            kwargs["exclude"] = exclude
+            fdargs["exclude"] = exclude
         if exclude_unset:
-            kwargs["exclude_unset"] = exclude_unset
+            fdargs["exclude_unset"] = exclude_unset
         if exclude_defaults:
-            kwargs["exclude_defaults"] = exclude_defaults
+            fdargs["exclude_defaults"] = exclude_defaults
         if exclude_none:
-            kwargs["exclude_none"] = exclude_none
+            fdargs["exclude_none"] = exclude_none
 
-        data = self.dict(**kwargs)
+        data = self.dict(**fdargs)
 
-        return serialize(data, encoding=encoding)
+        if encoding == "yaml":
+            for key, val in data.items():
+                if isinstance(val, np.ndarray):
+                    data[key] = self.Config.yaml_encoders[np.ndarray](val)
+
+        return serialize(data, encoding=encoding, **kwargs)
 
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
         return self.serialize("json", **kwargs)
+
+    def yaml(self, **kwargs):
+        return self.serialize("yaml", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
         """Compares the current object to the provided object recursively.
