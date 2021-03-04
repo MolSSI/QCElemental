@@ -1,5 +1,5 @@
 import json
-from typing import Any, Union
+from typing import Any, Union, Dict, Optional
 
 import numpy as np
 from pydantic.json import pydantic_encoder
@@ -76,7 +76,7 @@ def msgpackext_decode(obj: Any) -> Any:
     return obj
 
 
-def msgpackext_dumps(data: Any) -> bytes:
+def msgpackext_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> bytes:
     """Safe serialization of a Python object to msgpack binary representation using all known encoders.
     For NumPy, encodes a specialized object format to encode all shape and type data.
 
@@ -84,6 +84,8 @@ def msgpackext_dumps(data: Any) -> bytes:
     ----------
     data : Any
         A encodable python object.
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructor.
 
     Returns
     -------
@@ -92,16 +94,20 @@ def msgpackext_dumps(data: Any) -> bytes:
     """
     which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
 
-    return msgpack.dumps(data, default=msgpackext_encode, use_bin_type=True)
+    use_bin_type = kwargs.pop("use_bin_type", True)
+
+    return msgpack.dumps(data, default=msgpackext_encode, use_bin_type=use_bin_type, **kwargs)
 
 
-def msgpackext_loads(data: bytes) -> Any:
+def msgpackext_loads(data: bytes, **kwargs: Dict[str, Any]) -> Any:
     """Deserializes a msgpack byte representation of known objects into those objects.
 
     Parameters
     ----------
     data : bytes
         The serialized msgpack byte array.
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructor.
 
     Returns
     -------
@@ -110,7 +116,9 @@ def msgpackext_loads(data: bytes) -> Any:
     """
     which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
 
-    return msgpack.loads(data, object_hook=msgpackext_decode, raw=False)
+    raw = kwargs.pop("raw", False)
+
+    return msgpack.loads(data, object_hook=msgpackext_decode, raw=raw, **kwargs)
 
 
 ## JSON Ext
@@ -149,7 +157,7 @@ def jsonext_decode(obj: Any) -> Any:
     return obj
 
 
-def jsonext_dumps(data: Any) -> str:
+def jsonext_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
     """Safe serialization of Python objects to JSON string representation using all known encoders.
     The JSON serializer uses a custom array syntax rather than flat JSON lists.
 
@@ -157,6 +165,8 @@ def jsonext_dumps(data: Any) -> str:
     ----------
     data : Any
         A encodable python object.
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructor
 
     Returns
     -------
@@ -164,7 +174,7 @@ def jsonext_dumps(data: Any) -> str:
         A JSON representation of the data.
     """
 
-    return json.dumps(data, cls=JSONExtArrayEncoder)
+    return json.dumps(data, cls=JSONExtArrayEncoder, **kwargs)
 
 
 def jsonext_loads(data: Union[str, bytes]) -> Any:
@@ -203,13 +213,15 @@ class JSONArrayEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def json_dumps(data: Any) -> str:
+def json_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
     """Safe serialization of a Python dictionary to JSON string representation using all known encoders.
 
     Parameters
     ----------
     data : Any
         A encodable python object.
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructor
 
     Returns
     -------
@@ -217,7 +229,7 @@ def json_dumps(data: Any) -> str:
         A JSON representation of the data.
     """
 
-    return json.dumps(data, cls=JSONArrayEncoder)
+    return json.dumps(data, cls=JSONArrayEncoder, **kwargs)
 
 
 def json_loads(data: str) -> Any:
@@ -241,7 +253,7 @@ def json_loads(data: str) -> Any:
 ## Helper functions
 
 
-def serialize(data: Any, encoding: str) -> Union[str, bytes]:
+def serialize(data: Any, encoding: str, **kwargs: Optional[Dict[str, Any]]) -> Union[str, bytes]:
     """Encoding Python objects using the provided encoder.
 
     Parameters
@@ -250,6 +262,8 @@ def serialize(data: Any, encoding: str) -> Union[str, bytes]:
         A encodable python object.
     encoding : str
         The type of encoding to perform: {'json', 'json-ext', 'msgpack-ext'}
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructors.
 
     Returns
     -------
@@ -258,13 +272,15 @@ def serialize(data: Any, encoding: str) -> Union[str, bytes]:
 
     """
     if encoding.lower() == "json":
-        return json_dumps(data)
+        return json_dumps(data, **kwargs)
     elif encoding.lower() == "json-ext":
-        return jsonext_dumps(data)
+        return jsonext_dumps(data, **kwargs)
     elif encoding.lower() == "msgpack-ext":
-        return msgpackext_dumps(data)
+        return msgpackext_dumps(data, **kwargs)
     else:
-        raise KeyError(f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'")
+        raise KeyError(
+            f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'"
+        )
 
 
 def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
