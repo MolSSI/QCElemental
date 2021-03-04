@@ -43,6 +43,7 @@ def parse_type_str(prop) -> str:
         fields.SHAPE_SET: "Set",
         fields.SHAPE_LIST: "List",
         fields.SHAPE_SINGLETON: "Union",
+        fields.SHAPE_DICT: "Dict",
     }  # yapf: disable
     if type(prop) is type or prop.__module__ == "typing":
         # True native Python type
