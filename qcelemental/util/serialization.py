@@ -250,6 +250,58 @@ def json_loads(data: str) -> Any:
     return json.loads(data, object_hook=jsonext_decode)
 
 
+## YAML
+
+
+def yaml_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
+    """Safe serialization of a Python dictionary to YAML string representation.
+
+    Parameters
+    ----------
+    data : Any
+        A encodable python object.
+    **kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to pass to the constructor
+
+    Returns
+    -------
+    str
+        A JSON representation of the data.
+    """
+    try:
+        import yaml
+    except ModuleNotFoundError:  # pragma: no cover
+        raise ModuleNotFoundError(
+            "Serialization to YAML requires PyYAML. Solve by installing it: "
+            "`conda install pyyaml` or `pip install pyyaml`"
+        )
+    kwargs["sort_keys"] = kwargs.get("sort_keys", False)  # Preserve order by default
+    return yaml.safe_dump(data, **kwargs)
+
+
+def yaml_loads(data: str) -> Any:
+    """Deserializes a yaml representation of known objects into those objects.
+
+    Parameters
+    ----------
+    data : str
+        The serialized YAML blob.
+
+    Returns
+    -------
+    Any
+        The deserialized Python objects.
+    """
+    try:
+        import yaml
+    except ModuleNotFoundError:  # pragma: no cover
+        raise ModuleNotFoundError(
+            "Deserialization from YAML requires PyYAML. Solve by installing it: "
+            "`conda install pyyaml` or `pip install pyyaml`"
+        )
+    return yaml.safe_load(data)
+
+
 ## Helper functions
 
 
@@ -261,7 +313,7 @@ def serialize(data: Any, encoding: str, **kwargs: Optional[Dict[str, Any]]) -> U
     data : Any
         A encodable python object.
     encoding : str
-        The type of encoding to perform: {'json', 'json-ext', 'msgpack-ext'}
+        The type of encoding to perform: {'json', 'json-ext', 'yaml', 'msgpack-ext'}
     **kwargs : Optional[Dict[str, Any]], optional
         Additional keyword arguments to pass to the constructors.
 
@@ -275,11 +327,13 @@ def serialize(data: Any, encoding: str, **kwargs: Optional[Dict[str, Any]]) -> U
         return json_dumps(data, **kwargs)
     elif encoding.lower() == "json-ext":
         return jsonext_dumps(data, **kwargs)
+    elif encoding.lower() == "yaml":
+        return yaml_dumps(data, **kwargs)
     elif encoding.lower() == "msgpack-ext":
         return msgpackext_dumps(data, **kwargs)
     else:
         raise KeyError(
-            f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'"
+            f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'yaml', 'msgpack-ext'"
         )
 
 
@@ -304,6 +358,9 @@ def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
     elif encoding.lower() == "json-ext":
         assert isinstance(blob, (str, bytes))
         return jsonext_loads(blob)
+    elif encoding.lower() == "yaml":
+        assert isinstance(blob, str)
+        return yaml_loads(blob)
     elif encoding.lower() in ["msgpack", "msgpack-ext"]:
         assert isinstance(blob, bytes)
         return msgpackext_loads(blob)
