@@ -19,9 +19,7 @@ def yaml_import(raise_error: bool = False) -> ModuleType:
     """
     from importlib import import_module
 
-    raise_msg = (
-        "PyYAML or ruamel.yaml is required. Solve by installing either: `pip install pyyaml` or `pip install ruamel.yaml`"
-    )
+    raise_msg = "PyYAML or ruamel.yaml is required. Solve by installing either: `pip install pyyaml` or `pip install ruamel.yaml`"
 
     if which_import(
         "yaml",
