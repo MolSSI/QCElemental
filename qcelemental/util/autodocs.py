@@ -43,8 +43,13 @@ def parse_type_str(prop) -> str:
         fields.SHAPE_SET: "Set",
         fields.SHAPE_LIST: "List",
         fields.SHAPE_SINGLETON: "Union",
-        fields.SHAPE_DICT: "Dict",
     }  # yapf: disable
+    try:
+        typing_map[fields.SHAPE_DICT] = "Dict"
+    except AttributeError:
+        # older pydantic
+        pass
+
     if type(prop) is type or prop.__module__ == "typing":
         # True native Python type
         prop_type_str = type_to_string(prop)
