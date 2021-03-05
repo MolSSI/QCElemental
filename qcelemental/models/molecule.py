@@ -21,7 +21,7 @@ from ..molparse.to_string import to_string
 from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
-from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
+from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import, yaml_import
 from .basemodels import ProtoModel, qcschema_draft
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
@@ -888,11 +888,7 @@ class Molecule(ProtoModel):
             assert isinstance(data, str)
             input_dict = json.loads(data)
         elif dtype == "yaml":
-            yaml = which_import("yaml")
-            if not yaml:
-                raise ModuleNotFoundError(
-                    f"Python module pyyaml not found. Solve by installing it: `conda install pyyaml` or `pip install pyyaml`"
-                )  # pragma: no cover
+            yaml = yaml_import(raise_error=True)
             assert isinstance(data, str)
             input_dict = yaml.safe_load(data)
         elif dtype == "dict":
@@ -956,10 +952,7 @@ class Molecule(ProtoModel):
                 data = json.load(infile)
             dtype = "dict"
         elif dtype == "yaml":
-            try:
-                import yaml
-            except:
-                raise ModuleNotFoundError("Reading Molecule from YAML files requires PyYAML.")
+            yaml = yaml_import(raise_error=True)
             with open(filename, "r") as infile:
                 data = yaml.safe_load(infile)
             dtype = "dict"

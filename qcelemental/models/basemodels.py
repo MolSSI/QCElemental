@@ -6,7 +6,7 @@ import numpy as np
 from pydantic import BaseModel, BaseSettings
 
 from qcelemental.testing import compare_recursive
-from qcelemental.util import deserialize, serialize, which_import
+from qcelemental.util import deserialize, serialize, yaml_import
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
@@ -130,13 +130,7 @@ class ProtoModel(BaseModel):
         elif encoding == "json":
             return json.loads(serialize(data, encoding=encoding, **ser_kwargs))
         elif encoding == "yaml":
-            which_import(
-                "yaml",
-                raise_error=True,
-                raise_msg="PyYAML is required. Solve by installing it: `conda install pyyaml` or `pip install pyyaml`",
-            )
-            import yaml
-
+            yaml = yaml_import(raise_error=True)
             return yaml.safe_load(serialize(data, encoding=encoding, **ser_kwargs))
         else:
             raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json', 'yaml'.")
