@@ -888,13 +888,11 @@ class Molecule(ProtoModel):
             assert isinstance(data, str)
             input_dict = json.loads(data)
         elif dtype == "yaml":
-            try:
-                import yaml
-            except ModuleNotFoundError:  # pragma: no cover
+            yaml = which_import("yaml")
+            if not yaml:
                 raise ModuleNotFoundError(
-                    "Instantiating Molecule from a YAML representation requires PyYAML. Solve by installing it: "
-                    "`conda install pyyaml` or `pip install pyyaml`"
-                )
+                    f"Python module pyyaml not found. Solve by installing it: `conda install pyyaml` or `pip install pyyaml`"
+                )  # pragma: no cover
             assert isinstance(data, str)
             input_dict = yaml.safe_load(data)
         elif dtype == "dict":
