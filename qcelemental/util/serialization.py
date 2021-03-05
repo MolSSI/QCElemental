@@ -4,17 +4,14 @@ from typing import Any, Union, Dict, Optional
 import numpy as np
 from pydantic.json import pydantic_encoder
 
-from .importing import which_import
+from .importing import which_import, yaml_import
 
 try:
     import msgpack
 except ModuleNotFoundError:
     pass
 
-try:
-    import yaml
-except ModuleNotFoundError:
-    pass
+yaml = yaml_import(raise_error=False)
 
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
 _pyyaml_which_msg = "Please install via `pip install pyyaml` or `conda install pyyaml`."
@@ -260,7 +257,9 @@ def json_loads(data: str) -> Any:
 ## YAML
 
 
-def yaml_encode(dumper: "yaml.dumper.SafeDumper", obj: np.ndarray) -> "yaml.nodes.Node":
+def yaml_encode(
+    dumper: Union["yaml.dumper.SafeDumper", "yaml.dumper.RoundTripDumper"], obj: np.ndarray
+) -> "yaml.nodes.Node":
     """
     Encodes a NumPy ndarray for YAML.
 
@@ -287,13 +286,21 @@ def yaml_encode(dumper: "yaml.dumper.SafeDumper", obj: np.ndarray) -> "yaml.node
 def safe_dump(data, stream=None, sort_keys=False, **kwargs):
     """Mimics yaml.safe_dump with support for numpy.ndarray encoding. If stream is None, return
     the produced string instead. Order is preserved by default."""
-    which_import("yaml", raise_error=True, raise_msg=_pyyaml_which_msg)
 
-    class SafeDumper(yaml.SafeDumper):
-        ...
+    if yaml.__name__ == "ruamel.yaml":
 
-    SafeDumper.add_representer(np.ndarray, yaml_encode)
-    return yaml.dump(data, stream=stream, Dumper=SafeDumper, sort_keys=sort_keys, **kwargs)
+        class SafeDumper(yaml.RoundTripDumper):
+            ...
+
+        SafeDumper.add_representer(np.ndarray, yaml_encode)
+        return yaml.dump(data, stream=stream, Dumper=SafeDumper, **kwargs)
+    else:
+
+        class SafeDumper(yaml.SafeDumper):
+            ...
+
+        SafeDumper.add_representer(np.ndarray, yaml_encode)
+        return yaml.dump(data, stream=stream, Dumper=SafeDumper, sort_keys=sort_keys, **kwargs)
 
 
 def yaml_dump(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
@@ -327,7 +334,6 @@ def yaml_load(data: str) -> Any:
     Any
         The deserialized Python objects.
     """
-    which_import("yaml", raise_error=True, raise_msg=_pyyaml_which_msg)
 
     return yaml.safe_load(data)
 
