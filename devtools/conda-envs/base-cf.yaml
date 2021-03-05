@@ -1,0 +1,22 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+    # Base depends
+  - numpy>=1.12.0
+  - nomkl
+  - python
+  - pint>=0.10.0
+  - pydantic>=1.5.0,!=1.6.0,!=1.8.0
+
+    # Optional depends
+  - msgpack-python
+  - networkx>=2.4.0
+  - nglview
+
+    # Testing
+  - pytest>=4.0.0
+  - pytest-cov
+  - codecov
+  - scipy  # tests an aspect of a helper fn not used by qcel functionality
+  - jsonschema

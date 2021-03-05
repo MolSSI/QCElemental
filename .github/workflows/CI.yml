@@ -21,7 +21,7 @@ jobs:
           - conda-env: base
             python-version: 3.6
             label: minpy
-          - conda-env: base
+          - conda-env: base-cf
             python-version: 3.9
             label: full
     env:
