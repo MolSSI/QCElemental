@@ -11,7 +11,13 @@ try:
 except ModuleNotFoundError:
     pass
 
+try:
+    import yaml
+except ModuleNotFoundError:
+    pass
+
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
+_pyyaml_which_msg = "Please install via `pip install pyyaml` or `conda install pyyaml`."
 
 ## MSGPackExt
 
@@ -93,6 +99,7 @@ def msgpackext_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> bytes:
         A msgpack representation of the data in bytes.
     """
     which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
+    print("WTF!!!")
 
     use_bin_type = kwargs.pop("use_bin_type", True)
 
@@ -253,33 +260,61 @@ def json_loads(data: str) -> Any:
 ## YAML
 
 
-def yaml_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
+def yaml_encode(dumper: "yaml.dumper.SafeDumper", obj: np.ndarray) -> "yaml.nodes.Node":
+    """
+    Encodes a NumPy ndarray for YAML.
+
+    Parameters
+    ----------
+    dumper: yaml.dumper.SafeDumper
+        A PyYAML SafeDumper object
+    obj : np.ndarray
+        A NumPy ndarray object
+
+    Returns
+    -------
+    yaml.nodes.Node
+        A YAML node representing the object.
+    """
+
+    if obj.shape:
+        return dumper.represent_list(obj.ravel().tolist())
+    else:
+        # Converts np.array(5) -> 5
+        return dumper.represent_data(obj.tolist())
+
+
+def safe_dump(data, stream=None, sort_keys=False, **kwargs):
+    """Mimics yaml.safe_dump with support for numpy.ndarray encoding. If stream is None, return
+    the produced string instead. Order is preserved by default."""
+    which_import("yaml", raise_error=True, raise_msg=_pyyaml_which_msg)
+
+    class SafeDumper(yaml.SafeDumper):
+        ...
+
+    SafeDumper.add_representer(np.ndarray, yaml_encode)
+    return yaml.dump(data, stream=stream, Dumper=SafeDumper, sort_keys=sort_keys, **kwargs)
+
+
+def yaml_dump(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
     """Safe serialization of a Python dictionary to YAML string representation.
 
     Parameters
     ----------
     data : Any
-        A encodable python object.
+        An encodable python object.
     **kwargs : Optional[Dict[str, Any]], optional
         Additional keyword arguments to pass to the constructor
 
     Returns
     -------
     str
-        A JSON representation of the data.
+        A YAML representation of the data.
     """
-    try:
-        import yaml
-    except ModuleNotFoundError:  # pragma: no cover
-        raise ModuleNotFoundError(
-            "Serialization to YAML requires PyYAML. Solve by installing it: "
-            "`conda install pyyaml` or `pip install pyyaml`"
-        )
-    kwargs["sort_keys"] = kwargs.get("sort_keys", False)  # Preserve order by default
-    return yaml.safe_dump(data, **kwargs)
+    return safe_dump(data, **kwargs)
 
 
-def yaml_loads(data: str) -> Any:
+def yaml_load(data: str) -> Any:
     """Deserializes a yaml representation of known objects into those objects.
 
     Parameters
@@ -292,13 +327,8 @@ def yaml_loads(data: str) -> Any:
     Any
         The deserialized Python objects.
     """
-    try:
-        import yaml
-    except ModuleNotFoundError:  # pragma: no cover
-        raise ModuleNotFoundError(
-            "Deserialization from YAML requires PyYAML. Solve by installing it: "
-            "`conda install pyyaml` or `pip install pyyaml`"
-        )
+    which_import("yaml", raise_error=True, raise_msg=_pyyaml_which_msg)
+
     return yaml.safe_load(data)
 
 
@@ -328,7 +358,7 @@ def serialize(data: Any, encoding: str, **kwargs: Optional[Dict[str, Any]]) -> U
     elif encoding.lower() == "json-ext":
         return jsonext_dumps(data, **kwargs)
     elif encoding.lower() == "yaml":
-        return yaml_dumps(data, **kwargs)
+        return yaml_dump(data, **kwargs)
     elif encoding.lower() == "msgpack-ext":
         return msgpackext_dumps(data, **kwargs)
     else:
@@ -360,7 +390,7 @@ def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
         return jsonext_loads(blob)
     elif encoding.lower() == "yaml":
         assert isinstance(blob, str)
-        return yaml_loads(blob)
+        return yaml_load(blob)
     elif encoding.lower() in ["msgpack", "msgpack-ext"]:
         assert isinstance(blob, bytes)
         return msgpackext_loads(blob)
