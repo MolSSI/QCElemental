@@ -988,11 +988,11 @@ class Molecule(ProtoModel):
 
         flags = "w"
         if dtype in ["xyz", "xyz+", "psi4"]:
-            stringified = self.to_string(dtype)
+            stringified = self.to_string(dtype, **kwargs)
         elif dtype in ["json", "yaml"]:
-            stringified = self.serialize(dtype)
+            stringified = self.serialize(dtype, **kwargs)
         elif dtype in ["msgpack", "msgpack-ext"]:
-            stringified = self.serialize("msgpack-ext")
+            stringified = self.serialize("msgpack-ext", **kwargs)
             flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
