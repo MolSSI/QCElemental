@@ -11,10 +11,7 @@ try:
 except ModuleNotFoundError:
     pass
 
-yaml = yaml_import(raise_error=False)
-
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
-_pyyaml_which_msg = "Please install via `pip install pyyaml` or `conda install pyyaml`."
 
 ## MSGPackExt
 
@@ -287,6 +284,8 @@ def safe_dump(data, stream=None, sort_keys=False, **kwargs):
     """Mimics yaml.safe_dump with support for numpy.ndarray encoding. If stream is None, return
     the produced string instead. Order is preserved by default."""
 
+    yaml = yaml_import(raise_error=True)
+
     if yaml.__name__ == "ruamel.yaml":
 
         class SafeDumper(yaml.RoundTripDumper):
@@ -335,6 +334,7 @@ def yaml_load(data: str) -> Any:
         The deserialized Python objects.
     """
 
+    yaml = yaml_import(raise_error=True)
     return yaml.safe_load(data)
 
 
