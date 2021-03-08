@@ -262,9 +262,9 @@ def yaml_encode(
 
     Parameters
     ----------
-    dumper: yaml.dumper.SafeDumper
-        A PyYAML SafeDumper object
-    obj : np.ndarray
+    dumper: yaml.dumper.SafeDumper or ruamel.yaml.dumper.RoundTripDumper
+        A PyYAML SafeDumper or ruamel RoundTripDumper object
+    obj: np.ndarray
         A NumPy ndarray object
 
     Returns
