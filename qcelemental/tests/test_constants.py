@@ -110,6 +110,13 @@ def test_c_header():
     os.remove("header.h")
 
 
+def test_fortran_header():
+    from qcelemental.physical_constants.context import write_fortran_header
+
+    write_fortran_header("CODATA2018", "header.fh")
+    os.remove("header.fh")
+
+
 @pytest.mark.xfail(True, reason="comparison data not available for installed repository", run=True, strict=False)
 def test_constants_comparison():
     from qcelemental.physical_constants.context import run_comparison
