@@ -14,6 +14,20 @@ Changelog
 .. +++++++++
 
 
+0.19.0 / 2021-03-04
+-------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+- (:pr:`253`) Fixed incompatibility with Pydantic >=1.8.
+
+
 0.18.0 / 2021-02-16
 -------------------
 
