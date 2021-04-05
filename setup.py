@@ -31,7 +31,7 @@ if __name__ == "__main__":
         package_data={"": [os.path.join("qcelemental", "data", "*.json")]},
         setup_requires=[] + pytest_runner,
         python_requires=">=3.6",
-        install_requires=["numpy >= 1.12.0", "pint >= 0.10.0", "pydantic >=1.5.0,!=1.6.0"],
+        install_requires=["numpy >= 1.12.0", "pint >= 0.10.0", "pydantic >=1.5.0,!=1.6.0,!=1.8.0"],
         extras_require={
             "docs": [
                 "numpydoc",
