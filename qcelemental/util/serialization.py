@@ -93,7 +93,6 @@ def msgpackext_dumps(data: Any, **kwargs: Optional[Dict[str, Any]]) -> bytes:
         A msgpack representation of the data in bytes.
     """
     which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
-    print("WTF!!!")
 
     use_bin_type = kwargs.pop("use_bin_type", True)
 
@@ -264,7 +263,7 @@ def yaml_encode(
     ----------
     dumper: yaml.dumper.SafeDumper or ruamel.yaml.dumper.RoundTripDumper
         A PyYAML SafeDumper or ruamel RoundTripDumper object
-    obj: np.ndarray
+    obj : np.ndarray
         A NumPy ndarray object
 
     Returns
@@ -280,7 +279,7 @@ def yaml_encode(
         return dumper.represent_data(obj.tolist())
 
 
-def safe_dump(data, stream=None, sort_keys=False, **kwargs):
+def yaml_safe_dump(data, stream=None, sort_keys=False, **kwargs):
     """Mimics yaml.safe_dump with support for numpy.ndarray encoding. If stream is None, return
     the produced string instead. Order is preserved by default."""
 
@@ -317,7 +316,7 @@ def yaml_dump(data: Any, **kwargs: Optional[Dict[str, Any]]) -> str:
     str
         A YAML representation of the data.
     """
-    return safe_dump(data, **kwargs)
+    return yaml_safe_dump(data, **kwargs)
 
 
 def yaml_load(data: str) -> Any:
