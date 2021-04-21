@@ -35,7 +35,7 @@ class ProtoModel(BaseModel):
 
     @classmethod
     def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> "ProtoModel":  # type: ignore
-        """
+        r"""
         Parses raw string or bytes into a Model object.
 
         Parameters
@@ -70,7 +70,7 @@ class ProtoModel(BaseModel):
 
     @classmethod
     def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> "ProtoModel":  # type: ignore
-        """Parses a file into a Model object.
+        r"""Parses a file into a Model object.
 
         Parameters
         ----------
@@ -128,7 +128,7 @@ class ProtoModel(BaseModel):
         exclude_defaults: Optional[bool] = None,
         exclude_none: Optional[bool] = None,
     ) -> Union[bytes, str]:
-        """Generates a serialized representation of the model
+        r"""Generates a serialized representation of the model
 
         Parameters
         ----------
@@ -172,7 +172,7 @@ class ProtoModel(BaseModel):
         return self.serialize("json", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
-        """Compares the current object to the provided object recursively.
+        r"""Compares the current object to the provided object recursively.
 
         Parameters
         ----------

@@ -10,7 +10,7 @@ from pydantic import BaseModel, validator
 
 
 class Datum(BaseModel):
-    """Facilitates the storage of quantum chemical results by labeling them with basic metadata.
+    r"""Facilitates the storage of quantum chemical results by labeling them with basic metadata.
 
     Attributes
     ----------
@@ -18,15 +18,15 @@ class Datum(BaseModel):
         Official label for `data`, often qcvar. May contain spaces.
     units : str
         ASCII, LaTeX-like representation of units, without square brackets.
-    data : float or Decimal or or :py:class:`numpy.ndarray`
+    data : float or decimal.Decimal or numpy.ndarray
         Value for `label`.
-    comment : str, optional
+    comment : str
         Additional notes.
-    doi : str, optional
+    doi : str
         Literature citation or definition DOI link.
-    glossary : str, optional
+    glossary : str
         Extended description or definition.
-    numeric : bool, optional
+    numeric : bool
         Whether `data` is numeric. Pass `True` to disable validating `data` as float/Decimal/np.ndarray.
 
     """
@@ -102,11 +102,11 @@ class Datum(BaseModel):
 
 
 def print_variables(qcvars: Dict[str, "Datum"]) -> str:
-    """Form a printable representation of qcvariables.
+    r"""Form a printable representation of qcvariables.
 
     Parameters
     ----------
-    qcvars : dict of Datum
+    qcvars
         Group of Datum objects to print.
 
     Returns

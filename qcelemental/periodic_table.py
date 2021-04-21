@@ -10,7 +10,7 @@ from .exceptions import NotAnElementError
 
 
 class PeriodicTable:
-    """Nuclear and mass data about chemical elements from NIST.
+    r"""Nuclear and mass data about chemical elements from NIST.
 
     Parameters
     ----------
@@ -18,22 +18,23 @@ class PeriodicTable:
 
     Attributes
     ----------
-    A : list of int
+    A : List[int]
         Mass number, number of protons and neutrons, starting with 0 for dummies.
-    Z : list of int
+    Z : List[int]
         Atomic number, number of protons, starting with 0 for dummies.
-    E : list of str
+    E : List[str]
         Element symbol from periodic table, starting with "X" for dummies. "Fe" capitalization.
-    EA : list of str
+    EA : List[str]
         Nuclide symbol in E + A form, e.g., "Li6".
         List `EA` is a superset of `E`; that is, both "Li6" and "Li" present.
         For hydrogen, "D" and "T" also included.
-    mass : list of :py:class:`decimal.Decimal`
+    mass : List[decimal.Decimal]
         Atomic mass [u].
-        For nuclides (e.g., "Li6"), the reported mass.
-        For stable elements (e.g., "Li"), the mass of the most abundant isotope ("Li7").
-        For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope ("Pu244").
-    name : list of str
+
+          * For nuclides (e.g., "Li6"), the reported mass.
+          * For stable elements (e.g., "Li"), the mass of the most abundant isotope ("Li7").
+          * For unstable elements (e.g., "Pu"), the mass of the longest-lived isotope ("Pu244").
+    name : List[str]
         Element name from periodic table, starting with "Dummy". "Iron" capitalization.
 
     """
@@ -98,22 +99,23 @@ class PeriodicTable:
         return eliso
 
     def to_mass(self, atom: Union[int, str], *, return_decimal: bool = False) -> Union[float, "Decimal"]:
-        """Get atomic mass of `atom`.
+        r"""Get atomic mass of `atom`.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
-        return_decimal : bool, optional
+        return_decimal
             Whether to preserve significant figures information by returning as Decimal (`True`) or to convert to float (`False`).
 
         Returns
         -------
         decimal.Decimal or float
             Atomic mass [u]. See above for type.
-            If `atom` is nuclide (e.g., "Li6"), the reported mass.
-            If `atom` is stable element (e.g., "Li"), the mass of the most abundant isotope, "Li7".
-            If `atom` is unstable element (e.g., "Pu"), the mass of the longest-lived isotope, "Pu244".
+
+              * If `atom` is nuclide (e.g., "Li6"), the reported mass.
+              * If `atom` is stable element (e.g., "Li"), the mass of the most abundant isotope, "Li7".
+              * If `atom` is unstable element (e.g., "Pu"), the mass of the longest-lived isotope, "Pu244".
 
         Raises
         ------
@@ -130,22 +132,23 @@ class PeriodicTable:
             return float(mass)
 
     def to_A(self, atom: Union[int, str]) -> int:
-        """Get mass number of `atom`.
+        r"""Get mass number of `atom`.
 
         Functions :py:func:`to_A` and :py:func:`to_mass_number` are aliases.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
 
         Returns
         -------
         int
             Mass number, number of protons and neutrons.
-            If `atom` is nuclide (e.g., "Li6"), the corresponding mass number, 6.
-            If `atom` is stable element (e.g., "Li"), the mass number of the most abundant isotope, 7.
-            If `atom` is unstable element (e.g., "Pu"), the mass number of the longest-lived isotope, 244.
+
+              * If `atom` is nuclide (e.g., "Li6"), the corresponding mass number, 6.
+              * If `atom` is stable element (e.g., "Li"), the mass number of the most abundant isotope, 7.
+              * If `atom` is unstable element (e.g., "Pu"), the mass number of the longest-lived isotope, 244.
 
         Raises
         ------
@@ -157,13 +160,13 @@ class PeriodicTable:
         return self._eliso2a[identifier]
 
     def to_Z(self, atom: Union[int, str], strict: bool = False) -> int:
-        """Get atomic number of `atom`.
+        r"""Get atomic number of `atom`.
 
         Functions :py:func:`to_Z` and :py:func:`to_atomic_number` are aliases.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
         strict
             Allow only element identification in `atom`, not nuclide.
@@ -184,13 +187,13 @@ class PeriodicTable:
         return self._el2z[self._eliso2el[identifier]]
 
     def to_E(self, atom: Union[int, str], strict: bool = False) -> str:
-        """Get element symbol of `atom`.
+        r"""Get element symbol of `atom`.
 
         Functions :py:func:`to_E` and :py:func:`to_symbol` are aliases.
 
         Parameters
         ----------
-        atom : Union[int, str]
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
         strict
             Allow only element identification in `atom`, not nuclide.
@@ -211,13 +214,13 @@ class PeriodicTable:
         return self._eliso2el[identifier]
 
     def to_element(self, atom: Union[int, str], strict: bool = False) -> str:
-        """Get element name of `atom`.
+        r"""Get element name of `atom`.
 
         Functions :py:func:`to_element` and :py:func:`to_name` are aliases.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
         strict
             Allow only element identification in `atom`, not nuclide.
@@ -243,11 +246,11 @@ class PeriodicTable:
     to_name = to_element
 
     def to_period(self, atom: Union[int, str]) -> int:
-        """Get period (horizontal row in periodic table) of `atom`.
+        r"""Get period (horizontal row in periodic table) of `atom`.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
 
         Returns
@@ -281,11 +284,11 @@ class PeriodicTable:
             return 8
 
     def to_group(self, atom: Union[int, str]) -> Union[int, None]:
-        """Get group (vertical column in periodic table) of `atom`.
+        r"""Get group (vertical column in periodic table) of `atom`.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., `H`, `D`, `H2`, `He`, `hE4`.
 
         Returns
@@ -452,11 +455,11 @@ def run_comparison():
 
 
 def write_c_header(filename: str = "masses.h") -> None:
-    """Write C header file defining arrays of mass and element information.
+    r"""Write C header file defining arrays of mass and element information.
 
     Parameters
     ----------
-    filename : str, optional
+    filename
         The filename to write to.
     """
     self = PeriodicTable()

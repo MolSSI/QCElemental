@@ -39,42 +39,42 @@ def _parity_ok(z, c, m):
 
 
 def validate_and_fill_chgmult(
-    zeff,
-    fragment_separators,
+    zeff: np.ndarray,
+    fragment_separators: np.ndarray,
     molecular_charge: Union[float, None],
-    fragment_charges,
+    fragment_charges: Union[List[float], None],
     molecular_multiplicity: Union[int, None],
-    fragment_multiplicities,
+    fragment_multiplicities: Union[List[int], None],
     zero_ghost_fragments: bool = False,
     verbose: int = 1,
 ) -> Dict[str, Any]:
-    """Forms molecular and fragment charge and multiplicity specification
+    r"""Forms molecular and fragment charge and multiplicity specification
     by completing and reconciling information from argument, supplemented
     by physical constraints and sensible defaults.
 
     Parameters
     ----------
-    zeff : ndarray of float
-        (nat,) electron counts for neutral atoms, generally Z nuclear charge.
+    zeff
+        (nat,) electron counts (float) for neutral atoms, generally Z nuclear charge.
         0 indicates ghosts such that a full fragment of 0s will be constained
         to `0 1` charge & multiplicity.
-    fragment_separators : ndarray of int
+    fragment_separators
         (nfr - 1, ) indices splitting `zeff` into nfr fragments.
-    molecular_charge : float or None
+    molecular_charge
         Total charge for molecular system.
-    fragment_charges : list of float or None
+    fragment_charges
         (nfr,) known fragment charges with `None` as placeholder for
         unknown. Expected pre-defaulted so even if nothing known, if
         `fragment_separators` breaks `zeff` into `nfr=2` fragments, input
         value should be ``fragment_charges=[None, None]``.
-    molecular_multiplicity : int or None
+    molecular_multiplicity
         Total multiplicity for molecular system.
-    fragment_multiplicities : list of int or None
+    fragment_multiplicities
         (nfr,) known fragment charges with `None` as placeholder for
         unknown. Expected pre-defaulted so even if nothing known, if
         `fragment_separators` breaks `zeff` into `nfr=2` fragments, input
         value should be ``fragment_multiplicities=[None, None]``.
-    zero_ghost_fragments : bool, optional
+    zero_ghost_fragments
         Fragments composed entirely of ghost atoms (Zeff=0) are required to have
         chgmult `0 1`. When `False`, violations of this will cause a
         ValidationError. When `True`, treat ghost fragments indicated by `zeff` to
@@ -83,7 +83,7 @@ def validate_and_fill_chgmult(
         `molecular_charge` and `molecular_multiplicity` and sets ghost fragments
         to `0 1`, leaving other positions free to readjust. Unused (prefer to set
         up such manipulations outside function call) but works.
-    verbose : int, optional
+    verbose
         Amount of printing.
 
     Returns

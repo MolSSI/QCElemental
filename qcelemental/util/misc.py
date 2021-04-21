@@ -93,7 +93,7 @@ def filter_comments(string: str) -> str:
 
 
 def unnp(dicary: Dict, _path=None, *, flat: bool = False) -> Dict:
-    """Return `dicary` with any ndarray values replaced by lists.
+    r"""Return `dicary` with any ndarray values replaced by lists.
 
     Parameters
     ----------
@@ -184,7 +184,7 @@ def measure_coordinates(coordinates, measurements, degrees=False):
 
 
 def compute_distance(points1, points2) -> np.ndarray:
-    """
+    r"""
     Computes the distance between the provided points on a per-row basis.
 
     Parameters
@@ -217,7 +217,7 @@ def compute_distance(points1, points2) -> np.ndarray:
 
 
 def compute_angle(points1, points2, points3, *, degrees: bool = False) -> np.ndarray:
-    """
+    r"""
     Computes the angle (p1, p2 [vertex], p3) between the provided points on a per-row basis.
 
     Parameters
@@ -260,7 +260,7 @@ def compute_angle(points1, points2, points3, *, degrees: bool = False) -> np.nda
 
 
 def compute_dihedral(points1, points2, points3, points4, *, degrees: bool = False) -> np.ndarray:
-    """
+    r"""
     Computes the dihedral angle (p1, p2, p3, p4) between the provided points on a per-row basis using the Praxeolitic formula.
 
     Parameters

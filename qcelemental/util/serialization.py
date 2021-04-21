@@ -17,7 +17,7 @@ _msgpack_which_msg = "Please install via `conda install msgpack-python`."
 
 
 def msgpackext_encode(obj: Any) -> Any:
-    """
+    r"""
     Encodes an object using pydantic and NumPy array serialization techniques suitable for msgpack.
 
     Parameters
@@ -52,7 +52,7 @@ def msgpackext_encode(obj: Any) -> Any:
 
 
 def msgpackext_decode(obj: Any) -> Any:
-    """
+    r"""
     Decodes a msgpack objects from a dictionary representation.
 
     Parameters
@@ -77,7 +77,7 @@ def msgpackext_decode(obj: Any) -> Any:
 
 
 def msgpackext_dumps(data: Any) -> bytes:
-    """Safe serialization of a Python object to msgpack binary representation using all known encoders.
+    r"""Safe serialization of a Python object to msgpack binary representation using all known encoders.
     For NumPy, encodes a specialized object format to encode all shape and type data.
 
     Parameters
@@ -96,7 +96,7 @@ def msgpackext_dumps(data: Any) -> bytes:
 
 
 def msgpackext_loads(data: bytes) -> Any:
-    """Deserializes a msgpack byte representation of known objects into those objects.
+    r"""Deserializes a msgpack byte representation of known objects into those objects.
 
     Parameters
     ----------
@@ -150,7 +150,7 @@ def jsonext_decode(obj: Any) -> Any:
 
 
 def jsonext_dumps(data: Any) -> str:
-    """Safe serialization of Python objects to JSON string representation using all known encoders.
+    r"""Safe serialization of Python objects to JSON string representation using all known encoders.
     The JSON serializer uses a custom array syntax rather than flat JSON lists.
 
     Parameters
@@ -168,7 +168,7 @@ def jsonext_dumps(data: Any) -> str:
 
 
 def jsonext_loads(data: Union[str, bytes]) -> Any:
-    """Deserializes a json representation of known objects into those objects.
+    r"""Deserializes a json representation of known objects into those objects.
 
     Parameters
     ----------
@@ -204,7 +204,7 @@ class JSONArrayEncoder(json.JSONEncoder):
 
 
 def json_dumps(data: Any) -> str:
-    """Safe serialization of a Python dictionary to JSON string representation using all known encoders.
+    r"""Safe serialization of a Python dictionary to JSON string representation using all known encoders.
 
     Parameters
     ----------
@@ -221,7 +221,7 @@ def json_dumps(data: Any) -> str:
 
 
 def json_loads(data: str) -> Any:
-    """Deserializes a json representation of known objects into those objects.
+    r"""Deserializes a json representation of known objects into those objects.
 
     Parameters
     ----------
@@ -242,7 +242,7 @@ def json_loads(data: str) -> Any:
 
 
 def serialize(data: Any, encoding: str) -> Union[str, bytes]:
-    """Encoding Python objects using the provided encoder.
+    r"""Encoding Python objects using the provided encoder.
 
     Parameters
     ----------
@@ -268,7 +268,7 @@ def serialize(data: Any, encoding: str) -> Union[str, bytes]:
 
 
 def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
-    """Encoding Python objects using .
+    r"""Encoding Python objects using .
 
     Parameters
     ----------

@@ -22,40 +22,40 @@ def reconcile_nucleus(
     mtol: float = 1.0e-3,
     verbose: int = 1,
 ) -> Tuple[int, int, str, float, bool, str]:
-    """Forms consistent set of nucleus descriptors from all information
+    r"""Forms consistent set of nucleus descriptors from all information
     from arguments, supplemented by the periodic table. At the least,
     must provide element identity somehow. Defaults to most-abundant
     isotope.
 
     Parameters
     ----------
-    A : int, optional
+    A
         Mass number, number of protons and neutrons.
-    Z : int, optional
+    Z
         Atomic number, number of protons.
-    E : str, optional
+    E
         Element symbol from periodic table.
-    mass : float, optional
+    mass
         Atomic mass [u].
-    real : bool, optional
+    real
         Whether real or ghost/absent.
-    label : str, optional
+    label
         Atom label according to :py:data:`qcelemental.molparse.regex.NUCLEUS`.
-    speclabel : bool, optional
+    speclabel
         If `True`, interpret `label` as potentially full nucleus spec including
         ghosting, isotope, mass, tagging information, e.g., ``@13C_mine`` or
         ``He4@4.01``. If `False`, interpret `label` as only the user/tagging
         extension to nucleus label, e.g. ``_mine`` or ``4`` in the previous examples.
-    nonphysical : bool, optional
+    nonphysical
         When `True`, turns off sanity checking that prevents periodic table
         violations (e.g, light uranium: ``1U@1.007``).
-    mtol : float, optional
+    mtol
         How different `mass` can be from a known nuclide mass and still
         merit the mass number assignment. Note that for elements dominated
         by a single isotope, the default may not be tight enough to
         prevent standard atomic weight (abundance-average of isotopes)
         from being labeled as the dominant isotope for A.
-    verbose : int, optional
+    verbose
         Quantity of printing.
 
     Returns
@@ -345,12 +345,12 @@ def reconcile_nucleus(
     return (A_final, Z_final, E_final, mass_final, real_final, user_final)
 
 
-def parse_nucleus_label(label):
-    """Separate molecule nucleus string into fields.
+def parse_nucleus_label(label: str):
+    r"""Separate molecule nucleus string into fields.
 
     Parameters
     ----------
-    label : str
+    label
         Conveys at least element and ghostedness and possibly isotope, mass, and
         user info in accordance with :py:data:`qcelemental.molparse.regex.NUCLEUS`.
 

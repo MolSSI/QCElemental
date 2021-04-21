@@ -32,7 +32,7 @@ import numpy as np
 
 
 def _formDirected(g, match):
-    """Form directed graph D from G and matching M.
+    r"""Form directed graph D from G and matching M.
 
     Parameters
     ----------
@@ -71,7 +71,7 @@ def _formDirected(g, match):
 
 
 def _enumMaximumMatching(g, starter_match=None):
-    """Find all maximum matchings in an undirected bipartite graph `g`.
+    r"""Find all maximum matchings in an undirected bipartite graph `g`.
 
     Parameters
     ----------
@@ -117,7 +117,7 @@ def _enumMaximumMatching(g, starter_match=None):
 
 
 def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
-    """Recurively search maximum matchings.
+    r"""Recurively search maximum matchings.
 
     Parameters
     ----------
@@ -274,7 +274,7 @@ def _enumMaximumMatchingIter(g, match, all_matches, add_e=None):
 
 
 def _enumMaximumMatching2(g):
-    """Find all maximum matchings in an undirected bipartite graph `g`.
+    r"""Find all maximum matchings in an undirected bipartite graph `g`.
     Similar to _enumMaximumMatching but implemented using adjacency matrix
     of graph for slight speed boost.
 
@@ -334,7 +334,7 @@ def _enumMaximumMatching2(g):
 
 
 def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_cycle=True):
-    """Recurively search maximum matchings.
+    r"""Recurively search maximum matchings.
        Similar to _enumMaximumMatching but implemented using adjacency matrix
        of graph for a slight speed boost.
 

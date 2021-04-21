@@ -45,7 +45,7 @@ _extension_map = {
 
 
 def float_prep(array, around):
-    """
+    r"""
     Rounds floats to a common value and build positive zeros to prevent hash conflicts.
     """
     if isinstance(array, (list, np.ndarray)):
@@ -74,7 +74,7 @@ class BondOrderFloat(ConstrainedFloat):
 
 
 class Identifiers(ProtoModel):
-    """Canonical chemical identifiers"""
+    r"""Canonical chemical identifiers"""
 
     molecule_hash: Optional[str] = None
     molecular_formula: Optional[str] = None
@@ -95,7 +95,7 @@ class Identifiers(ProtoModel):
 
 
 class Molecule(ProtoModel):
-    """
+    r"""
     The physical Cartesian representation of the molecular system.
 
     A QCSchema representation of a Molecule. This model contains
@@ -106,9 +106,10 @@ class Molecule(ProtoModel):
     Notes
     -----
     All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
-        nat: number of atomic = calcinfo_natom
-        nfr: number of fragments
-        <varies>: irregular dimension not systematically reshapable
+
+      * nat: number of atomic = calcinfo_natom
+      * nfr: number of fragments
+      * <varies>: irregular dimension not systematically reshapable
 
     """
 
@@ -310,15 +311,15 @@ class Molecule(ProtoModel):
             schema["$schema"] = qcschema_draft
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
-        """Initializes the molecule object from dictionary-like values.
+        r"""Initializes the molecule object from dictionary-like values.
 
         Parameters
         ----------
-        orient : bool, optional
+        orient
             If True, orientates the Molecule to a common reference frame.
-        validate : Optional[bool], optional
+        validate
             If ``None`` validation is always applied unless the ``validated`` flag is set. Otherwise uses the boolean to decide to validate the Molecule or not.
-        **kwargs : Any
+        **kwargs
             The values of the Molecule object attributes.
         """
         if validate is None:
@@ -469,12 +470,12 @@ class Molecule(ProtoModel):
     ### Non-Pydantic API functions
 
     def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> "nglview.NGLWidget":  # type: ignore
-        """Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
+        r"""Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
         images (`.png`).
 
         Parameters
         ----------
-        ngl_kwargs : Optional[Dict[str, Any]], optional
+        ngl_kwargs
             Addition nglview NGLWidget kwargs
 
         Returns
@@ -500,15 +501,15 @@ class Molecule(ProtoModel):
     def measure(
         self, measurements: Union[List[int], List[List[int]]], *, degrees: bool = True
     ) -> Union[float, List[float]]:
-        """
+        r"""
         Takes a measurement of the moleucle from the indicies provided.
 
         Parameters
         ----------
-        measurements : Union[List[int], List[List[int]]]
+        measurements
             Either a single list of indices or multiple. Return a distance, angle, or dihedral depending if
             2, 3, or 4 indices is provided, respectively. Values are returned in Bohr (distance) or degree.
-        degrees : bool, optional
+        degrees
             Returns degrees by default, radians otherwise.
 
         Returns
@@ -520,7 +521,7 @@ class Molecule(ProtoModel):
         return measure_coordinates(self.geometry, measurements, degrees=degrees)
 
     def orient_molecule(self):
-        """
+        r"""
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
         return Molecule(orient=True, **self.dict())
@@ -532,7 +533,7 @@ class Molecule(ProtoModel):
         return self == other
 
     def __eq__(self, other):
-        """
+        r"""
         Checks if two molecules are identical. This is a molecular identity defined
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
@@ -553,7 +554,7 @@ class Molecule(ProtoModel):
         return super().dict(*args, **kwargs)
 
     def pretty_print(self):
-        """Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
+        r"""Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
         (method name in libmints is print_in_angstrom)
 
         """
@@ -583,7 +584,7 @@ class Molecule(ProtoModel):
         orient: bool = False,
         group_fragments: bool = True,
     ) -> "Molecule":
-        """Get new Molecule with fragments preserved, dropped, or ghosted.
+        r"""Get new Molecule with fragments preserved, dropped, or ghosted.
 
         Parameters
         ----------
@@ -603,8 +604,8 @@ class Molecule(ProtoModel):
 
         Returns
         -------
-        mol
-            New ``py::class:qcelemental.model.Molecule`` with ``self``\'s fragments present, ghosted, or absent.
+        Molecule
+            New qcelemental.models.Molecule with ``self``\'s fragments present, ghosted, or absent.
 
         """
         if isinstance(real, int):
@@ -732,7 +733,7 @@ class Molecule(ProtoModel):
         prec: int = 12,
         return_data: bool = False,
     ):
-        """Returns a string that can be used by a variety of programs.
+        r"""Returns a string that can be used by a variety of programs.
 
         Unclear if this will be removed or renamed to "to_psi4_string" in the future
 
@@ -751,7 +752,7 @@ class Molecule(ProtoModel):
         )
 
     def get_hash(self):
-        """
+        r"""
         Returns the hash of the molecule.
         """
 
@@ -776,7 +777,7 @@ class Molecule(ProtoModel):
         return m.hexdigest()
 
     def get_molecular_formula(self, order: str = "alphabetical") -> str:
-        """
+        r"""
         Returns the molecular formula for a molecule.
 
         Parameters
@@ -820,27 +821,27 @@ class Molecule(ProtoModel):
     @classmethod
     def from_data(
         cls,
-        data: Union[str, Dict[str, Any], np.array, bytes],
+        data: Union[str, Dict[str, Any], np.ndarray, bytes],
         dtype: Optional[str] = None,
         *,
         orient: bool = False,
         validate: bool = None,
         **kwargs: Dict[str, Any],
     ) -> "Molecule":
-        """
+        r"""
         Constructs a molecule object from a data structure.
 
         Parameters
         ----------
-        data : Union[str, Dict[str, Any], np.array]
+        data
             Data to construct Molecule from
-        dtype : Optional[str], optional
+        dtype
             How to interpret the data, if not passed attempts to discover this based on input type.
-        orient : bool, optional
+        orient
             Orientates the molecule to a standard frame or not.
-        validate : bool, optional
+        validate
             Validates the molecule or not.
-        **kwargs : Dict[str, Any]
+        **kwargs
             Additional kwargs to pass to the constructors. kwargs take precedence over data.
 
         Returns
@@ -906,16 +907,16 @@ class Molecule(ProtoModel):
 
     @classmethod
     def from_file(cls, filename: str, dtype: Optional[str] = None, *, orient: bool = False, **kwargs):
-        """
+        r"""
         Constructs a molecule object from a file.
 
         Parameters
         ----------
-        filename : str
+        filename
             The filename to build
-        dtype : Optional[str], optional
+        dtype
             The type of file to interpret.
-        orient : bool, optional
+        orient
             Orientates the molecule to a standard frame or not.
         **kwargs
             Any additional keywords to pass to the constructor
@@ -956,13 +957,13 @@ class Molecule(ProtoModel):
         return cls.from_data(data, dtype, orient=orient, **kwargs)
 
     def to_file(self, filename: str, dtype: Optional[str] = None) -> None:
-        """Writes the Molecule to a file.
+        r"""Writes the Molecule to a file.
 
         Parameters
         ----------
-        filename : str
+        filename
             The filename to write to
-        dtype : Optional[str], optional
+        dtype
             The type of file to write, attempts to infer dtype from the filename if not provided.
 
         """
@@ -997,7 +998,7 @@ class Molecule(ProtoModel):
     ### Non-Pydantic internal functions
 
     def _orient_molecule_internal(self):
-        """
+        r"""
         Centers the molecule and orients via inertia tensor before returning a new set of the
         molecule geometry
         """
@@ -1055,7 +1056,7 @@ class Molecule(ProtoModel):
 
     @staticmethod
     def _inertial_tensor(geom, *, weight):
-        """
+        r"""
         Compute the moment inertia tensor for a given geometry.
         """
         # Build inertia tensor
@@ -1074,16 +1075,17 @@ class Molecule(ProtoModel):
         return tensor
 
     def nuclear_repulsion_energy(self, ifr: int = None) -> float:
-        """Nuclear repulsion energy.
+        r"""Nuclear repulsion energy.
 
         Parameters
         ----------
-        ifr : int, optional
+        ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
 
         Returns
         -------
-        Nuclear repulsion energy in entire molecule or in fragment.
+        nre : float
+            Nuclear repulsion energy in entire molecule or in fragment.
 
         """
         Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
@@ -1100,16 +1102,17 @@ class Molecule(ProtoModel):
         return nre
 
     def nelectrons(self, ifr: int = None) -> int:
-        """Number of electrons.
+        r"""Number of electrons.
 
         Parameters
         ----------
-        ifr : int, optional
+        ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
 
         Returns
         -------
-        Number of electrons in entire molecule or in fragment.
+        nelec : int
+            Number of electrons in entire molecule or in fragment.
 
         """
         Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
@@ -1135,48 +1138,49 @@ class Molecule(ProtoModel):
         uno_cutoff: float = 1.0e-3,
         run_mirror: bool = False,
     ):
-        """Finds shift, rotation, and atom reordering of `concern_mol` (self)
+        r"""Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
-        Wraps :py:func:`qcel.molutil.B787` for :py:class:`qcel.models.Molecule`.
+        Wraps :py:func:`qcelemental.molutil.B787` for :py:class:`qcelemental.models.Molecule`.
         Employs the Kabsch, Hungarian, and Uno algorithms to exhaustively locate
         the best alignment for non-oriented, non-ordered structures.
 
         Parameters
         ----------
-        ref_mol : qcel.models.Molecule
+        ref_mol : qcelemental.models.Molecule
             Molecule to match.
-        atoms_map : bool, optional
+        atoms_map
             Whether atom1 of `ref_mol` corresponds to atom1 of `concern_mol`, etc.
             If true, specifying `True` can save much time.
-        mols_align : bool or float, optional
+        mols_align
             Whether ref_mol and concern_mol have identical geometries
             (barring orientation or atom mapping) and expected final RMSD = 0.
             If `True`, procedure is truncated when RMSD condition met, saving time.
             If float, RMSD tolerance at which search for alignment stops. If provided,
             the alignment routine will throw an error if it fails to align
             the molecule within the specified RMSD tolerance.
-        do_plot : bool, optional
+        do_plot
             Pops up a mpl plot showing before, after, and ref geometries.
-        run_to_completion : bool, optional
+        run_to_completion
             Run reorderings to completion (past RMSD = 0) even if unnecessary because
             `mols_align=True`. Used to test worst-case timings.
-        run_resorting : bool, optional
+        run_resorting
             Run the resorting machinery even if unnecessary because `atoms_map=True`.
-        uno_cutoff : float, optional
+        uno_cutoff
             TODO
-        run_mirror : bool, optional
+        run_mirror
             Run alternate geometries potentially allowing best match to `ref_mol`
             from mirror image of `concern_mol`. Only run if system confirmed to
             be nonsuperimposable upon mirror reflection.
-        verbose : int, optional
+        verbose
             Print level.
 
         Returns
         -------
-        Molecule, data
+        mol : Molecule
+        data : Dict[key, Any]
             Molecule is internal geometry of `self` optimally aligned and atom-ordered
-              to `ref_mol`. Presently all fragment information is discarded.
+            to `ref_mol`. Presently all fragment information is discarded.
             `data['rmsd']` is RMSD [A] between `ref_mol` and the optimally aligned
             geometry computed.
             `data['mill']` is a AlignmentMill with fields
@@ -1264,56 +1268,57 @@ class Molecule(ProtoModel):
     def scramble(
         self,
         *,
-        do_shift: bool = True,
-        do_rotate=True,
-        do_resort=True,
-        deflection=1.0,
-        do_mirror=False,
-        do_plot=False,
-        do_test=False,
-        run_to_completion=False,
-        run_resorting=False,
-        verbose=0,
+        do_shift: Union[bool, Array[float], List] = True,
+        do_rotate: Union[bool, Array[float], List[List]] = True,
+        do_resort: Union[bool, List] = True,
+        deflection: float = 1.0,
+        do_mirror: bool = False,
+        do_plot: bool = False,
+        do_test: bool = False,
+        run_to_completion: bool = False,
+        run_resorting: bool = False,
+        verbose: int = 0,
     ):
-        """Generate a Molecule with random or directed translation, rotation, and atom shuffling.
+        r"""Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
         Parameters
         ----------
-        ref_mol : qcel.models.Molecule
+        ref_mol : qcelemental.models.Molecule
             Molecule to perturb.
-        do_shift : bool or array-like, optional
+        do_shift
             Whether to generate a random atom shift on interval [-3, 3) in each
             dimension (`True`) or leave at current origin. To shift by a specified
             vector, supply a 3-element list.
-        do_rotate : bool or array-like, optional
+        do_rotate
             Whether to generate a random 3D rotation according to algorithm of Arvo.
             To rotate by a specified matrix, supply a 9-element list of lists.
-        do_resort : bool or array-like, optional
+        do_resort
             Whether to shuffle atoms (`True`) or leave 1st atom 1st, etc. (`False`).
             To specify shuffle, supply a nat-element list of indices.
-        deflection : float, optional
+        deflection
             If `do_rotate`, how random a rotation: 0.0 is no change, 0.1 is small
             perturbation, 1.0 is completely random.
-        do_mirror : bool, optional
+        do_mirror
             Whether to construct the mirror image structure by inverting y-axis.
-        do_plot : bool, optional
+        do_plot
             Pops up a mpl plot showing before, after, and ref geometries.
-        do_test : bool, optional
+        do_test
             Additionally, run the aligner on the returned Molecule and check that
             opposite transformations obtained.
-        run_to_completion : bool, optional
+        run_to_completion
             By construction, scrambled systems are fully alignable (final RMSD=0).
             Even so, `True` turns off the mechanism to stop when RMSD reaches zero
             and instead proceed to worst possible time.
-        run_resorting : bool, optional
+        run_resorting
             Even if atoms not shuffled, test the resorting machinery.
-        verbose : int, optional
+        verbose
             Print level.
 
         Returns
         -------
-        Molecule, data
+        mol : Molecule
+        data : Dict[key, Any]
             Molecule is scrambled copy of `ref_mol` (self).
             `data['rmsd']` is RMSD [A] between `ref_mol` and the scrambled geometry.
             `data['mill']` is a AlignmentMill with fields

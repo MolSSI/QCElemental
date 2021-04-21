@@ -27,7 +27,7 @@ def blockwise_contract(arr):
 
 
 def blockwise_expand(a, blockshape, aslist=False, require_aligned_blocks=True):
-    """
+    r"""
     Return a 2N-D view of the given N-D array, rearranged so each ND block (tile)
     of the original array is indexed by its block address using the first N
     indexes of the output array.

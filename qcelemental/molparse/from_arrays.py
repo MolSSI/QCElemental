@@ -162,42 +162,43 @@ def from_arrays(
     geom_unsettled=None,
     variables=None,
     domain="qm",
-    missing_enabled_return="error",
-    np_out=True,
-    speclabel=True,
-    tooclose=0.1,
+    missing_enabled_return: str = "error",
+    np_out: bool = True,
+    speclabel: bool = True,
+    tooclose: float = 0.1,
     zero_ghost_fragments=False,
-    nonphysical=False,
+    nonphysical: bool = False,
     mtol=1.0e-3,
     copy=True,
     verbose=1,
 ):
-    """Compose a Molecule dict from unvalidated arrays and variables, returning dict.
+    r"""Compose a Molecule dict from unvalidated arrays and variables, returning dict.
 
     See fields of Return molrec below. Required parameters (for QM XYZ)
     are `geom` and one of `elem`, `elez`, `elbl` (`speclabel=True`)
 
     Parameters
     ----------
-    geom : array-like
+    geom : Union[List[List[float]], numpy.ndarray]
         (nat, 3) or (3 * nat, ) ndarray or list o'lists of Cartesian coordinates.
-    fragment_separators : array-like of int, optional
+    fragment_separators : Union[List[int], numpy.ndarray]
         (nfr - 1, ) list of atom indices at which to split `geom` into fragments.
-    elbl : ndarray of str
+    elbl : Union[List[str], numpy.ndarray]
         (nat, ) Label extending `elem` symbol, possibly conveying ghosting, isotope, mass, tagging information.
-    tooclose : float, optional
+    tooclose
         Interatom distance (native `geom` units) nearer than which atoms not allowed.
-    nonphysical : bool, optional
+    nonphysical
         Do allow masses outside an element's natural range to pass validation?
-    speclabel : bool, optional
+    speclabel
         If `True`, interpret `elbl` as potentially full nucleus spec including
         ghosting, isotope, mass, tagging information, e.g., `@13C_mine` or
         `He4@4.01`. If `False`, interpret `elbl` as only the user/tagging
         extension to nucleus label, e.g. `_mine` or `4` in the previous examples.
-    missing_enabled_return : {'minimal', 'none', 'error'}
+    missing_enabled_return
+        {'minimal', 'none', 'error'}
         What to do when an enabled domain is of zero-length? Respectively, return
         a fully valid but empty molrec, return empty dictionary, or throw error.
-    np_out : bool, optional
+    np_out
         When `True`, fields geom, elea, elez, elem, mass, real, elbl will be ndarray.
         Use `False` to get a json-able version.
 
