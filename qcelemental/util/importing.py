@@ -13,7 +13,7 @@ def which_import(
     package: str = None,
     namespace_ok: bool = False,
 ) -> Union[bool, None, str, List[str]]:
-    """Tests to see if a Python module is available.
+    r"""Tests to see if a Python module is available.
 
     Returns
     -------
@@ -62,7 +62,7 @@ def which_import(
 def which(
     command: str, *, return_bool: bool = False, raise_error: bool = False, raise_msg: str = None, env: str = None
 ) -> Union[bool, None, str]:
-    """Test to see if a command is available.
+    r"""Test to see if a command is available.
 
     Returns
     -------

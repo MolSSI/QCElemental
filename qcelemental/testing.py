@@ -2,7 +2,7 @@ import copy
 import logging
 import pprint
 import sys
-from typing import Callable, Dict, List, Union
+from typing import Callable, Dict, List, Tuple, Union
 
 import numpy as np
 from pydantic import BaseModel
@@ -33,8 +33,8 @@ def tnm() -> str:
 
 
 def compare_values(
-    expected,
-    computed,
+    expected: Union[float, List, np.ndarray],
+    computed: Union[float, List, np.ndarray],
     label: str = None,
     *,
     atol: float = 1.0e-6,
@@ -45,42 +45,44 @@ def compare_values(
     quiet: bool = False,
     return_message: bool = False,
     return_handler: Callable = None,
-) -> bool:
-    """Returns True if two floats or float arrays are element-wise equal within a tolerance.
+) -> Union[bool, Tuple[bool, str]]:
+    r"""Returns True if two floats or float arrays are element-wise equal within a tolerance.
 
     Parameters
     ----------
-    expected : float or float array-like
+    expected
+        float or float array-like
         Reference value against which `computed` is compared.
-    computed : float or float array-like
+    computed
+        float or float array-like
         Input value to compare against `expected`.
-    atol : float, optional
+    atol
         Absolute tolerance (see formula below).
-    label : str, optional
+    label
         Label for passed and error messages. Defaults to calling function name.
-    rtol : float, optional
+    rtol
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
-    equal_nan : bool, optional
+    equal_nan
         Passed to np.isclose. Compare NaN's as equal.
-    equal_phase : bool, optional
+    equal_phase
         Compare computed *or its opposite* as equal.
-    passnone : bool, optional
+    passnone
         Return True when both expected and computed are None.
-    quiet : bool, optional
+    quiet
         Whether to log the return message.
-    return_message : bool, optional
+    return_message
         Whether to return tuple. See below.
 
     Returns
     -------
     allclose : bool
         Returns True if `expected` and `computed` are equal within tolerance; False otherwise.
-    message : str, optional
+    message : str
         When return_message=True, also return passed or error message.
 
     Other Parameters
     ----------------
-    return_handler : function, optional
+    return_handler
         Function to control printing, logging, raising, and returning.
         Specialized interception for interfacing testing systems.
 
@@ -172,38 +174,44 @@ def compare_values(
 
 
 def compare(
-    expected,
-    computed,
+    expected: Union[int, bool, str, List[int], np.ndarray],
+    computed: Union[int, bool, str, List[int], np.ndarray],
     label: str = None,
     *,
     equal_phase: bool = False,
     quiet: bool = False,
     return_message: bool = False,
     return_handler: Callable = None,
-) -> bool:
-    """Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
+) -> Union[bool, Tuple[bool, str]]:
+    r"""Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.
 
     Parameters
     ----------
-    expected : int, bool, str or int array-like
+    expected
+        int, bool, str or array-like of same.
         Reference value against which `computed` is compared.
-    computed : int, bool, str or int array-like
+    computed
+        int, bool, str or array-like of same.
         Input value to compare against `expected`.
-    label : str, optional
+    label
         Label for passed and error messages. Defaults to calling function name.
-    equal_phase : bool, optional
+    equal_phase
         Compare computed *or its opposite* as equal.
+    quiet
+        Whether to log the return message.
+    return_message
+        Whether to return tuple. See below.
 
     Returns
     -------
     allclose : bool
         Returns True if `expected` and `computed` are equal; False otherwise.
-    message : str, optional
+    message : str
         When return_message=True, also return passed or error message.
 
     Other Parameters
     ----------------
-    return_handler : function, optional
+    return_handler
         Function to control printing, logging, raising, and returning.
         Specialized interception for interfacing testing systems.
 
@@ -369,34 +377,38 @@ def compare_recursive(
     quiet: bool = False,
     return_message: bool = False,
     return_handler: Callable = None,
-) -> bool:
-    """
+) -> Union[bool, Tuple[bool, str]]:
+    r"""
     Recursively compares nested structures such as dictionaries and lists.
 
     Parameters
     ----------
-    expected : dict
+    expected
         Reference value against which `computed` is compared.
         Dict may be of any depth but should contain Plain Old Data.
-    computed : int, bool, str or int array-like
+    computed
         Input value to compare against `expected`.
         Dict may be of any depth but should contain Plain Old Data.
-    atol : int or float, optional
+    atol
         Absolute tolerance (see formula below).
-    label : str, optional
+    label
         Label for passed and error messages. Defaults to calling function name.
-    rtol : float, optional
+    rtol
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
-    forgive : list, optional
+    forgive
         Keys in top level which may change between `expected` and `computed` without triggering failure.
-    equal_phase : bool, optional
+    equal_phase
         Compare computed *or its opposite* as equal.
+    quiet
+        Whether to log the return message.
+    return_message
+        Whether to return tuple. See below.
 
     Returns
     -------
     allclose : bool
         Returns True if `expected` and `computed` are equal within tolerance; False otherwise.
-    message : str, optional
+    message : str
         When return_message=True, also return passed or error message.
 
     Notes

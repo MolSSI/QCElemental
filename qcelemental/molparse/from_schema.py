@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List, Union
 
 import numpy as np
 
@@ -7,16 +7,16 @@ from ..util import provenance_stamp
 from .from_arrays import from_arrays
 
 
-def from_schema(molschema, *, nonphysical: bool = False, verbose: int = 1) -> Dict:
-    """Construct molecule dictionary representation from non-Psi4 schema.
+def from_schema(molschema: Dict, *, nonphysical: bool = False, verbose: int = 1) -> Dict:
+    r"""Construct molecule dictionary representation from non-Psi4 schema.
 
     Parameters
     ----------
-    molschema : dict
+    molschema
         Dictionary form of Molecule following known schema.
-    nonphysical : bool, optional
+    nonphysical
         Do allow masses outside an element's natural range to pass validation?
-    verbose : int, optional
+    verbose
         Amount of printing.
 
     Returns
@@ -96,24 +96,29 @@ def from_schema(molschema, *, nonphysical: bool = False, verbose: int = 1) -> Di
 
 
 def contiguize_from_fragment_pattern(
-    frag_pattern, *, geom=None, verbose: int = 1, throw_reorder: bool = False, **kwargs
+    frag_pattern: List[List[int]],
+    *,
+    geom: Union[np.ndarray, List[List]] = None,
+    verbose: int = 1,
+    throw_reorder: bool = False,
+    **kwargs,
 ):
-    """Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) `frag_pattern`.
+    r"""Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) `frag_pattern`.
 
     Parameters
     ----------
-    frag_pattern : list of lists of ints
+    frag_pattern
         (nfr, ?) list of indices (0-indexed) grouping atoms into
         molecular fragments within the topology.
-    geom : array-like, optional
+    geom
         (nat, 3) or (3 * nat, ) ndarray or list o'lists of Cartesian
         coordinates, possibly with atoms belonging to the same fragment
         being dispersed in `geom`.
-    throw_reorder : bool, optional
+    throw_reorder
         Whether, when non-contiguous fragments detected, to raise
         ValidationError (``True``) or to proceed to reorder atoms to
         contiguize fragments (``False``).
-    verbose : int, optional
+    verbose
         Quantity of printing
     kwargs : None or array-like
         Each additional array will be returned with ordering applied

@@ -12,16 +12,17 @@ from .periodic_table import periodictable
 
 
 class CovalentRadii:
-    """Covalent radii sets.
+    r"""Covalent radii sets.
 
     Parameters
     ----------
-    context : {'ALVAREZ2008'}
+    context : str
+        {'ALVAREZ2008'}
         Origin of loaded data.
 
     Attributes
     ----------
-    cr : dict of Datum
+    cr : Dict[str, Datum]
         Each covalent radius is an entry in `cr`, where key is the
         "Fe"-cased element symbol if generic or symbol-prefixed label
         if specialized within element. The value is a Datum object with
@@ -75,19 +76,19 @@ class CovalentRadii:
     def get(
         self, atom: Union[int, str], *, return_tuple: bool = False, units: str = "bohr", missing: float = None
     ) -> Union[float, "Datum"]:  # lgtm [py/similar-function]
-        """
+        r"""
         Access a covalent radius for species `atom`.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., ``H``, ``D``, ``H2``, ``He``, ``hE4``.
             In general, one value recommended for each element; however, certain other exact labels may be available.
             ALVAREZ2008: C_sp3, C_sp2, C_sp, Mn_lowspin, Mn_highspin, Fe_lowspin, Fe_highspin, Co_lowspin, Co_highspin
-        units : str, optional
+        units
             Units of returned value. To return in native unit (ALVAREZ2008: angstrom), pass it explicitly.
             Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
-        missing : float or None, optional
+        missing
             How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
             When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
@@ -100,7 +101,7 @@ class CovalentRadii:
                     rad = 4.0
 
             Only relevant for ``return_tuple=False``.
-        return_tuple : bool, optional
+        return_tuple
             See below.
 
         Returns
@@ -145,13 +146,13 @@ class CovalentRadii:
         return print_variables(self.cr)
 
     def write_c_header(self, filename: str = "covrad.h", missing: float = 2.0) -> None:  # lgtm[py/similar-function]
-        """Write C header file defining covalent radii array.
+        r"""Write C header file defining covalent radii array.
 
         Parameters
         ----------
-        filename : str, optional
+        filename
             File name for header. Note that changing this won't change the header guard.
-        missing : float, optional
+        missing
             In order that the C array be atomic-number indexable and that it span the
             periodic table, this value is used anywhere data is missing.
 

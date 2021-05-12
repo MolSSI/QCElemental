@@ -12,58 +12,61 @@ __all__ = ["from_string"]
 
 
 def from_string(
-    molstr,
-    dtype=None,
+    molstr: str,
+    dtype: str = None,
     *,
-    name=None,
-    fix_com=None,
-    fix_orientation=None,
-    fix_symmetry=None,
-    return_processed=False,
-    enable_qm=True,
-    enable_efp=True,
-    missing_enabled_return_qm="none",
-    missing_enabled_return_efp="none",
+    name: str = None,
+    fix_com: bool = None,
+    fix_orientation: bool = None,
+    fix_symmetry: str = None,
+    return_processed: bool = False,
+    enable_qm: bool = True,
+    enable_efp: bool = True,
+    missing_enabled_return_qm: str = "none",
+    missing_enabled_return_efp: str = "none",
     verbose=1,
 ) -> Union[Dict, Tuple[Dict, Dict]]:
-    """Construct a molecule dictionary from any recognized string format.
+    r"""Construct a molecule dictionary from any recognized string format.
 
     Parameters
     ----------
-    molstr : str
+    molstr
         Multiline string specification of molecule in a recognized format.
-    dtype : {'xyz', 'xyz+', 'psi4', 'psi4+'}, optional
+    dtype
+        {'xyz', 'xyz+', 'psi4', 'psi4+'}
         Molecule format name; see below for details.
-    return_processed : bool, optional
+    return_processed
         Additionally return intermediate dictionary.
-    enable_qm : bool, optional
+    enable_qm
         Consider quantum mechanical domain in processing the string constants
         into the returned molrec.
-    enable_efp: bool, optional
+    enable_efp
         Consider effective fragment potential domain in processing the string
         contents into the returned molrec. Only relevant if `dtype` supports EFP.
-    missing_enabled_return_qm : {'minimal', 'none', 'error'}
+    missing_enabled_return_qm
+        {'minimal', 'none', 'error'}
         If `enable_qm=True`, what to do if it has no atoms/fragments?
         Respectively, return a fully valid but empty molrec, return empty
         dictionary, or throw error.
-    missing_enabled_return_efp : {'minimal', 'none', 'error'}
+    missing_enabled_return_efp
+        {'minimal', 'none', 'error'}
         If `enable_efp=True`, what to do if it has no atoms/fragments?
         Respectively, return a fully valid but empty molrec, return empty
         dictionary, or throw error.
-    name : str, optional
+    name
         Override `molstr` information for label for molecule; should
         be valid Python identifier. One of a very limited number of
         fields (three others follow) for trumping `molstr`. Provided
         for convenience, since the alternative would be collect the
         resulting molrec (discarding the Mol if called from class),
         editing it, then remaking the Mol.
-    fix_com : bool, optional
+    fix_com
         Override `molstr` information for whether translation of `geom`
         is allowed or disallowed.
-    fix_orientation : bool, optional
+    fix_orientation
         Override `molstr` information for whether rotation of `geom`
         is allowed or disallowed.
-    fix_symmetry : str, optional
+    fix_symmetry
         Override `molstr` information for maximal point group symmetry
         which geometry should be treated.
 
@@ -85,7 +88,9 @@ def from_string(
 
     Notes
     -----
-    Several formats are interpretable ::
+    Several formats are interpretable:
+
+    .. code-block:: none
 
         xyz - Strict XYZ format
         -----------------------
@@ -526,7 +531,7 @@ variable = re.compile(
 
 
 def _filter_mints(string, unsettled=False):
-    """Handle extracting fragment, atom, and chg/mult lines from `string`.
+    r"""Handle extracting fragment, atom, and chg/mult lines from `string`.
 
     Returns
     -------
@@ -667,7 +672,7 @@ atom_cartesian = re.compile(
 
 
 def _filter_xyz(string, strict):
-    """Handle extracting atom, units, and chg/mult lines from `string`.
+    r"""Handle extracting atom, units, and chg/mult lines from `string`.
 
     Parameters
     ----------

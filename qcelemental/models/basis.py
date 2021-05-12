@@ -57,7 +57,7 @@ class ElectronShell(ProtoModel):
         return v
 
     def nfunctions(self) -> int:
-        """
+        r"""
         Computes the number of basis functions on this shell.
 
         Returns
@@ -72,7 +72,7 @@ class ElectronShell(ProtoModel):
             return sum(((L + 1) * (L + 2) // 2) for L in self.angular_momentum)
 
     def is_contracted(self) -> bool:
-        """
+        r"""
         Checks if the shell represents a contracted Gaussian or not.
 
         Returns
@@ -208,7 +208,7 @@ class BasisSet(ProtoModel):
 
     @classmethod
     def _calculate_nbf(cls, atom_map, center_data) -> int:
-        """
+        r"""
         Number of basis functions in the basis set.
 
         Returns

@@ -15,11 +15,12 @@ if TYPE_CHECKING:
 
 
 class PhysicalConstantsContext:
-    """CODATA physical constants set from NIST.
+    r"""CODATA physical constants set from NIST.
 
     Parameters
     ----------
-    context : {'CODATA2014', 'CODATA2018'}
+    context : str
+        {'CODATA2014', 'CODATA2018'}
         Origin of loaded data.
 
     Attributes
@@ -28,7 +29,7 @@ class PhysicalConstantsContext:
         The DOI of the current context.
     name : str
         The name of the context ('CODATA2014')
-    pc : dict of Datum
+    pc : Dict[str, Datum]
         Each physical constant is an entry in `pc`, where key is the
         lowercased string of the NIST name (or any alias) and the
         value is a Datum object with `lbl` the exact NIST name string,
@@ -206,7 +207,7 @@ class PhysicalConstantsContext:
 
     @property
     def ureg(self) -> "UnitRegistry":
-        """Returns the internal Pint units registry.
+        r"""Returns the internal Pint units registry.
 
         Returns
         -------
@@ -219,18 +220,18 @@ class PhysicalConstantsContext:
         return self._ureg
 
     def get(self, physical_constant: str, return_tuple: bool = False) -> Union[float, Datum]:
-        """Access a physical constant, `physical_constant`.
+        r"""Access a physical constant, `physical_constant`.
 
         Parameters
         ----------
-        physical_constant : str
+        physical_constant
             Case-insensitive string of physical constant with NIST name.
-        return_tuple : bool, optional
+        return_tuple
             See below.
 
         Returns
         -------
-        Union[float, 'Datum']
+        Union[float, Datum]
             When ``return_tuple=False``, value of physical constant.
             When ``return_tuple=True``, Datum with units, description, uncertainty, and value of physical constant as Decimal.
 
@@ -277,15 +278,15 @@ class PhysicalConstantsContext:
     def conversion_factor(
         self, base_unit: Union[str, "quantity._Quantity"], conv_unit: Union[str, "quantity._Quantity"]
     ) -> float:
-        """Provides the conversion factor from one unit to another.
+        r"""Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
 
         Parameters
         ----------
-        base_unit : Union[str, 'Quantity']
+        base_unit
             The original units
-        conv_unit : Union[str, 'Quantity']
+        conv_unit
             The units to convert to
 
         Examples
@@ -434,11 +435,11 @@ def run_internal_comparison(old_context: str, new_context: str) -> None:
 
 
 def _get_pi(from_scratch: bool = False) -> "Decimal":
-    """Get pi to 36 digits (or more with mpmath).
+    r"""Get pi to 36 digits (or more with mpmath).
 
     Parameters
     ----------
-    from_scratch : bool, optional
+    from_scratch
         If True, recomputes Pi from mpmath.
 
     Returns

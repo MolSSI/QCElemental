@@ -12,16 +12,17 @@ from .periodic_table import periodictable
 
 
 class VanderWaalsRadii:
-    """Van der Waals radii sets.
+    r"""Van der Waals radii sets.
 
     Parameters
     ----------
-    context : {'MANTINA2009'}
+    context : str
+        {'MANTINA2009'}
         Origin of loaded data.
 
     Attributes
     ----------
-    vdwr : dict of Datum
+    vdwr : Dict[str, Datum]
         Each van der Waals radius is an entry in `vdwr`, where key is the
         "Fe"-cased element symbol if generic or symbol-prefixed label
         if specialized within element. The value is a Datum object with
@@ -61,17 +62,17 @@ class VanderWaalsRadii:
     def get(
         self, atom: Union[int, str], *, return_tuple: bool = False, units: str = "bohr", missing: float = None
     ) -> Union[float, "Datum"]:  # lgtm [py/similar-function]
-        """
+        r"""
         Access a van der Waals radius for species ``atom``.
 
         Parameters
         ----------
-        atom : int or str
+        atom
             Identifier for element or nuclide, e.g., ``H``, ``C``, ``Al``.
-        units : str, optional
+        units
             Units of returned value. To return in native unit (MANTINA2009: angstrom), pass it explicitly.
             Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.
-        missing : float or None, optional
+        missing
             How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.
             When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance
             that a call will work over all the periodic table than the equivalent
@@ -84,7 +85,7 @@ class VanderWaalsRadii:
                     rad = 4.0
 
             Only relevant for ``return_tuple=False``.
-        return_tuple : bool, optional
+        return_tuple
             See below.
 
         Returns
@@ -129,13 +130,13 @@ class VanderWaalsRadii:
         return print_variables(self.vdwr)
 
     def write_c_header(self, filename: str = "vdwrad.h", missing: float = 2.0) -> None:  # lgtm [py/similar-function]
-        """Write C header file defining Van der Waals radii array.
+        r"""Write C header file defining Van der Waals radii array.
 
         Parameters
         ----------
-        filename : str, optional
+        filename
             File name for header. Note that changing this won't change the header guard.
-        missing : float, optional
+        missing
             In order that the C array be atomic-number indexable and that it span the
             periodic table, this value is used anywhere data is missing.
 

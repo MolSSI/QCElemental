@@ -18,38 +18,38 @@ def to_string(
     prec: int = 12,
     return_data: bool = False,
 ) -> Union[str, Tuple[str, Dict]]:
-    """Format a string representation of QM molecule.
+    r"""Format a string representation of QM molecule.
 
     Parameters
     ----------
-    molrec : Dict
+    molrec
         Psi4 json Molecule spec.
-    dtype : str, {'xyz', 'cfour', 'nwchem', 'molpro', 'orca', 'turbomole',
-                  'qchem'}
+    dtype
+        {'xyz', 'cfour', 'nwchem', 'molpro', 'orca', 'turbomole', 'qchem'}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
         'cfour' forces nucleus label, ignoring atom_format, ghost_format
-    units : str, optional
+    units
         Units in which to write string. Usually ``Angstrom`` or ``Bohr``
         but may be any length unit.  There is not an option to write in
         intrinsic/input units. For ``dtype='xyz', units='Bohr'`` where the
         format doesn't have a slot to specify units, "au" is added so that
         readable as ``dtype='xyz+'``.
-    atom_format : str, optional
+    atom_format
         General format is ``'{elem}'``. A format string that may contain fields
         'elea' (-1 will be ''), 'elez', 'elem', 'mass', 'elbl' in any
         arrangement. For example, if a format naturally uses element symbol
         and you want atomic number instead with mass info, too, pass
         ``'{elez}@{mass}'``. See `ghost_format` for handling field 'real'.
-    ghost_format : str, optional
+    ghost_format
         General format is ``'@{elem}'``. Like `atom_format`, but this formatter
         is used when `real=False`. To suppress ghost atoms, use `ghost_format=''`.
-    width : int, optional
+    width
         Field width for formatting coordinate float.
-    prec : int, optional
+    prec
         Number of decimal places for formatting coordinate float.
-    return_data : bool, optional
+    return_data
         Whether to return dictionary with additional info from the molrec that's
         not expressible in the string but may be of interest to the QC program.
         Note that field names are in QCSchema, not molrec, language.
@@ -59,10 +59,10 @@ def to_string(
     str
         String representation of the molecule.
     str, dict
-        When ``return_data=True`, return additionally a dictionary
-            keywords: key, value pairs for processing molecule info into options
-            fields: aspects of ``qcelemental.models.Molecule`` expressed into
-                    string _or_ keywords.
+        When ``return_data=True``, return additionally a dictionary
+
+          * keywords: key, value pairs for processing molecule info into options
+          * fields: aspects of ``qcelemental.models.Molecule`` expressed into string *or* keywords.
 
     """
 

@@ -54,16 +54,20 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.graphviz',
+    "sphinx_autodoc_typehints",
     # from Astropy
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.automodsumm',
-    #'sphinx_automodapi.smart_resolver',
+    'sphinx_automodapi.smart_resolver',
 ]
 
 autosummary_generate = True
 automodapi_toctreedirnm = 'api'
 #numpydoc_show_class_members = False
 #automodsumm_inherited_members = True
+autodoc_typehints = "description"
+napoleon_use_param = True
+napoleon_use_rtype = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

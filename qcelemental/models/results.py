@@ -17,13 +17,12 @@ if TYPE_CHECKING:
 
 
 class AtomicResultProperties(ProtoModel):
-    """Named properties of quantum chemistry computations following the MolSSI QCSchema.
+    r"""Named properties of quantum chemistry computations following the MolSSI QCSchema.
 
-    Notes
-    -----
     All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
-        nao: number of atomic orbitals = calcinfo_nbasis
-        nmo: number of molecular orbitals
+
+      * nao: number of atomic orbitals = calcinfo_nbasis
+      * nmo: number of molecular orbitals
     """
 
     # Calcinfo
@@ -253,7 +252,7 @@ class AtomicResultProperties(ProtoModel):
 
 
 class WavefunctionProperties(ProtoModel):
-    """Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
+    r"""Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
 
     # Class properties
     _return_results_names: Set[str] = {
@@ -451,7 +450,7 @@ class WavefunctionProperties(ProtoModel):
 
 
 class WavefunctionProtocolEnum(str, Enum):
-    """Wavefunction to keep from a computation."""
+    r"""Wavefunction to keep from a computation."""
 
     all = "all"
     orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
@@ -460,7 +459,7 @@ class WavefunctionProtocolEnum(str, Enum):
 
 
 class ErrorCorrectionProtocol(ProtoModel):
-    """Configuration for how QCEngine handles error correction
+    r"""Configuration for how QCEngine handles error correction
 
     WARNING: These protocols are currently experimental and only supported by NWChem tasks
     """
@@ -482,7 +481,7 @@ class ErrorCorrectionProtocol(ProtoModel):
 
 
 class AtomicResultProtocols(ProtoModel):
-    """Protocols regarding the manipulation of computational result data."""
+    r"""Protocols regarding the manipulation of computational result data."""
 
     wavefunction: WavefunctionProtocolEnum = Field(
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
@@ -500,7 +499,7 @@ class AtomicResultProtocols(ProtoModel):
 
 
 class AtomicInput(ProtoModel):
-    """The MolSSI Quantum Chemistry Schema"""
+    r"""The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
     schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
@@ -541,7 +540,7 @@ class AtomicInput(ProtoModel):
 
 
 class AtomicResult(AtomicInput):
-    """Results from a CMS program execution."""
+    r"""Results from a CMS program execution."""
 
     schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
         qcschema_output_default,
@@ -569,7 +568,7 @@ class AtomicResult(AtomicInput):
 
     @validator("schema_name", pre=True)
     def _input_to_output(cls, v):
-        """If qcschema_input is passed in, cast it to output, otherwise no"""
+        r"""If qcschema_input is passed in, cast it to output, otherwise no"""
         if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
             return qcschema_output_default
         raise ValueError(

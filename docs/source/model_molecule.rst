@@ -3,7 +3,7 @@ Molecule
 
 A Python implementation of the `MolSSI QCSchema
 <https://github.com/MolSSI/QCSchema>`_ ``Molecule`` object.
-A "Molecule" many definitions of ``Molecule`` depending on the domain; this particular
+There are many definitions of ``Molecule`` depending on the domain; this particular
 ``Molecule`` is an immutable 3D Cartesian representation with support for
 quantum chemistry constructs.
 
@@ -99,7 +99,7 @@ the ``from_data`` function or by passing explicit fragments in the
     >>>       fragments=[[0], [1]]
     >>>       )
 
-Fragments from a molecule containing fragment information can be aquired by:
+Fragments from a molecule containing fragment information can be acquired by:
 
 .. code-block:: python
 
@@ -136,4 +136,5 @@ API
 .. autoclass:: qcelemental.models.Molecule
    :members:
    :no-special-members:
+   :noindex:
 

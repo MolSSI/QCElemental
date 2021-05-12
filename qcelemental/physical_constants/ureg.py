@@ -8,7 +8,7 @@ __all__ = ["build_units_registry"]
 
 
 def build_units_registry(context):
-    """Builds a pint UnitRegistry based on a given PhysicalConstantsContext.
+    r"""Builds a pint UnitRegistry based on a given PhysicalConstantsContext.
 
     Parameters
     ----------
@@ -144,7 +144,7 @@ def build_units_registry(context):
         return None
 
     def build_transformer(right_unit, default):
-        """Builds a transformer that attempts first to use the NIST values exactly and then falls back
+        r"""Builds a transformer that attempts first to use the NIST values exactly and then falls back
         on to canonical Pint tech. The NIST values are not "exact" and will
         fail the triangle rule due to the inherent uncertainties of the values.
 

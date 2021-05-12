@@ -2,6 +2,7 @@
 #
 
 # You can set these variables from the command line.
+#SPHINXOPTS    = -n -W --keep-going
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = qcelemental

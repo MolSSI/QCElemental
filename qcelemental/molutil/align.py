@@ -1,6 +1,7 @@
 import collections
 import itertools
 import time
+from typing import Union
 
 import numpy as np
 
@@ -31,64 +32,65 @@ def _pseudo_nre(Zhash, geom):
 
 
 def B787(
-    cgeom,
-    rgeom,
-    cuniq,
-    runiq,
-    do_plot=False,
-    verbose=1,
-    atoms_map=False,
-    run_resorting=False,
-    mols_align=False,
-    run_to_completion=False,
-    algorithm="hungarian_uno",
-    uno_cutoff=1.0e-3,
-    run_mirror=False,
+    cgeom: np.ndarray,
+    rgeom: np.ndarray,
+    cuniq: np.ndarray,
+    runiq: np.ndarray,
+    do_plot: bool = False,
+    verbose: int = 1,
+    atoms_map: bool = False,
+    run_resorting: bool = False,
+    mols_align: Union[bool, float] = False,
+    run_to_completion: bool = False,
+    algorithm: str = "hungarian_uno",
+    uno_cutoff: float = 1.0e-3,
+    run_mirror: bool = False,
 ):
-    """Use Kabsch algorithm to find best alignment of geometry `cgeom` onto
+    r"""Use Kabsch algorithm to find best alignment of geometry `cgeom` onto
     `rgeom` while sampling atom mappings restricted by `runiq` and `cuniq`.
 
     Parameters
     ----------
-    rgeom : ndarray of float
+    rgeom
         (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
         for RMSD purposes.
-    cgeom : ndarray of float
+    cgeom
         (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
         purposes. Must have same nat, units, and atom content as rgeom.
-    runiq : ndarray of str
-        (nat,) array indicating which rows (atoms) in `rgeom` are shuffleable
+    runiq
+        (nat,) array of str indicating which rows (atoms) in `rgeom` are shuffleable
         without changing the molecule. Generally hashes of element symbol and
         mass are used, but could be as simple as ['C', 'H', 'H', 'D', 'H'] for
         monodeuterated methane.
-    cuniq : ndarray of str
-        (nat,) array indicating which rows (atoms) in `cgeom` are shuffleable.
+    cuniq
+        (nat,) array of str indicating which rows (atoms) in `cgeom` are shuffleable.
         See `runiq` for more details. Strings and count in `cuniq` must match
         `runiq`. That is, `sorted(cuniq) == sorted(runiq)`.
-    do_plot : bool, optional
+    do_plot
         Pops up a mpl plot showing before, after, and ref geometries.
-    verbose : int, optional
+    verbose
         Quantity of printing. 0 to silence.
-    atoms_map : bool, optional
+    atoms_map
         Whether atom1 of rgeom already corresponds to atom1 of cgeom and so on.
         If `True`, no resorting will be run, parameters `runiq` and `cuniq`
         may be passed as `None`, and much time will be saved.
-    run_resorting : bool, optional
+    run_resorting
         Run the resorting machinery even if unnecessary because `atoms_map=True`.
-    mols_align : bool or float, optional
+    mols_align
         Whether ref_mol and concern_mol have identical geometries by eye
         (barring orientation or atom mapping) and expected final RMSD = 0.
         If `True`, procedure is truncated when RMSD condition met, saving time.
         If float, convcrit at which search for minimium truncates.
-    run_to_completion : bool, optional
+    run_to_completion
         Run reorderings to completion (past RMSD = 0) even if unnecessary because
         `mols_align=True`. Used to test worst-case timings.
-    algorithm : {'hungarian_uno', 'permutative'}, optional
+    algorithm
+        {'hungarian_uno', 'permutative'}
         When `atoms_map=False`, screening algorithm for plausible atom mappings.
         `permutative` suitable only for small systems.
-    uno_cutoff : float, optional
+    uno_cutoff
         TODO
-    run_mirror : bool, optional
+    run_mirror
         Run alternate geometries potentially allowing best match to `rgeom`
         from mirror image of `cgeom`. Only run if system confirmed to
         be nonsuperimposable upon mirror reflection.
@@ -292,7 +294,7 @@ def B787(
 
 
 def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm="hungarian_uno", verbose=1, uno_cutoff=1.0e-3):
-    """
+    r"""
 
     Parameters
     ----------
@@ -430,7 +432,7 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm="hungarian_u
 
 
 def kabsch_align(rgeom, cgeom, weight=None):
-    """Finds optimal translation and rotation to align `cgeom` onto `rgeom` via
+    r"""Finds optimal translation and rotation to align `cgeom` onto `rgeom` via
     Kabsch algorithm by minimizing the norm of the residual, || R - U * C ||.
 
     Parameters
@@ -553,7 +555,7 @@ def kabsch_quaternion(P, Q):
 
 
 def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflection=1.0, do_mirror=False):
-    """Generate a random or directed translation, rotation, and atom shuffling.
+    r"""Generate a random or directed translation, rotation, and atom shuffling.
 
     Parameters
     ----------

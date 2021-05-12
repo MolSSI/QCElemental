@@ -12,23 +12,24 @@ from .to_string import formula_generator
 def to_schema(
     molrec: Dict[str, Any], dtype: Union[str, int], units: str = "Bohr", *, np_out: bool = False, copy: bool = True
 ) -> Dict[str, Any]:
-    """Translate molparse internal Molecule spec into dictionary from other schemas.
+    r"""Translate molparse internal Molecule spec into dictionary from other schemas.
 
     Parameters
     ----------
-    molrec : dict
+    molrec
         Psi4 json Molecule spec.
-    dtype : {'psi4', 1, 2}
+    dtype
+        {'psi4', 1, 2}
         Molecule schema format.
         ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44 + #53
         ``2`` is ``1`` with internal schema_name/version (https://github.com/MolSSI/QCSchema/pull/60)
-    units : {'Bohr', 'Angstrom'}
+    units
+        {'Bohr', 'Angstrom'}
         Units in which to write string. There is not an option to write in
         intrinsic/input units. Some `dtype` may not allow all units.
-    np_out : bool, optional
+    np_out
         When `True`, fields originating from geom, elea, elez, elem, mass, real, elbl will be ndarray.
         Use `False` to get a json-able version.
-    #return_type : {'json', 'yaml'} Serialization format string to return.
 
     Returns
     -------
