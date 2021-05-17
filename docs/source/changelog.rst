@@ -14,6 +14,18 @@ Changelog
 .. +++++++++
 
 
+0.20.0 / 2021-05-16
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`257`) ``PhysicalConstantsContext`` learned to write a Fortran header. @awvwgk
+
+Enhancements
+++++++++++++
+- (:pr:`261`) Documentation became type-aware and grew more links.
+
+
 0.19.0 / 2021-03-04
 -------------------
 

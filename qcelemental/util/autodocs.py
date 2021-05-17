@@ -214,7 +214,7 @@ class AutoPydanticDocGenerator:
 def auto_gen_docs_on_demand(
     target: BaseModel, allow_failure: bool = True, ignore_reapply: bool = True, force_reapply: bool = False
 ):
-    """Tell a Pydantic base model to generate its docstrings on the fly with the tech here """
+    """Tell a Pydantic base model to generate its docstrings on the fly with the tech here"""
     try:
         target.__doc__ = AutoPydanticDocGenerator(target, allow_failure=allow_failure)  # type: ignore
     except AutoDocError:
