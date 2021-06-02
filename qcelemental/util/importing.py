@@ -79,7 +79,7 @@ def which(
 
     """
     if env is None:
-        lenv = {"PATH": os.environ.get("PATH", "") + os.pathsep + os.path.dirname(sys.executable)}
+        lenv = {"PATH": os.pathsep + os.environ.get("PATH", "") + os.pathsep + os.path.dirname(sys.executable)}
     else:
         lenv = {"PATH": os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ""])}
     lenv = {k: v for k, v in lenv.items() if v is not None}
