@@ -52,7 +52,7 @@ Physical constants can be acquired directly from the [NIST CODATA](https://physi
 >>> qcel.constants.get('hartree ENERGY in ev')
 27.21138602
 >>> pc = qcel.constants.get('hartree ENERGY in ev', return_tuple=True)
->>> pc.lbl
+>>> pc.label
 'Hartree energy in eV'
 >>> pc.data
 Decimal('27.21138602')

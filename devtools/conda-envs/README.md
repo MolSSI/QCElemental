@@ -11,7 +11,8 @@ more common `conda create` (the commands are slightly different as of writing,
 circa Conda 4.3), so note the difference in commands.
 
 * `base.yaml` is environment specification for general use.
-* `minimal_pins.yaml` is primarily for CI canary testing. It specifies
+* `base-cf.yaml` is the conda-forge-only version of `base.yaml`.
+* `minimal.yaml` is primarily for CI canary testing. It specifies
   minimal dependency set and pins to what we think are the minimal versions.
 
 ## Requirements to use Environments
