@@ -27,5 +27,7 @@ from .serialization import (
     jsonext_loads,
     msgpackext_dumps,
     msgpackext_loads,
+    msgpack_dumps,
+    msgpack_loads,
     serialize,
 )

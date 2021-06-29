@@ -945,11 +945,11 @@ class Molecule(ProtoModel):
             data = np.load(filename)
         elif dtype == "json":
             with open(filename, "r") as infile:
-                data = json.load(infile)
+                data = deserialize(infile.read(), encoding="json")
             dtype = "dict"
         elif dtype == "msgpack":
             with open(filename, "rb") as infile_bytes:
-                data = deserialize(infile_bytes.read(), encoding="msgpack-ext")
+                data = deserialize(infile_bytes.read(), encoding="msgpack")
             dtype = "dict"
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
@@ -980,8 +980,8 @@ class Molecule(ProtoModel):
             stringified = self.to_string(dtype)
         elif dtype in ["json"]:
             stringified = self.serialize("json")
-        elif dtype in ["msgpack", "msgpack-ext"]:
-            stringified = self.serialize("msgpack-ext")
+        elif dtype in ["msgpack"]:
+            stringified = self.serialize("msgpack")
             flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
