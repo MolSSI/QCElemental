@@ -166,11 +166,16 @@ def compare_values(
             diff[isclose] = 0.0
             diff_str = np.array_str(diff, max_line_width=120, precision=12, suppress_small=False)
             diff_str = "\n".join("    " + ln for ln in diff_str.splitlines())
+            digits_str += f" (o-e: RMS {_rms(cptd) - _rms(xptd):.1e}, MAX {np.amax(np.absolute(diff)):.1e})"
             message = """\t{}: computed value does not match {}.\n  Expected:\n{}\n  Observed:\n{}\n  Difference (passed elements are zeroed):\n{}\n""".format(
                 label, digits_str, xptd_str, cptd_str, diff_str
             )
 
     return return_handler(allclose, label, message, return_message, quiet)
+
+
+def _rms(arr: np.ndarray) -> float:
+    return np.sqrt(np.mean(np.square(arr)))
 
 
 def compare(

@@ -8,8 +8,8 @@ dependencies:
   - nomkl
   - python
   - pint>=0.10.0
-  - pydantic>=1.5.0,!=1.6.0,!=1.8.0
-  - dataclasses 
+  - pydantic>=1.8.2
+  - dataclasses  # only for py36 and only b/c default channel pydantic missing the conditional dep
 
     # Optional depends
   - msgpack-python

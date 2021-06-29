@@ -14,6 +14,23 @@ Changelog
 .. +++++++++
 
 
+0.21.0 / 2021-MM-DD
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`xxx`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
+
+Enhancements
+++++++++++++
+- (:pr:`266`) Testing function ``compare_values()`` learned to print RMS and MAX statistics for arrays.
+
+Bug Fixes
++++++++++
+- (:pr:`265`) Fix search path construction. @sheepforce
+- (:pr:`266`) Bump minimum pydantic to 1.8.2 to avoid security hole -- https://github.com/samuelcolvin/pydantic/security/advisories/GHSA-5jqp-qgf6-3pvh .
+
+
 0.20.0 / 2021-05-16
 -------------------
 
