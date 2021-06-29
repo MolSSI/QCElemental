@@ -19,9 +19,11 @@ Changelog
 
 New Features
 ++++++++++++
+- (:pr:`xxx`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
 
 Enhancements
 ++++++++++++
+- (:pr:`266`) Testing function ``compare_values()`` learned to print RMS and MAX statistics for arrays.
 
 Bug Fixes
 +++++++++
