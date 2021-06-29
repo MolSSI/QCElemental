@@ -61,7 +61,7 @@ class ProtoModel(BaseModel):
 
         if encoding.endswith(("json", "javascript", "pickle")):
             return super().parse_raw(data, content_type=encoding)
-        elif encoding in ["msgpack-ext", "json-ext"]:
+        elif encoding in ["msgpack-ext", "json-ext", "msgpack"]:
             obj = deserialize(data, encoding)
         else:
             raise TypeError(f"Content type '{encoding}' not understood.")

@@ -238,6 +238,78 @@ def json_loads(data: str) -> Any:
     return json.loads(data, object_hook=jsonext_decode)
 
 
+## MSGPack
+
+
+def msgpack_encode(obj: Any) -> Any:
+    r"""
+    Encodes an object using pydantic. Converts numpy arrays to plain python lists
+
+    Parameters
+    ----------
+    obj : Any
+        Any object that can be serialized with pydantic and NumPy encoding techniques.
+
+    Returns
+    -------
+    Any
+        A msgpack compatible form of the object.
+    """
+
+    try:
+        return pydantic_encoder(obj)
+    except TypeError:
+        pass
+
+    if isinstance(obj, np.ndarray):
+        if obj.shape:
+            return obj.ravel().tolist()
+        else:
+            return obj.tolist()
+
+    return obj
+
+
+def msgpack_dumps(data: Any) -> str:
+    r"""Safe serialization of a Python object to msgpack binary representation using all known encoders.
+    For NumPy, converts to lists.
+
+    Parameters
+    ----------
+    data : Any
+        A encodable python object.
+
+    Returns
+    -------
+    str
+        A msgpack representation of the data in bytes.
+    """
+
+    which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
+
+    return msgpack.dumps(data, default=msgpack_encode, use_bin_type=True)
+
+
+def msgpack_loads(data: str) -> Any:
+    r"""Deserializes a msgpack byte representation of known objects into those objects.
+
+    Parameters
+    ----------
+    data : bytes
+        The serialized msgpack byte array.
+
+    Returns
+    -------
+    Any
+        The deserialized Python objects.
+    """
+
+    which_import("msgpack", raise_error=True, raise_msg=_msgpack_which_msg)
+
+    # Doesn't hurt anything to try to load msgpack-ext as well
+    return msgpack.loads(data, object_hook=msgpackext_decode, raw=False)
+
+
 ## Helper functions
 
 
@@ -261,6 +333,8 @@ def serialize(data: Any, encoding: str) -> Union[str, bytes]:
         return json_dumps(data)
     elif encoding.lower() == "json-ext":
         return jsonext_dumps(data)
+    elif encoding.lower() == "msgpack":
+        return msgpack_dumps(data)
     elif encoding.lower() == "msgpack-ext":
         return msgpackext_dumps(data)
     else:
@@ -288,8 +362,13 @@ def deserialize(blob: Union[str, bytes], encoding: str) -> Any:
     elif encoding.lower() == "json-ext":
         assert isinstance(blob, (str, bytes))
         return jsonext_loads(blob)
-    elif encoding.lower() in ["msgpack", "msgpack-ext"]:
+    elif encoding.lower() in ["msgpack"]:
+        assert isinstance(blob, bytes)
+        return msgpack_loads(blob)
+    elif encoding.lower() in ["msgpack-ext"]:
         assert isinstance(blob, bytes)
         return msgpackext_loads(blob)
     else:
-        raise KeyError(f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack-ext'")
+        raise KeyError(
+            f"Encoding '{encoding}' not understood, valid options: 'json', 'json-ext', 'msgpack', 'msgpack-ext'"
+        )

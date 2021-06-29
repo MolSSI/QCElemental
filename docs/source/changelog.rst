@@ -19,7 +19,7 @@ Changelog
 
 New Features
 ++++++++++++
-- (:pr:`xxx`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
+- (:pr:`267`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
 
 Enhancements
 ++++++++++++

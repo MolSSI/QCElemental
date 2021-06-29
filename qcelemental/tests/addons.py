@@ -39,7 +39,12 @@ using_nglview = pytest.mark.skipif(
     reason="Not detecting module py3Dmol. Install package if necessary and add to envvar PYTHONPATH",
 )
 
-serialize_extensions = ["json", "json-ext", pytest.param("msgpack-ext", marks=using_msgpack)]
+serialize_extensions = [
+    "json",
+    "json-ext",
+    pytest.param("msgpack", marks=using_msgpack),
+    pytest.param("msgpack-ext", marks=using_msgpack),
+]
 
 
 @contextmanager
