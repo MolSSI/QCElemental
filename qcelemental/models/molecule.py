@@ -978,7 +978,9 @@ class Molecule(ProtoModel):
         flags = "w"
         if dtype in ["xyz", "xyz+", "psi4"]:
             stringified = self.to_string(dtype)
-        elif dtype in ["json", "json-ext", "msgpack", "msgpack-ext"]:
+        elif dtype in ["json", "json-ext"]:
+            stringified = self.serialize(dtype)
+        elif dtype in ["msgpack", "msgpack-ext"]:
             stringified = self.serialize(dtype)
             flags = "wb"
         elif dtype in ["numpy"]:
