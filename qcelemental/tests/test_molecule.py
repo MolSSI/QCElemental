@@ -219,7 +219,7 @@ def test_to_from_file_simple(tmp_path, dtype, filext):
     )
 
     p = tmp_path / ("water." + filext)
-    benchmol.to_file(p)
+    benchmol.to_file(p, dtype=dtype)
 
     mol = Molecule.from_file(p)
 

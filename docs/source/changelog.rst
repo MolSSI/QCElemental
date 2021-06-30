@@ -14,12 +14,12 @@ Changelog
 .. +++++++++
 
 
-0.21.0 / 2021-MM-DD
+0.21.0 / 2021-06-30
 -------------------
 
 New Features
 ++++++++++++
-- (:pr:`xxx`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
+- (:pr:`267`) Serialization learned msgpack mode that, in contrast to msgpack-ext, *doesn't* embed NumPy objects.
 
 Enhancements
 ++++++++++++
