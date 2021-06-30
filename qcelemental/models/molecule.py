@@ -40,7 +40,7 @@ _extension_map = {
     ".xyz": "xyz",
     ".psimol": "psi4",
     ".psi4": "psi4",
-    ".msgpack": "msgpack",
+    ".msgpack": "msgpack-ext",
 }
 
 
@@ -943,13 +943,13 @@ class Molecule(ProtoModel):
                 data = infile.read()
         elif dtype == "numpy":
             data = np.load(filename)
-        elif dtype == "json":
+        elif dtype in ["json", "json-ext"]:
             with open(filename, "r") as infile:
-                data = deserialize(infile.read(), encoding="json")
+                data = deserialize(infile.read(), encoding="json-ext")
             dtype = "dict"
-        elif dtype == "msgpack":
+        elif dtype in ["msgpack", "msgpack-ext"]:
             with open(filename, "rb") as infile_bytes:
-                data = deserialize(infile_bytes.read(), encoding="msgpack")
+                data = deserialize(infile_bytes.read(), encoding="msgpack-ext")
             dtype = "dict"
         else:
             raise KeyError("Dtype not understood '{}'.".format(dtype))
@@ -975,22 +975,19 @@ class Molecule(ProtoModel):
             else:
                 raise KeyError(f"Could not infer dtype from filename: `{filename}`")
 
-        flags = "w"
         if dtype in ["xyz", "xyz+", "psi4"]:
             stringified = self.to_string(dtype)
-        elif dtype in ["json", "json-ext"]:
+        elif dtype in ["json", "json-ext", "msgpack", "msgpack-ext"]:
             stringified = self.serialize(dtype)
-        elif dtype in ["msgpack", "msgpack-ext"]:
-            stringified = self.serialize(dtype)
-            flags = "wb"
         elif dtype in ["numpy"]:
             elements = np.array(self.atomic_numbers).reshape(-1, 1)
             npmol = np.hstack((elements, self.geometry * constants.conversion_factor("bohr", "angstroms")))
             np.save(filename, npmol)
             return
-
         else:
             raise KeyError(f"Dtype `{dtype}` is not valid")
+
+        flags = "wb" if dtype.startswith("msgpack") else "w"
 
         with open(filename, flags) as handle:
             handle.write(stringified)
