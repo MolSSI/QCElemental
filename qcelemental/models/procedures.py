@@ -13,6 +13,8 @@ from .common_models import (
     qcschema_input_default,
     qcschema_optimization_input_default,
     qcschema_optimization_output_default,
+    qcschema_torsion_drive_input_default,
+    qcschema_torsion_drive_output_default,
 )
 from .molecule import Molecule
 from .results import AtomicResult
@@ -129,6 +131,73 @@ class OptimizationResult(OptimizationInput):
             raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 
         return v
+
+
+class OptimizationSpecification(ProtoModel):
+    """
+    A specification for how a geometry optimization should be performed inside of another procedure.
+    """
+
+    schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
+    schema_version: int = 1
+
+    procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
+    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
+    protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+
+    @validator("procedure")
+    def _check_procedure(cls, v):
+        return v.lower()
+
+
+class TorsionDriveInput(ProtoModel):
+
+    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
+    schema_version: int = 1
+
+    keywords: Dict[str, Any] = Field({}, description="The torsion drive specific keywords to be used.")
+    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+
+    input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
+    initial_molecule: Molecule = Field(..., description="The starting molecule for the torsion drive.")
+
+    optimization_spec: OptimizationSpecification = Field(
+        ..., description="Settings to use for optimizations at each grid angle."
+    )
+
+    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
+
+    @validator("input_specification")
+    def _check_input_specification(cls, value):
+        assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
+        return value
+
+
+class TorsionDriveResult(TorsionDriveInput):
+
+    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_output_default) = qcschema_torsion_drive_output_default  # type: ignore
+    schema_version: int = 1
+
+    final_energies: Dict[str, float] = Field(
+        ..., description="The final energy at each angle of the TorsionDrive scan."
+    )
+    final_molecules: Dict[str, Molecule] = Field(
+        ..., description="The final molecule at each angle of the TorsionDrive scan."
+    )
+
+    optimization_history: Dict[str, List[OptimizationResult]] = Field(
+        ...,
+        description="The map of each angle of the TorsionDrive scan to each optimization computations.",
+    )
+
+    stdout: Optional[str] = Field(None, description="The standard output of the program.")
+    stderr: Optional[str] = Field(None, description="The standard error of the program.")
+
+    success: bool = Field(
+        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    )
+    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
+    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
 
 def Optimization(*args, **kwargs):
