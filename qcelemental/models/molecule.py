@@ -1385,7 +1385,7 @@ class Molecule(ProtoModel):
             solution = data["mill"]
 
             assert compare(
-                True, np.allclose(solution.shift, perturbation.shift, atol=6), "shifts equiv", quiet=(verbose > 1)
+                True, np.allclose(solution.shift, perturbation.shift, atol=1.e-6), "shifts equiv", quiet=(verbose > 1)
             )
             if not do_resort:
                 assert compare(
