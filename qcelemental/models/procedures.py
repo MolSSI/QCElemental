@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
 from pydantic import Field, constr, validator
 
@@ -150,12 +150,45 @@ class OptimizationSpecification(ProtoModel):
         return v.lower()
 
 
+class TDKeywords(ProtoModel):
+    """
+    TorsionDriveRecord options
+    """
+
+    dihedrals: List[Tuple[int, int, int, int]] = Field(
+        ...,
+        description="The list of dihedrals to select for the TorsionDrive operation. Each entry is a tuple of integers "
+        "of for particle indices.",
+    )
+    grid_spacing: List[int] = Field(
+        ...,
+        description="List of grid spacing for dihedral scan in degrees. Multiple values will be mapped to each "
+        "dihedral angle.",
+    )
+    dihedral_ranges: Optional[List[Tuple[int, int]]] = Field(
+        None,
+        description="A list of dihedral range limits as a pair (lower, upper). "
+        "Each range corresponds to the dihedrals in input.",
+    )
+    energy_decrease_thresh: Optional[float] = Field(
+        None,
+        description="The threshold of the smallest energy decrease amount to trigger activating optimizations from "
+        "grid point.",
+    )
+    energy_upper_limit: Optional[float] = Field(
+        None,
+        description="The threshold if the energy of a grid point that is higher than the current global minimum, to "
+        "start new optimizations, in unit of a.u. I.e. if energy_upper_limit = 0.05, current global "
+        "minimum energy is -9.9 , then a new task starting with energy -9.8 will be skipped.",
+    )
+
+
 class TorsionDriveInput(ProtoModel):
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
     schema_version: int = 1
 
-    keywords: Dict[str, Any] = Field({}, description="The torsion drive specific keywords to be used.")
+    keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
     input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
