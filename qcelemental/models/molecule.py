@@ -257,7 +257,9 @@ class Molecule(ProtoModel):
         description="Whether translation of geometry is allowed (fix F) or disallowed (fix T)."
         "When False, QCElemental will pre-process the Molecule object to translate the center of mass "
         "to (0,0,0) in Euclidean coordinate space, resulting in a different ``geometry`` than the "
-        "one provided. "
+        "one provided. 'Fix' is used in the sense of 'specify': that is, `fix_com=True` signals that "
+        "the origin in `geometry` is a deliberate part of the Molecule spec, whereas `fix_com=False` "
+        "(default) allows that the origin is happenstance and may be adjusted. "
         "guidance: A consumer who translates the geometry must not reattach the input (pre-translation) molecule schema instance to any output (post-translation) origin-sensitive results (e.g., an ordinary energy when EFP present).",
     )
     fix_orientation: bool = Field(  # type: ignore
@@ -265,6 +267,9 @@ class Molecule(ProtoModel):
         description="Whether rotation of geometry is allowed (fix F) or disallowed (fix T). "
         "When False, QCElemental will pre-process the Molecule object to orient via the intertial tensor, "
         "resulting in a different ``geometry`` than the one provided. "
+        "'Fix' is used in the sense of 'specify': that is, `fix_orientation=True` signals that "
+        "the frame orientation in `geometry` is a deliberate part of the Molecule spec, whereas "
+        "`fix_orientation=False` (default) allows that the frame is happenstance and may be adjusted. "
         "guidance: A consumer who rotates the geometry must not reattach the input (pre-rotation) molecule schema instance to any output (post-rotation) frame-sensitive results (e.g., molecular vibrations).",
     )
     fix_symmetry: Optional[str] = Field(  # type: ignore
@@ -326,6 +331,7 @@ class Molecule(ProtoModel):
             validate = not kwargs.get("validated", False)
 
         geometry_prep = kwargs.pop("_geometry_prep", False)
+        geometry_noise = kwargs.pop("geometry_noise", GEOMETRY_NOISE)
 
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
@@ -352,9 +358,9 @@ class Molecule(ProtoModel):
             values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
 
         if orient:
-            values["geometry"] = float_prep(self._orient_molecule_internal(), GEOMETRY_NOISE)
+            values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
         elif validate or geometry_prep:
-            values["geometry"] = float_prep(values["geometry"], GEOMETRY_NOISE)
+            values["geometry"] = float_prep(values["geometry"], geometry_noise)
 
     @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
@@ -470,7 +476,7 @@ class Molecule(ProtoModel):
     ### Non-Pydantic API functions
 
     def show(self, ngl_kwargs: Optional[Dict[str, Any]] = None) -> "nglview.NGLWidget":  # type: ignore
-        r"""Creates a 3D representation of a moleucle that can be manipulated in Jupyter Notebooks and exported as
+        r"""Creates a 3D representation of a molecule that can be manipulated in Jupyter Notebooks and exported as
         images (`.png`).
 
         Parameters
@@ -1137,7 +1143,7 @@ class Molecule(ProtoModel):
         run_to_completion: bool = False,
         uno_cutoff: float = 1.0e-3,
         run_mirror: bool = False,
-    ):
+    ) -> Tuple["Molecule", Dict[str, Any]]:
         r"""Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
 
@@ -1199,9 +1205,6 @@ class Molecule(ProtoModel):
         )
         concern_mol = self
         cgeom = np.array(concern_mol.geometry)
-        cmass = np.array(concern_mol.masses)
-        celem = np.array(concern_mol.symbols)
-        celez = np.array(concern_mol.atomic_numbers)
         cuniq = np.asarray(
             [
                 hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
@@ -1224,19 +1227,19 @@ class Molecule(ProtoModel):
             uno_cutoff=uno_cutoff,
         )
 
-        ageom, amass, aelem, aelez, _ = solution.align_system(cgeom, cmass, celem, celez, cuniq, reverse=False)
-        adict = from_arrays(
-            geom=ageom,
-            mass=amass,
-            elem=aelem,
-            elez=aelez,
-            units="Bohr",
-            molecular_charge=concern_mol.molecular_charge,
-            molecular_multiplicity=concern_mol.molecular_multiplicity,
-            fix_com=True,
-            fix_orientation=True,
-        )
-        amol = Molecule(validate=False, **to_schema(adict, dtype=2))
+        aupdate = {
+            "symbols": solution.align_atoms(concern_mol.symbols),
+            "geometry": solution.align_coordinates(concern_mol.geometry, reverse=False),
+            "masses": solution.align_atoms(concern_mol.masses),
+            "real": solution.align_atoms(concern_mol.real),
+            "atom_labels": solution.align_atoms(concern_mol.atom_labels),
+            "atomic_numbers": solution.align_atoms(concern_mol.atomic_numbers),
+            "mass_numbers": solution.align_atoms(concern_mol.mass_numbers),
+        }
+        adict = {**concern_mol.dict(), **aupdate}
+
+        # preserve intrinsic symmetry with lighter truncation
+        amol = Molecule(validate=True, **adict, geometry_noise=13)
 
         # TODO -- can probably do more with fragments in amol now that
         #         Mol is something with non-contig frags. frags now discarded.
@@ -1278,7 +1281,7 @@ class Molecule(ProtoModel):
         run_to_completion: bool = False,
         run_resorting: bool = False,
         verbose: int = 0,
-    ):
+    ) -> Tuple["Molecule", Dict[str, Any]]:
         r"""Generate a Molecule with random or directed translation, rotation, and atom shuffling.
         Optionally, check that the aligner returns the opposite transformation.
 
@@ -1335,40 +1338,32 @@ class Molecule(ProtoModel):
         from ..molutil.align import compute_scramble
 
         ref_mol = self
-        rgeom = np.array(ref_mol.geometry)
-        rmass = np.array(ref_mol.masses)
-        relem = np.array(ref_mol.symbols)
-        relez = np.array(ref_mol.atomic_numbers)
-        runiq = np.asarray(
-            [
-                hashlib.sha1((sym + str(mas)).encode("utf-8")).hexdigest()
-                for sym, mas in zip(cast(Iterable[str], ref_mol.symbols), ref_mol.masses)
-            ]
-        )
+        rgeom = ref_mol.geometry
         nat = rgeom.shape[0]
 
         perturbation = compute_scramble(
-            rgeom.shape[0],
+            nat,
             do_shift=do_shift,
             do_rotate=do_rotate,
             deflection=deflection,
             do_resort=do_resort,
             do_mirror=do_mirror,
         )
-        cgeom, cmass, celem, celez, cuniq = perturbation.align_system(rgeom, rmass, relem, relez, runiq, reverse=True)
-        cmolrec = from_arrays(
-            geom=cgeom,
-            mass=cmass,
-            elem=celem,
-            elez=celez,
-            units="Bohr",
-            molecular_charge=ref_mol.molecular_charge,
-            molecular_multiplicity=ref_mol.molecular_multiplicity,
-            # copying fix_* vals rather than outright True. neither way great
-            fix_com=ref_mol.fix_com,
-            fix_orientation=ref_mol.fix_orientation,
-        )
-        cmol = Molecule(validate=False, **to_schema(cmolrec, dtype=2))
+
+        cgeom = perturbation.align_coordinates(rgeom, reverse=True)
+        cupdate = {
+            "symbols": perturbation.align_atoms(ref_mol.symbols),
+            "geometry": cgeom,
+            "masses": perturbation.align_atoms(ref_mol.masses),
+            "real": perturbation.align_atoms(ref_mol.real),
+            "atom_labels": perturbation.align_atoms(ref_mol.atom_labels),
+            "atomic_numbers": perturbation.align_atoms(ref_mol.atomic_numbers),
+            "mass_numbers": perturbation.align_atoms(ref_mol.mass_numbers),
+        }
+        cdict = {**ref_mol.dict(), **cupdate}
+
+        # preserve intrinsic symmetry with lighter truncation
+        cmol = Molecule(validate=True, **cdict, geometry_noise=13)
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
         if verbose >= 1:
@@ -1388,7 +1383,7 @@ class Molecule(ProtoModel):
             solution = data["mill"]
 
             assert compare(
-                True, np.allclose(solution.shift, perturbation.shift, atol=6), "shifts equiv", quiet=(verbose > 1)
+                True, np.allclose(solution.shift, perturbation.shift, atol=1.0e-6), "shifts equiv", quiet=(verbose > 1)
             )
             if not do_resort:
                 assert compare(
