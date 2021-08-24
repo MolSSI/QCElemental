@@ -14,6 +14,25 @@ Changelog
 .. +++++++++
 
 
+0.22.0 / 2021-MM-DD
+-------------------
+ 
+New Features
+++++++++++++
+- (:pr:`268`) Add models for TorsionDrive procedures. @SimonBoothroyd
+- (:pr:`272`) Add SCF and return gradient and Hessian fields to ``AtomicResultProperties``.
+
+Enhancements
+++++++++++++
+- (:pr:`271`) ``Molecule`` learned to create instances with geometry rounded to other than 8 decimal places through ``Molecule(..., geometry_n
+- (:pr:`271`) ``Molecule.align`` and ``Molecule.scramble`` learned to return a fuller copy of self than previously. Now has aligned atom_label
+- (:pr:`271`) ``Molecule.to_string(dtype="gamess")`` learned to write symmetry information to the prinaxis output if passed in through field f
+
+Bug Fixes
++++++++++
+- (:pr:`271`) Testing function ``compare_values()`` on arrays corrected the RMS maximum o-e value displayed and added a relative value.
+
+
 0.21.0 / 2021-06-30
 -------------------
 
