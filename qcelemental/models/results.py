@@ -38,6 +38,16 @@ class AtomicResultProperties(ProtoModel):
         None,
         description="The energy of the requested method, identical to ``return_result`` for ``driver=energy`` computations.",
     )
+    return_gradient: Optional[Array[float]] = Field(
+        None,
+        description="The gradient of the requested method, identical to ``return_result`` for ``driver=gradient`` computations.",
+        units="E_h/a0",
+    )
+    return_hessian: Optional[Array[float]] = Field(
+        None,
+        description="The Hessian of the requested method, identical to ``return_result`` for ``driver=hessian`` computations.",
+        units="E_h/a0^2",
+    )
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
@@ -80,6 +90,16 @@ class AtomicResultProperties(ProtoModel):
         None,
         description="The total electronic energy of the SCF stage of the calculation.",
         units="E_h",
+    )
+    scf_total_gradient: Optional[Array[float]] = Field(
+        None,
+        description="The total electronic gradient of the SCF stage of the calculation.",
+        units="E_h/a0",
+    )
+    scf_total_hessian: Optional[Array[float]] = Field(
+        None,
+        description="The total electronic Hessian of the SCF stage of the calculation.",
+        units="E_h/a0^2",
     )
     scf_iterations: Optional[int] = Field(None, description="The number of SCF iterations taken before convergence.")
 
@@ -244,6 +264,31 @@ class AtomicResultProperties(ProtoModel):
 
         shape = tuple([3] * order)
         return np.asarray(v).reshape(shape)
+
+    @validator(
+        "return_gradient",
+        "return_hessian",
+        "scf_total_gradient",
+        "scf_total_hessian",
+    )
+    def _validate_derivs(cls, v, values, field):
+        if v is None:
+            return v
+
+        nat = values.get("calcinfo_natom", None)
+        if nat is None:
+            raise ValueError(f"Please also set ``calcinfo_natom``!")
+
+        if field.name.endswith("_gradient"):
+            shape = (nat, 3)
+        elif field.name.endswith("_hessian"):
+            shape = (3 * nat, 3 * nat)
+
+        try:
+            v = np.asarray(v).reshape(shape)
+        except (ValueError, AttributeError):
+            raise ValueError(f"Derivative must be castable to shape {shape}!")
+        return v
 
     def dict(self, *args, **kwargs):
         # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
