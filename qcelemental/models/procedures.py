@@ -135,7 +135,12 @@ class OptimizationResult(OptimizationInput):
 
 class OptimizationSpecification(ProtoModel):
     """
-    A specification for how a geometry optimization should be performed inside of another procedure.
+    A specification for how a geometry optimization should be performed **inside** of
+    another procedure.
+
+    Notes
+    -----
+    * This class is still provisional and may be subject to removal and re-design.
     """
 
     schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
@@ -153,6 +158,10 @@ class OptimizationSpecification(ProtoModel):
 class TDKeywords(ProtoModel):
     """
     TorsionDriveRecord options
+
+    Notes
+    -----
+    * This class is still provisional and may be subject to removal and re-design.
     """
 
     dihedrals: List[Tuple[int, int, int, int]] = Field(
@@ -184,7 +193,12 @@ class TDKeywords(ProtoModel):
 
 
 class TorsionDriveInput(ProtoModel):
+    """Inputs for running a torsion drive.
 
+    Notes
+    -----
+    * This class is still provisional and may be subject to removal and re-design.
+    """
     schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
     schema_version: int = 1
 
@@ -207,6 +221,12 @@ class TorsionDriveInput(ProtoModel):
 
 
 class TorsionDriveResult(TorsionDriveInput):
+    """Results from running a torsion drive.
+
+    Notes
+    -----
+    * This class is still provisional and may be subject to removal and re-design.
+    """
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_output_default) = qcschema_torsion_drive_output_default  # type: ignore
     schema_version: int = 1

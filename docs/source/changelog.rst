@@ -1,17 +1,12 @@
 Changelog
 =========
 
-.. X.Y.0 / 2021-MM-DD
-.. -------------------
-..
-.. New Features
-.. ++++++++++++
-..
-.. Enhancements
-.. ++++++++++++
-..
-.. Bug Fixes
-.. +++++++++
+X.Y.0 / 2021-MM-DD
+-------------------
+
+New Features
+++++++++++++
+- (:pr:`268`) Add provisional models that store the inputs to and outputs of a torsion drive procedure.
 
 
 0.21.0 / 2021-06-30
