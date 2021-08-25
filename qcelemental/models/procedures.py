@@ -199,6 +199,7 @@ class TorsionDriveInput(ProtoModel):
     -----
     * This class is still provisional and may be subject to removal and re-design.
     """
+
     schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
     schema_version: int = 1
 
