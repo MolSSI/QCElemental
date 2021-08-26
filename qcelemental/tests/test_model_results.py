@@ -412,6 +412,20 @@ def test_result_properties_array(request):
     assert obj.dict()["scf_quadrupole_moment"] == lquad
 
 
+def test_result_derivatives_array(request):
+    nat = 4
+    lgrad = list(range(nat * 3))
+    lhess = list(range(nat * nat * 9))
+
+    obj = qcel.models.AtomicResultProperties(calcinfo_natom=nat, return_gradient=lgrad, scf_total_hessian=lhess)
+    drop_qcsk(obj, request.node.name)
+
+    assert obj.calcinfo_natom == 4
+    assert obj.return_gradient.shape == (4, 3)
+    assert obj.scf_total_hessian.shape == (12, 12)
+    assert obj.dict().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+
+
 @pytest.mark.parametrize(
     "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
 )
