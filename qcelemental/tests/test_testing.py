@@ -79,7 +79,7 @@ _pass_message = "\t{:.<66}PASSED"
             False,
             (
                 None,
-                """test_compare_values: computed value does not match to atol=0.1 (o-e: RMS -1.2e-02, MAX 6.0e+00).
+                """test_compare_values: computed value does not match to atol=0.1 (o-e: RMS 3.7e+00, MAX 6.0e+00, RMAX 2.0e+00).
   Expected:
     [0. 1. 2. 3.]
   Observed:
@@ -104,7 +104,7 @@ _pass_message = "\t{:.<66}PASSED"
             False,
             (
                 None,
-                """test_compare_values: computed value does not match to atol=0.01 (o-e: RMS 1.2e-02, MAX 2.0e-02).
+                """test_compare_values: computed value does not match to atol=0.01 (o-e: RMS 1.4e-02, MAX 2.0e-02, RMAX 2.0e-02).
   Expected:
     [0. 1. 2. 3.]
   Observed:
@@ -122,7 +122,7 @@ _pass_message = "\t{:.<66}PASSED"
             False,
             (
                 None,
-                """test_compare_values: computed value does not match to atol=0.01 (o-e: RMS 1.2e-02, MAX 2.0e-02).
+                """test_compare_values: computed value does not match to atol=0.01 (o-e: RMS 1.4e-02, MAX 2.0e-02, RMAX 2.0e-02).
   Expected:
     [[0. 1.]
      [2. 3.]]

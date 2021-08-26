@@ -25,7 +25,7 @@ def to_string(
     molrec
         Psi4 json Molecule spec.
     dtype
-        {'xyz', 'cfour', 'nwchem', 'molpro', 'orca', 'turbomole', 'qchem'}
+        {"xyz", "cfour", "nwchem", "molpro", "orca", "turbomole", "qchem"}
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
@@ -63,6 +63,7 @@ def to_string(
 
           * keywords: key, value pairs for processing molecule info into options
           * fields: aspects of ``qcelemental.models.Molecule`` expressed into string *or* keywords.
+            Model fields *not* listed are lost in QCSchema -> QC DSL translation.
 
     """
 
@@ -269,6 +270,10 @@ def to_string(
             data.keywords["spin_restricted"] = "false"
 
     elif dtype == "gamess":
+        # * GAMESS can't detect or run in symmetry w/o explicit notation
+        # * symm detection is out-of-scope for qcel -- hence the explicit C1 default
+        # * symm provisionally hackable by passing both point group and naxis (if needed)
+        #   through ``fix_symmetry``. newline encoded here if needed.
 
         atom_format = " {elem}{elbl} {elez}"
         ghost_format = " {BQ} -{elez}"
@@ -277,12 +282,15 @@ def to_string(
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
         first_line = """ $data"""
-        second_line = f""" {tagline}"""
-        third_line = """ C1"""
+        second_line = f""" {tagline}"""  # card -1-
+        fix_symm = molrec.get("fix_symmetry", "C1").strip()
+        symm_line = f" {fix_symm}"  # card -2-
+        if fix_symm.upper() != "C1":
+            symm_line += "\n"  # blank card replaces -3- & -4-
         last_line = """ $end"""
 
-        smol = [first_line, second_line, third_line]
-        smol.extend(atoms)
+        smol = [first_line, second_line, symm_line]
+        smol.extend(atoms)  # card -5C-
         smol.append(last_line)
 
         data.fields.extend(["molecular_charge", "molecular_multiplicity"])
