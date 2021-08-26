@@ -99,11 +99,10 @@ class AlignmentMill(ProtoModel):
     def align_gradient(self, grad) -> Array:
         """suitable for vector system attached to atoms"""
 
-        # sensible? TODO
-        # algrad = np.copy(grad)
-        # if self.mirror:
-        #    algrad[:, 1] *= -1
-        algrad = grad.dot(self.rotation)
+        algrad = np.copy(grad)
+        if self.mirror:
+            algrad[:, 1] *= -1.0
+        algrad = algrad.dot(self.rotation)
         algrad = algrad[self.atommap]
 
         return algrad

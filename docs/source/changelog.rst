@@ -14,12 +14,12 @@ Changelog
 .. +++++++++
 
 
-0.22.0 / 2021-MM-DD
+0.22.0 / 2021-08-26
 -------------------
  
 New Features
 ++++++++++++
-- (:pr:`268`) Add models for TorsionDrive procedures. @SimonBoothroyd
+- (:pr:`268`) Add provisional models that store the inputs to and outputs of a torsion drive procedure. @SimonBoothroyd
 - (:pr:`272`) Add SCF and return gradient and Hessian fields to ``AtomicResultProperties``.
 
 Enhancements
