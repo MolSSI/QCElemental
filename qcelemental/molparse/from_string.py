@@ -259,7 +259,7 @@ def from_string(
                         if len(str(e)) < min_error_length:
                             min_error_length = len(str(e))
                             min_error = e
-                        raise(e)
+                        raise e
     else:
         raise KeyError(f"Molecule: dtype of `{dtype}` not recognized.")
 
