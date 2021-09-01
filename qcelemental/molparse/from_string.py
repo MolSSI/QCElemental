@@ -186,7 +186,7 @@ def from_string(
         molinit.update(processed)
 
         if molstr:
-            raise MoleculeFormatError("""Unprocessable Molecule remanents under {}:\n{}""".format(dtype, molstr))
+            raise MoleculeFormatError(f"""Unprocessable Molecule remnants under {dtype}:\n{molstr}""")
 
         return molstr, molinit
 
@@ -214,7 +214,7 @@ def from_string(
         molinit.update(processed)
 
         if molstr:
-            raise MoleculeFormatError("""Unprocessable Molecule remanents under {}:\n{}""".format(dtype, molstr))
+            raise MoleculeFormatError(f"""Unprocessable Molecule remnants under {dtype}:\n{molstr}""")
 
         return molstr, molinit
 
@@ -231,25 +231,35 @@ def from_string(
         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
 
     elif dtype is None:
+        dtype = "[psi4, xyz, xyz+, psi4+]"  # for error message
         try:
             molstr, molinit = parse_as_psi4_ish(molstr, unsettled=False)
             dtype = "psi4"
-        except MoleculeFormatError:
+        except MoleculeFormatError as e:
+            min_error_length = len(str(e))
+            min_error = e
             try:
                 molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
                 dtype = "xyz"
-            except MoleculeFormatError:
+            except MoleculeFormatError as e:
+                if len(str(e)) < min_error_length:
+                    min_error_length = len(str(e))
+                    min_error = e
                 try:
                     molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
                     dtype = "xyz+"
-                except MoleculeFormatError:
+                except MoleculeFormatError as e:
+                    if len(str(e)) < min_error_length:
+                        min_error_length = len(str(e))
+                        min_error = e
                     try:
                         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
                         dtype = "psi4+"
-                    except MoleculeFormatError:
-                        raise MoleculeFormatError(
-                            """Unprocessable Molecule remanents under [psi4, xyz, xyz+, psi4+]:\n{}""".format(molstr)
-                        )
+                    except MoleculeFormatError as e:
+                        if len(str(e)) < min_error_length:
+                            min_error_length = len(str(e))
+                            min_error = e
+                        raise(e)
     else:
         raise KeyError(f"Molecule: dtype of `{dtype}` not recognized.")
 
