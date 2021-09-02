@@ -525,6 +525,14 @@ class ErrorCorrectionProtocol(ProtoModel):
         return self.policies.get(policy, self.default_policy)
 
 
+class NativeFilesProtocolEnum(str, Enum):
+    r"""CMS program files to keep from a computation."""
+
+    all = "all"
+    input = "input"
+    none = "none"
+
+
 class AtomicResultProtocols(ProtoModel):
     r"""Protocols regarding the manipulation of computational result data."""
 
@@ -534,6 +542,10 @@ class AtomicResultProtocols(ProtoModel):
     stdout: bool = Field(True, description="Primary output file to keep from the computation")
     error_correction: ErrorCorrectionProtocol = Field(
         default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
+    )
+    native_files: NativeFilesProtocolEnum = Field(
+        default_factory=NativeFilesProtocolEnum.none,
+        description="Policies for keeping processed files from the computation",
     )
 
     class Config:
@@ -715,6 +727,25 @@ class AtomicResult(AtomicInput):
             return None
         else:
             raise ValueError(f"Protocol `stdout:{outp}` is not understood")
+
+    @validator("native_files")
+    def _native_file_protocol(cls, value, values):
+
+        ancp = values["protocols"].native_files
+        if ancp == "all":
+            return value
+        elif ancp == "none":
+            return None
+        elif ancp == "input":
+            return_keep = ["input"]
+            files = value.copy()
+        else:
+            raise ValueError(f"Protocol `native_files:{ancp}` is not understood")
+
+        ret = {}
+        for rk in return_keep:
+            ret[rk] = files.get(rk, None)
+        return ret
 
 
 class ResultProperties(AtomicResultProperties):
