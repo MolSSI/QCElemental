@@ -544,7 +544,7 @@ class AtomicResultProtocols(ProtoModel):
         default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
     )
     native_files: NativeFilesProtocolEnum = Field(
-        default_factory=NativeFilesProtocolEnum.none,
+        NativeFilesProtocolEnum.none,
         description="Policies for keeping processed files from the computation",
     )
 
