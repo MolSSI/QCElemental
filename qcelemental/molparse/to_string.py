@@ -221,8 +221,8 @@ def to_string(
 
     elif dtype == "nwchem":
 
-        atom_format = "{elem}"
-        ghost_format = "GH"
+        atom_format = "{elem}{elbl}"
+        ghost_format = "bq{elem}{elbl}"
         # TODO handle which units valid
         umap = {"bohr": "bohr", "angstrom": "angstroms", "nm": "nanometers", "pm": "picometers"}
 
@@ -245,6 +245,7 @@ def to_string(
         if molrec["molecular_multiplicity"] != 1:
             data.keywords["scf__nopen"] = molrec["molecular_multiplicity"] - 1
             data.keywords["dft__mult"] = molrec["molecular_multiplicity"]
+            data.keywords["mcscf__multiplicity"] = molrec["molecular_multiplicity"]
 
     elif dtype == "madness":
 
@@ -276,7 +277,7 @@ def to_string(
         #   through ``fix_symmetry``. newline encoded here if needed.
 
         atom_format = " {elem}{elbl} {elez}"
-        ghost_format = " {BQ} -{elez}"
+        ghost_format = " BQ -{elez}"
         umap = {"bohr": "bohr", "angstrom": "angs"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)

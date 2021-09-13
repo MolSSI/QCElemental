@@ -409,7 +409,8 @@ def test_result_properties_array(request):
 
     assert obj.dict().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
     assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
-    assert obj.dict()["scf_quadrupole_moment"] == lquad
+    # assert obj.dict()["scf_quadrupole_moment"] == lquad  # when properties.dict() was forced json
+    assert np.array_equal(obj.dict()["scf_quadrupole_moment"], np.array(lquad).reshape(3, 3))  # now remains ndarray
 
 
 def test_result_derivatives_array(request):

@@ -14,9 +14,23 @@ Changelog
 .. +++++++++
 
 
+0.23.0 / 2021-MM-DD
+-------------------
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`274`) The molecule ``from_string`` parser when no dtype specified learned to return the most specialized error message among the dtypes, not the full input string.
+
+Bug Fixes
++++++++++
+
+
 0.22.0 / 2021-08-26
 -------------------
- 
+
 New Features
 ++++++++++++
 - (:pr:`268`) Add provisional models that store the inputs to and outputs of a torsion drive procedure. @SimonBoothroyd
@@ -24,9 +38,9 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:`271`) ``Molecule`` learned to create instances with geometry rounded to other than 8 decimal places through ``Molecule(..., geometry_n
-- (:pr:`271`) ``Molecule.align`` and ``Molecule.scramble`` learned to return a fuller copy of self than previously. Now has aligned atom_label
-- (:pr:`271`) ``Molecule.to_string(dtype="gamess")`` learned to write symmetry information to the prinaxis output if passed in through field f
+- (:pr:`271`) ``Molecule`` learned to create instances with geometry rounded to other than 8 decimal places through ``Molecule(..., geometry_noise=<13>)`` to optionally override ``qcel.models.molecule.GEOMETRY_NOISE = 8``. This should be used sparingly, as it will make more molecules unique in the QCA database. But it is sometimes necessary for accurate finite difference steps and to preserve intrinsic symmetry upon geometry rotation. Previous route was to reset the qcel module variable for the duration of instance creation.
+- (:pr:`271`) ``Molecule.align`` and ``Molecule.scramble`` learned to return a fuller copy of self than previously. Now has aligned atom_labels, real, and mass_numbers as well as incidentals like Identifiers. Fragmentation still not addressed.
+- (:pr:`271`) ``Molecule.to_string(dtype="gamess")`` learned to write symmetry information to the prinaxis output if passed in through field fix_symmetry. This is provisional, as we'd like the field to be uniform across qcprogs.
 
 Bug Fixes
 +++++++++

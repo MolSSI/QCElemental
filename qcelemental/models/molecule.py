@@ -1140,6 +1140,7 @@ class Molecule(ProtoModel):
         run_to_completion: bool = False,
         uno_cutoff: float = 1.0e-3,
         run_mirror: bool = False,
+        ghosts_distinguishable: bool = True,
     ) -> Tuple["Molecule", Dict[str, Any]]:
         r"""Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
@@ -1175,6 +1176,11 @@ class Molecule(ProtoModel):
             Run alternate geometries potentially allowing best match to `ref_mol`
             from mirror image of `concern_mol`. Only run if system confirmed to
             be nonsuperimposable upon mirror reflection.
+        ghosts_distinguishable
+            When one or both molecules doesn't have meaningful element info for ghosts (can happen
+            when harvesting from a printout with a generic ghost symbol), set this to False to
+            place all real=False atoms into the same space for alignment. Only allowed when
+            ``atoms_map=True``.
         verbose
             Print level.
 
@@ -1208,6 +1214,14 @@ class Molecule(ProtoModel):
                 for sym, mas in zip(cast(Iterable[str], concern_mol.symbols), concern_mol.masses)
             ]
         )
+
+        if not ghosts_distinguishable:
+            if not mols_align:
+                raise ValueError("Too risky to lump ghosts together when mols not superimposable.")
+
+            bq_hash = hashlib.sha1(("bq").encode("utf-8")).hexdigest()
+            runiq = np.asarray([(rl_hash if rl else bq_hash) for rl, rl_hash in zip(ref_mol.real, runiq)])
+            cuniq = np.asarray([(rl_hash if rl else bq_hash) for rl, rl_hash in zip(concern_mol.real, cuniq)])
 
         rmsd, solution = B787(
             cgeom=cgeom,

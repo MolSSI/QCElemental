@@ -292,7 +292,9 @@ class AtomicResultProperties(ProtoModel):
 
     def dict(self, *args, **kwargs):
         # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
-        kwargs["encoding"] = "json"
+        # Sep 2021: commenting below for now to allow recomposing AtomicResult.properties for qcdb.
+        #   This will break QCFractal tests for now, but future qcf will be ok with it.
+        # kwargs["encoding"] = "json"
         return super().dict(*args, **kwargs)
 
 
