@@ -1,0 +1,592 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Common" href="model_common.html" />
+    <link rel="prev" title="Molecule" href="model_molecule.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_molecule.html">Molecule</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AtomicResult</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#atomicinput">AtomicInput</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">AtomicResult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>AtomicResult</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/model_result.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="atomicresult">
+<h1>AtomicResult<a class="headerlink" href="#atomicresult" title="Permalink to this headline">¶</a></h1>
+<p>A Python implementation of the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a> <code class="docutils literal notranslate"><span class="pre">AtomicResult</span></code> object.</p>
+<div class="section" id="atomicinput">
+<h2>AtomicInput<a class="headerlink" href="#atomicinput" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.models.AtomicInput">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">AtomicInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicInput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.AtomicInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>The MolSSI Quantum Chemistry Schema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The optional ID for the computation.</p></li>
+<li><p><strong>schema_name</strong> (<em>ConstrainedStrValue</em><em>, </em><em>Default: qcschema_input</em>) – The QCSchema specification this model conforms to. Explicitly fixed as qcschema_input.</p></li>
+<li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Default: 1</em>) – The version number of <code class="docutils literal notranslate"><span class="pre">schema_name</span></code> to which this model conforms.</p></li>
+<li><p><strong>molecule</strong> (<a class="reference internal" href="model_molecule.html#qcelemental.models.Molecule" title="qcelemental.models.Molecule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></a>) – The molecule to use in the computation.</p></li>
+<li><p><strong>driver</strong> (<em>{energy</em><em>,</em><em>gradient</em><em>,</em><em>hessian</em><em>,</em><em>properties}</em>) – Allowed computation driver values.</p></li>
+<li><p><strong>model</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code>) – The computational molecular sciences model to run.</p></li>
+<li><p><strong>keywords</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Default: {}</em>) – The program-specific keywords to be used.</p></li>
+<li><p><strong>protocols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicResultProtocols</span></code>, Optional) – Protocols regarding the manipulation of computational result data.</p></li>
+<li><p><strong>extras</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Default: {}</em>) – Additional information to bundle with the computation. Use for schema development and scratch space.</p></li>
+<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.Provenance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Provenance</span></code></a>, Optional) – Provenance information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>AtomicResult<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.models.AtomicResult">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">AtomicResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.AtomicResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Results from a CMS program execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The optional ID for the computation.</p></li>
+<li><p><strong>schema_name</strong> (<em>ConstrainedStrValue</em><em>, </em><em>Default: qcschema_output</em>) – The QCSchema specification this model conforms to. Explicitly fixed as qcschema_output.</p></li>
+<li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Default: 1</em>) – The version number of <code class="docutils literal notranslate"><span class="pre">schema_name</span></code> to which this model conforms.</p></li>
+<li><p><strong>molecule</strong> (<a class="reference internal" href="model_molecule.html#qcelemental.models.Molecule" title="qcelemental.models.Molecule"><code class="xref py py-class docutils literal notranslate"><span class="pre">Molecule</span></code></a>) – The molecule to use in the computation.</p></li>
+<li><p><strong>driver</strong> (<em>{energy</em><em>,</em><em>gradient</em><em>,</em><em>hessian</em><em>,</em><em>properties}</em>) – Allowed computation driver values.</p></li>
+<li><p><strong>model</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code>) – The computational molecular sciences model to run.</p></li>
+<li><p><strong>keywords</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Default: {}</em>) – The program-specific keywords to be used.</p></li>
+<li><p><strong>protocols</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicResultProtocols</span></code>, Optional) – Protocols regarding the manipulation of computational result data.</p></li>
+<li><p><strong>extras</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Default: {}</em>) – Additional information to bundle with the computation. Use for schema development and scratch space.</p></li>
+<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.Provenance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Provenance</span></code></a>) – Provenance information.</p></li>
+<li><p><strong>properties</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">AtomicResultProperties</span></code>) – <p>Named properties of quantum chemistry computations following the MolSSI QCSchema.</p>
+<blockquote>
+<div><p>All arrays are stored flat but must be reshapable into the dimensions in attribute <code class="docutils literal notranslate"><span class="pre">shape</span></code>, with abbreviations as follows:</p>
+<blockquote>
+<div><ul>
+<li><p>nao: number of atomic orbitals = calcinfo_nbasis</p></li>
+<li><p>nmo: number of molecular orbitals</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</p></li>
+<li><p><strong>wavefunction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">WavefunctionProperties</span></code>, Optional) – Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol.</p></li>
+<li><p><strong>return_result</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Array</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – The primary return specified by the <code class="docutils literal notranslate"><span class="pre">driver</span></code> field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.</p></li>
+<li><p><strong>stdout</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.</p></li>
+<li><p><strong>stderr</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The standard error of the program execution.</p></li>
+<li><p><strong>success</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – The success of program execution. If False, other fields may be blank.</p></li>
+<li><p><strong>error</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.ComputeError" title="qcelemental.models.ComputeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComputeError</span></code></a>, Optional) – Complete description of the error from an unsuccessful program execution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.models.results.AtomicResultProtocols">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.results.</span></span><span class="sig-name descname"><span class="pre">AtomicResultProtocols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicResultProtocols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.results.AtomicResultProtocols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Protocols regarding the manipulation of computational result data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavefunction</strong> (<em>{all</em><em>,</em><em>orbitals_and_eigenvalues</em><em>,</em><em>return_results</em><em>,</em><em>none}</em><em>, </em><em>Default: none</em>) – Wavefunction to keep from a computation.</p></li>
+<li><p><strong>stdout</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>Default: True</em>) – Primary output file to keep from the computation</p></li>
+<li><p><strong>error_correction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorCorrectionProtocol</span></code>, Optional) – Policies for error correction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.models.results.AtomicResultProperties">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.results.</span></span><span class="sig-name descname"><span class="pre">AtomicResultProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicResultProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.results.AtomicResultProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Named properties of quantum chemistry computations following the MolSSI QCSchema.</p>
+<blockquote>
+<div><p>All arrays are stored flat but must be reshapable into the dimensions in attribute <code class="docutils literal notranslate"><span class="pre">shape</span></code>, with abbreviations as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>nao: number of atomic orbitals = calcinfo_nbasis</p></li>
+<li><p>nmo: number of molecular orbitals</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calcinfo_nbasis</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of basis functions for the computation.</p></li>
+<li><p><strong>calcinfo_nmo</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of molecular orbitals for the computation.</p></li>
+<li><p><strong>calcinfo_nalpha</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of alpha electrons in the computation.</p></li>
+<li><p><strong>calcinfo_nbeta</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of beta electrons in the computation.</p></li>
+<li><p><strong>calcinfo_natom</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of atoms in the computation.</p></li>
+<li><p><strong>nuclear_repulsion_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The nuclear repulsion energy.</p></li>
+<li><p><strong>return_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The energy of the requested method, identical to <code class="docutils literal notranslate"><span class="pre">return_result</span></code> for <code class="docutils literal notranslate"><span class="pre">driver=energy</span></code> computations.</p></li>
+<li><p><strong>return_gradient</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The gradient of the requested method, identical to <code class="docutils literal notranslate"><span class="pre">return_result</span></code> for <code class="docutils literal notranslate"><span class="pre">driver=gradient</span></code> computations.</p></li>
+<li><p><strong>return_hessian</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The Hessian of the requested method, identical to <code class="docutils literal notranslate"><span class="pre">return_result</span></code> for <code class="docutils literal notranslate"><span class="pre">driver=hessian</span></code> computations.</p></li>
+<li><p><strong>scf_one_electron_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The one-electron (core Hamiltonian) energy contribution to the total SCF energy.</p></li>
+<li><p><strong>scf_two_electron_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The two-electron energy contribution to the total SCF energy.</p></li>
+<li><p><strong>scf_vv10_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The VV10 functional energy contribution to the total SCF energy.</p></li>
+<li><p><strong>scf_xc_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The functional (XC) energy contribution to the total SCF energy.</p></li>
+<li><p><strong>scf_dispersion_correction_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The dispersion correction appended to an underlying functional when a DFT-D method is requested.</p></li>
+<li><p><strong>scf_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The SCF X, Y, and Z dipole components</p></li>
+<li><p><strong>scf_quadrupole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The quadrupole components (redundant; 6 unique).</p></li>
+<li><p><strong>scf_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total electronic energy of the SCF stage of the calculation.</p></li>
+<li><p><strong>scf_total_gradient</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The total electronic gradient of the SCF stage of the calculation.</p></li>
+<li><p><strong>scf_total_hessian</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The total electronic Hessian of the SCF stage of the calculation.</p></li>
+<li><p><strong>scf_iterations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of SCF iterations taken before convergence.</p></li>
+<li><p><strong>mp2_same_spin_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.</p></li>
+<li><p><strong>mp2_opposite_spin_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.</p></li>
+<li><p><strong>mp2_singles_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The singles portion of the MP2 correlation energy. Zero except in ROHF.</p></li>
+<li><p><strong>mp2_doubles_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.</p></li>
+<li><p><strong>mp2_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The MP2 correlation energy.</p></li>
+<li><p><strong>mp2_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total MP2 energy (MP2 correlation energy + HF energy).</p></li>
+<li><p><strong>mp2_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The MP2 X, Y, and Z dipole components.</p></li>
+<li><p><strong>ccsd_same_spin_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.</p></li>
+<li><p><strong>ccsd_opposite_spin_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.</p></li>
+<li><p><strong>ccsd_singles_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The singles portion of the CCSD correlation energy. Zero except in ROHF.</p></li>
+<li><p><strong>ccsd_doubles_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The doubles portion of the CCSD correlation energy including same-spin and opposite-spin correlations.</p></li>
+<li><p><strong>ccsd_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The CCSD correlation energy.</p></li>
+<li><p><strong>ccsd_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total CCSD energy (CCSD correlation energy + HF energy).</p></li>
+<li><p><strong>ccsd_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The CCSD X, Y, and Z dipole components.</p></li>
+<li><p><strong>ccsd_iterations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of CCSD iterations taken before convergence.</p></li>
+<li><p><strong>ccsd_prt_pr_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The CCSD(T) correlation energy.</p></li>
+<li><p><strong>ccsd_prt_pr_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total CCSD(T) energy (CCSD(T) correlation energy + HF energy).</p></li>
+<li><p><strong>ccsd_prt_pr_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The CCSD(T) X, Y, and Z dipole components.</p></li>
+<li><p><strong>ccsdt_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The CCSDT correlation energy.</p></li>
+<li><p><strong>ccsdt_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total CCSDT energy (CCSDT correlation energy + HF energy).</p></li>
+<li><p><strong>ccsdt_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The CCSDT X, Y, and Z dipole components.</p></li>
+<li><p><strong>ccsdt_iterations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of CCSDT iterations taken before convergence.</p></li>
+<li><p><strong>ccsdtq_correlation_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The CCSDTQ correlation energy.</p></li>
+<li><p><strong>ccsdtq_total_energy</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Optional</em>) – The total CCSDTQ energy (CCSDTQ correlation energy + HF energy).</p></li>
+<li><p><strong>ccsdtq_dipole_moment</strong> (<em>Array</em><em>, </em><em>Optional</em>) – The CCSDTQ X, Y, and Z dipole components.</p></li>
+<li><p><strong>ccsdtq_iterations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of CCSDTQ iterations taken before convergence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.models.results.WavefunctionProperties">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.results.</span></span><span class="sig-name descname"><span class="pre">WavefunctionProperties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#WavefunctionProperties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.results.WavefunctionProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basis</strong> – A quantum chemistry basis description.</p></li>
+<li><p><strong>restricted</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
+<li><p><strong>h_core_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_core_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_effective_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_effective_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_orbitals_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_orbitals_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_density_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_density_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_fock_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_fock_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_eigenvalues_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_eigenvalues_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_occupations_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_occupations_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_coulomb_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_coulomb_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_exchange_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_exchange_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_orbitals_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_orbitals_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_fock_a</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_fock_b</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>orbitals_a</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>orbitals_b</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>density_a</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>density_b</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>fock_a</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>fock_b</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>eigenvalues_a</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>eigenvalues_b</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>occupations_a</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>occupations_b</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>restricted<span class="classifier">bool</span></dt><dd><p>If the computation was restricted or not (alpha == beta). If True, all beta quantities are skipped.</p>
+</dd>
+<dt>h_core_a<span class="classifier">Array, Optional</span></dt><dd><p>Alpha-spin core (one-electron) Hamiltonian in the AO basis.</p>
+</dd>
+<dt>h_core_b<span class="classifier">Array, Optional</span></dt><dd><p>Beta-spin core (one-electron) Hamiltonian in the AO basis.</p>
+</dd>
+<dt>h_effective_a<span class="classifier">Array, Optional</span></dt><dd><p>Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.</p>
+</dd>
+<dt>h_effective_b<span class="classifier">Array, Optional</span></dt><dd><p>Beta-spin effective core (one-electron) Hamiltonian in the AO basis</p>
+</dd>
+<dt>scf_orbitals_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin orbitals in the AO basis.</p>
+</dd>
+<dt>scf_orbitals_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin orbitals in the AO basis.</p>
+</dd>
+<dt>scf_density_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin density matrix in the AO basis.</p>
+</dd>
+<dt>scf_density_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin density matrix in the AO basis.</p>
+</dd>
+<dt>scf_fock_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin Fock matrix in the AO basis.</p>
+</dd>
+<dt>scf_fock_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin Fock matrix in the AO basis.</p>
+</dd>
+<dt>scf_eigenvalues_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin orbital eigenvalues.</p>
+</dd>
+<dt>scf_eigenvalues_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin orbital eigenvalues.</p>
+</dd>
+<dt>scf_occupations_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin orbital occupations.</p>
+</dd>
+<dt>scf_occupations_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin orbital occupations.</p>
+</dd>
+<dt>scf_coulomb_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin Coulomb matrix in the AO basis.</p>
+</dd>
+<dt>scf_coulomb_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin Coulomb matrix in the AO basis.</p>
+</dd>
+<dt>scf_exchange_a<span class="classifier">Array, Optional</span></dt><dd><p>SCF alpha-spin exchange matrix in the AO basis.</p>
+</dd>
+<dt>scf_exchange_b<span class="classifier">Array, Optional</span></dt><dd><p>SCF beta-spin exchange matrix in the AO basis.</p>
+</dd>
+<dt>localized_orbitals_a<span class="classifier">Array, Optional</span></dt><dd><p>Localized alpha-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.</p>
+</dd>
+<dt>localized_orbitals_b<span class="classifier">Array, Optional</span></dt><dd><p>Localized beta-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.</p>
+</dd>
+<dt>localized_fock_a<span class="classifier">Array, Optional</span></dt><dd><p>Alpha-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.</p>
+</dd>
+<dt>localized_fock_b<span class="classifier">Array, Optional</span></dt><dd><p>Beta-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.</p>
+</dd>
+<dt>orbitals_a<span class="classifier">str, Optional</span></dt><dd><p>Index to the alpha-spin orbitals of the primary return.</p>
+</dd>
+<dt>orbitals_b<span class="classifier">str, Optional</span></dt><dd><p>Index to the beta-spin orbitals of the primary return.</p>
+</dd>
+<dt>density_a<span class="classifier">str, Optional</span></dt><dd><p>Index to the alpha-spin density of the primary return.</p>
+</dd>
+<dt>density_b<span class="classifier">str, Optional</span></dt><dd><p>Index to the beta-spin density of the primary return.</p>
+</dd>
+<dt>fock_a<span class="classifier">str, Optional</span></dt><dd><p>Index to the alpha-spin Fock matrix of the primary return.</p>
+</dd>
+<dt>fock_b<span class="classifier">str, Optional</span></dt><dd><p>Index to the beta-spin Fock matrix of the primary return.</p>
+</dd>
+<dt>eigenvalues_a<span class="classifier">str, Optional</span></dt><dd><p>Index to the alpha-spin orbital eigenvalues of the primary return.</p>
+</dd>
+<dt>eigenvalues_b<span class="classifier">str, Optional</span></dt><dd><p>Index to the beta-spin orbital eigenvalues of the primary return.</p>
+</dd>
+<dt>occupations_a<span class="classifier">str, Optional</span></dt><dd><p>Index to the alpha-spin orbital occupations of the primary return.</p>
+</dd>
+<dt>occupations_b<span class="classifier">str, Optional</span></dt><dd><p>Index to the beta-spin orbital occupations of the primary return.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="model_common.html" class="btn btn-neutral float-right" title="Common" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="model_molecule.html" class="btn btn-neutral float-left" title="Molecule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

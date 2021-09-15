@@ -1,0 +1,6 @@
+from_schema
+===========
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: from_schema

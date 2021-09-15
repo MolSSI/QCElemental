@@ -1,0 +1,6 @@
+contiguize_from_fragment_pattern
+================================
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: contiguize_from_fragment_pattern

@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.molparse.from_schema</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.molparse.from_schema</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span> <span class="nn">.from_arrays</span> <span class="kn">import</span> <span class="n">from_arrays</span>
+
+
+<div class="viewcode-block" id="from_schema"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema">[docs]</a><span class="k">def</span> <span class="nf">from_schema</span><span class="p">(</span><span class="n">molschema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct molecule dictionary representation from non-Psi4 schema.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molschema</span>
+<span class="sd">        Dictionary form of Molecule following known schema.</span>
+<span class="sd">    nonphysical</span>
+<span class="sd">        Do allow masses outside an element&#39;s natural range to pass validation?</span>
+<span class="sd">    verbose</span>
+<span class="sd">        Amount of printing.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    molrec : dict</span>
+<span class="sd">        Dictionary representation of instance.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;qc_schema&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;qcschema&quot;</span><span class="p">)</span>
+    <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">molschema</span><span class="p">[</span><span class="s2">&quot;molecule&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;qcschema_molecule&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">molschema</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;Schema not recognized, schema_name/schema_version: {}/{} &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="s2">&quot;(none)&quot;</span><span class="p">),</span> <span class="n">molschema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">,</span> <span class="s2">&quot;(none)&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;fragments&quot;</span> <span class="ow">in</span> <span class="n">ms</span><span class="p">:</span>
+        <span class="n">frag_pattern</span> <span class="o">=</span> <span class="n">ms</span><span class="p">[</span><span class="s2">&quot;fragments&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">frag_pattern</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ms</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]))]</span>
+
+    <span class="n">dcontig</span> <span class="o">=</span> <span class="n">contiguize_from_fragment_pattern</span><span class="p">(</span>
+        <span class="n">frag_pattern</span><span class="p">,</span>
+        <span class="n">geom</span><span class="o">=</span><span class="n">ms</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">],</span>
+        <span class="n">elea</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mass_numbers&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">elez</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atomic_numbers&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">elem</span><span class="o">=</span><span class="n">ms</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">],</span>
+        <span class="n">mass</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;masses&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">real</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;real&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">elbl</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atom_labels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">throw_reorder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">molrec</span> <span class="o">=</span> <span class="n">from_arrays</span><span class="p">(</span>
+        <span class="n">geom</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">],</span>
+        <span class="n">elea</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;elea&quot;</span><span class="p">],</span>
+        <span class="n">elez</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;elez&quot;</span><span class="p">],</span>
+        <span class="n">elem</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">],</span>
+        <span class="n">mass</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">],</span>
+        <span class="n">real</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">],</span>
+        <span class="n">elbl</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="n">input_units_to_au</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">fix_com</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fix_com&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">fix_orientation</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">fix_symmetry</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">fragment_separators</span><span class="o">=</span><span class="n">dcontig</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">],</span>
+        <span class="n">fragment_charges</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_charges&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">molecular_charge</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">molecular_multiplicity</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">comment</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">provenance</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;provenance&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">connectivity</span><span class="o">=</span><span class="n">ms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connectivity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">domain</span><span class="o">=</span><span class="s2">&quot;qm&quot;</span><span class="p">,</span>
+        <span class="c1"># missing_enabled_return=missing_enabled_return,</span>
+        <span class="n">speclabel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># tooclose=tooclose,</span>
+        <span class="c1"># zero_ghost_fragments=zero_ghost_fragments,</span>
+        <span class="n">nonphysical</span><span class="o">=</span><span class="n">nonphysical</span><span class="p">,</span>
+        <span class="c1"># mtol=mtol,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># replace from_arrays stamp with from_schema stamp</span>
+    <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">molrec</span></div>
+
+
+<div class="viewcode-block" id="contiguize_from_fragment_pattern"><a class="viewcode-back" href="../../../api/qcelemental.molparse.contiguize_from_fragment_pattern.html#qcelemental.molparse.contiguize_from_fragment_pattern">[docs]</a><span class="k">def</span> <span class="nf">contiguize_from_fragment_pattern</span><span class="p">(</span>
+    <span class="n">frag_pattern</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">throw_reorder</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) `frag_pattern`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frag_pattern</span>
+<span class="sd">        (nfr, ?) list of indices (0-indexed) grouping atoms into</span>
+<span class="sd">        molecular fragments within the topology.</span>
+<span class="sd">    geom</span>
+<span class="sd">        (nat, 3) or (3 * nat, ) ndarray or list o&#39;lists of Cartesian</span>
+<span class="sd">        coordinates, possibly with atoms belonging to the same fragment</span>
+<span class="sd">        being dispersed in `geom`.</span>
+<span class="sd">    throw_reorder</span>
+<span class="sd">        Whether, when non-contiguous fragments detected, to raise</span>
+<span class="sd">        ValidationError (``True``) or to proceed to reorder atoms to</span>
+<span class="sd">        contiguize fragments (``False``).</span>
+<span class="sd">    verbose</span>
+<span class="sd">        Quantity of printing</span>
+<span class="sd">    kwargs : None or array-like</span>
+<span class="sd">        Each additional array will be returned with ordering applied</span>
+<span class="sd">        in the return dictionary.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    fragment_separators : array-like of int</span>
+<span class="sd">        (nfr - 1, ) list of atom indices at which to split `geom` into fragments.</span>
+<span class="sd">    geom : ndarray of float, optional</span>
+<span class="sd">        (3 * nat, ) Cartesian coordinates with fragments contiguous.</span>
+<span class="sd">    kwargs : None or ndarray, optional</span>
+<span class="sd">        (nat, ) Each `kwargs` input array reordered for contiguous fragments.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    qcelemental.ValidationError</span>
+<span class="sd">        When `frag_pattern` skips atoms or any array has inconsistent</span>
+<span class="sd">        length. If `throw_reorder`, raises when non-contiguous fragments</span>
+<span class="sd">        detected.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">vsplt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frag_pattern</span><span class="p">])</span>
+    <span class="n">nat</span> <span class="o">=</span> <span class="n">vsplt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">fragment_separators</span> <span class="o">=</span> <span class="n">vsplt</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Nothing to do for len =1 and ordered</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fragment_separators</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">frag_pattern</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">returns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">:</span> <span class="n">fragment_separators</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">geom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">returns</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">copy</span><span class="p">()})</span>
+        <span class="n">extras</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">returns</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span>
+
+        <span class="n">ncgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nat</span> <span class="o">!=</span> <span class="n">ncgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;dropped atoms! nat = </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="n">ncgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">returns</span>
+
+    <span class="n">do_reorder</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">frag_pattern</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nat</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Fragmentation pattern skips atoms: </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">frag_pattern</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">frag_pattern</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nat</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Warning: QCElemental is reordering atoms to accommodate non-contiguous fragments&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">do_reorder</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">do_reorder</span> <span class="ow">and</span> <span class="n">throw_reorder</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;Error: QCElemental would need to reorder atoms to accommodate non-contiguous fragments&quot;&quot;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">geom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ncgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nat</span> <span class="o">!=</span> <span class="n">ncgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;dropped atoms! nat = </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="n">ncgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">ncgeom</span><span class="p">[</span><span class="n">fr</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frag_pattern</span><span class="p">])</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">nat</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;wrong number of atoms in array: nat = </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)[</span><span class="n">fr</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frag_pattern</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">returns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">:</span> <span class="n">fragment_separators</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">geom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">returns</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="n">geom</span><span class="p">})</span>
+    <span class="n">extras</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">reorder</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">returns</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extras</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">returns</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

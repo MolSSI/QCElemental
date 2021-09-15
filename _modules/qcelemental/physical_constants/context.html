@@ -1,0 +1,830 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.physical_constants.context</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.physical_constants.context</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains relevant physical constants</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">..datum</span> <span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
+<span class="kn">from</span> <span class="nn">.ureg</span> <span class="kn">import</span> <span class="n">build_units_registry</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span><span class="p">,</span> <span class="n">quantity</span>  <span class="c1"># lgtm: [py/unused-import]</span>
+
+
+<div class="viewcode-block" id="PhysicalConstantsContext"><a class="viewcode-back" href="../../../api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">[docs]</a><span class="k">class</span> <span class="nc">PhysicalConstantsContext</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;CODATA physical constants set from NIST.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    context : str</span>
+<span class="sd">        {&#39;CODATA2014&#39;, &#39;CODATA2018&#39;}</span>
+<span class="sd">        Origin of loaded data.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    doi : str</span>
+<span class="sd">        The DOI of the current context.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the context (&#39;CODATA2014&#39;)</span>
+<span class="sd">    pc : Dict[str, Datum]</span>
+<span class="sd">        Each physical constant is an entry in `pc`, where key is the</span>
+<span class="sd">        lowercased string of the NIST name (or any alias) and the</span>
+<span class="sd">        value is a Datum object with `lbl` the exact NIST name string,</span>
+<span class="sd">        `units`, `data` value as Decimal object, and any uncertainty</span>
+<span class="sd">        in the `comment` field.</span>
+<span class="sd">    raw_codata : Dict[str, Any]</span>
+<span class="sd">        A dictionary representation of the raw context data.</span>
+<span class="sd">    year : int</span>
+<span class="sd">        The year the context was created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_transtable</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s2">&quot; -/{&quot;</span><span class="p">,</span> <span class="s2">&quot;__p_&quot;</span><span class="p">,</span> <span class="s2">&quot;.,()}&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Alias Typing</span>
+    <span class="n">h</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">kb</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">R</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">bohr2angstroms</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">bohr2cm</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">amu2g</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">amu2kg</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2J</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2aJ</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">cal2J</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">dipmom_au2si</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">dipmom_au2debye</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">c_au</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2ev</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2wavenumbers</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2kcalmol</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2kJmol</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">hartree2MHz</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">kcalmol2wavenumbers</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">e0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">na</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">me</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;CODATA2014&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2014&quot;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">nist_2014_codata</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">nist_2014_codata</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">raw_codata</span> <span class="o">=</span> <span class="n">nist_2014_codata</span><span class="p">[</span><span class="s2">&quot;constants&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2018&quot;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">nist_2018_codata</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">nist_2018_codata</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">raw_codata</span> <span class="o">=</span> <span class="n">nist_2018_codata</span><span class="p">[</span><span class="s2">&quot;constants&quot;</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Context set as &#39;</span><span class="si">{}</span><span class="s2">&#39;, only contexts {&#39;CODATA2014&#39;, &#39;CODATA2018&#39;, } are currently supported&quot;</span><span class="p">)</span>
+
+        <span class="c1"># physical constant loop</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_codata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span>
+                <span class="n">v</span><span class="p">[</span><span class="s2">&quot;quantity&quot;</span><span class="p">],</span>
+                <span class="n">v</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">],</span>
+                <span class="n">Decimal</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]),</span>
+                <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;uncertainty=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">]),</span>
+                <span class="n">doi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;CODATA&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Extra relationships</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;calorie-joule relationship&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span>
+            <span class="s2">&quot;calorie-joule relationship&quot;</span><span class="p">,</span> <span class="s2">&quot;J&quot;</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;4.184&quot;</span><span class="p">),</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;uncertainty=(exact)&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">rename_2018_from_2014</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;atomic unit of momentum&quot;</span><span class="p">:</span> <span class="s2">&quot;atomic unit of mom.um&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced Planck constant&quot;</span><span class="p">:</span> <span class="s2">&quot;Planck constant over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced Planck constant in eV s&quot;</span><span class="p">:</span> <span class="s2">&quot;Planck constant over 2 pi in eV s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced Planck constant times c in MeV fm&quot;</span><span class="p">:</span> <span class="s2">&quot;Planck constant over 2 pi times c in MeV fm&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;natural unit of momentum&quot;</span><span class="p">:</span> <span class="s2">&quot;natural unit of mom.um&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;natural unit of momentum in MeV/c&quot;</span><span class="p">:</span> <span class="s2">&quot;natural unit of mom.um in MeV/c&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;electron gyromag. ratio in MHz/T&quot;</span><span class="p">:</span> <span class="s2">&quot;electron gyromag. ratio over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;vacuum mag. permeability&quot;</span><span class="p">:</span> <span class="s2">&quot;mag. constant&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lattice spacing of ideal Si (220)&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{220}</span><span class="s2"> lattice spacing of silicon&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Planck constant in eV/Hz&quot;</span><span class="p">:</span> <span class="s2">&quot;Planck constant in eV s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Bohr magneton in inverse meter per tesla&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr magneton in inverse meters per tesla&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Boltzmann constant in inverse meter per kelvin&quot;</span><span class="p">:</span> <span class="s2">&quot;Boltzmann constant in inverse meters per kelvin&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Copper x unit&quot;</span><span class="p">:</span> <span class="s2">&quot;Cu x unit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Molybdenum x unit&quot;</span><span class="p">:</span> <span class="s2">&quot;Mo x unit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;proton gyromag. ratio in MHz/T&quot;</span><span class="p">:</span> <span class="s2">&quot;proton gyromag. ratio over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shielded proton gyromag. ratio in MHz/T&quot;</span><span class="p">:</span> <span class="s2">&quot;shielded proton gyromag. ratio over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced proton Compton wavelength&quot;</span><span class="p">:</span> <span class="s2">&quot;proton Compton wavelength over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced tau Compton wavelength&quot;</span><span class="p">:</span> <span class="s2">&quot;tau Compton wavelength over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tau energy equivalent&quot;</span><span class="p">:</span> <span class="s2">&quot;tau mass energy equivalent in mev&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced neutron Compton wavelength&quot;</span><span class="p">:</span> <span class="s2">&quot;neutron Compton wavelength over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;neutron gyromag. ratio in MHz/T&quot;</span><span class="p">:</span> <span class="s2">&quot;neutron gyromag. ratio over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nuclear magneton in inverse meter per tesla&quot;</span><span class="p">:</span> <span class="s2">&quot;nuclear magneton in inverse meters per tesla&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;shielded helion gyromag. ratio in MHz/T&quot;</span><span class="p">:</span> <span class="s2">&quot;shielded helion gyromag. ratio over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced Compton wavelength&quot;</span><span class="p">:</span> <span class="s2">&quot;Compton wavelength over 2 pi&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;vacuum electric permittivity&quot;</span><span class="p">:</span> <span class="s2">&quot;electric constant&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;reduced muon Compton wavelength&quot;</span><span class="p">:</span> <span class="s2">&quot;muon Compton wavelength over 2 pi&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># fmt: off</span>
+        <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2014&quot;</span><span class="p">:</span>
+            <span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">elif</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2018&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">old_name</span> <span class="ow">in</span> <span class="n">rename_2018_from_2014</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">new_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">old_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span><span class="n">old_name</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">dm</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">dm</span><span class="o">.</span><span class="n">comment</span><span class="p">,</span> <span class="n">doi</span><span class="o">=</span><span class="n">dm</span><span class="o">.</span><span class="n">doi</span><span class="p">)</span>
+
+            <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;molar Planck constant times c&quot;</span><span class="p">,</span>                      <span class="s2">&quot;J m mol^{-1}&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;molar planck constant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;speed of light in vacuum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>     <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;Faraday constant for conventional electric current&quot;</span><span class="p">,</span> <span class="s2">&quot;C_</span><span class="si">{90}</span><span class="s2"> mol^{-1}&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;faraday constant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;conventional value of coulomb-90&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;elementary charge over h&quot;</span><span class="p">,</span>                           <span class="s2">&quot;A J^{-1}&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;elementary charge over h-bar&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="o">=</span><span class="kc">False</span><span class="p">)),</span>    <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="p">]</span>
+
+        <span class="n">aliases</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span>                    <span class="s1">&#39;J s&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hertz-joule relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                             <span class="s1">&#39;The Planck constant (Js)&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hbar&#39;</span><span class="p">,</span>                 <span class="s1">&#39;J s&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;planck constant over 2 pi&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                            <span class="s1">&#39;Reduced Planck constant (Js)&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span>                    <span class="s1">&#39;m s^-1&#39;</span><span class="p">,</span>         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;inverse meter-hertz relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                     <span class="s1">&#39;Speed of light (ms$^{-1}$)&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;kb&#39;</span><span class="p">,</span>                   <span class="s1">&#39;J K^-1&#39;</span><span class="p">,</span>         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;kelvin-joule relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                            <span class="s1">&#39;The Boltzmann constant (JK$^{-1}$)&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">,</span>                    <span class="s1">&#39;J mol^-1 K^-1&#39;</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;molar gas constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                   <span class="s1">&#39;Universal gas constant (JK$^{-1}$mol$^{-1}$)&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;bohr2angstroms&#39;</span><span class="p">,</span>       <span class="s1">&#39;AA&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;bohr radius&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.E10&#39;</span><span class="p">),</span>                       <span class="s1">&#39;Bohr to Angstroms conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;bohr2m&#39;</span><span class="p">,</span>               <span class="s1">&#39;m&#39;</span><span class="p">,</span>              <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;bohr radius&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                          <span class="s1">&#39;Bohr to meters conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;bohr2cm&#39;</span><span class="p">,</span>              <span class="s1">&#39;cm&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;bohr radius&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;100&#39;</span><span class="p">),</span>                         <span class="s1">&#39;Bohr to centimeters conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;amu2g&#39;</span><span class="p">,</span>                <span class="s1">&#39;g&#39;</span><span class="p">,</span>              <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;atomic mass constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1000&#39;</span><span class="p">),</span>               <span class="s1">&#39;Atomic mass units to grams conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;amu2kg&#39;</span><span class="p">,</span>               <span class="s1">&#39;kg&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;atomic mass constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                 <span class="s1">&#39;Atomic mass units to kg conversion factor&#39;</span> <span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;au2amu&#39;</span><span class="p">,</span>               <span class="s1">&#39;u&#39;</span><span class="p">,</span>              <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;electron mass in u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                   <span class="s1">&#39;Atomic units (m$@@e$) to atomic mass units conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2J&#39;</span><span class="p">,</span>            <span class="s1">&#39;J&#39;</span><span class="p">,</span>              <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                       <span class="s1">&#39;Hartree to joule conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2aJ&#39;</span><span class="p">,</span>           <span class="s1">&#39;aJ&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.E18&#39;</span><span class="p">),</span>                    <span class="s1">&#39;Hartree to attojoule (10$^{-18}$J) conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;cal2J&#39;</span><span class="p">,</span>                <span class="s1">&#39;J&#39;</span><span class="p">,</span>              <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;calorie-joule relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                           <span class="s1">&#39;Calorie to joule conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;dipmom_au2si&#39;</span><span class="p">,</span>         <span class="s1">&#39;C m&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;atomic unit of electric dipole mom.&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                  <span class="s1">&#39;Atomic units to SI units (Cm) conversion factor for dipoles&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;dipmom_au2debye&#39;</span><span class="p">,</span>      <span class="s1">&#39;???&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;atomic unit of electric dipole mom.&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.E21&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hertz-inverse meter relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                                                                                             <span class="s1">&#39;Atomic units to Debye conversion factor for dipoles&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;dipmom_debye2si&#39;</span><span class="p">,</span>      <span class="s1">&#39;C m&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hertz-inverse meter relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.E-21&#39;</span><span class="p">),</span> <span class="s1">&#39;Debye to SI units (Cm) conversion factor for dipoles&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;c_au&#39;</span><span class="p">,</span>                 <span class="s1">&#39;&#39;</span><span class="p">,</span>               <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;inverse fine-structure constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                      <span class="s1">&#39;Speed of light in atomic units&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2ev&#39;</span><span class="p">,</span>           <span class="s1">&#39;eV&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree energy in ev&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                 <span class="s1">&#39;Hartree to eV conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2wavenumbers&#39;</span><span class="p">,</span>  <span class="s1">&#39;cm^-1&#39;</span><span class="p">,</span>          <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree-inverse meter relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.01&#39;</span><span class="p">),</span> <span class="s1">&#39;Hartree to cm$^{-1}$ conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2kcalmol&#39;</span><span class="p">,</span>      <span class="s1">&#39;kcal mol^-1&#39;</span><span class="p">,</span>    <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;avogadro constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.001&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;calorie-joule relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                                                                                             <span class="s1">&#39;Hartree to kcal mol$^{-1}$ conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2kJmol&#39;</span><span class="p">,</span>        <span class="s1">&#39;kJ mol^-1&#39;</span><span class="p">,</span>      <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree energy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;avogadro constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.001&#39;</span><span class="p">),</span> <span class="s1">&#39;Hartree to kilojoule mol$^{-1}$ conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;hartree2MHz&#39;</span><span class="p">,</span>          <span class="s1">&#39;MHz&#39;</span><span class="p">,</span>            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;hartree-hertz relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.E-6&#39;</span><span class="p">),</span>        <span class="s1">&#39;Hartree to MHz conversion factor&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;na&#39;</span><span class="p">,</span>                   <span class="s1">&#39;mol^-1&#39;</span><span class="p">,</span>         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;avogadro constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                    <span class="s2">&quot;Avogadro&#39;s number&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;me&#39;</span><span class="p">,</span>                   <span class="s1">&#39;kg&#39;</span><span class="p">,</span>             <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;electron mass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                        <span class="s1">&#39;Electron rest mass (in kg)&#39;</span><span class="p">),</span>
+        <span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2014&quot;</span><span class="p">:</span>
+            <span class="n">aliases</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="p">(</span><span class="s1">&#39;kcalmol2wavenumbers&#39;</span><span class="p">,</span>  <span class="s1">&#39;kcal cm mol^-1&#39;</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;10&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;calorie-joule relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;molar planck constant times c&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                                                                                             <span class="s1">&#39;kcal mol$^{-1}$ to cm$^{-1}$ conversion factor&#39;</span><span class="p">,),</span>
+            <span class="p">(</span><span class="s1">&#39;e0&#39;</span><span class="p">,</span>                   <span class="s1">&#39;F m^-1&#39;</span><span class="p">,</span>         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s1">&#39;electric constant&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                                    <span class="s1">&#39;Vacuum permittivity (Fm$^{-1}$)&#39;</span><span class="p">),</span>
+            <span class="p">])</span>
+        <span class="k">elif</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2018&quot;</span><span class="p">:</span>
+            <span class="n">aliases</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span>
+            <span class="p">(</span><span class="s2">&quot;kcalmol2wavenumbers&quot;</span><span class="p">,</span>  <span class="s2">&quot;kcal cm mol^-1&quot;</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;10&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;calorie-joule relationship&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;molar planck constant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;speed of light in vacuum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>                            <span class="s2">&quot;kcal mol$^{-1}$ to cm$^{-1}$ conversion factor&quot;</span><span class="p">,),</span>
+            <span class="p">(</span><span class="s2">&quot;e0&quot;</span><span class="p">,</span>                   <span class="s2">&quot;F m^-1&quot;</span><span class="p">,</span>         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="s2">&quot;vacuum electric permittivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>                         <span class="s2">&quot;Vacuum permittivity (Fm$^{-1}$)&quot;</span><span class="p">),</span>
+            <span class="p">])</span>
+        <span class="c1"># fmt: on</span>
+
+        <span class="c1"># add alternate names for constants or derived values to help QC programs</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="n">ident</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="n">alias</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">ident</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span><span class="n">ident</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
+
+        <span class="c1"># add constants as directly callable member data</span>
+        <span class="k">for</span> <span class="n">qca</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">callname</span> <span class="o">=</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transtable</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callname</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;PhysicalConstantsContext(context=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ureg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;UnitRegistry&quot;</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the internal Pint units registry.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        UnitRegistry</span>
+<span class="sd">            The pint context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span> <span class="o">=</span> <span class="n">build_units_registry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span>
+
+<div class="viewcode-block" id="PhysicalConstantsContext.get"><a class="viewcode-back" href="../../../api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">physical_constant</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Access a physical constant, `physical_constant`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        physical_constant</span>
+<span class="sd">            Case-insensitive string of physical constant with NIST name.</span>
+<span class="sd">        return_tuple</span>
+<span class="sd">            See below.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Union[float, Datum]</span>
+<span class="sd">            When ``return_tuple=False``, value of physical constant.</span>
+<span class="sd">            When ``return_tuple=True``, Datum with units, description, uncertainty, and value of physical constant as Decimal.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">physical_constant</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+
+        <span class="k">if</span> <span class="n">return_tuple</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qca</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+    <span class="c1">#       h                         &#39;hertz-joule relationship&#39;                  = 6.62606896E-34       # The Planck constant (Js)</span>
+    <span class="c1">#       c                         &#39;inverse meter-hertz relationship&#39;          = 2.99792458E8         # Speed of light (ms$^{-1}$)</span>
+    <span class="c1">#       kb                        &#39;kelvin-joule relationship&#39;                 = 1.3806504E-23        # The Boltzmann constant (JK$^{-1}$)</span>
+    <span class="c1">#       R                         &#39;molar gas constant&#39;                        = 8.314472             # Universal gas constant (JK$^{-1}$mol$^{-1}$)</span>
+    <span class="c1">#       bohr2angstroms            &#39;Bohr radius&#39; * 1.E10                       = 0.52917720859        # Bohr to Angstroms conversion factor</span>
+    <span class="c1">#       bohr2m                    &#39;Bohr radius&#39;                               = 0.52917720859E-10    # Bohr to meters conversion factor</span>
+    <span class="c1">#       bohr2cm                   &#39;Bohr radius&#39; * 100                         = 0.52917720859E-8     # Bohr to centimeters conversion factor</span>
+    <span class="c1">#       amu2kg                    &#39;atomic mass constant&#39;                      = 1.660538782E-27      # Atomic mass units to kg conversion factor</span>
+    <span class="c1">#       au2amu                    &#39;electron mass in u&#39;                        = 5.485799097E-4       # Atomic units (m$@@e$) to atomic mass units conversion factor</span>
+    <span class="c1">#       hartree2J                 &#39;Hartree energy&#39;                            = 4.359744E-18         # Hartree to joule conversion factor</span>
+    <span class="c1">#       hartree2aJ                &#39;Hartree energy&#39; * 1.E18                    = 4.359744             # Hartree to attojoule (10$^{-18}$J) conversion factor</span>
+    <span class="c1">#       cal2J                     = 4.184                # Calorie to joule conversion factor</span>
+    <span class="c1">#       dipmom_au2si              &#39;atomic unit of electric dipole mom.&#39;       = 8.47835281E-30       # Atomic units to SI units (Cm) conversion factor for dipoles</span>
+    <span class="c1">#       dipmom_au2debye           &#39;atomic unit of electric dipole mom.&#39; / (&#39;hertz-inverse meter relationship&#39; * 1.E-21)     = 2.54174623           # Atomic units to Debye conversion factor for dipoles</span>
+    <span class="c1">#       dipmom_debye2si           &#39;hertz-inverse meter relationship&#39; * 1.E-21 = 3.335640952E-30      # Debye to SI units (Cm) conversion factor for dipoles</span>
+    <span class="c1">#       c_au                      &#39;inverse fine-structure constant&#39;           = 137.035999679        # Speed of light in atomic units</span>
+    <span class="c1">#       hartree2ev                &#39;Hartree energy in eV&#39;                      = 27.21138             # Hartree to eV conversion factor</span>
+    <span class="c1">#       hartree2wavenumbers       &#39;hartree-inverse meter relationship&#39; * 0.01 = 219474.6             # Hartree to cm$^{-1}$ conversion factor</span>
+    <span class="c1">#       hartree2kcalmol           hartree2kJmol / cal2J                       = 627.5095             # Hartree to kcal mol$^{-1}$ conversion factor</span>
+    <span class="c1">#       hartree2kJmol             &#39;Hartree energy&#39;*&#39;Avogadro constant&#39;*0.001  = 2625.500             # Hartree to kilojoule mol$^{-1}$ conversion factor</span>
+    <span class="c1">#       hartree2MHz               &#39;hartree-hertz relationship&#39;                = 6.579684E9           # Hartree to MHz conversion factor</span>
+    <span class="c1">#       kcalmol2wavenumbers       10. / &#39;molar Planck constant times c&#39;*4.184 = 349.7551             # kcal mol$^{-1}$ to cm$^{-1}$ conversion factor</span>
+    <span class="c1">#       e0                        &#39;electric constant&#39;                         = 8.854187817E-12      # Vacuum permittivity (Fm$^{-1}$)</span>
+    <span class="c1">#       na                        &#39;Avogadro constant&#39;                         = 6.02214179E23        # Avogadro&#39;s number</span>
+    <span class="c1">#       me                        &#39;electron mass&#39;                             = 9.10938215E-31       # Electron rest mass (in kg)</span>
+
+<div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span> <span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a Pint Quantity.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PhysicalConstantsContext.conversion_factor"><a class="viewcode-back" href="../../../api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.conversion_factor">[docs]</a>    <span class="nd">@lru_cache</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">conversion_factor</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provides the conversion factor from one unit to another.</span>
+
+<span class="sd">        The conversion factor is based on the current contexts CODATA.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        base_unit</span>
+<span class="sd">            The original units</span>
+<span class="sd">        conv_unit</span>
+<span class="sd">            The units to convert to</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; conversion_factor(&quot;meter&quot;, &quot;picometer&quot;)</span>
+<span class="sd">        1e-12</span>
+
+<span class="sd">        &gt;&gt;&gt; conversion_factor(&quot;feet&quot;, &quot;meter&quot;)</span>
+<span class="sd">        0.30479999999999996</span>
+
+<span class="sd">        &gt;&gt;&gt; conversion_factor(10 * ureg.feet, &quot;meter&quot;)</span>
+<span class="sd">        3.0479999999999996</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The requested conversion factor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Add a little magic in case the incoming values have scalars</span>
+
+        <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">quantity</span>
+
+        <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="c1"># First make sure we either have Units or Quantities</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_unit</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">base_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">parse_expression</span><span class="p">(</span><span class="n">base_unit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">conv_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">parse_expression</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">)</span>
+
+        <span class="c1"># Need to play with prevector if we have Quantities</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_unit</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">_Quantity</span><span class="p">):</span>
+            <span class="n">factor</span> <span class="o">*=</span> <span class="n">base_unit</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">base_unit</span> <span class="o">=</span> <span class="n">base_unit</span><span class="o">.</span><span class="n">units</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">_Quantity</span><span class="p">):</span>
+            <span class="n">factor</span> <span class="o">/=</span> <span class="n">conv_unit</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">conv_unit</span> <span class="o">=</span> <span class="n">conv_unit</span><span class="o">.</span><span class="n">units</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">,</span> <span class="n">conv_unit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PhysicalConstantsContext.string_representation"><a class="viewcode-back" href="../../../api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.string_representation">[docs]</a>    <span class="k">def</span> <span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Print name, value, and units of all physical constants.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">print_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">run_comparison</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Compare the existing physical constant information for Psi4 (in checkup_data folder) to object instantiation from</span>
+<span class="sd">    `context`. Specialized use.&quot;&quot;&quot;</span>
+
+    <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">checkup_data</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info for comparison (directory checkup_data) not installed. Run from source.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+    <span class="k">class</span> <span class="nc">bcolors</span><span class="p">:</span>
+        <span class="n">HEADER</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
+        <span class="n">OKBLUE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m&quot;</span>
+        <span class="n">OKGREEN</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m&quot;</span>
+        <span class="n">WARNING</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m&quot;</span>
+        <span class="n">FAIL</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m&quot;</span>
+        <span class="n">ENDC</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+        <span class="n">BOLD</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
+        <span class="n">UNDERLINE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[4m&quot;</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0e-8</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">bcolors</span><span class="o">.</span><span class="n">OKBLUE</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Checking (</span><span class="si">{}</span><span class="s2">) physconst vs. Psi4 ...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span> <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">checkup_data</span><span class="o">.</span><span class="n">physconst</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">checkup_data</span><span class="o">.</span><span class="n">physconst</span><span class="p">,</span> <span class="n">pc</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+            <span class="n">rat</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rat</span> <span class="o">&gt;</span> <span class="mf">1.0e-4</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="n">bcolors</span><span class="o">.</span><span class="n">FAIL</span>
+                    <span class="o">+</span> <span class="s2">&quot;Physical Constant </span><span class="si">{}</span><span class="s2"> ratio differs by </span><span class="si">{:12.8f}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> (this) vs </span><span class="si">{}</span><span class="s2"> (psi)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">rat</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">rat</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Physical Constant </span><span class="si">{}</span><span class="s2"> ratio differs by </span><span class="si">{:12.8f}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> (this) vs </span><span class="si">{}</span><span class="s2"> (psi)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">rat</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">run_internal_comparison</span><span class="p">(</span><span class="n">old_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Compare two physical constant versions. Useful when adding new version.&quot;&quot;&quot;</span>
+
+    <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">old_context</span><span class="p">)</span>
+    <span class="n">other</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">new_context</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">bcolors</span><span class="p">:</span>
+        <span class="n">HEADER</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
+        <span class="n">OKBLUE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m&quot;</span>
+        <span class="n">OKGREEN</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m&quot;</span>
+        <span class="n">WARNING</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[93m&quot;</span>
+        <span class="n">FAIL</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[91m&quot;</span>
+        <span class="n">ENDC</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span>
+        <span class="n">BOLD</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1m&quot;</span>
+        <span class="n">UNDERLINE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[4m&quot;</span>
+
+    <span class="n">both</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="n">self_only</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">both</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">bcolors</span><span class="o">.</span><span class="n">WARNING</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PhysConst in old </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> missing in new </span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ...&quot;</span> <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">self_only</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pc</span><span class="p">))</span>
+
+    <span class="n">other_only</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">both</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">bcolors</span><span class="o">.</span><span class="n">WARNING</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">PhysConst in new </span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> missing in old </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ...&quot;</span> <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">other_only</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pc</span><span class="p">))</span>
+
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0e-8</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">bcolors</span><span class="o">.</span><span class="n">OKBLUE</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Checking (</span><span class="si">{</span><span class="n">tol</span><span class="si">}</span><span class="s2">) physconst </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> vs. </span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> ...&quot;</span> <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">both</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">):</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+            <span class="n">rat</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rat</span> <span class="o">&gt;</span> <span class="mf">1.0e-4</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="n">bcolors</span><span class="o">.</span><span class="n">FAIL</span>
+                    <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Physical Constant </span><span class="si">{</span><span class="n">pc</span><span class="si">}</span><span class="s2"> ratio differs by </span><span class="si">{</span><span class="n">rat</span><span class="si">:</span><span class="s2">12.8f</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2"> (this, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) vs </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">rat</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Physical Constant </span><span class="si">{</span><span class="n">pc</span><span class="si">}</span><span class="s2"> ratio differs by </span><span class="si">{</span><span class="n">rat</span><span class="si">:</span><span class="s2">12.8f</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2"> (this, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) vs </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">refu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">pc</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+            <span class="n">valu</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">pc</span><span class="p">[</span><span class="n">pc</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
+            <span class="k">if</span> <span class="n">refu</span> <span class="o">!=</span> <span class="n">valu</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="n">bcolors</span><span class="o">.</span><span class="n">BOLD</span>
+                    <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;Physical Constant </span><span class="si">{</span><span class="n">pc</span><span class="si">}</span><span class="s2"> units differs: </span><span class="si">{</span><span class="n">refu</span><span class="si">}</span><span class="s2"> (this, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">) vs </span><span class="si">{</span><span class="n">valu</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+                    <span class="o">+</span> <span class="n">bcolors</span><span class="o">.</span><span class="n">ENDC</span>
+                <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Decimal&quot;</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get pi to 36 digits (or more with mpmath).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    from_scratch</span>
+<span class="sd">        If True, recomputes Pi from mpmath.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Decimal</span>
+<span class="sd">        A representation of Pi</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span>
+
+        <span class="n">mp</span><span class="o">.</span><span class="n">dps</span> <span class="o">=</span> <span class="mi">36</span>
+        <span class="k">return</span> <span class="n">mp</span><span class="o">.</span><span class="n">pi</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;3.14159265358979323846264338327950288&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">write_c_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.h&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write C header file defining physical constants and pi, constants names are prefixed.&quot;&quot;&quot;</span>
+
+    <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;#ifndef _qcelemental_physconst_h_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;#define _qcelemental_physconst_h_&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;/* This file is autogenerated from the QCElemental python module from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> */&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;/* clang-format off */&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;#define </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">pi </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;#define </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">twopi </span><span class="si">{</span><span class="n">tau</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">pc</span><span class="p">,</span> <span class="n">qca</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">callname</span> <span class="o">=</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transtable</span><span class="p">)</span>
+        <span class="n">noncomment</span> <span class="o">=</span> <span class="s2">&quot;#define </span><span class="si">{}{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">callname</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:80}</span><span class="s2">  /*- </span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2"> -*/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">noncomment</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">comment</span><span class="p">))</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/* clang-format on */&quot;</span><span class="p">)</span>
+
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/* For Cray X1 compilers */&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#ifndef M_PI&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#define M_PI 3.14159265358979323846&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#endif&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#endif /* header guard */&quot;</span><span class="p">)</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File written (</span><span class="si">{}</span><span class="s2">). Remember to add license and clang-format it.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">write_fortran_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.fh&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write Fortran include file defining physical constants and pi, constants names are prefixed.</span>
+<span class="sd">    The name of the kind parameter can be passed as well.&quot;&quot;&quot;</span>
+
+    <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;! This file is autogenerated from the QCElemental python module from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">declare</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;real, parameter ::&quot;</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">declare</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">pi = </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">declare</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">twopi = </span><span class="si">{</span><span class="n">tau</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">declare</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;real(</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">), parameter ::&quot;</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">declare</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">pi = </span><span class="si">{</span><span class="n">pi</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">declare</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">twopi = </span><span class="si">{</span><span class="n">tau</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">pc</span><span class="p">,</span> <span class="n">qca</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">callname</span> <span class="o">=</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transtable</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">noncomment</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">declare</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">callname</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">noncomment</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">declare</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">callname</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">kind</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:80}</span><span class="s2">  !! </span><span class="si">{}</span><span class="s2"> [</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">noncomment</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">comment</span><span class="p">))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File written (</span><span class="si">{}</span><span class="s2">). Remember to add license header.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+
+<span class="c1"># singleton</span>
+<span class="n">constants</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="s2">&quot;CODATA2014&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

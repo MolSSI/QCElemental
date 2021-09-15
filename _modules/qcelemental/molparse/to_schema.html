@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.molparse.to_schema</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.molparse.to_schema</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">..physical_constants</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">unnp</span>
+<span class="kn">from</span> <span class="nn">.to_string</span> <span class="kn">import</span> <span class="n">formula_generator</span>
+
+
+<div class="viewcode-block" id="to_schema"><a class="viewcode-back" href="../../../api/qcelemental.molparse.to_schema.html#qcelemental.molparse.to_schema">[docs]</a><span class="k">def</span> <span class="nf">to_schema</span><span class="p">(</span>
+    <span class="n">molrec</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">np_out</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Translate molparse internal Molecule spec into dictionary from other schemas.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molrec</span>
+<span class="sd">        Psi4 json Molecule spec.</span>
+<span class="sd">    dtype</span>
+<span class="sd">        {&#39;psi4&#39;, 1, 2}</span>
+<span class="sd">        Molecule schema format.</span>
+<span class="sd">        ``1`` is https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html V1 + #44 + #53</span>
+<span class="sd">        ``2`` is ``1`` with internal schema_name/version (https://github.com/MolSSI/QCSchema/pull/60)</span>
+<span class="sd">    units</span>
+<span class="sd">        {&#39;Bohr&#39;, &#39;Angstrom&#39;}</span>
+<span class="sd">        Units in which to write string. There is not an option to write in</span>
+<span class="sd">        intrinsic/input units. Some `dtype` may not allow all units.</span>
+<span class="sd">    np_out</span>
+<span class="sd">        When `True`, fields originating from geom, elea, elez, elem, mass, real, elbl will be ndarray.</span>
+<span class="sd">        Use `False` to get a json-able version.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    qcschema : dict</span>
+<span class="sd">        Dictionary of the `dtype` repr of `molrec`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">qcschema</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span> <span class="ow">and</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span> <span class="ow">and</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span> <span class="ow">and</span> <span class="s2">&quot;input_units_to_au&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span> <span class="o">*</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;input_units_to_au&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span> <span class="n">units</span><span class="p">)</span>
+
+    <span class="n">nat</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">3</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">molrec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">formula_generator</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">]))</span>
+    <span class="c1">#    tagline = &quot;&quot;&quot;auto-generated by qcdb from molecule {}&quot;&quot;&quot;.format(name)</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;psi4&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;Psi4 Schema {} allows only &#39;Bohr&#39;/&#39;Angstrom&#39; coordinates, not {}.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">qcschema</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">molrec</span><span class="p">)</span>
+        <span class="n">qcschema</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom</span>
+        <span class="n">qcschema</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span>
+        <span class="n">qcschema</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;QCSchema </span><span class="si">{}</span><span class="s2"> allows only &#39;Bohr&#39; coordinates, not </span><span class="si">{}</span><span class="s2">.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">units</span><span class="p">))</span>
+
+        <span class="n">molecule</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;validated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;masses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;atomic_numbers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elez&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;mass_numbers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elea&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;atom_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="s2">&quot;comment&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+            <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">],</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">)</span>
+        <span class="n">fidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nat</span><span class="p">),</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">])</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fragments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">fr</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">fidx</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fragment_charges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fragment_charges&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;fix_symmetry&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+            <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">]</span>
+        <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;connectivity&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+            <span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;connectivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;connectivity&quot;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">qcschema</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;schema_name&quot;</span><span class="p">:</span> <span class="s2">&quot;qcschema_input&quot;</span><span class="p">,</span> <span class="s2">&quot;schema_version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;molecule&quot;</span><span class="p">:</span> <span class="n">molecule</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">qcschema</span> <span class="o">=</span> <span class="n">molecule</span>
+            <span class="n">qcschema</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;schema_name&quot;</span><span class="p">:</span> <span class="s2">&quot;qcschema_molecule&quot;</span><span class="p">,</span> <span class="s2">&quot;schema_version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+            <span class="s2">&quot;Schema dtype not understood, valid options are {{&#39;psi4&#39;, 1, 2}}. Found </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np_out</span><span class="p">:</span>
+        <span class="n">qcschema</span> <span class="o">=</span> <span class="n">unnp</span><span class="p">(</span><span class="n">qcschema</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">qcschema</span></div>
+
+    <span class="c1"># if return_type == &#39;json&#39;:</span>
+    <span class="c1">#    return json.dumps(qcschema)</span>
+    <span class="c1"># elif return_type == &#39;yaml&#39;:</span>
+    <span class="c1">#    import yaml</span>
+    <span class="c1">#    return yaml.dump(qcschema)</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#    raise ValidationError(&quot;&quot;&quot;Return type ({}) not recognized.&quot;&quot;&quot;.format(return_type))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+compare_molrecs
+===============
+
+.. currentmodule:: qcelemental.testing
+
+.. autofunction:: compare_molrecs

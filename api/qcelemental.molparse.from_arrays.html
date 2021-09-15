@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="from_input_arrays" href="qcelemental.molparse.from_input_arrays.html" />
+    <link rel="prev" title="contiguize_from_fragment_pattern" href="qcelemental.molparse.contiguize_from_fragment_pattern.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.periodic_table">qcelemental.periodic_table Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.physical_constants">qcelemental.physical_constants Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.covalent_radii">qcelemental.covalent_radii Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id8">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">from_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_schema.html">from_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_string.html">from_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_schema.html">to_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_string.html">to_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.validate_and_fill_chgmult.html">validate_and_fill_chgmult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">QCElemental API</a> &raquo;</li>
+        
+      <li>from_arrays</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/qcelemental.molparse.from_arrays.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="from-arrays">
+<h1>from_arrays<a class="headerlink" href="#from-arrays" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.molparse.from_arrays">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">from_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elea</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elez</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elbl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Angstrom'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_units_to_au</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_com</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_orientation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_symmetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_separators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_charges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_multiplicities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_multiplicity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provenance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hint_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom_hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geom_unsettled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'qm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_enabled_return</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'error'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">np_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speclabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tooclose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_ghost_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonphysical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/from_arrays.html#from_arrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.from_arrays" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compose a Molecule dict from unvalidated arrays and variables, returning dict.</p>
+<p>See fields of Return molrec below. Required parameters (for QM XYZ)
+are <cite>geom</cite> and one of <cite>elem</cite>, <cite>elez</cite>, <cite>elbl</cite> (<cite>speclabel=True</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geom</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>]</em><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em>]</em>) – (nat, 3) or (3 * nat, ) ndarray or list o’lists of Cartesian coordinates.</p></li>
+<li><p><strong>fragment_separators</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em>]</em>) – (nfr - 1, ) list of atom indices at which to split <cite>geom</cite> into fragments.</p></li>
+<li><p><strong>elbl</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em><em>, </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em>]</em>) – (nat, ) Label extending <cite>elem</cite> symbol, possibly conveying ghosting, isotope, mass, tagging information.</p></li>
+<li><p><strong>tooclose</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – Interatom distance (native <cite>geom</cite> units) nearer than which atoms not allowed.</p></li>
+<li><p><strong>nonphysical</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Do allow masses outside an element’s natural range to pass validation?</p></li>
+<li><p><strong>speclabel</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If <cite>True</cite>, interpret <cite>elbl</cite> as potentially full nucleus spec including
+ghosting, isotope, mass, tagging information, e.g., <cite>&#64;13C_mine</cite> or
+<cite>He4&#64;4.01</cite>. If <cite>False</cite>, interpret <cite>elbl</cite> as only the user/tagging
+extension to nucleus label, e.g. <cite>_mine</cite> or <cite>4</cite> in the previous examples.</p></li>
+<li><p><strong>missing_enabled_return</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – {‘minimal’, ‘none’, ‘error’}
+What to do when an enabled domain is of zero-length? Respectively, return
+a fully valid but empty molrec, return empty dictionary, or throw error.</p></li>
+<li><p><strong>np_out</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – When <cite>True</cite>, fields geom, elea, elez, elem, mass, real, elbl will be ndarray.
+Use <cite>False</cite> to get a json-able version.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul>
+<li><p><strong>molrec</strong> (<em>dict</em>) – Molecule dictionary spec follows. Its principles are</p>
+<p>(1) contents are fully validated and defaulted - no error
+checking necessary,</p>
+<p>(2) contents may be mildly redundant - atomic numbers and
+element symbols present,</p>
+<p>(3) big system, nat-length single-type arrays, not small system,
+nat-number heterogeneous objects,</p>
+<p>(4) some fields are optional (e.g., fix_symmetry) but largely
+self-describing so units or fix_com must be present.</p>
+<p>(5) apart from some mild optional fields, _all_ fields will
+be present (corollary of “fully validated and defaulted”) - no
+need to check for every key. in some cases like efp, keys will
+appear in blocks, so pre-handshake there will be a few hint keys
+and post-handshake they will be joined by full qm-like molrec.</p>
+<p>(6) molrec should be idempotent through this function (equiv to
+schema validator) but are not idempotent throughout its life. if
+fields permit, frame may be changed. Future? if fields permit,
+mol may be symmetrized. Coordinates and angles may change units
+or range if program returns them in only one form.</p>
+</li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – Label for molecule; should be valid Python identifier.</p></li>
+<li><p><strong>units</strong> (<em>{‘Angstrom’, ‘Bohr’}</em>) – Units for <cite>geom</cite>.</p></li>
+<li><p><strong>input_units_to_au</strong> (<em>float, optional</em>) – If <cite>units=’Angstrom’</cite>, overrides consumer’s value for [A]–&gt;[a0] conversion.</p></li>
+<li><p><strong>fix_com</strong> (<em>bool</em>) – Whether translation of <cite>geom</cite> is allowed or disallowed.</p></li>
+<li><p><strong>fix_orientation</strong> (<em>bool</em>) – Whether rotation of <cite>geom</cite> is allowed or disallowed.</p></li>
+<li><p><strong>fix_symmetry</strong> (<em>str, optional</em>) – Maximal point group symmetry which <cite>geom</cite> should be treated. Lowercase.</p></li>
+<li><p><strong>geom</strong> (<em>ndarray of float</em>) – (3 * nat, ) Cartesian coordinates in <cite>units</cite>.</p></li>
+<li><p><strong>elea</strong> (<em>ndarray of int</em>) – (nat, ) Mass number for atoms, if known isotope, else -1.</p></li>
+<li><p><strong>elez</strong> (<em>ndarray of int</em>) – (nat, ) Number of protons, nuclear charge for atoms.</p></li>
+<li><p><strong>elem</strong> (<em>ndarray of str</em>) – (nat, ) Element symbol for atoms.</p></li>
+<li><p><strong>mass</strong> (<em>ndarray of float</em>) – (nat, ) Atomic mass [u] for atoms.</p></li>
+<li><p><strong>real</strong> (<em>ndarray of bool</em>) – (nat, ) Real/ghostedness for atoms.</p></li>
+<li><p><strong>elbl</strong> (<em>ndarray of str</em>) – (nat, ) Label with any tagging information from element spec.</p></li>
+<li><p><strong>fragment_separators</strong> (<em>list of int</em>) – (nfr - 1, ) list of atom indices at which to split <cite>geom</cite> into fragments.</p></li>
+<li><p><strong>fragment_charges</strong> (<em>list of float</em>) – (nfr, ) list of charge allocated to each fragment.</p></li>
+<li><p><strong>fragment_multiplicities</strong> (<em>list of int</em>) – (nfr, ) list of multiplicity allocated to each fragment.</p></li>
+<li><p><strong>molecular_charge</strong> (<em>float</em>) – total charge on system.</p></li>
+<li><p><strong>molecular_multiplicity</strong> (<em>int</em>) – total multiplicity on system.</p></li>
+<li><p><strong>comment</strong> (<em>str, optional</em>) – Additional comment for molecule.</p></li>
+<li><p><strong>provenance</strong> (<em>dict of str</em>) – Accumulated history of molecule, with fields “creator”, “version”, “routine”.</p></li>
+<li><p><strong>connectivity</strong> (<em>list of tuples of int, optional</em>) – (nbond, 3) list of (0-indexed) (atomA, atomB, bond_order) (int, int, double) tuples</p></li>
+<li><p><em>EFP extension (this + units is minimal)</em></p></li>
+<li><p><strong>fragment_files</strong> (<em>list of str</em>) – (nfr, ) lowercased names of efp meat fragment files.</p></li>
+<li><p><strong>hint_types</strong> (<em>{‘xyzabc’, ‘points’}</em>) – (nfr, ) type of fragment orientation hint.</p></li>
+<li><p><strong>geom_hints</strong> (<em>list of lists of float</em>) – (nfr, ) inner lists have length 6 (xyzabc; to orient the center) or
+9 (points; to orient the first three atoms) of the EFP fragment.</p></li>
+<li><p><em>QMVZ extension (geom_unsettled replaces geom)</em></p></li>
+<li><p><strong>geom_unsettled</strong> (<em>list of lists of str</em>) – (nat, ) all-string Cartesian and/or zmat anchor and value contents
+mixing anchors, values, and variables.</p></li>
+<li><p><strong>variables</strong> (<em>list of pairs</em>) – (nvar, 2) pairs of variables (str) and values (float). May be incomplete.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – For most anything wrong.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="qcelemental.molparse.from_input_arrays.html" class="btn btn-neutral float-right" title="from_input_arrays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qcelemental.molparse.contiguize_from_fragment_pattern.html" class="btn btn-neutral float-left" title="contiguize_from_fragment_pattern" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.molparse.to_string</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.molparse.to_string</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..molutil</span> <span class="kn">import</span> <span class="n">guess_connectivity</span>
+<span class="kn">from</span> <span class="nn">..physical_constants</span> <span class="kn">import</span> <span class="n">constants</span>
+
+
+<div class="viewcode-block" id="to_string"><a class="viewcode-back" href="../../../api/qcelemental.molparse.to_string.html#qcelemental.molparse.to_string">[docs]</a><span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span>
+    <span class="n">molrec</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">atom_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ghost_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">17</span><span class="p">,</span>
+    <span class="n">prec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">return_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Format a string representation of QM molecule.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molrec</span>
+<span class="sd">        Psi4 json Molecule spec.</span>
+<span class="sd">    dtype</span>
+<span class="sd">        {&quot;xyz&quot;, &quot;cfour&quot;, &quot;nwchem&quot;, &quot;molpro&quot;, &quot;orca&quot;, &quot;turbomole&quot;, &quot;qchem&quot;}</span>
+<span class="sd">        Overall string format. Note that it&#39;s possible to request variations</span>
+<span class="sd">        that don&#39;t fit the dtype spec so may not be re-readable (e.g., ghost</span>
+<span class="sd">        and mass in nucleus label with ``&#39;xyz&#39;``).</span>
+<span class="sd">        &#39;cfour&#39; forces nucleus label, ignoring atom_format, ghost_format</span>
+<span class="sd">    units</span>
+<span class="sd">        Units in which to write string. Usually ``Angstrom`` or ``Bohr``</span>
+<span class="sd">        but may be any length unit.  There is not an option to write in</span>
+<span class="sd">        intrinsic/input units. For ``dtype=&#39;xyz&#39;, units=&#39;Bohr&#39;`` where the</span>
+<span class="sd">        format doesn&#39;t have a slot to specify units, &quot;au&quot; is added so that</span>
+<span class="sd">        readable as ``dtype=&#39;xyz+&#39;``.</span>
+<span class="sd">    atom_format</span>
+<span class="sd">        General format is ``&#39;{elem}&#39;``. A format string that may contain fields</span>
+<span class="sd">        &#39;elea&#39; (-1 will be &#39;&#39;), &#39;elez&#39;, &#39;elem&#39;, &#39;mass&#39;, &#39;elbl&#39; in any</span>
+<span class="sd">        arrangement. For example, if a format naturally uses element symbol</span>
+<span class="sd">        and you want atomic number instead with mass info, too, pass</span>
+<span class="sd">        ``&#39;{elez}@{mass}&#39;``. See `ghost_format` for handling field &#39;real&#39;.</span>
+<span class="sd">    ghost_format</span>
+<span class="sd">        General format is ``&#39;@{elem}&#39;``. Like `atom_format`, but this formatter</span>
+<span class="sd">        is used when `real=False`. To suppress ghost atoms, use `ghost_format=&#39;&#39;`.</span>
+<span class="sd">    width</span>
+<span class="sd">        Field width for formatting coordinate float.</span>
+<span class="sd">    prec</span>
+<span class="sd">        Number of decimal places for formatting coordinate float.</span>
+<span class="sd">    return_data</span>
+<span class="sd">        Whether to return dictionary with additional info from the molrec that&#39;s</span>
+<span class="sd">        not expressible in the string but may be of interest to the QC program.</span>
+<span class="sd">        Note that field names are in QCSchema, not molrec, language.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        String representation of the molecule.</span>
+<span class="sd">    str, dict</span>
+<span class="sd">        When ``return_data=True``, return additionally a dictionary</span>
+
+<span class="sd">          * keywords: key, value pairs for processing molecule info into options</span>
+<span class="sd">          * fields: aspects of ``qcelemental.models.Molecule`` expressed into string *or* keywords.</span>
+<span class="sd">            Model fields *not* listed are lost in QCSchema -&gt; QC DSL translation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># funits, fiutau = process_units(molrec)</span>
+    <span class="c1"># molrec = self.to_dict(force_units=units, np_out=True)</span>
+
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="n">default_units</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;xyz&quot;</span><span class="p">:</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;xyz+&quot;</span><span class="p">:</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nglview-sdf&quot;</span><span class="p">:</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cfour&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;gamess&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;molpro&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nwchem&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;orca&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;psi4&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;qchem&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;terachem&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;turbomole&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;madness&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>  <span class="c1"># madness by default reads au and optionally can read angs/angstrom</span>
+        <span class="s2">&quot;mrchem&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span>  <span class="c1"># MRChem by default reads au and optionally can read angs/angstrom</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">default_units</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dtype &#39;</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39; not understood.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Handle units</span>
+    <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">default_units</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">elif</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;input_units_to_au&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;input_units_to_au&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span>
+    <span class="k">elif</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span>
+    <span class="k">elif</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span> <span class="n">units</span><span class="p">)</span>
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="n">factor</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">molrec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">formula_generator</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">]))</span>
+    <span class="n">tagline</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;auto-generated by QCElemental from molecule </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+        <span class="n">fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;atomic_numbers&quot;</span><span class="p">,</span> <span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="s2">&quot;symbols&quot;</span><span class="p">]</span>
+        <span class="n">keywords</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">_dict_attrs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict_attrs</span><span class="p">}</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="s2">&quot;xyz+&quot;</span><span class="p">]:</span>
+        <span class="c1"># Notes</span>
+        <span class="c1"># * if units not in umap (e.g., nm), can&#39;t be read back in by from_string()</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">atom_format</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">atom_format</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;@</span><span class="si">{elem}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">ghost_format</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ghost_format</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;au&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">nat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">nat</span><span class="p">),</span> <span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;orca&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">:&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;! Bohrs&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;!&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">umap</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()])</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;*xyz </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;cfour&quot;</span><span class="p">:</span>
+        <span class="c1"># Notes</span>
+        <span class="c1"># * losing identity of ghost atoms. picked up again in basis formatting</span>
+        <span class="c1"># * casting &#39;molecular_charge&#39; to int</span>
+        <span class="c1"># * no spaces at the beginning of 1st/comment line is important</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;GH&quot;</span>
+        <span class="c1"># TODO handle which units valid</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">tagline</span><span class="p">]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;multiplicity&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+            <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;molpro&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Don&#39;t orient the molecule if asked to fix_com or fix_orientation</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]:</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{orient,noorient}&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Have no symmetry if asked to fix_symmetry</span>
+        <span class="k">if</span> <span class="s2">&quot;fix_symmetry&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{symmetry,nosym}&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;fix_symmetry&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">molrec</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{symmetry,auto}&quot;</span><span class="p">)</span>
+
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">units_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">geom_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;geometry={&quot;&quot;&quot;</span>
+        <span class="n">end_bracket</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;}&quot;&quot;&quot;</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">units_line</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geom_line</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_bracket</span><span class="p">)</span>
+
+        <span class="c1"># Write ghost atom declarations in Molpro (using dummy card)</span>
+        <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">]:</span>
+            <span class="n">ghost_line</span> <span class="o">=</span> <span class="s2">&quot;dummy,&quot;</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">real</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">real</span><span class="p">])</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ghost_line</span><span class="p">)</span>
+
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set,charge=</span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># The Molpro &quot;spin&quot; is the multiplicity minus one</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set,spin=</span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;nwchem&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;GH&quot;</span>
+        <span class="c1"># TODO handle which units valid</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstroms&quot;</span><span class="p">,</span> <span class="s2">&quot;nm&quot;</span><span class="p">:</span> <span class="s2">&quot;nanometers&quot;</span><span class="p">,</span> <span class="s2">&quot;pm&quot;</span><span class="p">:</span> <span class="s2">&quot;picometers&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;geometry units </span><span class="si">{</span><span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="c1"># noautosym nocenter  # no reorienting input geometry</span>
+        <span class="n">fix_symm</span> <span class="o">=</span> <span class="n">molrec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">symm_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fix_symm</span><span class="p">:</span>
+            <span class="n">symm_line</span> <span class="o">=</span> <span class="s2">&quot;symmetry </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fix_symm</span><span class="p">)</span>  <span class="c1"># not quite what Jiyoung had</span>
+        <span class="n">last_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;end&quot;&quot;&quot;</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="p">]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symm_line</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">])}</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;scf__nopen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;dft__mult&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;madness&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;GH&quot;</span>
+        <span class="c1"># TODO handle which units valid</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;au&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;geometry&quot;&quot;&quot;</span>
+        <span class="n">second_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;units </span><span class="si">{</span><span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">last_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;end&quot;&quot;&quot;</span>
+        <span class="c1"># noautosym nocenter  # no reorienting input geometry</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="p">]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">second_line</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">])}</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;spin_restricted&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;gamess&quot;</span><span class="p">:</span>
+        <span class="c1"># * GAMESS can&#39;t detect or run in symmetry w/o explicit notation</span>
+        <span class="c1"># * symm detection is out-of-scope for qcel -- hence the explicit C1 default</span>
+        <span class="c1"># * symm provisionally hackable by passing both point group and naxis (if needed)</span>
+        <span class="c1">#   through ``fix_symmetry``. newline encoded here if needed.</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{elem}{elbl}</span><span class="s2"> </span><span class="si">{elez}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{BQ}</span><span class="s2"> -</span><span class="si">{elez}</span><span class="s2">&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angs&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; $data&quot;&quot;&quot;</span>
+        <span class="n">second_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span><span class="si">{</span><span class="n">tagline</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>  <span class="c1"># card -1-</span>
+        <span class="n">fix_symm</span> <span class="o">=</span> <span class="n">molrec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">,</span> <span class="s2">&quot;C1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">symm_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">fix_symm</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># card -2-</span>
+        <span class="k">if</span> <span class="n">fix_symm</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;C1&quot;</span><span class="p">:</span>
+            <span class="n">symm_line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># blank card replaces -3- &amp; -4-</span>
+        <span class="n">last_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; $end&quot;&quot;&quot;</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="p">,</span> <span class="n">second_line</span><span class="p">,</span> <span class="n">symm_line</span><span class="p">]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>  <span class="c1"># card -5C-</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;contrl__icharg&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;contrl__mult&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;contrl__units&quot;</span><span class="p">:</span> <span class="n">umap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()),</span>
+            <span class="s2">&quot;contrl__coord&quot;</span><span class="p">:</span> <span class="s2">&quot;prinaxis&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;terachem&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;X</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;au&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">umap</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">name</span><span class="p">]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;psi4&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;Gh(</span><span class="si">{elem}{elbl}</span><span class="s2">)&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">]</span>
+        <span class="n">split_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">ifr</span><span class="p">,</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split_atoms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># harmless to include but tidier to exclude</span>
+                <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;fragment_charges&#39;</span><span class="p">][</span><span class="n">ifr</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;fragment_multiplicities&#39;</span><span class="p">][</span><span class="n">ifr</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">fr</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+        <span class="c1"># append units and any other non-default molecule keywords</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;units </span><span class="si">{</span><span class="n">umap</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]:</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;no_com&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]:</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;no_reorient&quot;</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fragments&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fragment_charges&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fix_com&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fix_orientation&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;turbomole&quot;</span><span class="p">:</span>
+        <span class="c1"># In Turbomole coord files the coordinates come first, and the atomic</span>
+        <span class="c1"># symbol comes afterwards.</span>
+        <span class="c1"># Handling of ghost atoms is done in the basis section of the control</span>
+        <span class="c1"># file by setting the nuclear charge of certain atoms to zero.</span>
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">}</span>
+        <span class="n">umap</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>  <span class="c1"># trigger error if downstream can&#39;t handle</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">xyze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">]</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;$coord&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">atoms</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;$end&quot;</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;nglview-sdf&quot;</span><span class="p">:</span>
+        <span class="c1"># SDF is pretty special, handle it manually</span>
+
+        <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Angstrom&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;SDF Format must be in Angstroms&quot;</span><span class="p">)</span>
+
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="n">ghost_format</span> <span class="ow">or</span> <span class="s2">&quot;Gh&quot;</span>
+
+        <span class="n">connectivity</span> <span class="o">=</span> <span class="n">molrec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connectivity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">connectivity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bohr_geom</span> <span class="o">=</span> <span class="n">geom</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">)</span>
+            <span class="n">connectivity</span> <span class="o">=</span> <span class="n">guess_connectivity</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">],</span> <span class="n">bohr_geom</span><span class="p">,</span> <span class="n">default_connectivity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;QCElemental</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;real&#39;</span><span class="p">])</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">connectivity</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">  0  0  0  0  0  0  0  0  0&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">real</span><span class="p">,</span> <span class="n">sym</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">],</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">],</span> <span class="n">geom</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">real</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">sym</span> <span class="o">=</span> <span class="n">ghost_format</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">sym</span><span class="si">:</span><span class="s2">&gt;3s</span><span class="si">}</span><span class="s2">  0  0     0  0  0  0  0  0&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">connectivity</span><span class="p">:</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="p">(</span><span class="n">a1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="n">a2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">:</span><span class="s2">1d</span><span class="si">}</span><span class="s2">  0  0  0  0&quot;</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;qchem&quot;</span><span class="p">:</span>
+
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;@</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">}</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">first_line</span> <span class="o">=</span> <span class="s2">&quot;$molecule&quot;</span>
+        <span class="n">chgmult_line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">last_line</span> <span class="o">=</span> <span class="s2">&quot;$end&quot;</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_line</span><span class="p">,</span> <span class="n">chgmult_line</span><span class="p">]</span>
+        <span class="n">split_atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">ifr</span><span class="p">,</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split_atoms</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="p">[</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;fragment_charges&#39;</span><span class="p">][</span><span class="n">ifr</span><span class="p">])</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;fragment_multiplicities&#39;</span><span class="p">][</span><span class="n">ifr</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">fr</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;fix_com&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fix_orientation&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fragment_charges&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;units&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;no_reorient&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;input_bohr&quot;</span><span class="p">:</span> <span class="n">umap</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="s2">&quot;fix_symmetry&quot;</span> <span class="ow">in</span> <span class="n">molrec</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;c1&quot;</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;sym_ignore&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;symmetry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;mrchem&quot;</span><span class="p">:</span>
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">smol</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[</span>
+                <span class="s2">&quot;Molecule {&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;charge = </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_charge&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;multiplicity = </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;translate = </span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;fix_com&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$coords&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="o">+</span> <span class="n">atoms</span>
+            <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;$end</span><span class="se">\n</span><span class="s2">}&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># this is what we are actually interested in:</span>
+        <span class="c1"># when dtype=&quot;mrchem&quot;, we always want to set return_data=True</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;multiplicity&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;translate&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dtype &#39;</span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39; not understood.&quot;</span><span class="p">)</span>
+
+    <span class="n">smol_ret</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">smol</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">return_data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smol_ret</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">smol_ret</span></div>
+
+
+<span class="k">def</span> <span class="nf">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">xyze</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Format a list of strings, one per atom from `molrec`.&quot;&quot;&quot;</span>
+
+    <span class="n">nat</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">fxyz</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{:&gt;</span><span class="si">{width}</span><span class="s2">.</span><span class="si">{prec}</span><span class="s2">f}&quot;&quot;&quot;</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{:</span><span class="si">{sp}</span><span class="s2">}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sp</span><span class="o">=</span><span class="n">sp</span><span class="p">)</span>
+
+    <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">iat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nat</span><span class="p">):</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">atominfo</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elea&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elea&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elea&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">],</span>
+            <span class="s2">&quot;elez&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elez&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">],</span>
+            <span class="s2">&quot;elem&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elem&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">],</span>
+            <span class="s2">&quot;mass&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;mass&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">],</span>
+            <span class="s2">&quot;elbl&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">][</span><span class="n">iat</span><span class="p">]:</span>
+            <span class="n">nuc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{:</span><span class="si">{width}</span><span class="s2">}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">atom_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+            <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nuc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ghost_format</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">nuc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{:</span><span class="si">{width}</span><span class="s2">}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ghost_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">atominfo</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+                <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nuc</span><span class="p">)</span>
+
+        <span class="n">atom</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">fxyz</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geom</span><span class="p">[</span><span class="n">iat</span><span class="p">]])</span>
+        <span class="k">if</span> <span class="n">xyze</span><span class="p">:</span>
+            <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+        <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">atoms</span>
+
+
+<span class="k">def</span> <span class="nf">formula_generator</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return simple chemical formula from element list `elem`.</span>
+
+<span class="sd">    &gt;&gt;&gt; formula_generator([&#39;C&#39;, &#39;Ca&#39;, &#39;O&#39;, &#39;O&#39;, &#39;Ag&#39;]</span>
+<span class="sd">    AgCCaO2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">counted</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">el</span> <span class="k">if</span> <span class="n">cnt</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">(</span><span class="n">el</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cnt</span><span class="p">)))</span> <span class="k">for</span> <span class="n">el</span><span class="p">,</span> <span class="n">cnt</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">counted</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

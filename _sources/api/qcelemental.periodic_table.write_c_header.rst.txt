@@ -1,0 +1,6 @@
+write_c_header
+==============
+
+.. currentmodule:: qcelemental.periodic_table
+
+.. autofunction:: write_c_header

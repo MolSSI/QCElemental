@@ -1,0 +1,37 @@
+PeriodicTable
+=============
+
+.. currentmodule:: qcelemental.periodic_table
+
+.. autoclass:: PeriodicTable
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~PeriodicTable.to_A
+      ~PeriodicTable.to_E
+      ~PeriodicTable.to_Z
+      ~PeriodicTable.to_atomic_number
+      ~PeriodicTable.to_element
+      ~PeriodicTable.to_group
+      ~PeriodicTable.to_mass
+      ~PeriodicTable.to_mass_number
+      ~PeriodicTable.to_name
+      ~PeriodicTable.to_period
+      ~PeriodicTable.to_symbol
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: to_A
+   .. automethod:: to_E
+   .. automethod:: to_Z
+   .. automethod:: to_atomic_number
+   .. automethod:: to_element
+   .. automethod:: to_group
+   .. automethod:: to_mass
+   .. automethod:: to_mass_number
+   .. automethod:: to_name
+   .. automethod:: to_period
+   .. automethod:: to_symbol

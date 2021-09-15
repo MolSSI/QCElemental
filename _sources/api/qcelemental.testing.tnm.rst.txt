@@ -1,0 +1,6 @@
+tnm
+===
+
+.. currentmodule:: qcelemental.testing
+
+.. autofunction:: tnm

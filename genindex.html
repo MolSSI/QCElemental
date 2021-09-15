@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.A">A (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.A">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="model_result.html#qcelemental.models.AtomicInput">AtomicInput (class in qcelemental.models)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_result.html#qcelemental.models.AtomicResult">AtomicResult (class in qcelemental.models)</a>
+</li>
+      <li><a href="model_result.html#qcelemental.models.results.AtomicResultProperties">AtomicResultProperties (class in qcelemental.models.results)</a>
+</li>
+      <li><a href="model_result.html#qcelemental.models.results.AtomicResultProtocols">AtomicResultProtocols (class in qcelemental.models.results)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_common.html#qcelemental.models.basis.BasisCenter">BasisCenter (class in qcelemental.models.basis)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_common.html#qcelemental.models.BasisSet">BasisSet (class in qcelemental.models)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.ChoicesError.html#qcelemental.ChoicesError">ChoicesError</a>
+</li>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.comment">comment (qcelemental.Datum attribute)</a>
+</li>
+      <li><a href="api/qcelemental.compare.html#qcelemental.compare">compare() (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.testing.compare.html#qcelemental.testing.compare">(in module qcelemental.testing)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.testing.compare_molrecs.html#qcelemental.testing.compare_molrecs">compare_molrecs() (in module qcelemental.testing)</a>
+</li>
+      <li><a href="api/qcelemental.compare_recursive.html#qcelemental.compare_recursive">compare_recursive() (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.testing.compare_recursive.html#qcelemental.testing.compare_recursive">(in module qcelemental.testing)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.compare_values.html#qcelemental.compare_values">compare_values() (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.testing.compare_values.html#qcelemental.testing.compare_values">(in module qcelemental.testing)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_common.html#qcelemental.models.ComputeError">ComputeError (class in qcelemental.models)</a>
+</li>
+      <li><a href="api/qcelemental.constants.html#qcelemental.constants">constants (in module qcelemental)</a>
+</li>
+      <li><a href="api/qcelemental.molparse.contiguize_from_fragment_pattern.html#qcelemental.molparse.contiguize_from_fragment_pattern">contiguize_from_fragment_pattern() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="physconst.html#qcelemental.constants.conversion_factor">conversion_factor (class in qcelemental.constants)</a>
+</li>
+      <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.conversion_factor">conversion_factor() (qcelemental.physical_constants.PhysicalConstantsContext method)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.conversion_factor">(qcelemental.PhysicalConstantsContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii">CovalentRadii (class in qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii">(class in qcelemental.covalent_radii)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.cr">cr (qcelemental.covalent_radii.CovalentRadii attribute)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.cr">(qcelemental.CovalentRadii attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.data">data (qcelemental.Datum attribute)</a>
+</li>
+      <li><a href="api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError">DataUnavailableError</a>
+</li>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum">Datum (class in qcelemental)</a>
+</li>
+      <li><a href="api/qcelemental.constants.html#qcelemental.doi">doi (in module qcelemental)</a>, <a href="api/qcelemental.vdwradii.html#qcelemental.doi">[1]</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.doi">(qcelemental.covalent_radii.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.doi">(qcelemental.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.doi">(qcelemental.Datum attribute)</a>
+</li>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.doi">(qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.doi">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.doi">(qcelemental.VanderWaalsRadii attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.E">E (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.E">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.EA">EA (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.EA">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_common.html#qcelemental.models.basis.ECPPotential">ECPPotential (class in qcelemental.models.basis)</a>
+</li>
+      <li><a href="model_common.html#qcelemental.models.basis.ElectronShell">ElectronShell (class in qcelemental.models.basis)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_common.html#qcelemental.models.FailedOperation">FailedOperation (class in qcelemental.models)</a>
+</li>
+      <li><a href="api/qcelemental.molparse.from_arrays.html#qcelemental.molparse.from_arrays">from_arrays() (in module qcelemental.molparse)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.molparse.from_input_arrays.html#qcelemental.molparse.from_input_arrays">from_input_arrays() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema">from_schema() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string">from_string() (in module qcelemental.molparse)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="physconst.html#qcelemental.constants.get">get() (in module qcelemental.constants)</a>
+
+      <ul>
+        <li><a href="covalent_radii.html#qcelemental.covalentradii.get">(in module qcelemental.covalentradii)</a>
+</li>
+        <li><a href="vanderwaals_radii.html#qcelemental.vdwradii.get">(in module qcelemental.vdwradii)</a>
+</li>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.get">(qcelemental.covalent_radii.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.get">(qcelemental.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.get">(qcelemental.physical_constants.PhysicalConstantsContext method)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.get">(qcelemental.PhysicalConstantsContext method)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.get">(qcelemental.VanderWaalsRadii method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.glossary">glossary (qcelemental.Datum attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.label">label (qcelemental.Datum attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.mass">mass (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.mass">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+      </ul></li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api.html#module-qcelemental">qcelemental</a>
+</li>
+        <li><a href="api.html#module-qcelemental.covalent_radii">qcelemental.covalent_radii</a>
+</li>
+        <li><a href="api.html#module-qcelemental.molparse">qcelemental.molparse</a>
+</li>
+        <li><a href="api.html#module-qcelemental.periodic_table">qcelemental.periodic_table</a>
+</li>
+        <li><a href="api.html#module-qcelemental.physical_constants">qcelemental.physical_constants</a>
+</li>
+        <li><a href="api.html#module-qcelemental.testing">qcelemental.testing</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_molecule.html#qcelemental.models.Molecule">Molecule (class in qcelemental.models)</a>
+</li>
+      <li><a href="api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError">MoleculeFormatError</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.constants.html#qcelemental.name">name (in module qcelemental)</a>, <a href="api/qcelemental.periodictable.html#qcelemental.name">[1]</a>, <a href="api/qcelemental.vdwradii.html#qcelemental.name">[2]</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.name">(qcelemental.covalent_radii.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.name">(qcelemental.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.name">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.name">(qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.name">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.name">(qcelemental.VanderWaalsRadii attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.vdwradii.html#qcelemental.native_units">native_units (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.native_units">(qcelemental.covalent_radii.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.native_units">(qcelemental.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.native_units">(qcelemental.VanderWaalsRadii attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError">NotAnElementError</a>
+</li>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.numeric">numeric (qcelemental.Datum attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.molparse.parse_nucleus_label.html#qcelemental.molparse.parse_nucleus_label">parse_nucleus_label() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.constants.html#qcelemental.pc">pc (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.pc">(qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.pc">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable">PeriodicTable (class in qcelemental.periodic_table)</a>
+</li>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.periodictable">periodictable (in module qcelemental)</a>
+</li>
+      <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">PhysicalConstantsContext (class in qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext">(class in qcelemental.physical_constants)</a>
+</li>
+      </ul></li>
+      <li><a href="model_common.html#qcelemental.models.Provenance">Provenance (class in qcelemental.models)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    qcelemental
+
+      <ul>
+        <li><a href="api.html#module-qcelemental">module</a>
+</li>
+      </ul></li>
+      <li>
+    qcelemental.covalent_radii
+
+      <ul>
+        <li><a href="api.html#module-qcelemental.covalent_radii">module</a>
+</li>
+      </ul></li>
+      <li>
+    qcelemental.molparse
+
+      <ul>
+        <li><a href="api.html#module-qcelemental.molparse">module</a>
+</li>
+      </ul></li>
+      <li>
+    qcelemental.periodic_table
+
+      <ul>
+        <li><a href="api.html#module-qcelemental.periodic_table">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    qcelemental.physical_constants
+
+      <ul>
+        <li><a href="api.html#module-qcelemental.physical_constants">module</a>
+</li>
+      </ul></li>
+      <li>
+    qcelemental.testing
+
+      <ul>
+        <li><a href="api.html#module-qcelemental.testing">module</a>
+</li>
+      </ul></li>
+      <li><a href="physconst.html#qcelemental.constants.Quantity">Quantity() (in module qcelemental.constants)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.Quantity">(qcelemental.physical_constants.PhysicalConstantsContext method)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">(qcelemental.PhysicalConstantsContext method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.constants.html#qcelemental.raw_codata">raw_codata (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.raw_codata">(qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.raw_codata">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.molparse.reconcile_nucleus.html#qcelemental.molparse.reconcile_nucleus">reconcile_nucleus() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.periodic_table.run_comparison.html#qcelemental.periodic_table.run_comparison">run_comparison() (in module qcelemental.periodic_table)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="physconst.html#qcelemental.constants.string_representation">string_representation() (in module qcelemental.constants)</a>
+
+      <ul>
+        <li><a href="covalent_radii.html#qcelemental.covalentradii.string_representation">(in module qcelemental.covalentradii)</a>
+</li>
+        <li><a href="vanderwaals_radii.html#qcelemental.vdwradii.string_representation">(in module qcelemental.vdwradii)</a>
+</li>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.string_representation">(qcelemental.covalent_radii.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.string_representation">(qcelemental.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.string_representation">(qcelemental.physical_constants.PhysicalConstantsContext method)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.string_representation">(qcelemental.PhysicalConstantsContext method)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.string_representation">(qcelemental.VanderWaalsRadii method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.testing.tnm.html#qcelemental.testing.tnm">tnm() (in module qcelemental.testing)</a>
+</li>
+      <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_A">to_A() (qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_atomic_number">to_atomic_number() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_atomic_number">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_E">to_E() (qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_element">to_element() (qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_group">to_group() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_group">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_mass">to_mass() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_mass">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_mass_number">to_mass_number() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_mass_number">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_name">to_name() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_name">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_period">to_period() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_period">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.molparse.to_schema.html#qcelemental.molparse.to_schema">to_schema() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.molparse.to_string.html#qcelemental.molparse.to_string">to_string() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="periodic_table.html#qcelemental.periodictable.to_symbol">to_symbol() (in module qcelemental.periodictable)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_symbol">(qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.to_Z">to_Z() (qcelemental.periodic_table.PeriodicTable method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.Datum.html#qcelemental.Datum.units">units (qcelemental.Datum attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.ureg">ureg (qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.ureg">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.molparse.validate_and_fill_chgmult.html#qcelemental.molparse.validate_and_fill_chgmult">validate_and_fill_chgmult() (in module qcelemental.molparse)</a>
+</li>
+      <li><a href="api/qcelemental.ValidationError.html#qcelemental.ValidationError">ValidationError</a>
+</li>
+      <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii">VanderWaalsRadii (class in qcelemental)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.vdwradii.html#qcelemental.vdwr">vdwr (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.vdwr">(qcelemental.VanderWaalsRadii attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/qcelemental.vdwradii.html#qcelemental.vdwradii">vdwradii (in module qcelemental)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="model_result.html#qcelemental.models.results.WavefunctionProperties">WavefunctionProperties (class in qcelemental.models.results)</a>
+</li>
+      <li><a href="api/qcelemental.periodic_table.write_c_header.html#qcelemental.periodic_table.write_c_header">write_c_header() (in module qcelemental.periodic_table)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.write_c_header">(qcelemental.covalent_radii.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.write_c_header">(qcelemental.CovalentRadii method)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.write_c_header">(qcelemental.VanderWaalsRadii method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.constants.html#qcelemental.year">year (in module qcelemental)</a>, <a href="api/qcelemental.vdwradii.html#qcelemental.year">[1]</a>
+
+      <ul>
+        <li><a href="api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.covalent_radii.CovalentRadii.year">(qcelemental.covalent_radii.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii.year">(qcelemental.CovalentRadii attribute)</a>
+</li>
+        <li><a href="api/qcelemental.physical_constants.PhysicalConstantsContext.html#qcelemental.physical_constants.PhysicalConstantsContext.year">(qcelemental.physical_constants.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.year">(qcelemental.PhysicalConstantsContext attribute)</a>
+</li>
+        <li><a href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.year">(qcelemental.VanderWaalsRadii attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/qcelemental.periodictable.html#qcelemental.Z">Z (in module qcelemental)</a>
+
+      <ul>
+        <li><a href="api/qcelemental.periodic_table.PeriodicTable.html#qcelemental.periodic_table.PeriodicTable.Z">(qcelemental.periodic_table.PeriodicTable attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

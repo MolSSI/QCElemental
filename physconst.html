@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Periodic Table" href="periodic_table.html" />
+    <link rel="prev" title="Install QCElemental" href="install.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physical Constants</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conversion-factors">Conversion Factors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quantities">Quantities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nist-codata">NIST CODATA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contexts">Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-definitions">Function Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Physical Constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/physconst.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="physical-constants">
+<h1>Physical Constants<a class="headerlink" href="#physical-constants" title="Permalink to this headline">¶</a></h1>
+<p>NIST Physical constants are available from QCElemental with arbitrary
+conversion factors using the <a class="reference external" href="https://pint.readthedocs.io/en/latest/">pint</a>
+package. The current default physical constants come from the <a class="reference external" href="https://physics.nist.gov/cuu/Constants/">NIST CODATA
+2014</a>.</p>
+<div class="section" id="conversion-factors">
+<h2>Conversion Factors<a class="headerlink" href="#conversion-factors" title="Permalink to this headline">¶</a></h2>
+<p>Conversion factors are available for any valid conversion:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;nanometer&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">)</span>
+<span class="go">10.0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;eV / nanometer ** 2&quot;</span><span class="p">,</span> <span class="s2">&quot;hartree / angstrom ** 2&quot;</span><span class="p">)</span>
+<span class="go">0.00036749322481535707</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>QCElemental is explicit: <code class="docutils literal notranslate"><span class="pre">kcal</span></code> is quite different from <code class="docutils literal notranslate"><span class="pre">kcal</span> <span class="pre">/</span> <span class="pre">mol</span></code>. Be careful of common
+shorthands.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;kcal&quot;</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+<span class="go">2.611447418269555e+22</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;kcal / mol&quot;</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+<span class="go">0.043364103900593226</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="quantities">
+<h2>Quantities<a class="headerlink" href="#quantities" title="Permalink to this headline">¶</a></h2>
+<p>QCElemental supports the <code class="docutils literal notranslate"><span class="pre">pint</span></code> “values with units” Quantity objects:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;5 kcal / mol&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span>
+<span class="go">&lt;Quantity(5, &#39;kilocalorie&#39;)&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="go">5.0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span><span class="o">.</span><span class="n">dimensionality</span>
+<span class="go">&lt;UnitsContainer({&#39;[length]&#39;: 2.0, &#39;[mass]&#39;: 1.0, &#39;[substance]&#39;: -1.0, &#39;[time]&#39;: -2.0})&gt;</span>
+</pre></div>
+</div>
+<p>These objects are often used for code that has many different units to make
+the requisite bookkeeping nearly effortless. In addition, these objects have
+NumPy and Pandas support built-in:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;kcal&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">&lt;Quantity([0 1 2 3], &#39;kilocalorie&#39;)&gt;</span>
+</pre></div>
+</div>
+<p>An example of array manipulation using a NumPy array with a <code class="docutils literal notranslate"><span class="pre">pint</span></code> quantity:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity([0 1 2 3], &#39;electron_volt * kilocalorie&#39;)&gt;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity([0.00000000e+00 2.61144742e+22 5.22289484e+22 7.83434225e+22], &#39;electron_volt&#39;)&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="nist-codata">
+<h2>NIST CODATA<a class="headerlink" href="#nist-codata" title="Permalink to this headline">¶</a></h2>
+<p>The exact values from the NIST CODATA can be queried explicitly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hartree energy in ev&quot;</span><span class="p">)</span>
+<span class="go">27.21138602</span>
+</pre></div>
+</div>
+<p>The complete NIST CODATA record is held and can be obtained via the Python-
+API. The following example shows how to obtain a  comprehensive overview of
+the individual CODATA record:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">datum</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hartree energy in ev&quot;</span><span class="p">,</span> <span class="n">return_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datum</span>
+<span class="go">&lt;----------------------------------------</span>
+<span class="go">       Datum Hartree energy in eV</span>
+<span class="go">----------------------------------------</span>
+<span class="go">Data:     27.21138602</span>
+<span class="go">Units:    [eV]</span>
+<span class="go">doi:      10.18434/T4WW24</span>
+<span class="go">Comment:  uncertainty=0.000 000 17</span>
+<span class="go">Glossary:</span>
+<span class="go">----------------------------------------&gt;</span>
+</pre></div>
+</div>
+<p>Each of these quantities is API accessible:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">datum</span><span class="o">.</span><span class="n">doi</span>
+<span class="go">&#39;10.18434/T4WW24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datum</span><span class="o">.</span><span class="n">comment</span>
+<span class="go">&#39;uncertainty=0.000 000 17&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contexts">
+<h2>Contexts<a class="headerlink" href="#contexts" title="Permalink to this headline">¶</a></h2>
+<p>Physical constants are continuously refined over time as experimental precision
+increases or redefinition occurs. To prepare for future changes, physical
+constants are contained in contexts. The <code class="docutils literal notranslate"><span class="pre">qcel.constants</span></code> context will be
+updated over time to the latest NIST data. To “pin” a context version, a
+specific context can be created like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">context</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="s2">&quot;CODATA2014&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">context</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;hartree&quot;</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">)</span>
+<span class="go">27.21138601949571</span>
+</pre></div>
+</div>
+<p>Currently only <code class="docutils literal notranslate"><span class="pre">CODATA2014</span></code> is available.</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>Top level user functions:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qcelemental.constants.conversion_factor" title="qcelemental.constants.conversion_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conversion_factor</span></code></a>(base_unit, conv_unit)</p></td>
+<td><p>Provides the conversion factor from one unit to another.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qcelemental.constants.get" title="qcelemental.constants.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([return_tuple])</p></td>
+<td><p>Access a physical constant, <cite>physical_constant</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qcelemental.constants.Quantity" title="qcelemental.constants.Quantity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quantity</span></code></a>()</p></td>
+<td><p>Returns a Pint Quantity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qcelemental.constants.string_representation" title="qcelemental.constants.string_representation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string_representation</span></code></a>()</p></td>
+<td><p>Print name, value, and units of all physical constants.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="function-definitions">
+<h2>Function Definitions<a class="headerlink" href="#function-definitions" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">conversion_factor</span></code> is a function, not a class, but cannot be documented in Sphinx as such
+due to the way the LRU Cache wraps it. Please disregard the marking of it being a “class.”</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="qcelemental.constants.conversion_factor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">qcelemental.constants.</span></span><span class="sig-name descname"><span class="pre">conversion_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qcelemental.constants.conversion_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides the conversion factor from one unit to another.</p>
+<p>The conversion factor is based on the current contexts CODATA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – The original units</p></li>
+<li><p><strong>conv_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – The units to convert to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;meter&quot;</span><span class="p">,</span> <span class="s2">&quot;picometer&quot;</span><span class="p">)</span>
+<span class="go">1e-12</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;feet&quot;</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">)</span>
+<span class="go">0.30479999999999996</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">conversion_factor</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">feet</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">)</span>
+<span class="go">3.0479999999999996</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The requested conversion factor</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+</dd>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – </p></li>
+<li><p><strong>conv_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.constants.get">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.constants.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">physical_constant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qcelemental.constants.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access a physical constant, <cite>physical_constant</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>physical_constant</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Case-insensitive string of physical constant with NIST name.</p></li>
+<li><p><strong>return_tuple</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – See below.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>When <code class="docutils literal notranslate"><span class="pre">return_tuple=False</span></code>, value of physical constant.
+When <code class="docutils literal notranslate"><span class="pre">return_tuple=True</span></code>, Datum with units, description, uncertainty, and value of physical constant as Decimal.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a>, <a class="reference internal" href="api/qcelemental.Datum.html#qcelemental.Datum" title="qcelemental.Datum">Datum</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.constants.Quantity">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.constants.</span></span><span class="sig-name descname"><span class="pre">Quantity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qcelemental.constants.Quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Pint Quantity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>quantity._Quantity</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.constants.string_representation">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.constants.</span></span><span class="sig-name descname"><span class="pre">string_representation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qcelemental.constants.string_representation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print name, value, and units of all physical constants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="periodic_table.html" class="btn btn-neutral float-right" title="Periodic Table" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Install QCElemental" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

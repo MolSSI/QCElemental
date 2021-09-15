@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.testing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.testing</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_handle_return</span><span class="p">(</span><span class="n">passfail</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function to print a &#39;*label*...PASSED&#39; line to log.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">passfail</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">.&lt;53</span><span class="si">}</span><span class="s2">PASSED&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">.&lt;53</span><span class="si">}</span><span class="s2">FAILED&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">message</span><span class="si">:</span><span class="s2">.&lt;53</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_message</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">passfail</span><span class="p">,</span> <span class="n">message</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">passfail</span>
+
+
+<div class="viewcode-block" id="tnm"><a class="viewcode-back" href="../../api/qcelemental.testing.tnm.html#qcelemental.tnm">[docs]</a><span class="k">def</span> <span class="nf">tnm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the name of the calling function, usually name of test case.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span></div>
+
+
+<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_values.html#qcelemental.compare_values">[docs]</a><span class="k">def</span> <span class="nf">compare_values</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">,</span>
+    <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span><span class="p">,</span>
+    <span class="n">equal_nan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">equal_phase</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">passnone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_handler</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns True if two floats or float arrays are element-wise equal within a tolerance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    expected</span>
+<span class="sd">        float or float array-like</span>
+<span class="sd">        Reference value against which `computed` is compared.</span>
+<span class="sd">    computed</span>
+<span class="sd">        float or float array-like</span>
+<span class="sd">        Input value to compare against `expected`.</span>
+<span class="sd">    atol</span>
+<span class="sd">        Absolute tolerance (see formula below).</span>
+<span class="sd">    label</span>
+<span class="sd">        Label for passed and error messages. Defaults to calling function name.</span>
+<span class="sd">    rtol</span>
+<span class="sd">        Relative tolerance (see formula below). By default set to zero so `atol` dominates.</span>
+<span class="sd">    equal_nan</span>
+<span class="sd">        Passed to np.isclose. Compare NaN&#39;s as equal.</span>
+<span class="sd">    equal_phase</span>
+<span class="sd">        Compare computed *or its opposite* as equal.</span>
+<span class="sd">    passnone</span>
+<span class="sd">        Return True when both expected and computed are None.</span>
+<span class="sd">    quiet</span>
+<span class="sd">        Whether to log the return message.</span>
+<span class="sd">    return_message</span>
+<span class="sd">        Whether to return tuple. See below.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    allclose : bool</span>
+<span class="sd">        Returns True if `expected` and `computed` are equal within tolerance; False otherwise.</span>
+<span class="sd">    message : str</span>
+<span class="sd">        When return_message=True, also return passed or error message.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    return_handler</span>
+<span class="sd">        Function to control printing, logging, raising, and returning.</span>
+<span class="sd">        Specialized interception for interfacing testing systems.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Akin to np.allclose.</span>
+<span class="sd">    * For scalar float-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,</span>
+<span class="sd">      float-comparable types. For mixed types, use :py:func:`compare_recursive`.</span>
+<span class="sd">    * Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        absolute(computed - expected) &lt;= (atol + rtol * absolute(expected))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
+    <span class="n">pass_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">.&lt;66</span><span class="si">}</span><span class="s2">PASSED&quot;</span>
+    <span class="k">if</span> <span class="n">return_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">return_handler</span> <span class="o">=</span> <span class="n">_handle_return</span>
+
+    <span class="k">if</span> <span class="n">passnone</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">expected</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">computed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">pass_message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplexobj</span><span class="p">(</span><span class="n">expected</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">complex</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">xptd</span><span class="p">,</span> <span class="n">cptd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">computed</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: inputs not cast-able to ndarray of </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">.&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">cptd</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: computed shape (</span><span class="si">{</span><span class="n">cptd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) does not match (</span><span class="si">{</span><span class="n">xptd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">).&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">return_message</span><span class="p">,</span>
+            <span class="n">quiet</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># lgtm: [py/syntax-error]</span>
+
+    <span class="n">digits1</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">atol</span><span class="p">)))</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="n">digits_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;to atol=</span><span class="si">{</span><span class="n">atol</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">rtol</span> <span class="o">&gt;</span> <span class="mf">1.0e-12</span><span class="p">:</span>
+        <span class="n">digits_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;, rtol=</span><span class="si">{</span><span class="n">rtol</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="n">isclose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cptd</span><span class="p">,</span> <span class="n">xptd</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">equal_nan</span><span class="o">=</span><span class="n">equal_nan</span><span class="p">)</span>
+    <span class="n">allclose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">isclose</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span> <span class="ow">and</span> <span class="n">equal_phase</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cptd</span><span class="p">,</span> <span class="s2">&quot;__neg__&quot;</span><span class="p">):</span>
+        <span class="n">n_isclose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="o">-</span><span class="n">cptd</span><span class="p">,</span> <span class="n">xptd</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">equal_nan</span><span class="o">=</span><span class="n">equal_nan</span><span class="p">)</span>
+        <span class="n">allclose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">n_isclose</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">allclose</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">pass_message</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">xptd</span><span class="p">)</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits1</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">xptd</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">xptd_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">cptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">cptd</span><span class="p">)</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits1</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">cptd</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">cptd_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">cptd</span> <span class="o">-</span> <span class="n">xptd</span>
+        <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">diff_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">digits1</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">: computed value (</span><span class="si">{}</span><span class="s2">) does not match (</span><span class="si">{}</span><span class="s2">) </span><span class="si">{}</span><span class="s2"> by difference (</span><span class="si">{}</span><span class="s2">).&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">label</span><span class="p">,</span> <span class="n">cptd_str</span><span class="p">,</span> <span class="n">xptd_str</span><span class="p">,</span> <span class="n">digits_str</span><span class="p">,</span> <span class="n">diff_str</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diff</span><span class="p">[</span><span class="n">isclose</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">diff_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">diff_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">diff_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+            <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+                <span class="n">diffrel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">xptd</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">diffrel</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">diffraw</span> <span class="o">=</span> <span class="n">cptd</span> <span class="o">-</span> <span class="n">xptd</span>
+            <span class="n">digits_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; (o-e: RMS </span><span class="si">{</span><span class="n">_rms</span><span class="p">(</span><span class="n">diffraw</span><span class="p">)</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">, MAX </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">diffraw</span><span class="p">))</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">, RMAX </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">diffrel</span><span class="p">))</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">: computed value does not match </span><span class="si">{}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">  Expected:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">  Observed:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">  Difference (passed elements are zeroed):</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">label</span><span class="p">,</span> <span class="n">digits_str</span><span class="p">,</span> <span class="n">xptd_str</span><span class="p">,</span> <span class="n">cptd_str</span><span class="p">,</span> <span class="n">diff_str</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_rms</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="compare"><a class="viewcode-back" href="../../api/qcelemental.testing.compare.html#qcelemental.compare">[docs]</a><span class="k">def</span> <span class="nf">compare</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">equal_phase</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_handler</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    expected</span>
+<span class="sd">        int, bool, str or array-like of same.</span>
+<span class="sd">        Reference value against which `computed` is compared.</span>
+<span class="sd">    computed</span>
+<span class="sd">        int, bool, str or array-like of same.</span>
+<span class="sd">        Input value to compare against `expected`.</span>
+<span class="sd">    label</span>
+<span class="sd">        Label for passed and error messages. Defaults to calling function name.</span>
+<span class="sd">    equal_phase</span>
+<span class="sd">        Compare computed *or its opposite* as equal.</span>
+<span class="sd">    quiet</span>
+<span class="sd">        Whether to log the return message.</span>
+<span class="sd">    return_message</span>
+<span class="sd">        Whether to return tuple. See below.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    allclose : bool</span>
+<span class="sd">        Returns True if `expected` and `computed` are equal; False otherwise.</span>
+<span class="sd">    message : str</span>
+<span class="sd">        When return_message=True, also return passed or error message.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    return_handler</span>
+<span class="sd">        Function to control printing, logging, raising, and returning.</span>
+<span class="sd">        Specialized interception for interfacing testing systems.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Akin to np.array_equal.</span>
+<span class="sd">    * For scalar exactly-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,</span>
+<span class="sd">      exactly-comparable types. For mixed types, use :py:func:`compare_recursive`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
+    <span class="n">pass_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">.&lt;66</span><span class="si">}</span><span class="s2">PASSED&quot;</span>
+    <span class="k">if</span> <span class="n">return_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">return_handler</span> <span class="o">=</span> <span class="n">_handle_return</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">xptd</span><span class="p">,</span> <span class="n">cptd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">computed</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: inputs not cast-able to ndarray.&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">cptd</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">: computed shape (</span><span class="si">{</span><span class="n">cptd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">) does not match (</span><span class="si">{</span><span class="n">xptd</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">).&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">return_message</span><span class="p">,</span>
+            <span class="n">quiet</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">isclose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xptd</span> <span class="o">==</span> <span class="n">cptd</span><span class="p">)</span>
+    <span class="n">allclose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">isclose</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span> <span class="ow">and</span> <span class="n">equal_phase</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">n_isclose</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xptd</span> <span class="o">==</span> <span class="o">-</span><span class="n">cptd</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">allclose</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">n_isclose</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">allclose</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">pass_message</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">xptd</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">xptd</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">xptd_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">xptd_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">cptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cptd</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">cptd</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">cptd_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">cptd_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">cptd</span> <span class="o">-</span> <span class="n">xptd</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">diff_str</span> <span class="o">=</span> <span class="s2">&quot;(n/a)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+                <span class="n">diff_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">diff_str</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">diff_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">diff_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">xptd</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">: computed value (</span><span class="si">{}</span><span class="s2">) does not match (</span><span class="si">{}</span><span class="s2">) by difference (</span><span class="si">{}</span><span class="s2">).&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">label</span><span class="p">,</span> <span class="n">cptd_str</span><span class="p">,</span> <span class="n">xptd_str</span><span class="p">,</span> <span class="n">diff_str</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\t</span><span class="si">{}</span><span class="s2">: computed value does not match.</span><span class="se">\n</span><span class="s2">  Expected:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">  Observed:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">  Difference:</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">label</span><span class="p">,</span> <span class="n">xptd_str</span><span class="p">,</span> <span class="n">cptd_str</span><span class="p">,</span> <span class="n">diff_str</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">_prefix</span> <span class="ow">or</span> <span class="s2">&quot;root&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+
+    <span class="c1"># Initial conversions if required</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">computed</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+        <span class="n">computed</span> <span class="o">=</span> <span class="n">computed</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">expected</span> <span class="o">!=</span> <span class="n">computed</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Value </span><span class="si">{}</span><span class="s2"> did not match </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">)))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">computed</span><span class="p">):</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Iterable lengths did not match&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expected</span><span class="p">)),</span> <span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">):</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                        <span class="n">_compare_recursive</span><span class="p">(</span>
+                            <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="n">prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="n">equal_phase</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Expected computed to have a __len__()&quot;</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">expected_extra</span> <span class="o">=</span> <span class="n">computed</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">expected</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">computed_extra</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">computed</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_extra</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Found extra keys </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expected_extra</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">computed_extra</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Missing keys </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">computed_extra</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">expected</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">computed</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="n">_compare_recursive</span><span class="p">(</span>
+                    <span class="n">expected</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">computed</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">_prefix</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="n">equal_phase</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)):</span>
+        <span class="n">passfail</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span>
+            <span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="n">equal_phase</span><span class="p">,</span> <span class="n">return_message</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">passfail</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Arrays differ.&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="n">passfail</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">compare_values</span><span class="p">(</span>
+                <span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="n">equal_phase</span><span class="p">,</span> <span class="n">return_message</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">passfail</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">compare</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="n">equal_phase</span><span class="p">,</span> <span class="n">return_message</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">passfail</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;Arrays differ.&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">))</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">expected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">computed</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;&#39;None&#39; does not match.&quot;</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span><span class="si">}</span><span class="s2"> not understood -- stopping recursive compare.&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">errors</span>
+
+
+<div class="viewcode-block" id="compare_recursive"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_recursive.html#qcelemental.compare_recursive">[docs]</a><span class="k">def</span> <span class="nf">compare_recursive</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+    <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">,</span>
+    <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span><span class="p">,</span>
+    <span class="n">forgive</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">equal_phase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_handler</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recursively compares nested structures such as dictionaries and lists.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    expected</span>
+<span class="sd">        Reference value against which `computed` is compared.</span>
+<span class="sd">        Dict may be of any depth but should contain Plain Old Data.</span>
+<span class="sd">    computed</span>
+<span class="sd">        Input value to compare against `expected`.</span>
+<span class="sd">        Dict may be of any depth but should contain Plain Old Data.</span>
+<span class="sd">    atol</span>
+<span class="sd">        Absolute tolerance (see formula below).</span>
+<span class="sd">    label</span>
+<span class="sd">        Label for passed and error messages. Defaults to calling function name.</span>
+<span class="sd">    rtol</span>
+<span class="sd">        Relative tolerance (see formula below). By default set to zero so `atol` dominates.</span>
+<span class="sd">    forgive</span>
+<span class="sd">        Keys in top level which may change between `expected` and `computed` without triggering failure.</span>
+<span class="sd">    equal_phase</span>
+<span class="sd">        Compare computed *or its opposite* as equal.</span>
+<span class="sd">    quiet</span>
+<span class="sd">        Whether to log the return message.</span>
+<span class="sd">    return_message</span>
+<span class="sd">        Whether to return tuple. See below.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    allclose : bool</span>
+<span class="sd">        Returns True if `expected` and `computed` are equal within tolerance; False otherwise.</span>
+<span class="sd">    message : str</span>
+<span class="sd">        When return_message=True, also return passed or error message.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        absolute(computed - expected) &lt;= (atol + rtol * absolute(expected))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
+    <span class="k">if</span> <span class="n">atol</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Prior to v0.4.0, ``compare_recursive`` used to 10**-atol any atol &gt;=1. That has ceased, so please express your atol literally.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">return_handler</span> <span class="o">=</span> <span class="n">_handle_return</span>
+
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">errors</span> <span class="ow">and</span> <span class="n">equal_phase</span><span class="p">:</span>
+        <span class="n">n_errors</span> <span class="o">=</span> <span class="n">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">n_errors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">n_errors</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">equal_phase</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">equal_phase</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="n">equal_phase</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">equal_phase</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">equal_phase</span> <span class="o">=</span> <span class="p">[(</span><span class="n">ep</span> <span class="k">if</span> <span class="n">ep</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;root.&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;root.&quot;</span> <span class="o">+</span> <span class="n">ep</span><span class="p">)</span> <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="n">equal_phase</span><span class="p">]</span>
+        <span class="n">phased</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">nomatch</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="n">equal_phase</span> <span class="ow">or</span> <span class="p">[]:</span>
+                <span class="k">if</span> <span class="n">nomatch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">ep</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">nomatch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">n_errors</span><span class="p">:</span>
+                        <span class="n">phased</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nomatch</span><span class="p">)</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">nomatch</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">forgive</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">forgive</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">forgive</span> <span class="o">=</span> <span class="p">[(</span><span class="n">fg</span> <span class="k">if</span> <span class="n">fg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;root.&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;root.&quot;</span> <span class="o">+</span> <span class="n">fg</span><span class="p">)</span> <span class="k">for</span> <span class="n">fg</span> <span class="ow">in</span> <span class="n">forgive</span><span class="p">]</span>
+    <span class="n">forgiven</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">nomatch</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fg</span> <span class="ow">in</span> <span class="n">forgive</span> <span class="ow">or</span> <span class="p">[]:</span>
+            <span class="k">if</span> <span class="n">nomatch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">fg</span><span class="p">):</span>
+                <span class="n">forgiven</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nomatch</span><span class="p">)</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">nomatch</span><span class="p">)</span>
+
+    <span class="c1">## print if verbose &gt;= 2 if these functions had that knob</span>
+    <span class="c1"># forgiven_message = []</span>
+    <span class="c1"># for e in sorted(forgiven):</span>
+    <span class="c1">#     forgiven_message.append(e[0])</span>
+    <span class="c1">#     forgiven_message.append(&quot;forgiven    &quot; + e[1])</span>
+    <span class="c1"># pprint.pprint(forgiven)</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">errors</span><span class="p">):</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">ret_msg_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret_msg_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">ret_msg_str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compare_molrecs"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_molrecs.html#qcelemental.compare_molrecs">[docs]</a><span class="k">def</span> <span class="nf">compare_molrecs</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">,</span>
+    <span class="n">computed</span><span class="p">,</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">,</span>
+    <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span><span class="p">,</span>
+    <span class="n">forgive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">relative_geoms</span><span class="o">=</span><span class="s2">&quot;exact&quot;</span><span class="p">,</span>
+    <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_handler</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Function to compare Molecule dictionaries.&quot;&quot;&quot;</span>
+    <span class="c1"># Need to manipulate the dictionaries a bit, so hold values</span>
+    <span class="n">xptd</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+    <span class="n">cptd</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">computed</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">massage_dicts</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
+        <span class="c1"># if &#39;fix_symmetry&#39; in dicary:</span>
+        <span class="c1">#     dicary[&#39;fix_symmetry&#39;] = str(dicary[&#39;fix_symmetry&#39;])</span>
+        <span class="c1"># if &#39;units&#39; in dicary:</span>
+        <span class="c1">#     dicary[&#39;units&#39;] = str(dicary[&#39;units&#39;])</span>
+        <span class="k">if</span> <span class="s2">&quot;fragment_files&quot;</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">:</span>
+            <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;fragment_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;fragment_files&quot;</span><span class="p">]]</span>
+        <span class="c1"># and about int vs long errors</span>
+        <span class="c1"># if &#39;molecular_multiplicity&#39; in dicary:</span>
+        <span class="c1">#     dicary[&#39;molecular_multiplicity&#39;] = int(dicary[&#39;molecular_multiplicity&#39;])</span>
+        <span class="c1"># if &#39;fragment_multiplicities&#39; in dicary:</span>
+        <span class="c1">#     dicary[&#39;fragment_multiplicities&#39;] = [(m if m is None else int(m))</span>
+        <span class="c1">#                                          for m in dicary[&#39;fragment_multiplicities&#39;]]</span>
+        <span class="k">if</span> <span class="s2">&quot;fragment_separators&quot;</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">:</span>
+            <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">s</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">]]</span>
+        <span class="c1"># forgive generator version changes</span>
+        <span class="k">if</span> <span class="s2">&quot;provenance&quot;</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">:</span>
+            <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">)</span>
+        <span class="c1"># regularize connectivity ordering</span>
+        <span class="k">if</span> <span class="s2">&quot;connectivity&quot;</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">:</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">min</span><span class="p">(</span><span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">),</span> <span class="n">bo</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">,</span> <span class="n">bo</span><span class="p">)</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;connectivity&quot;</span><span class="p">]]</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tup</span><span class="p">:</span> <span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;connectivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span>
+
+        <span class="k">return</span> <span class="n">dicary</span>
+
+    <span class="n">xptd</span> <span class="o">=</span> <span class="n">massage_dicts</span><span class="p">(</span><span class="n">xptd</span><span class="p">)</span>
+    <span class="n">cptd</span> <span class="o">=</span> <span class="n">massage_dicts</span><span class="p">(</span><span class="n">cptd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">relative_geoms</span> <span class="o">==</span> <span class="s2">&quot;exact&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">relative_geoms</span> <span class="o">==</span> <span class="s2">&quot;align&quot;</span><span class="p">:</span>
+        <span class="c1"># can&#39;t just expect geometries to match, so we&#39;ll align them, check that</span>
+        <span class="c1">#   they overlap and that the translation/rotation arrays jibe with</span>
+        <span class="c1">#   fix_com/orientation, then attach the oriented geom to computed before the</span>
+        <span class="c1">#   recursive dict comparison.</span>
+        <span class="kn">from</span> <span class="nn">.molutil.align</span> <span class="kn">import</span> <span class="n">B787</span>
+
+        <span class="n">cgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cptd</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">rgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xptd</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">rmsd</span><span class="p">,</span> <span class="n">mill</span> <span class="o">=</span> <span class="n">B787</span><span class="p">(</span>
+            <span class="n">rgeom</span><span class="o">=</span><span class="n">rgeom</span><span class="p">,</span>
+            <span class="n">cgeom</span><span class="o">=</span><span class="n">cgeom</span><span class="p">,</span>
+            <span class="n">runiq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cuniq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">atoms_map</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">mols_align</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">run_mirror</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">cptd</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">compare</span><span class="p">(</span>
+                <span class="kc">True</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">)),</span> <span class="n">mill</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">),</span>
+                <span class="s2">&quot;null shift&quot;</span><span class="p">,</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">return_message</span><span class="o">=</span><span class="n">return_message</span><span class="p">,</span>
+                <span class="n">return_handler</span><span class="o">=</span><span class="n">return_handler</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">cptd</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">compare</span><span class="p">(</span>
+                <span class="kc">True</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">mill</span><span class="o">.</span><span class="n">rotation</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">),</span>
+                <span class="s2">&quot;null rotation&quot;</span><span class="p">,</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">return_message</span><span class="o">=</span><span class="n">return_message</span><span class="p">,</span>
+                <span class="n">return_handler</span><span class="o">=</span><span class="n">return_handler</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">ageom</span> <span class="o">=</span> <span class="n">mill</span><span class="o">.</span><span class="n">align_coordinates</span><span class="p">(</span><span class="n">cgeom</span><span class="p">)</span>
+        <span class="n">cptd</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ageom</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">compare_recursive</span><span class="p">(</span>
+        <span class="n">xptd</span><span class="p">,</span>
+        <span class="n">cptd</span><span class="p">,</span>
+        <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span>
+        <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+        <span class="n">forgive</span><span class="o">=</span><span class="n">forgive</span><span class="p">,</span>
+        <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">return_message</span><span class="o">=</span><span class="n">return_message</span><span class="p">,</span>
+        <span class="n">return_handler</span><span class="o">=</span><span class="n">return_handler</span><span class="p">,</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

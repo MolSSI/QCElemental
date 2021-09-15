@@ -1,0 +1,7 @@
+Datum
+=====
+
+.. currentmodule:: qcelemental
+
+.. autoclass:: Datum
+   :show-inheritance:

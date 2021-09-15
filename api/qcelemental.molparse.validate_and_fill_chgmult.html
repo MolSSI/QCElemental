@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="compare" href="qcelemental.testing.compare.html" />
+    <link rel="prev" title="to_string" href="qcelemental.molparse.to_string.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.periodic_table">qcelemental.periodic_table Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.physical_constants">qcelemental.physical_constants Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.covalent_radii">qcelemental.covalent_radii Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id8">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_arrays.html">from_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_schema.html">from_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_string.html">from_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_schema.html">to_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_string.html">to_string</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">validate_and_fill_chgmult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">QCElemental API</a> &raquo;</li>
+        
+      <li>validate_and_fill_chgmult</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/qcelemental.molparse.validate_and_fill_chgmult.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="validate-and-fill-chgmult">
+<h1>validate_and_fill_chgmult<a class="headerlink" href="#validate-and-fill-chgmult" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.molparse.validate_and_fill_chgmult">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">validate_and_fill_chgmult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_separators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_multiplicity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_multiplicities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_ghost_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/chgmult.html#validate_and_fill_chgmult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.validate_and_fill_chgmult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms molecular and fragment charge and multiplicity specification
+by completing and reconciling information from argument, supplemented
+by physical constraints and sensible defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>zeff</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) electron counts (float) for neutral atoms, generally Z nuclear charge.
+0 indicates ghosts such that a full fragment of 0s will be constained
+to <cite>0 1</cite> charge &amp; multiplicity.</p></li>
+<li><p><strong>fragment_separators</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nfr - 1, ) indices splitting <cite>zeff</cite> into nfr fragments.</p></li>
+<li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – Total charge for molecular system.</p></li>
+<li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]]) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
+unknown. Expected pre-defaulted so even if nothing known, if
+<cite>fragment_separators</cite> breaks <cite>zeff</cite> into <cite>nfr=2</cite> fragments, input
+value should be <code class="docutils literal notranslate"><span class="pre">fragment_charges=[None,</span> <span class="pre">None]</span></code>.</p></li>
+<li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Total multiplicity for molecular system.</p></li>
+<li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
+unknown. Expected pre-defaulted so even if nothing known, if
+<cite>fragment_separators</cite> breaks <cite>zeff</cite> into <cite>nfr=2</cite> fragments, input
+value should be <code class="docutils literal notranslate"><span class="pre">fragment_multiplicities=[None,</span> <span class="pre">None]</span></code>.</p></li>
+<li><p><strong>zero_ghost_fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Fragments composed entirely of ghost atoms (Zeff=0) are required to have
+chgmult <cite>0 1</cite>. When <cite>False</cite>, violations of this will cause a
+ValidationError. When <cite>True</cite>, treat ghost fragments indicated by <cite>zeff</cite> to
+contain superior information over chgmult arguments that might still
+correspond to full-real molecule. Clears information from
+<cite>molecular_charge</cite> and <cite>molecular_multiplicity</cite> and sets ghost fragments
+to <cite>0 1</cite>, leaving other positions free to readjust. Unused (prefer to set
+up such manipulations outside function call) but works.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Amount of printing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>molecular_charge</strong> (<em>float</em>) – Total charge for molecular system.</p></li>
+<li><p><strong>fragment_charges</strong> (<em>list of float</em>) – (nfr,) Charge on each fragment.</p></li>
+<li><p><strong>molecular_multiplicity</strong> (<em>int</em>) – Total multiplicity for molecular system.</p></li>
+<li><p><strong>fragment_multiplicities</strong> (<em>list of int</em>) – (nfr,) Multiplicity for each fragment.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – When no solution to input arguments subject to the constraints below can be found.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Returns combination of total &amp; fragment charge &amp; multiplicity among
+values of S1-7 that fulfill rules R1-9. A few derived implications in I1-3.</p>
+<ul class="simple">
+<li><p>Constraints</p>
+<ul>
+<li><p>R1 require all chg &amp; mult exist</p></li>
+<li><p>R2 require total charge to be the sum of frag chg</p></li>
+<li><p>R3 require mult is positive int</p></li>
+<li><p>R4 require sufficient tot electrons for mult: mult - 1 &lt;= neut_el - chg</p></li>
+<li><p>R5 require total parity consistent among tot electrons and mult: (mult % 2) != ((neut_el - chg) % 2)</p></li>
+<li><p>R6 require chg match input argument values</p></li>
+<li><p>R7 require mult match input argument values</p></li>
+<li><p>R8 require that tot = sum(frag) mult follow high spin addition unless tot &amp; frag mult fully specified</p></li>
+<li><p>R9 require that ghost fragments (zeff all 0) be neutral singlet</p></li>
+</ul>
+</li>
+<li><p>Allowed values</p>
+<ul>
+<li><p>S1 suggest input argument values for tot chg, frag chg, tot mult or frag mult</p></li>
+<li><p>S2 suggest sum frag chg for tot chg, allowing for indiv frag chg defaulting to 0</p></li>
+<li><p>S3 suggest distributing unallocated chg onto frag chg</p></li>
+<li><p>S4 suggest 0 default for frag chg</p></li>
+<li><p>S5 suggest range of high-spin sum frag mult for tot mult, allowing for indiv frag mult defaulting to 1 or 2</p></li>
+<li><p>S6 suggest range of unallocated mult = tot - high_spin_sum(frag - 1), allowing for all indiv but self defaulting to 1 or 2.</p></li>
+<li><p>S7 suggest 1 or 2 default for frag mult</p></li>
+</ul>
+</li>
+<li><p>Implications</p>
+<ul>
+<li><p>I1 won’t form an ion just to be closed shell (would require choosing +1 vs. -1)</p></li>
+<li><p>I2 unallocated chg or mult lands on the first unspecified fragment able to bear it (enforced by returning first match encountered; subsequent matches distribute charge to later frags)</p></li>
+<li><p>I3 missing chg or mult from tot - frags will always be allocated as a block, not distributed</p></li>
+</ul>
+</li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">0, [0], 1, [1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0], 1, [1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0, 0], 1, [1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [2, 0], 1, [1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [2, 0], 1, [1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [2, -2], 1, [1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Ne/He/He&#39;</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">-2, [-4, 2, 0], 1, [1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Ne/He/He&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [4, -2, 0], 1, [1, 1, 1]</span>
+<span class="go">#  9 - residual +4 distributes to first fragment able to wholly accept it (He+4 is no-go)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He/Ne&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [0, -2, 4], 1, [1, 1, 1]</span>
+<span class="go"># 10 - residual +4 unsuited for only open fragment, He, so irreconcilable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He/Ne&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="go"># 11 - non-positive multiplicity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He/Ne&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [2, -2, 2], 1, [1, 1, 1])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [-2, 2], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">-2, [0, -2], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Ne/Ne&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [-4, 4], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He/He&#39;</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">4, [2, 2, 0], 1, [1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [-2, 2], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">0, [0], 1, [1]</span>
+<span class="go"># 20 - doublet non consistent with closed-shell, neutral default charge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">0, [0], 3, [3]</span>
+<span class="go"># 22 - insufficient electrons for pentuplet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">-1, [-1], 2, [2]</span>
+<span class="go"># 24 - doublet not consistent with even charge</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">0, [0, 0], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">0, [0, 0], 3, [3, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">0, [0, 0], 3, [1, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">0, [0, 0], 5, [3, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">0, [0, 0], 3, [3, 3]</span>
+<span class="go"># 30 - bad parity btwn mult and total # electrons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0], 2, [2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [1], 1, [1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">-1, [-1], 1, [1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;funnyH&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0], 1, [1]</span>
+<span class="go"># 35 - insufficient electrons</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;funnierH&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/H&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0, 0], 3, [2, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [0, 0], 2, [2, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [1, 1], 2, [1, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">-2, [-1, -1], 2, [1, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [-1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">3, [0, 2, 1, 0], 2, [2, 1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [0, 1, 0, 1], 5, [2, 2, 2, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [0, 1, 0, 0], 4, [2, 2, 2, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;H/He/Na/Ne&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [0, 1, 0, 0], 6, [2, 2, 4, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He/He&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">0, [0, -1, 1], 3, [1, 2, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/N/N&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">3, [1, 1, 1], 3, [1, 3, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/N/N&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">3, [1, 1, 1], 3, [3, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/N/N&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/N/N&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">1, [2, -1, 0], 3, [2, 1, 2]</span>
+<span class="go"># 55 - both (1, (1, 0.0, 0.0), 4, (1, 3, 2)) and (1, (0.0, 0.0, 1), 4, (2, 3, 1)) plausible</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/Ne/N&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [1, 0, 0], 4, [1, 3, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;N/Ne/N&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [0, 0, 1], 4, [2, 3, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">0, [-1, 1], 3, [2, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh&#39;</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;He/Gh&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [2, 0], 1, [1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh/He&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">ValidationError</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh/He/Ne&#39;</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">2, [0, -2, 4], 1, [1, 1, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">validate_and_fill_chgmult</span><span class="p">(</span><span class="o">*</span><span class="n">sys</span><span class="p">(</span><span class="s1">&#39;Gh/He/Gh&#39;</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="go">1, [0, 1, 0], 2, [1, 2, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span> <span class="o">=</span> <span class="p">{</span>
+<span class="go">    &#39;He&#39;: (np.array([2]), np.array([])),</span>
+<span class="go">    &#39;He/He&#39;: (np.array([2, 2]), np.array([1])),</span>
+<span class="go">    &#39;Ne/He/He&#39;: (np.array([10, 2, 2]), np.array([1, 2])),</span>
+<span class="go">    &#39;He/He/Ne&#39;: (np.array([2, 2, 10]), np.array([1, 2])),</span>
+<span class="go">    &#39;Ne/Ne&#39;: (np.array([10, 10]), np.array([1])),</span>
+<span class="go">    &#39;He/He/He&#39;: (np.array([2, 2, 2]), np.array([1, 2])),</span>
+<span class="go">    &#39;H&#39;: (np.array([1]), np.array([])),</span>
+<span class="go">    &#39;funnyH&#39;: (np.array([0]), np.array([])),  # has no electrons</span>
+<span class="go">    &#39;funnierH&#39;: (np.array([-1]), np.array([])),  # has positron</span>
+<span class="go">    &#39;H/H&#39;: (np.array([1, 1]), np.array([1])),</span>
+<span class="go">    &#39;H/He&#39;: (np.array([1, 2]), np.array([1])),</span>
+<span class="go">    &#39;H/He/Na/Ne&#39;: (np.array([1, 2, 11, 10]), np.array([1, 2, 3])),</span>
+<span class="go">    &#39;N/N/N&#39;: (np.array([7, 7, 7]), np.array([1, 2])),</span>
+<span class="go">    &#39;N/Ne/N&#39;: (np.array([7, 10, 7]), np.array([1, 2])),</span>
+<span class="go">    &#39;He/Gh&#39;: (np.array([2, 0]), np.array([1])),</span>
+<span class="go">    &#39;Gh/He&#39;: (np.array([0, 2]), np.array([1])),</span>
+<span class="go">    &#39;Gh&#39;: (np.array([0, 0]), np.array([])),</span>
+<span class="go">    &#39;Gh/He/Ne&#39;: (np.array([0, 0, 2, 10]), np.array([2, 3])),</span>
+<span class="go">    &#39;Gh/He/Gh&#39;: (np.array([0, 2, 0]), np.array([1, 2]))}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="qcelemental.testing.compare.html" class="btn btn-neutral float-right" title="compare" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qcelemental.molparse.to_string.html" class="btn btn-neutral float-left" title="to_string" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

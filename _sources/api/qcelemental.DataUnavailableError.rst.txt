@@ -1,0 +1,6 @@
+DataUnavailableError
+====================
+
+.. currentmodule:: qcelemental
+
+.. autoexception:: DataUnavailableError

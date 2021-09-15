@@ -1,0 +1,485 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/small-apps.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/themefisher-font.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div style="width: 100%" class="qca-header">
+<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
+  <div class="container nav-width">
+    <div class="logo-width">
+    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="tf-ion-android-menu"></span>
+    </button>
+    </div>
+      <div class="collapse navbar-collapse" id=navbarNav>
+         <ul class="navbar-nav ml-auto">
+            <li class=nav-item>
+                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
+                Community Slack
+                </a>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>GitHub
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
+                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
+               </div>
+            </li>
+            <li class="nav-item dropdown dropdown-slide">
+               <a class=nav-link href=# data-toggle=dropdown>Documentation
+               <span><i class=tf-ion-ios-arrow-down></i></span></a>
+               <div class=dropdown-menu>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
+                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
+               </div>
+            </li>
+            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
+         </ul>
+      </div>
+   </div>
+   </div>
+</nav>
+
+
+
+
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> QCElemental
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0+untagged.1.g6e06fb7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QCElemental</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>qcelemental.covalent_radii</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for qcelemental.covalent_radii</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains covalent radii</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">.datum</span> <span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">DataUnavailableError</span>
+<span class="kn">from</span> <span class="nn">.periodic_table</span> <span class="kn">import</span> <span class="n">periodictable</span>
+
+
+<div class="viewcode-block" id="CovalentRadii"><a class="viewcode-back" href="../../api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.CovalentRadii">[docs]</a><span class="k">class</span> <span class="nc">CovalentRadii</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Covalent radii sets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    context : str</span>
+<span class="sd">        {&#39;ALVAREZ2008&#39;}</span>
+<span class="sd">        Origin of loaded data.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cr : Dict[str, Datum]</span>
+<span class="sd">        Each covalent radius is an entry in `cr`, where key is the</span>
+<span class="sd">        &quot;Fe&quot;-cased element symbol if generic or symbol-prefixed label</span>
+<span class="sd">        if specialized within element. The value is a Datum object with</span>
+<span class="sd">        `lbl` the same as key, `units`, `data` value as Decimal object,</span>
+<span class="sd">        and any uncertainty in the `comment` field.</span>
+<span class="sd">    doi : str</span>
+<span class="sd">        The DOI of the current context.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the context (&#39;ALVAREZ2008&#39;)</span>
+<span class="sd">    native_units : str</span>
+<span class="sd">        The units the original data was provided in.</span>
+<span class="sd">    year : int</span>
+<span class="sd">        The year the context was created.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ALVAREZ2008&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">alvarez_2008_covalent_radii</span>
+
+        <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;ALVAREZ2008&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">alvarez_2008_covalent_radii</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">native_units</span> <span class="o">=</span> <span class="n">alvarez_2008_covalent_radii</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span>
+
+            <span class="c1"># TypedDict wont be in until 3.8, have to ignore heterogeneous dicts for now</span>
+            <span class="k">for</span> <span class="n">cr</span> <span class="ow">in</span> <span class="n">alvarez_2008_covalent_radii</span><span class="p">[</span><span class="s2">&quot;covalent_radii&quot;</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="n">cr</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span><span class="n">cr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">native_units</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">cr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">comment</span><span class="o">=</span><span class="n">cr</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">doi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Context set as &#39;</span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="s2">&#39;, &quot;</span> <span class="o">+</span> <span class="s2">&quot;only contexts {&#39;ALVAREZ2008&#39;, } are currently supported&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">alvarez_2008_covalent_radii</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># Extra relationships</span>
+        <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="s2">&quot;C_sp3&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Largest (sp3) chosen for generic atom&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Mn&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="s2">&quot;Mn_highspin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Larger (high-spin) chosen for generic atom&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Fe&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="s2">&quot;Fe_highspin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Larger (high-spin) chosen for generic atom&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;Co&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="s2">&quot;Co_highspin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Larger (high-spin) chosen for generic atom&quot;</span><span class="p">),</span>
+        <span class="p">]</span>  <span class="c1"># yapf: disable</span>
+
+        <span class="c1"># add alternate names to help QC programs</span>
+        <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+            <span class="n">ident</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="n">alias</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="n">ident</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()]</span> <span class="o">=</span> <span class="n">Datum</span><span class="p">(</span><span class="n">ident</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;CovalentRadii(context=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CovalentRadii.get"><a class="viewcode-back" href="../../api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.CovalentRadii.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="n">missing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;Datum&quot;</span><span class="p">]:</span>  <span class="c1"># lgtm [py/similar-function]</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Access a covalent radius for species `atom`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atom</span>
+<span class="sd">            Identifier for element or nuclide, e.g., ``H``, ``D``, ``H2``, ``He``, ``hE4``.</span>
+<span class="sd">            In general, one value recommended for each element; however, certain other exact labels may be available.</span>
+<span class="sd">            ALVAREZ2008: C_sp3, C_sp2, C_sp, Mn_lowspin, Mn_highspin, Fe_lowspin, Fe_highspin, Co_lowspin, Co_highspin</span>
+<span class="sd">        units</span>
+<span class="sd">            Units of returned value. To return in native unit (ALVAREZ2008: angstrom), pass it explicitly.</span>
+<span class="sd">            Only relevant for ``return_tuple=False`` since ``True`` returns underlying data structure with native units.</span>
+<span class="sd">        missing</span>
+<span class="sd">            How to handle when ``atom`` is valid but outside the available data range. When ``None``, raises DataUnavailableError.</span>
+<span class="sd">            When a float, returns that float, so supply in ``units`` units. Supplying a float is a more compact assurance</span>
+<span class="sd">            that a call will work over all the periodic table than the equivalent</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                try:</span>
+<span class="sd">                    rad = qcel.covalentradii.get(atom)</span>
+<span class="sd">                except qcel.DataUnavailableError:</span>
+<span class="sd">                    rad = 4.0</span>
+
+<span class="sd">            Only relevant for ``return_tuple=False``.</span>
+<span class="sd">        return_tuple</span>
+<span class="sd">            See below.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            When ``return_tuple=False``, value of covalent radius. If multiple defined for element, returns largest.</span>
+<span class="sd">        qcelemental.Datum</span>
+<span class="sd">            When ``return_tuple=True``, Datum with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).</span>
+<span class="sd">            If multiple defined for element, returns largest.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotAnElementError</span>
+<span class="sd">            If `atom` cannot be resolved into an element or nuclide or label.</span>
+<span class="sd">        DataUnavailableError</span>
+<span class="sd">            If `atom` is a valid element or nuclide but not one for which a covalent radius is available and `missing=None`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># catch extra labels like &#39;C_sp3&#39;</span>
+            <span class="n">identifier</span> <span class="o">=</span> <span class="n">atom</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">identifier</span> <span class="o">=</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>  <span class="c1"># Should be string by now</span>
+            <span class="n">qca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="n">identifier</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">return_tuple</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">missing</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DataUnavailableError</span><span class="p">(</span><span class="s2">&quot;covalent radius&quot;</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">if</span> <span class="n">return_tuple</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qca</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">qca</span><span class="o">.</span><span class="n">to_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CovalentRadii.string_representation"><a class="viewcode-back" href="../../api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.CovalentRadii.string_representation">[docs]</a>    <span class="k">def</span> <span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Print name, value, and units of all covalent radii.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">print_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CovalentRadii.write_c_header"><a class="viewcode-back" href="../../api/qcelemental.covalent_radii.CovalentRadii.html#qcelemental.CovalentRadii.write_c_header">[docs]</a>    <span class="k">def</span> <span class="nf">write_c_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;covrad.h&quot;</span><span class="p">,</span> <span class="n">missing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># lgtm[py/similar-function]</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Write C header file defining covalent radii array.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename</span>
+<span class="sd">            File name for header. Note that changing this won&#39;t change the header guard.</span>
+<span class="sd">        missing</span>
+<span class="sd">            In order that the C array be atomic-number indexable and that it span the</span>
+<span class="sd">            periodic table, this value is used anywhere data is missing.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#ifndef _qcelemental_covrad_h_&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#define _qcelemental_covrad_h_&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;/* This file is autogenerated from the QCElemental python module */&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;const double covalent_radii[] = {&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">E</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">qca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cr</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">,  /*- [</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> -*/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">comment</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">,  /*- [</span><span class="si">{}</span><span class="s2">] </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> -*/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">missing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">native_units</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="s2">&quot;Default value for missing data&quot;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;};&quot;</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#endif /* header guard */&quot;</span><span class="p">)</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File written (</span><span class="si">{}</span><span class="s2">). Remember to add license and clang-format it.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div></div>
+
+
+<span class="c1"># singleton</span>
+<span class="n">covalentradii</span> <span class="o">=</span> <span class="n">CovalentRadii</span><span class="p">(</span><span class="s2">&quot;ALVAREZ2008&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, The Molecular Sciences Software Institute.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

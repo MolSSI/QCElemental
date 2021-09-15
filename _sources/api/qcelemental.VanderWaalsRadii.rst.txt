@@ -1,0 +1,21 @@
+VanderWaalsRadii
+================
+
+.. currentmodule:: qcelemental
+
+.. autoclass:: VanderWaalsRadii
+   :show-inheritance:
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~VanderWaalsRadii.get
+      ~VanderWaalsRadii.string_representation
+      ~VanderWaalsRadii.write_c_header
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: get
+   .. automethod:: string_representation
+   .. automethod:: write_c_header
