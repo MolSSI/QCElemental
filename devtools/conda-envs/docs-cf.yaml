@@ -8,6 +8,7 @@ dependencies:
   - pydantic
   - numpy
   - pint
+  - pip
 
     # qc
 
