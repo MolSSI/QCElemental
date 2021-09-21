@@ -106,6 +106,7 @@ jobs:
         make html
     - name: GitHub Pages Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.1
+      if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
       with:
         branch: gh-pages
         folder: docs/build/html
