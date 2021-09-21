@@ -1140,7 +1140,7 @@ class Molecule(ProtoModel):
         run_to_completion: bool = False,
         uno_cutoff: float = 1.0e-3,
         run_mirror: bool = False,
-        ghosts_distinguishable: bool = True,
+        generic_ghosts: bool = False,
     ) -> Tuple["Molecule", Dict[str, Any]]:
         r"""Finds shift, rotation, and atom reordering of `concern_mol` (self)
         that best aligns with `ref_mol`.
@@ -1176,9 +1176,9 @@ class Molecule(ProtoModel):
             Run alternate geometries potentially allowing best match to `ref_mol`
             from mirror image of `concern_mol`. Only run if system confirmed to
             be nonsuperimposable upon mirror reflection.
-        ghosts_distinguishable
+        generic_ghosts
             When one or both molecules doesn't have meaningful element info for ghosts (can happen
-            when harvesting from a printout with a generic ghost symbol), set this to False to
+            when harvesting from a printout with a generic ghost symbol), set this to True to
             place all real=False atoms into the same space for alignment. Only allowed when
             ``atoms_map=True``.
         verbose
@@ -1215,7 +1215,7 @@ class Molecule(ProtoModel):
             ]
         )
 
-        if not ghosts_distinguishable:
+        if generic_ghosts:
             if not mols_align:
                 raise ValueError("Too risky to lump ghosts together when mols not superimposable.")
 

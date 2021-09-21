@@ -4,6 +4,9 @@ Changelog
 .. X.Y.0 / 2021-MM-DD
 .. -------------------
 ..
+.. Breaking Changes
+.. ++++++++++++++++
+..
 .. New Features
 .. ++++++++++++
 ..
@@ -17,15 +20,34 @@ Changelog
 0.23.0 / 2021-MM-DD
 -------------------
 
+Breaking Changes
+++++++++++++++++
+- (:pr:`276`) ``AtomicResultProperties.dict()`` no longer forces arrays to JSON flat lists but now
+  allows NumPy arrays. That is, ``AtomicResultProperties`` now behaves like every other QCElemental
+  model. Expected to be disruptive to QCFractal.
+
 New Features
 ++++++++++++
+- (:pr:`277`) Documentation is now served from https://molssi.github.io/QCElemental/ and built by
+  https://github.com/MolSSI/QCElemental/blob/master/.github/workflows/CI.yml .
+  https://qcelemental.readthedocs.io/en/latest/ will soon be retired.
 
 Enhancements
 ++++++++++++
-- (:pr:`274`) The molecule ``from_string`` parser when no dtype specified learned to return the most specialized error message among the dtypes, not the full input string.
+- (:pr:`274`) The molecule ``from_string`` parser when no dtype specified learned to return the most
+  specialized error message among the dtypes, not the full input string.
+- (:pr:`276`) ``Molecule.to_string(..., dtype="nwchem")`` learned to handle ghosts (``real=False``)
+  correctly. It also now prints the user label, which is used downstream for custom basis sets and
+  shows up in a NWChem output file. QCEngine will be edited to process the label, but other uses may
+  need modification.
+- (:pr:`276`) ``Molecule.align`` learned a new keyword ``generic_ghosts=True`` so that it can act on
+  molecules that have centers with content Gh, not Gh(He).
 
 Bug Fixes
 +++++++++
+- (:pr:`276`) ``Molecule.to_string(..., dtype="gamess")`` learned to handle ghosts (``real=False``)
+  correctly for ``coord=unique``. Note that QCEngine uses ``coord=prinaxis``, so actual ghosts are
+  still NOT interpretable by downstream GAMESS.
 
 
 0.22.0 / 2021-08-26
