@@ -1,0 +1,71 @@
+{
+  "atom_labels": [
+    "",
+    "",
+    "_deut"
+  ],
+  "atomic_numbers": [
+    1,
+    8,
+    1
+  ],
+  "comment": "I has a comment",
+  "fix_com": true,
+  "fix_orientation": true,
+  "fix_symmetry": "cs",
+  "fragment_charges": [
+    0.0
+  ],
+  "fragment_multiplicities": [
+    1
+  ],
+  "fragments": [
+    [
+      0,
+      1,
+      2
+    ]
+  ],
+  "geometry": [
+    0.0,
+    0.0,
+    2.0,
+    0.0,
+    0.0,
+    0.0,
+    2.0,
+    0.0,
+    0.0
+  ],
+  "mass_numbers": [
+    1,
+    16,
+    2
+  ],
+  "masses": [
+    1.00782503223,
+    15.99491461957,
+    2.01410177812
+  ],
+  "molecular_charge": 0.0,
+  "molecular_multiplicity": 1,
+  "name": "H2O",
+  "provenance": {
+    "creator": "QCElemental",
+    "routine": "qcelemental.molparse.from_string",
+    "version": "v0.22.0+9.g9b70011"
+  },
+  "real": [
+    true,
+    true,
+    true
+  ],
+  "schema_name": "qcschema_molecule",
+  "schema_version": 2,
+  "symbols": [
+    "H",
+    "O",
+    "H"
+  ],
+  "validated": true
+}
