@@ -68,8 +68,10 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
 
     with open(drop, "w") as fp:
         if isinstance(instance, qcelemental.models.ProtoModel):
-            fp.write(instance.json(exclude_unset=True, exclude_none=True))
+            # fp.write(instance.json(exclude_unset=True, exclude_none=True))  # works but file is one-line
+            instance = json.loads(instance.json(exclude_unset=True, exclude_none=True))
         elif isinstance(instance, dict):
-            json.dump(instance, fp, sort_keys=True, indent=2)
+            pass
         else:
             raise TypeError
+        json.dump(instance, fp, sort_keys=True, indent=2)
