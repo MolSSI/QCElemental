@@ -618,7 +618,7 @@ class AtomicResult(AtomicInput):
         description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
     )
     stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
-    native_files: Optional[Dict[str, str]] = Field(None, description="DSL files.")
+    native_files: Optional[Dict[str, Optional[str]]] = Field(None, description="DSL files.")
 
     success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
@@ -739,7 +739,10 @@ class AtomicResult(AtomicInput):
             return None
         elif ancp == "input":
             return_keep = ["input"]
-            files = value.copy()
+            if value is None:
+                files = {}
+            else:
+                files = value.copy()
         else:
             raise ValueError(f"Protocol `native_files:{ancp}` is not understood")
 
