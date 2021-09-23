@@ -17,7 +17,7 @@ Changelog
 .. +++++++++
 
 
-0.23.0 / 2021-MM-DD
+0.23.0 / 2021-09-23
 -------------------
 
 Breaking Changes
@@ -25,6 +25,9 @@ Breaking Changes
 - (:pr:`276`) ``AtomicResultProperties.dict()`` no longer forces arrays to JSON flat lists but now
   allows NumPy arrays. That is, ``AtomicResultProperties`` now behaves like every other QCElemental
   model. Expected to be disruptive to QCFractal.
+- (:pr:`280`) Examples of QCSchema from test cases are now saved at branch
+  https://github.com/MolSSI/QCElemental/tree/qcschema-examples . These have passed validation as
+  models by Pydantic and as JSON by schema generated from Pydantic models.
 
 New Features
 ++++++++++++
