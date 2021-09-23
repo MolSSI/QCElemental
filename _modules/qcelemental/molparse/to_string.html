@@ -98,7 +98,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../../../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g3030b8b
+                0+untagged.1.g36c5e0d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -331,7 +331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span> <span class="o">=</span> <span class="p">[</span><span class="n">tagline</span><span class="p">]</span>
         <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">])</span>
         <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;multiplicity&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">],</span>
@@ -380,8 +380,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;nwchem&quot;</span><span class="p">:</span>
 
-        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
-        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;GH&quot;</span>
+        <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;bq</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
         <span class="c1"># TODO handle which units valid</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstroms&quot;</span><span class="p">,</span> <span class="s2">&quot;nm&quot;</span><span class="p">:</span> <span class="s2">&quot;nanometers&quot;</span><span class="p">,</span> <span class="s2">&quot;pm&quot;</span><span class="p">:</span> <span class="s2">&quot;picometers&quot;</span><span class="p">}</span>
 
@@ -399,11 +399,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symm_line</span><span class="p">)</span>
         <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">])</span>
         <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;charge&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">])}</span>
         <span class="k">if</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;scf__nopen&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;dft__mult&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;mcscf__multiplicity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;madness&quot;</span><span class="p">:</span>
 
@@ -433,9 +434,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="c1"># * symm detection is out-of-scope for qcel -- hence the explicit C1 default</span>
         <span class="c1"># * symm provisionally hackable by passing both point group and naxis (if needed)</span>
         <span class="c1">#   through ``fix_symmetry``. newline encoded here if needed.</span>
+        <span class="c1"># * coord=prinaxis, as set up here, can&#39;t handle ghost atoms</span>
 
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{elem}{elbl}</span><span class="s2"> </span><span class="si">{elez}</span><span class="s2">&quot;</span>
-        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{BQ}</span><span class="s2"> -</span><span class="si">{elez}</span><span class="s2">&quot;</span>
+        <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">{elem}</span><span class="s2"> -</span><span class="si">{elez}</span><span class="s2">&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angs&quot;</span><span class="p">}</span>
 
         <span class="n">atoms</span> <span class="o">=</span> <span class="n">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -452,7 +454,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>  <span class="c1"># card -5C-</span>
         <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_line</span><span class="p">)</span>
 
-        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">])</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span> <span class="s2">&quot;real&quot;</span><span class="p">])</span>
         <span class="n">data</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;contrl__icharg&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]),</span>
             <span class="s2">&quot;contrl__mult&quot;</span><span class="p">:</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">],</span>

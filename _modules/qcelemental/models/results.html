@@ -98,7 +98,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../../../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g3030b8b
+                0+untagged.1.g36c5e0d
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -451,7 +451,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span>
+        <span class="c1"># Sep 2021: commenting below for now to allow recomposing AtomicResult.properties for qcdb.</span>
+        <span class="c1">#   This will break QCFractal tests for now, but future qcf will be ok with it.</span>
+        <span class="c1"># kwargs[&quot;encoding&quot;] = &quot;json&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
