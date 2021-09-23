@@ -1,1 +1,29 @@
-{"molecule": {"schema_name": "qcschema_molecule", "schema_version": 2, "validated": true, "symbols": ["He"], "geometry": [0.0, 0.0, 0.0], "name": "He", "molecular_charge": 0.0, "molecular_multiplicity": 1, "fix_com": false, "fix_orientation": false, "provenance": {"creator": "QCElemental", "version": "v0.22.0+8.gc6e4aeb", "routine": "qcelemental.molparse.from_schema"}}, "driver": "gradient", "model": {"method": "UFF"}}
+{
+  "driver": "gradient",
+  "model": {
+    "method": "UFF"
+  },
+  "molecule": {
+    "fix_com": false,
+    "fix_orientation": false,
+    "geometry": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "molecular_charge": 0.0,
+    "molecular_multiplicity": 1,
+    "name": "He",
+    "provenance": {
+      "creator": "QCElemental",
+      "routine": "qcelemental.molparse.from_schema",
+      "version": "v0.22.0+9.g8002f76"
+    },
+    "schema_name": "qcschema_molecule",
+    "schema_version": 2,
+    "symbols": [
+      "He"
+    ],
+    "validated": true
+  }
+}
