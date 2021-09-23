@@ -128,6 +128,41 @@ def wavefunction_data_fixture(result_data_fixture):
 
 
 @pytest.fixture(scope="function")
+def native_data_fixture(result_data_fixture):
+    result_data_fixture["protocols"] = {"native_files": "all"}
+    result_data_fixture["native_files"] = {
+        "input": """
+echo
+geometry units bohr
+H1                    0.000000000000     0.000000000000    -0.650000000000
+H1                    0.000000000000     0.000000000000     0.650000000000
+end
+charge 0.0
+memory 1669668536 double
+task scf energy
+""",
+        "DIPOL": """
+        0.0000000000        0.0000000000        0.0000000000
+        0.0000000000        0.0000000000       -0.7855589278
+""",
+        "gms.dat": """
+ $DATA
+Methylene...3-B-1 state...ROHF/STO-2G
+CNV      2
+
+HYDROGEN    1.0      0.8288400000      0.0000000000      0.6060939022
+   STO     2
+
+CARBON      6.0      0.0000000000      0.0000000000     -0.1018060978
+   STO     2
+
+ $END
+""",
+    }
+    return result_data_fixture
+
+
+@pytest.fixture(scope="function")
 def optimization_data_fixture(result_data_fixture):
 
     trajectory = []
@@ -306,6 +341,39 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
         assert wfn.wavefunction.dict().keys() == expected_keys
+
+@pytest.mark.parametrize(
+    "protocol, provided, expected",
+    [
+        ("none", ["input", "gms.dat", "DIPOL"], []),
+        (None, ["input", "gms.dat", "DIPOL"], []),
+        ("input", ["input", "gms.dat", "DIPOL"], ["input"]),
+        ("all", ["input", "gms.dat", "DIPOL"], ["input", "gms.dat", "DIPOL"]),
+        ("all", ["DIPOL"], ["DIPOL"]),
+        ("input", ["gms.dat"], ["input"]),
+    ],
+)
+def test_native_protocols(protocol, provided, expected, native_data_fixture, request):
+
+    native_data = native_data_fixture["native_files"]
+
+    if protocol is None:
+        native_data_fixture.pop("protocols")
+    else:
+        native_data_fixture["protocols"]["native_files"] = protocol
+
+    for name in list(native_data.keys()):
+        if name not in provided:
+            native_data.pop(name)
+
+    wfn = qcel.models.AtomicResult(**native_data_fixture)
+    drop_qcsk(wfn, request.node.name)
+
+    if len(expected) == 0:
+        assert wfn.native_files is None
+    else:
+        expected_keys = set(expected)
+        assert wfn.native_files.keys() == expected_keys
 
 
 @pytest.mark.parametrize(
