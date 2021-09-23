@@ -342,6 +342,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
         assert wfn.wavefunction.dict().keys() == expected_keys
 
+
 @pytest.mark.parametrize(
     "protocol, provided, expected",
     [
