@@ -4,6 +4,9 @@ Changelog
 .. X.Y.0 / 2021-MM-DD
 .. -------------------
 ..
+.. Breaking Changes
+.. ++++++++++++++++
+..
 .. New Features
 .. ++++++++++++
 ..
@@ -14,9 +17,42 @@ Changelog
 .. +++++++++
 
 
+0.23.0 / 2021-MM-DD
+-------------------
+
+Breaking Changes
+++++++++++++++++
+- (:pr:`276`) ``AtomicResultProperties.dict()`` no longer forces arrays to JSON flat lists but now
+  allows NumPy arrays. That is, ``AtomicResultProperties`` now behaves like every other QCElemental
+  model. Expected to be disruptive to QCFractal.
+
+New Features
+++++++++++++
+- (:pr:`277`) Documentation is now served from https://molssi.github.io/QCElemental/ and built by
+  https://github.com/MolSSI/QCElemental/blob/master/.github/workflows/CI.yml .
+  https://qcelemental.readthedocs.io/en/latest/ will soon be retired.
+
+Enhancements
+++++++++++++
+- (:pr:`274`) The molecule ``from_string`` parser when no dtype specified learned to return the most
+  specialized error message among the dtypes, not the full input string.
+- (:pr:`276`) ``Molecule.to_string(..., dtype="nwchem")`` learned to handle ghosts (``real=False``)
+  correctly. It also now prints the user label, which is used downstream for custom basis sets and
+  shows up in a NWChem output file. QCEngine will be edited to process the label, but other uses may
+  need modification.
+- (:pr:`276`) ``Molecule.align`` learned a new keyword ``generic_ghosts=True`` so that it can act on
+  molecules that have centers with content Gh, not Gh(He).
+
+Bug Fixes
++++++++++
+- (:pr:`276`) ``Molecule.to_string(..., dtype="gamess")`` learned to handle ghosts (``real=False``)
+  correctly for ``coord=unique``. Note that QCEngine uses ``coord=prinaxis``, so actual ghosts are
+  still NOT interpretable by downstream GAMESS.
+
+
 0.22.0 / 2021-08-26
 -------------------
- 
+
 New Features
 ++++++++++++
 - (:pr:`268`) Add provisional models that store the inputs to and outputs of a torsion drive procedure. @SimonBoothroyd
@@ -24,9 +60,9 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:`271`) ``Molecule`` learned to create instances with geometry rounded to other than 8 decimal places through ``Molecule(..., geometry_n
-- (:pr:`271`) ``Molecule.align`` and ``Molecule.scramble`` learned to return a fuller copy of self than previously. Now has aligned atom_label
-- (:pr:`271`) ``Molecule.to_string(dtype="gamess")`` learned to write symmetry information to the prinaxis output if passed in through field f
+- (:pr:`271`) ``Molecule`` learned to create instances with geometry rounded to other than 8 decimal places through ``Molecule(..., geometry_noise=<13>)`` to optionally override ``qcel.models.molecule.GEOMETRY_NOISE = 8``. This should be used sparingly, as it will make more molecules unique in the QCA database. But it is sometimes necessary for accurate finite difference steps and to preserve intrinsic symmetry upon geometry rotation. Previous route was to reset the qcel module variable for the duration of instance creation.
+- (:pr:`271`) ``Molecule.align`` and ``Molecule.scramble`` learned to return a fuller copy of self than previously. Now has aligned atom_labels, real, and mass_numbers as well as incidentals like Identifiers. Fragmentation still not addressed.
+- (:pr:`271`) ``Molecule.to_string(dtype="gamess")`` learned to write symmetry information to the prinaxis output if passed in through field fix_symmetry. This is provisional, as we'd like the field to be uniform across qcprogs.
 
 Bug Fixes
 +++++++++

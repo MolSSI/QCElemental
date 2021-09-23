@@ -172,7 +172,7 @@ def to_string(
         smol = [tagline]
         smol.extend(atoms)
 
-        data.fields.extend(["molecular_charge", "molecular_multiplicity"])
+        data.fields.extend(["molecular_charge", "molecular_multiplicity", "real"])
         data.keywords = {
             "charge": int(molrec["molecular_charge"]),
             "multiplicity": molrec["molecular_multiplicity"],
@@ -221,8 +221,8 @@ def to_string(
 
     elif dtype == "nwchem":
 
-        atom_format = "{elem}"
-        ghost_format = "GH"
+        atom_format = "{elem}{elbl}"
+        ghost_format = "bq{elem}{elbl}"
         # TODO handle which units valid
         umap = {"bohr": "bohr", "angstrom": "angstroms", "nm": "nanometers", "pm": "picometers"}
 
@@ -240,11 +240,12 @@ def to_string(
         smol.append(symm_line)
         smol.append(last_line)
 
-        data.fields.extend(["molecular_charge", "molecular_multiplicity"])
+        data.fields.extend(["molecular_charge", "molecular_multiplicity", "real"])
         data.keywords = {"charge": int(molrec["molecular_charge"])}
         if molrec["molecular_multiplicity"] != 1:
             data.keywords["scf__nopen"] = molrec["molecular_multiplicity"] - 1
             data.keywords["dft__mult"] = molrec["molecular_multiplicity"]
+            data.keywords["mcscf__multiplicity"] = molrec["molecular_multiplicity"]
 
     elif dtype == "madness":
 
@@ -274,9 +275,10 @@ def to_string(
         # * symm detection is out-of-scope for qcel -- hence the explicit C1 default
         # * symm provisionally hackable by passing both point group and naxis (if needed)
         #   through ``fix_symmetry``. newline encoded here if needed.
+        # * coord=prinaxis, as set up here, can't handle ghost atoms
 
         atom_format = " {elem}{elbl} {elez}"
-        ghost_format = " {BQ} -{elez}"
+        ghost_format = " {elem} -{elez}"
         umap = {"bohr": "bohr", "angstrom": "angs"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -293,7 +295,7 @@ def to_string(
         smol.extend(atoms)  # card -5C-
         smol.append(last_line)
 
-        data.fields.extend(["molecular_charge", "molecular_multiplicity"])
+        data.fields.extend(["molecular_charge", "molecular_multiplicity", "real"])
         data.keywords = {
             "contrl__icharg": int(molrec["molecular_charge"]),
             "contrl__mult": molrec["molecular_multiplicity"],
