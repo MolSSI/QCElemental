@@ -207,7 +207,9 @@ class TorsionDriveInput(ProtoModel):
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
     input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: conlist(item_type=Molecule, min_items=1) = Field(..., description="The starting molecule(s) for the torsion drive.")
+    initial_molecule: conlist(item_type=Molecule, min_items=1) = Field(
+        ..., description="The starting molecule(s) for the torsion drive."
+    )
 
     optimization_spec: OptimizationSpecification = Field(
         ..., description="Settings to use for optimizations at each grid angle."
