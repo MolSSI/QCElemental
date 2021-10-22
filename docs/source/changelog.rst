@@ -16,6 +16,24 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+0.24.0 / 2021-MM-DD
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+
+Enhancements
+++++++++++++
+- (:pr:`281`) ``TorsionDriveInput`` now accepts a list of ``Molecule`` objects as the ``initial_molecule`` to seed
+the torsiondrive with multiple conformations.
+
+Bug Fixes
++++++++++
+
 
 0.23.0 / 2021-09-23
 -------------------
