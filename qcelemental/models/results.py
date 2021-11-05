@@ -433,6 +433,9 @@ class WavefunctionProperties(ProtoModel):
     @validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     def _assert1d(cls, v, values):
 
+        if v is None:
+            return None
+
         try:
             v = v.reshape(-1)
         except (ValueError, AttributeError):
@@ -442,6 +445,9 @@ class WavefunctionProperties(ProtoModel):
     @validator("scf_orbitals_a", "scf_orbitals_b")
     def _assert2d_nao_x(cls, v, values):
         bas = values.get("basis", None)
+
+        if v is None:
+            return None
 
         # Do not raise multiple errors
         if bas is None:
@@ -467,6 +473,9 @@ class WavefunctionProperties(ProtoModel):
     def _assert2d(cls, v, values):
         bas = values.get("basis", None)
 
+        if v is None:
+            return None
+
         # Do not raise multiple errors
         if bas is None:
             return v
@@ -490,6 +499,8 @@ class WavefunctionProperties(ProtoModel):
         "occupations_b",
     )
     def _assert_exists(cls, v, values):
+        if v is None:
+            return None
 
         if values.get(v, None) is None:
             raise ValueError(f"Return quantity {v} does not exist in the values.")
