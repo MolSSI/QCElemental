@@ -34,14 +34,12 @@
     ],
     "validated": true
   },
+  "native_files": {
+    "input": null
+  },
   "properties": {},
   "protocols": {
-    "error_correction": {
-      "default_policy": false,
-      "policies": {
-        "a": true
-      }
-    }
+    "native_files": "input"
   },
   "provenance": {
     "creator": "qcel"

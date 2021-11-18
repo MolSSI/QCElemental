@@ -34,14 +34,12 @@
     ],
     "validated": true
   },
+  "native_files": {
+    "DIPOL": "\n        0.0000000000        0.0000000000        0.0000000000\n        0.0000000000        0.0000000000       -0.7855589278\n"
+  },
   "properties": {},
   "protocols": {
-    "error_correction": {
-      "default_policy": false,
-      "policies": {
-        "a": true
-      }
-    }
+    "native_files": "all"
   },
   "provenance": {
     "creator": "qcel"

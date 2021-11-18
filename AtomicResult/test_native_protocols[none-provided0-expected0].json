@@ -36,12 +36,7 @@
   },
   "properties": {},
   "protocols": {
-    "error_correction": {
-      "default_policy": false,
-      "policies": {
-        "a": true
-      }
-    }
+    "native_files": "none"
   },
   "provenance": {
     "creator": "qcel"

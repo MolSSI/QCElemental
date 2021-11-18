@@ -34,14 +34,12 @@
     ],
     "validated": true
   },
+  "native_files": {
+    "input": "\necho\ngeometry units bohr\nH1                    0.000000000000     0.000000000000    -0.650000000000\nH1                    0.000000000000     0.000000000000     0.650000000000\nend\ncharge 0.0\nmemory 1669668536 double\ntask scf energy\n"
+  },
   "properties": {},
   "protocols": {
-    "error_correction": {
-      "default_policy": false,
-      "policies": {
-        "a": true
-      }
-    }
+    "native_files": "input"
   },
   "provenance": {
     "creator": "qcel"
