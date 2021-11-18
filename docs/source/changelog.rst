@@ -16,23 +16,19 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
-0.24.0 / 2021-MM-DD
+0.24.0 / 2021-11-18
 -------------------
-
-Breaking Changes
-++++++++++++++++
 
 New Features
 ++++++++++++
-
+- (:pr:`275`) ``AtomicResult`` gains a ``native_files`` field of a dictionary of file names (or generic ``'input'``)
+  and text (not binary) contents that the CMS program may have generated but which haven't necessarily been
+  harvested into QCSchema. Contents controlled by a new native_files protocol analogous to stdout protocol.
 
 Enhancements
 ++++++++++++
 - (:pr:`281`) ``TorsionDriveInput`` now accepts a list of ``Molecule`` objects as the ``initial_molecule`` to seed
-the torsiondrive with multiple conformations.
-
-Bug Fixes
-+++++++++
+  the torsiondrive with multiple conformations.
 
 
 0.23.0 / 2021-09-23
