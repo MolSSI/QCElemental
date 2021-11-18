@@ -527,6 +527,14 @@ class ErrorCorrectionProtocol(ProtoModel):
         return self.policies.get(policy, self.default_policy)
 
 
+class NativeFilesProtocolEnum(str, Enum):
+    r"""CMS program files to keep from a computation."""
+
+    all = "all"
+    input = "input"
+    none = "none"
+
+
 class AtomicResultProtocols(ProtoModel):
     r"""Protocols regarding the manipulation of computational result data."""
 
@@ -536,6 +544,10 @@ class AtomicResultProtocols(ProtoModel):
     stdout: bool = Field(True, description="Primary output file to keep from the computation")
     error_correction: ErrorCorrectionProtocol = Field(
         default_factory=ErrorCorrectionProtocol, description="Policies for error correction"
+    )
+    native_files: NativeFilesProtocolEnum = Field(
+        NativeFilesProtocolEnum.none,
+        description="Policies for keeping processed files from the computation",
     )
 
     class Config:
@@ -608,6 +620,7 @@ class AtomicResult(AtomicInput):
         description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
     )
     stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
+    native_files: Optional[Dict[str, Any]] = Field(None, description="DSL files.")
 
     success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
@@ -717,6 +730,28 @@ class AtomicResult(AtomicInput):
             return None
         else:
             raise ValueError(f"Protocol `stdout:{outp}` is not understood")
+
+    @validator("native_files")
+    def _native_file_protocol(cls, value, values):
+
+        ancp = values["protocols"].native_files
+        if ancp == "all":
+            return value
+        elif ancp == "none":
+            return None
+        elif ancp == "input":
+            return_keep = ["input"]
+            if value is None:
+                files = {}
+            else:
+                files = value.copy()
+        else:
+            raise ValueError(f"Protocol `native_files:{ancp}` is not understood")
+
+        ret = {}
+        for rk in return_keep:
+            ret[rk] = files.get(rk, None)
+        return ret
 
 
 class ResultProperties(AtomicResultProperties):
