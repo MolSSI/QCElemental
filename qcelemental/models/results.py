@@ -642,7 +642,7 @@ class AtomicResult(AtomicInput):
             v = np.asarray(v).reshape(-1, 3)
         elif values["driver"] == "hessian":
             v = np.asarray(v)
-            nsq = int(v.size ** 0.5)
+            nsq = int(v.size**0.5)
             v.shape = (nsq, nsq)
 
         return v
