@@ -20,7 +20,7 @@ dependencies:
   - sphinx_rtd_theme
 
     # testing
-  - pytest>=4.0.0
+  - pytest
   - pytest-cov
   - codecov
 

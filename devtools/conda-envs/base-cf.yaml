@@ -15,7 +15,7 @@ dependencies:
   - nglview
 
     # Testing
-  - pytest>=4.0.0
+  - pytest
   - pytest-cov
   - codecov
   - scipy  # tests an aspect of a helper fn not used by qcel functionality
