@@ -7,6 +7,8 @@ from typing import Callable, Dict, List, Tuple, Union
 import numpy as np
 from pydantic import BaseModel
 
+from qcelemental.models.basemodels import ProtoModel
+
 pp = pprint.PrettyPrinter(width=120)
 
 
