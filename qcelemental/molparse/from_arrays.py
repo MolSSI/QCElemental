@@ -600,7 +600,7 @@ def validate_and_fill_geometry(geom=None, tooclose=0.1, copy=True):
     npgeom = np.array(geom, copy=copy, dtype=float).reshape((-1, 3))
 
     # Upper triangular
-    metric = tooclose ** 2
+    metric = tooclose**2
     tooclose_inds = []
     for x in range(npgeom.shape[0]):
         diffs = npgeom[x] - npgeom[x + 1 :]
