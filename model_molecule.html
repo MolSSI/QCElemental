@@ -101,7 +101,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gcabec4a
+                0+untagged.1.gd04a380
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -299,15 +299,15 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>validate</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
+<li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
 <li><p><strong>schema_name</strong> (<em>qcelemental.models.molecule.ConstrainedStrValue</em>) – </p></li>
 <li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>validated</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>symbols</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>geometry</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>identifiers</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
-<li><p><strong>comment</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
+<li><p><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – </p></li>
 <li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>masses</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
@@ -315,20 +315,20 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <li><p><strong>atom_labels</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>atomic_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>mass_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><em>Tuple</em><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>fragments</strong> (<em>List</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>fragment_charges</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
-<li><p><strong>fragment_multiplicities</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
+<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
 <li><p><strong>fix_com</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_orientation</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>fix_symmetry</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>fix_symmetry</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>qcelemental.models.common_models.Provenance</em></a>) – </p></li>
-<li><p><strong>id</strong> (<em>Optional</em><em>[</em><em>Any</em><em>]</em>) – </p></li>
-<li><p><strong>extras</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>extras</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -356,15 +356,15 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>validate</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
+<li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
 <li><p><strong>schema_name</strong> (<em>qcelemental.models.molecule.ConstrainedStrValue</em>) – </p></li>
 <li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>validated</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>symbols</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>geometry</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>name</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>identifiers</strong> (<em>Optional</em><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
-<li><p><strong>comment</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
+<li><p><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – </p></li>
 <li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>masses</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
@@ -372,20 +372,20 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <li><p><strong>atom_labels</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>atomic_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
 <li><p><strong>mass_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><em>Tuple</em><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>fragments</strong> (<em>List</em><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>fragment_charges</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
-<li><p><strong>fragment_multiplicities</strong> (<em>List</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
+<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
+<li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
 <li><p><strong>fix_com</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_orientation</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>fix_symmetry</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>fix_symmetry</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>qcelemental.models.common_models.Provenance</em></a>) – </p></li>
-<li><p><strong>id</strong> (<em>Optional</em><em>[</em><em>Any</em><em>]</em>) – </p></li>
-<li><p><strong>extras</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
+<li><p><strong>extras</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -475,12 +475,12 @@ from <cite>concern_mol</cite> and the optimally aligned geometry.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#bytes" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – Data to construct Molecule from</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#bytes" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>]) – Data to construct Molecule from</p></li>
 <li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – How to interpret the data, if not passed attempts to discover this based on input type.</p></li>
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Orientates the molecule to a standard frame or not.</p></li>
 <li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]) – Validates the molecule or not.</p></li>
 <li><p><strong>**kwargs</strong> – Additional kwargs to pass to the constructors. kwargs take precedence over data.</p></li>
-<li><p><strong>kwargs</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -747,9 +747,9 @@ images (<cite>.png</cite>).</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
-<li><p><strong>units</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>atom_format</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>ghost_format</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>atom_format</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>ghost_format</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>prec</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>return_data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
@@ -774,7 +774,7 @@ images (<cite>.png</cite>).</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2021, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

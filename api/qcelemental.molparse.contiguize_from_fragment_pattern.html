@@ -101,7 +101,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gcabec4a
+                0+untagged.1.gd04a380
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -194,14 +194,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>frag_pattern</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]) – (nfr, ?) list of indices (0-indexed) grouping atoms into
 molecular fragments within the topology.</p></li>
-<li><p><strong>geom</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>], <a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]) – (nat, 3) or (3 * nat, ) ndarray or list o’lists of Cartesian
+<li><p><strong>geom</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>], <a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]) – (nat, 3) or (3 * nat, ) ndarray or list o’lists of Cartesian
 coordinates, possibly with atoms belonging to the same fragment
 being dispersed in <cite>geom</cite>.</p></li>
 <li><p><strong>throw_reorder</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether, when non-contiguous fragments detected, to raise
 ValidationError (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or to proceed to reorder atoms to
 contiguize fragments (<code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Quantity of printing</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><em>array-like</em>) – Each additional array will be returned with ordering applied
+<li><p><strong>kwargs</strong> (<em>None</em><em> or </em><em>array-like</em>) – Each additional array will be returned with ordering applied
 in the return dictionary.</p></li>
 </ul>
 </dd>
@@ -234,7 +234,7 @@ in the return dictionary.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2021, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

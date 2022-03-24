@@ -101,7 +101,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gcabec4a
+                0+untagged.1.gd04a380
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -197,15 +197,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
 <li><p><strong>units</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
-<li><p><strong>data</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a>) – </p></li>
 <li><p><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
-<li><p><strong>doi</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>doi</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>glossary</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p></li>
 <li><p><strong>numeric</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.7/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -236,7 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd><p>Value for <cite>label</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a> or <a class="reference external" href="https://docs.python.org/3.7/library/decimal.html#decimal.Decimal" title="(in Python v3.7)">decimal.Decimal</a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a> or <a class="reference external" href="https://docs.python.org/3.7/library/decimal.html#decimal.Decimal" title="(in Python v3.7)">decimal.Decimal</a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,6 +285,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 </dd></dl>
 
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qcelemental.Datum.dict" title="qcelemental.Datum.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#qcelemental.Datum.must_be_numerical" title="qcelemental.Datum.must_be_numerical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">must_be_numerical</span></code></a>(v, values, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#qcelemental.Datum.to_units" title="qcelemental.Datum.to_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_units</span></code></a>([units])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qcelemental.Datum.dict">
+<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/datum.html#Datum.dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.Datum.dict" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qcelemental.Datum.must_be_numerical">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">must_be_numerical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/datum.html#Datum.must_be_numerical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.Datum.must_be_numerical" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qcelemental.Datum.to_units">
+<span class="sig-name descname"><span class="pre">to_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/datum.html#Datum.to_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.Datum.to_units" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -300,7 +335,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2021, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
