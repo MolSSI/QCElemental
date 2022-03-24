@@ -17,7 +17,7 @@
     "provenance": {
       "creator": "QCElemental",
       "routine": "qcelemental.molparse.from_schema",
-      "version": "v0.23.0+3.gcabec4a"
+      "version": "v0.24.0+1.gd04a380"
     },
     "schema_name": "qcschema_molecule",
     "schema_version": 2,
