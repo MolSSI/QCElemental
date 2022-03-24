@@ -33,6 +33,8 @@ Bug Fixes
 +++++++++
 - (:pr:`286`) Sphinx autodocumentation with typing of ``qcelemental.testing.compare_recursive`` no longer
   warns about circular import.
+- (:pr:`286`) Some devtools/conda-envs/ were pinning to ``pytest>=4.0.0``. While correct, the
+  restriction didn't allow major version updates. Since pytest is now on v7, pinning lifted.
 
 
 0.24.0 / 2021-11-18
