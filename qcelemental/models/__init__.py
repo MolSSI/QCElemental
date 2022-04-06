@@ -8,14 +8,12 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
-from .basemodels import AutodocBaseSettings, ProtoModel
+from .basemodels import AutodocBaseSettings, ProtoModel, Provenance
 from .basis import BasisSet
-from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
+from .common_models import ComputeError, DriverEnum
 from .molecule import Molecule
-from .procedures import OptimizationInput, OptimizationResult
-from .procedures import Optimization  # scheduled for removal
+from .procedures import OptimizationInput, OptimizationResult, FailedOperation, TorsionDriveInput, TorsionDriveResult
 from .results import AtomicInput, AtomicResult, AtomicResultProperties
-from .results import Result, ResultInput, ResultProperties  # scheduled for removal
 
 
 def qcschema_models():

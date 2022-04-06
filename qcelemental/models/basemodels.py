@@ -1,13 +1,16 @@
+import abc
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel, BaseSettings
+from pydantic import BaseModel, BaseSettings, Field
 
 from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
+
+from ..util import provenance_stamp
 
 
 def _repr(self) -> str:
@@ -187,6 +190,24 @@ class ProtoModel(BaseModel):
             True if the objects match.
         """
         return compare_recursive(self, other, **kwargs)
+
+
+class Provenance(ProtoModel):
+    """Provenance information."""
+
+    creator: str = Field(..., description="The name of the program, library, or person who created the object.")
+    version: str = Field(
+        "",
+        description="The version of the creator, blank otherwise. This should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).",
+    )
+    routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
+
+    class Config(ProtoModel.Config):
+        canonical_repr = True
+        extra: str = "allow"
+
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
 
 
 class AutodocBaseSettings(BaseSettings):

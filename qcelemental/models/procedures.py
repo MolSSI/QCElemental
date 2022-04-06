@@ -1,23 +1,31 @@
+from asyncio import protocols
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional, Tuple, Union
 
-from pydantic import Field, constr, validator, conlist
+from pydantic import Field, constr, validator
+from typing_extensions import Literal
 
-from ..util import provenance_stamp
+from .abcmodels import ResultBase
 from .basemodels import ProtoModel
 from .common_models import (
     ComputeError,
     DriverEnum,
-    Model,
-    Provenance,
-    qcschema_input_default,
     qcschema_optimization_input_default,
     qcschema_optimization_output_default,
+    qcschema_optimization_specification_default,
     qcschema_torsion_drive_input_default,
     qcschema_torsion_drive_output_default,
+    qcschema_torsion_drive_specification_default,
 )
 from .molecule import Molecule
-from .results import AtomicResult
+from .results import (
+    AtomicInput,
+    AtomicResult,
+    InputComputationBase,
+    InputSpecificationBase,
+    QCInputSpecification,
+    SuccessfulResultBase,
+)
 
 if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
@@ -47,76 +55,71 @@ class OptimizationProtocols(ProtoModel):
         force_skip_defaults = True
 
 
-class QCInputSpecification(ProtoModel):
+class OptimizationSpecification(InputSpecificationBase):
     """
-    A compute description for energy, gradient, and Hessian computations used in a geometry optimization.
+    A specification for how a geometry optimization should be performed **inside** of
+    another procedure.
+
+    Notes
+    -----
+    * This class is still provisional and may be subject to removal and re-design.
+    * NOTE: I suggest this object be used analogous to QCInputSpecification but for optimizations
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1
-
-    driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
-
-    extras: Dict[str, Any] = Field(
-        {},
-        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
-    )
-
-
-class OptimizationInput(ProtoModel):
-    id: Optional[str] = None
-    hash_index: Optional[str] = None
-    schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_input_default
-    ) = qcschema_optimization_input_default
-    schema_version: int = 1
-
-    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    # schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_specification) = qcschema_optimization_specification  # type: ignore
+    schema_name: ClassVar[str] = qcschema_optimization_specification_default
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+    # NOTE: Need a little help knowing how procedure field is used. What values might it contain?
+    procedure: Optional[str] = Field(None, description="Optimization procedure to run the optimization with.")
 
-    input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: Molecule = Field(..., description="The starting molecule for the geometry optimization.")
+    @validator("procedure")
+    def _check_procedure(cls, v):
+        return v.lower()
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
+
+class OptimizationInput(InputComputationBase):
+    """Input object for an optimization computation"""
+
+    schema_name: ClassVar[str] = qcschema_optimization_input_default
+    hash_index: Optional[str] = None  # NOTE: Need this field?
+    input_spec: OptimizationSpecification = Field(
+        OptimizationSpecification(), description=OptimizationSpecification.__doc__
+    )
+    gradient_spec: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
+
+    @validator("gradient_spec")
+    def _check_gradient_spec(cls, value):
+        assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
+        return value
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("model", self.input_specification.model.dict()),
-            ("molecule_hash", self.initial_molecule.get_hash()[:7]),
+            ("model", self.gradient_spec.model.dict()),
+            ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
 
-class OptimizationResult(OptimizationInput):
-    schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_output_default
-    ) = qcschema_optimization_output_default
+class OptimizationResult(SuccessfulResultBase):
+    """The result of an optimization procedure"""
 
+    schema_name: ClassVar[str] = qcschema_optimization_output_default
+    # schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default  # type: ignore
+    input_data: OptimizationInput = Field(..., description=str(OptimizationInput.__doc__))
+    # NOTE: If Optional we want None instead of ...; is there a reason for ...? Should the attribute not be Optional?
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
     trajectory: List[AtomicResult] = Field(
         ..., description="A list of ordered Result objects for each step in the optimization."
     )
     energies: List[float] = Field(..., description="A list of ordered energies for each step in the optimization.")
 
-    stdout: Optional[str] = Field(None, description="The standard output of the program.")
-    stderr: Optional[str] = Field(None, description="The standard error of the program.")
-
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
-    )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-
     @validator("trajectory", each_item=False)
     def _trajectory_protocol(cls, v, values):
+        # NOTE: Commenting out because with current setup field is gauranteed to always exist
+        # Do not propagate validation errors
+        # if "protocols" not in values["input_data"]:
+        #     raise ValueError("Protocols was not properly formed.")
 
-        # Do not propogate validation errors
-        if "protocols" not in values:
-            raise ValueError("Protocols was not properly formed.")
-
-        keep_enum = values["protocols"].trajectory
+        keep_enum = values["input_data"].input_spec.protocols.trajectory
         if keep_enum == "all":
             pass
         elif keep_enum == "initial_and_final":
@@ -131,28 +134,6 @@ class OptimizationResult(OptimizationInput):
             raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 
         return v
-
-
-class OptimizationSpecification(ProtoModel):
-    """
-    A specification for how a geometry optimization should be performed **inside** of
-    another procedure.
-
-    Notes
-    -----
-    * This class is still provisional and may be subject to removal and re-design.
-    """
-
-    schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1
-
-    procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
-    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
-    protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
-
-    @validator("procedure")
-    def _check_procedure(cls, v):
-        return v.lower()
 
 
 class TDKeywords(ProtoModel):
@@ -192,7 +173,16 @@ class TDKeywords(ProtoModel):
     )
 
 
-class TorsionDriveInput(ProtoModel):
+class TorsionDriveSpecification(InputSpecificationBase):
+    """Specification for a Torsion Drive computation"""
+
+    protocols: None = None
+    schema_name: ClassVar[str] = qcschema_torsion_drive_specification_default
+    # schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
+    keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
+
+
+class TorsionDriveInput(InputComputationBase):
     """Inputs for running a torsion drive.
 
     Notes
@@ -200,30 +190,20 @@ class TorsionDriveInput(ProtoModel):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
-    schema_version: int = 1
-
-    keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
-
-    input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: conlist(item_type=Molecule, min_items=1) = Field(
-        ..., description="The starting molecule(s) for the torsion drive."
-    )
-
+    schema_name: ClassVar[str] = qcschema_torsion_drive_input_default
+    input_spec: TorsionDriveSpecification = Field(..., description=(str(TorsionDriveSpecification.__doc__)))
+    gradient_spec: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
     optimization_spec: OptimizationSpecification = Field(
-        ..., description="Settings to use for optimizations at each grid angle."
+        OptimizationSpecification(), description="Settings to use for optimizations at each grid angle."
     )
 
-    provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
-
-    @validator("input_specification")
-    def _check_input_specification(cls, value):
+    @validator("gradient_spec")
+    def _check_gradient_spec(cls, value):
         assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
 
 
-class TorsionDriveResult(TorsionDriveInput):
+class TorsionDriveResult(SuccessfulResultBase):
     """Results from running a torsion drive.
 
     Notes
@@ -231,33 +211,37 @@ class TorsionDriveResult(TorsionDriveInput):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_output_default) = qcschema_torsion_drive_output_default  # type: ignore
-    schema_version: int = 1
-
+    schema_name: ClassVar[str] = qcschema_torsion_drive_output_default
+    input_data: TorsionDriveInput = Field(..., description="TorsionDriveInput used to generate the computation")
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
     )
     final_molecules: Dict[str, Molecule] = Field(
         ..., description="The final molecule at each angle of the TorsionDrive scan."
     )
-
     optimization_history: Dict[str, List[OptimizationResult]] = Field(
         ...,
         description="The map of each angle of the TorsionDrive scan to each optimization computations.",
     )
 
-    stdout: Optional[str] = Field(None, description="The standard output of the program.")
-    stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+class FailedOperation(ResultBase):
+    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure."""
+
+    input_data: Union[AtomicInput, OptimizationInput, TorsionDriveInput] = Field(
+        ..., description="The input data supplied to generate this computation"
     )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
+    success: Literal[False] = Field(  # type: ignore
+        False,
+        description="A boolean indicator that the operation failed consistent with the model of successful operations. "
+        "Should always be False. Allows programmatic assessment of all operations regardless of if they failed or "
+        "succeeded",
+    )
+    error: ComputeError = Field(  # type: ignore
+        ...,
+        description="A container which has details of the error that failed this operation. See the "
+        ":class:`ComputeError` for more details.",
+    )
 
-
-def Optimization(*args, **kwargs):
-    from warnings import warn
-
-    warn("Optimization has been renamed to OptimizationResult and will be removed in v0.13.0", DeprecationWarning)
-    return OptimizationResult(*args, **kwargs)
+    def __repr_args__(self) -> "ReprArgs":
+        return [("error", self.error)]

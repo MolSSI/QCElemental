@@ -22,8 +22,8 @@ from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
-from .basemodels import ProtoModel, qcschema_draft
-from .common_models import Provenance, qcschema_molecule_default
+from .basemodels import ProtoModel, Provenance, qcschema_draft
+from .common_models import qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
@@ -113,12 +113,7 @@ class Molecule(ProtoModel):
 
     """
 
-    schema_name: constr(strip_whitespace=True, regex="^(qcschema_molecule)$") = Field(  # type: ignore
-        qcschema_molecule_default,
-        description=(
-            f"The QCSchema specification to which this model conforms. Explicitly fixed as {qcschema_molecule_default}."
-        ),
-    )
+    schema_name: constr(strip_whitespace=True, regex=qcschema_molecule_default) = qcschema_molecule_default  # type: ignore
     schema_version: int = Field(  # type: ignore
         2, description="The version number of ``schema_name`` to which this model conforms."
     )
