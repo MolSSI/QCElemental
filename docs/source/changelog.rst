@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2021-MM-DD
+.. X.Y.0 / 2022-MM-DD
 .. -------------------
 ..
 .. Breaking Changes
@@ -15,6 +15,25 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
+
+
+0.25.0 / 2022-MM-DD
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+- (:pr:`286`) Sphinx autodocumentation with typing of ``qcelemental.testing.compare_recursive`` no longer
+  warns about circular import.
+
 
 0.24.0 / 2021-11-18
 -------------------
