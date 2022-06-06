@@ -703,7 +703,7 @@ New Features
 Enhancements
 ++++++++++++
 
-- (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py#L23-L41>`_ rather than previous list o'dicts.
+- (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py>`_ (line 23) rather than previous list o'dicts.
 
 
 0.1.2 / 2018-11-3

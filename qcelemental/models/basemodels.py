@@ -6,7 +6,6 @@ import numpy as np
 from pydantic import BaseModel, BaseSettings
 
 from qcelemental.util import deserialize, serialize
-from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
 
 def _repr(self) -> str:
@@ -24,7 +23,6 @@ class ProtoModel(BaseModel):
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
         if "pydantic" in cls.__repr__.__module__:
             cls.__repr__ = _repr
@@ -178,7 +176,7 @@ class ProtoModel(BaseModel):
         other : Model
             The model to compare to.
         **kwargs
-            Additional kwargs to pass to ``qcelemental.compare_recursive``.
+            Additional kwargs to pass to :func:`~qcelemental.compare_recursive`.
 
         Returns
         -------
@@ -188,11 +186,6 @@ class ProtoModel(BaseModel):
         from ..testing import compare_recursive
 
         return compare_recursive(self, other, **kwargs)
-
-
-class AutodocBaseSettings(BaseSettings):
-    def __init_subclass__(cls) -> None:
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
 
 qcschema_draft = "http://json-schema.org/draft-04/schema#"

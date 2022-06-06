@@ -13,6 +13,7 @@ dependencies:
     - sphinx-automodapi
     - sphinx-autodoc-typehints
     - graphviz
+    - autodoc-pydantic
 
     - pip:
       - git+https://github.com/MolSSI/qcarchive-sphinx-theme#egg=qcarchive_sphinx_theme

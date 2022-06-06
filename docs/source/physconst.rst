@@ -148,10 +148,13 @@ Function Definitions
            due to the way the LRU Cache wraps it. Please disregard the marking of it being a "class."
 
 .. autoclass:: conversion_factor
+   :noindex:
 
 .. autofunction:: get
+   :noindex:
 
 .. autofunction:: Quantity
+   :noindex:
 
 .. autofunction:: string_representation
-
+   :noindex:

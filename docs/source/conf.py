@@ -53,12 +53,12 @@ extensions = [
     'sphinx.ext.graphviz',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
-    'sphinx.ext.graphviz',
-    "sphinx_autodoc_typehints",
     # from Astropy
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.automodsumm',
     'sphinx_automodapi.smart_resolver',
+    "sphinx_autodoc_typehints",
+    "sphinxcontrib.autodoc_pydantic",
 ]
 
 autosummary_generate = True
@@ -68,6 +68,9 @@ automodapi_toctreedirnm = 'api'
 autodoc_typehints = "description"
 napoleon_use_param = True
 napoleon_use_rtype = True
+autodoc_pydantic_model_hide_paramlist = True
+autodoc_pydantic_model_show_config_summary = False
+autodoc_pydantic_field_swap_name_and_alias = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -102,11 +105,7 @@ pygments_style = 'default'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-try:
-    import qcarchive_sphinx_theme  # lgtm: [py/unused-import]
-    html_theme = 'qcarchive_sphinx_theme'
-except ModuleNotFoundError:
-    html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -198,10 +197,12 @@ extlinks = {
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'python': ('https://docs.python.org/3.7', None),
-                       'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-                       'matplotlib': ('https://matplotlib.org/', None),
+intersphinx_mapping = {'python': ('https://docs.python.org/3.10', None),
+                       "numpy": ("https://numpy.org/doc/stable/", None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None),
+                       "qcengine": ("http://docs.qcarchive.molssi.org/projects/QCEngine/en/latest/", None),
+                       "qcfractal": ("http://docs.qcarchive.molssi.org/projects/QCFractal/en/latest/", None),
                       }
 
 # -- Options for todo extension ----------------------------------------------
