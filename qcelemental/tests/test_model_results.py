@@ -371,7 +371,7 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     drop_qcsk(wfn, request.node.name)
 
     if len(expected) == 0:
-        assert wfn.native_files is None
+        assert wfn.native_files == {}
     else:
         expected_keys = set(expected)
         assert wfn.native_files.keys() == expected_keys
