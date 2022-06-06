@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -166,10 +167,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="common">
-<h1>Common<a class="headerlink" href="#common" title="Permalink to this headline"></a></h1>
+<h1>Common<a class="headerlink" href="#common" title="Permalink to this heading"></a></h1>
 <p>Common Models used throughout the QCArchive ecosystem.</p>
 <section id="basisset">
-<h2>BasisSet<a class="headerlink" href="#basisset" title="Permalink to this headline"></a></h2>
+<h2>BasisSet<a class="headerlink" href="#basisset" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.BasisSet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">BasisSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/basis.html#BasisSet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.BasisSet" title="Permalink to this definition"></a></dt>
@@ -186,9 +187,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>nbf</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of basis functions. Use for convenience or as checksum</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -204,9 +202,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>ecp_potentials</strong> (<a class="reference internal" href="#qcelemental.models.basis.ECPPotential" title="qcelemental.models.basis.ECPPotential"><code class="xref py py-class docutils literal notranslate"><span class="pre">ECPPotential</span></code></a>, Optional) – ECPs, MCPs, or other field potentials for this center.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -217,14 +212,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>angular_momentum</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.basis.NonnegativeInt</em><em>]</em>) – </p></li>
-<li><p><strong>harmonic_type</strong> (<em>qcelemental.models.basis.HarmonicType</em>) – </p></li>
+<li><p><strong>angular_momentum</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>NonnegativeInt</em><em>]</em>) – </p></li>
+<li><p><strong>harmonic_type</strong> (<em>HarmonicType</em>) – </p></li>
 <li><p><strong>exponents</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
 <li><p><strong>coefficients</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>]</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -236,22 +228,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ecp_type</strong> (<em>qcelemental.models.basis.ECPType</em>) – </p></li>
-<li><p><strong>angular_momentum</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.basis.NonnegativeInt</em><em>]</em>) – </p></li>
+<li><p><strong>ecp_type</strong> (<em>ECPType</em>) – </p></li>
+<li><p><strong>angular_momentum</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>NonnegativeInt</em><em>]</em>) – </p></li>
 <li><p><strong>r_exponents</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
 <li><p><strong>gaussian_exponents</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
 <li><p><strong>coefficients</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>]</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="computeerror">
-<h2>ComputeError<a class="headerlink" href="#computeerror" title="Permalink to this headline"></a></h2>
+<h2>ComputeError<a class="headerlink" href="#computeerror" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.ComputeError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">ComputeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/common_models.html#ComputeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.ComputeError" title="Permalink to this definition"></a></dt>
@@ -264,15 +253,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>extras</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Optional</em>) – Additional information to bundle with the error.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="failedoperation">
-<h2>FailedOperation<a class="headerlink" href="#failedoperation" title="Permalink to this headline"></a></h2>
+<h2>FailedOperation<a class="headerlink" href="#failedoperation" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.FailedOperation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">FailedOperation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/common_models.html#FailedOperation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.FailedOperation" title="Permalink to this definition"></a></dt>
@@ -287,15 +273,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>extras</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Optional</em>) – Additional information to bundle with the failed operation. Details which pertain specifically to a thrown error should be contained in the <cite>error</cite> field. See <a class="reference internal" href="#qcelemental.models.ComputeError" title="qcelemental.models.ComputeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComputeError</span></code></a> for details.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="provenance">
-<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this headline"></a></h2>
+<h2>Provenance<a class="headerlink" href="#provenance" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.Provenance">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">Provenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/common_models.html#Provenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.Provenance" title="Permalink to this definition"></a></dt>
@@ -308,9 +291,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>routine</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Default:</em>) – The name of the routine or function within the creator, blank otherwise.</p></li>
 <li><p><strong>extra_data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>

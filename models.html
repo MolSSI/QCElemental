@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -164,12 +165,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h1>
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
 <p>Python implementations of the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a>
 are available within QCElemental. These models use <a class="reference external" href="https://pydantic-docs.helpmanual.io">Pydantic</a>
 as their base to provide serialization, validation, and manipluation.</p>
 <section id="basics">
-<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline"></a></h2>
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this heading"></a></h2>
 <p>Model creation occurs with a <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> constructor as shown by equivalent operations below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;He&quot;</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:[</span><span class="s2">&quot;He&quot;</span><span class="p">],</span> <span class="s2">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
@@ -203,7 +204,7 @@ as their base to provide serialization, validation, and manipluation.</p>
 </div>
 </section>
 <section id="serialization">
-<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline"></a></h2>
+<h2>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h2>
 <p>All models can be serialized back to their dictionary counterparts through the <code class="docutils literal notranslate"><span class="pre">dict</span></code> function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 <span class="go">{&#39;symbols&#39;: [&#39;He&#39;], &#39;geometry&#39;: array([[0., 0., 0.]])}</span>

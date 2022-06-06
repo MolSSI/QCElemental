@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -168,13 +169,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="physical-constants">
-<h1>Physical Constants<a class="headerlink" href="#physical-constants" title="Permalink to this headline"></a></h1>
+<h1>Physical Constants<a class="headerlink" href="#physical-constants" title="Permalink to this heading"></a></h1>
 <p>NIST Physical constants are available from QCElemental with arbitrary
 conversion factors using the <a class="reference external" href="https://pint.readthedocs.io/en/latest/">pint</a>
 package. The current default physical constants come from the <a class="reference external" href="https://physics.nist.gov/cuu/Constants/">NIST CODATA
 2014</a>.</p>
 <section id="conversion-factors">
-<h2>Conversion Factors<a class="headerlink" href="#conversion-factors" title="Permalink to this headline"></a></h2>
+<h2>Conversion Factors<a class="headerlink" href="#conversion-factors" title="Permalink to this heading"></a></h2>
 <p>Conversion factors are available for any valid conversion:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;nanometer&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">)</span>
 <span class="go">10.0</span>
@@ -197,7 +198,7 @@ shorthands.</p>
 </div>
 </section>
 <section id="quantities">
-<h2>Quantities<a class="headerlink" href="#quantities" title="Permalink to this headline"></a></h2>
+<h2>Quantities<a class="headerlink" href="#quantities" title="Permalink to this heading"></a></h2>
 <p>QCElemental supports the <code class="docutils literal notranslate"><span class="pre">pint</span></code> “values with units” Quantity objects:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="s2">&quot;5 kcal / mol&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">q</span>
@@ -230,7 +231,7 @@ NumPy and Pandas support built-in:</p>
 </div>
 </section>
 <section id="nist-codata">
-<h2>NIST CODATA<a class="headerlink" href="#nist-codata" title="Permalink to this headline"></a></h2>
+<h2>NIST CODATA<a class="headerlink" href="#nist-codata" title="Permalink to this heading"></a></h2>
 <p>The exact values from the NIST CODATA can be queried explicitly:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hartree energy in ev&quot;</span><span class="p">)</span>
 <span class="go">27.21138602</span>
@@ -261,7 +262,7 @@ the individual CODATA record:</p>
 </div>
 </section>
 <section id="contexts">
-<h2>Contexts<a class="headerlink" href="#contexts" title="Permalink to this headline"></a></h2>
+<h2>Contexts<a class="headerlink" href="#contexts" title="Permalink to this heading"></a></h2>
 <p>Physical constants are continuously refined over time as experimental precision
 increases or redefinition occurs. To prepare for future changes, physical
 constants are contained in contexts. The <code class="docutils literal notranslate"><span class="pre">qcel.constants</span></code> context will be
@@ -275,9 +276,9 @@ specific context can be created like so:</p>
 <p>Currently only <code class="docutils literal notranslate"><span class="pre">CODATA2014</span></code> is available.</p>
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <p>Top level user functions:</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -299,7 +300,7 @@ specific context can be created like so:</p>
 </table>
 </section>
 <section id="function-definitions">
-<h2>Function Definitions<a class="headerlink" href="#function-definitions" title="Permalink to this headline"></a></h2>
+<h2>Function Definitions<a class="headerlink" href="#function-definitions" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">conversion_factor</span></code> is a function, not a class, but cannot be documented in Sphinx as such
@@ -313,8 +314,8 @@ due to the way the LRU Cache wraps it. Please disregard the marking of it being 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>base_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – The original units</p></li>
-<li><p><strong>conv_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – The units to convert to</p></li>
+<li><p><strong>base_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pint.quantity.Quantity</em><em>]</em>) – The original units</p></li>
+<li><p><strong>conv_unit</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>pint.quantity.Quantity</em><em>]</em>) – The units to convert to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -343,8 +344,8 @@ due to the way the LRU Cache wraps it. Please disregard the marking of it being 
 </dd>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>base_unit</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – </p></li>
-<li><p><strong>conv_unit</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>quantity._Quantity</em><em>]</em>) – </p></li>
+<li><p><strong>base_unit</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Quantity</em><em>]</em>) – </p></li>
+<li><p><strong>conv_unit</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Union" title="(in Python v3.7)"><em>Union</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Quantity</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -377,7 +378,7 @@ When <code class="docutils literal notranslate"><span class="pre">return_tuple=T
 <dd><p>Returns a Pint Quantity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>quantity._Quantity</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code></p>
 </dd>
 <dt class="field-even">Parameters</dt>
 <dd class="field-even"><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – </p>

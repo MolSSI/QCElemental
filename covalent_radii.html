@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -165,7 +166,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="covalent-radii">
-<h1>Covalent Radii<a class="headerlink" href="#covalent-radii" title="Permalink to this headline"></a></h1>
+<h1>Covalent Radii<a class="headerlink" href="#covalent-radii" title="Permalink to this heading"></a></h1>
 <p>Access Covalent Radii information within QCElemental.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">covalentradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">1.4361918553479494</span>
@@ -178,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </pre></div>
 </div>
 <section id="contexts">
-<h2>Contexts<a class="headerlink" href="#contexts" title="Permalink to this headline"></a></h2>
+<h2>Contexts<a class="headerlink" href="#contexts" title="Permalink to this heading"></a></h2>
 <p>To prepare for future changes, covalent radii
 are contained in contexts. The <code class="docutils literal notranslate"><span class="pre">qcel.covalentradii</span></code> context will be
 updated over time to the latest data. To “pin” a context version, a
@@ -191,9 +192,9 @@ specific context can be created like so:</p>
 <p>Currently only <code class="docutils literal notranslate"><span class="pre">ALVAREZ2008</span></code> is available.</p>
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <p>Top level user functions:</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -209,7 +210,7 @@ specific context can be created like so:</p>
 </table>
 </section>
 <section id="function-definitions">
-<h2>Function Definitions<a class="headerlink" href="#function-definitions" title="Permalink to this headline"></a></h2>
+<h2>Function Definitions<a class="headerlink" href="#function-definitions" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="qcelemental.covalentradii.get">
 <span class="sig-prename descclassname"><span class="pre">qcelemental.covalentradii.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bohr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qcelemental.covalentradii.get" title="Permalink to this definition"></a></dt>

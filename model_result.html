@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -165,10 +166,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="atomicresult">
-<h1>AtomicResult<a class="headerlink" href="#atomicresult" title="Permalink to this headline"></a></h1>
+<h1>AtomicResult<a class="headerlink" href="#atomicresult" title="Permalink to this heading"></a></h1>
 <p>A Python implementation of the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a> <code class="docutils literal notranslate"><span class="pre">AtomicResult</span></code> object.</p>
 <section id="atomicinput">
-<h2>AtomicInput<a class="headerlink" href="#atomicinput" title="Permalink to this headline"></a></h2>
+<h2>AtomicInput<a class="headerlink" href="#atomicinput" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.AtomicInput">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">AtomicInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicInput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.AtomicInput" title="Permalink to this definition"></a></dt>
@@ -188,15 +189,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.Provenance"><code class="xref py py-class docutils literal notranslate"><span class="pre">Provenance</span></code></a>, Optional) – Provenance information.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="id1">
-<h2>AtomicResult<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<h2>AtomicResult<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.AtomicResult">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">AtomicResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.AtomicResult" title="Permalink to this definition"></a></dt>
@@ -229,20 +227,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>return_result</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>Array</em><em>, </em><em>Dict</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – The primary return specified by the <code class="docutils literal notranslate"><span class="pre">driver</span></code> field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.</p></li>
 <li><p><strong>stdout</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.</p></li>
 <li><p><strong>stderr</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>Optional</em>) – The standard error of the program execution.</p></li>
-<li><p><strong>native_files</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Optional</em>) – DSL files.</p></li>
+<li><p><strong>native_files</strong> (<em>Dict</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Default: {}</em>) – DSL files.</p></li>
 <li><p><strong>success</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – The success of program execution. If False, other fields may be blank.</p></li>
 <li><p><strong>error</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.ComputeError" title="qcelemental.models.ComputeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComputeError</span></code></a>, Optional) – Complete description of the error from an unsuccessful program execution.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.results.AtomicResultProtocols">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.results.</span></span><span class="sig-name descname"><span class="pre">AtomicResultProtocols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/results.html#AtomicResultProtocols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.results.AtomicResultProtocols" title="Permalink to this definition"></a></dt>
@@ -255,9 +250,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>error_correction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ErrorCorrectionProtocol</span></code>, Optional) – Policies for error correction</p></li>
 <li><p><strong>native_files</strong> (<em>{all</em><em>,</em><em>input</em><em>,</em><em>none}</em><em>, </em><em>Default: none</em>) – Policies for keeping processed files from the computation</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -326,9 +318,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>ccsdtq_iterations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>Optional</em>) – The number of CCSDTQ iterations taken before convergence.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -341,28 +330,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>basis</strong> – A quantum chemistry basis description.</p></li>
 <li><p><strong>restricted</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>h_core_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>h_core_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>h_effective_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>h_effective_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_orbitals_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_orbitals_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_density_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_density_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_fock_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_fock_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_eigenvalues_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_eigenvalues_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_occupations_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_occupations_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_coulomb_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_coulomb_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_exchange_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>scf_exchange_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>localized_orbitals_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>localized_orbitals_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>localized_fock_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
-<li><p><strong>localized_fock_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_core_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_core_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_effective_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>h_effective_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_orbitals_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_orbitals_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_density_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_density_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_fock_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_fock_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_eigenvalues_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_eigenvalues_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_occupations_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_occupations_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_coulomb_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_coulomb_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_exchange_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>scf_exchange_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_orbitals_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_orbitals_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_fock_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
+<li><p><strong>localized_fock_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
 <li><p><strong>orbitals_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>orbitals_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>density_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
@@ -374,9 +363,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><strong>occupations_a</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>occupations_b</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="simple">

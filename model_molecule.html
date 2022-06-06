@@ -21,6 +21,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -101,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.gd04a380
+                0+untagged.1.g1920120
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -171,13 +172,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="molecule">
-<h1>Molecule<a class="headerlink" href="#molecule" title="Permalink to this headline"></a></h1>
+<h1>Molecule<a class="headerlink" href="#molecule" title="Permalink to this heading"></a></h1>
 <p>A Python implementation of the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a> <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> object.
 There are many definitions of <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> depending on the domain; this particular
 <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> is an immutable 3D Cartesian representation with support for
 quantum chemistry constructs.</p>
 <section id="creation">
-<h2>Creation<a class="headerlink" href="#creation" title="Permalink to this headline"></a></h2>
+<h2>Creation<a class="headerlink" href="#creation" title="Permalink to this heading"></a></h2>
 <p>A Molecule can be created using the normal kwargs fashion as shown below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;symbols&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;He&quot;</span><span class="p">],</span> <span class="s2">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
 </pre></div>
@@ -195,12 +196,12 @@ quantum chemistry constructs.</p>
 </div>
 </section>
 <section id="identifiers">
-<h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline"></a></h2>
+<h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this heading"></a></h2>
 <p>A number of unique identifiers are automatically created for each molecule.
 Additional implementation such as InChI and SMILES are actively being looked
 into.</p>
 <section id="molecular-hash">
-<h3>Molecular Hash<a class="headerlink" href="#molecular-hash" title="Permalink to this headline"></a></h3>
+<h3>Molecular Hash<a class="headerlink" href="#molecular-hash" title="Permalink to this heading"></a></h3>
 <p>A molecule hash is automatically created to allow each molecule to be uniquely
 identified. The following keys are used to generate the hash:</p>
 <ul class="simple">
@@ -225,7 +226,7 @@ database.</p>
 </div>
 </section>
 <section id="molecular-formula">
-<h3>Molecular Formula<a class="headerlink" href="#molecular-formula" title="Permalink to this headline"></a></h3>
+<h3>Molecular Formula<a class="headerlink" href="#molecular-formula" title="Permalink to this heading"></a></h3>
 <p>The molecular formula is also available sorted in alphabetical order with
 title case symbol names. Any symbol with a count of one does not have a number
 associated with it.</p>
@@ -236,7 +237,7 @@ associated with it.</p>
 </section>
 </section>
 <section id="fragments">
-<h2>Fragments<a class="headerlink" href="#fragments" title="Permalink to this headline"></a></h2>
+<h2>Fragments<a class="headerlink" href="#fragments" title="Permalink to this heading"></a></h2>
 <p>A Molecule with fragments can be created either using the <code class="docutils literal notranslate"><span class="pre">--</span></code> separators in
 the <code class="docutils literal notranslate"><span class="pre">from_data</span></code> function or by passing explicit fragments in the
 <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> constructor:</p>
@@ -278,7 +279,7 @@ the <code class="docutils literal notranslate"><span class="pre">from_data</span
 </div>
 </section>
 <section id="fields">
-<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline"></a></h2>
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="qcelemental.models.Molecule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">Molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/molecule.html#Molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.Molecule" title="Permalink to this definition"></a></dt>
@@ -300,42 +301,39 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
-<li><p><strong>schema_name</strong> (<em>qcelemental.models.molecule.ConstrainedStrValue</em>) – </p></li>
+<li><p><strong>schema_name</strong> (<em>ConstrainedStrValue</em>) – </p></li>
 <li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>validated</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>symbols</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>geometry</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
+<li><p><strong>symbols</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>geometry</strong> (<em>Array</em>) – </p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
+<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Identifiers</em><em>]</em>) – </p></li>
 <li><p><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – </p></li>
 <li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
-<li><p><strong>masses</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>real</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>atom_labels</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>atomic_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>mass_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>masses</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>real</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>atom_labels</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>atomic_numbers</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>mass_numbers</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>connectivity</strong> (<em>ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>NonnegativeInt</em><em>, </em><em>NonnegativeInt</em><em>, </em><em>BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
 <li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
 <li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
 <li><p><strong>fix_com</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_orientation</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_symmetry</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>qcelemental.models.common_models.Provenance</em></a>) – </p></li>
+<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>Provenance</em></a>) – </p></li>
 <li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 <li><p><strong>extras</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
 <section id="api">
-<h2>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h2>
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">Molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/molecule.html#Molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
@@ -357,35 +355,32 @@ data for symbols, geometry, connectivity, charges, fragmentation, etc while also
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>]</em>) – </p></li>
-<li><p><strong>schema_name</strong> (<em>qcelemental.models.molecule.ConstrainedStrValue</em>) – </p></li>
+<li><p><strong>schema_name</strong> (<em>ConstrainedStrValue</em>) – </p></li>
 <li><p><strong>schema_version</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
 <li><p><strong>validated</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
-<li><p><strong>symbols</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>geometry</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
+<li><p><strong>symbols</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>geometry</strong> (<em>Array</em>) – </p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>qcelemental.models.molecule.Identifiers</em><em>]</em>) – </p></li>
+<li><p><strong>identifiers</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><em>Identifiers</em><em>]</em>) – </p></li>
 <li><p><strong>comment</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – </p></li>
 <li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – </p></li>
-<li><p><strong>masses</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>real</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>atom_labels</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>atomic_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>mass_numbers</strong> (<em>qcelemental.models.types.Array</em>) – </p></li>
-<li><p><strong>connectivity</strong> (<em>types.ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.NonnegativeInt</em><em>, </em><em>qcelemental.models.molecule.BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>qcelemental.models.types.Array</em><em>]</em>) – </p></li>
+<li><p><strong>masses</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>real</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>atom_labels</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>atomic_numbers</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>mass_numbers</strong> (<em>Array</em>) – </p></li>
+<li><p><strong>connectivity</strong> (<em>ConstrainedListValue</em><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Tuple" title="(in Python v3.7)"><em>Tuple</em></a><em>[</em><em>NonnegativeInt</em><em>, </em><em>NonnegativeInt</em><em>, </em><em>BondOrderFloat</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>fragments</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><em>Array</em><em>]</em>) – </p></li>
 <li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – </p></li>
 <li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – </p></li>
 <li><p><strong>fix_com</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_orientation</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – </p></li>
 <li><p><strong>fix_symmetry</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>qcelemental.models.common_models.Provenance</em></a>) – </p></li>
+<li><p><strong>provenance</strong> (<a class="reference internal" href="model_common.html#qcelemental.models.Provenance" title="qcelemental.models.common_models.Provenance"><em>Provenance</em></a>) – </p></li>
 <li><p><strong>id</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><em>Optional</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 <li><p><strong>extras</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -480,7 +475,6 @@ from <cite>concern_mol</cite> and the optimally aligned geometry.</p></li>
 <li><p><strong>orient</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Orientates the molecule to a standard frame or not.</p></li>
 <li><p><strong>validate</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Optional" title="(in Python v3.7)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#bool" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]) – Validates the molecule or not.</p></li>
 <li><p><strong>**kwargs</strong> – Additional kwargs to pass to the constructors. kwargs take precedence over data.</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Dict" title="(in Python v3.7)"><em>Dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.Any" title="(in Python v3.7)"><em>Any</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
