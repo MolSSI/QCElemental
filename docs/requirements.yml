@@ -15,5 +15,5 @@ dependencies:
     - graphviz
     - autodoc-pydantic
 
-    - pip:
-      - git+https://github.com/MolSSI/qcarchive-sphinx-theme#egg=qcarchive_sphinx_theme
+    #- pip:
+    #  - git+https://github.com/MolSSI/qcarchive-sphinx-theme#egg=qcarchive_sphinx_theme

@@ -28,6 +28,12 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`285`) Standardized default on ``AtomicResult.native_files`` to ``{}``
+  from ``None``.
+- (:pr:`289`) Transition from some early documentation tools (class
+  ``AutodocBaseSettings`` and ``qcarchive_sphinx_theme``) to externally
+  maintained ones (project https://github.com/mansenfranzen/autodoc_pydantic
+  and ``sphinx_rtd_theme``). Expand API docs.
 
 Bug Fixes
 +++++++++
