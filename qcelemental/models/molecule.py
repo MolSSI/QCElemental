@@ -120,7 +120,8 @@ class Molecule(ProtoModel):
         ),
     )
     schema_version: int = Field(  # type: ignore
-        2, description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms."
+        2,
+        description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.",
     )
     validated: bool = Field(  # type: ignore
         False,
@@ -273,7 +274,8 @@ class Molecule(ProtoModel):
         "guidance: A consumer who rotates the geometry must not reattach the input (pre-rotation) molecule schema instance to any output (post-rotation) frame-sensitive results (e.g., molecular vibrations).",
     )
     fix_symmetry: Optional[str] = Field(  # type: ignore
-        None, description="Maximal point group symmetry which :attr:`~qcelemental.models.Molecule.geometry` should be treated. Lowercase."
+        None,
+        description="Maximal point group symmetry which :attr:`~qcelemental.models.Molecule.geometry` should be treated. Lowercase.",
     )
     # Extra
     provenance: Provenance = Field(

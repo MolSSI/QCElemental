@@ -265,5 +265,7 @@ def Optimization(*args, **kwargs):
     """
     from warnings import warn
 
-    warn("Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0", DeprecationWarning)
+    warn(
+        "Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0", DeprecationWarning
+    )
     return OptimizationResult(*args, **kwargs)

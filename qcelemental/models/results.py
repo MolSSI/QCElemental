@@ -568,15 +568,16 @@ class AtomicInput(ProtoModel):
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
         ),
     )
-    schema_version: int = Field(1, description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.")
+    schema_version: int = Field(
+        1,
+        description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
+    )
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
-    protocols: AtomicResultProtocols = Field(
-        AtomicResultProtocols(), description=str(AtomicResultProtocols.__doc__)
-    )
+    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=str(AtomicResultProtocols.__doc__))
 
     extras: Dict[str, Any] = Field(
         {},
@@ -762,6 +763,7 @@ class ResultProperties(AtomicResultProperties):
        Use :py:func:`qcelemental.models.AtomicResultProperties` instead.
 
     """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
@@ -779,6 +781,7 @@ class ResultProtocols(AtomicResultProtocols):
        Use :py:func:`qcelemental.models.AtomicResultProtocols` instead.
 
     """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
@@ -796,6 +799,7 @@ class ResultInput(AtomicInput):
        Use :py:func:`qcelemental.models.AtomicInput` instead.
 
     """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
@@ -810,6 +814,7 @@ class Result(AtomicResult):
        Use :py:func:`qcelemental.models.AtomicResult` instead.
 
     """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
