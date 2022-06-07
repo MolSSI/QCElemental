@@ -1,0 +1,6 @@
+order_molecular_formula
+=======================
+
+.. currentmodule:: qcelemental.molutil
+
+.. autofunction:: order_molecular_formula

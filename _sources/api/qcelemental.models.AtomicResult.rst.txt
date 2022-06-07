@@ -1,0 +1,6 @@
+AtomicResult
+============
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: AtomicResult

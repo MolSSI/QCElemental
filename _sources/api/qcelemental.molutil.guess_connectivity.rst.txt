@@ -1,0 +1,6 @@
+guess_connectivity
+==================
+
+.. currentmodule:: qcelemental.molutil
+
+.. autofunction:: guess_connectivity

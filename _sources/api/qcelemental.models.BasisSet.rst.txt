@@ -1,0 +1,6 @@
+BasisSet
+========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: BasisSet

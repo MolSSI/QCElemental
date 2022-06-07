@@ -3,19 +3,4 @@ Datum
 
 .. currentmodule:: qcelemental
 
-.. autoclass:: Datum
-   :show-inheritance:
-
-   .. rubric:: Methods Summary
-
-   .. autosummary::
-
-      ~Datum.dict
-      ~Datum.must_be_numerical
-      ~Datum.to_units
-
-   .. rubric:: Methods Documentation
-
-   .. automethod:: dict
-   .. automethod:: must_be_numerical
-   .. automethod:: to_units
+.. autopydantic_model:: Datum

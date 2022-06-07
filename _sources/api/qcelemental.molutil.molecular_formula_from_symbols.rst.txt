@@ -1,0 +1,6 @@
+molecular_formula_from_symbols
+==============================
+
+.. currentmodule:: qcelemental.molutil
+
+.. autofunction:: molecular_formula_from_symbols

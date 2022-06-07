@@ -1,0 +1,33 @@
+DriverEnum
+==========
+
+.. currentmodule:: qcelemental.models
+
+.. autoclass:: DriverEnum
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~DriverEnum.energy
+      ~DriverEnum.gradient
+      ~DriverEnum.hessian
+      ~DriverEnum.properties
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~DriverEnum.derivative_int
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: energy
+   .. autoattribute:: gradient
+   .. autoattribute:: hessian
+   .. autoattribute:: properties
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: derivative_int

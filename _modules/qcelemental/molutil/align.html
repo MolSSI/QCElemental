@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qcelemental.molutil.align &mdash; QCElemental 0+untagged.1.g3766e37 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/autodoc_pydantic.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> QCElemental
+          </a>
+              <div class="version">
+                0+untagged.1.g3766e37
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>qcelemental.molutil.align</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qcelemental.molutil.align</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="n">AlignmentMill</span>
+<span class="kn">from</span> <span class="nn">..physical_constants</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">..testing</span> <span class="kn">import</span> <span class="n">compare_values</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">distance_matrix</span><span class="p">,</span> <span class="n">linear_sum_assignment</span><span class="p">,</span> <span class="n">random_rotation_matrix</span><span class="p">,</span> <span class="n">uno</span><span class="p">,</span> <span class="n">which_import</span>
+
+
+<span class="k">def</span> <span class="nf">_nre</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Nuclear repulsion energy&quot;&quot;&quot;</span>
+
+    <span class="n">nre</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">at1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">at2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">at1</span><span class="p">):</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">geom</span><span class="p">[</span><span class="n">at1</span><span class="p">]</span> <span class="o">-</span> <span class="n">geom</span><span class="p">[</span><span class="n">at2</span><span class="p">])</span>
+            <span class="n">nre</span> <span class="o">+=</span> <span class="n">Z</span><span class="p">[</span><span class="n">at1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Z</span><span class="p">[</span><span class="n">at2</span><span class="p">]</span> <span class="o">/</span> <span class="n">dist</span>
+    <span class="k">return</span> <span class="n">nre</span>
+
+
+<span class="k">def</span> <span class="nf">_pseudo_nre</span><span class="p">(</span><span class="n">Zhash</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pseudo nuclear repulsion energy where non-physical Z contrived from `Zhash`.&quot;&quot;&quot;</span>
+
+    <span class="n">Zidx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">Zhash</span><span class="p">)))</span>
+    <span class="n">pZ</span> <span class="o">=</span> <span class="p">[</span><span class="n">Zidx</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">Zhash</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_nre</span><span class="p">(</span><span class="n">pZ</span><span class="p">,</span> <span class="n">geom</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="B787"><a class="viewcode-back" href="../../../api/qcelemental.molutil.B787.html#qcelemental.molutil.B787">[docs]</a><span class="k">def</span> <span class="nf">B787</span><span class="p">(</span>
+    <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">cuniq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">runiq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">do_plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">atoms_map</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">run_resorting</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">mols_align</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">run_to_completion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span>
+    <span class="n">uno_cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-3</span><span class="p">,</span>
+    <span class="n">run_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Use Kabsch algorithm to find best alignment of geometry `cgeom` onto</span>
+<span class="sd">    `rgeom` while sampling atom mappings restricted by `runiq` and `cuniq`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rgeom</span>
+<span class="sd">        (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]</span>
+<span class="sd">        for RMSD purposes.</span>
+<span class="sd">    cgeom</span>
+<span class="sd">        (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD</span>
+<span class="sd">        purposes. Must have same nat, units, and atom content as rgeom.</span>
+<span class="sd">    runiq</span>
+<span class="sd">        (nat,) array of str indicating which rows (atoms) in `rgeom` are shuffleable</span>
+<span class="sd">        without changing the molecule. Generally hashes of element symbol and</span>
+<span class="sd">        mass are used, but could be as simple as [&#39;C&#39;, &#39;H&#39;, &#39;H&#39;, &#39;D&#39;, &#39;H&#39;] for</span>
+<span class="sd">        monodeuterated methane.</span>
+<span class="sd">    cuniq</span>
+<span class="sd">        (nat,) array of str indicating which rows (atoms) in `cgeom` are shuffleable.</span>
+<span class="sd">        See `runiq` for more details. Strings and count in `cuniq` must match</span>
+<span class="sd">        `runiq`. That is, `sorted(cuniq) == sorted(runiq)`.</span>
+<span class="sd">    do_plot</span>
+<span class="sd">        Pops up a mpl plot showing before, after, and ref geometries.</span>
+<span class="sd">    verbose</span>
+<span class="sd">        Quantity of printing. 0 to silence.</span>
+<span class="sd">    atoms_map</span>
+<span class="sd">        Whether atom1 of rgeom already corresponds to atom1 of cgeom and so on.</span>
+<span class="sd">        If `True`, no resorting will be run, parameters `runiq` and `cuniq`</span>
+<span class="sd">        may be passed as `None`, and much time will be saved.</span>
+<span class="sd">    run_resorting</span>
+<span class="sd">        Run the resorting machinery even if unnecessary because `atoms_map=True`.</span>
+<span class="sd">    mols_align</span>
+<span class="sd">        Whether ref_mol and concern_mol have identical geometries by eye</span>
+<span class="sd">        (barring orientation or atom mapping) and expected final RMSD = 0.</span>
+<span class="sd">        If `True`, procedure is truncated when RMSD condition met, saving time.</span>
+<span class="sd">        If float, convcrit at which search for minimium truncates.</span>
+<span class="sd">    run_to_completion</span>
+<span class="sd">        Run reorderings to completion (past RMSD = 0) even if unnecessary because</span>
+<span class="sd">        `mols_align=True`. Used to test worst-case timings.</span>
+<span class="sd">    algorithm</span>
+<span class="sd">        {&#39;hungarian_uno&#39;, &#39;permutative&#39;}</span>
+<span class="sd">        When `atoms_map=False`, screening algorithm for plausible atom mappings.</span>
+<span class="sd">        `permutative` suitable only for small systems.</span>
+<span class="sd">    uno_cutoff</span>
+<span class="sd">        TODO</span>
+<span class="sd">    run_mirror</span>
+<span class="sd">        Run alternate geometries potentially allowing best match to `rgeom`</span>
+<span class="sd">        from mirror image of `cgeom`. Only run if system confirmed to</span>
+<span class="sd">        be nonsuperimposable upon mirror reflection.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float, AlignmentMill</span>
+<span class="sd">        First item is RMSD [A] between `rgeom` and the optimally aligned</span>
+<span class="sd">        geometry computed.</span>
+<span class="sd">        Second item is a AlignmentMill with fields</span>
+<span class="sd">        (shift, rotation, atommap, mirror) that prescribe the transformation</span>
+<span class="sd">        from `cgeom` and the optimally aligned geometry.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># validation</span>
+    <span class="k">if</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">cgeom</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;natom doesn&#39;t match: </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="n">nat</span> <span class="o">=</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">atoms_map</span> <span class="ow">and</span> <span class="n">runiq</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">cuniq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">runiq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">nat</span><span class="p">)</span>
+        <span class="n">cuniq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">nat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">runiq</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cuniq</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;atom subclasses unequal:</span><span class="se">\n</span><span class="s2">  </span><span class="si">{}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runiq</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">run_mirror</span><span class="p">:</span>
+        <span class="c1"># use aligner to check if system and its (xz-plane) mirror image are</span>
+        <span class="c1">#   superimposible and hence whether its worth doubling the number of Kabsch</span>
+        <span class="c1">#   runs below to check for mirror-image matches</span>
+        <span class="n">mcgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cgeom</span><span class="p">)</span>
+        <span class="n">mcgeom</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="n">exact</span> <span class="o">=</span> <span class="mf">1.0e-6</span>
+        <span class="n">mrmsd</span><span class="p">,</span> <span class="n">msolution</span> <span class="o">=</span> <span class="n">B787</span><span class="p">(</span>
+            <span class="n">mcgeom</span><span class="p">,</span>
+            <span class="n">cgeom</span><span class="p">,</span>
+            <span class="n">cuniq</span><span class="p">,</span>
+            <span class="n">cuniq</span><span class="p">,</span>
+            <span class="n">do_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">atoms_map</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">mols_align</span><span class="o">=</span><span class="n">exact</span><span class="p">,</span>
+            <span class="n">run_mirror</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">superimposable</span> <span class="o">=</span> <span class="n">mrmsd</span> <span class="o">&lt;</span> <span class="n">exact</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">superimposable</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Not testing for mirror-image matches (despite `run_mirror`) since system and its mirror are superimposable&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># initialization</span>
+    <span class="n">best_rmsd</span> <span class="o">=</span> <span class="mf">100.0</span>  <span class="c1"># [A]</span>
+    <span class="n">ocount</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">hold_solution</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">run_resorting</span> <span class="o">=</span> <span class="n">run_resorting</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">atoms_map</span>
+    <span class="k">if</span> <span class="n">mols_align</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">a_convergence</span> <span class="o">=</span> <span class="mf">1.0e-3</span>
+    <span class="k">elif</span> <span class="n">mols_align</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">a_convergence</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a_convergence</span> <span class="o">=</span> <span class="n">mols_align</span>
+
+    <span class="c1"># initial presentation</span>
+    <span class="n">atomfmt2</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;  </span><span class="si">{}</span><span class="s2"> </span><span class="si">{:16.8f}</span><span class="s2"> </span><span class="si">{:16.8f}</span><span class="s2"> </span><span class="si">{:16.8f}</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  Reference:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">runiq</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">atomfmt2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">runiq</span><span class="p">[</span><span class="n">at</span><span class="p">][:</span><span class="mi">6</span><span class="p">],</span> <span class="o">*</span><span class="n">rgeom</span><span class="p">[</span><span class="n">at</span><span class="p">]))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  Concern:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cuniq</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">atomfmt2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cuniq</span><span class="p">[</span><span class="n">at</span><span class="p">][:</span><span class="mi">6</span><span class="p">],</span> <span class="o">*</span><span class="n">cgeom</span><span class="p">[</span><span class="n">at</span><span class="p">]))</span>
+
+    <span class="c1"># start_rmsd is nonsense if not atoms_map</span>
+    <span class="n">start_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">cgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start RMSD = </span><span class="si">{:8.4f}</span><span class="s2"> [A] (naive)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">start_rmsd</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_plausible_atom_orderings_wrapper</span><span class="p">(</span>
+        <span class="n">runiq</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">run_resorting</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">1.0e-3</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when</span>
+<span class="sd">        atoms of R &amp; C known to be ordered. Easier to put logic here because _plausible is generator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">run_resorting</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_plausible_atom_orderings</span><span class="p">(</span>
+                <span class="n">runiq</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="n">uno_cutoff</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">tc</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">ordering</span> <span class="ow">in</span> <span class="n">_plausible_atom_orderings_wrapper</span><span class="p">(</span>
+        <span class="n">runiq</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">run_resorting</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="n">uno_cutoff</span>
+    <span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">ocount</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">npordd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">TT</span> <span class="o">=</span> <span class="n">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">[</span><span class="n">npordd</span><span class="p">,</span> <span class="p">:],</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">temp_solution</span> <span class="o">=</span> <span class="n">AlignmentMill</span><span class="p">(</span><span class="n">shift</span><span class="o">=</span><span class="n">TT</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">RR</span><span class="p">,</span> <span class="n">atommap</span><span class="o">=</span><span class="n">npordd</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">tgeom</span> <span class="o">=</span> <span class="n">temp_solution</span><span class="o">.</span><span class="n">align_coordinates</span><span class="p">(</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temp geom diff</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span>
+        <span class="n">temp_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">temp_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">temp_rmsd</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">tc</span> <span class="o">+=</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>
+
+        <span class="k">if</span> <span class="n">temp_rmsd</span> <span class="o">&lt;</span> <span class="n">best_rmsd</span><span class="p">:</span>
+            <span class="n">best_rmsd</span> <span class="o">=</span> <span class="n">temp_rmsd</span>
+            <span class="n">hold_solution</span> <span class="o">=</span> <span class="n">temp_solution</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  trial </span><span class="si">{:8}</span><span class="s2">  </span><span class="si">{}</span><span class="s2"> yields RMSD </span><span class="si">{}</span><span class="s2">  &gt;&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ocount</span><span class="p">,</span> <span class="n">npordd</span><span class="p">,</span> <span class="n">temp_rmsd</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">run_to_completion</span> <span class="ow">and</span> <span class="n">best_rmsd</span> <span class="o">&lt;</span> <span class="n">a_convergence</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     trial </span><span class="si">{:8}</span><span class="s2">  </span><span class="si">{}</span><span class="s2"> yields RMSD </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ocount</span><span class="p">,</span> <span class="n">npordd</span><span class="p">,</span> <span class="n">temp_rmsd</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">run_mirror</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">superimposable</span><span class="p">:</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">ocount</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">icgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cgeom</span><span class="p">)</span>
+            <span class="n">icgeom</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">TT</span> <span class="o">=</span> <span class="n">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">icgeom</span><span class="p">[</span><span class="n">npordd</span><span class="p">,</span> <span class="p">:],</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="n">temp_solution</span> <span class="o">=</span> <span class="n">AlignmentMill</span><span class="p">(</span><span class="n">shift</span><span class="o">=</span><span class="n">TT</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">RR</span><span class="p">,</span> <span class="n">atommap</span><span class="o">=</span><span class="n">npordd</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">tgeom</span> <span class="o">=</span> <span class="n">temp_solution</span><span class="o">.</span><span class="n">align_coordinates</span><span class="p">(</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temp geom diff</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span>
+            <span class="n">temp_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">tgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">temp_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">temp_rmsd</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">tc</span> <span class="o">+=</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span>
+
+            <span class="k">if</span> <span class="n">temp_rmsd</span> <span class="o">&lt;</span> <span class="n">best_rmsd</span><span class="p">:</span>
+                <span class="n">best_rmsd</span> <span class="o">=</span> <span class="n">temp_rmsd</span>
+                <span class="n">hold_solution</span> <span class="o">=</span> <span class="n">temp_solution</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  trial </span><span class="si">{:8}</span><span class="s2">m </span><span class="si">{}</span><span class="s2"> yields RMSD </span><span class="si">{}</span><span class="s2">  &gt;&gt;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ocount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npordd</span><span class="p">,</span> <span class="n">temp_rmsd</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">run_to_completion</span> <span class="ow">and</span> <span class="n">best_rmsd</span> <span class="o">&lt;</span> <span class="n">a_convergence</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     trial </span><span class="si">{:8}</span><span class="s2">m </span><span class="si">{}</span><span class="s2"> yields RMSD </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ocount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npordd</span><span class="p">,</span> <span class="n">temp_rmsd</span><span class="p">))</span>
+
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total time [s] for </span><span class="si">{:6}</span><span class="s2"> iterations: </span><span class="si">{:.3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ocount</span><span class="p">,</span> <span class="n">t3</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hungarian time [s] for atom ordering: </span><span class="si">{:.3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t3</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">-</span> <span class="n">tc</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Kabsch time [s] for mol alignment:    </span><span class="si">{:.3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tc</span><span class="p">))</span>
+
+    <span class="n">ageom</span><span class="p">,</span> <span class="n">auniq</span> <span class="o">=</span> <span class="n">hold_solution</span><span class="o">.</span><span class="n">align_mini_system</span><span class="p">(</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">final_rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ageom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nat</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="n">best_rmsd</span> <span class="o">-</span> <span class="n">final_rmsd</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0e-3</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final RMSD = </span><span class="si">{:8.4f}</span><span class="s2"> [A]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_rmsd</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mirror match:&quot;</span><span class="p">,</span> <span class="n">hold_solution</span><span class="o">.</span><span class="n">mirror</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">hold_solution</span><span class="p">)</span>
+
+    <span class="c1"># final presentation &amp; plotting</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  Aligned:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">hsh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">auniq</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">atomfmt2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auniq</span><span class="p">[</span><span class="n">at</span><span class="p">][:</span><span class="mi">6</span><span class="p">],</span> <span class="o">*</span><span class="n">ageom</span><span class="p">[</span><span class="n">at</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&lt;&lt;  Aligned Diff:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">at</span><span class="p">,</span> <span class="n">hsh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">auniq</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">atomfmt2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auniq</span><span class="p">[</span><span class="n">at</span><span class="p">][:</span><span class="mi">6</span><span class="p">],</span> <span class="o">*</span><span class="p">[</span><span class="n">ageom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">[</span><span class="n">at</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]))</span>
+
+    <span class="k">if</span> <span class="n">do_plot</span><span class="p">:</span>
+        <span class="c1"># TODO Missing import</span>
+        <span class="n">plot_coord</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">cand</span><span class="o">=</span><span class="n">ageom</span><span class="p">,</span> <span class="n">orig</span><span class="o">=</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Final RMSD = </span><span class="si">{:8.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_rmsd</span><span class="p">))</span>
+
+    <span class="c1"># sanity checks</span>
+    <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span>
+        <span class="n">_pseudo_nre</span><span class="p">(</span><span class="n">cuniq</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">),</span>
+        <span class="n">_pseudo_nre</span><span class="p">(</span><span class="n">auniq</span><span class="p">,</span> <span class="n">ageom</span><span class="p">),</span>
+        <span class="s2">&quot;D: concern_mol--&gt;returned_mol pNRE uncorrupted&quot;</span><span class="p">,</span>
+        <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span>
+        <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mols_align</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span>
+            <span class="n">_pseudo_nre</span><span class="p">(</span><span class="n">runiq</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">),</span>
+            <span class="n">_pseudo_nre</span><span class="p">(</span><span class="n">auniq</span><span class="p">,</span> <span class="n">ageom</span><span class="p">),</span>
+            <span class="s2">&quot;D: concern_mol--&gt;returned_mol pNRE matches ref_mol&quot;</span><span class="p">,</span>
+            <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span>
+            <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span>
+            <span class="n">rgeom</span><span class="p">,</span> <span class="n">ageom</span><span class="p">,</span> <span class="s2">&quot;D: concern_mol--&gt;returned_mol geometry matches ref_mol&quot;</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_rmsd</span><span class="p">,</span> <span class="s2">&quot;D: null RMSD&quot;</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">final_rmsd</span><span class="p">,</span> <span class="n">hold_solution</span></div>
+
+
+<span class="k">def</span> <span class="nf">_plausible_atom_orderings</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ref : list</span>
+<span class="sd">        Hashes encoding distinguishable non-coord characteristics of reference</span>
+<span class="sd">        molecule. Namely, atomic symbol, mass, basis sets?.</span>
+<span class="sd">    current : list</span>
+<span class="sd">        Hashes encoding distinguishable non-coord characteristics of trial</span>
+<span class="sd">        molecule. Namely, atomic symbol, mass, basis sets?.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    iterator of tuples</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+            <span class="sd">&quot;&quot;&quot;ref and current can&#39;t map to each other.\n&quot;&quot;&quot;</span> <span class="o">+</span> <span class="s2">&quot;R:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">C:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">where</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iuq</span><span class="p">,</span> <span class="n">uq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ref</span><span class="p">):</span>
+        <span class="n">where</span><span class="p">[</span><span class="n">uq</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iuq</span><span class="p">)</span>
+
+    <span class="n">cwhere</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iuq</span><span class="p">,</span> <span class="n">uq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
+        <span class="n">cwhere</span><span class="p">[</span><span class="n">uq</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iuq</span><span class="p">)</span>
+
+    <span class="n">connect</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">where</span><span class="p">:</span>
+        <span class="n">connect</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="n">k</span><span class="p">])]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cwhere</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">filter_permutative</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Original atom ordering generator for like subset of atoms (e.g., all carbons).</span>
+<span class="sd">        Relies on permutation. Filtering depends on similarity of structure (see `atol` parameter).</span>
+<span class="sd">        Only suitable for total system size up to about 20 atoms.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Space:     </span><span class="si">{}</span><span class="s2"> &lt;--&gt; </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">))</span>
+        <span class="n">bnbn</span> <span class="o">=</span> <span class="p">[</span><span class="n">rrdistmat</span><span class="p">[</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">]</span> <span class="k">for</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">rgp</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+        <span class="k">for</span> <span class="n">pm</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">(</span><span class="n">cgp</span><span class="p">):</span>
+            <span class="n">cncn</span> <span class="o">=</span> <span class="p">[</span><span class="n">ccdistmat</span><span class="p">[</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">]</span> <span class="k">for</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pm</span><span class="p">,</span> <span class="n">pm</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">bnbn</span><span class="p">,</span> <span class="n">cncn</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Candidate:&quot;</span><span class="p">,</span> <span class="n">rgp</span><span class="p">,</span> <span class="s2">&quot;&lt;--&quot;</span><span class="p">,</span> <span class="n">pm</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">pm</span>
+
+    <span class="k">def</span> <span class="nf">filter_hungarian_uno</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hungarian algorithm on cost matrix based off headless (all Z same w/i space anyways) NRE.</span>
+<span class="sd">        Having found _a_ solution and the reduced cost matrix, this still isn&#39;t likely to produce</span>
+<span class="sd">        atom rearrangement fit for Kabsch b/c internal coordinate cost matrix doesn&#39;t nail down</span>
+<span class="sd">        distance-equivalent atoms with different Cartesian coordinates like Cartesian-distance-matrix</span>
+<span class="sd">        cost matrix does. So, form a bipartite graph from all essentially-zero connections between</span>
+<span class="sd">        ref and concern and run Uno algorithm to enumerate them.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Space:     </span><span class="si">{}</span><span class="s2"> &lt;--&gt; </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">))</span>
+
+        <span class="c1"># formulate cost matrix from internal (not Cartesian) layouts of R &amp; C</span>
+        <span class="n">npcgp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cgp</span><span class="p">)</span>
+        <span class="n">submatCC</span> <span class="o">=</span> <span class="n">ccnremat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">cgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">)]</span>
+        <span class="n">submatRR</span> <span class="o">=</span> <span class="n">rrnremat</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">rgp</span><span class="p">)]</span>
+        <span class="n">sumCC</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">submatCC</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># cost mat small if not scaled, this way like Z=Neon</span>
+        <span class="n">sumRR</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">submatRR</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">cgp</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgp</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cost</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cost</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sumCC</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">sumRR</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cost:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+        <span class="n">costcopy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>  <span class="c1"># other one gets manipulated by hungarian call</span>
+
+        <span class="c1"># find _a_ best match btwn R &amp; C atoms through Kuhn-Munkres (Hungarian) algorithm</span>
+        <span class="c1"># * linear_sum_assigment call is exactly like `scipy.optimize.linear_sum_assignment(cost)` only with extra return</span>
+        <span class="n">t00</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">),</span> <span class="n">reducedcost</span> <span class="o">=</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">return_cost</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">ptsCR</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">))</span>
+        <span class="n">ptsCR</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ptsCR</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tup</span><span class="p">:</span> <span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sumCR</span> <span class="o">=</span> <span class="n">costcopy</span><span class="p">[</span><span class="n">row_ind</span><span class="p">,</span> <span class="n">col_ind</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">t01</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reduced cost:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hungarian time [s] for space:         </span><span class="si">{:.3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t01</span> <span class="o">-</span> <span class="n">t00</span><span class="p">))</span>
+
+        <span class="c1"># find _all_ best matches btwn R &amp; C atoms through Uno algorithm, seeded from Hungarian sol&#39;n</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">reducedcost</span> <span class="o">&lt;</span> <span class="n">uno_cutoff</span><span class="p">)</span>
+        <span class="n">gooduns</span> <span class="o">=</span> <span class="n">uno</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">ptsCR</span><span class="p">)</span>
+        <span class="n">t02</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uno time [s] for space:               </span><span class="si">{:.3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t02</span> <span class="o">-</span> <span class="n">t01</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">gu</span> <span class="ow">in</span> <span class="n">gooduns</span><span class="p">:</span>
+            <span class="n">gu2</span> <span class="o">=</span> <span class="n">gu</span><span class="p">[:]</span>
+            <span class="n">gu2</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># resorts match into (r, c) = (info, range)</span>
+            <span class="n">subans</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">gu2</span><span class="p">]</span>  <span class="c1"># compacted to subans/lap format</span>
+
+            <span class="n">ans</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">npcgp</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subans</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Best Candidate (</span><span class="si">{:6.3}</span><span class="s2">):&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sumCR</span><span class="p">),</span> <span class="n">rgp</span><span class="p">,</span> <span class="s2">&quot;&lt;--&quot;</span><span class="p">,</span> <span class="n">ans</span><span class="p">,</span> <span class="s2">&quot;     from&quot;</span><span class="p">,</span> <span class="n">cgp</span><span class="p">,</span> <span class="n">subans</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">ans</span>
+
+    <span class="k">if</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;permutative&quot;</span><span class="p">:</span>
+        <span class="n">ccdistmat</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">)</span>
+        <span class="n">rrdistmat</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">)</span>
+        <span class="n">algofn</span> <span class="o">=</span> <span class="n">filter_permutative</span>
+
+    <span class="k">if</span> <span class="n">algorithm</span> <span class="o">==</span> <span class="s2">&quot;hungarian_uno&quot;</span><span class="p">:</span>
+        <span class="n">ccdistmat</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">)</span>
+        <span class="n">rrdistmat</span> <span class="o">=</span> <span class="n">distance_matrix</span><span class="p">(</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
+            <span class="n">ccnremat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">ccdistmat</span><span class="p">)</span>
+            <span class="n">rrnremat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">rrdistmat</span><span class="p">)</span>
+        <span class="n">ccnremat</span><span class="p">[</span><span class="n">ccnremat</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">rrnremat</span><span class="p">[</span><span class="n">rrnremat</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">algofn</span> <span class="o">=</span> <span class="n">filter_hungarian_uno</span>
+
+        <span class="c1"># Ensure (optional dependency) networkx exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">which_import</span><span class="p">(</span><span class="s2">&quot;networkx&quot;</span><span class="p">,</span> <span class="n">return_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+                <span class="sd">&quot;&quot;&quot;Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`&quot;&quot;&quot;</span>
+            <span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+
+    <span class="c1"># collect candidate atom orderings from algofn for each of the atom classes,</span>
+    <span class="c1">#   recombine the classes with each other in every permutation (could maybe</span>
+    <span class="c1">#   add Hungarian here, too) as generator back to permutation_kabsch</span>
+    <span class="k">for</span> <span class="n">cpmut</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">itertools</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">algofn</span><span class="p">,</span> <span class="n">connect</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+        <span class="n">atpat</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">igp</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cpmut</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">iidx</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">connect</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">igp</span><span class="p">]):</span>
+                <span class="n">atpat</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="n">iidx</span><span class="p">]</span>
+        <span class="k">yield</span> <span class="n">atpat</span>
+
+
+<div class="viewcode-block" id="kabsch_align"><a class="viewcode-back" href="../../../api/qcelemental.molutil.kabsch_align.html#qcelemental.molutil.kabsch_align">[docs]</a><span class="k">def</span> <span class="nf">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finds optimal translation and rotation to align `cgeom` onto `rgeom` via</span>
+<span class="sd">    Kabsch algorithm by minimizing the norm of the residual, :math:`|| R - U * C ||`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rgeom</span>
+<span class="sd">        (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]</span>
+<span class="sd">        for RMSD purposes.</span>
+<span class="sd">    cgeom</span>
+<span class="sd">        (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD</span>
+<span class="sd">        purposes. Must have same Natom, units, and 1-to-1 atom ordering as rgeom.</span>
+<span class="sd">    weight</span>
+<span class="sd">        (nat,) array of weights applied to `rgeom`. Note that definitions of</span>
+<span class="sd">        weights (nothing to do with atom masses) are several, and I haven&#39;t</span>
+<span class="sd">        seen one yet that can make centroid the center-of-mass and</span>
+<span class="sd">        also make the RMSD match the usual mass-wtd-RMSD definition.</span>
+<span class="sd">        Also, only one weight vector used rather than split btwn R &amp; C,</span>
+<span class="sd">        which may be invalid if not 1-to-1. Weighting is not recommended.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float, ~numpy.ndarray, ~numpy.ndarray</span>
+<span class="sd">        First item is RMSD [A] between `rgeom` and the optimally aligned</span>
+<span class="sd">        geometry computed.</span>
+<span class="sd">        Second item is (3, 3) rotation matrix to optimal alignment.</span>
+<span class="sd">        Third item is (3,) translation vector [a0] to optimal alignment.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Kabsch: Acta Cryst. (1978). A34, 827-828 http://journals.iucr.org/a/issues/1978/05/00/a15629/a15629.pdf</span>
+<span class="sd">    * C++ affine code: https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp</span>
+<span class="sd">    * weighted RMSD: http://www.amber.utah.edu/AMBER-workshop/London-2015/tutorial1/</span>
+<span class="sd">    * protein wRMSD code: https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt</span>
+<span class="sd">    * quaternion: https://cnx.org/contents/HV-RsdwL@23/Molecular-Distance-Measures</span>
+
+<span class="sd">    Author: dsirianni</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;Unrecognized argument type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span><span class="si">}</span><span class="s2"> for kwarg &#39;weight&#39;.&quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">rgeom</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">cgeom</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+        <span class="c1"># can hit a mixed non-identity translation/rotation, so head off</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">Rcentroid</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">Ccentroid</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Rcentroid</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">Ccentroid</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+    <span class="n">C</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+
+    <span class="n">RR</span> <span class="o">=</span> <span class="n">kabsch_quaternion</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># U</span>
+    <span class="n">TT</span> <span class="o">=</span> <span class="n">Ccentroid</span> <span class="o">-</span> <span class="n">RR</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Rcentroid</span><span class="p">)</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RR</span><span class="p">)</span>
+    <span class="n">rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">R</span> <span class="o">-</span> <span class="n">C</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">rmsd</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">TT</span></div>
+
+
+<span class="k">def</span> <span class="nf">kabsch_quaternion</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the optimal rotation matrix U which mapping a set of points P</span>
+<span class="sd">    onto the set of points Q according to the minimization of || Q - U * P ||,</span>
+<span class="sd">    using the unit quaternion formulation of the Kabsch algorithm.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    &lt;np.ndarray&gt; P := MxN array. M=dimension of space, N=number of points.</span>
+<span class="sd">    &lt;np.ndarray&gt; Q := MxN array. M=dimension of space, N=number of points.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    &lt;np.ndarray&gt; U := Optimal MxM rotation matrix mapping P onto Q.</span>
+
+<span class="sd">    Author: dsirianni</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Form covariance matrix</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># Form the quaternion transformation matrix F</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="c1"># diagonal</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Upper &amp; lower triangle</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">F</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">cov</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Compute ew, ev of F</span>
+    <span class="n">ew</span><span class="p">,</span> <span class="n">ev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+
+    <span class="c1"># Construct optimal rotation matrix from leading ev</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">U</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">U</span>
+
+
+<span class="c1"># TODO: consider `numpy.typing.ArrayLike` in compute_scramble</span>
+
+
+<div class="viewcode-block" id="compute_scramble"><a class="viewcode-back" href="../../../api/qcelemental.molutil.compute_scramble.html#qcelemental.molutil.compute_scramble">[docs]</a><span class="k">def</span> <span class="nf">compute_scramble</span><span class="p">(</span>
+    <span class="n">nat</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">do_resort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">do_shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">do_rotate</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">deflection</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">do_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlignmentMill</span><span class="p">:</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a random or directed translation, rotation, and atom shuffling.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    nat</span>
+<span class="sd">        Number of atoms for which to prepare an atom mapping.</span>
+<span class="sd">    do_resort</span>
+<span class="sd">        Whether to randomly shuffle atoms (`True`) or leave 1st atom 1st, etc. (`False`)</span>
+<span class="sd">        or shuffle according to specified (nat, ) indices (e.g., [2, 1, 0])</span>
+<span class="sd">    do_shift</span>
+<span class="sd">        Whether to generate a random atom shift on interval [-3, 3) in each</span>
+<span class="sd">        dimension (`True`) or leave at current origin (`False`) or shift along</span>
+<span class="sd">        specified (3, ) vector (e.g., np.array([0., 1., -1.])).</span>
+<span class="sd">    do_rotate</span>
+<span class="sd">        Whether to generate a random 3D rotation according to algorithm of Arvo (`True`)</span>
+<span class="sd">        or leave at current orientation (`False`) or rotate with specified (3, 3) matrix.</span>
+<span class="sd">    deflection</span>
+<span class="sd">        If `do_rotate`, how random a rotation: 0.0 is no change, 0.1 is small</span>
+<span class="sd">        perturbation, 1.0 is completely random.</span>
+<span class="sd">    do_mirror</span>
+<span class="sd">        Whether to set mirror reflection instruction. Changes identity of</span>
+<span class="sd">        molecule so off by default.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    AlignmentMill</span>
+<span class="sd">        Fields (shift, rotation, atommap, mirror)</span>
+<span class="sd">        as requested: identity, random, or specified.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rand_elord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">do_resort</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">rand_elord</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">do_resort</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rand_elord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">do_resort</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rand_elord</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nat</span><span class="p">,)</span>
+
+    <span class="k">if</span> <span class="n">do_shift</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">rand_shift</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="mi">3</span><span class="p">,))</span> <span class="o">-</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">do_shift</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">rand_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rand_shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">do_shift</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rand_shift</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+
+    <span class="k">if</span> <span class="n">do_rotate</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">rand_rot3d</span> <span class="o">=</span> <span class="n">random_rotation_matrix</span><span class="p">(</span><span class="n">deflection</span><span class="o">=</span><span class="n">deflection</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">do_rotate</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">rand_rot3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rand_rot3d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">do_rotate</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">rand_rot3d</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">perturbation</span> <span class="o">=</span> <span class="n">AlignmentMill</span><span class="p">(</span><span class="n">shift</span><span class="o">=</span><span class="n">rand_shift</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">rand_rot3d</span><span class="p">,</span> <span class="n">atommap</span><span class="o">=</span><span class="n">rand_elord</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="n">do_mirror</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">perturbation</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

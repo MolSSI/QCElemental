@@ -1,0 +1,6 @@
+Molecule
+========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: Molecule

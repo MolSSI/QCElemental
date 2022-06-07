@@ -1,0 +1,6 @@
+ProtoModel
+==========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: ProtoModel

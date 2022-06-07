@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kabsch_align &mdash; QCElemental 0+untagged.1.g3766e37 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="molecular_formula_from_symbols" href="qcelemental.molutil.molecular_formula_from_symbols.html" />
+    <link rel="prev" title="guess_connectivity" href="qcelemental.molutil.guess_connectivity.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> QCElemental
+          </a>
+              <div class="version">
+                0+untagged.1.g3766e37
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id2">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.B787.html">B787</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.compute_scramble.html">compute_scramble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.guess_connectivity.html">guess_connectivity</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">kabsch_align</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.molecular_formula_from_symbols.html">molecular_formula_from_symbols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.order_molecular_formula.html">order_molecular_formula</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models">qcelemental.models Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api.html">QCElemental API</a> &raquo;</li>
+      <li>kabsch_align</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/qcelemental.molutil.kabsch_align.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kabsch-align">
+<h1>kabsch_align<a class="headerlink" href="#kabsch-align" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.molutil.kabsch_align">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molutil.</span></span><span class="sig-name descname"><span class="pre">kabsch_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgeom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cgeom</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molutil/align.html#kabsch_align"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molutil.kabsch_align" title="Permalink to this definition"></a></dt>
+<dd><p>Finds optimal translation and rotation to align <cite>cgeom</cite> onto <cite>rgeom</cite> via
+Kabsch algorithm by minimizing the norm of the residual, <span class="math notranslate nohighlight">\(|| R - U * C ||\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
+for RMSD purposes.</p></li>
+<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
+purposes. Must have same Natom, units, and 1-to-1 atom ordering as rgeom.</p></li>
+<li><p><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]) – (nat,) array of weights applied to <cite>rgeom</cite>. Note that definitions of
+weights (nothing to do with atom masses) are several, and I haven’t
+seen one yet that can make centroid the center-of-mass and
+also make the RMSD match the usual mass-wtd-RMSD definition.
+Also, only one weight vector used rather than split btwn R &amp; C,
+which may be invalid if not 1-to-1. Weighting is not recommended.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>First item is RMSD [A] between <cite>rgeom</cite> and the optimally aligned
+geometry computed.
+Second item is (3, 3) rotation matrix to optimal alignment.
+Third item is (3,) translation vector [a0] to optimal alignment.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><em>ndarray</em></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Kabsch: Acta Cryst. (1978). A34, 827-828 <a class="reference external" href="http://journals.iucr.org/a/issues/1978/05/00/a15629/a15629.pdf">http://journals.iucr.org/a/issues/1978/05/00/a15629/a15629.pdf</a></p></li>
+<li><p>C++ affine code: <a class="reference external" href="https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp">https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp</a></p></li>
+<li><p>weighted RMSD: <a class="reference external" href="http://www.amber.utah.edu/AMBER-workshop/London-2015/tutorial1/">http://www.amber.utah.edu/AMBER-workshop/London-2015/tutorial1/</a></p></li>
+<li><p>protein wRMSD code: <a class="reference external" href="https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt">https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt</a></p></li>
+<li><p>quaternion: <a class="reference external" href="https://cnx.org/contents/HV-RsdwL&#64;23/Molecular-Distance-Measures">https://cnx.org/contents/HV-RsdwL&#64;23/Molecular-Distance-Measures</a></p></li>
+</ul>
+<p>Author: dsirianni</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qcelemental.molutil.guess_connectivity.html" class="btn btn-neutral float-left" title="guess_connectivity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.molutil.molecular_formula_from_symbols.html" class="btn btn-neutral float-right" title="molecular_formula_from_symbols" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

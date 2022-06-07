@@ -3,16 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
+  <title>qcelemental.models.molecule &mdash; QCElemental 0+untagged.1.g3766e37 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/small-apps.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/themefisher-font.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/style.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/autodoc_pydantic.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -41,56 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-
-
-<div style="width: 100%" class="qca-header">
-<nav class="navbar main-nav navbar-expand-lg p-0 qca-header">
-  <div class="container nav-width">
-    <div class="logo-width">
-    <a class="navbar-brand" href="https://docs.qcarchive.molssi.org"><img src="https://docs.qcarchive.molssi.org/en/latest/_static/images/QCAInfrastructure.png" alt="logo" width=200px></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-      aria-expanded="false" aria-label="Toggle navigation">
-      <span class="tf-ion-android-menu"></span>
-    </button>
-    </div>
-      <div class="collapse navbar-collapse" id=navbarNav>
-         <ul class="navbar-nav ml-auto">
-            <li class=nav-item>
-                <a class=nav-link href=https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM>
-                Community Slack
-                </a>
-            </li>
-            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org></a></li>
-            <li class="nav-item dropdown dropdown-slide">
-               <a class=nav-link href=# data-toggle=dropdown>GitHub
-               <span><i class=tf-ion-ios-arrow-down></i></span></a>
-               <div class=dropdown-menu>
-                  <a class=dropdown-item href=https://github.com/MolSSI/QCElemental>QCElemental</a>
-                  <a class=dropdown-item href=https://github.com/MolSSI/QCEngine>QCEngine</a>
-                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCFractal</a>
-                  <a class=dropdown-item href=https://github.com/MolSSI/QCFractal>QCPortal</a>
-               </div>
-            </li>
-            <li class="nav-item dropdown dropdown-slide">
-               <a class=nav-link href=# data-toggle=dropdown>Documentation
-               <span><i class=tf-ion-ios-arrow-down></i></span></a>
-               <div class=dropdown-menu>
-                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/>Examples</a>
-                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCElemental/en/stable>QCElemental</a>
-                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCEngine/en/stable>QCEngine</a>
-                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCFractal/en/stable>QCFractal</a>
-                  <a class=dropdown-item href=https://docs.qcarchive.molssi.org/projects/QCPortal/en/stable>QCPortal</a>
-               </div>
-            </li>
-            <li class=nav-item><a class=nav-link href=https://qcarchive.molssi.org/><u>MolSSI Database</u></a></li>
-         </ul>
-      </div>
-   </div>
-   </div>
-</nav>
-
-
-
+ 
 
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
@@ -99,7 +45,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../../../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g1920120
+                0+untagged.1.g3766e37
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -280,7 +226,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">schema_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-        <span class="mi">2</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of ``schema_name`` to which this model conforms.&quot;</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">validated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">False</span><span class="p">,</span>
@@ -295,9 +242,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">symbols</span><span class="p">:</span> <span class="n">Array</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The ordered array of atomic elemental symbols in title case. This field&#39;s index &quot;</span>
-        <span class="s2">&quot;sets atomic order for all other per-atom fields like ``real`` and the first dimension of &quot;</span>
-        <span class="s2">&quot;``geometry``. Ghost/virtual atoms must have an entry here in ``symbols``; ghostedness is &quot;</span>
-        <span class="s2">&quot;indicated through the ``real`` field.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sets atomic order for all other per-atom fields like :attr:`~qcelemental.models.Molecule.real` and the first dimension of &quot;</span>
+        <span class="s2">&quot;:attr:`~qcelemental.models.Molecule.geometry`. Ghost/virtual atoms must have an entry here in :attr:`~qcelemental.models.Molecule.symbols`; ghostedness is &quot;</span>
+        <span class="s2">&quot;indicated through the :attr:`~qcelemental.models.Molecule.real` field.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">geometry</span><span class="p">:</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -306,7 +253,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="s2">&quot;Atom ordering is fixed; that is, a consumer who shuffles atoms must not reattach the input &quot;</span>
         <span class="s2">&quot;(pre-shuffling) molecule schema instance to any output (post-shuffling) per-atom results &quot;</span>
         <span class="s2">&quot;(e.g., gradient). Index of the first dimension matches the 0-indexed indices of all other &quot;</span>
-        <span class="s2">&quot;per-atom settings like ``symbols`` and ``real``.&quot;</span>
+        <span class="s2">&quot;per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`.&quot;</span>
         <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="s2">&quot;Serialized storage is always flat, (3*nat,), but QCSchema implementations will want to reshape it. &quot;</span>
         <span class="s2">&quot;QCElemental can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, &quot;</span>
@@ -319,12 +266,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1"># Molecule data</span>
     <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Common or human-readable name to assign to this molecule. This field can be arbitrary; see ``identifiers`` for well-defined labels.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Common or human-readable name to assign to this molecule. This field can be arbitrary; see :attr:`~qcelemental.models.Molecule.identifiers` for well-defined labels.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">identifiers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Identifiers</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An optional dictionary of additional identifiers by which this molecule can be referenced, &quot;</span>
-        <span class="s2">&quot;such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;such as INCHI, canonical SMILES, etc. See the :class:`~qcelemental.models.results.Identifiers` model for more details.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
@@ -337,10 +284,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">masses_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The ordered array of atomic masses. Index order &quot;</span>
-        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom fields like ``symbols`` and ``real``. If &quot;</span>
+        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom fields like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. If &quot;</span>
         <span class="s2">&quot;this is not provided, the mass of each atom is inferred from its most common isotope. If this &quot;</span>
-        <span class="s2">&quot;is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for &quot;</span>
-        <span class="s2">&quot;standard masses to infer from the same index in the ``symbols`` field.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is provided, it must be the same length as :attr:`~qcelemental.models.Molecule.symbols` but can accept ``None`` entries for &quot;</span>
+        <span class="s2">&quot;standard masses to infer from the same index in the :attr:`~qcelemental.models.Molecule.symbols` field.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
         <span class="n">units</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -348,8 +295,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The ordered array indicating if each atom is real (``True``) or &quot;</span>
         <span class="s2">&quot;ghost/virtual (``False``). Index &quot;</span>
-        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first &quot;</span>
-        <span class="s2">&quot;dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``).&quot;</span>
+        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and the first &quot;</span>
+        <span class="s2">&quot;dimension of :attr:`~qcelemental.models.Molecule.geometry`. If this is not provided, all atoms are assumed to be real (``True``).&quot;</span>
         <span class="s2">&quot;If this is provided, the reality or ghostedness of every atom must be specified.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
     <span class="p">)</span>
@@ -357,22 +304,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional per-atom labels as an array of strings. Typical use is in &quot;</span>
         <span class="s2">&quot;model conversions, such as Elemental &lt;-&gt; Molpro and not typically something which should be user &quot;</span>
-        <span class="s2">&quot;assigned. See the ``comments`` field for general human-consumable text to affix to the molecule.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;assigned. See the :attr:`~qcelemental.models.Molecule.comment` field for general human-consumable text to affix to the molecule.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">atomic_numbers_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index &quot;</span>
-        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. &quot;</span>
-        <span class="s2">&quot;Values are inferred from the ``symbols`` list if not explicitly set. &quot;</span>
-        <span class="s2">&quot;Ghostedness should be indicated through ``real`` field, not zeros here.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. &quot;</span>
+        <span class="s2">&quot;Values are inferred from the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. &quot;</span>
+        <span class="s2">&quot;Ghostedness should be indicated through :attr:`~qcelemental.models.Molecule.real` field, not zeros here.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">mass_numbers_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index &quot;</span>
-        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. &quot;</span>
-        <span class="s2">&quot;Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set. &quot;</span>
+        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. &quot;</span>
+        <span class="s2">&quot;Values are inferred from the most common isotopes of the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. &quot;</span>
         <span class="s2">&quot;If single isotope not (yet) known for an atom, -1 is placeholder.&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">],</span>
     <span class="p">)</span>
@@ -382,15 +329,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of bonds within the molecule. Each entry is a tuple &quot;</span>
         <span class="s2">&quot;of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` &quot;</span>
-        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. &quot;</span>
+        <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. &quot;</span>
         <span class="s2">&quot;Bonds may be freely reordered and inverted.&quot;</span><span class="p">,</span>
         <span class="n">min_items</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fragments_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of indices grouping atoms (0-indexed) into molecular fragments within the molecule. &quot;</span>
-        <span class="s2">&quot;Each entry in the outer list is a new fragment; index matches the ordering in ``fragment_charges`` and &quot;</span>
-        <span class="s2">&quot;``fragment_multiplicities``. Inner lists are 0-indexed atoms which compose the fragment; every atom must &quot;</span>
+        <span class="s2">&quot;Each entry in the outer list is a new fragment; index matches the ordering in :attr:`~qcelemental.models.Molecule.fragment_charges` and &quot;</span>
+        <span class="s2">&quot;:attr:`~qcelemental.models.Molecule.fragment_multiplicities`. Inner lists are 0-indexed atoms which compose the fragment; every atom must &quot;</span>
         <span class="s2">&quot;be in exactly one inner list. Noncontiguous fragments are allowed, though no QM program is known to support them. &quot;</span>
         <span class="s2">&quot;Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the input &quot;</span>
         <span class="s2">&quot;(pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment results (e.g., n-body energy arrays).&quot;</span><span class="p">,</span>
@@ -398,16 +345,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
     <span class="n">fragment_charges_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The total charge of each fragment in the ``fragments`` list. The index of this &quot;</span>
-        <span class="s2">&quot;list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of rules &quot;</span>
-        <span class="s2">&quot;if not provided (and ``fragments`` are specified).&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The total charge of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this &quot;</span>
+        <span class="s2">&quot;list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of rules &quot;</span>
+        <span class="s2">&quot;if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nfr&quot;</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">fragment_multiplicities_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The multiplicity of each fragment in the ``fragments`` list. The index of this &quot;</span>
-        <span class="s2">&quot;list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of &quot;</span>
-        <span class="s2">&quot;rules if not provided (and ``fragments`` are specified).&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this &quot;</span>
+        <span class="s2">&quot;list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of &quot;</span>
+        <span class="s2">&quot;rules if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).&quot;</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nfr&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
@@ -416,7 +363,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">False</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether translation of geometry is allowed (fix F) or disallowed (fix T).&quot;</span>
         <span class="s2">&quot;When False, QCElemental will pre-process the Molecule object to translate the center of mass &quot;</span>
-        <span class="s2">&quot;to (0,0,0) in Euclidean coordinate space, resulting in a different ``geometry`` than the &quot;</span>
+        <span class="s2">&quot;to (0,0,0) in Euclidean coordinate space, resulting in a different :attr:`~qcelemental.models.Molecule.geometry` than the &quot;</span>
         <span class="s2">&quot;one provided. &#39;Fix&#39; is used in the sense of &#39;specify&#39;: that is, `fix_com=True` signals that &quot;</span>
         <span class="s2">&quot;the origin in `geometry` is a deliberate part of the Molecule spec, whereas `fix_com=False` &quot;</span>
         <span class="s2">&quot;(default) allows that the origin is happenstance and may be adjusted. &quot;</span>
@@ -426,14 +373,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">False</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether rotation of geometry is allowed (fix F) or disallowed (fix T). &quot;</span>
         <span class="s2">&quot;When False, QCElemental will pre-process the Molecule object to orient via the intertial tensor, &quot;</span>
-        <span class="s2">&quot;resulting in a different ``geometry`` than the one provided. &quot;</span>
+        <span class="s2">&quot;resulting in a different :attr:`~qcelemental.models.Molecule.geometry` than the one provided. &quot;</span>
         <span class="s2">&quot;&#39;Fix&#39; is used in the sense of &#39;specify&#39;: that is, `fix_orientation=True` signals that &quot;</span>
         <span class="s2">&quot;the frame orientation in `geometry` is a deliberate part of the Molecule spec, whereas &quot;</span>
         <span class="s2">&quot;`fix_orientation=False` (default) allows that the frame is happenstance and may be adjusted. &quot;</span>
         <span class="s2">&quot;guidance: A consumer who rotates the geometry must not reattach the input (pre-rotation) molecule schema instance to any output (post-rotation) frame-sensitive results (e.g., molecular vibrations).&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fix_symmetry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximal point group symmetry which ``geometry`` should be treated. Lowercase.&quot;</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Maximal point group symmetry which :attr:`~qcelemental.models.Molecule.geometry` should be treated. Lowercase.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># Extra</span>
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>

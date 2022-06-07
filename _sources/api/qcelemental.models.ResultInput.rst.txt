@@ -1,0 +1,6 @@
+ResultInput
+===========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: ResultInput

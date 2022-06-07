@@ -1,0 +1,6 @@
+Provenance
+==========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: Provenance

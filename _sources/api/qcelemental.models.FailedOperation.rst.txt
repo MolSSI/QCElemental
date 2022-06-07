@@ -1,0 +1,6 @@
+FailedOperation
+===============
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: FailedOperation

@@ -1,6 +1,0 @@
-run_comparison
-==============
-
-.. currentmodule:: qcelemental.periodic_table
-
-.. autofunction:: run_comparison

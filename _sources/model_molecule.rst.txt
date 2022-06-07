@@ -124,17 +124,9 @@ Obtaining fragments with ghost atoms is also supported:
         Ne      (Gh)      3.100000000572     0.000000000000     0.000000000000
     >
 
-Fields
-------
-
-.. autoclass:: qcelemental.models.Molecule
-
-
 API
 ---
 
-.. autoclass:: qcelemental.models.Molecule
-   :members:
-   :no-special-members:
+.. autopydantic_model:: qcelemental.models.Molecule
    :noindex:
 

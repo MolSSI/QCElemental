@@ -1,0 +1,6 @@
+ResultProperties
+================
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: ResultProperties
