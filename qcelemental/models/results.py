@@ -288,7 +288,7 @@ class AtomicResultProperties(ProtoModel):
         try:
             v = np.asarray(v).reshape(shape)
         except (ValueError, AttributeError):
-            raise ValueError(f"Derivative must be castable to shape {shape}! len={np.asarray(v).size()}")
+            raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
 
     def dict(self, *args, **kwargs):
