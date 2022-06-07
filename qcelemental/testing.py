@@ -65,7 +65,7 @@ def compare_values(
     rtol
         Relative tolerance (see formula below). By default set to zero so `atol` dominates.
     equal_nan
-        Passed to np.isclose. Compare NaN's as equal.
+        Passed to :func:`numpy.isclose`. Compare NaN's as equal.
     equal_phase
         Compare computed *or its opposite* as equal.
     passnone
@@ -90,7 +90,7 @@ def compare_values(
 
     Notes
     -----
-    * Akin to np.allclose.
+    * Akin to :func:`numpy.allclose`.
     * For scalar float-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,
       float-comparable types. For mixed types, use :py:func:`compare_recursive`.
     * Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:
@@ -228,7 +228,7 @@ def compare(
 
     Notes
     -----
-    * Akin to np.array_equal.
+    * Akin to :func:`numpy.array_equal`.
     * For scalar exactly-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,
       exactly-comparable types. For mixed types, use :py:func:`compare_recursive`.
 

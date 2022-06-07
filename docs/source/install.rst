@@ -29,7 +29,7 @@ You can also install QCElemental using ``pip``:
 Test the Installation
 ---------------------
 
-You can test to make sure that Elemental is installed correctly by first installing ``pytest``.
+You can test to make sure that QCElemental is installed correctly by first installing ``pytest``.
 
 From ``conda``:
 
@@ -53,5 +53,5 @@ Then, run the following command:
 Developing from Source
 ----------------------
 
-If you are a developer and want to make contributions Elemental, you can access the source code from
+If you are a developer and want to make contributions to QCElemental, you can access the source code from
 `github <https://github.com/molssi/qcelemental>`_.

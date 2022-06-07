@@ -65,15 +65,22 @@ Function Definitions
 --------------------
 
 .. autofunction:: to_mass
+   :noindex:
 
 .. autofunction:: to_mass_number
+   :noindex:
 
 .. autofunction:: to_atomic_number
+   :noindex:
 
 .. autofunction:: to_symbol
+   :noindex:
 
 .. autofunction:: to_name
+   :noindex:
 
 .. autofunction:: to_period
+   :noindex:
 
 .. autofunction:: to_group
+   :noindex:

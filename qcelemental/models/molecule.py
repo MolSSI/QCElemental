@@ -120,7 +120,8 @@ class Molecule(ProtoModel):
         ),
     )
     schema_version: int = Field(  # type: ignore
-        2, description="The version number of ``schema_name`` to which this model conforms."
+        2,
+        description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.",
     )
     validated: bool = Field(  # type: ignore
         False,
@@ -135,9 +136,9 @@ class Molecule(ProtoModel):
     symbols: Array[str] = Field(  # type: ignore
         ...,
         description="The ordered array of atomic elemental symbols in title case. This field's index "
-        "sets atomic order for all other per-atom fields like ``real`` and the first dimension of "
-        "``geometry``. Ghost/virtual atoms must have an entry here in ``symbols``; ghostedness is "
-        "indicated through the ``real`` field.",
+        "sets atomic order for all other per-atom fields like :attr:`~qcelemental.models.Molecule.real` and the first dimension of "
+        ":attr:`~qcelemental.models.Molecule.geometry`. Ghost/virtual atoms must have an entry here in :attr:`~qcelemental.models.Molecule.symbols`; ghostedness is "
+        "indicated through the :attr:`~qcelemental.models.Molecule.real` field.",
         shape=["nat"],
     )
     geometry: Array[float] = Field(  # type: ignore
@@ -146,7 +147,7 @@ class Molecule(ProtoModel):
         "Atom ordering is fixed; that is, a consumer who shuffles atoms must not reattach the input "
         "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-atom results "
         "(e.g., gradient). Index of the first dimension matches the 0-indexed indices of all other "
-        "per-atom settings like ``symbols`` and ``real``."
+        "per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`."
         "\n"
         "Serialized storage is always flat, (3*nat,), but QCSchema implementations will want to reshape it. "
         "QCElemental can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
@@ -159,12 +160,12 @@ class Molecule(ProtoModel):
     # Molecule data
     name: Optional[str] = Field(  # type: ignore
         None,
-        description="Common or human-readable name to assign to this molecule. This field can be arbitrary; see ``identifiers`` for well-defined labels.",
+        description="Common or human-readable name to assign to this molecule. This field can be arbitrary; see :attr:`~qcelemental.models.Molecule.identifiers` for well-defined labels.",
     )
     identifiers: Optional[Identifiers] = Field(  # type: ignore
         None,
         description="An optional dictionary of additional identifiers by which this molecule can be referenced, "
-        "such as INCHI, canonical SMILES, etc. See the :class:``Identifiers`` model for more details.",
+        "such as INCHI, canonical SMILES, etc. See the :class:`~qcelemental.models.results.Identifiers` model for more details.",
     )
     comment: Optional[str] = Field(  # type: ignore
         None,
@@ -177,10 +178,10 @@ class Molecule(ProtoModel):
     masses_: Optional[Array[float]] = Field(  # type: ignore
         None,
         description="The ordered array of atomic masses. Index order "
-        "matches the 0-indexed indices of all other per-atom fields like ``symbols`` and ``real``. If "
+        "matches the 0-indexed indices of all other per-atom fields like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. If "
         "this is not provided, the mass of each atom is inferred from its most common isotope. If this "
-        "is provided, it must be the same length as ``symbols`` but can accept ``None`` entries for "
-        "standard masses to infer from the same index in the ``symbols`` field.",
+        "is provided, it must be the same length as :attr:`~qcelemental.models.Molecule.symbols` but can accept ``None`` entries for "
+        "standard masses to infer from the same index in the :attr:`~qcelemental.models.Molecule.symbols` field.",
         shape=["nat"],
         units="u",
     )
@@ -188,8 +189,8 @@ class Molecule(ProtoModel):
         None,
         description="The ordered array indicating if each atom is real (``True``) or "
         "ghost/virtual (``False``). Index "
-        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and the first "
-        "dimension of ``geometry``. If this is not provided, all atoms are assumed to be real (``True``)."
+        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and the first "
+        "dimension of :attr:`~qcelemental.models.Molecule.geometry`. If this is not provided, all atoms are assumed to be real (``True``)."
         "If this is provided, the reality or ghostedness of every atom must be specified.",
         shape=["nat"],
     )
@@ -197,22 +198,22 @@ class Molecule(ProtoModel):
         None,
         description="Additional per-atom labels as an array of strings. Typical use is in "
         "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
-        "assigned. See the ``comments`` field for general human-consumable text to affix to the molecule.",
+        "assigned. See the :attr:`~qcelemental.models.Molecule.comment` field for general human-consumable text to affix to the molecule.",
         shape=["nat"],
     )
     atomic_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
-        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-        "Values are inferred from the ``symbols`` list if not explicitly set. "
-        "Ghostedness should be indicated through ``real`` field, not zeros here.",
+        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
+        "Values are inferred from the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. "
+        "Ghostedness should be indicated through :attr:`~qcelemental.models.Molecule.real` field, not zeros here.",
         shape=["nat"],
     )
     mass_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
         description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
-        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
-        "Values are inferred from the most common isotopes of the ``symbols`` list if not explicitly set. "
+        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
+        "Values are inferred from the most common isotopes of the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. "
         "If single isotope not (yet) known for an atom, -1 is placeholder.",
         shape=["nat"],
     )
@@ -222,15 +223,15 @@ class Molecule(ProtoModel):
         None,
         description="A list of bonds within the molecule. Each entry is a tuple "
         "of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
-        "matches the 0-indexed indices of all other per-atom settings like ``symbols`` and ``real``. "
+        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
         "Bonds may be freely reordered and inverted.",
         min_items=1,
     )
     fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
         description="List of indices grouping atoms (0-indexed) into molecular fragments within the molecule. "
-        "Each entry in the outer list is a new fragment; index matches the ordering in ``fragment_charges`` and "
-        "``fragment_multiplicities``. Inner lists are 0-indexed atoms which compose the fragment; every atom must "
+        "Each entry in the outer list is a new fragment; index matches the ordering in :attr:`~qcelemental.models.Molecule.fragment_charges` and "
+        ":attr:`~qcelemental.models.Molecule.fragment_multiplicities`. Inner lists are 0-indexed atoms which compose the fragment; every atom must "
         "be in exactly one inner list. Noncontiguous fragments are allowed, though no QM program is known to support them. "
         "Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the input "
         "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment results (e.g., n-body energy arrays).",
@@ -238,16 +239,16 @@ class Molecule(ProtoModel):
     )
     fragment_charges_: Optional[List[float]] = Field(  # type: ignore
         None,
-        description="The total charge of each fragment in the ``fragments`` list. The index of this "
-        "list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of rules "
-        "if not provided (and ``fragments`` are specified).",
+        description="The total charge of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
+        "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of rules "
+        "if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
         shape=["nfr"],
     )
     fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
         None,
-        description="The multiplicity of each fragment in the ``fragments`` list. The index of this "
-        "list matches the 0-index indices of ``fragments`` list. Will be filled in based on a set of "
-        "rules if not provided (and ``fragments`` are specified).",
+        description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
+        "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of "
+        "rules if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
         shape=["nfr"],
     )
 
@@ -256,7 +257,7 @@ class Molecule(ProtoModel):
         False,
         description="Whether translation of geometry is allowed (fix F) or disallowed (fix T)."
         "When False, QCElemental will pre-process the Molecule object to translate the center of mass "
-        "to (0,0,0) in Euclidean coordinate space, resulting in a different ``geometry`` than the "
+        "to (0,0,0) in Euclidean coordinate space, resulting in a different :attr:`~qcelemental.models.Molecule.geometry` than the "
         "one provided. 'Fix' is used in the sense of 'specify': that is, `fix_com=True` signals that "
         "the origin in `geometry` is a deliberate part of the Molecule spec, whereas `fix_com=False` "
         "(default) allows that the origin is happenstance and may be adjusted. "
@@ -266,14 +267,15 @@ class Molecule(ProtoModel):
         False,
         description="Whether rotation of geometry is allowed (fix F) or disallowed (fix T). "
         "When False, QCElemental will pre-process the Molecule object to orient via the intertial tensor, "
-        "resulting in a different ``geometry`` than the one provided. "
+        "resulting in a different :attr:`~qcelemental.models.Molecule.geometry` than the one provided. "
         "'Fix' is used in the sense of 'specify': that is, `fix_orientation=True` signals that "
         "the frame orientation in `geometry` is a deliberate part of the Molecule spec, whereas "
         "`fix_orientation=False` (default) allows that the frame is happenstance and may be adjusted. "
         "guidance: A consumer who rotates the geometry must not reattach the input (pre-rotation) molecule schema instance to any output (post-rotation) frame-sensitive results (e.g., molecular vibrations).",
     )
     fix_symmetry: Optional[str] = Field(  # type: ignore
-        None, description="Maximal point group symmetry which ``geometry`` should be treated. Lowercase."
+        None,
+        description="Maximal point group symmetry which :attr:`~qcelemental.models.Molecule.geometry` should be treated. Lowercase.",
     )
     # Extra
     provenance: Provenance = Field(

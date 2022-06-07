@@ -17,12 +17,13 @@ if TYPE_CHECKING:
 
 
 class AtomicResultProperties(ProtoModel):
-    r"""Named properties of quantum chemistry computations following the MolSSI QCSchema.
+    r"""
+    Named properties of quantum chemistry computations following the MolSSI QCSchema.
 
     All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
 
-      * nao: number of atomic orbitals = calcinfo_nbasis
-      * nmo: number of molecular orbitals
+    * nao: number of atomic orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nbasis`
+    * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nmo`
     """
 
     # Calcinfo
@@ -36,16 +37,16 @@ class AtomicResultProperties(ProtoModel):
     nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy.")
     return_energy: Optional[float] = Field(
         None,
-        description="The energy of the requested method, identical to ``return_result`` for ``driver=energy`` computations.",
+        description="The energy of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.energy` computations.",
     )
     return_gradient: Optional[Array[float]] = Field(
         None,
-        description="The gradient of the requested method, identical to ``return_result`` for ``driver=gradient`` computations.",
+        description="The gradient of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.gradient` computations.",
         units="E_h/a0",
     )
     return_hessian: Optional[Array[float]] = Field(
         None,
-        description="The Hessian of the requested method, identical to ``return_result`` for ``driver=hessian`` computations.",
+        description="The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.",
         units="E_h/a0^2",
     )
 
@@ -567,15 +568,16 @@ class AtomicInput(ProtoModel):
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
         ),
     )
-    schema_version: int = Field(1, description="The version number of ``schema_name`` to which this model conforms.")
+    schema_version: int = Field(
+        1,
+        description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
+    )
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
     driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__base_doc__))
+    model: Model = Field(..., description=str(Model.__doc__))
     keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
-    protocols: AtomicResultProtocols = Field(
-        AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
-    )
+    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=str(AtomicResultProtocols.__doc__))
 
     extras: Dict[str, Any] = Field(
         {},
@@ -583,7 +585,7 @@ class AtomicInput(ProtoModel):
     )
 
     provenance: Provenance = Field(
-        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__base_doc__)
+        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__doc__)
     )
 
     class Config(ProtoModel.Config):
@@ -607,12 +609,12 @@ class AtomicResult(AtomicInput):
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
         ),
     )
-    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__base_doc__))
-    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
+    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__doc__))
+    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
         ...,
-        description="The primary return specified by the ``driver`` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
+        description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
 
     stdout: Optional[str] = Field(
@@ -623,8 +625,8 @@ class AtomicResult(AtomicInput):
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
 
     success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__base_doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__base_doc__))
+    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
+    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @validator("schema_name", pre=True)
     def _input_to_output(cls, v):
@@ -755,38 +757,66 @@ class AtomicResult(AtomicInput):
 
 
 class ResultProperties(AtomicResultProperties):
+    """QC Result Properties Schema.
+
+    .. deprecated:: 0.12
+       Use :py:func:`qcelemental.models.AtomicResultProperties` instead.
+
+    """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
         warn(
-            "ResultProperties has been renamed to AtomicResultProperties and will be removed in v0.13.0",
+            "ResultProperties has been renamed to AtomicResultProperties and will be removed as soon as v0.13.0",
             DeprecationWarning,
         )
         super().__init__(*args, **kwargs)
 
 
 class ResultProtocols(AtomicResultProtocols):
+    """QC Result Protocols Schema.
+
+    .. deprecated:: 0.12
+       Use :py:func:`qcelemental.models.AtomicResultProtocols` instead.
+
+    """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
         warn(
-            "ResultProtocols has been renamed to AtomicResultProtocols and will be removed in v0.13.0",
+            "ResultProtocols has been renamed to AtomicResultProtocols and will be removed as soon as v0.13.0",
             DeprecationWarning,
         )
         super().__init__(*args, **kwargs)
 
 
 class ResultInput(AtomicInput):
+    """QC Input Schema.
+
+    .. deprecated:: 0.12
+       Use :py:func:`qcelemental.models.AtomicInput` instead.
+
+    """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
-        warn("ResultInput has been renamed to AtomicInput and will be removed in v0.13.0", DeprecationWarning)
+        warn("ResultInput has been renamed to AtomicInput and will be removed as soon as v0.13.0", DeprecationWarning)
         super().__init__(*args, **kwargs)
 
 
 class Result(AtomicResult):
+    """QC Result Schema.
+
+    .. deprecated:: 0.12
+       Use :py:func:`qcelemental.models.AtomicResult` instead.
+
+    """
+
     def __init__(self, *args, **kwargs):
         from warnings import warn
 
-        warn("Result has been renamed to AtomicResult and will be removed in v0.13.0", DeprecationWarning)
+        warn("Result has been renamed to AtomicResult and will be removed as soon as v0.13.0", DeprecationWarning)
         super().__init__(*args, **kwargs)

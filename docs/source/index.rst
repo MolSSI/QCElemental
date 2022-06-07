@@ -45,7 +45,7 @@ Molecule Handlers
 -----------------
 
 Molecules can be translated to/from the `MolSSI QCSchema
-<https://github.com/MolSSI/QC_JSON_Schema>`_ format or quantum chemistry
+<https://github.com/MolSSI/QCSchema>`_ format or quantum chemistry
 program specific input specifications such as NWChem, Psi4, and CFour. In
 addition, databases such as PubChem can be searched:
 

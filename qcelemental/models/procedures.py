@@ -257,7 +257,15 @@ class TorsionDriveResult(TorsionDriveInput):
 
 
 def Optimization(*args, **kwargs):
+    """QC Optimization Results Schema.
+
+    .. deprecated:: 0.12
+       Use :py:func:`qcelemental.models.OptimizationResult` instead.
+
+    """
     from warnings import warn
 
-    warn("Optimization has been renamed to OptimizationResult and will be removed in v0.13.0", DeprecationWarning)
+    warn(
+        "Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0", DeprecationWarning
+    )
     return OptimizationResult(*args, **kwargs)

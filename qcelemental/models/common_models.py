@@ -21,7 +21,7 @@ class Provenance(ProtoModel):
     creator: str = Field(..., description="The name of the program, library, or person who created the object.")
     version: str = Field(
         "",
-        description="The version of the creator, blank otherwise. This should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).",
+        description="The version of the creator, blank otherwise. This should be sortable by the very broad `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.",
     )
     routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 

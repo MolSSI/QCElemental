@@ -156,7 +156,8 @@ class BasisSet(ProtoModel):
         description=(f"The QCSchema specification to which this model conforms. Explicitly fixed as qcschema_basis."),
     )
     schema_version: int = Field(  # type: ignore
-        1, description="The version number of ``schema_name`` to which this model conforms."
+        1,
+        description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` to which this model conforms.",
     )
 
     name: str = Field(..., description="The standard basis name if available (e.g., 'cc-pVDZ').")

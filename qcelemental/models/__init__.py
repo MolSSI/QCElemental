@@ -8,7 +8,7 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
-from .basemodels import AutodocBaseSettings, ProtoModel
+from .basemodels import ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
 from .molecule import Molecule
