@@ -7,6 +7,8 @@ QCElemental API
 
 .. automodapi:: qcelemental.molparse
 
+.. automodapi:: qcelemental.molutil
+
 .. automodapi:: qcelemental.testing
    :skip:tnm
 
