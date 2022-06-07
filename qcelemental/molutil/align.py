@@ -556,6 +556,7 @@ def kabsch_quaternion(P, Q):
 
 # TODO: consider `numpy.typing.ArrayLike` in compute_scramble
 
+
 def compute_scramble(
     nat: int,
     do_resort: Union[bool, List, np.ndarray] = True,
