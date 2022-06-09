@@ -1,0 +1,6 @@
+AutodocBaseSettings
+===================
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_settings:: AutodocBaseSettings

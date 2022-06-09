@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>order_molecular_formula &mdash; QCElemental 0+untagged.1.g60934f3 documentation</title>
+  <title>AutodocBaseSettings &mdash; QCElemental 0+untagged.1.g60934f3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -21,8 +21,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="compare" href="qcelemental.testing.compare.html" />
-    <link rel="prev" title="molecular_formula_from_symbols" href="qcelemental.molutil.molecular_formula_from_symbols.html" />
+    <link rel="next" title="BasisSet" href="qcelemental.models.BasisSet.html" />
+    <link rel="prev" title="AtomicResultProperties" href="qcelemental.models.AtomicResultProperties.html" />
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -81,20 +81,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id2">Functions</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.B787.html">B787</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.compute_scramble.html">compute_scramble</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.guess_connectivity.html">guess_connectivity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.kabsch_align.html">kabsch_align</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molutil.molecular_formula_from_symbols.html">molecular_formula_from_symbols</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">order_molecular_formula</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models">qcelemental.models Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.models">qcelemental.models Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id4">Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.AlignmentMill.html">AlignmentMill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.AtomicInput.html">AtomicInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.AtomicResult.html">AtomicResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.AtomicResultProperties.html">AtomicResultProperties</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">AutodocBaseSettings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.BasisSet.html">BasisSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.ComputeError.html">ComputeError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.DriverEnum.html">DriverEnum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.FailedOperation.html">FailedOperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.Molecule.html">Molecule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.OptimizationInput.html">OptimizationInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.OptimizationResult.html">OptimizationResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.ProtoModel.html">ProtoModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.Provenance.html">Provenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.Result.html">Result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.ResultInput.html">ResultInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.ResultProperties.html">ResultProperties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#id5">Class Inheritance Diagram</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -115,9 +127,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../api.html">QCElemental API</a> &raquo;</li>
-      <li>order_molecular_formula</li>
+      <li>AutodocBaseSettings</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/qcelemental.molutil.order_molecular_formula.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/qcelemental.models.AutodocBaseSettings.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -125,27 +137,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="order-molecular-formula">
-<h1>order_molecular_formula<a class="headerlink" href="#order-molecular-formula" title="Permalink to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="qcelemental.molutil.order_molecular_formula">
-<span class="sig-prename descclassname"><span class="pre">qcelemental.molutil.</span></span><span class="sig-name descname"><span class="pre">order_molecular_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">formula</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'alphabetical'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molutil/molecular_formula.html#order_molecular_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molutil.order_molecular_formula" title="Permalink to this definition"></a></dt>
-<dd><p>Reorders a molecular formula.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>formula</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – A molecular formula</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Sorting order of the formula. Valid choices are “alphabetical” and “hill”.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The molecular formula.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
+  <section id="autodocbasesettings">
+<h1>AutodocBaseSettings<a class="headerlink" href="#autodocbasesettings" title="Permalink to this heading"></a></h1>
+<dl class="py class pydantic_settings">
+<dt class="sig sig-object py" id="qcelemental.models.AutodocBaseSettings">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">settings</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.</span></span><span class="sig-name descname"><span class="pre">AutodocBaseSettings</span></span><a class="reference internal" href="../_modules/qcelemental/models/basemodels.html#AutodocBaseSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.AutodocBaseSettings" title="Permalink to this definition"></a></dt>
+<dd><p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AutodocBaseSettings&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Base class for settings, allowing values to be overridden by environment variables.\n\nThis is useful in production for secrets you do not wish to save in code, it plays nicely with docker(-compose),\nHeroku and any 12 factor app design.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</details></p></dd></dl>
 
 </section>
 
@@ -153,8 +160,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="qcelemental.molutil.molecular_formula_from_symbols.html" class="btn btn-neutral float-left" title="molecular_formula_from_symbols" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="qcelemental.testing.compare.html" class="btn btn-neutral float-right" title="compare" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qcelemental.models.AtomicResultProperties.html" class="btn btn-neutral float-left" title="AtomicResultProperties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.models.BasisSet.html" class="btn btn-neutral float-right" title="BasisSet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
