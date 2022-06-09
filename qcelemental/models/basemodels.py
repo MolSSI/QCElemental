@@ -3,9 +3,11 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel, BaseSettings
+from pydantic import BaseSettings  # remove when QCFractal merges `next`
+from pydantic import BaseModel
 
 from qcelemental.util import deserialize, serialize
+from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 def _repr(self) -> str:
@@ -23,6 +25,7 @@ class ProtoModel(BaseModel):
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
+        cls.__base_doc__ = ""  # remove when QCFractal merges `next`
 
         if "pydantic" in cls.__repr__.__module__:
             cls.__repr__ = _repr
@@ -186,6 +189,12 @@ class ProtoModel(BaseModel):
         from ..testing import compare_recursive
 
         return compare_recursive(self, other, **kwargs)
+
+
+# remove when QCFractal merges `next`
+class AutodocBaseSettings(BaseSettings):
+    def __init_subclass__(cls) -> None:
+        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
 
 qcschema_draft = "http://json-schema.org/draft-04/schema#"

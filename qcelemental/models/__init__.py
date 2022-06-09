@@ -8,6 +8,7 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
+from .basemodels import AutodocBaseSettings  # remove when QCFractal merges `next`
 from .basemodels import ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
