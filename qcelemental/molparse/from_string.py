@@ -1,6 +1,6 @@
 import pprint
 import re
-from typing import Dict, Tuple, Union
+from typing import Any, Dict, Tuple, Union
 
 from ..exceptions import ChoicesError, MoleculeFormatError, ValidationError
 from ..util import filter_comments, provenance_stamp
@@ -135,6 +135,25 @@ def from_string(
             -----
             <number of atoms> is pattern-matched but ignored.
 
+        gdb
+        ---
+
+            +-------------+------------------------------------------------------------------------------------+
+            | Line        | Content https://www.nature.com/articles/sdata201422/tables/3                       |
+            +=============+====================================================================================+
+            | 1           | <number of atoms>, nat                                                             |
+            +-------------+------------------------------------------------------------------------------------+
+            | 2           | Scalar properties (see https://www.nature.com/articles/sdata201422/tables/4)       |
+            +-------------+------------------------------------------------------------------------------------+
+            | 3,...,nat+2 | Element type, coordinate (x, y, z, in Å), Mulliken partial charges (in e) on atoms |
+            +-------------+------------------------------------------------------------------------------------+
+            | nat+3       | Harmonic vibrational frequencies (3nat−5 or 3nat-6, in cm−1)                       |
+            +-------------+------------------------------------------------------------------------------------+
+            | nat+4       | SMILES strings from GDB-17 and from B3LYP relaxation                               |
+            +-------------+------------------------------------------------------------------------------------+
+            | nat+5       | InChI strings for Corina and B3LYP geometries                                      |
+            +-------------+------------------------------------------------------------------------------------+
+
         psi4 - Psi4 molecule {...} format
         ---------------------------------
 
@@ -178,11 +197,11 @@ def from_string(
     # << 1 >>  str-->str -- discard comments
     molstr = filter_comments(molstr.strip())
 
-    def parse_as_xyz_ish(molstr, strict):
+    def parse_as_xyz_ish(molstr, strict, gdb):
         molinit = {}
 
         # << 2 >>  str-->dict -- process atoms, units[, chg, mult]
-        molstr, processed = _filter_xyz(molstr, strict=strict)
+        molstr, processed = _filter_xyz(molstr, strict=strict, gdb=gdb)
         molinit.update(processed)
 
         if molstr:
@@ -219,16 +238,19 @@ def from_string(
         return molstr, molinit
 
     if dtype == "xyz":
-        molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
+        molstr, molinit = parse_as_xyz_ish(molstr, strict=True, gdb=False)
 
     elif dtype == "xyz+":
-        molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
+        molstr, molinit = parse_as_xyz_ish(molstr, strict=False, gdb=False)
 
     elif dtype == "psi4":
         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=False)
 
     elif dtype == "psi4+":
         molstr, molinit = parse_as_psi4_ish(molstr, unsettled=True)
+
+    elif dtype == "gdb":
+        molstr, molinit = parse_as_xyz_ish(molstr, strict=True, gdb=True)
 
     elif dtype is None:
         dtype = "[psi4, xyz, xyz+, psi4+]"  # for error message
@@ -239,14 +261,14 @@ def from_string(
             min_error_length = len(str(e))
             min_error = e
             try:
-                molstr, molinit = parse_as_xyz_ish(molstr, strict=True)
+                molstr, molinit = parse_as_xyz_ish(molstr, strict=True, gdb=False)
                 dtype = "xyz"
             except MoleculeFormatError as e:
                 if len(str(e)) < min_error_length:
                     min_error_length = len(str(e))
                     min_error = e
                 try:
-                    molstr, molinit = parse_as_xyz_ish(molstr, strict=False)
+                    molstr, molinit = parse_as_xyz_ish(molstr, strict=False, gdb=False)
                     dtype = "xyz+"
                 except MoleculeFormatError as e:
                     if len(str(e)) < min_error_length:
@@ -680,19 +702,27 @@ atom_cartesian = re.compile(
     r"\A" + r"(?P<nucleus>" + NUCLEUS + r")" + SEP + CARTXYZ + r"\Z", re.IGNORECASE | re.VERBOSE
 )
 
+xyz2_gdb = re.compile(r"\A" + r"gdb\d*" + SEP + r"(\d+)" + r"(" + SEP + NUMBER + r")*", re.IGNORECASE | re.VERBOSE)
+atom_cartesian_strict_gdb = re.compile(
+    r"\A" + r"(?P<nucleus>" + SIMPLENUCLEUS + r")" + SEP + CARTXYZ + SEP + NUMBER + r"\Z", re.IGNORECASE | re.VERBOSE
+)
+reNUMBER = r"(?x:" + NUMBER + ")"
 
-def _filter_xyz(string, strict):
+
+def _filter_xyz(string: str, *, strict: bool, gdb: bool) -> Tuple[str, Dict[str, Any]]:
     r"""Handle extracting atom, units, and chg/mult lines from `string`.
 
     Parameters
     ----------
-    strict : bool
+    strict
         Whether to enforce a strict XYZ file format or to allow units, chg/mult,
         and add'l atom info.
+    gdb
+        Whether to expect GDB format with extra properties info.
 
     Returns
     -------
-    str, dict
+    Tuple[str, Dict[str, Any]]
         Returns first a subset of `string` containing the unmatched contents.
         These are generally input violations unless handled by a subsequent
         processing function.
@@ -733,8 +763,32 @@ def _filter_xyz(string, strict):
     processed["geom"] = []
     processed["elbl"] = []
 
-    if strict:
-        for iln, line in enumerate(string.split("\n")):
+    splitstring = string.strip().split("\n")
+
+    if gdb:
+        for iln, line in enumerate(splitstring):
+            line = line.strip()
+            if iln == 0:
+                line = re.sub(xyz1strict, "", line)
+            elif iln == 1:
+                line = re.sub(xyz2_gdb, "", line)
+            elif iln == (len(splitstring) - 3):
+                nfr = 3 * (iln - 2) - 6
+                freqs = re.split(reNUMBER, line)
+                freqs = [float(fr) for fr in freqs if fr.strip()]
+                if len(freqs) == nfr or len(freqs) == nfr - 1:
+                    line = ""
+            elif iln == (len(splitstring) - 2):
+                line = ""
+            elif iln == (len(splitstring) - 1):
+                line = ""
+            else:
+                line = re.sub(atom_cartesian_strict_gdb, process_atom_cartesian, line)
+            if line:
+                reconstitute.append(line)
+
+    elif strict:
+        for iln, line in enumerate(splitstring):
             line = line.strip()
             if iln == 0:
                 line = re.sub(xyz1strict, "", line)
@@ -745,7 +799,7 @@ def _filter_xyz(string, strict):
             if line:
                 reconstitute.append(line)
     else:
-        for iln, line in enumerate(string.split("\n")):
+        for iln, line in enumerate(splitstring):
             line = line.strip()
             if iln == 0:
                 line = re.sub(xyz1, process_bohrang, line)
