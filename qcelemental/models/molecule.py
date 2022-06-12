@@ -870,7 +870,7 @@ class Molecule(ProtoModel):
             else:
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
-        if dtype in ["string", "psi4", "xyz", "xyz+"]:
+        if dtype in ["string", "psi4", "xyz", "xyz+", "gdb"]:
             mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
             input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
@@ -946,7 +946,7 @@ class Molecule(ProtoModel):
                 dtype = "string"
 
         # Raw string type, read and pass through
-        if dtype in ["string", "xyz", "xyz+", "psi4"]:
+        if dtype in ["string", "xyz", "xyz+", "psi4", "gdb"]:
             with open(filename, "r") as infile:
                 data = infile.read()
         elif dtype == "numpy":
