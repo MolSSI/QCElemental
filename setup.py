@@ -38,6 +38,7 @@ if __name__ == "__main__":
                 'sphinx',  # autodoc was broken in 1.3.1
                 'sphinxcontrib-napoleon',
                 'sphinx_rtd_theme',
+                "autodoc-pydantic",
             ],
             'tests': [
                 'pytest >= 4.0.0',
@@ -70,6 +71,7 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
+            'Programming Language :: Python :: 3.10',
         ],
         zip_safe=False,
         long_description=long_description,
