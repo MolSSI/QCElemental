@@ -17,7 +17,7 @@ Changelog
 .. +++++++++
 
 
-0.25.0 / 2022-MM-DD
+0.25.0 / 2022-06-DD
 -------------------
 
 Breaking Changes
@@ -25,6 +25,10 @@ Breaking Changes
 
 New Features
 ++++++++++++
+- (:pr:`288`, :pr:`291`) The molecule ``from_string`` parser learned new format
+  ``dtype="gdb"`` from https://www.nature.com/articles/sdata201422/tables/3 .
+  At present, dtype must be specified explicitly to trigger this parsing; it is
+  not in the customary fallback sequence of unspecified dtype.
 
 Enhancements
 ++++++++++++
@@ -37,8 +41,9 @@ Enhancements
 
 Bug Fixes
 +++++++++
-- (:pr:`286`) Sphinx autodocumentation with typing of ``qcelemental.testing.compare_recursive`` no longer
-  warns about circular import.
+- (:pr:`286`) Sphinx autodocumentation with typing of
+  ``qcelemental.testing.compare_recursive`` no longer warns about circular
+  import.
 
 
 0.24.0 / 2021-11-18
