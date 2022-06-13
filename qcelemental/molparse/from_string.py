@@ -154,6 +154,16 @@ def from_string(
             | nat+5       | InChI strings for Corina and B3LYP geometries                                      |
             +-------------+------------------------------------------------------------------------------------+
 
+            QM Domain
+            ---------
+            Specifiable: geom, elem (element identity)
+
+            Notes
+            -----
+            It's unclear what extras in the way of extra lines, columns and
+            fields are required, so enforcement vs. validation vs. ignore is
+            mixed in this routine and is subject to change.
+
         psi4 - Psi4 molecule {...} format
         ---------------------------------
 
@@ -192,7 +202,7 @@ def from_string(
 
     """
     if verbose >= 2:
-        print("<<< FROM_STRING\n", molstr, "\n>>>")
+        print(f"<<< FROM_STRING: {dtype}\n", molstr, "\n>>>")
 
     # << 1 >>  str-->str -- discard comments
     molstr = filter_comments(molstr.strip())
@@ -281,7 +291,14 @@ def from_string(
                         if len(str(e)) < min_error_length:
                             min_error_length = len(str(e))
                             min_error = e
-                        raise min_error
+                        try:
+                            molstr, molinit = parse_as_xyz_ish(molstr, strict=True, gdb=True)
+                            dtype = "gdb"
+                        except MoleculeFormatError as e:
+                            if len(str(e)) < min_error_length:
+                                min_error_length = len(str(e))
+                                min_error = e
+                            raise min_error
     else:
         raise KeyError(f"Molecule: dtype of `{dtype}` not recognized.")
 
@@ -766,21 +783,28 @@ def _filter_xyz(string: str, *, strict: bool, gdb: bool) -> Tuple[str, Dict[str,
     splitstring = string.strip().split("\n")
 
     if gdb:
+        nat = len(splitstring) - 5
         for iln, line in enumerate(splitstring):
             line = line.strip()
             if iln == 0:
                 line = re.sub(xyz1strict, "", line)
             elif iln == 1:
                 line = re.sub(xyz2_gdb, "", line)
-            elif iln == (len(splitstring) - 3):
+            elif iln == nat + 2:
                 nfr = 3 * (iln - 2) - 6
                 freqs = re.split(reNUMBER, line)
-                freqs = [float(fr) for fr in freqs if fr.strip()]
-                if len(freqs) == nfr or len(freqs) == nfr - 1:
-                    line = ""
-            elif iln == (len(splitstring) - 2):
+                try:
+                    freqs = [float(fr) for fr in freqs if fr.strip()]
+                except ValueError:
+                    pass
+                else:
+                    if len(freqs) == nfr or len(freqs) == nfr - 1:
+                        line = ""
+                    else:
+                        line += f" ValidationError: {len(freqs)} != {nfr}"
+            elif iln == nat + 3:
                 line = ""
-            elif iln == (len(splitstring) - 1):
+            elif iln == nat + 4:
                 line = ""
             else:
                 line = re.sub(atom_cartesian_strict_gdb, process_atom_cartesian, line)
