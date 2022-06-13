@@ -1011,12 +1011,14 @@ def test_xyz_gdb_error(string, err):
 
     assert err in str(e.value)
 
+
 @pytest.mark.parametrize(
-    "dtype", [
-    None,
-    "xyz",
-    "xyz+",
-    ]
+    "dtype",
+    [
+        None,
+        "xyz",
+        "xyz+",
+    ],
 )
 def test_xyz_fields_error(dtype):
 
