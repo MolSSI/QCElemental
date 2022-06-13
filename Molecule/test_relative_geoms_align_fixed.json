@@ -69,7 +69,7 @@
   "provenance": {
     "creator": "QCElemental",
     "routine": "qcelemental.molparse.from_string",
-    "version": "v0.24.0+5.gcb04079"
+    "version": "v0.24.0+6.g2956421"
   },
   "schema_name": "qcschema_molecule",
   "schema_version": 2,

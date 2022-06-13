@@ -30,7 +30,7 @@
   "provenance": {
     "creator": "QCElemental",
     "routine": "qcelemental.molparse.from_schema",
-    "version": "v0.24.0+5.gcb04079"
+    "version": "v0.24.0+6.g2956421"
   },
   "real": [
     false,
