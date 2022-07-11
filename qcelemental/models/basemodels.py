@@ -5,7 +5,6 @@ from typing import Any, Dict, Optional, Set, Union
 import numpy as np
 from pydantic import BaseModel, BaseSettings, Field
 
-from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
@@ -187,6 +186,8 @@ class ProtoModel(BaseModel):
         bool
             True if the objects match.
         """
+        from ..testing import compare_recursive
+
         return compare_recursive(self, other, **kwargs)
 
 

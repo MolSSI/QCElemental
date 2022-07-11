@@ -1,6 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
             python-version: 3.6
             label: minpy
           - conda-env: base-cf
-            python-version: 3.9
+            python-version: "3.10"
             label: full
     env:
       PYVER: ${{ matrix.cfg.python-version }}
