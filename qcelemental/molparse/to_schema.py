@@ -97,7 +97,6 @@ def to_schema(
             qcschema = {"schema_name": "qcschema_input", "schema_version": 1, "molecule": molecule}
         elif dtype == 2:
             qcschema = molecule
-            qcschema.update({"schema_name": "qcschema_molecule", "schema_version": 2})
 
     else:
         raise ValidationError(

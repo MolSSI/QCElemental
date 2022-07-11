@@ -1,4 +1,3 @@
-import abc
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
@@ -10,7 +9,6 @@ from qcelemental.testing import compare_recursive
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator
 
-from ..util import provenance_stamp
 
 
 def _repr(self) -> str:

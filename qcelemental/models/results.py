@@ -1,18 +1,16 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, ClassVar, Dict, Optional, Set, Union
+from typing import Any, Dict, Optional, Set, TYPE_CHECKING, Union
 
 import numpy as np
-from pydantic import Field, constr, validator
+from pydantic import Field, validator
+from typing_extensions import Literal
 
-from .abcmodels import InputComputationBase, InputSpecificationBase, SuccessfulResultBase
+from .inputresult_abc import InputBase, SpecificationBase, SuccessfulResultBase
 from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import (
     DriverEnum,
     Model,
-    qcschema_input_default,
-    qcschema_input_specification_default,
-    qcschema_output_default,
 )
 from .types import Array
 
@@ -561,22 +559,20 @@ class AtomicResultProtocols(ProtoModel):
 ### Primary models
 
 
-class QCInputSpecification(InputSpecificationBase):
-    """Input specification for single point QC calculations"""
+class AtomicSpecification(SpecificationBase):
+    """Specification for a single point QC calculation"""
 
-    schema_name: ClassVar[str] = qcschema_input_specification_default
-    driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
-    protocols: AtomicResultProtocols = Field(
-        AtomicResultProtocols(), description=str(AtomicResultProtocols.__base_doc__)
-    )
+    schema_name: Literal["qcschema_atomicspecification"] = "qcschema_atomicspecification"
+    driver: DriverEnum = Field(..., description=DriverEnum.__doc__)
+    model: Model = Field(..., description=Model.__doc__)
+    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=AtomicResultProtocols.__doc__)
 
 
-class AtomicInput(InputComputationBase):
-    """The MolSSI Quantum Chemistry Schema"""
+class AtomicInput(InputBase):
+    """Complete input for a single point calculation"""
 
-    schema_name: ClassVar[str] = qcschema_input_default
-    input_spec: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
+    schema_name: Literal["qcschema_atomicinput"] = "qcschema_atomicinput"
+    specification: AtomicSpecification = Field(..., description=AtomicSpecification.__doc__)
 
     class Config(ProtoModel.Config):
         def schema_extra(schema, model):
@@ -584,18 +580,17 @@ class AtomicInput(InputComputationBase):
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("driver", self.input_spec.driver.value),
-            ("model", self.input_spec.model.dict()),
+            ("driver", self.specification.driver.value),
+            ("model", self.specification.model.dict()),
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
 
 class AtomicResult(SuccessfulResultBase):
     r"""Results from a CMS program execution."""
-    # schema_name: constr(strip_whitespace=True, regex=qcschema_output_default) = qcschema_output_default  # type: ignore
-    schema_name: ClassVar[str] = qcschema_output_default
+    schema_name: Literal["qcschema_atomicresult"] = "qcschema_atomicresult"
     input_data: AtomicInput = Field(..., description="The input data supplied to generate this computation")
-    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__base_doc__))
+    properties: AtomicResultProperties = Field(..., description=AtomicResultProperties.__base_doc__)
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(

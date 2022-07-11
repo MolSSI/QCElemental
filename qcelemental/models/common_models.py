@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 import numpy as np
 from pydantic import Field
 
-from .basemodels import ProtoModel, qcschema_draft
+from .basemodels import ProtoModel
 from .basis import BasisSet
 
 if TYPE_CHECKING:
@@ -74,15 +74,3 @@ class ComputeError(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]
-
-
-qcschema_input_default = "qcschema_input"
-qcschema_output_default = "qcschema_output"
-qcschema_input_specification_default = "qcschema_input_specification"
-qcschema_optimization_specification_default = "qcschema_optimization_specification"
-qcschema_optimization_input_default = "qcschema_optimization_input"
-qcschema_optimization_output_default = "qcschema_optimization_output"
-qcschema_torsion_drive_input_default = "qcschema_torsion_drive_input"
-qcschema_torsion_drive_output_default = "qcschema_torsion_drive_output"
-qcschema_torsion_drive_specification_default = "qcschema_torsion_drive_specification"
-qcschema_molecule_default = "qcschema_molecule"

@@ -1,29 +1,22 @@
-from asyncio import protocols
 from enum import Enum
-from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, TYPE_CHECKING, Tuple, Union
 
-from pydantic import Field, constr, validator
+from pydantic import Field, validator
 from typing_extensions import Literal
 
-from .abcmodels import ResultBase
+from .inputresult_abc import ResultBase
 from .basemodels import ProtoModel
 from .common_models import (
     ComputeError,
     DriverEnum,
-    qcschema_optimization_input_default,
-    qcschema_optimization_output_default,
-    qcschema_optimization_specification_default,
-    qcschema_torsion_drive_input_default,
-    qcschema_torsion_drive_output_default,
-    qcschema_torsion_drive_specification_default,
 )
 from .molecule import Molecule
 from .results import (
     AtomicInput,
     AtomicResult,
-    InputComputationBase,
-    InputSpecificationBase,
-    QCInputSpecification,
+    InputBase,
+    SpecificationBase,
+    AtomicSpecification,
     SuccessfulResultBase,
 )
 
@@ -47,15 +40,13 @@ class OptimizationProtocols(ProtoModel):
     Protocols regarding the manipulation of a Optimization output data.
     """
 
-    trajectory: TrajectoryProtocolEnum = Field(
-        TrajectoryProtocolEnum.all, description=str(TrajectoryProtocolEnum.__doc__)
-    )
+    trajectory: TrajectoryProtocolEnum = Field(TrajectoryProtocolEnum.all, description=TrajectoryProtocolEnum.__doc__)
 
     class Config:
         force_skip_defaults = True
 
 
-class OptimizationSpecification(InputSpecificationBase):
+class OptimizationSpecification(SpecificationBase):
     """
     A specification for how a geometry optimization should be performed **inside** of
     another procedure.
@@ -66,31 +57,21 @@ class OptimizationSpecification(InputSpecificationBase):
     * NOTE: I suggest this object be used analogous to QCInputSpecification but for optimizations
     """
 
-    # schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_specification) = qcschema_optimization_specification  # type: ignore
-    schema_name: ClassVar[str] = qcschema_optimization_specification_default
-    protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
-    # NOTE: Need a little help knowing how procedure field is used. What values might it contain?
-    procedure: Optional[str] = Field(None, description="Optimization procedure to run the optimization with.")
+    schema_name: Literal["qcschema_optimizationspecification"] = "qcschema_optimizationspecification"
+    protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=OptimizationProtocols.__doc__)
+    gradient_specification: AtomicSpecification = Field(..., description=AtomicSpecification.__doc__)
 
-    @validator("procedure")
-    def _check_procedure(cls, v):
-        return v.lower()
-
-
-class OptimizationInput(InputComputationBase):
-    """Input object for an optimization computation"""
-
-    schema_name: ClassVar[str] = qcschema_optimization_input_default
-    hash_index: Optional[str] = None  # NOTE: Need this field?
-    input_spec: OptimizationSpecification = Field(
-        OptimizationSpecification(), description=OptimizationSpecification.__doc__
-    )
-    gradient_spec: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-
-    @validator("gradient_spec")
+    @validator("gradient_specification")
     def _check_gradient_spec(cls, value):
         assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
+
+
+class OptimizationInput(InputBase):
+    """Input object for an optimization computation"""
+
+    schema_name: Literal["qcschema_optimizaitoninput"] = "qcschema_optimizaitoninput"
+    specification: OptimizationSpecification = Field(..., description=OptimizationSpecification.__doc__)
 
     def __repr_args__(self) -> "ReprArgs":
         return [
@@ -102,9 +83,8 @@ class OptimizationInput(InputComputationBase):
 class OptimizationResult(SuccessfulResultBase):
     """The result of an optimization procedure"""
 
-    schema_name: ClassVar[str] = qcschema_optimization_output_default
-    # schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_output_default) = qcschema_optimization_output_default  # type: ignore
-    input_data: OptimizationInput = Field(..., description=str(OptimizationInput.__doc__))
+    schema_name: Literal["qcschema_optimizationresult"] = "qcschema_optimizationresult"
+    input_data: OptimizationInput = Field(..., description=OptimizationInput.__doc__)
     # NOTE: If Optional we want None instead of ...; is there a reason for ...? Should the attribute not be Optional?
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
     trajectory: List[AtomicResult] = Field(
@@ -114,7 +94,7 @@ class OptimizationResult(SuccessfulResultBase):
 
     @validator("trajectory", each_item=False)
     def _trajectory_protocol(cls, v, values):
-        # NOTE: Commenting out because with current setup field is gauranteed to always exist
+        # NOTE: Commenting out because with current setup field is guaranteed to always exist
         # Do not propagate validation errors
         # if "protocols" not in values["input_data"]:
         #     raise ValueError("Protocols was not properly formed.")
@@ -137,6 +117,9 @@ class OptimizationResult(SuccessfulResultBase):
 
 
 class TDKeywords(ProtoModel):
+    # NOTE: May want to consider using typing_extensions.TypedDict instead of ProtoModel
+    # Will maintain .keywords: dict interface while allowing more specific type checking
+    # https://docs.python.org/3.8/library/typing.html#typing.TypedDict
     """
     TorsionDriveRecord options
 
@@ -173,16 +156,15 @@ class TDKeywords(ProtoModel):
     )
 
 
-class TorsionDriveSpecification(InputSpecificationBase):
+class TorsionDriveSpecification(SpecificationBase):
     """Specification for a Torsion Drive computation"""
 
-    protocols: None = None
-    schema_name: ClassVar[str] = qcschema_torsion_drive_specification_default
-    # schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
+    schema_name: Literal["qcschema_torsiondrivespecification"] = "qcschema_torsiondrivespecification"
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
+    optimization_specification: OptimizationSpecification = Field(..., description=OptimizationSpecification.__doc__)
 
 
-class TorsionDriveInput(InputComputationBase):
+class TorsionDriveInput(InputBase):
     """Inputs for running a torsion drive.
 
     Notes
@@ -190,17 +172,8 @@ class TorsionDriveInput(InputComputationBase):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: ClassVar[str] = qcschema_torsion_drive_input_default
-    input_spec: TorsionDriveSpecification = Field(..., description=(str(TorsionDriveSpecification.__doc__)))
-    gradient_spec: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    optimization_spec: OptimizationSpecification = Field(
-        OptimizationSpecification(), description="Settings to use for optimizations at each grid angle."
-    )
-
-    @validator("gradient_spec")
-    def _check_gradient_spec(cls, value):
-        assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
-        return value
+    schema_name: Literal["qcschema_torsiondriveinput"] = "qcschema_torsiondriveinput"
+    specification: TorsionDriveSpecification = Field(..., description=(TorsionDriveSpecification.__doc__))
 
 
 class TorsionDriveResult(SuccessfulResultBase):
@@ -211,7 +184,7 @@ class TorsionDriveResult(SuccessfulResultBase):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: ClassVar[str] = qcschema_torsion_drive_output_default
+    schema_name: Literal["qcschema_torsiondriveresult"] = "qcschema_torsiondriveresult"
     input_data: TorsionDriveInput = Field(..., description="TorsionDriveInput used to generate the computation")
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
@@ -226,18 +199,16 @@ class TorsionDriveResult(SuccessfulResultBase):
 
 
 class FailedOperation(ResultBase):
-    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure."""
+    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input_data which generated the failure."""
 
+    schema_name: Literal["qcschema_failedoperation"] = "qcschema_failedoperation"
     input_data: Union[AtomicInput, OptimizationInput, TorsionDriveInput] = Field(
-        ..., description="The input data supplied to generate this computation"
+        ...,
+        discriminator="schema_name",
+        description="The input data supplied to generate this computation",
     )
-    success: Literal[False] = Field(  # type: ignore
-        False,
-        description="A boolean indicator that the operation failed consistent with the model of successful operations. "
-        "Should always be False. Allows programmatic assessment of all operations regardless of if they failed or "
-        "succeeded",
-    )
-    error: ComputeError = Field(  # type: ignore
+    success: Literal[False] = Field(False, description="FailedOperation objects always have `False`.")
+    error: ComputeError = Field(
         ...,
         description="A container which has details of the error that failed this operation. See the "
         ":class:`ComputeError` for more details.",
