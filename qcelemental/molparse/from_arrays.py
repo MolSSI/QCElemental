@@ -426,6 +426,9 @@ def validate_and_fill_units(
         molinit["comment"] = comment
 
     def validate_provenance(dicary):
+        # Added because sometimes dicary was being passed as Provenance object
+        if not isinstance(dicary, dict):
+            dicary = dict(dicary)
         expected_prov_keys = ["creator", "routine", "version"]
         try:
             prov_keys = sorted(dicary.keys())

@@ -53,8 +53,9 @@ def test_relative_geoms_align_free(request):
             do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
 
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        # Changed to using dict() since .dict() omits schema_name and schema_version for unknown reason
+        rmolrec = qcel.molparse.from_schema(dict(s22_12))
+        cmolrec = qcel.molparse.from_schema(dict(cmol))
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
@@ -66,9 +67,9 @@ def test_relative_geoms_align_fixed(request):
         cmol, _ = s22_12.scramble(
             do_shift=False, do_rotate=False, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
-
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        # Changed to using dict() since .dict() omits schema_name and schema_version for unknown reason
+        rmolrec = qcel.molparse.from_schema(dict(s22_12))
+        cmolrec = qcel.molparse.from_schema(dict(cmol))
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
