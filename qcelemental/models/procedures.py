@@ -70,12 +70,12 @@ class OptimizationSpecification(SpecificationBase):
 class OptimizationInput(InputBase):
     """Input object for an optimization computation"""
 
-    schema_name: Literal["qcschema_optimizaitoninput"] = "qcschema_optimizaitoninput"
+    schema_name: Literal["qcschema_optimizationinput"] = "qcschema_optimizationinput"
     specification: OptimizationSpecification = Field(..., description=OptimizationSpecification.__doc__)
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("model", self.gradient_spec.model.dict()),
+            ("model", self.specification.gradient_specification.model.dict()),
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
@@ -98,8 +98,10 @@ class OptimizationResult(SuccessfulResultBase):
         # Do not propagate validation errors
         # if "protocols" not in values["input_data"]:
         #     raise ValueError("Protocols was not properly formed.")
+        if not values.get("input_data"):
+            raise ValueError("input_data not correctly formatted!")
 
-        keep_enum = values["input_data"].input_spec.protocols.trajectory
+        keep_enum = values["input_data"].specification.protocols.trajectory
         if keep_enum == "all":
             pass
         elif keep_enum == "initial_and_final":

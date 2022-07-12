@@ -1,8 +1,11 @@
+from copy import deepcopy
+
 import numpy as np
 import pytest
 
 import qcelemental as qcel
 from qcelemental.models import basis
+from qcelemental.util.internal import provenance_stamp
 
 from .addons import drop_qcsk
 
@@ -99,15 +102,33 @@ def result_data_fixture():
     )
 
     return {
-        "molecule": mol,
-        "driver": "energy",
-        "model": {"method": "UFF"},
+        "input_data": {
+            "schema_name": "qcschema_atomicinput",
+            "molecule": mol,
+            "specification": {
+                "driver": "energy",
+                "model": {"method": "UFF"},
+                "program": "fake_prog",
+            },
+        },
         "return_result": 5,
         "success": True,
         "properties": {},
         "provenance": {"creator": "qcel"},
         "stdout": "I ran.",
+        "extras": {},
     }
+
+
+@pytest.fixture(scope="function")
+def result_data_gradient_fixture(result_data_fixture):
+    result_data_fixture["input_data"]["specification"]["driver"] = "gradient"
+    result_data_fixture["return_result"] = [
+        [7.1234026493505187e-05, 1.1549628467694140e-05, 1.4794606596757465e-07],
+        [2.6885596836613151e-03, -9.3040101965997934e-03, -7.9574838722651017e-03],
+        [-2.7597976922728029e-03, 9.2924567327004395e-03, 7.9573373337154529e-03],
+    ]
+    return result_data_fixture
 
 
 @pytest.fixture(scope="function")
@@ -116,7 +137,7 @@ def wavefunction_data_fixture(result_data_fixture):
         name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]
     )
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
-    result_data_fixture["protocols"] = {"wavefunction": "all"}
+    result_data_fixture["input_data"]["specification"]["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
         "basis": bas,
         "restricted": True,
@@ -129,7 +150,7 @@ def wavefunction_data_fixture(result_data_fixture):
 
 @pytest.fixture(scope="function")
 def native_data_fixture(result_data_fixture):
-    result_data_fixture["protocols"] = {"native_files": "all"}
+    result_data_fixture["input_data"]["specification"]["protocols"] = {"native_files": "all"}
     result_data_fixture["native_files"] = {
         "input": """
 echo
@@ -163,24 +184,29 @@ CARBON      6.0      0.0000000000      0.0000000000     -0.1018060978
 
 
 @pytest.fixture(scope="function")
-def optimization_data_fixture(result_data_fixture):
+def optimization_data_fixture(result_data_gradient_fixture):
 
     trajectory = []
     energies = []
     for x in range(5):
-        result = result_data_fixture.copy()
-        result["return_result"] = x
+        result = deepcopy(result_data_gradient_fixture)
+        result["extras"]["traj_idx"] = x
         trajectory.append(result)
         energies.append(x)
 
     ret = {
-        "initial_molecule": result_data_fixture["molecule"],
-        "final_molecule": result_data_fixture["molecule"],
+        "input_data": {
+            "molecule": result_data_gradient_fixture["input_data"]["molecule"],
+            "specification": {
+                "program": "fake_optimizer",
+                "gradient_specification": result_data_gradient_fixture["input_data"]["specification"],
+            },
+        },
+        "final_molecule": result_data_gradient_fixture["input_data"]["molecule"],
         "trajectory": trajectory,
         "energies": energies,
         "success": True,
         "provenance": {"creator": "qcel"},
-        "input_specification": {"model": {"method": "UFF"}},
     }
 
     return ret
@@ -261,7 +287,7 @@ def test_result_build(result_data_fixture, request):
 
 
 def test_result_build_wavefunction_delete(wavefunction_data_fixture, request):
-    del wavefunction_data_fixture["protocols"]
+    del wavefunction_data_fixture["input_data"]["specification"]["protocols"]
     ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
@@ -318,9 +344,9 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
     wfn_data = wavefunction_data_fixture["wavefunction"]
 
     if protocol is None:
-        wavefunction_data_fixture.pop("protocols")
+        wavefunction_data_fixture["input_data"]["specification"].pop("protocols")
     else:
-        wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
+        wavefunction_data_fixture["input_data"]["specification"]["protocols"]["wavefunction"] = protocol
 
     wfn_data["restricted"] = restricted
     bas = wfn_data["basis"]
@@ -359,9 +385,9 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     native_data = native_data_fixture["native_files"]
 
     if protocol is None:
-        native_data_fixture.pop("protocols")
+        native_data_fixture["input_data"]["specification"].pop("protocols")
     else:
-        native_data_fixture["protocols"]["native_files"] = protocol
+        native_data_fixture["input_data"]["specification"]["protocols"]["native_files"] = protocol
 
     for name in list(native_data.keys()):
         if name not in provided:
@@ -382,14 +408,14 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     [(None, [0, 1, 2, 3, 4]), ("all", [0, 1, 2, 3, 4]), ("initial_and_final", [0, 4]), ("final", [4]), ("none", [])],
 )
 def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
-
     if keep is not None:
-        optimization_data_fixture["protocols"] = {"trajectory": keep}
+        # Add trajectory to protocols
+        optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory": keep}
     opt = qcel.models.OptimizationResult(**optimization_data_fixture)
 
     assert len(opt.trajectory) == len(indices)
     for result, index in zip(opt.trajectory, indices):
-        assert result.return_result == index
+        assert result.extras["traj_idx"] == index
 
 
 @pytest.mark.parametrize(
@@ -402,12 +428,12 @@ def test_error_correction_protocol(default, defined, default_result, defined_res
         policy["default_policy"] = default
     if defined is not None:
         policy["policies"] = defined
-    result_data_fixture["protocols"] = {"error_correction": policy}
+    result_data_fixture["input_data"]["specification"]["protocols"] = {"error_correction": policy}
     res = qcel.models.AtomicResult(**result_data_fixture)
     drop_qcsk(res, request.node.name)
 
-    assert res.protocols.error_correction.default_policy == default_result
-    assert res.protocols.error_correction.policies == defined_result
+    assert res.input_data.specification.protocols.error_correction.default_policy == default_result
+    assert res.input_data.specification.protocols.error_correction.policies == defined_result
 
 
 def test_error_correction_logic():
@@ -430,7 +456,7 @@ def test_error_correction_logic():
 
 
 def test_result_build_stdout_delete(result_data_fixture, request):
-    result_data_fixture["protocols"] = {"stdout": False}
+    result_data_fixture["input_data"]["specification"]["protocols"] = {"stdout": False}
     ret = qcel.models.AtomicResult(**result_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.stdout is None
@@ -454,8 +480,9 @@ def test_failed_operation(result_data_fixture, request):
 
     failed = qcel.models.FailedOperation(
         extras={"garbage": water},
-        input_data=result_data_fixture,
+        input_data=result_data_fixture["input_data"],
         error={"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
+        provenance=provenance_stamp(__name__),
     )
     assert isinstance(failed.error, qcel.models.ComputeError)
     assert isinstance(failed.dict(), dict)
@@ -503,7 +530,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
     if smodel == "molecule":
         model = qcel.models.Molecule
-        data = result_data_fixture["molecule"].dict()
+        data = result_data_fixture["input_data"]["molecule"].dict()
 
     elif smodel == "atomicresultproperties":
         model = qcel.models.AtomicResultProperties
@@ -511,7 +538,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
     elif smodel == "atomicinput":
         model = qcel.models.AtomicInput
-        data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
+        data = result_data_fixture["input_data"]
 
     elif smodel == "atomicresult":
         model = qcel.models.AtomicResult
@@ -523,18 +550,3 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
     instance = model(**data)
     assert model(**instance.dict())
-
-
-def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
-
-    with pytest.warns(DeprecationWarning):
-        qcel.models.ResultProperties(scf_one_electron_energy="-5.0")
-
-    with pytest.warns(DeprecationWarning):
-        qcel.models.ResultInput(**{k: result_data_fixture[k] for k in ["molecule", "model", "driver"]})
-
-    with pytest.warns(DeprecationWarning):
-        qcel.models.Result(**result_data_fixture)
-
-    with pytest.warns(DeprecationWarning):
-        qcel.models.Optimization(**optimization_data_fixture)

@@ -602,7 +602,9 @@ class AtomicResult(SuccessfulResultBase):
 
     @validator("return_result")
     def _validate_return_result(cls, v, values):
-        driver = values["input_data"].input_spec.driver
+        if not values.get("input_data"):
+            raise ValueError("input_data not correctly formatted!")
+        driver = values["input_data"].specification.driver
         if driver == "gradient":
             v = np.asarray(v).reshape(-1, 3)
         elif driver == "hessian":
@@ -625,10 +627,6 @@ class AtomicResult(SuccessfulResultBase):
         else:
             raise ValueError("wavefunction must be None, a dict, or a WavefunctionProperties object.")
 
-        # Do not propagate validation errors
-        if "protocols" not in values:
-            raise ValueError("Protocols was not properly formed.")
-
         # Handle restricted
         restricted = wfn.get("restricted", None)
         if restricted is None:
@@ -640,7 +638,7 @@ class AtomicResult(SuccessfulResultBase):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = values["protocols"].wavefunction
+        wfnp = values["input_data"].specification.protocols.wavefunction
         return_keep = None
         if wfnp == "all":
             pass
@@ -683,12 +681,9 @@ class AtomicResult(SuccessfulResultBase):
 
     @validator("stdout")
     def _stdout_protocol(cls, value, values):
-
-        # Do not propagate validation errors
-        if "protocols" not in values["input_spec"]:
-            raise ValueError("Protocols was not properly formed.")
-
-        outp = values["input_spec"]["protocols"].stdout
+        if not values.get("input_data"):
+            raise ValueError("input_data not correctly formatted!")
+        outp = values["input_data"].specification.protocols.stdout
         if outp is True:
             return value
         elif outp is False:
@@ -699,7 +694,7 @@ class AtomicResult(SuccessfulResultBase):
     @validator("native_files")
     def _native_file_protocol(cls, value, values):
 
-        ancp = values["protocols"].native_files
+        ancp = values["input_data"].specification.protocols.native_files
         if ancp == "all":
             return value
         elif ancp == "none":

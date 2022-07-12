@@ -311,6 +311,7 @@ class Molecule(AutoSetProvenance):
 
         if validate:
             kwargs["schema_version"] = kwargs.pop("schema_version", 2)
+            kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
             nonphysical = kwargs.pop("nonphysical", False)
