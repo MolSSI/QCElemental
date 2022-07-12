@@ -1834,7 +1834,7 @@ def test_badprov0_error():
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(geom=[1, 2, 3], elez=[4], provenance="mine")
 
-    assert "Provenance entry is not dictionary" in str(e.value)
+    assert "Provenance entry cannot be cast as a dictionary" in str(e.value)
 
 
 def test_badprov1_error():
