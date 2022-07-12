@@ -218,4 +218,3 @@ class FailedOperation(ResultBase):
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
-

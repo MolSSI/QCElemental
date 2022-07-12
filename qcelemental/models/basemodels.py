@@ -3,11 +3,10 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel, BaseSettings, Field # remove BaseSettings when QCFractal merges `next`
+from pydantic import BaseModel, BaseSettings, Field  # remove BaseSettings when QCFractal merges `next`
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
-
 
 
 def _repr(self) -> str:
