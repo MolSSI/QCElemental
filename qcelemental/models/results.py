@@ -19,12 +19,13 @@ if TYPE_CHECKING:
 
 
 class AtomicResultProperties(ProtoModel):
-    r"""Named properties of quantum chemistry computations following the MolSSI QCSchema.
+    r"""
+    Named properties of quantum chemistry computations following the MolSSI QCSchema.
 
     All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
 
-      * nao: number of atomic orbitals = calcinfo_nbasis
-      * nmo: number of molecular orbitals
+    * nao: number of atomic orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nbasis`
+    * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nmo`
     """
 
     # Calcinfo
@@ -38,16 +39,16 @@ class AtomicResultProperties(ProtoModel):
     nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy.")
     return_energy: Optional[float] = Field(
         None,
-        description="The energy of the requested method, identical to ``return_result`` for ``driver=energy`` computations.",
+        description="The energy of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.energy` computations.",
     )
     return_gradient: Optional[Array[float]] = Field(
         None,
-        description="The gradient of the requested method, identical to ``return_result`` for ``driver=gradient`` computations.",
+        description="The gradient of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.gradient` computations.",
         units="E_h/a0",
     )
     return_hessian: Optional[Array[float]] = Field(
         None,
-        description="The Hessian of the requested method, identical to ``return_result`` for ``driver=hessian`` computations.",
+        description="The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.",
         units="E_h/a0^2",
     )
 
@@ -595,7 +596,7 @@ class AtomicResult(SuccessfulResultBase):
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
         ...,
-        description="The primary return specified by the ``driver`` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
+        description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
 
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
@@ -698,7 +699,7 @@ class AtomicResult(SuccessfulResultBase):
         if ancp == "all":
             return value
         elif ancp == "none":
-            return None
+            return {}
         elif ancp == "input":
             return_keep = ["input"]
             if value is None:

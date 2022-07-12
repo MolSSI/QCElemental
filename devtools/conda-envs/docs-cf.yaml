@@ -18,11 +18,12 @@ dependencies:
   - sphinx-autodoc-typehints
   - sphinx-automodapi
   - sphinx_rtd_theme
+  - autodoc-pydantic
 
     # testing
   - pytest
   - pytest-cov
   - codecov
 
-  - pip:
-     - git+https://github.com/MolSSI/qcarchive-sphinx-theme#egg=qcarchive_sphinx_theme
+  #- pip:
+  #   - git+https://github.com/MolSSI/qcarchive-sphinx-theme#egg=qcarchive_sphinx_theme

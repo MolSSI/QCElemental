@@ -1,7 +1,7 @@
 import collections
 import itertools
 import time
-from typing import Union
+from typing import List, Optional, Union
 
 import numpy as np
 
@@ -97,7 +97,7 @@ def B787(
 
     Returns
     -------
-    float, tuple
+    float, AlignmentMill
         First item is RMSD [A] between `rgeom` and the optimally aligned
         geometry computed.
         Second item is a AlignmentMill with fields
@@ -431,19 +431,19 @@ def _plausible_atom_orderings(ref, current, rgeom, cgeom, algorithm="hungarian_u
         yield atpat
 
 
-def kabsch_align(rgeom, cgeom, weight=None):
+def kabsch_align(rgeom: np.ndarray, cgeom: np.ndarray, weight: Optional[np.ndarray] = None):
     r"""Finds optimal translation and rotation to align `cgeom` onto `rgeom` via
-    Kabsch algorithm by minimizing the norm of the residual, || R - U * C ||.
+    Kabsch algorithm by minimizing the norm of the residual, :math:`|| R - U * C ||`.
 
     Parameters
     ----------
-    rgeom : ndarray of float
+    rgeom
         (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
         for RMSD purposes.
-    cgeom : ndarray of float
+    cgeom
         (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
         purposes. Must have same Natom, units, and 1-to-1 atom ordering as rgeom.
-    weight : ndarray of float
+    weight
         (nat,) array of weights applied to `rgeom`. Note that definitions of
         weights (nothing to do with atom masses) are several, and I haven't
         seen one yet that can make centroid the center-of-mass and
@@ -453,19 +453,19 @@ def kabsch_align(rgeom, cgeom, weight=None):
 
     Returns
     -------
-    float, ndarray, ndarray
+    float, ~numpy.ndarray, ~numpy.ndarray
         First item is RMSD [A] between `rgeom` and the optimally aligned
         geometry computed.
         Second item is (3, 3) rotation matrix to optimal alignment.
         Third item is (3,) translation vector [a0] to optimal alignment.
 
-    Sources
-    -------
-    Kabsch: Acta Cryst. (1978). A34, 827-828 http://journals.iucr.org/a/issues/1978/05/00/a15629/a15629.pdf
-    C++ affine code: https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp
-    weighted RMSD: http://www.amber.utah.edu/AMBER-workshop/London-2015/tutorial1/
-    protein wRMSD code: https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt
-    quaternion: https://cnx.org/contents/HV-RsdwL@23/Molecular-Distance-Measures
+    Notes
+    -----
+    * Kabsch: Acta Cryst. (1978). A34, 827-828 http://journals.iucr.org/a/issues/1978/05/00/a15629/a15629.pdf
+    * C++ affine code: https://github.com/oleg-alexandrov/projects/blob/master/eigen/Kabsch.cpp
+    * weighted RMSD: http://www.amber.utah.edu/AMBER-workshop/London-2015/tutorial1/
+    * protein wRMSD code: https://pharmacy.umich.edu/sites/default/files/global_wrmsd_v8.3.py.txt
+    * quaternion: https://cnx.org/contents/HV-RsdwL@23/Molecular-Distance-Measures
 
     Author: dsirianni
 
@@ -554,34 +554,44 @@ def kabsch_quaternion(P, Q):
     return U
 
 
-def compute_scramble(nat, do_resort=True, do_shift=True, do_rotate=True, deflection=1.0, do_mirror=False):
+# TODO: consider `numpy.typing.ArrayLike` in compute_scramble
+
+
+def compute_scramble(
+    nat: int,
+    do_resort: Union[bool, List, np.ndarray] = True,
+    do_shift: Union[bool, List, np.ndarray] = True,
+    do_rotate: Union[bool, List, np.ndarray] = True,
+    deflection: float = 1.0,
+    do_mirror: bool = False,
+) -> AlignmentMill:
     r"""Generate a random or directed translation, rotation, and atom shuffling.
 
     Parameters
     ----------
-    nat : int
+    nat
         Number of atoms for which to prepare an atom mapping.
-    do_resort : bool or array-like, optional
+    do_resort
         Whether to randomly shuffle atoms (`True`) or leave 1st atom 1st, etc. (`False`)
         or shuffle according to specified (nat, ) indices (e.g., [2, 1, 0])
-    do_shift : bool or array-like, optional
+    do_shift
         Whether to generate a random atom shift on interval [-3, 3) in each
         dimension (`True`) or leave at current origin (`False`) or shift along
         specified (3, ) vector (e.g., np.array([0., 1., -1.])).
-    do_rotate : bool or array-like, optional
+    do_rotate
         Whether to generate a random 3D rotation according to algorithm of Arvo (`True`)
         or leave at current orientation (`False`) or rotate with specified (3, 3) matrix.
-    deflection : float, optional
+    deflection
         If `do_rotate`, how random a rotation: 0.0 is no change, 0.1 is small
         perturbation, 1.0 is completely random.
-    do_mirror : bool, optional
+    do_mirror
         Whether to set mirror reflection instruction. Changes identity of
         molecule so off by default.
 
     Returns
     -------
-    tuple
-        AlignmentMill with fields (shift, rotation, atommap, mirror)
+    AlignmentMill
+        Fields (shift, rotation, atommap, mirror)
         as requested: identity, random, or specified.
 
     """

@@ -46,5 +46,7 @@ Function Definitions
 --------------------
 
 .. autofunction:: get
+   :noindex:
 
 .. autofunction:: string_representation
+   :noindex:

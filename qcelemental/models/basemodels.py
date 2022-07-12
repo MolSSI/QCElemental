@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import BaseModel, BaseSettings, Field
+from pydantic import BaseModel, BaseSettings, Field # remove BaseSettings when QCFractal merges `next`
 
 from qcelemental.util import deserialize, serialize
-from qcelemental.util.autodocs import AutoPydanticDocGenerator
+from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 
@@ -25,7 +25,7 @@ class ProtoModel(BaseModel):
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
+        cls.__base_doc__ = ""  # remove when QCFractal merges `next`
 
         if "pydantic" in cls.__repr__.__module__:
             cls.__repr__ = _repr
@@ -34,15 +34,15 @@ class ProtoModel(BaseModel):
             cls.__str__ = _repr
 
     @classmethod
-    def parse_raw(cls, data: Union[bytes, str], *, encoding: str = None) -> "ProtoModel":  # type: ignore
+    def parse_raw(cls, data: Union[bytes, str], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""
         Parses raw string or bytes into a Model object.
 
         Parameters
         ----------
-        data : Union[bytes, str]
+        data
             A serialized data blob to be deserialized into a Model.
-        encoding : str, optional
+        encoding
             The type of the serialized array, available types are: {'json', 'json-ext', 'msgpack-ext', 'pickle'}
 
         Returns
@@ -69,14 +69,14 @@ class ProtoModel(BaseModel):
         return cls.parse_obj(obj)
 
     @classmethod
-    def parse_file(cls, path: Union[str, Path], *, encoding: str = None) -> "ProtoModel":  # type: ignore
+    def parse_file(cls, path: Union[str, Path], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""Parses a file into a Model object.
 
         Parameters
         ----------
-        path : Union[str, Path]
+        path
             The path to the file.
-        encoding : str, optional
+        encoding
             The type of the files, available types are: {'json', 'msgpack', 'pickle'}. Attempts to
             automatically infer the file type from the file extension if None.
 
@@ -132,22 +132,22 @@ class ProtoModel(BaseModel):
 
         Parameters
         ----------
-        encoding : str
+        encoding
             The serialization type, available types are: {'json', 'json-ext', 'msgpack-ext'}
-        include : Optional[Set[str]], optional
+        include
             Fields to be included in the serialization.
-        exclude : Optional[Set[str]], optional
+        exclude
             Fields to be excluded in the serialization.
-        exclude_unset : Optional[bool], optional
+        exclude_unset
             If True, skips fields that have default values provided.
-        exclude_defaults: Optional[bool], optional
+        exclude_defaults
             If True, skips fields that have set or defaulted values equal to the default.
-        exclude_none: Optional[bool], optional
+        exclude_none
             If True, skips fields that have value ``None``.
 
         Returns
         -------
-        Union[bytes, str]
+        ~typing.Union[bytes, str]
             The serialized model.
         """
 
@@ -176,10 +176,10 @@ class ProtoModel(BaseModel):
 
         Parameters
         ----------
-        other : Model
+        other
             The model to compare to.
         **kwargs
-            Additional kwargs to pass to ``qcelemental.compare_recursive``.
+            Additional kwargs to pass to :func:`~qcelemental.compare_recursive`.
 
         Returns
         -------
@@ -210,6 +210,7 @@ class Provenance(ProtoModel):
 
 
 class AutodocBaseSettings(BaseSettings):
+    # remove when QCFractal merges `next`
     def __init_subclass__(cls) -> None:
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 

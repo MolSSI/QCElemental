@@ -16,18 +16,18 @@ def guess_connectivity(
 
     Parameters
     ----------
-    symbols : np.ndarray
+    symbols
         The molecular symbols (e.g., 'Zr', 'C')
-    geometry : np.ndarray
+    geometry
         The molecular geometry in Bohr
-    threshold : float, optional
+    threshold
         Tunes the covalent radii metric safety factor.
-    default_connectivity : Optional[float], optional
+    default_connectivity
         Provides a default connectivity value
 
     Returns
     -------
-    List[Union[Tuple[int, int], Tuple[int, int, float]]]
+    ~typing.List[~typing.Union[~typing.Tuple[int, int], ~typing.Tuple[int, int, float]]]
         Provides a list of connected atoms, or optionally a list of
         connected atoms and default connectivity if provided.
     """

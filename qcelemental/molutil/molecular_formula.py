@@ -9,9 +9,9 @@ def order_molecular_formula(formula: str, order: str = "alphabetical") -> str:
 
     Parameters
     ----------
-    formula: str
+    formula
         A molecular formula
-    order: str, optional
+    order
         Sorting order of the formula. Valid choices are "alphabetical" and "hill".
 
     Returns
@@ -42,9 +42,9 @@ def molecular_formula_from_symbols(symbols: List[str], order: str = "alphabetica
 
     Parameters
     ----------
-    symbols: List[str]
+    symbols
         List of chemical symbols
-    order: str, optional
+    order
         Sorting order of the formula. Valid choices are "alphabetical" and "hill".
 
     Returns

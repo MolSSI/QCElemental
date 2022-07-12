@@ -17,7 +17,7 @@ Changelog
 .. +++++++++
 
 
-0.25.0 / 2022-MM-DD
+0.25.0 / 2022-06-13
 -------------------
 
 Breaking Changes
@@ -28,11 +28,18 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`285`) Standardized default on ``AtomicResult.native_files`` to ``{}``
+  from ``None``. May break strict logic.
+- (:pr:`289`, :pr:`290`) Transition from some early documentation tools (class
+  ``AutodocBaseSettings`` and ``qcarchive_sphinx_theme``) to externally
+  maintained ones (project https://github.com/mansenfranzen/autodoc_pydantic
+  and ``sphinx_rtd_theme``). Expand API docs.
 
 Bug Fixes
 +++++++++
-- (:pr:`286`) Sphinx autodocumentation with typing of ``qcelemental.testing.compare_recursive`` no longer
-  warns about circular import.
+- (:pr:`286`) Sphinx autodocumentation with typing of
+  ``qcelemental.testing.compare_recursive`` no longer warns about circular
+  import.
 
 
 0.24.0 / 2021-11-18
@@ -703,7 +710,7 @@ New Features
 Enhancements
 ++++++++++++
 
-- (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py#L23-L41>`_ rather than previous list o'dicts.
+- (:pr:`12`) Adds single dictionary provenance consistent with `QCSchema <https://github.com/MolSSI/QCSchema/blob/master/qcschema/dev/definitions.py>`_ (line 23) rather than previous list o'dicts.
 
 
 0.1.2 / 2018-11-3
