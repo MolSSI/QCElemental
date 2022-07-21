@@ -5,12 +5,14 @@ from qcelemental.models import (
     AtomicResultProperties,
     ComputeError,
     FailedOperation,
+    Molecule,
     OptimizationInput,
     ProtoModel,
     Provenance,
 )
 
 from .addons import drop_qcsk
+from qcelemental.util import provenance_stamp
 
 
 def test_result_properties_default_skip(request):
@@ -46,7 +48,19 @@ def test_repr_compute_error():
 
 
 def test_repr_failed_op():
-    fail_op = FailedOperation(error=ComputeError(error_type="random_error", error_message="this is bad"))
+    fail_op = FailedOperation(
+        input_data={
+            "schema_name": "qcschema_atomicinput",
+            "specification": {
+                "driver": "gradient",
+                "model": {"method": "UFF"},
+                "program": "psi4",
+            },
+            "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+        },
+        error=ComputeError(error_type="random_error", error_message="this is bad"),
+        provenance=provenance_stamp(__name__),
+    )
     assert (
         str(fail_op)
         == """FailedOperation(error=ComputeError(error_type='random_error', error_message='this is bad'))"""
@@ -55,7 +69,14 @@ def test_repr_failed_op():
 
 def test_repr_result(request):
     result = AtomicInput(
-        **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
+        **{
+            "specification": {
+                "driver": "gradient",
+                "model": {"method": "UFF"},
+                "program": "psi4",
+            },
+            "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+        }
     )
     drop_qcsk(result, request.node.name)
     assert "molecule_hash" in str(result)
@@ -66,8 +87,11 @@ def test_repr_result(request):
 def test_repr_optimization():
     opt = OptimizationInput(
         **{
-            "input_specification": {"driver": "gradient", "model": {"method": "UFF"}},
-            "initial_molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+            "specification": {
+                "program": "geometric",
+                "gradient_specification": {"driver": "gradient", "model": {"method": "UFF"}, "program": "psi4"},
+            },
+            "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
         }
     )
 

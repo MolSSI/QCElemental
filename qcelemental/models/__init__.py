@@ -8,16 +8,15 @@ except ImportError:  # pragma: no cover
 
 from . import types
 from .align import AlignmentMill
-from .basemodels import AutodocBaseSettings  # remove when QCFractal merges `next`
-from .basemodels import ProtoModel
+from .basemodels import (
+    AutodocBaseSettings,
+    ProtoModel,
+    Provenance,
+)  # remove AutodocBaseSettings when QCFractal merges `next`
 from .basis import BasisSet
-from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
+from .common_models import ComputeError, DriverEnum
 from .molecule import Molecule
-from .procedures import Optimization  # scheduled for removal
-from .procedures import OptimizationInput, OptimizationResult
-from .results import Result  # scheduled for removal
-from .results import ResultInput  # scheduled for removal
-from .results import ResultProperties  # scheduled for removal
+from .procedures import OptimizationInput, OptimizationResult, FailedOperation, TorsionDriveInput, TorsionDriveResult
 from .results import AtomicInput, AtomicResult, AtomicResultProperties
 
 

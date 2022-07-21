@@ -1,19 +1,21 @@
 from enum import Enum
-from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
+from typing import Any, Dict, Optional, Set, TYPE_CHECKING, Union
 
 import numpy as np
 
 try:
-    from pydantic.v1 import Field, constr, validator
+    from pydantic.v1 import Field, validator
 except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field, constr, validator
+    from pydantic import Field, validator
+from typing_extensions import Literal
 
-from ..util import provenance_stamp
+from .inputresult_abc import InputBase, SpecificationBase, SuccessfulResultBase
 from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
-from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
-from .molecule import Molecule
+from .common_models import (
+    DriverEnum,
+    Model,
+)
 from .types import Array
 
 if TYPE_CHECKING:
@@ -511,6 +513,14 @@ class WavefunctionProtocolEnum(str, Enum):
     none = "none"
 
 
+class NativeFilesProtocolEnum(str, Enum):
+    r"""CMS program files to keep from a computation."""
+
+    all = "all"
+    input = "input"
+    none = "none"
+
+
 class ErrorCorrectionProtocol(ProtoModel):
     r"""Configuration for how QCEngine handles error correction
 
@@ -531,14 +541,6 @@ class ErrorCorrectionProtocol(ProtoModel):
         if self.policies is None:
             return self.default_policy
         return self.policies.get(policy, self.default_policy)
-
-
-class NativeFilesProtocolEnum(str, Enum):
-    r"""CMS program files to keep from a computation."""
-
-    all = "all"
-    input = "input"
-    none = "none"
 
 
 class AtomicResultProtocols(ProtoModel):
@@ -563,35 +565,20 @@ class AtomicResultProtocols(ProtoModel):
 ### Primary models
 
 
-class AtomicInput(ProtoModel):
-    r"""The MolSSI Quantum Chemistry Schema"""
+class AtomicSpecification(SpecificationBase):
+    """Specification for a single point QC calculation"""
 
-    id: Optional[str] = Field(None, description="The optional ID for the computation.")
-    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
-        qcschema_input_default,
-        description=(
-            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
-        ),
-    )
-    schema_version: int = Field(
-        1,
-        description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
-    )
+    schema_name: Literal["qcschema_atomicspecification"] = "qcschema_atomicspecification"
+    driver: DriverEnum = Field(..., description=DriverEnum.__doc__)
+    model: Model = Field(..., description=Model.__doc__)
+    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=AtomicResultProtocols.__doc__)
 
-    molecule: Molecule = Field(..., description="The molecule to use in the computation.")
-    driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
-    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=str(AtomicResultProtocols.__doc__))
 
-    extras: Dict[str, Any] = Field(
-        {},
-        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
-    )
+class AtomicInput(InputBase):
+    """Complete input for a single point calculation"""
 
-    provenance: Provenance = Field(
-        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__doc__)
-    )
+    schema_name: Literal["qcschema_atomicinput"] = "qcschema_atomicinput"
+    specification: AtomicSpecification = Field(..., description=AtomicSpecification.__doc__)
 
     class Config(ProtoModel.Config):
         def schema_extra(schema, model):
@@ -599,55 +586,34 @@ class AtomicInput(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("driver", self.driver.value),
-            ("model", self.model.dict()),
+            ("driver", self.specification.driver.value),
+            ("model", self.specification.model.dict()),
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
 
-class AtomicResult(AtomicInput):
+class AtomicResult(SuccessfulResultBase):
     r"""Results from a CMS program execution."""
-
-    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
-        qcschema_output_default,
-        description=(
-            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
-        ),
-    )
-    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__doc__))
-    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
+    schema_name: Literal["qcschema_atomicresult"] = "qcschema_atomicresult"
+    input_data: AtomicInput = Field(..., description="The input data supplied to generate this computation")
+    properties: AtomicResultProperties = Field(..., description=AtomicResultProperties.__base_doc__)
+    wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
         ...,
         description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
 
-    stdout: Optional[str] = Field(
-        None,
-        description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
-    )
-    stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
-
-    success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-
-    @validator("schema_name", pre=True)
-    def _input_to_output(cls, v):
-        r"""If qcschema_input is passed in, cast it to output, otherwise no"""
-        if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
-            return qcschema_output_default
-        raise ValueError(
-            "Only {0} or {1} is allowed for schema_name, "
-            "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default)
-        )
 
     @validator("return_result")
     def _validate_return_result(cls, v, values):
-        if values["driver"] == "gradient":
+        if not values.get("input_data"):
+            raise ValueError("input_data not correctly formatted!")
+        driver = values["input_data"].specification.driver
+        if driver == "gradient":
             v = np.asarray(v).reshape(-1, 3)
-        elif values["driver"] == "hessian":
+        elif driver == "hessian":
             v = np.asarray(v)
             nsq = int(v.size**0.5)
             v.shape = (nsq, nsq)
@@ -666,10 +632,6 @@ class AtomicResult(AtomicInput):
         else:
             raise ValueError("wavefunction must be None, a dict, or a WavefunctionProperties object.")
 
-        # Do not propagate validation errors
-        if "protocols" not in values:
-            raise ValueError("Protocols was not properly formed.")
-
         # Handle restricted
         restricted = wfn.get("restricted", None)
         if restricted is None:
@@ -681,7 +643,7 @@ class AtomicResult(AtomicInput):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = values["protocols"].wavefunction
+        wfnp = values["input_data"].specification.protocols.wavefunction
         return_keep = None
         if wfnp == "all":
             pass
@@ -724,11 +686,9 @@ class AtomicResult(AtomicInput):
 
     @validator("stdout")
     def _stdout_protocol(cls, value, values):
-        # Do not propagate validation errors
-        if "protocols" not in values:
-            raise ValueError("Protocols was not properly formed.")
-
-        outp = values["protocols"].stdout
+        if not values.get("input_data"):
+            raise ValueError("input_data not correctly formatted!")
+        outp = values["input_data"].specification.protocols.stdout
         if outp is True:
             return value
         elif outp is False:
@@ -738,7 +698,7 @@ class AtomicResult(AtomicInput):
 
     @validator("native_files")
     def _native_file_protocol(cls, value, values):
-        ancp = values["protocols"].native_files
+        ancp = values["input_data"].specification.protocols.native_files
         if ancp == "all":
             return value
         elif ancp == "none":
@@ -756,69 +716,3 @@ class AtomicResult(AtomicInput):
         for rk in return_keep:
             ret[rk] = files.get(rk, None)
         return ret
-
-
-class ResultProperties(AtomicResultProperties):
-    """QC Result Properties Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResultProperties` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            "ResultProperties has been renamed to AtomicResultProperties and will be removed as soon as v0.13.0",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class ResultProtocols(AtomicResultProtocols):
-    """QC Result Protocols Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResultProtocols` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            "ResultProtocols has been renamed to AtomicResultProtocols and will be removed as soon as v0.13.0",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class ResultInput(AtomicInput):
-    """QC Input Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicInput` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn("ResultInput has been renamed to AtomicInput and will be removed as soon as v0.13.0", DeprecationWarning)
-        super().__init__(*args, **kwargs)
-
-
-class Result(AtomicResult):
-    """QC Result Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResult` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn("Result has been renamed to AtomicResult and will be removed as soon as v0.13.0", DeprecationWarning)
-        super().__init__(*args, **kwargs)

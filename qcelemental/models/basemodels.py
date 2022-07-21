@@ -6,10 +6,10 @@ import numpy as np
 
 try:
     from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic.v1 import BaseModel
+    from pydantic.v1 import BaseModel, Field
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic import BaseModel
+    from pydantic import BaseModel, Field
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
@@ -196,8 +196,26 @@ class ProtoModel(BaseModel):
         return compare_recursive(self, other, **kwargs)
 
 
-# remove when QCFractal merges `next`
+class Provenance(ProtoModel):
+    """Provenance information."""
+
+    creator: str = Field(..., description="The name of the program, library, or person who created the object.")
+    version: str = Field(
+        "",
+        description="The version of the creator, blank otherwise. This should be sortable by the very broad [PEP 440](https://www.python.org/dev/peps/pep-0440/).",
+    )
+    routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
+
+    class Config(ProtoModel.Config):
+        canonical_repr = True
+        extra: str = "allow"
+
+        def schema_extra(schema, model):
+            schema["$schema"] = qcschema_draft
+
+
 class AutodocBaseSettings(BaseSettings):
+    # remove when QCFractal merges `next`
     def __init_subclass__(cls) -> None:
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
