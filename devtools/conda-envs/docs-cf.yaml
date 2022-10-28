@@ -7,7 +7,7 @@ dependencies:
   - networkx
   - pydantic
   - numpy
-  - pint
+  - pint>=0.20.1
   - pip
 
     # qc

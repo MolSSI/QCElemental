@@ -309,8 +309,6 @@ class PhysicalConstantsContext:
 
         # Add a little magic in case the incoming values have scalars
 
-        from pint import quantity
-
         factor = 1.0
 
         # First make sure we either have Units or Quantities
@@ -321,11 +319,11 @@ class PhysicalConstantsContext:
             conv_unit = self.ureg.parse_expression(conv_unit)
 
         # Need to play with prevector if we have Quantities
-        if isinstance(base_unit, quantity._Quantity):
+        if isinstance(base_unit, self.ureg.Quantity):
             factor *= base_unit.magnitude
             base_unit = base_unit.units
 
-        if isinstance(conv_unit, quantity._Quantity):
+        if isinstance(conv_unit, self.ureg.Quantity):
             factor /= conv_unit.magnitude
             conv_unit = conv_unit.units
 
