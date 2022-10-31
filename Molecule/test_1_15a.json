@@ -53,7 +53,7 @@
   "provenance": {
     "creator": "QCElemental",
     "routine": "qcelemental.molparse.from_string",
-    "version": "v0.24.0+6.g2956421"
+    "version": "v0.25.0+1.gf7b2969"
   },
   "real": [
     true,
