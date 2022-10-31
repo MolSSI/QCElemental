@@ -11,7 +11,8 @@ from ..datum import Datum, print_variables
 from .ureg import build_units_registry
 
 if TYPE_CHECKING:
-    from pint import UnitRegistry, Quantity as _Quantity  # lgtm: [py/unused-import]
+    from pint import Quantity as _Quantity  # lgtm: [py/unused-import]
+    from pint import UnitRegistry  # lgtm: [py/unused-import]
 
 
 class PhysicalConstantsContext:
@@ -275,9 +276,7 @@ class PhysicalConstantsContext:
         return self.ureg.Quantity(data)
 
     @lru_cache()
-    def conversion_factor(
-        self, base_unit: Union[str, "_Quantity"], conv_unit: Union[str, "_Quantity"]
-    ) -> float:
+    def conversion_factor(self, base_unit: Union[str, "_Quantity"], conv_unit: Union[str, "_Quantity"]) -> float:
         r"""Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
