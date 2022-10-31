@@ -11,7 +11,8 @@ from ..datum import Datum, print_variables
 from .ureg import build_units_registry
 
 if TYPE_CHECKING:
-    from pint import UnitRegistry, quantity  # lgtm: [py/unused-import]
+    from pint import Quantity as _Quantity  # lgtm: [py/unused-import]
+    from pint import UnitRegistry  # lgtm: [py/unused-import]
 
 
 class PhysicalConstantsContext:
@@ -269,15 +270,13 @@ class PhysicalConstantsContext:
     #       na                        'Avogadro constant'                         = 6.02214179E23        # Avogadro's number
     #       me                        'electron mass'                             = 9.10938215E-31       # Electron rest mass (in kg)
 
-    def Quantity(self, data: str) -> "quantity._Quantity":
+    def Quantity(self, data: str) -> "_Quantity":
         """Returns a Pint Quantity."""
 
         return self.ureg.Quantity(data)
 
     @lru_cache()
-    def conversion_factor(
-        self, base_unit: Union[str, "quantity._Quantity"], conv_unit: Union[str, "quantity._Quantity"]
-    ) -> float:
+    def conversion_factor(self, base_unit: Union[str, "_Quantity"], conv_unit: Union[str, "_Quantity"]) -> float:
         r"""Provides the conversion factor from one unit to another.
 
         The conversion factor is based on the current contexts CODATA.
@@ -309,7 +308,7 @@ class PhysicalConstantsContext:
 
         # Add a little magic in case the incoming values have scalars
 
-        from pint import quantity
+        from pint import Quantity as _Quantity
 
         factor = 1.0
 
@@ -321,11 +320,11 @@ class PhysicalConstantsContext:
             conv_unit = self.ureg.parse_expression(conv_unit)
 
         # Need to play with prevector if we have Quantities
-        if isinstance(base_unit, quantity._Quantity):
+        if isinstance(base_unit, _Quantity):
             factor *= base_unit.magnitude
             base_unit = base_unit.units
 
-        if isinstance(conv_unit, quantity._Quantity):
+        if isinstance(conv_unit, _Quantity):
             factor /= conv_unit.magnitude
             conv_unit = conv_unit.units
 

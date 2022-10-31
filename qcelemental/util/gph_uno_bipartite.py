@@ -371,7 +371,7 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
         d = matchadj.multiply(adj)
         d[n1:, :] = adj[n1:, :] - matchadj[n1:, :].multiply(adj[n1:, :])
 
-        dg = nx.from_numpy_matrix(d.toarray(), create_using=nx.DiGraph())
+        dg = nx.from_numpy_array(d.toarray(), create_using=nx.DiGraph())
         cycles = list(nx.simple_cycles(dg))
         if len(cycles) == 0:
             check_cycle = False
