@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.physical_constants.context &mdash; QCElemental 0+untagged.1.g2956421 documentation</title>
+  <title>qcelemental.physical_constants.context &mdash; QCElemental 0+untagged.1.gf7b2969 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -17,6 +17,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -45,7 +46,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="../../../index.html" class="icon icon-home"> QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g2956421
+                0+untagged.1.gf7b2969
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -117,7 +118,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="kn">from</span> <span class="nn">.ureg</span> <span class="kn">import</span> <span class="n">build_units_registry</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span><span class="p">,</span> <span class="n">quantity</span>  <span class="c1"># lgtm: [py/unused-import]</span>
+    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>  <span class="c1"># lgtm: [py/unused-import]</span>
+    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span>  <span class="c1"># lgtm: [py/unused-import]</span>
 
 
 <div class="viewcode-block" id="PhysicalConstantsContext"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">[docs]</a><span class="k">class</span> <span class="nc">PhysicalConstantsContext</span><span class="p">:</span>
@@ -375,15 +377,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">#       na                        &#39;Avogadro constant&#39;                         = 6.02214179E23        # Avogadro&#39;s number</span>
     <span class="c1">#       me                        &#39;electron mass&#39;                             = 9.10938215E-31       # Electron rest mass (in kg)</span>
 
-<div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span> <span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span> <span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Returns a Pint Quantity.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.conversion_factor"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.conversion_factor">[docs]</a>    <span class="nd">@lru_cache</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">conversion_factor</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;quantity._Quantity&quot;</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">conversion_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provides the conversion factor from one unit to another.</span>
 
 <span class="sd">        The conversion factor is based on the current contexts CODATA.</span>
@@ -415,7 +415,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="c1"># Add a little magic in case the incoming values have scalars</span>
 
-        <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">quantity</span>
+        <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>
 
         <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
 
@@ -427,11 +427,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">conv_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">parse_expression</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">)</span>
 
         <span class="c1"># Need to play with prevector if we have Quantities</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_unit</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">_Quantity</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_unit</span><span class="p">,</span> <span class="n">_Quantity</span><span class="p">):</span>
             <span class="n">factor</span> <span class="o">*=</span> <span class="n">base_unit</span><span class="o">.</span><span class="n">magnitude</span>
             <span class="n">base_unit</span> <span class="o">=</span> <span class="n">base_unit</span><span class="o">.</span><span class="n">units</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">_Quantity</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv_unit</span><span class="p">,</span> <span class="n">_Quantity</span><span class="p">):</span>
             <span class="n">factor</span> <span class="o">/=</span> <span class="n">conv_unit</span><span class="o">.</span><span class="n">magnitude</span>
             <span class="n">conv_unit</span> <span class="o">=</span> <span class="n">conv_unit</span><span class="o">.</span><span class="n">units</span>
 

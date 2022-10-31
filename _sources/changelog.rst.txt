@@ -17,6 +17,14 @@ Changelog
 .. +++++++++
 
 
+0.25.1 / 2022-10-31
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`477`) Rearrange imports for compatibility with Pint v0.20. No new restrictions on pint version.
+
+
 0.25.0 / 2022-06-13
 -------------------
 
