@@ -22,7 +22,7 @@ Changelog
 
 Bug Fixes
 +++++++++
-- (:pr:`477`) Rearrange imports for compatibility with Pint v0.20. No new restrictions on pint version.
+- (:pr:`297`) Rearrange imports for compatibility with Pint v0.20. No new restrictions on pint version.
 
 
 0.25.0 / 2022-06-13
