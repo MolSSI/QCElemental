@@ -1,0 +1,7 @@
+query-filters:
+  - exclude:
+      id: py/not-named-self
+  - exclude:
+      id: py/missing-equals
+  - exclude:
+      id: py/unsafe-cyclic-import
