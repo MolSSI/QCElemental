@@ -17,6 +17,7 @@ from .common_models import (
     Model,
 )
 from .types import Array
+from .molecule import Molecule
 
 if TYPE_CHECKING:
     try:
@@ -591,6 +592,19 @@ class AtomicInput(InputBase):
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
+    def from_v2(**kwargs):
+        # tentative fn
+        atspec_kw = {}
+        for k in ["driver", "model", "protocols", "program", "keywords"]:
+            if k in kwargs:
+                atspec_kw[k] = kwargs.pop(k)
+        #atspec_kw = {k: v for k, v in kwargs if k in ["driver", "model", "protocols"]}
+        #atspec = AtomicSpecification(**atspec_kw)
+        atin = AtomicInput(specification=atspec_kw, **kwargs)
+        #import pprint
+        #pprint.pprint(atin.dict(), width=200)
+        return atin
+
 
 class AtomicResult(SuccessfulResultBase):
     r"""Results from a CMS program execution."""
@@ -598,6 +612,7 @@ class AtomicResult(SuccessfulResultBase):
     input_data: AtomicInput = Field(..., description="The input data supplied to generate this computation")
     properties: AtomicResultProperties = Field(..., description=AtomicResultProperties.__base_doc__)
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__base_doc__))
+    molecule: Molecule = Field(None)  # here or in SuccessfulResultBase?
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(
         ...,
@@ -716,3 +731,13 @@ class AtomicResult(SuccessfulResultBase):
         for rk in return_keep:
             ret[rk] = files.get(rk, None)
         return ret
+
+    @validator("molecule")
+    def _molecule_final(cls, value, values):
+        # tentative -- do we want molecule copied from input be default if not present? or demand two mols?
+        if value is None:
+            if not values.get("input_data"):
+                raise ValueError("input_data not correctly formatted!")
+            return values["input_data"]["molecule"]
+        else:
+            return value
