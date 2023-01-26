@@ -16,6 +16,14 @@ if TYPE_CHECKING:
     from pydantic.typing import ReprArgs
 
 
+class MolecularDescriptors(ProtoModel):
+    r"""
+    Molecular descriptors for cheminformatics and AI/ML applications following the MolSSI QCSchema.
+    """
+
+    canonical_smiles: Optional[str] = Field(None, description="Canonical (non-kekulized, implicit hydrogens) SMILES string representing the molecule.")
+
+
 class AtomicResultProperties(ProtoModel):
     r"""
     Named properties of quantum chemistry computations following the MolSSI QCSchema.
@@ -31,7 +39,7 @@ class AtomicResultProperties(ProtoModel):
     calcinfo_nmo: Optional[int] = Field(None, description="The number of molecular orbitals for the computation.")
     calcinfo_nalpha: Optional[int] = Field(None, description="The number of alpha electrons in the computation.")
     calcinfo_nbeta: Optional[int] = Field(None, description="The number of beta electrons in the computation.")
-    calcinfo_natom: Optional[int] = Field(None, description="The number of atoms in the computation.")
+    calcinfo_natom: Optional[int] = Field(None, description="The number of atoms in the computation.")    # perhaps this shouldn't be optional
 
     # Canonical
     nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy.")
@@ -49,6 +57,9 @@ class AtomicResultProperties(ProtoModel):
         description="The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.",
         units="E_h/a0^2",
     )
+
+    # Cheminformatics (currently just rdkit) Keywords
+    descriptors: Optional[MolecularDescriptors] = Field(None, description=MolecularDescriptors.__doc__)
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
