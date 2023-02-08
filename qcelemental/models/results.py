@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Set, Union
 
 import numpy as np
 from pydantic import Field, constr, validator
@@ -22,6 +22,7 @@ class MolecularDescriptors(ProtoModel):
     """
 
     canonical_smiles: Optional[str] = Field(None, description="Canonical (non-kekulized, implicit hydrogens) SMILES string representing the molecule.")
+    stereochemistry: Optional[List[Union[Tuple[int, str], Tuple[int, int, str]]]] = Field(None, description="CIP (R/S, E/Z) stereochemistry by atom indices and stereo type.")
 
 
 class AtomicResultProperties(ProtoModel):
