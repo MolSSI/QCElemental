@@ -23,6 +23,9 @@ class MolecularDescriptors(ProtoModel):
 
     canonical_smiles: Optional[str] = Field(None, description="Canonical (non-kekulized, implicit hydrogens) SMILES string representing the molecule.")
     stereochemistry: Optional[List[Union[Tuple[int, str], Tuple[int, int, str]]]] = Field(None, description="CIP (R/S, E/Z) stereochemistry by atom indices and stereo type.")
+    aromaticity: Optional[Dict[str, List[Union[int, Tuple[int, int]]]]] = Field(None, description="Dictionary of bond indices and atom indices of aromatic bonds.")
+    ring_info: Optional[Dict[str, Union[int, Dict[int, Dict[str, Union[int, bool, List[int]]]]]]] = Field(None, description="Dictionary with number of rings and a dictionary for each ring where the key is the ring index and contains the size, whether it's aromatic(bool) and/or a heterocycle(bool), and atom indices.")
+    gasteiger_charges: Optional[List[float]] = Field(None, description="Calculated atomic charges following method in Gasteiger, J.; Marseli, M. Tetrahedron, 1980.")
 
 
 class AtomicResultProperties(ProtoModel):
