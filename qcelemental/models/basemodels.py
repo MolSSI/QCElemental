@@ -127,6 +127,7 @@ class ProtoModel(BaseModel):
         exclude_unset: Optional[bool] = None,
         exclude_defaults: Optional[bool] = None,
         exclude_none: Optional[bool] = None,
+        **kwargs,
     ) -> Union[bytes, str]:
         r"""Generates a serialized representation of the model
 
@@ -144,6 +145,8 @@ class ProtoModel(BaseModel):
             If True, skips fields that have set or defaulted values equal to the default.
         exclude_none
             If True, skips fields that have value ``None``.
+        kwargs
+            For passing additional values like indent to serialization functions
 
         Returns
         -------
@@ -151,21 +154,21 @@ class ProtoModel(BaseModel):
             The serialized model.
         """
 
-        kwargs = {}
+        dict_kwargs = {}
         if include:
-            kwargs["include"] = include
+            dict_kwargs["include"] = include
         if exclude:
-            kwargs["exclude"] = exclude
+            dict_kwargs["exclude"] = exclude
         if exclude_unset:
-            kwargs["exclude_unset"] = exclude_unset
+            dict_kwargs["exclude_unset"] = exclude_unset
         if exclude_defaults:
-            kwargs["exclude_defaults"] = exclude_defaults
+            dict_kwargs["exclude_defaults"] = exclude_defaults
         if exclude_none:
-            kwargs["exclude_none"] = exclude_none
+            dict_kwargs["exclude_none"] = exclude_none
 
-        data = self.dict(**kwargs)
+        data = self.dict(**dict_kwargs)
 
-        return serialize(data, encoding=encoding)
+        return serialize(data, encoding=encoding, **kwargs)
 
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
