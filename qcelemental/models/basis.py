@@ -192,7 +192,6 @@ class BasisSet(ProtoModel):
 
     @validator("nbf", always=True)
     def _check_nbf(cls, v, values):
-
         # Bad construction, pass on errors
         try:
             nbf = cls._calculate_nbf(values["atom_map"], values["center_data"])

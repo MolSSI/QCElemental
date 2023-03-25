@@ -2,8 +2,9 @@
 This file will generate a JSON blob usable by QCElemental for physical constants
 """
 
-import json
 import datetime
+import json
+
 import requests
 from yapf.yapflib.yapf_api import FormatCode
 
@@ -13,9 +14,9 @@ with open(metadata_file, "r") as handle:
 
 title = metadata["title"]
 date_modified = metadata["modified"]
-year = date_modified.split('-')[0]
-doi = metadata['distribution'][-1]['accessURL'].strip('https://dx.doi.org/')
-url = metadata['distribution'][0]['downloadURL']
+year = date_modified.split("-")[0]
+doi = metadata["distribution"][-1]["accessURL"].strip("https://dx.doi.org/")
+url = metadata["distribution"][0]["downloadURL"]
 access_date = str(datetime.datetime.utcnow())
 
 constants = requests.get(url).json()
@@ -33,7 +34,9 @@ File Authors: QCElemental Authors
 """
 
 
-'''.format(year, title, date_modified, doi, url, access_date)
+'''.format(
+    year, title, date_modified, doi, url, access_date
+)
 
 constants_json = {
     "title": title,
@@ -41,20 +44,20 @@ constants_json = {
     "doi": doi,
     "url": url,
     "access_data": access_date,
-    "constants": {}
+    "constants": {},
 }
 
-for pc in constants['constant']:
-    value = pc['Value'].strip()
-    uncertainty = pc['Uncertainty']
-    if uncertainty == '(exact)':
-        value = value.replace('...', '')
+for pc in constants["constant"]:
+    value = pc["Value"].strip()
+    uncertainty = pc["Uncertainty"]
+    if uncertainty == "(exact)":
+        value = value.replace("...", "")
 
     constants_json["constants"][pc["Quantity "].lower()] = {
         "quantity": pc["Quantity "],
         "unit": pc["Unit"],
         "value": value.replace(" ", ""),
-        'uncertainty': uncertainty
+        "uncertainty": uncertainty,
     }
 output += "nist_{}_codata = {}".format(year, constants_json)
 

@@ -40,7 +40,6 @@ class PeriodicTable:
     """
 
     def __init__(self):
-
         from . import data
 
         # Of length number of elements

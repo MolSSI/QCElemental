@@ -138,7 +138,6 @@ class JSONExtArrayEncoder(json.JSONEncoder):
 
 
 def jsonext_decode(obj: Any) -> Any:
-
     if "_nd_" in obj:
         arr = np.frombuffer(bytes.fromhex(obj["data"]), dtype=obj["dtype"])
         if "shape" in obj:

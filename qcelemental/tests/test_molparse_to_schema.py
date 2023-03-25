@@ -104,7 +104,6 @@ def test_psi4_14c():
 
 
 def test_dtype_error():
-
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final["qm"], dtype="xkcd927")
@@ -114,7 +113,6 @@ def test_dtype_error():
 
 @pytest.mark.parametrize("dtype", [1, 2])
 def test_atomic_units_qcschema_ang_error(dtype):
-
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final["qm"], dtype=dtype, units="Angstrom")
@@ -123,7 +121,6 @@ def test_atomic_units_qcschema_ang_error(dtype):
 
 
 def test_psi4_nm_error():
-
     final = qcelemental.molparse.from_string(subject14)
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.to_schema(final["qm"], dtype="psi4", units="nm")
@@ -326,7 +323,6 @@ def test_froto_2_16a(request):
 
 @pytest.mark.parametrize("dtype", [1, 2])
 def test_tofro_16b(dtype, request):
-
     fullans = copy.deepcopy(schema16_psi4)
     fullans["provenance"] = _schema_prov_stamp
 

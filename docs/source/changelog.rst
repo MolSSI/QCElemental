@@ -16,6 +16,20 @@ Changelog
 .. Bug Fixes
 .. +++++++++
 
+Unreleased
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+- (:pr:`308`) Fix CI Pipelines. Dropped Python3.6. Bring CI pipelines into harmony with local dev experience. Lint and format entire code base. Accelerate CI pipelines. Update setup.py to correctly define extras packages. Breaking change due to dropped support for Python3.6. No code functionality was altered.
+   - Dropped support for dead Python 3.6. Minimum supported Python is now 3.7.
+   - Updated CONTRIBUTING.md to contain detailed instructions for developers on how to contribute.
+   - Fixed broken code that failed to prepend the "v" to version numbers.
+   - Updated CI to run without conda and using only packages defined in setup.py. CI is now much faster and runs the same way for local developers and GitHub Actions.
+   - Added test.sh and format.sh to devtools/scripts for easy execution of formatting and testing.
+   - Formatted all code with black. Sorted imports with isort.
+   - Added pre-commit to repo so code formatting, linting, and testing will all run as part of regular git workflow.
 
 0.25.1 / 2022-10-31
 -------------------

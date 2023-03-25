@@ -174,7 +174,6 @@ def test_psi4_qm_1e():
 
 
 def test_psi4_qm_1f():
-
     qcelemental.molparse.from_arrays(
         geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
         elez=np.array([8, 1]),
@@ -185,7 +184,6 @@ def test_psi4_qm_1f():
 
 
 def test_psi4_qm_iutautoobig_error_1g():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             geom=np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
@@ -644,7 +642,6 @@ def test_psi4_qmefpformat_error_6c():
 
 
 def test_qmefp_array_6d():
-
     fullans = copy.deepcopy(fullans6)
     fullans["qm"]["provenance"] = _arrays_prov_stamp
     fullans["efp"]["provenance"] = _arrays_prov_stamp
@@ -666,7 +663,6 @@ def test_qmefp_array_6d():
 
 
 def test_qmefp_badhint_error_6e():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -684,7 +680,6 @@ def test_qmefp_badhint_error_6e():
 
 
 def test_qmefp_badefpgeom_error_6f():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -702,7 +697,6 @@ def test_qmefp_badefpgeom_error_6f():
 
 
 def test_qmefp_badhintgeom_error_6g():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -720,7 +714,6 @@ def test_qmefp_badhintgeom_error_6g():
 
 
 def test_qmefp_badfragfile_error_6h():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -738,7 +731,6 @@ def test_qmefp_badfragfile_error_6h():
 
 
 def test_qmefp_hintlen_error_6i():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -756,7 +748,6 @@ def test_qmefp_hintlen_error_6i():
 
 
 def test_qmefp_fixcom_error_6j():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -775,7 +766,6 @@ def test_qmefp_fixcom_error_6j():
 
 
 def test_qmefp_fixori_error_6k():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_input_arrays(
             units="Bohr",
@@ -1535,7 +1525,6 @@ def test_steepzmat_error():
 
 
 def test_zmatvar_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz", elem=["Rn", "Rn"], variables=[["bond", 2.0, "badextra"]], geom_unsettled=[[], ["1", "bond"]]
@@ -1545,7 +1534,6 @@ def test_zmatvar_error():
 
 
 def test_toomanyfrag_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1563,7 +1551,6 @@ def test_toomanyfrag_error():
 
 
 def test_fragsep_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1650,7 +1637,6 @@ def test_natom_error():
 
 
 def test_incompletefrag_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1667,7 +1653,6 @@ def test_incompletefrag_error():
 
 
 def test_badmult_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1685,7 +1670,6 @@ def test_badmult_error():
 
 
 def test_badchg_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1703,7 +1687,6 @@ def test_badchg_error():
 
 
 def test_fraglen_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             domain="qmvz",
@@ -1926,7 +1909,6 @@ def test_connectivity_17b():
 
 
 def test_connectivity_atindex_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             geom=np.arange(9),
@@ -1941,7 +1923,6 @@ def test_connectivity_atindex_error():
 
 
 def test_connectivity_atrange_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             geom=np.arange(9),
@@ -1956,7 +1937,6 @@ def test_connectivity_atrange_error():
 
 
 def test_connectivity_bondorder_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             geom=np.arange(9),
@@ -1971,7 +1951,6 @@ def test_connectivity_bondorder_error():
 
 
 def test_connectivity_type_error():
-
     with pytest.raises(qcelemental.ValidationError) as e:
         qcelemental.molparse.from_arrays(
             geom=np.arange(9),

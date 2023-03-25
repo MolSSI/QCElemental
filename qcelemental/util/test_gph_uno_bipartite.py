@@ -11,7 +11,6 @@ from ..tests.addons import using_networkx, using_scipy
 
 @using_networkx
 def test_example4(alg=1):
-
     # fmt: off
     edges = [(0, 0),
              (0, 1),
@@ -78,7 +77,6 @@ def test_example4(alg=1):
 
 @using_networkx
 def test_example3(alg=1):
-
     # fmt: off
     match = [(1, 2), (3, 4), (5, 6), (7, 8)]
     edges = [(1, 2),
@@ -113,7 +111,6 @@ def test_example3(alg=1):
 
 
 def _check(msg, ans, ref, verbose=1):
-
     tans = [tuple(qw) for qw in ans]
     tref = [tuple(qw) for qw in ref]
     extra_answers = set(tans).difference(set(tref))

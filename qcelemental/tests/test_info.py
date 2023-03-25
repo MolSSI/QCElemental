@@ -60,14 +60,12 @@ def test_cpu_info_index_lengths():
     ],
 )
 def test_cpu_info_search(name, model):
-
     cpu = cpu_info.get(name)
     assert cpu is not None, name
     assert cpu.model == model, name
 
 
 def test_cpu_info_errors():
-
     with pytest.raises(KeyError) as exc:
         cpu_info.get("E7-8867 V4")
 

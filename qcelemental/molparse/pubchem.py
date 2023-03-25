@@ -93,7 +93,6 @@ class PubChemObj:
 
         atom_count = 0
         for line in lines:
-
             atom_match = atom_re.match(line)
             if atom_match:
                 x = float(atom_match.group(1))

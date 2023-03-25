@@ -2,12 +2,9 @@ import pytest
 
 from qcelemental.models import (
     AtomicInput,
-    AtomicResult,
     AtomicResultProperties,
     ComputeError,
     FailedOperation,
-    Molecule,
-    Optimization,
     OptimizationInput,
     ProtoModel,
     Provenance,
@@ -17,7 +14,6 @@ from .addons import drop_qcsk
 
 
 def test_result_properties_default_skip(request):
-
     obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
     drop_qcsk(obj, request.node.name)
 
@@ -35,7 +31,6 @@ def test_result_properties_default_repr():
 
 
 def test_repr_provenance(request):
-
     prov = Provenance(creator="qcel", version="v0.3.2")
     drop_qcsk(prov, request.node.name)
 
@@ -59,7 +54,6 @@ def test_repr_failed_op():
 
 
 def test_repr_result(request):
-
     result = AtomicInput(
         **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
     )
@@ -70,7 +64,6 @@ def test_repr_result(request):
 
 
 def test_repr_optimization():
-
     opt = OptimizationInput(
         **{
             "input_specification": {"driver": "gradient", "model": {"method": "UFF"}},
