@@ -645,7 +645,6 @@ class Molecule(ProtoModel):
         atom_size = 0
 
         if group_fragments:
-
             # Loop through the real blocks
             frag_start = 0
             for frag in real:
@@ -1029,7 +1028,6 @@ class Molecule(ProtoModel):
 
         geom_noise = 10 ** (-GEOMETRY_NOISE)
         for num in range(new_geometry.shape[0]):
-
             for x in range(3):
                 if phase_check[x]:
                     continue

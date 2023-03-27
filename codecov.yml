@@ -1,6 +1,6 @@
 coverage:
   ignore:
-    - */tests/*
+    - "*/tests/*"
     - qcelemental/_version.py
     - setup.py
   status:

@@ -111,7 +111,6 @@ class OptimizationResult(OptimizationInput):
 
     @validator("trajectory", each_item=False)
     def _trajectory_protocol(cls, v, values):
-
         # Do not propogate validation errors
         if "protocols" not in values:
             raise ValueError("Protocols was not properly formed.")

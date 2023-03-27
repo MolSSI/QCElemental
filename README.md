@@ -17,7 +17,7 @@ srd121, respectively ([details](raw_data/README.md)) in a renewable manner
 This project also contains a generator, validator, and translator for [Molecule
 QCSchema](https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html).
 
-It is intended to keep the QCElemental code compatible with Python 3.6+
+It is intended to keep the QCElemental code compatible with Python 3.7+
 as long as dependencies allow. Packages are assured for Python 3.8+.
 
 

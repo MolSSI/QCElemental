@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.11]
+
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Install QCElemental
+        run: python -m pip install '.[tests]'
+      - name: Run tests
+        run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml qcelemental
+      - name: Run pytest validate
+        run: pytest -rws -v --color=yes --validate qcelemental
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3 # NEEDS UPDATE TO v3 https://github.com/codecov/codecov-action
+      - name: QCSchema Examples Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
+        with:
+          branch: qcschema-examples
+          folder: qcelemental/tests/qcschema_instances
+
+  build_documentation:
+    needs: [test]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        name: Set up Python
+        with:
+          python-version: "3.7"
+      - name: Build Documentation
+        run: |
+          python -m pip install '.[docs]'
+          cd docs
+          make html
+      - name: GitHub Pages Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
+        with:
+          branch: gh-pages
+          folder: docs/build/html

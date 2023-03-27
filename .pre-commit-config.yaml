@@ -1,0 +1,45 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=250"]
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        stages: [commit]
+  # TODO: Update to 5.12.x once we drop Python3.7 support
+  # https://levelup.gitconnected.com/fix-runtimeerror-poetry-isort-5db7c67b60ff
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.5
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+  # TODO: Support flake8 when the repo is ready
+  # - repo: https://github.com/PyCQA/flake8
+  #   rev: 6.0.0
+  #   hooks:
+  #     - id: flake8
+  # TODO: Support mypy when the repo is ready
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.1.1
+  #   hooks:
+  #     - id: mypy
+  #       additional_dependencies:
+  #         [tokenize-rt==3.2.0, pydantic>=1.0.0]
+  - repo: local
+    hooks:
+      - id: tests
+        name: tests
+        stages: [push]
+        language: system
+        entry: pytest --cov-report html:htmlcov --cov -v
+        types: [python]
+        pass_filenames: false

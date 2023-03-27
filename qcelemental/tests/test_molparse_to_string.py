@@ -331,7 +331,6 @@ QCElemental
     ],
 )
 def test_molecule_to_string(inp, kwargs, expected, request):
-
     smol = _molecule_inputs[inp].to_string(**kwargs)
     drop_qcsk(_molecule_inputs[inp], request.node.name)
     assert compare(_molecule_outputs[expected], smol)

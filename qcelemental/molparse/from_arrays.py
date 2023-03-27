@@ -462,7 +462,7 @@ def validate_and_fill_units(
     if connectivity is not None:
         conn = []
         try:
-            for (at1, at2, bondorder) in connectivity:
+            for at1, at2, bondorder in connectivity:
                 if not (float(at1)).is_integer() or at1 < 0:  # or at1 >= nat:
                     raise ValidationError("""Connectivity first atom should be int [0, nat): {}""".format(at1))
                 if not (float(at2)).is_integer() or at2 < 0:  # or at2 >= nat:
@@ -502,7 +502,6 @@ def validate_and_fill_units(
 
 
 def validate_and_fill_frame(extern, fix_com=None, fix_orientation=None, fix_symmetry=None):
-
     if fix_com is True:
         com = True
     elif fix_com is False:
@@ -549,7 +548,6 @@ def validate_and_fill_frame(extern, fix_com=None, fix_orientation=None, fix_symm
 
 
 def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None):
-
     if (
         fragment_files is None
         or hint_types is None
@@ -559,7 +557,6 @@ def validate_and_fill_efp(fragment_files=None, hint_types=None, geom_hints=None)
         or geom_hints == [None]
         or not (len(fragment_files) == len(hint_types) == len(geom_hints))
     ):
-
         raise ValidationError(
             """Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})""".format(
                 fragment_files, hint_types, geom_hints

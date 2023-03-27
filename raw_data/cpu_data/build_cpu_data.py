@@ -1,7 +1,7 @@
-import pandas as pd
-import black
 import json
 
+import black
+import pandas as pd
 
 with open("intel_cpu_database.json", "r") as handle:
     intel_raw = json.loads(handle.read())
@@ -36,7 +36,6 @@ def parse_amd_clock(name):
 
 
 def parse_amd_launch(d):
-
     if d is None:
         return None
 
@@ -105,7 +104,7 @@ for row in list(intel_raw.values())[100:]:
 
     # Some processors are classified as "Mobile", which are almost certainly in laptops not phones
     # Excluding atom procs instead, since they're the ones the break the parser
-    #if row["Essentials"]["Vertical Segment"] == "Mobile":
+    # if row["Essentials"]["Vertical Segment"] == "Mobile":
     #    continue
     if "Intel Atom " in row["name"]:
         continue
@@ -130,14 +129,11 @@ for row in list(intel_raw.values())[100:]:
         raise
 
 
-
 def parse_intel_clock(name):
-
     if name is None:
         return None
 
     name = name.lower()
-
 
     if "mhz" in name:
         repl = "mhz"
@@ -155,7 +151,6 @@ def parse_intel_clock(name):
 
 
 def parse_instructions(inst):
-
     if inst is None:
         return None
 
@@ -167,7 +162,6 @@ def parse_instructions(inst):
 
 
 def parse_date(d):
-
     if d is None:
         return None
 
@@ -198,18 +192,21 @@ df["instructions"] = df["instructions"].apply(lambda x: translation[x])
 
 # add extra data
 import extra_cpus
+
 for i in extra_cpus.extra_cpus:
     df = df.append(i, ignore_index=True)
+
 
 def name(vendor, family, model, clock_speed):
     if vendor.lower() in family.lower():
         vendor = ""
     if family in str(model):
         family = ""
-    if family.endswith("Processors") and family[:-len("Processors")] in str(model):
+    if family.endswith("Processors") and family[: -len("Processors")] in str(model):
         family = ""
 
     return f"{vendor} {family} {model} @ {clock_speed/1_000_000_000:.1f} GHz"
+
 
 df["name"] = df.apply(lambda row: name(row["vendor"], row["family"], row["model"], row["base_clock"]), axis=1)
 
@@ -220,14 +217,14 @@ for (vendor, model), fix in extra_cpus.fixes.items():
 # Print some data for posterity
 print(df[df["vendor"] == "intel"].tail())
 print(df[df["vendor"] == "amd"].tail())
-print('---')
+print("---")
 
 # Handle nthreads == ncore bugs
 mask = (df["nthreads"] == "") | df["nthreads"].isnull()
 df.loc[mask, "nthreads"] = df.loc[mask, "ncores"]
 
 mask = (df["nthreads"] != "") & df["nthreads"].notnull()
-#print(df[~mask])
+# print(df[~mask])
 cnt = df.shape[0]
 df = df[mask]
 print(f"Dropped {cnt - df.shape[0]} / {cnt} processors without ncores")
@@ -243,7 +240,6 @@ df.sort_values(["vendor", "model", "launch_date"], inplace=True)
 df.drop_duplicates(subset=["vendor", "model"], keep="last", inplace=True)
 
 
-
 output = f'''
 """
 Processor data from multiple sources and vendors.
@@ -253,10 +249,18 @@ File Authors: QCElemental Authors
 
 '''
 
-def to_python_str(data):
-    return json.dumps(data, indent=2).replace("true", "True").replace("false", "False").replace("NaN", "None").replace("null", "None")
 
-output += f"data_rows = {to_python_str([tuple(x[1].values) for x in df.iterrows()])}\n" 
+def to_python_str(data):
+    return (
+        json.dumps(data, indent=2)
+        .replace("true", "True")
+        .replace("false", "False")
+        .replace("NaN", "None")
+        .replace("null", "None")
+    )
+
+
+output += f"data_rows = {to_python_str([tuple(x[1].values) for x in df.iterrows()])}\n"
 output += f"data_columns = {to_python_str(list(df.columns))}\n"
 output += "data_blob = [{k: v for k, v in zip(data_columns, row)} for row in data_rows]\n"
 

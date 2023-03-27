@@ -164,7 +164,6 @@ CARBON      6.0      0.0000000000      0.0000000000     -0.1018060978
 
 @pytest.fixture(scope="function")
 def optimization_data_fixture(result_data_fixture):
-
     trajectory = []
     energies = []
     for x in range(5):
@@ -249,7 +248,6 @@ def test_basis_ecp_center_raises():
 
 
 def test_basis_map_raises():
-
     with pytest.raises(ValueError) as e:
         assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
 
@@ -274,7 +272,6 @@ def test_wavefunction_build(wavefunction_data_fixture, request):
 
 
 def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
-
     wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"] = np.random.rand(2, 2)
     with pytest.raises(ValueError) as e:
         qcel.models.AtomicResult(**wavefunction_data_fixture)
@@ -283,7 +280,6 @@ def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
 
 
 def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
-
     del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
     with pytest.raises(ValueError) as e:
         qcel.models.AtomicResult(**wavefunction_data_fixture)
@@ -314,7 +310,6 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
     ],
 )
 def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture, request):
-
     wfn_data = wavefunction_data_fixture["wavefunction"]
 
     if protocol is None:
@@ -355,7 +350,6 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
     ],
 )
 def test_native_protocols(protocol, provided, expected, native_data_fixture, request):
-
     native_data = native_data_fixture["native_files"]
 
     if protocol is None:
@@ -382,7 +376,6 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     [(None, [0, 1, 2, 3, 4]), ("all", [0, 1, 2, 3, 4]), ("initial_and_final", [0, 4]), ("final", [4]), ("none", [])],
 )
 def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
-
     if keep is not None:
         optimization_data_fixture["protocols"] = {"trajectory": keep}
     opt = qcel.models.OptimizationResult(**optimization_data_fixture)
@@ -500,7 +493,6 @@ def test_result_derivatives_array(request):
     "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
 )
 def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
-
     if smodel == "molecule":
         model = qcel.models.Molecule
         data = result_data_fixture["molecule"].dict()
@@ -526,7 +518,6 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
-
     with pytest.warns(DeprecationWarning):
         qcel.models.ResultProperties(scf_one_electron_energy="-5.0")
 

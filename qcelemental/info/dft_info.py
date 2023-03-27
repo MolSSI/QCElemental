@@ -62,7 +62,6 @@ dftfunctionalinfo = DFTFunctionalContext("default")
 
 
 def get(name: str) -> DFTFunctionalInfo:
-
     name = name.lower()
     for x in dftfunctionalinfo.suffixes:
         if name.endswith(x):

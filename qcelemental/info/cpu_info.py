@@ -101,7 +101,6 @@ context = ProcessorContext("default")
 
 @lru_cache(maxsize=1024)
 def get(name: str, vendor=None, cutoff=0.9) -> ProcessorInfo:
-
     name = context.process_names(name.split("@")[0])
 
     if ("amd" in name) or (vendor == "amd"):

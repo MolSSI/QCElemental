@@ -303,7 +303,6 @@ def compare(
 
 
 def _compare_recursive(expected, computed, atol, rtol, _prefix=False, equal_phase=False):
-
     errors = []
     name = _prefix or "root"
     prefix = name + "."

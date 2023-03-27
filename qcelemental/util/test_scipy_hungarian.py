@@ -15,7 +15,6 @@ from qcelemental.util.scipy_hungarian import linear_sum_assignment
 
 
 def test_linear_sum_assignment():
-
     # fmt: off
     data = [
         # Square
@@ -66,7 +65,6 @@ def test_linear_sum_assignment():
     # fmt: on
 
     for cost_matrix, expected_cost, expected_reduced_cost_matrix in data:
-
         cost_matrix = np.array(cost_matrix)
         (row_ind, col_ind), reduced_cost_matrix = linear_sum_assignment(cost_matrix, return_cost=True)
         assert_array_equal(row_ind, np.sort(row_ind))

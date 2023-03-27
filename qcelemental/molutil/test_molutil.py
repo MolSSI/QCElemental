@@ -572,7 +572,6 @@ def test_vector_gradient_align():
     ],
 )
 def test_guess_connectivity(args, kwargs, ans):
-
     computed = qcel.molutil.guess_connectivity(*args, **kwargs)
     assert compare(computed, ans)
 

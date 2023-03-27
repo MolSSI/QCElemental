@@ -96,7 +96,6 @@ def build_units_registry(context):
     _nist_units = set()
 
     for k, v in phys_const.items():
-
         # Automatically builds the following:
         # electron_volt_to_kelvin = 1.16045221e4 / electron_volt * kelvin
         # hartree_to_atomic_mass_unit = 2.9212623197e-8 / hartree * atomic_mass_unit
@@ -157,7 +156,6 @@ def build_units_registry(context):
         """
 
         def transformer(ureg, val):
-
             left_unit = _find_nist_unit(val)
             if left_unit is None:
                 return val * ureg.parse_expression(default)

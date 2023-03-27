@@ -172,7 +172,6 @@ def test_water_minima_data():
 
 
 def test_water_minima_fragment():
-
     mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
@@ -193,13 +192,11 @@ def test_water_minima_fragment():
 
 
 def test_pretty_print():
-
     mol = water_dimer_minima.copy()
     assert isinstance(mol.pretty_print(), str)
 
 
 def test_to_string():
-
     mol = water_dimer_minima.copy()
     assert isinstance(mol.to_string("psi4"), str)
 
@@ -209,7 +206,6 @@ def test_to_string():
     [("json", "json"), ("xyz", "xyz"), ("numpy", "npy"), pytest.param("msgpack", "msgpack", marks=using_msgpack)],
 )
 def test_to_from_file_simple(tmp_path, dtype, filext):
-
     benchmol = Molecule.from_data(
         """
     O 0 0 0
@@ -228,7 +224,6 @@ def test_to_from_file_simple(tmp_path, dtype, filext):
 
 @pytest.mark.parametrize("dtype", ["json", "psi4"])
 def test_to_from_file_complex(tmp_path, dtype):
-
     p = tmp_path / ("water." + dtype)
     water_dimer_minima.to_file(p)
 
@@ -240,7 +235,6 @@ def test_to_from_file_complex(tmp_path, dtype):
     "dtype, filext", [("json", "json"), ("xyz+", "xyz"), pytest.param("msgpack", "msgpack", marks=using_msgpack)]
 )
 def test_to_from_file_charge_spin(tmp_path, dtype, filext):
-
     benchmol = Molecule.from_data(
         """
     1 2
@@ -510,7 +504,6 @@ def test_get_fragment(group_fragments, orient):
 
 
 def test_molecule_repeated_hashing():
-
     mol = Molecule(
         **{
             "symbols": ["H", "O", "O", "H"],
@@ -544,7 +537,6 @@ def test_molecule_repeated_hashing():
     ],
 )
 def test_measurements(measure, result):
-
     Molecule(
         **{
             "symbols": ["H", "O", "O", "H"],
@@ -572,7 +564,6 @@ def test_measurements(measure, result):
     ],
 )
 def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm):
-
     mol = Molecule.from_data(
         """
     {f1c} {f1m}
@@ -604,7 +595,6 @@ def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm):
 
 
 def test_nuclearrepulsionenergy_nelectrons():
-
     mol = Molecule.from_data(
         """
     0 1
@@ -645,7 +635,6 @@ def test_nuclearrepulsionenergy_nelectrons():
 
 @using_nglview
 def test_show():
-
     water_dimer_minima.show()
 
 
@@ -683,7 +672,6 @@ def test_orient_nomasses():
     ],
 )
 def test_sparse_molecule_fields(mol_string, extra_keys):
-
     expected_keys = {
         "schema_name",
         "schema_version",

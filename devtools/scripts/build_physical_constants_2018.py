@@ -2,14 +2,12 @@
 This file will generate a JSON blob usable by QCElemental for physical constants
 """
 
-import os
-import math
-import json
 import datetime
-import requests
-import pandas as pd
-import black
+import os
 
+import black
+import pandas as pd
+import requests
 
 table_url = "https://physics.nist.gov/cuu/Constants/Table/allascii.txt"
 
@@ -62,7 +60,13 @@ for pc in constants.values():
 
     constants_json["constants"][pc["Quantity"].lower()] = {
         "quantity": pc["Quantity"],
-        "unit": str(pc["Unit"]).replace("nan", "").replace("^-1", "^{-1}").replace("^-2", "^{-2}").replace("^-3", "^{-3}").replace("^-4", "^{-4}").replace("_90", "_{90}"),
+        "unit": str(pc["Unit"])
+        .replace("nan", "")
+        .replace("^-1", "^{-1}")
+        .replace("^-2", "^{-2}")
+        .replace("^-3", "^{-3}")
+        .replace("^-4", "^{-4}")
+        .replace("_90", "_{90}"),
         "value": value.replace(" ", ""),
         "uncertainty": uncertainty,
     }

@@ -178,7 +178,6 @@ class AutoPydanticDocGenerator:
 
         if not always_apply:
             if isinstance(target, BaseModel) or (isinstance(target, type) and issubclass(target, BaseModel)):
-
                 if (
                     hasattr(target, self.ALREADY_AUTODOCED_ATTR)
                     and getattr(target, self.ALREADY_AUTODOCED_ATTR) is True

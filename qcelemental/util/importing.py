@@ -103,7 +103,8 @@ def safe_version(*args, **kwargs) -> str:
     """
     import pkg_resources
 
-    return pkg_resources.safe_version(*args, **kwargs)
+    version = pkg_resources.safe_version(*args, **kwargs)
+    return version
 
 
 def parse_version(*args, **kwargs):

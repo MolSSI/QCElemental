@@ -142,7 +142,6 @@ def to_string(
         smol.extend(atoms)
 
     elif dtype == "orca":
-
         atom_format = "{elem}"
         ghost_format = "{elem}:"
         umap = {"bohr": "! Bohrs", "angstrom": "!"}
@@ -181,7 +180,6 @@ def to_string(
         }
 
     elif dtype == "molpro":
-
         atom_format = "{elem}"
         ghost_format = "{elem}"
         umap = {"bohr": "bohr", "angstrom": "angstrom"}
@@ -220,7 +218,6 @@ def to_string(
         smol.append(f"set,spin={molrec['molecular_multiplicity']-1}")
 
     elif dtype == "nwchem":
-
         atom_format = "{elem}{elbl}"
         ghost_format = "bq{elem}{elbl}"
         # TODO handle which units valid
@@ -248,7 +245,6 @@ def to_string(
             data.keywords["mcscf__multiplicity"] = molrec["molecular_multiplicity"]
 
     elif dtype == "madness":
-
         atom_format = "{elem}"
         ghost_format = "GH"
         # TODO handle which units valid
@@ -304,7 +300,6 @@ def to_string(
         }
 
     elif dtype == "terachem":
-
         atom_format = "{elem}"
         ghost_format = "X{elem}"
         umap = {"bohr": "au", "angstrom": ""}
@@ -316,7 +311,6 @@ def to_string(
         smol.extend(atoms)
 
     elif dtype == "psi4":
-
         atom_format = "{elem}{elbl}"
         ghost_format = "Gh({elem}{elbl})"
         umap = {"bohr": "bohr", "angstrom": "angstrom"}
@@ -392,7 +386,6 @@ def to_string(
             smol.append(f" {(a1 + 1):2d} {(a2 + 1):2d}  {int(b):1d}  0  0  0  0")
 
     elif dtype == "qchem":
-
         atom_format = "{elem}"
         ghost_format = "@{elem}"
         umap = {"bohr": "True", "angstrom": "False"}
