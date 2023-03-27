@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>B787 &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>B787 &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -46,14 +46,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -114,9 +118,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../api.html">QCElemental API</a> &raquo;</li>
-      <li>B787</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
+      <li class="breadcrumb-item active">B787</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/qcelemental.molutil.B787.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -134,17 +138,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd><p>Use Kabsch algorithm to find best alignment of geometry <cite>cgeom</cite> onto
 <cite>rgeom</cite> while sampling atom mappings restricted by <cite>runiq</cite> and <cite>cuniq</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
+<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
 for RMSD purposes.</p></li>
-<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
+<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
 purposes. Must have same nat, units, and atom content as rgeom.</p></li>
-<li><p><strong>runiq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
+<li><p><strong>runiq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
 without changing the molecule. Generally hashes of element symbol and
 mass are used, but could be as simple as [‘C’, ‘H’, ‘H’, ‘D’, ‘H’] for
 monodeuterated methane.</p></li>
-<li><p><strong>cuniq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
+<li><p><strong>cuniq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
 See <cite>runiq</cite> for more details. Strings and count in <cite>cuniq</cite> must match
 <cite>runiq</cite>. That is, <cite>sorted(cuniq) == sorted(runiq)</cite>.</p></li>
 <li><p><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Pops up a mpl plot showing before, after, and ref geometries.</p></li>
@@ -168,14 +172,14 @@ from mirror image of <cite>cgeom</cite>. Only run if system confirmed to
 be nonsuperimposable upon mirror reflection.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>First item is RMSD [A] between <cite>rgeom</cite> and the optimally aligned
 geometry computed.
 Second item is a AlignmentMill with fields
 (shift, rotation, atommap, mirror) that prescribe the transformation
 from <cite>cgeom</cite> and the optimally aligned geometry.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference internal" href="qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill" title="qcelemental.models.AlignmentMill">AlignmentMill</a></p>
 </dd>
 </dl>
@@ -194,7 +198,7 @@ from <cite>cgeom</cite> and the optimally aligned geometry.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

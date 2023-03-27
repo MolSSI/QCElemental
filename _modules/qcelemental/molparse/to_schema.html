@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.to_schema &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.molparse.to_schema &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.molparse.to_schema</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molparse.to_schema</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -119,7 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="viewcode-block" id="to_schema"><a class="viewcode-back" href="../../../api/qcelemental.molparse.to_schema.html#qcelemental.molparse.to_schema">[docs]</a><span class="k">def</span> <span class="nf">to_schema</span><span class="p">(</span>
     <span class="n">molrec</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">np_out</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Translate molparse internal Molecule spec into dictionary from other schemas.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Translate molparse internal Molecule spec into dictionary from other schemas.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -163,7 +167,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;psi4&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span> <span class="s2">&quot;Bohr&quot;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;Psi4 Schema {} allows only &#39;Bohr&#39;/&#39;Angstrom&#39; coordinates, not {}.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Psi4 Schema {} allows only &#39;Bohr&#39;/&#39;Angstrom&#39; coordinates, not {}.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">units</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="n">qcschema</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">molrec</span><span class="p">)</span>
         <span class="n">qcschema</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom</span>
@@ -232,7 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

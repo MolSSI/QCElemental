@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.nucleus &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.molparse.nucleus &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.molparse.nucleus</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molparse.nucleus</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -129,7 +133,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">mtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-3</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Forms consistent set of nucleus descriptors from all information</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Forms consistent set of nucleus descriptors from all information</span>
 <span class="sd">    from arguments, supplemented by the periodic table. At the least,</span>
 <span class="sd">    must provide element identity somehow. Defaults to most-abundant</span>
 <span class="sd">    isotope.</span>
@@ -251,13 +255,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">log_text</span> <span class="o">=</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span>
 
     <span class="k">def</span> <span class="nf">reconcile</span><span class="p">(</span><span class="n">exact</span><span class="p">,</span> <span class="n">tests</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a member from `exact` that passes all `tests`, else raises error for `feature`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a member from `exact` that passes all `tests`, else raises error for `feature`.&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">exact</span><span class="p">:</span>
             <span class="n">assessment</span> <span class="o">=</span> <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">log_text</span><span class="p">:</span>
                 <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;Assess {} candidate {}: {} --&gt; {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">assessment</span><span class="p">,</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">))</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;Assess {} candidate {}: {} --&gt; {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">assessment</span><span class="p">,</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">))</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">candidate</span>
@@ -270,13 +274,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">offer_element_symbol</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Given an element, what can be suggested and asserted about Z, A, mass?&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an element, what can be suggested and asserted about Z, A, mass?&quot;&quot;&quot;</span>
 
         <span class="n">_Z</span> <span class="o">=</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">to_Z</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">offer_atomic_number</span><span class="p">(</span><span class="n">_Z</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">offer_atomic_number</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Given an atomic number, what can be suggested and asserted about Z, A, mass?&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given an atomic number, what can be suggested and asserted about Z, A, mass?&quot;&quot;&quot;</span>
 
         <span class="n">z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
@@ -302,7 +306,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">A_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">amin</span><span class="o">=</span><span class="n">z_a2mass_min</span><span class="p">,</span> <span class="n">amax</span><span class="o">=</span><span class="n">z_a2mass_max</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">amin</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">amax</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">log_text</span><span class="p">:</span>
                 <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;For A, input Z: {} requires {} &lt; A &lt; {} or -1, the known mass number range for element&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;For A, input Z: {} requires {} &lt; A &lt; {} or -1, the known mass number range for element&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">z</span><span class="p">,</span> <span class="n">z_a2mass_min</span><span class="p">,</span> <span class="n">z_a2mass_max</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -316,13 +320,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">m_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">mmin</span><span class="o">=</span><span class="n">z_mass2a_min</span><span class="p">,</span> <span class="n">mmax</span><span class="o">=</span><span class="n">z_mass2a_max</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">mmin</span> <span class="o">-</span> <span class="n">mmtol</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">mmax</span> <span class="o">+</span> <span class="n">mmtol</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">log_text</span><span class="p">:</span>
                 <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;For mass, input Z: {} requires {} &lt; mass &lt; {} +/-{}, the known mass range for element&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;For mass, input Z: {} requires {} &lt; mass &lt; {} +/-{}, the known mass range for element&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">z</span><span class="p">,</span> <span class="n">z_mass2a_min</span><span class="p">,</span> <span class="n">z_mass2a_max</span><span class="p">,</span> <span class="n">mmtol</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">offer_mass_number</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Given a mass number and element, what can be suggested and asserted about A, mass?&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a mass number and element, what can be suggested and asserted about A, mass?&quot;&quot;&quot;</span>
 
         <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">a_eliso</span> <span class="o">=</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -339,7 +343,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;For mass, inputs Z: </span><span class="si">{}</span><span class="s2">, A: </span><span class="si">{}</span><span class="s2"> require abs(mass - </span><span class="si">{}</span><span class="s2">) &lt; </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">a_mass</span><span class="p">,</span> <span class="n">mtol</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">offer_mass_value</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Given a mass and element, what can be suggested and asserted about A, mass?&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a mass and element, what can be suggested and asserted about A, mass?&quot;&quot;&quot;</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
         <span class="n">m_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -441,7 +445,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">if</span> <span class="n">log_text</span><span class="p">:</span>
         <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;&lt;-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;&lt;-- Out: A={}, Z={}, E={}, mass={}, real={}, user={}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">A_final</span><span class="p">,</span> <span class="n">Z_final</span><span class="p">,</span> <span class="n">E_final</span><span class="p">,</span> <span class="n">mass_final</span><span class="p">,</span> <span class="n">real_final</span><span class="p">,</span> <span class="n">user_final</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -453,7 +457,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="parse_nucleus_label"><a class="viewcode-back" href="../../../api/qcelemental.molparse.parse_nucleus_label.html#qcelemental.molparse.parse_nucleus_label">[docs]</a><span class="k">def</span> <span class="nf">parse_nucleus_label</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Separate molecule nucleus string into fields.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Separate molecule nucleus string into fields.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -551,7 +555,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

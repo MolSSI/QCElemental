@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.from_arrays &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.molparse.from_arrays &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.molparse.from_arrays</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molparse.from_arrays</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -160,7 +164,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compose a Molecule dict from unvalidated arrays and variables</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compose a Molecule dict from unvalidated arrays and variables</span>
 <span class="sd">    in multiple domains.</span>
 
 <span class="sd">    Drives :py:func:`qcelemental.molparse.from_arrays` for sucessive</span>
@@ -279,7 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compose a Molecule dict from unvalidated arrays and variables, returning dict.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compose a Molecule dict from unvalidated arrays and variables, returning dict.</span>
 
 <span class="sd">    See fields of Return molrec below. Required parameters (for QM XYZ)</span>
 <span class="sd">    are `geom` and one of `elem`, `elez`, `elbl` (`speclabel=True`)</span>
@@ -542,17 +546,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">if</span> <span class="n">prov_keys</span> <span class="o">==</span> <span class="n">expected_prov_keys</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;creator&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;Provenance key &#39;creator&#39; should be string of creating program&#39;s name: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;Provenance key &#39;creator&#39; should be string of creating program&#39;s name: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;creator&quot;</span><span class="p">]</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">VERSION_PATTERN</span><span class="p">,</span> <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;Provenance key &#39;version&#39; should be a valid PEP 440 string: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;Provenance key &#39;version&#39; should be a valid PEP 440 string: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;routine&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;Provenance key &#39;routine&#39; should be string of creating function&#39;s name: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;Provenance key &#39;routine&#39; should be string of creating function&#39;s name: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;routine&quot;</span><span class="p">]</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -569,7 +573,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">if</span> <span class="n">connectivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">,</span> <span class="n">bondorder</span><span class="p">)</span> <span class="ow">in</span> <span class="n">connectivity</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">at1</span><span class="p">,</span> <span class="n">at2</span><span class="p">,</span> <span class="n">bondorder</span> <span class="ow">in</span> <span class="n">connectivity</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">at1</span><span class="p">))</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="ow">or</span> <span class="n">at1</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># or at1 &gt;= nat:</span>
                     <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Connectivity first atom should be int [0, nat): </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">at1</span><span class="p">))</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">at2</span><span class="p">))</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="ow">or</span> <span class="n">at2</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># or at2 &gt;= nat:</span>
@@ -599,7 +603,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">iutau</span> <span class="o">=</span> <span class="n">input_units_to_au</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;No big perturbations to physical constants! {} !~= {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iutau</span><span class="p">,</span> <span class="n">input_units_to_au</span><span class="p">)</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;No big perturbations to physical constants! {} !~= {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iutau</span><span class="p">,</span> <span class="n">input_units_to_au</span><span class="p">)</span>
             <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">always_return_iutau</span> <span class="ow">or</span> <span class="n">input_units_to_au</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -609,7 +613,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">validate_and_fill_frame</span><span class="p">(</span><span class="n">extern</span><span class="p">,</span> <span class="n">fix_com</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
     <span class="k">if</span> <span class="n">fix_com</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">com</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="n">fix_com</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -656,7 +659,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">validate_and_fill_efp</span><span class="p">(</span><span class="n">fragment_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hint_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geom_hints</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">fragment_files</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="ow">or</span> <span class="n">hint_types</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -666,9 +668,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="ow">or</span> <span class="n">geom_hints</span> <span class="o">==</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
         <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fragment_files</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">hint_types</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">geom_hints</span><span class="p">))</span>
     <span class="p">):</span>
-
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Missing or inconsistent length among efp quantities: fragment_files ({}), hint_types ({}), and geom_hints ({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">fragment_files</span><span class="p">,</span> <span class="n">hint_types</span><span class="p">,</span> <span class="n">geom_hints</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -702,7 +703,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">validate_and_fill_geometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tooclose</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check `geom` for overlapping atoms. Return flattened&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check `geom` for overlapping atoms. Return flattened&quot;&quot;&quot;</span>
 
     <span class="n">npgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
@@ -720,7 +721,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">if</span> <span class="n">tooclose_inds</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;Following atoms are too close: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">tooclose_inds</span><span class="p">])</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Following atoms are too close: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">([(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">tooclose_inds</span><span class="p">])</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="n">npgeom</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
@@ -740,7 +741,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">mtol</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check the nuclear identity arrays for consistency and fill in knowable values.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the nuclear identity arrays for consistency and fill in knowable values.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">elea</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">elea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">nat</span><span class="p">)</span>
@@ -777,7 +778,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">nat</span><span class="p">,)</span> <span class="o">==</span> <span class="n">elea</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">elez</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">elem</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">mass</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">real</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">elbl</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;Dimension mismatch natom {} among A {}, Z {}, E {}, mass {}, real {}, and elbl {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Dimension mismatch natom {} among A {}, Z {}, E {}, mass {}, real {}, and elbl {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">nat</span><span class="p">,),</span> <span class="n">elea</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">elez</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">elem</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">mass</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">real</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">elbl</span><span class="o">.</span><span class="n">shape</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -813,7 +814,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">validate_and_fill_fragments</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check consistency of fragment specifiers wrt type and length. For</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check consistency of fragment specifiers wrt type and length. For</span>
 <span class="sd">    charge &amp; multiplicity, scientific defaults are not computed or applied;</span>
 <span class="sd">    rather, missing slots are filled with `None` for later processing.</span>
 
@@ -825,7 +826,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">frm</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;Fragment quantities given without separation info: sep ({}), chg ({}), and mult ({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Fragment quantities given without separation info: sep ({}), chg ({}), and mult ({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">fragment_separators</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="p">,</span> <span class="n">fragment_multiplicities</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -835,18 +836,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">split_geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">trial_geom</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;fragment_separators ({}) unable to perform trial np.split on geometry.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment_separators</span><span class="p">)</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;fragment_separators ({}) unable to perform trial np.split on geometry.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment_separators</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">split_geom</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">nat</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sd">&quot;&quot;&quot;fragment_separators ({}) yields zero-length fragment(s) after trial np.split on geometry.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;fragment_separators ({}) yields zero-length fragment(s) after trial np.split on geometry.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">split_geom</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">split_geom</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nat</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;fragment_separators ({}) yields overlapping fragment(s) after trial np.split on geometry, possibly unsorted.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;fragment_separators ({}) yields overlapping fragment(s) after trial np.split on geometry, possibly unsorted.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">split_geom</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -867,12 +868,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">frm</span> <span class="o">=</span> <span class="n">fragment_multiplicities</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;fragment_multiplicities not among None or positive integer: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment_multiplicities</span><span class="p">)</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;fragment_multiplicities not among None or positive integer: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fragment_multiplicities</span><span class="p">)</span>
             <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">frc</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">frm</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">frs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;Dimension mismatch among fragment quantities: sep + 1 ({}), chg ({}), and mult({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Dimension mismatch among fragment quantities: sep + 1 ({}), chg ({}), and mult({})&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">frs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">frc</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">frm</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -888,7 +889,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">l</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lgeom</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">((</span><span class="n">l</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lgeom</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;Mixing Cartesian and Zmat formats must occur in just that order once absolute frame established.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Mixing Cartesian and Zmat formats must occur in just that order once absolute frame established.&quot;&quot;&quot;</span>
         <span class="p">)</span>
 
     <span class="n">allowed_to_follow</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="mi">4</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="mi">6</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}</span>
@@ -896,7 +897,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">for</span> <span class="n">il</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lgeom</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">lgeom</span><span class="p">[</span><span class="n">il</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_to_follow</span><span class="p">[</span><span class="n">lgeom</span><span class="p">[</span><span class="n">il</span><span class="p">]]:</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;This is not how a Zmat works - aim for lower triangular. Line len ({}) may be followed by line len ({}), not ({}).&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;This is not how a Zmat works - aim for lower triangular. Line len ({}) may be followed by line len ({}), not ({}).&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">lgeom</span><span class="p">[</span><span class="n">il</span><span class="p">],</span> <span class="n">allowed_to_follow</span><span class="p">[</span><span class="n">lgeom</span><span class="p">[</span><span class="n">il</span><span class="p">]],</span> <span class="n">lgeom</span><span class="p">[</span><span class="n">il</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -916,7 +917,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

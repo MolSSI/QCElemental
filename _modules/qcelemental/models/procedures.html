@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.procedures &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.models.procedures &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.models.procedures</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.models.procedures</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -131,7 +135,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">TrajectoryProtocolEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Which gradient evaluations to keep in an optimization trajectory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -142,7 +146,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">OptimizationProtocols</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Protocols regarding the manipulation of a Optimization output data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -155,7 +159,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">QCInputSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A compute description for energy, gradient, and Hessian computations used in a geometry optimization.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -218,7 +222,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;trajectory&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_trajectory_protocol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-
         <span class="c1"># Do not propogate validation errors</span>
         <span class="k">if</span> <span class="s2">&quot;protocols&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Protocols was not properly formed.&quot;</span><span class="p">)</span>
@@ -241,7 +244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">OptimizationSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A specification for how a geometry optimization should be performed **inside** of</span>
 <span class="sd">    another procedure.</span>
 
@@ -263,7 +266,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">TDKeywords</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TorsionDriveRecord options</span>
 
 <span class="sd">    Notes</span>
@@ -300,7 +303,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">TorsionDriveInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Inputs for running a torsion drive.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inputs for running a torsion drive.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -331,7 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">TorsionDriveResult</span><span class="p">(</span><span class="n">TorsionDriveInput</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Results from running a torsion drive.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Results from running a torsion drive.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -364,7 +367,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">Optimization</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;QC Optimization Results Schema.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;QC Optimization Results Schema.</span>
 
 <span class="sd">    .. deprecated:: 0.12</span>
 <span class="sd">       Use :py:func:`qcelemental.models.OptimizationResult` instead.</span>
@@ -385,7 +388,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

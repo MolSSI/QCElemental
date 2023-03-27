@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.physical_constants.context &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.physical_constants.context &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.physical_constants.context</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.physical_constants.context</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -123,7 +127,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="PhysicalConstantsContext"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">[docs]</a><span class="k">class</span> <span class="nc">PhysicalConstantsContext</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;CODATA physical constants set from NIST.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;CODATA physical constants set from NIST.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -315,7 +319,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ureg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;UnitRegistry&quot;</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the internal Pint units registry.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the internal Pint units registry.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -328,7 +332,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.get"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">physical_constant</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Access a physical constant, `physical_constant`.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Access a physical constant, `physical_constant`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -378,13 +382,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">#       me                        &#39;electron mass&#39;                             = 9.10938215E-31       # Electron rest mass (in kg)</span>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span> <span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns a Pint Quantity.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Pint Quantity.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.conversion_factor"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.conversion_factor">[docs]</a>    <span class="nd">@lru_cache</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">conversion_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provides the conversion factor from one unit to another.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provides the conversion factor from one unit to another.</span>
 
 <span class="sd">        The conversion factor is based on the current contexts CODATA.</span>
 
@@ -438,13 +442,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">,</span> <span class="n">conv_unit</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.string_representation"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.string_representation">[docs]</a>    <span class="k">def</span> <span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Print name, value, and units of all physical constants.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print name, value, and units of all physical constants.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">print_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">run_comparison</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Compare the existing physical constant information for Psi4 (in checkup_data folder) to object instantiation from</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the existing physical constant information for Psi4 (in checkup_data folder) to object instantiation from</span>
 <span class="sd">    `context`. Specialized use.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
@@ -484,7 +488,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">run_internal_comparison</span><span class="p">(</span><span class="n">old_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Compare two physical constant versions. Useful when adding new version.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare two physical constant versions. Useful when adding new version.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">old_context</span><span class="p">)</span>
     <span class="n">other</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">new_context</span><span class="p">)</span>
@@ -541,7 +545,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Decimal&quot;</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get pi to 36 digits (or more with mpmath).</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get pi to 36 digits (or more with mpmath).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -564,7 +568,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">write_c_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.h&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Write C header file defining physical constants and pi, constants names are prefixed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write C header file defining physical constants and pi, constants names are prefixed.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 
@@ -604,7 +608,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">write_fortran_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.fh&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Write Fortran include file defining physical constants and pi, constants names are prefixed.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Fortran include file defining physical constants and pi, constants names are prefixed.</span>
 <span class="sd">    The name of the kind parameter can be passed as well.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
@@ -648,7 +652,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

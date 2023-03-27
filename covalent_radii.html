@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Covalent Radii &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>Covalent Radii &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -46,14 +46,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -101,8 +105,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Covalent Radii</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Covalent Radii</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/covalent_radii.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -142,10 +146,6 @@ specific context can be created like so:</p>
 <h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <p>Top level user functions:</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code>(*[, return_tuple, units, missing])</p></td>
 <td><p>Access a covalent radius for species <cite>atom</cite>.</p></td>
@@ -163,7 +163,7 @@ specific context can be created like so:</p>
 <span class="sig-prename descclassname"><span class="pre">qcelemental.covalentradii.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bohr'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Access a covalent radius for species <cite>atom</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <code class="docutils literal notranslate"><span class="pre">H</span></code>, <code class="docutils literal notranslate"><span class="pre">D</span></code>, <code class="docutils literal notranslate"><span class="pre">H2</span></code>, <code class="docutils literal notranslate"><span class="pre">He</span></code>, <code class="docutils literal notranslate"><span class="pre">hE4</span></code>.
 In general, one value recommended for each element; however, certain other exact labels may be available.
@@ -184,10 +184,10 @@ that a call will work over all the periodic table than the equivalent</p>
 <li><p><strong>return_tuple</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – See below.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference internal" href="api/qcelemental.Datum.html#qcelemental.Datum" title="qcelemental.datum.Datum"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datum</span></code></a>]</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><em>float</em> – When <code class="docutils literal notranslate"><span class="pre">return_tuple=False</span></code>, value of covalent radius. If multiple defined for element, returns largest.</p></li>
 <li><p><em>qcelemental.Datum</em> – When <code class="docutils literal notranslate"><span class="pre">return_tuple=True</span></code>, Datum with units, description, uncertainty, and value of covalent radius as Decimal (preserving significant figures).
@@ -195,7 +195,7 @@ If multiple defined for element, returns largest.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide or label.</p></li>
 <li><p><a class="reference internal" href="api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError" title="qcelemental.DataUnavailableError"><strong>DataUnavailableError</strong></a> – If <cite>atom</cite> is a valid element or nuclide but not one for which a covalent radius is available and <cite>missing=None</cite>.</p></li>
@@ -209,7 +209,7 @@ If multiple defined for element, returns largest.</p></li>
 <span class="sig-prename descclassname"><span class="pre">qcelemental.covalentradii.</span></span><span class="sig-name descname"><span class="pre">string_representation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Print name, value, and units of all covalent radii.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd>
 </dl>
@@ -229,7 +229,7 @@ If multiple defined for element, returns largest.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

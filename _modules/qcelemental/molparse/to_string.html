@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.to_string &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.molparse.to_string &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.molparse.to_string</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molparse.to_string</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -125,7 +129,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">prec</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
     <span class="n">return_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Format a string representation of QM molecule.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Format a string representation of QM molecule.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -249,7 +253,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;orca&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">:&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;! Bohrs&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;!&quot;</span><span class="p">}</span>
@@ -288,7 +291,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">}</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;molpro&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
@@ -327,7 +329,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set,spin=</span><span class="si">{</span><span class="n">molrec</span><span class="p">[</span><span class="s1">&#39;molecular_multiplicity&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;nwchem&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;bq</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
         <span class="c1"># TODO handle which units valid</span>
@@ -355,7 +356,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">data</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;mcscf__multiplicity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molrec</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;madness&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;GH&quot;</span>
         <span class="c1"># TODO handle which units valid</span>
@@ -411,7 +411,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">}</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;terachem&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;X</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;au&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
@@ -423,7 +422,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">smol</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;psi4&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}{elbl}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;Gh(</span><span class="si">{elem}{elbl}</span><span class="s2">)&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">}</span>
@@ -496,10 +494,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">10.4f</span><span class="si">}{</span><span class="n">sym</span><span class="si">:</span><span class="s2">&gt;3s</span><span class="si">}</span><span class="s2">  0  0     0  0  0  0  0  0&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">connectivity</span><span class="p">:</span>
-            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="p">(</span><span class="n">a1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="n">a2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">:</span><span class="s2">1d</span><span class="si">}</span><span class="s2">  0  0  0  0&quot;</span><span class="p">)</span>
+            <span class="n">smol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="p">(</span><span class="n">a1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="n">a2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="si">:</span><span class="s2">1d</span><span class="si">}</span><span class="s2">  0  0  0  0&quot;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;qchem&quot;</span><span class="p">:</span>
-
         <span class="n">atom_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">ghost_format</span> <span class="o">=</span> <span class="s2">&quot;@</span><span class="si">{elem}</span><span class="s2">&quot;</span>
         <span class="n">umap</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bohr&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;angstrom&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">}</span>
@@ -579,7 +576,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">_atoms_formatter</span><span class="p">(</span><span class="n">molrec</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">atom_format</span><span class="p">,</span> <span class="n">ghost_format</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">prec</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">xyze</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Format a list of strings, one per atom from `molrec`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a list of strings, one per atom from `molrec`.&quot;&quot;&quot;</span>
 
     <span class="n">nat</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">fxyz</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;{:&gt;</span><span class="si">{width}</span><span class="s2">.</span><span class="si">{prec}</span><span class="s2">f}&quot;&quot;&quot;</span>
@@ -615,7 +612,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">formula_generator</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return simple chemical formula from element list `elem`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return simple chemical formula from element list `elem`.</span>
 
 <span class="sd">    &gt;&gt;&gt; formula_generator([&#39;C&#39;, &#39;Ca&#39;, &#39;O&#39;, &#39;O&#39;, &#39;Ag&#39;]</span>
 <span class="sd">    AgCCaO2</span>
@@ -632,7 +629,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

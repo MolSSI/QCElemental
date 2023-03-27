@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.datum &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.datum &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.datum</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.datum</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -117,7 +121,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="Datum"><a class="viewcode-back" href="../../api/qcelemental.Datum.html#qcelemental.Datum">[docs]</a><span class="k">class</span> <span class="nc">Datum</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Facilitates the storage of quantum chemical results by labeling them with basic metadata.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Facilitates the storage of quantum chemical results by labeling them with basic metadata.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -209,7 +213,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">print_variables</span><span class="p">(</span><span class="n">qcvars</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;Datum&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form a printable representation of qcvariables.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form a printable representation of qcvariables.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -246,26 +250,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_str</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">max_line_width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">suppress_small</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;        &quot;</span> <span class="o">+</span> <span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">keywidth</span><span class="o">=</span><span class="n">largest_key</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">largest_characteristic</span> <span class="o">+</span> <span class="mi">14</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">Decimal</span><span class="p">):</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">keywidth</span><span class="o">=</span><span class="n">largest_key</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">largest_characteristic</span> <span class="o">+</span> <span class="mi">14</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">qca</span><span class="o">.</span><span class="n">numeric</span><span class="p">:</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:&gt;{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:&gt;{width}} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">keywidth</span><span class="o">=</span><span class="n">largest_key</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">largest_characteristic</span> <span class="o">+</span> <span class="mi">14</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}.{prec}f} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;  {:{keywidth}} =&gt; {:{width}.{prec}f} [{}]&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">k</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">qca</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">keywidth</span><span class="o">=</span><span class="n">largest_key</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">largest_characteristic</span> <span class="o">+</span> <span class="mi">14</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="mi">12</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -281,7 +285,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Periodic Table &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>Periodic Table &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -46,14 +46,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -100,8 +104,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Periodic Table</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Periodic Table</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/periodic_table.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -155,10 +159,6 @@ isotope symbol, and name can all be passed:</p>
 <h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
 <p>Top level user functions:</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mass</span></code>(*[, return_decimal])</p></td>
 <td><p>Get atomic mass of <cite>atom</cite>.</p></td>
@@ -191,13 +191,13 @@ isotope symbol, and name can all be passed:</p>
 <span class="sig-prename descclassname"><span class="pre">qcelemental.periodictable.</span></span><span class="sig-name descname"><span class="pre">to_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Get atomic mass of <cite>atom</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
 <li><p><strong>return_decimal</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to preserve significant figures information by returning as Decimal (<cite>True</cite>) or to convert to float (<cite>False</cite>).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Atomic mass [u]. See above for type.</p>
 <blockquote>
 <div><ul class="simple">
@@ -208,10 +208,10 @@ isotope symbol, and name can all be passed:</p>
 </div></blockquote>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/decimal.html#decimal.Decimal" title="(in Python v3.10)">decimal.Decimal</a> or <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
 </dd>
 </dl>
@@ -223,10 +223,10 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get mass number of <cite>atom</cite>.</p>
 <p>Functions <code class="xref py py-func docutils literal notranslate"><span class="pre">to_A()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">to_mass_number()</span></code> are aliases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Mass number, number of protons and neutrons.</p>
 <blockquote>
 <div><ul class="simple">
@@ -237,10 +237,10 @@ isotope symbol, and name can all be passed:</p>
 </div></blockquote>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
 </dd>
 </dl>
@@ -252,19 +252,19 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get atomic number of <cite>atom</cite>.</p>
 <p>Functions <code class="xref py py-func docutils literal notranslate"><span class="pre">to_Z()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">to_atomic_number()</span></code> are aliases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
 <li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Atomic number, number of protons.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.
     If <cite>strict=True</cite> and <cite>atom</cite> resolves into nuclide, not element.</p>
 </dd>
@@ -277,19 +277,19 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get element symbol of <cite>atom</cite>.</p>
 <p>Functions <code class="xref py py-func docutils literal notranslate"><span class="pre">to_E()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">to_symbol()</span></code> are aliases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
 <li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Element symbol, capitalized.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.
     If <cite>strict=True</cite> and <cite>atom</cite> resolves into nuclide, not element.</p>
 </dd>
@@ -302,19 +302,19 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get element name of <cite>atom</cite>.</p>
 <p>Functions <code class="xref py py-func docutils literal notranslate"><span class="pre">to_element()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">to_name()</span></code> are aliases.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
 <li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Element name, capitalized.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.
     If <cite>strict=True</cite> and <cite>atom</cite> resolves into nuclide, not element.</p>
 </dd>
@@ -326,16 +326,16 @@ isotope symbol, and name can all be passed:</p>
 <span class="sig-prename descclassname"><span class="pre">qcelemental.periodictable.</span></span><span class="sig-name descname"><span class="pre">to_period</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Get period (horizontal row in periodic table) of <cite>atom</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Period between 1 (e.g., <cite>He</cite>) and 7 (e.g., <cite>U238</cite>).</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
 </dd>
 </dl>
@@ -346,20 +346,20 @@ isotope symbol, and name can all be passed:</p>
 <span class="sig-prename descclassname"><span class="pre">qcelemental.periodictable.</span></span><span class="sig-name descname"><span class="pre">to_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Get group (vertical column in periodic table) of <cite>atom</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><ul class="simple">
 <li><p><em>int</em> – Group between 1 (e.g., <cite>Li</cite>) and 18 (e.g., <cite>KR84</cite>).</p></li>
 <li><p><em>None</em> – If one of the 30 Lanthanides (Z=57-71) or Actinides (Z=89-103).</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
 </dd>
 </dl>
@@ -379,7 +379,7 @@ isotope symbol, and name can all be passed:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

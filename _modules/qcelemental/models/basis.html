@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.basis &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.models.basis &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.models.basis</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.models.basis</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -119,14 +123,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">HarmonicType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The angular momentum representation of a shell.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The angular momentum representation of a shell.&quot;&quot;&quot;</span>
 
     <span class="n">spherical</span> <span class="o">=</span> <span class="s2">&quot;spherical&quot;</span>
     <span class="n">cartesian</span> <span class="o">=</span> <span class="s2">&quot;cartesian&quot;</span>
 
 
 <div class="viewcode-block" id="ElectronShell"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ElectronShell">[docs]</a><span class="k">class</span> <span class="nc">ElectronShell</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information for a single electronic shell.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information for a single electronic shell.&quot;&quot;&quot;</span>
 
     <span class="n">angular_momentum</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NonnegativeInt</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Angular momentum for the shell as an array of integers.&quot;</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">1</span>
@@ -164,7 +168,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
 <div class="viewcode-block" id="ElectronShell.nfunctions"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ElectronShell.nfunctions">[docs]</a>    <span class="k">def</span> <span class="nf">nfunctions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the number of basis functions on this shell.</span>
 
 <span class="sd">        Returns</span>
@@ -179,7 +183,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">return</span> <span class="nb">sum</span><span class="p">(((</span><span class="n">L</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ElectronShell.is_contracted"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ElectronShell.is_contracted">[docs]</a>    <span class="k">def</span> <span class="nf">is_contracted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if the shell represents a contracted Gaussian or not.</span>
 
 <span class="sd">        Returns</span>
@@ -192,14 +196,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">class</span> <span class="nc">ECPType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The type of the ECP potential.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The type of the ECP potential.&quot;&quot;&quot;</span>
 
     <span class="n">scalar</span> <span class="o">=</span> <span class="s2">&quot;scalar&quot;</span>
     <span class="n">spinorbit</span> <span class="o">=</span> <span class="s2">&quot;spinorbit&quot;</span>
 
 
 <div class="viewcode-block" id="ECPPotential"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ECPPotential">[docs]</a><span class="k">class</span> <span class="nc">ECPPotential</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Information for a single ECP potential.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information for a single ECP potential.&quot;&quot;&quot;</span>
 
     <span class="n">ecp_type</span><span class="p">:</span> <span class="n">ECPType</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ECPType</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
     <span class="n">angular_momentum</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">NonnegativeInt</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -239,7 +243,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="BasisCenter"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.BasisCenter">[docs]</a><span class="k">class</span> <span class="nc">BasisCenter</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Data for a single atom/center in a basis set.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data for a single atom/center in a basis set.&quot;&quot;&quot;</span>
 
     <span class="n">electron_shells</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ElectronShell</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Electronic shells for this center.&quot;</span><span class="p">,</span> <span class="n">min_items</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">ecp_electrons</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Number of electrons replaced by ECP, MCP, or other field potentials.&quot;</span><span class="p">)</span>
@@ -254,7 +258,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="BasisSet"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.BasisSet">[docs]</a><span class="k">class</span> <span class="nc">BasisSet</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A quantum chemistry basis description.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -299,7 +303,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;nbf&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_check_nbf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-
         <span class="c1"># Bad construction, pass on errors</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">nbf</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calculate_nbf</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;atom_map&quot;</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;center_data&quot;</span><span class="p">])</span>
@@ -316,7 +319,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_calculate_nbf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">atom_map</span><span class="p">,</span> <span class="n">center_data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Number of basis functions in the basis set.</span>
 
 <span class="sd">        Returns</span>
@@ -343,7 +346,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

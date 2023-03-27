@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molutil.align &mdash; QCElemental 0+untagged.1.g292350f documentation</title>
+  <title>qcelemental.molutil.align &mdash; QCElemental v0+untagged.1.g86b4700 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -43,14 +43,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> QCElemental
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
           </a>
               <div class="version">
-                0+untagged.1.g292350f
+                v0+untagged.1.g86b4700
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -93,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>qcelemental.molutil.align</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molutil.align</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -120,7 +124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">_nre</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Nuclear repulsion energy&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Nuclear repulsion energy&quot;&quot;&quot;</span>
 
     <span class="n">nre</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="k">for</span> <span class="n">at1</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
@@ -131,7 +135,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">_pseudo_nre</span><span class="p">(</span><span class="n">Zhash</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo nuclear repulsion energy where non-physical Z contrived from `Zhash`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pseudo nuclear repulsion energy where non-physical Z contrived from `Zhash`.&quot;&quot;&quot;</span>
 
     <span class="n">Zidx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">Zhash</span><span class="p">)))</span>
     <span class="n">pZ</span> <span class="o">=</span> <span class="p">[</span><span class="n">Zidx</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">Zhash</span><span class="p">]</span>
@@ -153,7 +157,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">uno_cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-3</span><span class="p">,</span>
     <span class="n">run_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Use Kabsch algorithm to find best alignment of geometry `cgeom` onto</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Use Kabsch algorithm to find best alignment of geometry `cgeom` onto</span>
 <span class="sd">    `rgeom` while sampling atom mappings restricted by `runiq` and `cuniq`.</span>
 
 <span class="sd">    Parameters</span>
@@ -279,7 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">def</span> <span class="nf">_plausible_atom_orderings_wrapper</span><span class="p">(</span>
         <span class="n">runiq</span><span class="p">,</span> <span class="n">cuniq</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">run_resorting</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">1.0e-3</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper to _plausible_atom_orderings that bypasses it (`run_resorting=False`) when</span>
 <span class="sd">        atoms of R &amp; C known to be ordered. Easier to put logic here because _plausible is generator.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -401,7 +405,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">_plausible_atom_orderings</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -419,7 +423,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sd">&quot;&quot;&quot;ref and current can&#39;t map to each other.\n&quot;&quot;&quot;</span> <span class="o">+</span> <span class="s2">&quot;R:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">C:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;ref and current can&#39;t map to each other.\n&quot;&quot;&quot;</span> <span class="o">+</span> <span class="s2">&quot;R:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">C:  &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
         <span class="p">)</span>
 
     <span class="n">where</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -435,7 +439,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">connect</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">where</span><span class="p">[</span><span class="n">k</span><span class="p">])]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cwhere</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">filter_permutative</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Original atom ordering generator for like subset of atoms (e.g., all carbons).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Original atom ordering generator for like subset of atoms (e.g., all carbons).</span>
 <span class="sd">        Relies on permutation. Filtering depends on similarity of structure (see `atol` parameter).</span>
 <span class="sd">        Only suitable for total system size up to about 20 atoms.</span>
 
@@ -451,7 +455,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="k">yield</span> <span class="n">pm</span>
 
     <span class="k">def</span> <span class="nf">filter_hungarian_uno</span><span class="p">(</span><span class="n">rgp</span><span class="p">,</span> <span class="n">cgp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Hungarian algorithm on cost matrix based off headless (all Z same w/i space anyways) NRE.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hungarian algorithm on cost matrix based off headless (all Z same w/i space anyways) NRE.</span>
 <span class="sd">        Having found _a_ solution and the reduced cost matrix, this still isn&#39;t likely to produce</span>
 <span class="sd">        atom rearrangement fit for Kabsch b/c internal coordinate cost matrix doesn&#39;t nail down</span>
 <span class="sd">        distance-equivalent atoms with different Cartesian coordinates like Cartesian-distance-matrix</span>
@@ -524,7 +528,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="c1"># Ensure (optional dependency) networkx exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">which_import</span><span class="p">(</span><span class="s2">&quot;networkx&quot;</span><span class="p">,</span> <span class="n">return_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
-                <span class="sd">&quot;&quot;&quot;Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`&quot;&quot;&quot;</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Python module networkx not found. Solve by installing it: `conda install networkx` or `pip install networkx`&quot;&quot;&quot;</span>
             <span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
     <span class="c1"># collect candidate atom orderings from algofn for each of the atom classes,</span>
@@ -539,7 +543,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="kabsch_align"><a class="viewcode-back" href="../../../api/qcelemental.molutil.kabsch_align.html#qcelemental.molutil.kabsch_align">[docs]</a><span class="k">def</span> <span class="nf">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finds optimal translation and rotation to align `cgeom` onto `rgeom` via</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finds optimal translation and rotation to align `cgeom` onto `rgeom` via</span>
 <span class="sd">    Kabsch algorithm by minimizing the norm of the residual, :math:`|| R - U * C ||`.</span>
 
 <span class="sd">    Parameters</span>
@@ -609,7 +613,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span> <span class="nf">kabsch_quaternion</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the optimal rotation matrix U which mapping a set of points P</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the optimal rotation matrix U which mapping a set of points P</span>
 <span class="sd">    onto the set of points Q according to the minimization of || Q - U * P ||,</span>
 <span class="sd">    using the unit quaternion formulation of the Kabsch algorithm.</span>
 
@@ -672,7 +676,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">deflection</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">do_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlignmentMill</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a random or directed translation, rotation, and atom shuffling.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a random or directed translation, rotation, and atom shuffling.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -738,7 +742,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018-2022, The Molecular Sciences Software Institute.</p>
+    <p>&#169; Copyright 2018-2023, The Molecular Sciences Software Institute.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
