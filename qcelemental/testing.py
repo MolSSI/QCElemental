@@ -128,7 +128,7 @@ def compare_values(
             f"""\t{label}: computed shape ({cptd.shape}) does not match ({xptd.shape}).""",
             return_message,
             quiet,
-        )  # lgtm: [py/syntax-error]
+        )
 
     digits1 = abs(int(np.log10(atol))) + 2
     digits_str = f"to atol={atol}"

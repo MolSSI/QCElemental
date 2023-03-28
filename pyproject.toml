@@ -1,3 +1,85 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "qcelemental"
+version = "0.25.1"
+description = "Core data structures for Quantum Chemistry."
+authors = ["The QCArchive Development Team <qcarchive@molsii.org>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+homepage = "https://github.com/MolSSI/QCElemental"
+documentation = "http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[tool.poetry.dependencies]
+numpy = [
+    { version = ">=1.12.0", python = "3.8" },
+    { version = ">=1.24.1", python = ">=3.9" },
+]
+python = "^3.7"
+pint = ">=0.10.0"
+pydantic = ">=1.8.2"
+nglview = { extras = ["viz"], version = "^3.0.3" }
+ipykernel = { version = "<6.0.0", extras = ["viz"] }
+importlib-metadata = { version = ">=4.8", python = "<3.8" }
+networkx = { version = "<3.0", extras = ["align"] }
+pytest = { extras = ["test"], version = "^7.2.2" }
+
+
+[tool.poetry.group.dev.dependencies]
+black = ">=23.1.0"
+mypy = "^1.1.1"
+isort = "5.11.5"
+flake8 = "<6.0.0"
+pre-commit = "<3.2.0"
+pytest-cov = "^4.0.0"
+autoflake = "^2.0.2"
+jsonschema = "^4.17.3"
+msgpack = "^1.0.5"
+numpydoc = "^1.5.0"
+docutils = "<0.19"
+sphinx = "<6.0.0"
+sphinxcontrib-napoleon = "^0.7"
+sphinx-rtd-theme = "^1.2.0"
+autodoc-pydantic = "^1.8.0"
+sphinx-automodapi = "^0.15.0"
+sphinx-autodoc-typehints = "^1.22"
+
 [tool.black]
 line-length = 120
 target-version = ['py37']
+
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+use_parentheses = true
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*", "*/migrations/*", "*site-packages*", "*__init__.py"]
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true

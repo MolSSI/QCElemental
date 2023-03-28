@@ -1,6 +1,7 @@
-import psi4
 import json
+
 import black
+import psi4
 
 dft_info = {"version": psi4.__version__, "functionals": {}}
 

@@ -13,10 +13,12 @@ from .basemodels import ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Provenance
 from .molecule import Molecule
-from .procedures import OptimizationInput, OptimizationResult
 from .procedures import Optimization  # scheduled for removal
+from .procedures import OptimizationInput, OptimizationResult
+from .results import Result  # scheduled for removal
+from .results import ResultInput  # scheduled for removal
+from .results import ResultProperties  # scheduled for removal
 from .results import AtomicInput, AtomicResult, AtomicResultProperties
-from .results import Result, ResultInput, ResultProperties  # scheduled for removal
 
 
 def qcschema_models():

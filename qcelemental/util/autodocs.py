@@ -151,7 +151,7 @@ def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool 
                 second_line = "\n" + indent(prop_desc, "    ") if prop_desc is not None else ""
                 # Finally, write the detailed doc string
                 new_doc += first_line + second_line + "\n"
-        except:  # lgtm [py/catch-base-exception]
+        except:
             if allow_failure:
                 new_doc = base_docs
             else:
@@ -204,7 +204,7 @@ class AutoPydanticDocGenerator:
             self.target.__doc__ = self.base_doc
             if hasattr(self.target, self.ALREADY_AUTODOCED_ATTR):
                 setattr(self.target, self.ALREADY_AUTODOCED_ATTR, False)
-        except:  # lgtm [py/catch-base-exception]
+        except:
             # Corner case where trying to reapply and failing cannot delete the new self mid __init__ since
             # base_doc has not been set.
             pass

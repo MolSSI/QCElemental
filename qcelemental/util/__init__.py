@@ -3,8 +3,6 @@ from .gph_uno_bipartite import uno
 from .importing import parse_version, safe_version, which, which_import
 from .internal import provenance_stamp
 from .itertools import unique_everseen
-
-# from .mpl import plot_coord
 from .misc import (
     compute_angle,
     compute_dihedral,
@@ -25,9 +23,9 @@ from .serialization import (
     json_loads,
     jsonext_dumps,
     jsonext_loads,
-    msgpackext_dumps,
-    msgpackext_loads,
     msgpack_dumps,
     msgpack_loads,
+    msgpackext_dumps,
+    msgpackext_loads,
     serialize,
 )

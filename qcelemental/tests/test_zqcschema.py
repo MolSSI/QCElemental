@@ -25,12 +25,3 @@ def test_qcschema(fl, qcschema_models):
 
     res = jsonschema.validate(instance, qcschema_models[model])
     assert res is None
-
-
-#    import pprint
-#    print("\n\n<<< SCHEMA")
-#    pprint.pprint(schemas["BasisSet"])
-#    print("\n\n<<< INSTANCE")
-#    pprint.pprint(instance)
-
-#    assert 0
