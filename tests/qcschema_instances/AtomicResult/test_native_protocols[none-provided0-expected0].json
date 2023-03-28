@@ -1,0 +1,48 @@
+{
+  "driver": "energy",
+  "model": {
+    "method": "UFF"
+  },
+  "molecule": {
+    "fix_com": false,
+    "fix_orientation": false,
+    "geometry": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      3.77945225,
+      0.0,
+      3.77945225,
+      0.0
+    ],
+    "molecular_charge": 0.0,
+    "molecular_multiplicity": 1,
+    "name": "H2O",
+    "provenance": {
+      "creator": "QCElemental",
+      "routine": "qcelemental.molparse.from_string",
+      "version": "v0.25.1+5.g424dbd1"
+    },
+    "schema_name": "qcschema_molecule",
+    "schema_version": 2,
+    "symbols": [
+      "O",
+      "H",
+      "H"
+    ],
+    "validated": true
+  },
+  "native_files": {},
+  "properties": {},
+  "protocols": {
+    "native_files": "none"
+  },
+  "provenance": {
+    "creator": "qcel"
+  },
+  "return_result": 5.0,
+  "stdout": "I ran.",
+  "success": true
+}

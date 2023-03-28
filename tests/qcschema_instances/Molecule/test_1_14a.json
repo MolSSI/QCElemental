@@ -1,0 +1,61 @@
+{
+  "atom_labels": [
+    "",
+    ""
+  ],
+  "atomic_numbers": [
+    2,
+    2
+  ],
+  "fix_com": false,
+  "fix_orientation": false,
+  "fragment_charges": [
+    0.0,
+    0.0
+  ],
+  "fragment_multiplicities": [
+    3,
+    1
+  ],
+  "fragments": [
+    [
+      0
+    ],
+    [
+      1
+    ]
+  ],
+  "geometry": [
+    0.0,
+    0.0,
+    -5.0,
+    0.0,
+    0.0,
+    5.0
+  ],
+  "mass_numbers": [
+    4,
+    4
+  ],
+  "masses": [
+    4.00260325413,
+    4.00260325413
+  ],
+  "molecular_charge": 0.0,
+  "molecular_multiplicity": 3,
+  "name": "He2",
+  "provenance": {
+    "creator": "QCElemental",
+    "routine": "qcelemental.molparse.from_string",
+    "version": "v0.25.1+5.g424dbd1"
+  },
+  "real": [
+    true,
+    false
+  ],
+  "symbols": [
+    "He",
+    "He"
+  ],
+  "validated": true
+}

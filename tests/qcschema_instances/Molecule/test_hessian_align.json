@@ -1,0 +1,35 @@
+{
+  "fix_com": false,
+  "fix_orientation": false,
+  "geometry": [
+    1.83199008,
+    -1.57622903,
+    -5.56e-06,
+    1.31720978,
+    0.13813086,
+    0.0,
+    -1.31720978,
+    -0.13813086,
+    0.0,
+    -1.83199008,
+    1.57622903,
+    -5.56e-06
+  ],
+  "molecular_charge": 0.0,
+  "molecular_multiplicity": 1,
+  "name": "H2O2",
+  "provenance": {
+    "creator": "QCElemental",
+    "routine": "qcelemental.molparse.from_string",
+    "version": "v0.25.1+5.g424dbd1"
+  },
+  "schema_name": "qcschema_molecule",
+  "schema_version": 2,
+  "symbols": [
+    "H",
+    "O",
+    "O",
+    "H"
+  ],
+  "validated": true
+}

@@ -8,7 +8,7 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values
 
-from ..tests.addons import drop_qcsk, using_networkx
+from .addons import drop_qcsk, using_networkx
 
 pp = pprint.PrettyPrinter(width=120)
 

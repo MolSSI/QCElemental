@@ -63,7 +63,9 @@ def test_molecule_data_constructor_dict():
     assert water_psi == water_from_json
     assert water_psi == Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4")
 
-    assert water_psi.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"  # copied from schema_version=1
+    assert (
+        water_psi.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"  # pragma: allowlist secret
+    )  # copied from schema_version=1
     assert water_psi.schema_version == 2
     assert water_psi.schema_name == "qcschema_molecule"
 
@@ -90,16 +92,16 @@ def test_hash_canary():
     """,
         dtype="psi4",
     )
-    assert water_dimer_minima.get_hash() == "42f3ac52af52cf2105c252031334a2ad92aa911c"
+    assert water_dimer_minima.get_hash() == "42f3ac52af52cf2105c252031334a2ad92aa911c"  # pragma: allowlist secret
 
     # Check orientation
     mol = water_dimer_minima.orient_molecule()
-    assert mol.get_hash() == "632490a0601500bfc677e9277275f82fbc45affe"
+    assert mol.get_hash() == "632490a0601500bfc677e9277275f82fbc45affe"  # pragma: allowlist secret
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
-    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"
-    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"
+    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"  # pragma: allowlist secret
+    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"  # pragma: allowlist secret
 
 
 def test_molecule_np_constructors():
@@ -168,15 +170,15 @@ def test_water_minima_data():
             [-3.27523824, 0.81341093, -1.43347255],
         ],
     )
-    assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"
+    assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"  # pragma: allowlist secret
 
 
 def test_water_minima_fragment():
     mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
-    assert frag_0.get_hash() == "5f31757232a9a594c46073082534ca8a6806d367"
-    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"
+    assert frag_0.get_hash() == "5f31757232a9a594c46073082534ca8a6806d367"  # pragma: allowlist secret
+    assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"  # pragma: allowlist secret
 
     frag_0_1 = mol.get_fragment(0, 1)
     frag_1_0 = mol.get_fragment(1, 0)

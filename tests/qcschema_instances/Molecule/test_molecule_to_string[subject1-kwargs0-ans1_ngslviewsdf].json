@@ -1,0 +1,43 @@
+{
+  "connectivity": [
+    [
+      0,
+      1,
+      1.0
+    ],
+    [
+      0,
+      2,
+      1.0
+    ]
+  ],
+  "fix_com": false,
+  "fix_orientation": false,
+  "geometry": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.9,
+    0.0,
+    -1.9,
+    0.0
+  ],
+  "molecular_charge": 0.0,
+  "molecular_multiplicity": 1,
+  "name": "H2O",
+  "provenance": {
+    "creator": "QCElemental",
+    "routine": "qcelemental.molparse.from_schema",
+    "version": "v0.25.1+5.g424dbd1"
+  },
+  "schema_name": "qcschema_molecule",
+  "schema_version": 2,
+  "symbols": [
+    "O",
+    "H",
+    "H"
+  ],
+  "validated": true
+}

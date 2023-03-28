@@ -6,7 +6,7 @@ import pytest
 
 from qcelemental.util.gph_uno_bipartite import _enumMaximumMatching, _enumMaximumMatching2, uno
 
-from ..tests.addons import using_networkx, using_scipy
+from .addons import using_networkx, using_scipy
 
 
 @using_networkx

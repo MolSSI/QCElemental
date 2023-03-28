@@ -1,0 +1,29 @@
+{
+  "driver": "gradient",
+  "model": {
+    "method": "UFF"
+  },
+  "molecule": {
+    "fix_com": false,
+    "fix_orientation": false,
+    "geometry": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "molecular_charge": 0.0,
+    "molecular_multiplicity": 1,
+    "name": "He",
+    "provenance": {
+      "creator": "QCElemental",
+      "routine": "qcelemental.molparse.from_schema",
+      "version": "v0.25.1+5.g424dbd1"
+    },
+    "schema_name": "qcschema_molecule",
+    "schema_version": 2,
+    "symbols": [
+      "He"
+    ],
+    "validated": true
+  }
+}
