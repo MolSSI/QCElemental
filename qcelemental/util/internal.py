@@ -1,6 +1,6 @@
 from typing import Dict
 
-from qcelemental.extras import get_information
+from qcelemental import __version__
 
 
 def provenance_stamp(routine: str) -> Dict[str, str]:
@@ -10,4 +10,4 @@ def provenance_stamp(routine: str) -> Dict[str, str]:
     generating routine's name is passed in through `routine`.
 
     """
-    return {"creator": "QCElemental", "version": get_information("version"), "routine": routine}
+    return {"creator": "QCElemental", "version": __version__, "routine": routine}

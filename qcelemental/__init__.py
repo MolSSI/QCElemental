@@ -1,15 +1,15 @@
-"""
-Main init for QCElemental
-"""
+# https://github.com/python-poetry/poetry/pull/2366#issuecomment-652418094
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
+
+__version__ = importlib_metadata.version(__name__)
 
 # Handle singletons, not their classes or modules
 from . import covalent_radii, models, molparse, molutil, periodic_table, physical_constants, util, vanderwaals_radii
 from .datum import Datum
 from .exceptions import ChoicesError, DataUnavailableError, MoleculeFormatError, NotAnElementError, ValidationError
-
-# Handle versioneer
-from .extras import get_information
-
 from .testing import compare, compare_recursive, compare_values
 
 # Expose singletons from the modules
@@ -26,7 +26,3 @@ del periodic_table
 del physical_constants
 del covalent_radii
 del vanderwaals_radii
-
-__version__ = get_information("version")
-__git_revision__ = get_information("git_revision")
-del get_information

@@ -2,24 +2,45 @@
 
 [![Build Status](https://github.com/MolSSI/QCElemental/workflows/CI/badge.svg?branch=master)](https://github.com/MolSSI/QCElemental/actions?query=workflow%3ACI)
 [![codecov](https://img.shields.io/codecov/c/github/MolSSI/QCElemental.svg?logo=Codecov&logoColor=white)](https://codecov.io/gh/MolSSI/QCElemental)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/MolSSI/QCElemental.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MolSSI/QCElemental/context:python)
 [![Documentation Status](https://img.shields.io/github/workflow/status/MolSSI/QCElemental/CI/master?label=docs&logo=readthedocs&logoColor=white)](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/)
 [![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM)
-![python](https://img.shields.io/badge/python-3.6+-blue.svg)
+![python](https://img.shields.io/badge/python-3.7+-blue.svg)
 
-QCElemental is a resource module for quantum chemistry containing physical
-constants and periodic table data from NIST and molecule handlers.
+**Documentation:** [Read The Docs](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/index.html)
 
-Periodic Table and Physical Constants data are pulled from NIST srd144 and
-srd121, respectively ([details](raw_data/README.md)) in a renewable manner
-(class around NIST-published JSON file).
+Core data structures for Quantum Chemistry. QCElemental also contains physical constants and periodic table data from NIST and molecule handlers.
 
-This project also contains a generator, validator, and translator for [Molecule
-QCSchema](https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html).
+Periodic Table and Physical Constants data are pulled from NIST srd144 and srd121, respectively ([details](raw_data/README.md)) in a renewable manner (class around NIST-published JSON file).
 
-It is intended to keep the QCElemental code compatible with Python 3.7+
-as long as dependencies allow. Packages are assured for Python 3.8+.
+This project also contains a generator, validator, and translator for [Molecule QCSchema](https://molssi-qc-schema.readthedocs.io/en/latest/auto_topology.html).
 
+## ✨ Getting Started
+
+- Installation. QCElemental supports Python 3.7+.
+
+  ```sh
+  python -m pip install qcelemental
+  ```
+
+- To install QCElemental with molecule visualization capabilities (useful in iPython or Jupyter notebook environments):
+
+  ```sh
+  python -m pip install 'qcelemental[viz]`
+  ```
+
+- To install QCElemental with various alignment capabilities using `networkx`
+
+  ```sh
+  python -m pip install 'qcelemental[align]`
+  ```
+
+- Or install both:
+
+  ```sh
+  python -m pip install 'qcelemental[viz,align]`
+  ```
+
+- See [documentation](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/index.html)
 
 ### Periodic Table
 
@@ -77,6 +98,7 @@ conversion factors can be obtained:
 ### Covalent Radii
 
 Covalent radii are accessible for most of the periodic table from [Alvarez, Dalton Transactions (2008) doi:10.1039/b801115j](https://doi.org/10.1039/b801115j) ([details](qcelemental/data/alvarez_2008_covalent_radii.py.py)).
+
 ```python
 >>> import qcelemental as qcel
 >>> qcel.covalentradii.get('I')
@@ -96,6 +118,7 @@ qcelemental.exceptions.DataUnavailableError: ('covalent radius', 'Lv')
 ### van der Waals Radii
 
 Van der Waals radii are accessible for tmost of the periodic table from [Mantina, J. Phys. Chem. A (2009) doi: 10.1021/jp8111556](https://pubs.acs.org/doi/10.1021/jp8111556) ([details](qcelemental/data/mantina_2009_vanderwaals_radii.py)).
+
 ```python
 >>> import qcelemental as qcel
 >>> qcel.vdwradii.get('I')

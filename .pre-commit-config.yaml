@@ -24,7 +24,7 @@ repos:
       - id: black
   # TODO: Support flake8 when the repo is ready
   # - repo: https://github.com/PyCQA/flake8
-  #   rev: 6.0.0
+  #   rev: 5.0.4
   #   hooks:
   #     - id: flake8
   # TODO: Support mypy when the repo is ready
@@ -40,6 +40,6 @@ repos:
         name: tests
         stages: [push]
         language: system
-        entry: pytest --cov-report html:htmlcov --cov -v
+        entry: bash scripts/test.sh
         types: [python]
         pass_filenames: false

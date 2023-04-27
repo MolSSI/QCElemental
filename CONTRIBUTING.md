@@ -16,24 +16,26 @@ We welcome contributions from external contributors, and this document describes
   git clone https://github.com/{YOUR-GITHUB-USERNAME}/QCElemental.git
   cd QCElemental
   ```
-- Create a virtual environment into which you can install QCElemental. Make sure to use Python3.7+. Source this environment to use it for development.
+- Install [poetry](https://python-poetry.org/) if you do not have it on your system. Poetry will manage package dependencies and virtual environments for you.
+  ```sh
+  curl -sSL https://install.python-poetry.org | python3 -
+  ```
+- Install QCElemental.
 
   ```sh
-  python -m venv env
-  source env/bin/activate
+  poetry install
   ```
 
-- Install `QCElemental` into this virtual environment and then source the new command line tools. The command below installs QCElemental in "editable" mode--meaning all changes to the code will be instantly available to the python interpreter--and with all associated development tools.
+- Activate your new virtual environment. Many editors--like VS Code--will do this for you automatically when you open a directory that has been installed with `poetry`.
 
   ```sh
-  pip install -e '.[docs,tests,align,viz,lint]'
-  source env/bin/activate
+  poetry shell
   ```
 
 - Check your installation by running the tests.
 
   ```sh
-  bash devtools/scripts/test.sh
+  bash scripts/test.sh
   ```
 
 - Look at the code coverage by opening the newly created `htmlcov/index.html` in your browser. This can help you evaluate the test coverage of new code that you add.
@@ -64,12 +66,31 @@ We welcome contributions from external contributors, and this document describes
 - Make changes to the code and commit your changes using git. You can lint your code (make sure it adheres to our code guidelines by standardizing code format, import ordering, spacing, etc.) without needing to deal with these details yourself by running:
 
   ```sh
-  bash devtools/scripts/format.sh
+  bash scripts/format.sh
   ```
 
 - If you're providing a new feature, you must add test cases and documentation.
 
 - Push to your repo. When you are ready to submit your changes open a [Pull Request](https://github.com/MolSSI/QCElemental/pulls) on the MolSSI/QCElemental repo from your fork into the QCElemental `master` branch. When you're ready to be considered for merging, check the "Ready to go" box on the PR page to let the QCElemental developers know that the changes are complete. The code will not be merged until this box is checked, the continuous integration returns check marks, and multiple core developers give "Approved" reviews.
+
+## Building Docs and Packaging for Distribution
+
+- Build Docs:
+
+  ```sh
+  bash scripts/build_docs.sh
+  ```
+
+- Build packages for distribution. Build artifacts will be in `dist/`:
+
+  ```sh
+  poetry build
+  ```
+
+- Distribute built packages to PyPi:
+  ```sh
+  poetry publish --username {pypi_username} --password {pypi_password}
+  ```
 
 ## Additional Resources
 

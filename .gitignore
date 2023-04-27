@@ -64,8 +64,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/build/
-docs/source/api/
+docs/api/
 
 # PyBuilder
 target/
@@ -120,6 +119,7 @@ runinfo/*
 .vscode/
 raw_data/**/*_blob.py
 
-# autogen
+# QCElemental Specific ignores
 qcschema/*.schema
 qcelemental/tests/qcschema_instances/*/*.json
+poetry.lock

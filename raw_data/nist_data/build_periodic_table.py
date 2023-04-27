@@ -5,10 +5,9 @@ This file will generate a JSON blob usable by QCElemental for physical constants
 import datetime
 import json
 import re
-from decimal import Decimal
 
 import requests
-from yapf.yapflib.yapf_api import FormatCode
+from yapf.yapflib.yapf_api import FormatCode  # noqa
 
 # from https://www.nist.gov/pml/periodic-table-elements on 30 Aug 2018
 #   NIST SP 966 (July 2018)
