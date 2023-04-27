@@ -31,6 +31,17 @@ Breaking Changes
    - Formatted all code with black. Sorted imports with isort.
    - Added pre-commit to repo so code formatting, linting, and testing will all run as part of regular git workflow.
 
+Enhancements
+++++++++++++
+- (:pr:`310`) Modernize DevOps Tooling
+   - Added `/scripts` directory to root of project that contains scripts for testing, formatting code, and building docs.
+   - Updated build system from `setuptools` to modern `pyproject.toml` specification using `poetry` for the build backend.
+   - Removed complicated versioning code in favor of single source of truth in `pyproject.toml`. Using standard library `importlib` for looking up package version in `__init__.py` file. 
+   - Added `build_docs.sh` script to `/scrips` and removed `Makefile` from `/docs`. Flattened `/docs` file structure.
+   - Removed `travis-ci` code from `devtools`
+   - Removed LGTM code (they no longer exist as a project).
+   - Bring all package directories under `black`, `isort`, and `autoflake` control.
+
 0.25.1 / 2022-10-31
 -------------------
 
