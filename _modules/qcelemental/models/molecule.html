@@ -461,6 +461,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">schema</span><span class="p">}</span>  <span class="c1"># Allow any extra fields</span>
             <span class="n">validate</span> <span class="o">=</span> <span class="kc">True</span>
 
+        <span class="k">if</span> <span class="s2">&quot;extras&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected</span>
