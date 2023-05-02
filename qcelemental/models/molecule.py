@@ -350,6 +350,8 @@ class Molecule(ProtoModel):
             kwargs = {**kwargs, **schema}  # Allow any extra fields
             validate = True
 
+        if "extras" not in kwargs:
+            kwargs["extras"] = {}
         super().__init__(**kwargs)
 
         # We are pulling out the values *explicitly* so that the pydantic skip_defaults works as expected

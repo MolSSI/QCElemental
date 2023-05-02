@@ -686,6 +686,7 @@ def test_sparse_molecule_fields(mol_string, extra_keys):
         "fix_com",
         "fix_orientation",
         "provenance",
+        "extras",
     }
     mol = Molecule.from_data(mol_string)
 
@@ -724,3 +725,11 @@ def test_nonphysical_spec():
     assert compare_values([100.0], mol.masses, "nonphysical mass")
 
     print(mol.to_string(dtype="psi4"))
+
+
+def test_extras():
+    mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0])
+    assert mol.extras is not None
+
+    mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], extras={"foo": "bar"})
+    assert mol.extras["foo"] == "bar"
