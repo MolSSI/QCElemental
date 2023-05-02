@@ -4,6 +4,7 @@
     "method": "UFF"
   },
   "molecule": {
+    "extras": {},
     "fix_com": false,
     "fix_orientation": false,
     "geometry": [
