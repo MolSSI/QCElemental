@@ -52,7 +52,7 @@ Enhancements
 - (:pr:`310`) Modernize DevOps Tooling
    - Added `/scripts` directory to root of project that contains scripts for testing, formatting code, and building docs.
    - Updated build system from `setuptools` to modern `pyproject.toml` specification using `poetry` for the build backend.
-   - Removed complicated versioning code in favor of single source of truth in `pyproject.toml`. Using standard library `importlib` for looking up package version in `__init__.py` file. 
+   - Removed complicated versioning code in favor of single source of truth in `pyproject.toml`. Using standard library `importlib` for looking up package version in `__init__.py` file.
    - Added `build_docs.sh` script to `/scrips` and removed `Makefile` from `/docs`. Flattened `/docs` file structure.
    - Removed `travis-ci` code from `devtools`
    - Removed LGTM code (they no longer exist as a project).
@@ -62,6 +62,8 @@ Bug Fixes
 +++++++++
 - (:pr:`305`) Initialize `Molecule.extras` as empty dictionary.
 - (:pr:`311`) Pin pydantic=1 until QCElemental updated for v2. Update docs location from RTD to GH pages. Update changelog.
+- (:pr:`311`) Clear up NumPy "Conversion of an array with ndim > 0 to a scalar is deprecated" in
+  `util.measure_coordinates` called by `Molecule.measure`.
 
 
 0.25.1 / 2022-10-31
