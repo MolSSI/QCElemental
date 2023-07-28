@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7", "3.11"]
+        pydantic-version: ["1", "2"]
 
     steps:
       - name: Set up Python ${{ matrix.python-version }}
@@ -22,8 +23,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Install poetry
         run: pip install poetry
-      - name: Install repo
+      - name: Install repo with Pydantic v2
         run: poetry install --no-interaction --no-ansi
+        if: ${{ matrix.pydantic-version == 2 }}
+      - name: Install repo with Pydantic v1
+        run: poetry install --no-interaction --no-ansi --without pydantic --with pydanticv1
+        if: ${{ matrix.pydantic-version == 1 }}
       - name: Run tests
         run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml
       - name: Upload coverage to Codecov

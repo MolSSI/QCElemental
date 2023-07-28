@@ -2,7 +2,10 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-from pydantic import BaseModel, Field
+try:
+    from pydantic.v1 import BaseModel, Field
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import BaseModel, Field
 
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values

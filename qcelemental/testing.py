@@ -5,7 +5,10 @@ import sys
 from typing import Callable, Dict, List, Tuple, Union
 
 import numpy as np
-from pydantic import BaseModel
+try:
+    from pydantic.v1 import BaseModel
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import BaseModel
 
 from qcelemental.models.basemodels import ProtoModel
 

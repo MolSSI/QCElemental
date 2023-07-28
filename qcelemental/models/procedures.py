@@ -1,7 +1,10 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
-from pydantic import Field, conlist, constr, validator
+try:
+    from pydantic.v1 import Field, conlist, constr, validator
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import Field, conlist, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel
@@ -20,7 +23,10 @@ from .molecule import Molecule
 from .results import AtomicResult
 
 if TYPE_CHECKING:
-    from pydantic.typing import ReprArgs
+    try:
+        from pydantic.v1.typing import ReprArgs
+    except ImportError:  # Will also trap ModuleNotFoundError
+        from pydantic.typing import ReprArgs
 
 
 class TrajectoryProtocolEnum(str, Enum):

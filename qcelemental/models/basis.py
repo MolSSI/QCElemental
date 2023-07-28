@@ -1,7 +1,10 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
-from pydantic import ConstrainedInt, Field, constr, validator
+try:
+    from pydantic.v1 import ConstrainedInt, Field, constr, validator
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import ConstrainedInt, Field, constr, validator
 
 from ..exceptions import ValidationError
 from .basemodels import ProtoModel, qcschema_draft
