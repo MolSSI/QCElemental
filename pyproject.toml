@@ -5,9 +5,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "qcelemental"
-version = "0.25.1"
+version = "0.26.0"
 description = "Core data structures for Quantum Chemistry."
-authors = ["The QCArchive Development Team <qcarchive@molsii.org>"]
+authors = ["The QCArchive Development Team <qcarchive@molssi.org>"]
 license = "BSD-3-Clause"
 readme = "README.md"
 homepage = "https://github.com/MolSSI/QCElemental"
@@ -31,7 +31,7 @@ numpy = [
 ]
 python = "^3.7"
 pint = ">=0.10.0"
-pydantic = ">=1.8.2"
+pydantic = ">=1.8.2,<2"
 nglview = { extras = ["viz"], version = "^3.0.3" }
 ipykernel = { version = "<6.0.0", extras = ["viz"] }
 importlib-metadata = { version = ">=4.8", python = "<3.8" }

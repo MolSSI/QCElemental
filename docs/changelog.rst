@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2022-MM-DD
+.. X.Y.0 / 2023-MM-DD
 .. -------------------
 ..
 .. Breaking Changes
@@ -17,6 +17,22 @@ Changelog
 .. +++++++++
 
 Unreleased
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+
+0.26.0 / 2023-07-28
 -------------------
 
 Breaking Changes
@@ -41,6 +57,12 @@ Enhancements
    - Removed `travis-ci` code from `devtools`
    - Removed LGTM code (they no longer exist as a project).
    - Bring all package directories under `black`, `isort`, and `autoflake` control.
+
+Bug Fixes
++++++++++
+- (:pr:`305`) Initialize `Molecule.extras` as empty dictionary.
+- (:pr:`311`) Pin pydantic=1 until QCElemental updated for v2. Update docs location from RTD to GH pages. Update changelog.
+
 
 0.25.1 / 2022-10-31
 -------------------
