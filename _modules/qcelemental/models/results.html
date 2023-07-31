@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.results &mdash; QCElemental 0.25.1 documentation</title>
+  <title>qcelemental.models.results &mdash; QCElemental 0.26.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -50,7 +50,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             QCElemental
           </a>
               <div class="version">
-                0.25.1
+                0.26.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -155,16 +155,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">nuclear_repulsion_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The nuclear repulsion energy.&quot;</span><span class="p">)</span>
     <span class="n">return_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The energy of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.energy` computations.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The energy of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`</span><span class="se">\\</span><span class="s2"> =</span><span class="se">\\</span><span class="s2"> :attr:`~qcelemental.models.DriverEnum.energy` computations.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">return_gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The gradient of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.gradient` computations.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The gradient of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`</span><span class="se">\\</span><span class="s2"> =</span><span class="se">\\</span><span class="s2"> :attr:`~qcelemental.models.DriverEnum.gradient` computations.&quot;</span><span class="p">,</span>
         <span class="n">units</span><span class="o">=</span><span class="s2">&quot;E_h/a0&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">return_hessian</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\ =\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`</span><span class="se">\\</span><span class="s2"> =</span><span class="se">\\</span><span class="s2"> :attr:`~qcelemental.models.DriverEnum.hessian` computations.&quot;</span><span class="p">,</span>
         <span class="n">units</span><span class="o">=</span><span class="s2">&quot;E_h/a0^2&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
