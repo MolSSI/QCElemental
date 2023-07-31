@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2022-MM-DD
+.. X.Y.0 / 2023-MM-DD
 .. -------------------
 ..
 .. Breaking Changes
@@ -22,6 +22,22 @@ Unreleased
 Breaking Changes
 ++++++++++++++++
 
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+
+0.26.0 / 2023-07-31
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
 - (:pr:`308`) Fix CI Pipelines. Dropped Python3.6. Bring CI pipelines into harmony with local dev experience. Lint and format entire code base. Accelerate CI pipelines. Update setup.py to correctly define extras packages. Breaking change due to dropped support for Python3.6. No code functionality was altered.
    - Dropped support for dead Python 3.6. Minimum supported Python is now 3.7.
    - Updated CONTRIBUTING.md to contain detailed instructions for developers on how to contribute.
@@ -36,11 +52,21 @@ Enhancements
 - (:pr:`310`) Modernize DevOps Tooling
    - Added `/scripts` directory to root of project that contains scripts for testing, formatting code, and building docs.
    - Updated build system from `setuptools` to modern `pyproject.toml` specification using `poetry` for the build backend.
-   - Removed complicated versioning code in favor of single source of truth in `pyproject.toml`. Using standard library `importlib` for looking up package version in `__init__.py` file. 
+   - Removed complicated versioning code in favor of single source of truth in `pyproject.toml`. Using standard library `importlib` for looking up package version in `__init__.py` file.
    - Added `build_docs.sh` script to `/scrips` and removed `Makefile` from `/docs`. Flattened `/docs` file structure.
    - Removed `travis-ci` code from `devtools`
    - Removed LGTM code (they no longer exist as a project).
    - Bring all package directories under `black`, `isort`, and `autoflake` control.
+
+Bug Fixes
++++++++++
+- (:pr:`305`) Initialize `Molecule.extras` as empty dictionary.
+- (:pr:`311`) Update docs location from RTD to GH pages. Resolve escape char warnings. Update changelog.
+- (:pr:`311`) Clear up NumPy "Conversion of an array with ndim > 0 to a scalar is deprecated" in
+  `util.measure_coordinates` called by `Molecule.measure`.
+- (:pr:`314`) Import `pydantic.v1` from pydantic v2 so that QCElemental can work with any >=1.8.2 pydantic
+  until QCElemental is updated for v2.
+
 
 0.25.1 / 2022-10-31
 -------------------

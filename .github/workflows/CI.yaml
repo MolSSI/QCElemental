@@ -10,8 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
-        python-version: ["3.7", "3.11"]
+        python-version: ["3.7", "3.9", "3.11"]
         pydantic-version: ["1", "2"]
 
     steps:
@@ -31,9 +32,13 @@ jobs:
       - name: Sed replace pydantic on repo
         run: |
           sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
-        if: ${{ matrix.pydantic-version == 1 }}
-      - name: Install repo with poetry
-        run: poetry install --no-interaction --no-ansi
+        if: matrix.pydantic-version == '1'
+      - name: Install repo with poetry (full deps)
+        if: matrix.python-version != '3.9'
+        run: poetry install --no-interaction --no-ansi --all-extras
+      - name: Install repo with poetry (min deps)
+        if: matrix.python-version == '3.9'
+        run: poetry install --no-interaction --no-ansi --extras test
       - name: Run tests
         run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml
       - name: Upload coverage to Codecov

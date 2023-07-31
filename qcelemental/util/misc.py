@@ -175,7 +175,7 @@ def measure_coordinates(coordinates, measurements, degrees=False):
             raise KeyError(f"Unrecognized number of arguments for measurement {num}, found {len(m)}, expected 2-4.")
 
         val = func(*[coordinates[x] for x in m], **kwargs)
-        ret.append(float(val))
+        ret.append(val[0])
 
     if single:
         return ret[0]
