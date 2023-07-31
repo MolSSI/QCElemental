@@ -24,7 +24,7 @@
     "provenance": {
       "creator": "QCElemental",
       "routine": "qcelemental.molparse.from_string",
-      "version": "0.25.1"
+      "version": "0.26.0"
     },
     "schema_name": "qcschema_molecule",
     "schema_version": 2,
