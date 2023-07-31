@@ -6,7 +6,11 @@ from decimal import Decimal
 from typing import Any, Dict, Optional
 
 import numpy as np
-from pydantic import BaseModel, validator
+
+try:
+    from pydantic.v1 import BaseModel, validator
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import BaseModel, validator
 
 
 class Datum(BaseModel):

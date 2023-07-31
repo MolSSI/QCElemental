@@ -1,7 +1,11 @@
 from typing import Optional
 
 import numpy as np
-from pydantic import Field, validator
+
+try:
+    from pydantic.v1 import Field, validator
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import Field, validator
 
 from ..util import blockwise_contract, blockwise_expand
 from .basemodels import ProtoModel

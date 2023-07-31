@@ -2,7 +2,11 @@ import json
 from typing import Any, Union
 
 import numpy as np
-from pydantic.json import pydantic_encoder
+
+try:
+    from pydantic.v1.json import pydantic_encoder
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic.json import pydantic_encoder
 
 from .importing import which_import
 

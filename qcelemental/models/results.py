@@ -3,7 +3,11 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic import Field, constr, validator
+
+try:
+    from pydantic.v1 import Field, constr, validator
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import Field, constr, validator
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel, qcschema_draft
@@ -13,7 +17,10 @@ from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
-    from pydantic.typing import ReprArgs
+    try:
+        from pydantic.v1.typing import ReprArgs
+    except ImportError:  # Will also trap ModuleNotFoundError
+        from pydantic.typing import ReprArgs
 
 
 class AtomicResultProperties(ProtoModel):

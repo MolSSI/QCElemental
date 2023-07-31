@@ -3,7 +3,10 @@ from enum import Enum, EnumMeta
 from textwrap import dedent, indent
 from typing import Any
 
-from pydantic import BaseModel, BaseSettings
+try:
+    from pydantic.v1 import BaseModel, BaseSettings
+except ImportError:  # Will also trap ModuleNotFoundError
+    from pydantic import BaseModel, BaseSettings
 
 __all__ = ["auto_gen_docs_on_demand", "get_base_docs", "AutoPydanticDocGenerator"]
 
@@ -36,7 +39,11 @@ def is_pydantic(test_object):
 
 
 def parse_type_str(prop) -> str:
-    from pydantic import fields  # Import here to minimize issues
+    # Import here to minimize issues
+    try:
+        from pydantic.v1 import fields
+    except ImportError:  # Will also trap ModuleNotFoundError
+        from pydantic import fields
 
     typing_map = {
         fields.SHAPE_TUPLE: "Tuple",

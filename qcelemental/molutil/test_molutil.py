@@ -2,7 +2,11 @@ import math
 import pprint
 
 import numpy as np
-import pydantic
+
+try:
+    import pydantic.v1 as pydantic
+except ImportError:  # Will also trap ModuleNotFoundError
+    import pydantic
 import pytest
 
 import qcelemental as qcel
