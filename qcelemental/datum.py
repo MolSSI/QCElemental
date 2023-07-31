@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Any, Dict, Optional
 
 import numpy as np
+
 try:
     from pydantic.v1 import BaseModel, validator
 except ImportError:  # Will also trap ModuleNotFoundError

@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
+
 try:
     from pydantic.v1 import BaseModel, Field
 except ImportError:  # Will also trap ModuleNotFoundError

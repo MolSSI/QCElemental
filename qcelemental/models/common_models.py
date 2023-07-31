@@ -2,6 +2,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 import numpy as np
+
 try:
     from pydantic.v1 import Field
 except ImportError:  # Will also trap ModuleNotFoundError

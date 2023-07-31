@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
 
 import numpy as np
+
 try:
     from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
 except ImportError:  # Will also trap ModuleNotFoundError

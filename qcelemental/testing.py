@@ -5,6 +5,7 @@ import sys
 from typing import Callable, Dict, List, Tuple, Union
 
 import numpy as np
+
 try:
     from pydantic.v1 import BaseModel
 except ImportError:  # Will also trap ModuleNotFoundError

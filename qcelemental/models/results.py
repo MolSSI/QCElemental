@@ -3,6 +3,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
+
 try:
     from pydantic.v1 import Field, constr, validator
 except ImportError:  # Will also trap ModuleNotFoundError

@@ -2,6 +2,7 @@ import json
 from typing import Any, Union
 
 import numpy as np
+
 try:
     from pydantic.v1.json import pydantic_encoder
 except ImportError:  # Will also trap ModuleNotFoundError

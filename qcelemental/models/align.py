@@ -1,6 +1,7 @@
 from typing import Optional
 
 import numpy as np
+
 try:
     from pydantic.v1 import Field, validator
 except ImportError:  # Will also trap ModuleNotFoundError
