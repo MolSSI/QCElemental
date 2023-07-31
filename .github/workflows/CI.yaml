@@ -33,7 +33,7 @@ jobs:
           sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
         if: ${{ matrix.pydantic-version == 1 }}
       - name: Install repo with poetry
-        run: poetry install --no-interaction --no-ansi
+        run: poetry install --no-interaction --no-ansi --all-extras
       - name: Run tests
         run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml
       - name: Upload coverage to Codecov
