@@ -59,6 +59,10 @@ jobs:
           python-version: "3.7"
       - name: Install poetry
         run: pip install poetry
+      # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed (see above for details)
+      - name: Sed replace pydantic on repo
+        run: |
+          sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
       - name: Install repo
         run: poetry install --no-interaction --no-ansi
       - name: Build Documentation
