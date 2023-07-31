@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python-version: ["3.7", "3.9", "3.11"]
         pydantic-version: ["1", "2"]
