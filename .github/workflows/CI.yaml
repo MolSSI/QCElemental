@@ -23,12 +23,16 @@ jobs:
         uses: actions/checkout@v3
       - name: Install poetry
         run: pip install poetry
-      - name: Install repo with Pydantic v2
-        run: poetry install --no-interaction --no-ansi
-        if: ${{ matrix.pydantic-version == 2 }}
+      # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed
+      # -i '' is zero-length extension which does effectively in-place sub.
+      # ^ start of line, pydantic, optional spaces and > sign, capture the version, replace with ^{version}
+      # Should avoid also replacing the autodoc-pydantic spec later on.
       - name: Install repo with Pydantic v1
-        run: poetry install --no-interaction --no-ansi --without pydantic --with pydanticv1
+        run: |
+          sed -i '' 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
         if: ${{ matrix.pydantic-version == 1 }}
+      - name: Install repo with poetry
+        run: poetry install --no-interaction --no-ansi
       - name: Run tests
         run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml
       - name: Upload coverage to Codecov
