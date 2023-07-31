@@ -36,6 +36,7 @@ nglview = { extras = ["viz"], version = "^3.0.3" }
 ipykernel = { version = "<6.0.0", extras = ["viz"] }
 importlib-metadata = { version = ">=4.8", python = "<3.8" }
 networkx = { version = "<3.0", extras = ["align"] }
+scipy = { extras = ["align"] }
 pytest = { extras = ["test"], version = "^7.2.2" }
 
 

@@ -61,7 +61,7 @@ Enhancements
 Bug Fixes
 +++++++++
 - (:pr:`305`) Initialize `Molecule.extras` as empty dictionary.
-- (:pr:`311`) Update docs location from RTD to GH pages. Update changelog.
+- (:pr:`311`) Update docs location from RTD to GH pages. Resolve escape char warnings. Update changelog.
 - (:pr:`311`) Clear up NumPy "Conversion of an array with ndim > 0 to a scalar is deprecated" in
   `util.measure_coordinates` called by `Molecule.measure`.
 - (:pr:`314`) Import `pydantic.v1` from pydantic v2 so that QCElemental can work with any >=1.8.2 pydantic
