@@ -1,15 +1,12 @@
 import json
+import warnings
 from pathlib import Path
-from typing import Any, Dict, Optional, Set, Union
+from typing import Any, Dict, Optional, Set, Union, List, Callable
 
 import numpy as np
 
-try:
-    from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic.v1 import BaseModel
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic import BaseModel
+from pydantic_settings import BaseSettings  # remove when QCFractal merges `next`
+from pydantic import BaseModel, ConfigDict
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
@@ -19,14 +16,31 @@ def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
+class ExtendedConfigDict(ConfigDict, total=False):
+    serialize_default_excludes: Set
+    """Add items to exclude from serialization"""
+
+    serialize_skip_defaults: bool
+    """When serializing, ignore default values (i.e. those not set by user)"""
+
+    force_skip_defaults: bool
+    """Manually force defaults to not be included in output dictionary"""
+
+    canonical_repr: bool
+    """Use canonical representation of the molecules"""
+
+    repr_style: Union[List[str], Callable]
+    """Representation styles"""
+
+
 class ProtoModel(BaseModel):
-    class Config:
-        allow_mutation: bool = False
-        extra: str = "forbid"
-        json_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
-        serialize_default_excludes: Set = set()
-        serialize_skip_defaults: bool = False
-        force_skip_defaults: bool = False
+    model_config = ExtendedConfigDict(
+        frozen=True,
+        extra="forbid",
+        serialize_default_excludes=set(),
+        serialize_skip_defaults=False,
+        force_skip_defaults=False
+    )
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
@@ -42,6 +56,11 @@ class ProtoModel(BaseModel):
     def parse_raw(cls, data: Union[bytes, str], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""
         Parses raw string or bytes into a Model object.
+
+        This overwrites the deprecated parse_file of v2 Pydantic to eventually call parse_model or parse_model_json,
+        but is kept to preserve our own API
+
+        May also be deprecated from QCElemental in time
 
         Parameters
         ----------
@@ -65,17 +84,23 @@ class ProtoModel(BaseModel):
                 raise TypeError("Input is neither str nor bytes, please specify an encoding.")
 
         if encoding.endswith(("json", "javascript", "pickle")):
-            return super().parse_raw(data, content_type=encoding)
+            # return super().parse_raw(data, content_type=encoding)
+            return cls.model_validate_json(data)
         elif encoding in ["msgpack-ext", "json-ext", "msgpack"]:
             obj = deserialize(data, encoding)
         else:
             raise TypeError(f"Content type '{encoding}' not understood.")
 
-        return cls.parse_obj(obj)
+        return cls.model_validate(obj)
 
     @classmethod
     def parse_file(cls, path: Union[str, Path], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""Parses a file into a Model object.
+
+        This overwrites the deprecated parse_file of v2 Pydantic to eventually call parse_model or parse_model_json,
+        but is kept to preserve our own API
+
+        May also be deprecated from QCElemental in time
 
         Parameters
         ----------
@@ -105,6 +130,10 @@ class ProtoModel(BaseModel):
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
     def dict(self, **kwargs) -> Dict[str, Any]:
+        warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', DeprecationWarning)
+        return self.model_dump(**kwargs)
+
+    def model_dump(self, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
         kwargs["exclude"] = (
@@ -114,7 +143,7 @@ class ProtoModel(BaseModel):
         if self.__config__.force_skip_defaults:  # type: ignore
             kwargs["exclude_unset"] = True
 
-        data = super().dict(**kwargs)
+        data = super().model_dump(**kwargs)
 
         if encoding is None:
             return data
@@ -168,12 +197,16 @@ class ProtoModel(BaseModel):
         if exclude_none:
             kwargs["exclude_none"] = exclude_none
 
-        data = self.dict(**kwargs)
+        data = self.model_dump(**kwargs)
 
         return serialize(data, encoding=encoding)
 
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
+        warnings.warn('The `json` method is deprecated; use `model_dump_json` instead.', DeprecationWarning)
+        return self.model_dump_json(**kwargs)
+
+    def model_dump_json(self, **kwargs):
         return self.serialize("json", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:

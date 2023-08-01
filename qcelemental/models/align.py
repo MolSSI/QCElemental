@@ -2,10 +2,7 @@ from typing import Optional
 
 import numpy as np
 
-try:
-    from pydantic.v1 import Field, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from ..util import blockwise_contract, blockwise_expand
 from .basemodels import ProtoModel
@@ -33,16 +30,18 @@ class AlignmentMill(ProtoModel):
     class Config:
         force_skip_defaults = True
 
-    @validator("shift")
-    def _must_be_3(cls, v, values, **kwargs):
+    @field_validator("shift")
+    @classmethod
+    def _must_be_3(cls, v):
         try:
             v = v.reshape(3)
         except (ValueError, AttributeError):
             raise ValueError("Shift must be castable to shape (3,)!")
         return v
 
-    @validator("rotation")
-    def _must_be_33(cls, v, values, **kwargs):
+    @field_validator("rotation")
+    @classmethod
+    def _must_be_33(cls, v):
         try:
             v = v.reshape(3, 3)
         except (ValueError, AttributeError):

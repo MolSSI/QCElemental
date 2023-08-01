@@ -1,25 +1,23 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union, Sequence, Tuple
 
 import numpy as np
 
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic import Field
 
-from .basemodels import ProtoModel, qcschema_draft
+from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
 from .basis import BasisSet
 
 if TYPE_CHECKING:
-    try:
-        from pydantic.v1.typing import ReprArgs
-    except ImportError:  # Will also trap ModuleNotFoundError
-        from pydantic.typing import ReprArgs
+    ReprArgs = Sequence[Tuple[Optional[str], Any]]
 
 
 # Encoders, to be deprecated
 ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
+
+
+def provenance_json_schema_extra(schema, model):
+    schema["$schema"] = qcschema_draft
 
 
 class Provenance(ProtoModel):
@@ -28,16 +26,15 @@ class Provenance(ProtoModel):
     creator: str = Field(..., description="The name of the program, library, or person who created the object.")
     version: str = Field(
         "",
-        description="The version of the creator, blank otherwise. This should be sortable by the very broad `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.",
+        description="The version of the creator, blank otherwise. "
+                    "This should be sortable by the very broad `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.",
     )
     routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
-    class Config(ProtoModel.Config):
-        canonical_repr = True
-        extra: str = "allow"
-
-        def schema_extra(schema, model):
-            schema["$schema"] = qcschema_draft
+    model_config = ExtendedConfigDict(canonical_repr=True,
+                                      json_schema_extra=provenance_json_schema_extra,
+                                      **ProtoModel.model_config,
+                                      extra="allow")
 
 
 class Model(ProtoModel):
@@ -55,10 +52,9 @@ class Model(ProtoModel):
     )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
-
-    class Config(ProtoModel.Config):
-        canonical_repr = True
-        extra: str = "allow"
+    model_config = ExtendedConfigDict(canonical_repr=True,
+                                      **ProtoModel.model_config,
+                                      extra="allow")
 
 
 class DriverEnum(str, Enum):
@@ -82,7 +78,8 @@ class ComputeError(ProtoModel):
 
     error_type: str = Field(  # type: ignore
         ...,  # Error enumeration not yet strict
-        description="The type of error which was thrown. Restrict this field to short classifiers e.g. 'input_error'. Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py",
+        description="The type of error which was thrown. Restrict this field to short classifiers e.g. 'input_error'. "
+                    "Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py",
     )
     error_message: str = Field(  # type: ignore
         ...,
@@ -94,15 +91,19 @@ class ComputeError(ProtoModel):
         description="Additional information to bundle with the error.",
     )
 
-    class Config:
-        repr_style = ["error_type", "error_message"]
+    model_config = ExtendedConfigDict(repr_style=["error_type", "error_message"],
+                                      **ProtoModel.model_config
+                                      )
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]
 
 
 class FailedOperation(ProtoModel):
-    """Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure."""
+    """
+    Record indicating that a given operation (program, procedure, etc.) has failed
+    and containing the reason and input data which generated the failure.
+    """
 
     id: str = Field(  # type: ignore
         None,

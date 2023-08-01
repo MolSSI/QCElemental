@@ -7,10 +7,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 
-try:
-    from pydantic.v1 import BaseModel, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 
 class Datum(BaseModel):
@@ -59,20 +56,21 @@ class Datum(BaseModel):
 
         super().__init__(**kwargs)
 
-    @validator("data")
-    def must_be_numerical(cls, v, values, **kwargs):
+    @field_validator("data")
+    @classmethod
+    def must_be_numerical(cls, v, info):
         try:
             1.0 * v
         except TypeError:
             try:
                 Decimal("1.0") * v
             except TypeError:
-                if values["numeric"]:
+                if info.data["numeric"]:
                     raise ValueError(f"Datum data should be float, Decimal, or np.ndarray, not {type(v)}.")
             else:
-                values["numeric"] = True
+                info.data["numeric"] = True
         else:
-            values["numeric"] = True
+            info.data["numeric"] = True
 
         return v
 

@@ -8,10 +8,7 @@ from enum import Enum
 from functools import lru_cache
 from typing import List, Optional
 
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic import Field
 
 from ..models import ProtoModel
 
@@ -40,13 +37,13 @@ class ProcessorInfo(ProtoModel):
     ncores: int = Field(..., description="The number of physical cores on the chip.")
     nthreads: Optional[int] = Field(..., description="The maximum number of concurrent threads.")
     base_clock: float = Field(..., description="The base clock frequency (GHz).")
-    boost_clock: Optional[float] = Field(..., description="The boost clock frequency (GHz).")
+    boost_clock: Optional[float] = Field(None, description="The boost clock frequency (GHz).")
     model: str = Field(..., description="The model number of the chip.")
     family: str = Field(..., description="The family of the chip.")
-    launch_date: Optional[int] = Field(..., description="The launch year of the chip.")
+    launch_date: Optional[int] = Field(None, description="The launch year of the chip.")
     target_use: str = Field(..., description="Target use case (Desktop, Server, etc).")
     vendor: VendorEnum = Field(..., description="The vendor the chip is produced by.")
-    microarchitecture: Optional[str] = Field(..., description="The microarchitecture the chip follows.")
+    microarchitecture: Optional[str] = Field(None, description="The microarchitecture the chip follows.")
     instructions: InstructionSetEnum = Field(..., description="The maximum vectorized instruction set available.")
     type: str = Field(..., description="The type of chip (cpu, gpu, etc).")
 

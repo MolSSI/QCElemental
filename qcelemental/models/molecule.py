@@ -8,13 +8,12 @@ import warnings
 from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
+from typing_extensions import Annotated
 
 import numpy as np
 
-try:
-    from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import ConstrainedFloat, ConstrainedInt, Field, constr, validator
+from pydantic import Field, constr, field_validator
+from pydantic.v1 import Field as FE
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ..molparse.from_arrays import from_arrays
@@ -26,15 +25,12 @@ from ..periodic_table import periodictable
 from ..physical_constants import constants
 from ..testing import compare, compare_values
 from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
-from .basemodels import ProtoModel, qcschema_draft
+from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
-    try:
-        from pydantic.v1.typing import ReprArgs
-    except ImportError:  # Will also trap ModuleNotFoundError
-        from pydantic.typing import ReprArgs
+    from .common_models import ReprArgs
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
@@ -71,13 +67,8 @@ def float_prep(array, around):
     return array
 
 
-class NonnegativeInt(ConstrainedInt):
-    ge = 0
-
-
-class BondOrderFloat(ConstrainedFloat):
-    ge = 0
-    le = 5
+NonnegativeInt = Annotated[int, Field(ge=0)]
+BondOrderFloat = Annotated[float, Field(ge=0, le=5)]
 
 
 class Identifiers(ProtoModel):
@@ -97,8 +88,14 @@ class Identifiers(ProtoModel):
     pubchem_sid: Optional[str] = Field(None, description="PubChem Substance ID")
     pubchem_conformerid: Optional[str] = Field(None, description="PubChem Conformer ID")
 
-    class Config(ProtoModel.Config):
-        serialize_skip_defaults = True
+    model_config = ExtendedConfigDict(**ProtoModel.model_config,
+                                      serialize_skip_defaults=True
+                                      )
+
+
+def molecule_json_schema_extras(schema, model):
+    # below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .
+    schema["$schema"] = qcschema_draft
 
 
 class Molecule(ProtoModel):
@@ -120,7 +117,7 @@ class Molecule(ProtoModel):
 
     """
 
-    schema_name: constr(strip_whitespace=True, regex="^(qcschema_molecule)$") = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, pattern="^(qcschema_molecule)$") = Field(  # type: ignore
         qcschema_molecule_default,
         description=(
             f"The QCSchema specification to which this model conforms. Explicitly fixed as {qcschema_molecule_default}."
@@ -146,7 +143,9 @@ class Molecule(ProtoModel):
         "sets atomic order for all other per-atom fields like :attr:`~qcelemental.models.Molecule.real` and the first dimension of "
         ":attr:`~qcelemental.models.Molecule.geometry`. Ghost/virtual atoms must have an entry here in :attr:`~qcelemental.models.Molecule.symbols`; ghostedness is "
         "indicated through the :attr:`~qcelemental.models.Molecule.real` field.",
-        shape=["nat"],
+        json_schema_extra={
+            "shape": ["nat"]
+        },
     )
     geometry: Array[float] = Field(  # type: ignore
         ...,
@@ -160,19 +159,24 @@ class Molecule(ProtoModel):
         "QCElemental can also accept array-likes which can be mapped to (nat,3) such as a 1-D list of length 3*nat, "
         "or the serialized version of the array in (3*nat,) shape; all forms will be reshaped to "
         "(nat,3) for this attribute.",
-        shape=["nat", 3],
-        units="a0",
+        json_schema_extra={
+            "shape": ["nat", 3],
+            "units": "a0"
+        },
     )
 
     # Molecule data
     name: Optional[str] = Field(  # type: ignore
         None,
-        description="Common or human-readable name to assign to this molecule. This field can be arbitrary; see :attr:`~qcelemental.models.Molecule.identifiers` for well-defined labels.",
+        description="Common or human-readable name to assign to this molecule. "
+                    "This field can be arbitrary; see :attr:`~qcelemental.models.Molecule.identifiers` "
+                    "for well-defined labels.",
     )
     identifiers: Optional[Identifiers] = Field(  # type: ignore
         None,
         description="An optional dictionary of additional identifiers by which this molecule can be referenced, "
-        "such as INCHI, canonical SMILES, etc. See the :class:`~qcelemental.models.results.Identifiers` model for more details.",
+                    "such as INCHI, canonical SMILES, etc. See the :class:`~qcelemental.models.results.Identifiers` "
+                    "model for more details.",
     )
     comment: Optional[str] = Field(  # type: ignore
         None,
@@ -184,79 +188,117 @@ class Molecule(ProtoModel):
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
         None,
-        description="The ordered array of atomic masses. Index order "
-        "matches the 0-indexed indices of all other per-atom fields like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. If "
-        "this is not provided, the mass of each atom is inferred from its most common isotope. If this "
-        "is provided, it must be the same length as :attr:`~qcelemental.models.Molecule.symbols` but can accept ``None`` entries for "
-        "standard masses to infer from the same index in the :attr:`~qcelemental.models.Molecule.symbols` field.",
-        shape=["nat"],
-        units="u",
+        description="The ordered array of atomic masses. Index order matches the 0-indexed indices of all other "
+                    "per-atom fields like :attr:`~qcelemental.models.Molecule.symbols` "
+                    "and :attr:`~qcelemental.models.Molecule.real`. "
+                    "If this is not provided, the mass of each atom is inferred from its most common isotope. "
+                    "If this is provided, it must be the same length as :attr:`~qcelemental.models.Molecule.symbols` "
+                    "but can accept ``None`` entries for standard masses to infer from the same index in the "
+                    ":attr:`~qcelemental.models.Molecule.symbols` field.",
+        alias="masses",
+        json_schema_extra={
+            "shape": ["nat"],
+            "units": "u"
+        },
     )
     real_: Optional[Array[bool]] = Field(  # type: ignore
         None,
-        description="The ordered array indicating if each atom is real (``True``) or "
-        "ghost/virtual (``False``). Index "
-        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and the first "
-        "dimension of :attr:`~qcelemental.models.Molecule.geometry`. If this is not provided, all atoms are assumed to be real (``True``)."
-        "If this is provided, the reality or ghostedness of every atom must be specified.",
-        shape=["nat"],
+        description="The ordered array indicating if each atom is real (``True``) or ghost/virtual (``False``). "
+                    "Index matches the 0-indexed indices of all other per-atom settings like "
+                    ":attr:`~qcelemental.models.Molecule.symbols` and the first dimension of "
+                    ":attr:`~qcelemental.models.Molecule.geometry`. "
+                    "If this is not provided, all atoms are assumed to be real (``True``). "
+                    "If this is provided, the reality or ghostedness of every atom must be specified.",
+        alias="real",
+        json_schema_extra={
+            "shape": ["nat"],
+        },
     )
     atom_labels_: Optional[Array[str]] = Field(  # type: ignore
         None,
-        description="Additional per-atom labels as an array of strings. Typical use is in "
-        "model conversions, such as Elemental <-> Molpro and not typically something which should be user "
-        "assigned. See the :attr:`~qcelemental.models.Molecule.comment` field for general human-consumable text to affix to the molecule.",
-        shape=["nat"],
+        description="Additional per-atom labels as an array of strings. Typical use is in model conversions, "
+                    "such as Elemental <-> Molpro and not typically something which should be user assigned. "
+                    "See the :attr:`~qcelemental.models.Molecule.comment` field for general human-consumable "
+                    "text to affix to the molecule.",
+        alias="atom_labels",
+        json_schema_extra={
+            "shape": ["nat"],
+        },
     )
     atomic_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
-        description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index "
-        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
-        "Values are inferred from the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. "
-        "Ghostedness should be indicated through :attr:`~qcelemental.models.Molecule.real` field, not zeros here.",
-        shape=["nat"],
+        description="An optional ordered 1-D array-like object of atomic numbers of shape (nat,). Index matches the "
+                    "0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols`"
+                    " and :attr:`~qcelemental.models.Molecule.real`. Values are inferred from the "
+                    ":attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. Ghostedness should be "
+                    "indicated through :attr:`~qcelemental.models.Molecule.real` field, not zeros here.",
+        alias="atomic_numbers",
+        json_schema_extra={
+            "shape": ["nat"],
+        },
     )
     mass_numbers_: Optional[Array[np.int16]] = Field(  # type: ignore
         None,
-        description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). Index "
-        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
-        "Values are inferred from the most common isotopes of the :attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. "
-        "If single isotope not (yet) known for an atom, -1 is placeholder.",
-        shape=["nat"],
+        description="An optional ordered 1-D array-like object of atomic *mass* numbers of shape (nat). "
+                    "Index matches the 0-indexed indices of all other per-atom settings like "
+                    ":attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
+                    "Values are inferred from the most common isotopes of the "
+                    ":attr:`~qcelemental.models.Molecule.symbols` list if not explicitly set. "
+                    "If single isotope not (yet) known for an atom, -1 is placeholder.",
+        alias="mass_numbers",
+        json_schema_extra={
+            "shape": ["nat"],
+        },
     )
 
     # Fragment and connection data
     connectivity_: Optional[List[Tuple[NonnegativeInt, NonnegativeInt, BondOrderFloat]]] = Field(  # type: ignore
         None,
-        description="A list of bonds within the molecule. Each entry is a tuple "
-        "of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
-        "matches the 0-indexed indices of all other per-atom settings like :attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
-        "Bonds may be freely reordered and inverted.",
-        min_items=1,
+        description="A list of bonds within the molecule. "
+                    "Each entry is a tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
+                    "matches the 0-indexed indices of all other per-atom settings like "
+                    ":attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
+                    "Bonds may be freely reordered and inverted.",
+        alias="connectivity",
+        min_length=1,
     )
     fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
         None,
         description="List of indices grouping atoms (0-indexed) into molecular fragments within the molecule. "
-        "Each entry in the outer list is a new fragment; index matches the ordering in :attr:`~qcelemental.models.Molecule.fragment_charges` and "
-        ":attr:`~qcelemental.models.Molecule.fragment_multiplicities`. Inner lists are 0-indexed atoms which compose the fragment; every atom must "
-        "be in exactly one inner list. Noncontiguous fragments are allowed, though no QM program is known to support them. "
-        "Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the input "
-        "(pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment results (e.g., n-body energy arrays).",
-        shape=["nfr", "<varies>"],
+                    "Each entry in the outer list is a new fragment; index matches the ordering in "
+                    ":attr:`~qcelemental.models.Molecule.fragment_charges` and "
+                    ":attr:`~qcelemental.models.Molecule.fragment_multiplicities`. "
+                    "Inner lists are 0-indexed atoms which compose the fragment; every atom must be in exactly one "
+                    "inner list. Noncontiguous fragments are allowed, though no QM program is known to support them. "
+                    "Fragment ordering is fixed; that is, a consumer who shuffles fragments must not reattach the "
+                    "input (pre-shuffling) molecule schema instance to any output (post-shuffling) per-fragment "
+                    "results (e.g., n-body energy arrays).",
+        alias="fragments",
+        json_schema_extra={
+            "shape": ["nfr", "<varies>"],
+        },
     )
     fragment_charges_: Optional[List[float]] = Field(  # type: ignore
         None,
-        description="The total charge of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
-        "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of rules "
-        "if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
-        shape=["nfr"],
+        description="The total charge of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. "
+                    "The index of this list matches the 0-index indices of "
+                    ":attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of rules if "
+                    "not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
+        alias="fragment_charges",
+        json_schema_extra={
+            "shape": ["nfr"],
+        },
     )
     fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
         None,
-        description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
-        "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of "
-        "rules if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
-        shape=["nfr"],
+        description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. "
+                    "The index of this list matches the 0-index indices of "
+                    ":attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of rules if "
+                    "not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
+        alias="fragment_multiplicities",
+        json_schema_extra={
+            "shape": ["nfr"],
+        },
     )
 
     # Orientation
@@ -301,28 +343,14 @@ class Molecule(ProtoModel):
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
-    class Config(ProtoModel.Config):
-        serialize_skip_defaults = True
-        repr_style = lambda self: [
-            ("name", self.name),
-            ("formula", self.get_molecular_formula()),
-            ("hash", self.get_hash()[:7]),
-        ]
-        fields = {
-            "masses_": "masses",
-            "real_": "real",
-            "atom_labels_": "atom_labels",
-            "atomic_numbers_": "atomic_numbers",
-            "mass_numbers_": "mass_numbers",
-            "connectivity_": "connectivity",
-            "fragments_": "fragments",
-            "fragment_charges_": "fragment_charges",
-            "fragment_multiplicities_": "fragment_multiplicities",
-        }
-
-        def schema_extra(schema, model):
-            # below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .
-            schema["$schema"] = qcschema_draft
+    model_config = ExtendedConfigDict(**ProtoModel.model_config,
+                                      serialize_skip_defaults=True,
+                                      repr_style=lambda self: [("name", self.name),
+                                                               ("formula", self.get_molecular_formula()),
+                                                               ("hash", self.get_hash()[:7])],
+                                      json_schema_extra= molecule_json_schema_extras
+                                      )
+    # Alias fields are handled with the Field objects above
 
     def __init__(self, orient: bool = False, validate: Optional[bool] = None, **kwargs: Any) -> None:
         r"""Initializes the molecule object from dictionary-like values.

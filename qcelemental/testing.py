@@ -6,10 +6,7 @@ from typing import Callable, Dict, List, Tuple, Union
 
 import numpy as np
 
-try:
-    from pydantic.v1 import BaseModel
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel
+from pydantic import BaseModel
 
 from qcelemental.models.basemodels import ProtoModel
 
@@ -306,17 +303,17 @@ def compare(
     return return_handler(allclose, label, message, return_message, quiet)
 
 
-def _compare_recursive(expected, computed, atol, rtol, _prefix=False, equal_phase=False):
+def _compare_recursive(expected, computed, atol, rtol, _prefix: Union[bool, str] =False, equal_phase=False):
     errors = []
     name = _prefix or "root"
     prefix = name + "."
 
     # Initial conversions if required
     if isinstance(expected, BaseModel):
-        expected = expected.dict()
+        expected = expected.model_dump()
 
     if isinstance(computed, BaseModel):
-        computed = computed.dict()
+        computed = computed.model_dump()
 
     if isinstance(expected, (str, int, bool, complex)):
         if expected != computed:
