@@ -13,7 +13,6 @@ from typing_extensions import Annotated
 import numpy as np
 
 from pydantic import Field, constr, field_validator
-from pydantic.v1 import Field as FE
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ..molparse.from_arrays import from_arrays
@@ -401,34 +400,38 @@ class Molecule(ProtoModel):
         elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], geometry_noise)
 
-    @validator("geometry")
-    def _must_be_3n(cls, v, values, **kwargs):
-        n = len(values["symbols"])
+    @field_validator("geometry")
+    @classmethod
+    def _must_be_3n(cls, v, info):
+        n = len(info.data["symbols"])
         try:
             v = v.reshape(n, 3)
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
         return v
 
-    @validator("masses_", "real_")
-    def _must_be_n(cls, v, values, **kwargs):
-        n = len(values["symbols"])
+    @field_validator("masses_", "real_")
+    @classmethod
+    def _must_be_n(cls, v, info):
+        n = len(info.data["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
         return v
 
-    @validator("real_")
-    def _populate_real(cls, v, values, **kwargs):
+    @field_validator("real_")
+    @classmethod
+    def _populate_real(cls, v, info):
         # Can't use geometry here since its already been validated and not in values
-        n = len(values["symbols"])
+        n = len(info.data["symbols"])
         if len(v) == 0:
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator("fragment_charges_", "fragment_multiplicities_")
-    def _must_be_n_frag(cls, v, values, **kwargs):
-        if "fragments_" in values and values["fragments_"] is not None:
-            n = len(values["fragments_"])
+    @field_validator("fragment_charges_", "fragment_multiplicities_")
+    @classmethod
+    def _must_be_n_frag(cls, v, info):
+        if "fragments_" in info.data and info.data["fragments_"] is not None:
+            n = len(info.data["fragments_"])
             if len(v) != n:
                 raise ValueError(
                     "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
@@ -596,7 +599,7 @@ class Molecule(ProtoModel):
     def dict(self, *args, **kwargs):
         kwargs["by_alias"] = True
         kwargs["exclude_unset"] = True
-        return super().dict(*args, **kwargs)
+        return super().model_dump(*args, **kwargs)
 
     def pretty_print(self):
         r"""Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.

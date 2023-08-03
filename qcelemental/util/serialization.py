@@ -3,10 +3,9 @@ from typing import Any, Union
 
 import numpy as np
 
-try:
-    from pydantic.v1.json import pydantic_encoder
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic.json import pydantic_encoder
+# Might need to do a BaseModel.model_dump because the deprecated docs have both that and to_jsonable_python
+# from pydantic import BaseModel
+from pydantic_core import to_jsonable_python
 
 from .importing import which_import
 
@@ -37,8 +36,8 @@ def msgpackext_encode(obj: Any) -> Any:
 
     # First try pydantic base objects
     try:
-        return pydantic_encoder(obj)
-    except TypeError:
+        return to_jsonable_python(obj)
+    except ValueError:
         pass
 
     if isinstance(obj, np.ndarray):
@@ -123,8 +122,8 @@ def msgpackext_loads(data: bytes) -> Any:
 class JSONExtArrayEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         try:
-            return pydantic_encoder(obj)
-        except TypeError:
+            return to_jsonable_python(obj)
+        except ValueError:
             pass
 
         if isinstance(obj, np.ndarray):
@@ -193,8 +192,8 @@ def jsonext_loads(data: Union[str, bytes]) -> Any:
 class JSONArrayEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         try:
-            return pydantic_encoder(obj)
-        except TypeError:
+            return to_jsonable_python(obj)
+        except ValueError:
             pass
 
         if isinstance(obj, np.ndarray):
@@ -260,8 +259,8 @@ def msgpack_encode(obj: Any) -> Any:
     """
 
     try:
-        return pydantic_encoder(obj)
-    except TypeError:
+        return to_jsonable_python(obj)
+    except ValueError:
         pass
 
     if isinstance(obj, np.ndarray):
