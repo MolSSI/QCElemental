@@ -179,7 +179,7 @@ class Molecule(ProtoModel):
         description="Additional comments for this molecule. Intended for pure human/user consumption and clarity.",
     )
     molecular_charge: float = Field(0.0, description="The net electrostatic charge of the molecule.")  # type: ignore
-    molecular_multiplicity: int = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
+    molecular_multiplicity: Union[int, float] = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
 
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
@@ -251,7 +251,7 @@ class Molecule(ProtoModel):
         "if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
         shape=["nfr"],
     )
-    fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
+    fragment_multiplicities_: Optional[List[Union[int, float]]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
         "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of "
@@ -784,6 +784,12 @@ class Molecule(ProtoModel):
                 data = float_prep(data, CHARGE_NOISE)
             elif field == "molecular_charge":
                 data = float_prep(data, CHARGE_NOISE)
+            elif field == "fragment_multiplicities":
+                if any(isinstance(value, float) for value in data):
+                    data = float_prep(data, CHARGE_NOISE)
+            elif field == "molecular_multiplicity":
+                if isinstance(data, float):
+                    data = float_prep(data, CHARGE_NOISE)
             elif field == "masses":
                 data = float_prep(data, MASS_NOISE)
 
