@@ -3,7 +3,7 @@ Datum Object Model
 """
 
 from decimal import Decimal
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 from typing_extensions import Annotated
 
 import numpy as np
@@ -22,10 +22,28 @@ def cast_complex(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
     """Special helper to serialize NumPy arrays before serializing"""
     if isinstance(v, complex):
         return f'{nxt((v.real, v.imag))}'
-    return f'{nxt(v)}'
+    return nxt(v)
 
 
-AnyArrayComplex = Annotated[Any, WrapSerializer(cast_ndarray), WrapSerializer(cast_complex)]
+def preserve_decimal(v: Any, nxt: SerializerFunctionWrapHandler) -> Union[str, Decimal]:
+    """
+    Ensure Decimal types are preserved on the way out
+
+    This arose because Decimal was serialized to string and "dump" is equal to "serialize" in v2 pydantic
+    https://docs.pydantic.dev/latest/migration/#changes-to-json-schema-generation
+    """
+    if isinstance(v, Decimal):
+        return v
+    return nxt(v)
+
+
+# Serializers are pop'd out of the list in FILO (right to left)
+AnyArrayComplex = Annotated[
+    Any,
+    WrapSerializer(cast_ndarray, when_used="json"),
+    WrapSerializer(cast_complex, when_used="json"),
+    WrapSerializer(preserve_decimal)
+]
 
 
 class Datum(BaseModel):

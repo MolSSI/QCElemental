@@ -576,7 +576,7 @@ class Molecule(ProtoModel):
         r"""
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
-        return Molecule(orient=True, **self.dict())
+        return Molecule(orient=True, **self.model_dump())
 
     def compare(self, other):
         warnings.warn(
@@ -600,10 +600,14 @@ class Molecule(ProtoModel):
 
         return self.get_hash() == other.get_hash()
 
-    def dict(self, *args, **kwargs):
+    def dict(self, **kwargs):
+        warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', DeprecationWarning)
+        return self.model_dump(**kwargs)
+
+    def model_dump(self, **kwargs) -> Dict[str, Any]:
         kwargs["by_alias"] = True
         kwargs["exclude_unset"] = True
-        return super().model_dump(*args, **kwargs)
+        return super().model_dump(**kwargs)
 
     def pretty_print(self):
         r"""Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
@@ -790,7 +794,7 @@ class Molecule(ProtoModel):
 
         Suggest psi4 --> psi4frag and psi4 route to to_string
         """
-        molrec = from_schema(self.dict(), nonphysical=True)
+        molrec = from_schema(self.model_dump(), nonphysical=True)
         return to_string(
             molrec,
             dtype=dtype,
@@ -1291,7 +1295,7 @@ class Molecule(ProtoModel):
             "atomic_numbers": solution.align_atoms(concern_mol.atomic_numbers),
             "mass_numbers": solution.align_atoms(concern_mol.mass_numbers),
         }
-        adict = {**concern_mol.dict(), **aupdate}
+        adict = {**concern_mol.model_dump(), **aupdate}
 
         # preserve intrinsic symmetry with lighter truncation
         amol = Molecule(validate=True, **adict, geometry_noise=13)
@@ -1415,7 +1419,7 @@ class Molecule(ProtoModel):
             "atomic_numbers": perturbation.align_atoms(ref_mol.atomic_numbers),
             "mass_numbers": perturbation.align_atoms(ref_mol.mass_numbers),
         }
-        cdict = {**ref_mol.dict(), **cupdate}
+        cdict = {**ref_mol.model_dump(), **cupdate}
 
         # preserve intrinsic symmetry with lighter truncation
         cmol = Molecule(validate=True, **cdict, geometry_noise=13)

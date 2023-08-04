@@ -84,7 +84,7 @@ class OptimizationInput(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("model", self.input_specification.model.dict()),
+            ("model", self.input_specification.model.model_dump()),
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
         ]
 

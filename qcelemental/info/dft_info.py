@@ -68,4 +68,4 @@ def get(name: str) -> DFTFunctionalInfo:
             name = name.replace(x, "")
             break
 
-    return dftfunctionalinfo.functionals[name].copy()
+    return dftfunctionalinfo.functionals[name].model_copy()

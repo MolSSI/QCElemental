@@ -607,8 +607,8 @@ class WavefunctionProperties(ProtoModel):
         "scf_fock_b",
     )
     @classmethod
-    def _assert2d(cls, v, values):
-        bas = values.get("basis", None)
+    def _assert2d(cls, v, info):
+        bas = info.data.get("basis", None)
 
         # Do not raise multiple errors
         if bas is None:

@@ -37,6 +37,7 @@ class ProtoModel(BaseModel):
     model_config = ExtendedConfigDict(
         frozen=True,
         extra="forbid",
+        populate_by_name=True,  # Allows using alias to populate
         serialize_default_excludes=set(),
         serialize_skip_defaults=False,
         force_skip_defaults=False

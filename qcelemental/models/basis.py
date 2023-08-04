@@ -217,10 +217,10 @@ class BasisSet(ProtoModel):
 
     @field_validator("nbf")
     @classmethod
-    def _check_nbf(cls, v, values):
+    def _check_nbf(cls, v, info):
         # Bad construction, pass on errors
         try:
-            nbf = cls._calculate_nbf(values["atom_map"], values["center_data"])
+            nbf = cls._calculate_nbf(info.data["atom_map"], info.data["center_data"])
         except KeyError:
             return v
 

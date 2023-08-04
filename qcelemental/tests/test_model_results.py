@@ -495,7 +495,7 @@ def test_result_derivatives_array(request):
 def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
     if smodel == "molecule":
         model = qcel.models.Molecule
-        data = result_data_fixture["molecule"].dict()
+        data = result_data_fixture["molecule"].model_dump()
 
     elif smodel == "atomicresultproperties":
         model = qcel.models.AtomicResultProperties
@@ -514,7 +514,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
         data = optimization_data_fixture
 
     instance = model(**data)
-    assert model(**instance.dict())
+    assert model(**instance.model_dump())
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
