@@ -101,9 +101,9 @@ class AtomicResultProperties(ProtoModel):
     scf_quadrupole_moment: Optional[Array[float]] = Field(
         None,
         description="The quadrupole components (redundant; 6 unique).",
-        shape=[3, 3],
         json_schema_extra={
-            "units": "e a0^2"
+            "units": "e a0^2",
+            "shape": [3, 3]
         },
     )
     scf_total_energy: Optional[float] = Field(
@@ -312,8 +312,9 @@ class AtomicResultProperties(ProtoModel):
         None, description="The number of CCSDTQ iterations taken before convergence."
     )
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      force_skip_defaults=True
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(force_skip_defaults=True)
+                                         }
                                       )
 
     def __repr_args__(self) -> "ReprArgs":
@@ -402,62 +403,116 @@ class WavefunctionProperties(ProtoModel):
 
     # Core Hamiltonian
     h_core_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+        None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     h_core_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+        None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     h_effective_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.", shape=["nao", "nao"]
+        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     h_effective_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis", shape=["nao", "nao"]
+        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
 
     # SCF Results
     scf_orbitals_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+        None, description="SCF alpha-spin orbitals in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nmo"],
+        },
     )
     scf_orbitals_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbitals in the AO basis.", shape=["nao", "nmo"]
+        None, description="SCF beta-spin orbitals in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nmo"],
+        },
     )
     scf_density_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin density matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF alpha-spin density matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_density_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin density matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF beta-spin density matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_fock_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF alpha-spin Fock matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_fock_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin Fock matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF beta-spin Fock matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_eigenvalues_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbital eigenvalues.", shape=["nmo"]
+        None, description="SCF alpha-spin orbital eigenvalues.",
+        json_schema_extra={
+            "shape": ["nmo"],
+        },
     )
     scf_eigenvalues_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbital eigenvalues.", shape=["nmo"]
+        None, description="SCF beta-spin orbital eigenvalues.",
+        json_schema_extra={
+            "shape": ["nmo"],
+        },
     )
     scf_occupations_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbital occupations.", shape=["nmo"]
+        None, description="SCF alpha-spin orbital occupations.",
+        json_schema_extra={
+            "shape": ["nmo"],
+        },
     )
     scf_occupations_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbital occupations.", shape=["nmo"]
+        None, description="SCF beta-spin orbital occupations.",
+        json_schema_extra={
+            "shape": ["nmo"],
+        },
     )
 
     # BELOW from qcsk
     scf_coulomb_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF alpha-spin Coulomb matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_coulomb_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin Coulomb matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF beta-spin Coulomb matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_exchange_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF alpha-spin exchange matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
     scf_exchange_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin exchange matrix in the AO basis.", shape=["nao", "nao"]
+        None, description="SCF beta-spin exchange matrix in the AO basis.",
+        json_schema_extra={
+            "shape": ["nao", "nao"],
+        },
     )
 
     # Localized-orbital SCF wavefunction quantities
@@ -511,8 +566,9 @@ class WavefunctionProperties(ProtoModel):
         None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      force_skip_defaults=True
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(force_skip_defaults=True)
+                                         }
                                       )
 
     @field_validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")

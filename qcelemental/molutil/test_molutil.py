@@ -315,9 +315,9 @@ Rotation:
         "mirror": False,
     }
 
-    assert compare_recursive(mill_dict, mill.dict())
+    assert compare_recursive(mill_dict, mill.model_dump())
     mill_dict["rotation"] = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-    assert compare_recursive(mill_dict, mill.dict(encoding="json"))
+    assert compare_recursive(mill_dict, mill.model_dump(encoding="json"))
 
 
 def test_scramble_specific():

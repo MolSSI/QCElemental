@@ -5,7 +5,7 @@ import numpy as np
 from pydantic import Field, field_validator
 
 from ..util import blockwise_contract, blockwise_expand
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, ExtendedConfigDict
 from .types import Array
 
 __all__ = ["AlignmentMill"]
@@ -27,8 +27,7 @@ class AlignmentMill(ProtoModel):
     atommap: Optional[Array[int]] = Field(None, description="Atom exchange map (nat,) for coordinates.")  # type: ignore
     mirror: bool = Field(False, description="Do mirror invert coordinates?")
 
-    class Config:
-        force_skip_defaults = True
+    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
     @field_validator("shift")
     @classmethod

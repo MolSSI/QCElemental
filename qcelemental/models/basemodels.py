@@ -138,9 +138,9 @@ class ProtoModel(BaseModel):
 
         kwargs["exclude"] = (
             kwargs.get("exclude", None) or set()
-        ) | self.__config__.serialize_default_excludes  # type: ignore
-        kwargs.setdefault("exclude_unset", self.__config__.serialize_skip_defaults)  # type: ignore
-        if self.__config__.force_skip_defaults:  # type: ignore
+        ) | self.model_config["serialize_default_excludes"]  # type: ignore
+        kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
+        if self.model_config["force_skip_defaults"]:  # type: ignore
             kwargs["exclude_unset"] = True
 
         data = super().model_dump(**kwargs)

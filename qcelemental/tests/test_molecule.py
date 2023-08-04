@@ -390,7 +390,7 @@ def test_molecule_json_serialization():
 
     assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
 
-    assert water_dimer_minima == Molecule.from_data(water_dimer_minima.json(), dtype="json")
+    assert water_dimer_minima == Molecule.from_data(water_dimer_minima.model_dump_json(), dtype="json")
 
 
 @pytest.mark.parametrize("encoding", serialize_extensions)

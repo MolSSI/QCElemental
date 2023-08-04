@@ -31,10 +31,12 @@ class Provenance(ProtoModel):
     )
     routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
-    model_config = ExtendedConfigDict(canonical_repr=True,
-                                      json_schema_extra=provenance_json_schema_extra,
-                                      **ProtoModel.model_config,
-                                      extra="allow")
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(canonical_repr=True,
+                                                              json_schema_extra=provenance_json_schema_extra,
+                                                              extra="allow")
+                                         }
+                                      )
 
 
 class Model(ProtoModel):
@@ -52,9 +54,11 @@ class Model(ProtoModel):
     )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
-    model_config = ExtendedConfigDict(canonical_repr=True,
-                                      **ProtoModel.model_config,
-                                      extra="allow")
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(canonical_repr=True,
+                                                              extra="allow")
+                                         }
+                                      )
 
 
 class DriverEnum(str, Enum):

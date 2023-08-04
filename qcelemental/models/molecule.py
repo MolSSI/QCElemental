@@ -87,8 +87,9 @@ class Identifiers(ProtoModel):
     pubchem_sid: Optional[str] = Field(None, description="PubChem Substance ID")
     pubchem_conformerid: Optional[str] = Field(None, description="PubChem Conformer ID")
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      serialize_skip_defaults=True
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(serialize_skip_defaults=True)
+                                         }
                                       )
 
 
@@ -342,12 +343,15 @@ class Molecule(ProtoModel):
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      serialize_skip_defaults=True,
-                                      repr_style=lambda self: [("name", self.name),
-                                                               ("formula", self.get_molecular_formula()),
-                                                               ("hash", self.get_hash()[:7])],
-                                      json_schema_extra= molecule_json_schema_extras
+    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
+                                         **ExtendedConfigDict(serialize_skip_defaults=True,
+                                                              repr_style=lambda self: [("name", self.name),
+                                                                                       ("formula",
+                                                                                        self.get_molecular_formula()),
+                                                                                       ("hash", self.get_hash()[:7])],
+                                                              json_schema_extra=molecule_json_schema_extras
+                                                              )
+                                         }
                                       )
     # Alias fields are handled with the Field objects above
 

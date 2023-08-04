@@ -15,6 +15,7 @@ from .common_models import (
     qcschema_optimization_output_default,
     qcschema_torsion_drive_input_default,
     qcschema_torsion_drive_output_default,
+    ExtendedConfigDict,
 )
 from .molecule import Molecule
 from .results import AtomicResult
@@ -43,8 +44,7 @@ class OptimizationProtocols(ProtoModel):
         TrajectoryProtocolEnum.all, description=str(TrajectoryProtocolEnum.__doc__)
     )
 
-    class Config:
-        force_skip_defaults = True
+    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
 class QCInputSpecification(ProtoModel):

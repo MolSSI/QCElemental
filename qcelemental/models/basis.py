@@ -38,7 +38,7 @@ class ElectronShell(ProtoModel):
         ...,
         description="General contraction coefficients for the shell; "
                     "individual list components will be the individual segment contraction coefficients.",
-        min_items=1,
+        min_length=1,
     )
 
     model_config = ExtendedConfigDict(json_schema_extra=electron_shell_json_schema_extra,
@@ -111,15 +111,15 @@ class ECPPotential(ProtoModel):
 
     ecp_type: ECPType = Field(..., description=str(ECPType.__doc__))
     angular_momentum: List[NonnegativeInt] = Field(
-        ..., description="Angular momentum for the potential as an array of integers.", min_items=1
+        ..., description="Angular momentum for the potential as an array of integers.", min_length=1
     )
-    r_exponents: List[int] = Field(..., description="Exponents of the 'r' term.", min_items=1)
-    gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.", min_items=1)
+    r_exponents: List[int] = Field(..., description="Exponents of the 'r' term.", min_length=1)
+    gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.", min_length=1)
     coefficients: List[List[float]] = Field(
         ...,
         description="General contraction coefficients for the potential; "
                     "individual list components will be the individual segment contraction coefficients.",
-        min_items=1,
+        min_length=1,
     )
 
     model_config = ExtendedConfigDict(json_schema_extra=ecp_json_schema_extra,
@@ -163,6 +163,10 @@ class BasisCenter(ProtoModel):
                                       **ProtoModel.model_config)
 
 
+def basis_set_json_schema_extra(schema, model):
+    schema["$schema"] = qcschema_draft
+
+
 class BasisSet(ProtoModel):
     """
     A quantum chemistry basis description.
@@ -191,9 +195,9 @@ class BasisSet(ProtoModel):
                                description="The number of basis functions. Use for convenience or as checksum",
                                validate_default=True)
 
-    class Config(ProtoModel.Config):
-        def schema_extra(schema, model):
-            schema["$schema"] = qcschema_draft
+    model_config = ExtendedConfigDict(**ProtoModel.model_config,
+                                      json_schema_extra=basis_set_json_schema_extra
+                                      )
 
     @field_validator("atom_map")
     @classmethod

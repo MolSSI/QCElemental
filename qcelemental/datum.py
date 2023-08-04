@@ -4,10 +4,28 @@ Datum Object Model
 
 from decimal import Decimal
 from typing import Any, Dict, Optional
+from typing_extensions import Annotated
 
 import numpy as np
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, ConfigDict, WrapSerializer, SerializerFunctionWrapHandler
+
+
+def cast_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
+    """Special helper to list NumPy arrays before serializing"""
+    if isinstance(v, np.ndarray):
+        return f'{nxt(v.flatten().tolist())}'
+    return f'{nxt(v)}'
+
+
+def cast_complex(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
+    """Special helper to serialize NumPy arrays before serializing"""
+    if isinstance(v, complex):
+        return f'{nxt((v.real, v.imag))}'
+    return f'{nxt(v)}'
+
+
+AnyArrayComplex = Annotated[Any, WrapSerializer(cast_ndarray), WrapSerializer(cast_complex)]
 
 
 class Datum(BaseModel):
@@ -35,15 +53,14 @@ class Datum(BaseModel):
     numeric: bool
     label: str
     units: str
-    data: Any
+    data: AnyArrayComplex
     comment: str = ""
     doi: Optional[str] = None
     glossary: str = ""
 
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
-        json_encoders = {np.ndarray: lambda v: v.flatten().tolist(), complex: lambda v: (v.real, v.imag)}
+    model_config = ConfigDict(extra="forbid",
+                              frozen=True,
+                              )
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
         kwargs = {"label": label, "units": units, "data": data, "numeric": numeric}
@@ -89,7 +106,7 @@ class Datum(BaseModel):
         return "\n".join(text)
 
     def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"exclude_unset": True}})
+        return super().model_dump(*args, **{**kwargs, **{"exclude_unset": True}})
 
     def to_units(self, units=None):
         from .physical_constants import constants
