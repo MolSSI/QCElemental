@@ -48,7 +48,7 @@ align = ["networkx", "scipy"]
 test = ["pytest"]
 
 [tool.poetry.group.dev.dependencies]
-black = ">=23.1.0"
+black = ">=22.1.0,<23.0a0"
 mypy = "^1.1.1"
 isort = "5.11.5"
 flake8 = "<6.0.0"
