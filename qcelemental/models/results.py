@@ -3,11 +3,10 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
-
-from pydantic import Field, constr, field_validator, model_serializer
+from pydantic import Field, constr, field_validator
 
 from ..util import provenance_stamp
-from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
+from .basemodels import ExtendedConfigDict, ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
@@ -43,89 +42,64 @@ class AtomicResultProperties(ProtoModel):
     return_gradient: Optional[Array[float]] = Field(
         None,
         description=f"The gradient of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\\ =\\ :attr:`~qcelemental.models.DriverEnum.gradient` computations.",
-        json_schema_extra={
-            "units": "E_h/a0"
-        },
+        json_schema_extra={"units": "E_h/a0"},
     )
     return_hessian: Optional[Array[float]] = Field(
         None,
         description=f"The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\\ =\\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.",
-        json_schema_extra={
-            "units": "E_h/a0^2"
-        },
+        json_schema_extra={"units": "E_h/a0^2"},
     )
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
         None,
         description="The one-electron (core Hamiltonian) energy contribution to the total SCF energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_two_electron_energy: Optional[float] = Field(
         None,
         description="The two-electron energy contribution to the total SCF energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_vv10_energy: Optional[float] = Field(
         None,
         description="The VV10 functional energy contribution to the total SCF energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_xc_energy: Optional[float] = Field(
         None,
         description="The functional (XC) energy contribution to the total SCF energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_dispersion_correction_energy: Optional[float] = Field(
         None,
         description="The dispersion correction appended to an underlying functional when a DFT-D method is requested.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The SCF X, Y, and Z dipole components",
-        json_schema_extra={
-            "units": "e a0"
-        },
+        json_schema_extra={"units": "e a0"},
     )
     scf_quadrupole_moment: Optional[Array[float]] = Field(
         None,
         description="The quadrupole components (redundant; 6 unique).",
-        json_schema_extra={
-            "units": "e a0^2",
-            "shape": [3, 3]
-        },
+        json_schema_extra={"units": "e a0^2", "shape": [3, 3]},
     )
     scf_total_energy: Optional[float] = Field(
         None,
         description="The total electronic energy of the SCF stage of the calculation.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     scf_total_gradient: Optional[Array[float]] = Field(
         None,
         description="The total electronic gradient of the SCF stage of the calculation.",
-        json_schema_extra={
-            "units": "E_h/a0"
-        },
+        json_schema_extra={"units": "E_h/a0"},
     )
     scf_total_hessian: Optional[Array[float]] = Field(
         None,
         description="The total electronic Hessian of the SCF stage of the calculation.",
-        json_schema_extra={
-            "units": "E_h/a0^2"
-        },
+        json_schema_extra={"units": "E_h/a0^2"},
     )
     scf_iterations: Optional[int] = Field(None, description="The number of SCF iterations taken before convergence.")
 
@@ -133,104 +107,74 @@ class AtomicResultProperties(ProtoModel):
     mp2_same_spin_correlation_energy: Optional[float] = Field(
         None,
         description="The portion of MP2 doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
         description="The portion of MP2 doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_singles_energy: Optional[float] = Field(
         None,
         description="The singles portion of the MP2 correlation energy. Zero except in ROHF.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_doubles_energy: Optional[float] = Field(
         None,
         description="The doubles portion of the MP2 correlation energy including same-spin and opposite-spin correlations.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_correlation_energy: Optional[float] = Field(
         None,
         description="The MP2 correlation energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_total_energy: Optional[float] = Field(
         None,
         description="The total MP2 energy (MP2 correlation energy + HF energy).",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     mp2_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The MP2 X, Y, and Z dipole components.",
-        json_schema_extra={
-            "shape": [3],
-            "units": "e a0"
-        },
+        json_schema_extra={"shape": [3], "units": "e a0"},
     )
 
     # CCSD Keywords
     ccsd_same_spin_correlation_energy: Optional[float] = Field(
         None,
         description="The portion of CCSD doubles correlation energy from same-spin (i.e. triplet) correlations, without any user scaling.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_opposite_spin_correlation_energy: Optional[float] = Field(
         None,
         description="The portion of CCSD doubles correlation energy from opposite-spin (i.e. singlet) correlations, without any user scaling.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_singles_energy: Optional[float] = Field(
         None,
         description="The singles portion of the CCSD correlation energy. Zero except in ROHF.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_doubles_energy: Optional[float] = Field(
         None,
         description="The doubles portion of the CCSD correlation energy including same-spin and opposite-spin correlations.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_correlation_energy: Optional[float] = Field(
         None,
         description="The CCSD correlation energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_total_energy: Optional[float] = Field(
         None,
         description="The total CCSD energy (CCSD correlation energy + HF energy).",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The CCSD X, Y, and Z dipole components.",
-        json_schema_extra={
-            "shape": [3],
-            "units": "e a0"
-        },
+        json_schema_extra={"shape": [3], "units": "e a0"},
     )
     ccsd_iterations: Optional[int] = Field(None, description="The number of CCSD iterations taken before convergence.")
 
@@ -238,48 +182,34 @@ class AtomicResultProperties(ProtoModel):
     ccsd_prt_pr_correlation_energy: Optional[float] = Field(
         None,
         description="The CCSD(T) correlation energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_prt_pr_total_energy: Optional[float] = Field(
         None,
         description="The total CCSD(T) energy (CCSD(T) correlation energy + HF energy).",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsd_prt_pr_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The CCSD(T) X, Y, and Z dipole components.",
-        json_schema_extra={
-            "shape": [3],
-            "units": "e a0"
-        },
+        json_schema_extra={"shape": [3], "units": "e a0"},
     )
 
     # CCSDT keywords
     ccsdt_correlation_energy: Optional[float] = Field(
         None,
         description="The CCSDT correlation energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsdt_total_energy: Optional[float] = Field(
         None,
         description="The total CCSDT energy (CCSDT correlation energy + HF energy).",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsdt_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The CCSDT X, Y, and Z dipole components.",
-        json_schema_extra={
-            "shape": [3],
-            "units": "e a0"
-        },
+        json_schema_extra={"shape": [3], "units": "e a0"},
     )
     ccsdt_iterations: Optional[int] = Field(
         None, description="The number of CCSDT iterations taken before convergence."
@@ -289,33 +219,23 @@ class AtomicResultProperties(ProtoModel):
     ccsdtq_correlation_energy: Optional[float] = Field(
         None,
         description="The CCSDTQ correlation energy.",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsdtq_total_energy: Optional[float] = Field(
         None,
         description="The total CCSDTQ energy (CCSDTQ correlation energy + HF energy).",
-        json_schema_extra={
-            "units": "E_h"
-        },
+        json_schema_extra={"units": "E_h"},
     )
     ccsdtq_dipole_moment: Optional[Array[float]] = Field(
         None,
         description="The CCSDTQ X, Y, and Z dipole components.",
-        json_schema_extra={
-            "shape": [3],
-            "units": "e a0"
-        },
+        json_schema_extra={"shape": [3], "units": "e a0"},
     )
     ccsdtq_iterations: Optional[int] = Field(
         None, description="The number of CCSDTQ iterations taken before convergence."
     )
 
-    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
-                                         **ExtendedConfigDict(force_skip_defaults=True)
-                                         }
-                                      )
+    model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
     def __repr_args__(self) -> "ReprArgs":
         return [(k, v) for k, v in self.dict().items()]
@@ -403,25 +323,29 @@ class WavefunctionProperties(ProtoModel):
 
     # Core Hamiltonian
     h_core_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.",
+        None,
+        description="Alpha-spin core (one-electron) Hamiltonian in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     h_core_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin core (one-electron) Hamiltonian in the AO basis.",
+        None,
+        description="Beta-spin core (one-electron) Hamiltonian in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     h_effective_a: Optional[Array[float]] = Field(
-        None, description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.",
+        None,
+        description="Alpha-spin effective core (one-electron) Hamiltonian in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     h_effective_b: Optional[Array[float]] = Field(
-        None, description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis",
+        None,
+        description="Beta-spin effective core (one-electron) Hamiltonian in the AO basis",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
@@ -429,61 +353,71 @@ class WavefunctionProperties(ProtoModel):
 
     # SCF Results
     scf_orbitals_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbitals in the AO basis.",
+        None,
+        description="SCF alpha-spin orbitals in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nmo"],
         },
     )
     scf_orbitals_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbitals in the AO basis.",
+        None,
+        description="SCF beta-spin orbitals in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nmo"],
         },
     )
     scf_density_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin density matrix in the AO basis.",
+        None,
+        description="SCF alpha-spin density matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_density_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin density matrix in the AO basis.",
+        None,
+        description="SCF beta-spin density matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_fock_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin Fock matrix in the AO basis.",
+        None,
+        description="SCF alpha-spin Fock matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_fock_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin Fock matrix in the AO basis.",
+        None,
+        description="SCF beta-spin Fock matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_eigenvalues_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbital eigenvalues.",
+        None,
+        description="SCF alpha-spin orbital eigenvalues.",
         json_schema_extra={
             "shape": ["nmo"],
         },
     )
     scf_eigenvalues_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbital eigenvalues.",
+        None,
+        description="SCF beta-spin orbital eigenvalues.",
         json_schema_extra={
             "shape": ["nmo"],
         },
     )
     scf_occupations_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin orbital occupations.",
+        None,
+        description="SCF alpha-spin orbital occupations.",
         json_schema_extra={
             "shape": ["nmo"],
         },
     )
     scf_occupations_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin orbital occupations.",
+        None,
+        description="SCF beta-spin orbital occupations.",
         json_schema_extra={
             "shape": ["nmo"],
         },
@@ -491,25 +425,29 @@ class WavefunctionProperties(ProtoModel):
 
     # BELOW from qcsk
     scf_coulomb_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin Coulomb matrix in the AO basis.",
+        None,
+        description="SCF alpha-spin Coulomb matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_coulomb_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin Coulomb matrix in the AO basis.",
+        None,
+        description="SCF beta-spin Coulomb matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_exchange_a: Optional[Array[float]] = Field(
-        None, description="SCF alpha-spin exchange matrix in the AO basis.",
+        None,
+        description="SCF alpha-spin exchange matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
     )
     scf_exchange_b: Optional[Array[float]] = Field(
-        None, description="SCF beta-spin exchange matrix in the AO basis.",
+        None,
+        description="SCF beta-spin exchange matrix in the AO basis.",
         json_schema_extra={
             "shape": ["nao", "nao"],
         },
@@ -519,30 +457,22 @@ class WavefunctionProperties(ProtoModel):
     localized_orbitals_a: Optional[Array[float]] = Field(
         None,
         description="Localized alpha-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
-        json_schema_extra={
-            "shape": ["nao", "nmo"]
-        },
+        json_schema_extra={"shape": ["nao", "nmo"]},
     )
     localized_orbitals_b: Optional[Array[float]] = Field(
         None,
         description="Localized beta-spin orbitals in the AO basis. All nmo orbitals are included, even if only a subset were localized.",
-        json_schema_extra={
-            "shape": ["nao", "nmo"]
-        },
+        json_schema_extra={"shape": ["nao", "nmo"]},
     )
     localized_fock_a: Optional[Array[float]] = Field(
         None,
         description="Alpha-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
-        json_schema_extra={
-            "shape": ["nmo", "nmo"]
-        },
+        json_schema_extra={"shape": ["nmo", "nmo"]},
     )
     localized_fock_b: Optional[Array[float]] = Field(
         None,
         description="Beta-spin Fock matrix in the localized molecular orbital basis. All nmo orbitals are included, even if only a subset were localized.",
-        json_schema_extra={
-            "shape": ["nmo", "nmo"]
-        },
+        json_schema_extra={"shape": ["nmo", "nmo"]},
     )
     # ABOVE from qcsk
 
@@ -566,10 +496,7 @@ class WavefunctionProperties(ProtoModel):
         None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
-    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
-                                         **ExtendedConfigDict(force_skip_defaults=True)
-                                         }
-                                      )
+    model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
     @field_validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     @classmethod
@@ -698,6 +625,7 @@ class AtomicResultProtocols(ProtoModel):
 
 ### Primary models
 
+
 def atomic_input_json_schema_extra(schema, model):
     schema["$schema"] = qcschema_draft
 
@@ -729,13 +657,12 @@ class AtomicInput(ProtoModel):
     )
 
     provenance: Provenance = Field(
-        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__doc__),
-        validate_default=True  # Cast inputs to
+        default_factory=partial(provenance_stamp, __name__),
+        description=str(Provenance.__doc__),
+        validate_default=True,  # Cast inputs to
     )
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      json_schema_extra=atomic_input_json_schema_extra
-                                      )
+    model_config = ProtoModel._merge_config_with(json_schema_extra=atomic_input_json_schema_extra)
 
     def __repr_args__(self) -> "ReprArgs":
         return [

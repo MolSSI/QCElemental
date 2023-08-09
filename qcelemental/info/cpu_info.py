@@ -7,9 +7,9 @@ import re
 from enum import Enum
 from functools import lru_cache
 from typing import List, Optional
-from typing_extensions import Annotated
 
-from pydantic import Field, BeforeValidator
+from pydantic import BeforeValidator, Field
+from typing_extensions import Annotated
 
 from ..models import ProtoModel
 

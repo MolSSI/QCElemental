@@ -2,7 +2,6 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-
 from pydantic import BaseModel, Field
 
 import qcelemental as qcel

@@ -1,11 +1,10 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple, Union
 
 import numpy as np
-
 from pydantic import Field
 
-from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
+from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 
 if TYPE_CHECKING:
@@ -27,16 +26,13 @@ class Provenance(ProtoModel):
     version: str = Field(
         "",
         description="The version of the creator, blank otherwise. "
-                    "This should be sortable by the very broad `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.",
+        "This should be sortable by the very broad `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.",
     )
     routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
-    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
-                                         **ExtendedConfigDict(canonical_repr=True,
-                                                              json_schema_extra=provenance_json_schema_extra,
-                                                              extra="allow")
-                                         }
-                                      )
+    model_config = ProtoModel._merge_config_with(
+        canonical_repr=True, json_schema_extra=provenance_json_schema_extra, extra="allow"
+    )
 
 
 class Model(ProtoModel):
@@ -54,11 +50,7 @@ class Model(ProtoModel):
     )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
-    model_config = ExtendedConfigDict(**{**ProtoModel.model_config,
-                                         **ExtendedConfigDict(canonical_repr=True,
-                                                              extra="allow")
-                                         }
-                                      )
+    model_config = ProtoModel._merge_config_with(canonical_repr=True, extra="allow")
 
 
 class DriverEnum(str, Enum):
@@ -83,7 +75,7 @@ class ComputeError(ProtoModel):
     error_type: str = Field(  # type: ignore
         ...,  # Error enumeration not yet strict
         description="The type of error which was thrown. Restrict this field to short classifiers e.g. 'input_error'. "
-                    "Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py",
+        "Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py",
     )
     error_message: str = Field(  # type: ignore
         ...,
@@ -95,9 +87,7 @@ class ComputeError(ProtoModel):
         description="Additional information to bundle with the error.",
     )
 
-    model_config = ExtendedConfigDict(repr_style=["error_type", "error_message"],
-                                      **ProtoModel.model_config
-                                      )
+    model_config = ProtoModel._merge_config_with(repr_style=["error_type", "error_message"])
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]

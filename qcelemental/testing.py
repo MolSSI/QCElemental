@@ -5,7 +5,6 @@ import sys
 from typing import Callable, Dict, List, Tuple, Union
 
 import numpy as np
-
 from pydantic import BaseModel
 
 from qcelemental.models.basemodels import ProtoModel
@@ -303,7 +302,7 @@ def compare(
     return return_handler(allclose, label, message, return_message, quiet)
 
 
-def _compare_recursive(expected, computed, atol, rtol, _prefix: Union[bool, str] =False, equal_phase=False):
+def _compare_recursive(expected, computed, atol, rtol, _prefix: Union[bool, str] = False, equal_phase=False):
     errors = []
     name = _prefix or "root"
     prefix = name + "."

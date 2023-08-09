@@ -1,11 +1,10 @@
 from typing import Optional
 
 import numpy as np
-
 from pydantic import Field, field_validator
 
 from ..util import blockwise_contract, blockwise_expand
-from .basemodels import ProtoModel, ExtendedConfigDict
+from .basemodels import ExtendedConfigDict, ProtoModel
 from .types import Array
 
 __all__ = ["AlignmentMill"]

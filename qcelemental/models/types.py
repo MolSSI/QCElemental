@@ -1,10 +1,10 @@
 from typing import Any, Dict
-from typing_extensions import Annotated, get_args
 
 import numpy as np
 from numpy.typing import NDArray
 from pydantic import SerializerFunctionWrapHandler
 from pydantic_core import core_schema
+from typing_extensions import Annotated, get_args
 
 
 def generate_caster(dtype):
@@ -14,14 +14,15 @@ def generate_caster(dtype):
         except ValueError:
             raise ValueError(f"Could not cast {v} to NumPy Array!")
         return v
+
     return cast_to_np
 
 
 def listandstr_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
     """Special helper to list NumPy arrays before serializing"""
     if isinstance(v, np.ndarray):
-        return f'{nxt(v.tolist())}'
-    return f'{nxt(v)}'
+        return f"{nxt(v.tolist())}"
+    return f"{nxt(v)}"
 
 
 def flatten_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> np.ndarray:
@@ -47,9 +48,8 @@ class ValidatableArrayAnnotation:
         serializer = core_schema.plain_serializer_function_ser_schema(lambda v: v.flatten.tolist(), when_used="json")
         # Affix dtype metadata to the schema we'll use in serialization
         schema = core_schema.no_info_plain_validator_function(
-            validator,
-            serialization=serializer,
-            metadata={"dtype": dtype})
+            validator, serialization=serializer, metadata={"dtype": dtype}
+        )
         return schema
 
     @classmethod

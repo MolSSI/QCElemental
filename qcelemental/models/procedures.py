@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 from pydantic import Field, conlist, constr, field_validator
 
 from ..util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ExtendedConfigDict, ProtoModel
 from .common_models import (
     ComputeError,
     DriverEnum,
@@ -15,7 +15,6 @@ from .common_models import (
     qcschema_optimization_output_default,
     qcschema_torsion_drive_input_default,
     qcschema_torsion_drive_output_default,
-    ExtendedConfigDict,
 )
 from .molecule import Molecule
 from .results import AtomicResult
@@ -143,9 +142,9 @@ class OptimizationSpecification(ProtoModel):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True,
-                        pattern="qcschema_optimization_specification"
-                        ) = "qcschema_optimization_specification"  # type: ignore
+    schema_name: constr(
+        strip_whitespace=True, pattern="qcschema_optimization_specification"
+    ) = "qcschema_optimization_specification"  # type: ignore
     schema_version: int = 1
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
@@ -203,9 +202,9 @@ class TorsionDriveInput(ProtoModel):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True,
-                        pattern=qcschema_torsion_drive_input_default
-                        ) = qcschema_torsion_drive_input_default  # type: ignore
+    schema_name: constr(
+        strip_whitespace=True, pattern=qcschema_torsion_drive_input_default
+    ) = qcschema_torsion_drive_input_default  # type: ignore
     schema_version: int = 1
 
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
@@ -237,9 +236,9 @@ class TorsionDriveResult(TorsionDriveInput):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True,
-                        pattern=qcschema_torsion_drive_output_default
-                        ) = qcschema_torsion_drive_output_default  # type: ignore
+    schema_name: constr(
+        strip_whitespace=True, pattern=qcschema_torsion_drive_output_default
+    ) = qcschema_torsion_drive_output_default  # type: ignore
     schema_version: int = 1
 
     final_energies: Dict[str, float] = Field(

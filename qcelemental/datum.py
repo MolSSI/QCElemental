@@ -4,24 +4,23 @@ Datum Object Model
 
 from decimal import Decimal
 from typing import Any, Dict, Optional, Union
-from typing_extensions import Annotated
 
 import numpy as np
-
-from pydantic import BaseModel, field_validator, ConfigDict, WrapSerializer, SerializerFunctionWrapHandler
+from pydantic import BaseModel, ConfigDict, SerializerFunctionWrapHandler, WrapSerializer, field_validator
+from typing_extensions import Annotated
 
 
 def cast_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
     """Special helper to list NumPy arrays before serializing"""
     if isinstance(v, np.ndarray):
-        return f'{nxt(v.flatten().tolist())}'
-    return f'{nxt(v)}'
+        return f"{nxt(v.flatten().tolist())}"
+    return f"{nxt(v)}"
 
 
 def cast_complex(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
     """Special helper to serialize NumPy arrays before serializing"""
     if isinstance(v, complex):
-        return f'{nxt((v.real, v.imag))}'
+        return f"{nxt((v.real, v.imag))}"
     return nxt(v)
 
 
@@ -42,7 +41,7 @@ AnyArrayComplex = Annotated[
     Any,
     WrapSerializer(cast_ndarray, when_used="json"),
     WrapSerializer(cast_complex, when_used="json"),
-    WrapSerializer(preserve_decimal)
+    WrapSerializer(preserve_decimal),
 ]
 
 
@@ -76,9 +75,10 @@ class Datum(BaseModel):
     doi: Optional[str] = None
     glossary: str = ""
 
-    model_config = ConfigDict(extra="forbid",
-                              frozen=True,
-                              )
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+    )
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
         kwargs = {"label": label, "units": units, "data": data, "numeric": numeric}

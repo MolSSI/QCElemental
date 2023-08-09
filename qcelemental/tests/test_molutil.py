@@ -2,7 +2,6 @@ import math
 import pprint
 
 import numpy as np
-
 import pydantic
 import pytest
 

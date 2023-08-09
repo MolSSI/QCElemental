@@ -1,12 +1,11 @@
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Dict, Optional, Set, Union, List, Callable
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
-
-from pydantic_settings import BaseSettings  # remove when QCFractal merges `next`
 from pydantic import BaseModel, ConfigDict, model_serializer
+from pydantic_settings import BaseSettings  # remove when QCFractal merges `next`
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
@@ -40,7 +39,7 @@ class ProtoModel(BaseModel):
         populate_by_name=True,  # Allows using alias to populate
         serialize_default_excludes=set(),
         serialize_skip_defaults=False,
-        force_skip_defaults=False
+        force_skip_defaults=False,
     )
 
     def __init_subclass__(cls, **kwargs) -> None:
@@ -131,7 +130,7 @@ class ProtoModel(BaseModel):
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
     def dict(self, **kwargs) -> Dict[str, Any]:
-        warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', DeprecationWarning)
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
         return self.model_dump(**kwargs)
 
     @model_serializer(mode="wrap")
@@ -234,7 +233,7 @@ class ProtoModel(BaseModel):
 
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
-        warnings.warn('The `json` method is deprecated; use `model_dump_json` instead.', DeprecationWarning)
+        warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
         return self.model_dump_json(**kwargs)
 
     def model_dump_json(self, **kwargs):
@@ -258,6 +257,22 @@ class ProtoModel(BaseModel):
         from ..testing import compare_recursive
 
         return compare_recursive(self, other, **kwargs)
+
+    @classmethod
+    def _merge_config_with(cls, *args, **kwargs):
+        """
+        Helper function to merge protomodel's config with other args
+
+        args: other ExtendedConfigDict instances or equivalent dicts
+        kwargs: Keys to add into the dictionary raw
+        """
+        output_dict = {**cls.model_config}
+        for arg in args:  # Handle other dicts first
+            output_dict.update(arg)
+        # Update any specific keywords
+        output_dict.update(kwargs)
+        # Finally, check against the Extended Config Dict
+        return ExtendedConfigDict(**output_dict)
 
 
 # remove when QCFractal merges `next`

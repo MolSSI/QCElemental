@@ -2,12 +2,12 @@ import re
 from enum import Enum, EnumMeta
 from textwrap import dedent, indent
 from typing import Union
-from typing_extensions import get_args
 
 from pydantic import BaseModel
 from pydantic.fields import FieldInfo
-from pydantic_settings import BaseSettings
 from pydantic_core import PydanticUndefined
+from pydantic_settings import BaseSettings
+from typing_extensions import get_args
 
 __all__ = ["auto_gen_docs_on_demand", "get_base_docs", "AutoPydanticDocGenerator"]
 
@@ -47,7 +47,7 @@ def parse_type_str(prop: Union[FieldInfo, type]) -> str:
         # Normal Python thing (or at least non-pydantic)
         annotation = prop
 
-    if type(annotation) is type: # and annotation.__module__ == "typing":
+    if type(annotation) is type:
         # True native Python type
         prop_type_str = type_to_string(annotation)
     elif issubclass(annotation.__class__, Enum) or issubclass(annotation.__class__, EnumMeta):

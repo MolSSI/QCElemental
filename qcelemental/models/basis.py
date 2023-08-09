@@ -1,12 +1,11 @@
 from enum import Enum
 from typing import Dict, List, Optional
-from typing_extensions import Annotated
 
 from pydantic import Field, constr, field_validator
+from typing_extensions import Annotated
 
 from ..exceptions import ValidationError
-from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
-
+from .basemodels import ProtoModel, qcschema_draft
 
 NonnegativeInt = Annotated[int, Field(ge=0)]
 
@@ -37,13 +36,11 @@ class ElectronShell(ProtoModel):
     coefficients: List[List[float]] = Field(
         ...,
         description="General contraction coefficients for the shell; "
-                    "individual list components will be the individual segment contraction coefficients.",
+        "individual list components will be the individual segment contraction coefficients.",
         min_length=1,
     )
 
-    model_config = ExtendedConfigDict(json_schema_extra=electron_shell_json_schema_extra,
-                                      **ProtoModel.model_config)
-
+    model_config = ProtoModel._merge_config_with(json_schema_extra=electron_shell_json_schema_extra)
 
     @field_validator("coefficients")
     @classmethod
@@ -118,12 +115,11 @@ class ECPPotential(ProtoModel):
     coefficients: List[List[float]] = Field(
         ...,
         description="General contraction coefficients for the potential; "
-                    "individual list components will be the individual segment contraction coefficients.",
+        "individual list components will be the individual segment contraction coefficients.",
         min_length=1,
     )
 
-    model_config = ExtendedConfigDict(json_schema_extra=ecp_json_schema_extra,
-                                      **ProtoModel.model_config)
+    model_config = ProtoModel._merge_config_with(json_schema_extra=ecp_json_schema_extra)
 
     @field_validator("gaussian_exponents")
     @classmethod
@@ -159,8 +155,7 @@ class BasisCenter(ProtoModel):
         None, description="ECPs, MCPs, or other field potentials for this center.", min_length=1
     )
 
-    model_config = ExtendedConfigDict(json_schema_extra=basis_center_json_schema_extras,
-                                      **ProtoModel.model_config)
+    model_config = ProtoModel._merge_config_with(json_schema_extra=basis_center_json_schema_extras)
 
 
 def basis_set_json_schema_extra(schema, model):
@@ -179,7 +174,7 @@ class BasisSet(ProtoModel):
     schema_version: int = Field(  # type: ignore
         1,
         description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` "
-                    "to which this model conforms.",
+        "to which this model conforms.",
     )
 
     name: str = Field(..., description="The standard basis name if available (e.g., 'cc-pVDZ').")
@@ -191,13 +186,11 @@ class BasisSet(ProtoModel):
         ..., description="Mapping of all atoms/centers in the parent molecule to centers in ``center_data``."
     )
 
-    nbf: Optional[int] = Field(None,
-                               description="The number of basis functions. Use for convenience or as checksum",
-                               validate_default=True)
+    nbf: Optional[int] = Field(
+        None, description="The number of basis functions. Use for convenience or as checksum", validate_default=True
+    )
 
-    model_config = ExtendedConfigDict(**ProtoModel.model_config,
-                                      json_schema_extra=basis_set_json_schema_extra
-                                      )
+    model_config = ProtoModel._merge_config_with(json_schema_extra=basis_set_json_schema_extra)
 
     @field_validator("atom_map")
     @classmethod
