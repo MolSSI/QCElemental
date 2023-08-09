@@ -256,9 +256,9 @@ def test_auto_gen_doc(doc_fixture):
     assert "this is complicated" not in doc_fixture.__doc__
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" in doc_fixture.__doc__
-    assert "z3 : float, Optional" in doc_fixture.__doc__
+    assert "z3 : Optional[float]" in doc_fixture.__doc__
     # Check that docstring does not get duplicated for some reason
-    assert doc_fixture.__doc__.count("z3 : float, Optional") == 1
+    assert doc_fixture.__doc__.count("z3 : Optional[float]") == 1
 
 
 def test_auto_gen_doc_exiting(doc_fixture):

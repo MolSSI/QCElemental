@@ -59,7 +59,7 @@ def test_molecule_data_constructor_dict():
     water_from_json = Molecule.from_data(water_psi.model_dump())
     assert water_psi == water_from_json
 
-    water_from_json = Molecule.from_data(water_psi.json(), "json")
+    water_from_json = Molecule.from_data(water_psi.model_dump_json(), "json")
     assert water_psi == water_from_json
     assert water_psi == Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4")
 
@@ -128,7 +128,7 @@ def test_molecule_np_constructors():
     assert neon_from_psi == neon_from_np
 
     # Check the JSON construct/deconstruct
-    neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
+    neon_from_json = Molecule.from_data(neon_from_psi.model_dump_json(), dtype="json")
     assert neon_from_psi == neon_from_json
     assert neon_from_json.get_molecular_formula() == "Ne4"
 
@@ -386,7 +386,7 @@ def test_molecule_errors_shape():
 
 
 def test_molecule_json_serialization():
-    assert isinstance(water_dimer_minima.json(), str)
+    assert isinstance(water_dimer_minima.model_dump_json(), str)
 
     assert isinstance(water_dimer_minima.model_dump(encoding="json")["geometry"], list)
 

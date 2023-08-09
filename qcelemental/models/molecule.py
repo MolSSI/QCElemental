@@ -12,7 +12,7 @@ from typing_extensions import Annotated
 
 import numpy as np
 
-from pydantic import Field, constr, field_validator
+from pydantic import Field, constr, field_validator, model_serializer
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ..molparse.from_arrays import from_arrays
@@ -331,6 +331,7 @@ class Molecule(ProtoModel):
         default_factory=partial(provenance_stamp, __name__),
         description="The provenance information about how this Molecule (and its attributes) were generated, "
         "provided, and manipulated.",
+        validate_default=True,  # Force casting provenance to dict
     )
     id: Optional[Any] = Field(  # type: ignore
         None,
@@ -604,10 +605,20 @@ class Molecule(ProtoModel):
         warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', DeprecationWarning)
         return self.model_dump(**kwargs)
 
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        kwargs["by_alias"] = True
-        kwargs["exclude_unset"] = True
-        return super().model_dump(**kwargs)
+    @model_serializer(mode="wrap")
+    def _serialize_molecule(self, handler) -> Dict[str, Any]:
+        default_result = handler(self)
+        output_dict = {}
+        for key, value in default_result.items():
+            # Could do this as a single comprehension dict, but this is easier to read
+            # Handle exclude unset is always true
+            if key not in self.model_fields_set:
+                continue
+            # Handle "by_alias" is always true
+            alias = self.model_fields[key].alias
+            output_key = alias if alias is not None else key
+            output_dict[output_key] = value
+        return output_dict
 
     def pretty_print(self):
         r"""Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.

@@ -40,7 +40,6 @@ def is_pydantic(test_object):
 
 
 def parse_type_str(prop: Union[FieldInfo, type]) -> str:
-
     try:
         # Pydantic
         annotation = prop.annotation
@@ -69,7 +68,7 @@ def parse_type_str(prop: Union[FieldInfo, type]) -> str:
             # Stitch together for all of them
             prop_type_objs = []
             for annotation_arg in annotation_args:
-                if type(annotation_arg) is None:
+                if annotation_arg in [None, type(None)]:
                     if base_name == "Optional":
                         # Skip the Optional adding "NoneType" to its Union
                         continue
@@ -124,7 +123,7 @@ def doc_formatter(base_docs: str, target_object: BaseModel, allow_failure: bool 
                 #   description
                 first_line = prop_name + " : " + prop_type_str
                 if not prop.is_required() and (prop.default is None or is_pydantic(prop.default)):
-                    first_line += ", Optional"
+                    first_line += ", Nullable"
                 elif prop.default not in [None, PydanticUndefined]:
                     first_line += f", Default: {prop.default}"
                 # Write the prop description

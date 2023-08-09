@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional, Set, Union, List, Callable
 import numpy as np
 
 from pydantic_settings import BaseSettings  # remove when QCFractal merges `next`
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_serializer
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
@@ -134,16 +134,46 @@ class ProtoModel(BaseModel):
         warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', DeprecationWarning)
         return self.model_dump(**kwargs)
 
+    @model_serializer(mode="wrap")
+    def _serialize_model(self, handler) -> Dict[str, Any]:
+        """
+        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested
+        models and any model config options.
+
+        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been
+        dumped/de-pydantic-ized.
+
+        DEVELOPER WARNING: If default values for nested ProtoModels are not validated and are also not the expected
+        model (e.g. Provenance fields are dicts by default), then this function will throw an error because the self
+        field becomes the current value, not the model.
+        """
+        # Get the default return, let the model_dump handle kwarg
+
+        default_result = handler(self)
+        exclusion_set = self.model_config["serialize_default_excludes"]
+        force_skip_default = self.model_config["force_skip_defaults"]
+        output_dict = {}
+        # Could handle this with a comprehension, easier this way
+        for key, value in default_result.items():
+            # Skip defaults on config level (skip default must be on and k has to be unset)
+            # Also check against exclusion set on a model_config level
+            if (force_skip_default and key not in self.model_fields_set) or key in exclusion_set:
+                continue
+            output_dict[key] = value
+        return output_dict
+
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
-        kwargs["exclude"] = (
-            kwargs.get("exclude", None) or set()
-        ) | self.model_config["serialize_default_excludes"]  # type: ignore
-        kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
-        if self.model_config["force_skip_defaults"]:  # type: ignore
-            kwargs["exclude_unset"] = True
+        # kwargs["exclude"] = (
+        #     kwargs.get("exclude", None) or set()
+        # ) | self.model_config["serialize_default_excludes"]  # type: ignore
+        # kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
+        # if self.model_config["force_skip_defaults"]:  # type: ignore
+        #     kwargs["exclude_unset"] = True
 
+        # Model config defaults will be handled in the @model_serializer function
+        # The @model_serializer function will be called AFTER this is called
         data = super().model_dump(**kwargs)
 
         if encoding is None:

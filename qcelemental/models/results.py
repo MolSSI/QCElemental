@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
 import numpy as np
 
-from pydantic import Field, constr, field_validator
+from pydantic import Field, constr, field_validator, model_serializer
 
 from ..util import provenance_stamp
 from .basemodels import ProtoModel, qcschema_draft, ExtendedConfigDict
@@ -729,7 +729,8 @@ class AtomicInput(ProtoModel):
     )
 
     provenance: Provenance = Field(
-        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__doc__)
+        default_factory=partial(provenance_stamp, __name__), description=str(Provenance.__doc__),
+        validate_default=True  # Cast inputs to
     )
 
     model_config = ExtendedConfigDict(**ProtoModel.model_config,
