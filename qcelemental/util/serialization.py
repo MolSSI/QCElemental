@@ -2,7 +2,6 @@ import json
 from typing import Any, Union
 
 import numpy as np
-
 # Might need to do a BaseModel.model_dump because the deprecated docs have both that and to_jsonable_python
 # from pydantic import BaseModel
 from pydantic_core import to_jsonable_python
