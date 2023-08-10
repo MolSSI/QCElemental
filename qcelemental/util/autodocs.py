@@ -59,7 +59,13 @@ def parse_type_str(prop: Union[FieldInfo, type]) -> str:
     elif annotation.__module__ == "typing":
         # Typing Types
         prop_type_str = ""
-        base_name = annotation.__name__
+        # In python 3.9 and below, annotations didn't have __name__... so... do it the hard way
+        try:
+            base_name = annotation.__name__
+        except AttributeError:
+            splits = re.split(r"\.|\[", str(annotation))
+            # typing, {actual object name}, args... So get index 1
+            base_name = splits[1]
         # Special case Optional
         annotation_args = get_args(annotation)
         prop_type_str += f"{base_name}"

@@ -1,3 +1,4 @@
+import warnings
 from typing import Any, Dict
 
 import numpy as np
@@ -66,6 +67,9 @@ class ValidatableArrayAnnotation:
             items = {"type": "string"}
         elif dt is bool or np.issubdtype(dt, np.bool_):
             items = {"type": "boolean"}
+        else:
+            items = {"type": "Unknown"}
+            warnings.warn(f"Unknown dtype to handle type [{dt}] for array. May result in weird serialization or typing")
         output_schema.update(type="array", items=items)
         return output_schema
 
