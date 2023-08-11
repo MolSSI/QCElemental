@@ -85,7 +85,9 @@ if sys.version_info < (3, 9):
     # So. This code block does a TON of heavy lifting to re-cast the NDArray type with _GenericAlias from python typing.
     # I've tried to reuse as much data from NDArray as I possibly can and still use np.ndarray (which is not
     # np.typing.NDArray) to still correctly type hint np.ndarrays.
+    # See (pre 3.9) numpy/typing/_generic_alias.py
     from typing import _GenericAlias
+
     _shape_info, _dtype_info = NDArray.__args__
     _generic_dtype = _GenericAlias(_dtype_info, _dtype_info.__args__)
     _generic_ndarr = _GenericAlias(np.ndarray, (_shape_info, _generic_dtype))

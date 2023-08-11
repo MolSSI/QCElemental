@@ -63,9 +63,12 @@ def parse_type_str(prop: Union[FieldInfo, type]) -> str:
         try:
             base_name = annotation.__name__
         except AttributeError:
-            splits = re.split(r"\.|\[", str(annotation))
+            splits = re.split(r"\.|\[|,", str(annotation).replace(" ", ""))
             # typing, {actual object name}, args... So get index 1
             base_name = splits[1]
+            # Case Optional[...] -> Union[..., None], leaving the trailing "]" as it's a helpful unique identifier
+            if "Union" in splits and ("NoneType]" in splits or "None]" in splits):
+                base_name = "Optional"
         # Special case Optional
         annotation_args = get_args(annotation)
         prop_type_str += f"{base_name}"
