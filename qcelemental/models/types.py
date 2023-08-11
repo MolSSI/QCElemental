@@ -1,3 +1,4 @@
+import sys
 import warnings
 from typing import Any, Dict
 
@@ -73,5 +74,21 @@ class ValidatableArrayAnnotation:
         output_schema.update(type="array", items=items)
         return output_schema
 
+
+if sys.version_info < (3, 9):
+    # LNN: Ooooooooohhhh boy...
+    # Source information: https://github.com/beartype/beartype/issues/42
+    # Annotated checks against instances of _GenericAlias to see if you can support Data[type_info], e.g. NDArray[int]
+    # (in Python types since 3.9, and kinda of as _GenricAlias before that)
+    # Prior to 3.9, Numpy implemented their own version of _GenericAlias which isn't Python _GenericAlias, so the types
+    # are not considered "Generic" when Annotated[NDArray, Metadata][type_info] does its thing.
+    # So. This code block does a TON of heavy lifting to re-cast the NDArray type with _GenericAlias from python typing.
+    # I've tried to reuse as much data from NDArray as I possibly can and still use np.ndarray (which is not
+    # np.typing.NDArray) to still correctly type hint np.ndarrays.
+    from typing import _GenericAlias
+    _shape_info, _dtype_info = NDArray.__args__
+    _generic_dtype = _GenericAlias(_dtype_info, _dtype_info.__args__)
+    _generic_ndarr = _GenericAlias(np.ndarray, (_shape_info, _generic_dtype))
+    NDArray = _generic_ndarr
 
 Array = Annotated[NDArray, ValidatableArrayAnnotation]
