@@ -87,16 +87,16 @@ def which(
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv["PATH"])
 
     # secondary check, see https://github.com/MolSSI/QCEngine/issues/292
+    local_raise_msg = ""
     if ans and (".pyenv/shims" in ans):
-        raise_msg = raise_msg or ""
-        raise_msg += (
+        local_raise_msg += (
             f"Pyenv shim detected; '{command}' may become available upon `conda activate {ans.split('/')[-1]}`."
         )
         ans = None
 
     if raise_error and ans is None:
         raise ModuleNotFoundError(
-            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}"
+            f"Command '{command}' not found in envvar PATH.{local_raise_msg}{' ' + raise_msg if raise_msg else ''}"
         )
 
     if return_bool:
