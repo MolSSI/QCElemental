@@ -90,7 +90,7 @@ def which(
     local_raise_msg = ""
     if ans and (".pyenv/shims" in ans):
         local_raise_msg += (
-            f"Pyenv shim detected; '{command}' may become available upon `conda activate {ans.split('/')[-1]}`."
+            f"Pyenv shim detected; running {ans} and activating a suggested conda environment may provide '{command}'."
         )
         ans = None
 
