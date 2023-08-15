@@ -6,43 +6,41 @@ from decimal import Decimal
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
-from pydantic import BaseModel, ConfigDict, SerializerFunctionWrapHandler, WrapSerializer, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    SerializationInfo,
+    SerializerFunctionWrapHandler,
+    WrapSerializer,
+    field_validator,
+    model_serializer,
+)
 from typing_extensions import Annotated
 
 
-def cast_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
-    """Special helper to list NumPy arrays before serializing"""
-    if isinstance(v, np.ndarray):
-        return f"{nxt(v.flatten().tolist())}"
-    return f"{nxt(v)}"
-
-
-def cast_complex(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
-    """Special helper to serialize NumPy arrays before serializing"""
-    if isinstance(v, complex):
-        return f"{nxt((v.real, v.imag))}"
-    return nxt(v)
-
-
-def preserve_decimal(v: Any, nxt: SerializerFunctionWrapHandler) -> Union[str, Decimal]:
+def keep_decimal_cast_ndarray_complex(
+    v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
+) -> Union[str, Decimal]:
     """
     Ensure Decimal types are preserved on the way out
 
     This arose because Decimal was serialized to string and "dump" is equal to "serialize" in v2 pydantic
     https://docs.pydantic.dev/latest/migration/#changes-to-json-schema-generation
+
+    This also checks against NumPy Arrays and complex numbers in the instance of being in JSON mode
     """
     if isinstance(v, Decimal):
         return v
+    if info.mode == "json":
+        if isinstance(v, complex):
+            return f"{nxt((v.real, v.imag))}"
+        if isinstance(v, np.ndarray):
+            return f"{nxt(v.flatten().tolist())}"
     return nxt(v)
 
 
-# Serializers are pop'd out of the list in FILO (right to left)
-AnyArrayComplex = Annotated[
-    Any,
-    WrapSerializer(cast_ndarray, when_used="json"),
-    WrapSerializer(cast_complex, when_used="json"),
-    WrapSerializer(preserve_decimal),
-]
+# Only 1 serializer is allowed. You can't chain wrap serializers.
+AnyArrayComplex = Annotated[Any, WrapSerializer(keep_decimal_cast_ndarray_complex)]
 
 
 class Datum(BaseModel):
@@ -123,8 +121,35 @@ class Datum(BaseModel):
         text.append("-" * width)
         return "\n".join(text)
 
+    @model_serializer(mode="wrap")
+    def _serialize_model(self, handler) -> Dict[str, Any]:
+        """
+        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested
+        models and any model config options.
+
+        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been
+        dumped/de-pydantic-ized.
+        """
+
+        # Get the default return, let the model_dump handle kwarg
+        default_result = handler(self)
+        # Exclude unset always
+        output_dict = {key: value for key, value in default_result.items() if key in self.model_fields_set}
+        return output_dict
+
     def dict(self, *args, **kwargs):
-        return super().model_dump(*args, **{**kwargs, **{"exclude_unset": True}})
+        """
+        Passthrough to model_dump without deprecation warning
+        exclude_unset is forced through the model_serializer
+        """
+        return super().model_dump(*args, **kwargs)
+
+    def json(self, *args, **kwargs):
+        """
+        Passthrough to model_dump_sjon without deprecation warning
+        exclude_unset is forced through the model_serializer
+        """
+        return super().model_dump_json(*args, **kwargs)
 
     def to_units(self, units=None):
         from .physical_constants import constants

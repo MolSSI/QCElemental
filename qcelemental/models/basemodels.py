@@ -146,8 +146,8 @@ class ProtoModel(BaseModel):
         model (e.g. Provenance fields are dicts by default), then this function will throw an error because the self
         field becomes the current value, not the model.
         """
-        # Get the default return, let the model_dump handle kwarg
 
+        # Get the default return, let the model_dump handle kwarg
         default_result = handler(self)
         exclusion_set = self.model_config["serialize_default_excludes"]
         force_skip_default = self.model_config["force_skip_defaults"]
