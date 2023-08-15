@@ -25,6 +25,7 @@ def reduce_complex(data):
     # Fallback
     return data
 
+
 def keep_decimal_cast_ndarray_complex(
     v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
 ) -> Union[list, Decimal]:
