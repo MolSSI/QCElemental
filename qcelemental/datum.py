@@ -27,7 +27,7 @@ def reduce_complex(data):
 
 def keep_decimal_cast_ndarray_complex(
     v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
-) -> Union[str, Decimal]:
+) -> Union[list, Decimal]:
     """
     Ensure Decimal types are preserved on the way out
 
@@ -40,12 +40,12 @@ def keep_decimal_cast_ndarray_complex(
         return v
     if info.mode == "json":
         if isinstance(v, complex):
-            return f"{nxt(reduce_complex(v))}"
+            return nxt(reduce_complex(v))
         if isinstance(v, np.ndarray):
             # Handle NDArray and complex NDArray
             flat_list = v.flatten().tolist()
             reduced_list = list(map(reduce_complex, flat_list))
-            return f"{nxt(reduced_list)}"
+            return nxt(reduced_list)
     return nxt(v)
 
 
