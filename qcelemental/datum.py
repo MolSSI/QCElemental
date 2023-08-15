@@ -18,6 +18,13 @@ from pydantic import (
 from typing_extensions import Annotated
 
 
+def reduce_complex(data):
+    # Reduce Complex
+    if isinstance(data, complex):
+        return [data.real, data.imag]
+    # Fallback
+    return data
+
 def keep_decimal_cast_ndarray_complex(
     v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
 ) -> Union[str, Decimal]:
@@ -33,9 +40,12 @@ def keep_decimal_cast_ndarray_complex(
         return v
     if info.mode == "json":
         if isinstance(v, complex):
-            return f"{nxt((v.real, v.imag))}"
+            return f"{nxt(reduce_complex(v))}"
         if isinstance(v, np.ndarray):
-            return f"{nxt(v.flatten().tolist())}"
+            # Handle NDArray and complex NDArray
+            flat_list = v.flatten().tolist()
+            reduced_list = list(map(reduce_complex, flat_list))
+            return f"{nxt(reduced_list)}"
     return nxt(v)
 
 
