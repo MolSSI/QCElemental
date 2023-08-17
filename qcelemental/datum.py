@@ -28,7 +28,7 @@ def reduce_complex(data):
 
 def keep_decimal_cast_ndarray_complex(
     v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
-) -> Union[list, Decimal]:
+) -> Union[list, Decimal, float]:
     """
     Ensure Decimal types are preserved on the way out
 
@@ -47,6 +47,11 @@ def keep_decimal_cast_ndarray_complex(
             flat_list = v.flatten().tolist()
             reduced_list = list(map(reduce_complex, flat_list))
             return nxt(reduced_list)
+        try:
+            # Cast NumPy scalar data types to native Python data type
+            v = v.item()
+        except (AttributeError, ValueError):
+            pass
     return nxt(v)
 
 
