@@ -1,6 +1,9 @@
 from typing import Any, Dict, Optional
 
-from pydantic import Field
+try:
+    from pydantic.v1 import Field
+except ImportError:
+    from pydantic import Field
 from typing_extensions import Literal
 
 

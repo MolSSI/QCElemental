@@ -1,7 +1,10 @@
 from abc import ABC
 from typing import Any, Dict, Optional
 
-from pydantic import Field, validator
+try:
+    from pydantic.v1 import Field, validator
+except ImportError:
+    from pydantic import Field, validator
 from typing_extensions import Literal
 
 from .basemodels import ProtoModel, Provenance

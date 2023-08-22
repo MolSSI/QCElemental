@@ -111,6 +111,7 @@ def result_data_fixture():
                 "program": "fake_prog",
             },
         },
+        "molecule": mol,
         "return_result": 5,
         "success": True,
         "properties": {},
