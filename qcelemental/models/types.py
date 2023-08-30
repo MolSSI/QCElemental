@@ -47,7 +47,7 @@ class ValidatableArrayAnnotation:
         dtype = get_args(dtype_alias)[0]
         validator = generate_caster(dtype)
         # When using JSON, flatten and to list it
-        serializer = core_schema.plain_serializer_function_ser_schema(lambda v: v.flatten.tolist(), when_used="json")
+        serializer = core_schema.plain_serializer_function_ser_schema(lambda v: v.flatten().tolist(), when_used="json")
         # Affix dtype metadata to the schema we'll use in serialization
         schema = core_schema.no_info_plain_validator_function(
             validator, serialization=serializer, metadata={"dtype": dtype}

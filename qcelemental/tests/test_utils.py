@@ -314,12 +314,11 @@ def a_model():
         s: str = "1234"
         n: int = 12
         f: float = 4.0
-        np: qcel.models.types.Array[float] = [[1, 2, 3], [4, 5, 6]]
+        np: qcel.models.types.Array[float] = np.array([[1, 2, 3], [4, 5, 6]])
 
     yield M()
 
 
 def test_json_dumps(a_model):
     ret = qcel.util.json_dumps(a_model)
-    breakpoint()
     assert isinstance(ret, str)
