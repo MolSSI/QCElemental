@@ -2,7 +2,8 @@ import json
 from typing import Any, Union
 
 import numpy as np
-from pydantic_core import to_jsonable_python
+import pydantic
+from pydantic_core import PydanticSerializationError, to_jsonable_python
 
 from .importing import which_import
 
@@ -192,10 +193,19 @@ def jsonext_loads(data: Union[str, bytes]) -> Any:
 
 class JSONArrayEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
+        # See if pydantic can do this on its own.
+        # Note: This calls DIFFERENT logic on BaseModels than BaseModel.model_dump_json, for somoe reason
         try:
             return to_jsonable_python(obj)
         except ValueError:
             pass
+
+        # See if pydantic model can be just serialized if the above couldn't be dumped
+        if isinstance(obj, pydantic.BaseModel):
+            try:
+                return obj.model_dump_json()
+            except PydanticSerializationError:
+                pass
 
         if isinstance(obj, np.ndarray):
             if obj.shape:

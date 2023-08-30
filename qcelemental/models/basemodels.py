@@ -15,6 +15,10 @@ def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
+# Encoders, to be deprecated at some point
+ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
+
+
 class ExtendedConfigDict(ConfigDict, total=False):
     serialize_default_excludes: Set
     """Add items to exclude from serialization"""

@@ -11,10 +11,6 @@ if TYPE_CHECKING:
     ReprArgs = Sequence[Tuple[Optional[str], Any]]
 
 
-# Encoders, to be deprecated
-ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
-
-
 def provenance_json_schema_extra(schema, model):
     schema["$schema"] = qcschema_draft
 
