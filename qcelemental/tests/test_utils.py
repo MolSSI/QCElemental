@@ -306,3 +306,20 @@ def test_auto_gen_doc_delete(doc_fixture):
 def test_serialization(obj, encoding):
     new_obj = qcel.util.deserialize(qcel.util.serialize(obj, encoding=encoding), encoding=encoding)
     assert compare_recursive(obj, new_obj)
+
+
+@pytest.fixture(scope="function")
+def a_model():
+    class M(qcel.models.ProtoModel):
+        s: str = "1234"
+        n: int = 12
+        f: float = 4.0
+        np: qcel.models.types.Array[float] = [[1, 2, 3], [4, 5, 6]]
+
+    yield M()
+
+
+def test_json_dumps(a_model):
+    ret = qcel.util.json_dumps(a_model)
+    breakpoint()
+    assert isinstance(ret, str)
