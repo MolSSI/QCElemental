@@ -3,7 +3,6 @@ from typing import Any, Union
 
 import numpy as np
 from pydantic_core import to_jsonable_python
-from pydantic.deprecated.json import pydantic_encoder
 
 from .importing import which_import
 
@@ -194,7 +193,6 @@ def jsonext_loads(data: Union[str, bytes]) -> Any:
 class JSONArrayEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:
         try:
-            breakpoint()
             return to_jsonable_python(obj)
         except ValueError:
             pass
