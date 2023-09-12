@@ -40,7 +40,7 @@ This project also contains a generator, validator, and translator for [Molecule 
   python -m pip install 'qcelemental[viz,align]`
   ```
 
-- See [documentation](http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/index.html)
+- See [documentation](https://molssi.github.io/QCElemental/)
 
 ### Periodic Table
 
