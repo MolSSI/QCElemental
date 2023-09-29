@@ -77,6 +77,21 @@ def which(
     ModuleNotFoundError
         When `raises_error=True` and command not found. Raises generic message plus any `raise_msg`.
 
+    Notes
+    -----
+    
+    +-------------+-------------+---------------------------------+---------------------------+
+    | return_bool | raise_error | action if found                 | action if not found       |
+    +=============+=============+=================================+===========================+
+    | F (default) | F (default) | return <path to command> string | return None               |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | T           | F (default) | return True                     | return False              |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | F (default) | T           | return <path to command> string | raise ModuleNotFoundError |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | T           | T           | return True                     | raise ModuleNotFoundError |
+    +-------------+-------------+---------------------------------+---------------------------+
+
     """
     if env is None:
         lenv = {"PATH": os.pathsep + os.environ.get("PATH", "") + os.pathsep + os.path.dirname(sys.executable)}
