@@ -775,7 +775,6 @@ class Molecule(ProtoModel):
         m = hashlib.sha1()
         concat = ""
 
-        np.set_printoptions(precision=16)
         for field in self.hash_fields:
             data = getattr(self, field)
             if field == "geometry":
