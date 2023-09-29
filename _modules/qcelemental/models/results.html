@@ -618,6 +618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="nb">all</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
     <span class="n">orbitals_and_eigenvalues</span> <span class="o">=</span> <span class="s2">&quot;orbitals_and_eigenvalues&quot;</span>
+    <span class="n">eigenvalues_and_occupations</span> <span class="o">=</span> <span class="s2">&quot;eigenvalues_and_occupations&quot;</span>
     <span class="n">return_results</span> <span class="o">=</span> <span class="s2">&quot;return_results&quot;</span>
     <span class="n">none</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
 
@@ -813,6 +814,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="p">]</span>
         <span class="k">elif</span> <span class="n">wfnp</span> <span class="o">==</span> <span class="s2">&quot;orbitals_and_eigenvalues&quot;</span><span class="p">:</span>
             <span class="n">return_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;orbitals_a&quot;</span><span class="p">,</span> <span class="s2">&quot;orbitals_b&quot;</span><span class="p">,</span> <span class="s2">&quot;eigenvalues_a&quot;</span><span class="p">,</span> <span class="s2">&quot;eigenvalues_b&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">wfnp</span> <span class="o">==</span> <span class="s2">&quot;eigenvalues_and_occupations&quot;</span><span class="p">:</span>
+            <span class="n">return_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;eigenvalues_a&quot;</span><span class="p">,</span> <span class="s2">&quot;eigenvalues_b&quot;</span><span class="p">,</span> <span class="s2">&quot;occupations_a&quot;</span><span class="p">,</span> <span class="s2">&quot;occupations_b&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Protocol `wavefunction:</span><span class="si">{</span><span class="n">wfnp</span><span class="si">}</span><span class="s2">` is not understood.&quot;</span><span class="p">)</span>
 
