@@ -734,3 +734,35 @@ def test_extras():
 
     mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], extras={"foo": "bar"})
     assert mol.extras["foo"] == "bar"
+
+
+@pytest.mark.parametrize(
+    "mult_in,mult_store,validate",
+    [
+        pytest.param(3, 3, False),
+        pytest.param(3, 3, True),
+        pytest.param(3.1, 3.1, False),
+        pytest.param(3.00001, 3.00001, False),
+        pytest.param(3.0, 3, False),
+        pytest.param(3.0, 3, True),
+        pytest.param(1, 1, False),
+        pytest.param(1, 1, True),
+        pytest.param(1.000000000000000000002, 1, False),
+        pytest.param(1.000000000000000000002, 1, True),
+        pytest.param(1.000000000000002, 1.000000000000002, False),
+        pytest.param(None, 1, False),
+        pytest.param(None, 1, True),
+    ],
+)
+def test_mol_multiplicity_types(mult_in, mult_store, validate):
+    # validate=False passes through pydantic validators. =True passes through molparse.
+    # fractional can only use =False route b/c molparse can't check the physics of chg/mult for float multiplicity.
+    if mult_in is None:
+        mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], validate=validate)
+    else:
+        mol = qcel.models.Molecule(
+            symbols=["He"], geometry=[0, 0, 0], validate=validate, molecular_multiplicity=mult_in
+        )
+
+    assert mult_store == mol.molecular_multiplicity
+    assert type(mult_store) is type(mol.molecular_multiplicity)

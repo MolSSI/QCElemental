@@ -179,7 +179,7 @@ class Molecule(ProtoModel):
         description="Additional comments for this molecule. Intended for pure human/user consumption and clarity.",
     )
     molecular_charge: float = Field(0.0, description="The net electrostatic charge of the molecule.")  # type: ignore
-    molecular_multiplicity: Union[int, float] = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
+    molecular_multiplicity: float = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
 
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
@@ -251,7 +251,7 @@ class Molecule(ProtoModel):
         "if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
         shape=["nfr"],
     )
-    fragment_multiplicities_: Optional[List[Union[int, float]]] = Field(  # type: ignore
+    fragment_multiplicities_: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
         "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of "
@@ -397,7 +397,7 @@ class Molecule(ProtoModel):
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator("fragment_charges_", "fragment_multiplicities_")
+    @validator("fragment_charges_")
     def _must_be_n_frag(cls, v, values, **kwargs):
         if "fragments_" in values and values["fragments_"] is not None:
             n = len(values["fragments_"])
@@ -405,6 +405,23 @@ class Molecule(ProtoModel):
                 raise ValueError(
                     "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
                 )
+        return v
+
+    @validator("fragment_multiplicities_")
+    def _must_be_n_frag_mult(cls, v, values, **kwargs):
+        if "fragments_" in values and values["fragments_"] is not None:
+            n = len(values["fragments_"])
+            if len(v) != n:
+                raise ValueError(
+                    "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
+                )
+        int_ized_v = [(int(m) if m.is_integer() else m) for m in v]
+        return int_ized_v
+
+    @validator("molecular_multiplicity")
+    def _int_if_possible(cls, v, values, **kwargs):
+        if v.is_integer():
+            v = int(v)
         return v
 
     @property
@@ -478,7 +495,7 @@ class Molecule(ProtoModel):
         return fragment_charges
 
     @property
-    def fragment_multiplicities(self) -> List[int]:
+    def fragment_multiplicities(self) -> List[float]:
         fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
         if fragment_multiplicities is None:
             fragment_multiplicities = [self.molecular_multiplicity]

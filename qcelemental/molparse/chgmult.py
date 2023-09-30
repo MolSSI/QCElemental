@@ -101,6 +101,8 @@ def validate_and_fill_chgmult(
     ------
     qcelemental.ValidationError
         When no solution to input arguments subject to the constraints below can be found.
+    TypeError
+        When fractional multiplicity is provided.
 
     Notes
     -----
@@ -299,6 +301,19 @@ def validate_and_fill_chgmult(
     log_full = verbose >= 2
     log_brief = verbose >= 2  # TODO: Move back to 1
     text = []
+
+    def int_if_possible(val):
+        if isinstance(val, float) and val.is_integer():
+            return int(val)
+        else:
+            return val
+
+    molecular_multiplicity = int_if_possible(molecular_multiplicity)
+    fragment_multiplicities = [int_if_possible(m) for m in fragment_multiplicities]
+    if isinstance(molecular_multiplicity, float) or any(isinstance(m, float) for m in fragment_multiplicities):
+        raise TypeError(
+            f"validate_and_fill_chgmult() cannot handle fractional multiplicity. m: {molecular_multiplicity}, fm: {fragment_multiplicities}"
+        )
 
     felez = np.split(zeff, fragment_separators)
     nfr = len(felez)
