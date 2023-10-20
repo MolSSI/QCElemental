@@ -89,6 +89,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#misc">Misc.</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#id1">0.26.0 / 2023-07-31</a><ul>
@@ -357,12 +358,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 <section id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/326">GH#326</a>, <a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/327">GH#327</a>) New protocol option <code class="docutils literal notranslate"><span class="pre">occupations_and_eigenvalues</span></code> added to
+<code class="docutils literal notranslate"><span class="pre">WavefunctionProperties</span></code> to store lightweight fields.</p></li>
+</ul>
 </section>
 <section id="enhancements">
 <h3>Enhancements<a class="headerlink" href="#enhancements" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/322">GH#322</a>) Allow <code class="docutils literal notranslate"><span class="pre">util.which</span></code> to raise a clearer error when handling pyenv shims. Improve docs.</p></li>
+</ul>
 </section>
 <section id="bug-fixes">
 <h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/325">GH#325</a>, <a class="reference external" href="https://github.com/MolSSI/QCElemental/issues/324">GH#324</a>) Ensure <code class="docutils literal notranslate"><span class="pre">util.measure_coordinates</span></code> isn’t returning NaN angles just</dt><dd><p>because floating-point errors are outside arccos’s <code class="docutils literal notranslate"><span class="pre">[-1,</span> <span class="pre">1]</span></code> bounds.</p>
+</dd>
+</dl>
+</li>
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/315">GH#315</a>) Stop resetting numpy print formatting.</p></li>
+</ul>
+</section>
+<section id="misc">
+<h3>Misc.<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/320">GH#320</a>) Reset <code class="docutils literal notranslate"><span class="pre">black</span></code> formatting to 2022.</p></li>
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/327">GH#327</a>) Enable Python v3.12 in poetry.</p></li>
+</ul>
 </section>
 </section>
 <section id="id1">
