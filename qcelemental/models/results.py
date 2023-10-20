@@ -507,7 +507,7 @@ class WavefunctionProtocolEnum(str, Enum):
 
     all = "all"
     orbitals_and_eigenvalues = "orbitals_and_eigenvalues"
-    eigenvalues_and_occupations = "eigenvalues_and_occupations"
+    occupations_and_eigenvalues = "occupations_and_eigenvalues"
     return_results = "return_results"
     none = "none"
 
@@ -703,8 +703,8 @@ class AtomicResult(AtomicInput):
             ]
         elif wfnp == "orbitals_and_eigenvalues":
             return_keep = ["orbitals_a", "orbitals_b", "eigenvalues_a", "eigenvalues_b"]
-        elif wfnp == "eigenvalues_and_occupations":
-            return_keep = ["eigenvalues_a", "eigenvalues_b", "occupations_a", "occupations_b"]
+        elif wfnp == "occupations_and_eigenvalues":
+            return_keep = ["occupations_a", "occupations_b", "eigenvalues_a", "eigenvalues_b"]
         else:
             raise ValueError(f"Protocol `wavefunction:{wfnp}` is not understood.")
 

@@ -308,13 +308,13 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
         ),
         ("return_results", True, ["orbitals_a", "fock_a", "fock_b"], ["orbitals_a", "fock_a"]),
         (
-            "eigenvalues_and_occupations",
+            "occupations_and_eigenvalues",
             True,
             ["orbitals_a", "orbitals_b", "occupations_a", "occupations_b", "eigenvalues_a", "eigenvalues_b"],
             ["occupations_a", "eigenvalues_a"],
         ),
         (
-            "eigenvalues_and_occupations",
+            "occupations_and_eigenvalues",
             False,
             ["orbitals_a", "orbitals_b", "occupations_a", "occupations_b", "eigenvalues_a", "eigenvalues_b"],
             ["occupations_a", "occupations_b", "eigenvalues_a", "eigenvalues_b"],
