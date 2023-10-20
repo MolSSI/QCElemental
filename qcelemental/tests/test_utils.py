@@ -2,11 +2,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-
-try:
-    from pydantic.v1 import BaseModel, Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
@@ -259,9 +255,9 @@ def test_auto_gen_doc(doc_fixture):
     assert "this is complicated" not in doc_fixture.__doc__
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" in doc_fixture.__doc__
-    assert "z3 : float, Optional" in doc_fixture.__doc__
+    assert "z3 : Optional[float]" in doc_fixture.__doc__
     # Check that docstring does not get duplicated for some reason
-    assert doc_fixture.__doc__.count("z3 : float, Optional") == 1
+    assert doc_fixture.__doc__.count("z3 : Optional[float]") == 1
 
 
 def test_auto_gen_doc_exiting(doc_fixture):
@@ -310,3 +306,85 @@ def test_auto_gen_doc_delete(doc_fixture):
 def test_serialization(obj, encoding):
     new_obj = qcel.util.deserialize(qcel.util.serialize(obj, encoding=encoding), encoding=encoding)
     assert compare_recursive(obj, new_obj)
+
+
+@pytest.fixture
+def atomic_result():
+    """Mock AtomicResult output which can be tested against for complex serialization methods"""
+
+    data = {
+        "id": None,
+        "schema_name": "qcschema_output",
+        "schema_version": 1,
+        "molecule": {
+            "schema_name": "qcschema_molecule",
+            "schema_version": 2,
+            "validated": True,
+            "symbols": np.array(["O", "H", "H"], dtype="<U1"),
+            "geometry": np.array(
+                [
+                    [0.0000000000000000, 0.0000000000000000, -0.1242978140796278],
+                    [0.0000000000000000, -1.4344192748456206, 0.9863482549166890],
+                    [0.0000000000000000, 1.4344192748456206, 0.9863482549166890],
+                ]
+            ),
+            "name": "h2o",
+            "molecular_charge": 0.0,
+            "molecular_multiplicity": 1,
+            "masses": np.array([15.9949146195700003, 1.0078250322300000, 1.0078250322300000]),
+            "real": np.array([True, True, True]),
+            "atom_labels": np.array(["", "", ""], dtype="<U1"),
+            "atomic_numbers": np.array([8, 1, 1], dtype=np.int16),
+            "mass_numbers": np.array([16, 1, 1], dtype=np.int16),
+            "fragments": [np.array([0, 1, 2], dtype=np.int32)],
+            "fragment_charges": [0.0],
+            "fragment_multiplicities": [1],
+            "fix_com": True,
+            "fix_orientation": True,
+            "provenance": {
+                "creator": "QCElemental",
+                "version": "0.29.0.dev1",
+                "routine": "qcelemental.molparse.from_string",
+            },
+            "extras": {},
+        },
+        "driver": "gradient",
+        "model": {"method": "unknown", "basis": "unknown"},
+        "keywords": {},
+        "protocols": {},
+        "extras": {
+            "qcvars": {
+                "NUCLEAR REPULSION ENERGY": 9.168193296424349,
+                "CURRENT ENERGY": -76.02663273512756,
+                "CURRENT GRADIENT": np.array(
+                    [
+                        [-0.0000000000000000, 0.0000000000000000, -0.0176416299024253],
+                        [0.0000000000000000, -0.0124384148528182, 0.0088208149511995],
+                        [-0.0000000000000000, 0.0124384148528182, 0.0088208149511995],
+                    ]
+                ),
+            }
+        },
+        "provenance": {"creator": "User", "version": "0.1", "routine": ""},
+        "properties": {"nuclear_repulsion_energy": 9.168193296424349, "return_energy": -76.02663273512756},
+        "wavefunction": None,
+        "return_result": np.array(
+            [
+                [-0.0000000000000000, 0.0000000000000000, -0.0176416299024253],
+                [0.0000000000000000, -0.0124384148528182, 0.0088208149511995],
+                [-0.0000000000000000, 0.0124384148528182, 0.0088208149511995],
+            ]
+        ),
+        "stdout": "User provided energy, gradient, or hessian is returned",
+        "stderr": None,
+        "native_files": {},
+        "success": True,
+        "error": None,
+    }
+
+    yield qcel.models.results.AtomicResult(**data)
+
+
+def test_json_dumps(atomic_result):
+    ret = qcel.util.json_dumps(atomic_result)
+    assert isinstance(ret, str)

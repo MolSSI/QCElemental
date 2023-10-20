@@ -347,7 +347,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
         assert wfn.wavefunction is None
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
-        assert wfn.wavefunction.dict().keys() == expected_keys
+        assert wfn.wavefunction.model_dump().keys() == expected_keys
 
 
 @pytest.mark.parametrize(
@@ -463,8 +463,8 @@ def test_failed_operation(result_data_fixture, request):
         error={"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
     )
     assert isinstance(failed.error, qcel.models.ComputeError)
-    assert isinstance(failed.dict(), dict)
-    failed_json = failed.json()
+    assert isinstance(failed.model_dump(), dict)
+    failed_json = failed.model_dump_json()
     assert isinstance(failed_json, str)
     assert "its all good" in failed_json
 
@@ -507,7 +507,7 @@ def test_result_derivatives_array(request):
 def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
     if smodel == "molecule":
         model = qcel.models.Molecule
-        data = result_data_fixture["molecule"].dict()
+        data = result_data_fixture["molecule"].model_dump()
 
     elif smodel == "atomicresultproperties":
         model = qcel.models.AtomicResultProperties
@@ -526,7 +526,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
         data = optimization_data_fixture
 
     instance = model(**data)
-    assert model(**instance.dict())
+    assert model(**instance.model_dump())
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):

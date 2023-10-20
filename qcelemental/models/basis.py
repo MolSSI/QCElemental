@@ -1,17 +1,13 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
-try:
-    from pydantic.v1 import ConstrainedInt, Field, constr, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import ConstrainedInt, Field, constr, validator
+from pydantic import Field, constr, field_validator
+from typing_extensions import Annotated
 
 from ..exceptions import ValidationError
 from .basemodels import ProtoModel, qcschema_draft
 
-
-class NonnegativeInt(ConstrainedInt):
-    ge = 0
+NonnegativeInt = Annotated[int, Field(ge=0)]
 
 
 class HarmonicType(str, Enum):
@@ -21,42 +17,47 @@ class HarmonicType(str, Enum):
     cartesian = "cartesian"
 
 
+def electron_shell_json_schema_extra(schema, model):
+    # edit to allow string storage of basis sets as BSE uses.
+    # alternately, could `Union[float, str]` above but that loses some validation
+    schema["properties"]["exponents"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
+    schema["properties"]["coefficients"]["items"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
+    schema["properties"]["angular_momentum"].update({"uniqueItems": True})
+
+
 class ElectronShell(ProtoModel):
     """Information for a single electronic shell."""
 
     angular_momentum: List[NonnegativeInt] = Field(
-        ..., description="Angular momentum for the shell as an array of integers.", min_items=1
+        ..., description="Angular momentum for the shell as an array of integers.", min_length=1
     )
     harmonic_type: HarmonicType = Field(..., description=str(HarmonicType.__doc__))
-    exponents: List[float] = Field(..., description="Exponents for the contracted shell.", min_items=1)
+    exponents: List[float] = Field(..., description="Exponents for the contracted shell.", min_length=1)
     coefficients: List[List[float]] = Field(
         ...,
-        description="General contraction coefficients for the shell; individual list components will be the individual segment contraction coefficients.",
-        min_items=1,
+        description="General contraction coefficients for the shell; "
+        "individual list components will be the individual segment contraction coefficients.",
+        min_length=1,
     )
 
-    class Config(ProtoModel.Config):
-        def schema_extra(schema, model):
-            # edit to allow string storage of basis sets as BSE uses. alternately, could `Union[float, str]` above but that loses some validation
-            schema["properties"]["exponents"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
-            schema["properties"]["coefficients"]["items"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
-            schema["properties"]["angular_momentum"].update({"uniqueItems": True})
+    model_config = ProtoModel._merge_config_with(json_schema_extra=electron_shell_json_schema_extra)
 
-    @validator("coefficients")
-    def _check_coefficient_length(cls, v, values):
-        len_exp = len(values["exponents"])
+    @field_validator("coefficients")
+    @classmethod
+    def _check_coefficient_length(cls, v, info):
+        len_exp = len(info.data["exponents"])
         for row in v:
             if len(row) != len_exp:
                 raise ValueError("The length of coefficients does not match the length of exponents.")
 
         return v
 
-    @validator("coefficients")
-    def _check_general_contraction_or_fused(cls, v, values):
-        if len(values["angular_momentum"]) > 1:
-            if len(values["angular_momentum"]) != len(v):
-                raise ValueError("The length for a fused shell must equal the length of coefficients.")
-
+    @field_validator("coefficients")
+    @classmethod
+    def _check_general_contraction_or_fused(cls, v, info):
+        angular_momentum = info.data["angular_momentum"]
+        if len(angular_momentum) > 1 and len(angular_momentum) != len(v):
+            raise ValueError("The length for a fused shell must equal the length of coefficients.")
         return v
 
     def nfunctions(self) -> int:
@@ -94,39 +95,45 @@ class ECPType(str, Enum):
     spinorbit = "spinorbit"
 
 
+def ecp_json_schema_extra(schema, model):
+    # edit to allow string storage of basis sets as BSE uses.
+    # alternately, could `Union[float, str]` above but that loses some validation
+    schema["properties"]["gaussian_exponents"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
+    schema["properties"]["coefficients"]["items"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
+    schema["properties"]["angular_momentum"].update({"uniqueItems": True})
+
+
 class ECPPotential(ProtoModel):
     """Information for a single ECP potential."""
 
     ecp_type: ECPType = Field(..., description=str(ECPType.__doc__))
     angular_momentum: List[NonnegativeInt] = Field(
-        ..., description="Angular momentum for the potential as an array of integers.", min_items=1
+        ..., description="Angular momentum for the potential as an array of integers.", min_length=1
     )
-    r_exponents: List[int] = Field(..., description="Exponents of the 'r' term.", min_items=1)
-    gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.", min_items=1)
+    r_exponents: List[int] = Field(..., description="Exponents of the 'r' term.", min_length=1)
+    gaussian_exponents: List[float] = Field(..., description="Exponents of the 'gaussian' term.", min_length=1)
     coefficients: List[List[float]] = Field(
         ...,
-        description="General contraction coefficients for the potential; individual list components will be the individual segment contraction coefficients.",
-        min_items=1,
+        description="General contraction coefficients for the potential; "
+        "individual list components will be the individual segment contraction coefficients.",
+        min_length=1,
     )
 
-    class Config(ProtoModel.Config):
-        def schema_extra(schema, model):
-            # edit to allow string storage of basis sets as BSE uses. alternately, could `Union[float, str]` above but that loses some validation
-            schema["properties"]["gaussian_exponents"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
-            schema["properties"]["coefficients"]["items"]["items"] = {"anyOf": [{"type": "number"}, {"type": "string"}]}
-            schema["properties"]["angular_momentum"].update({"uniqueItems": True})
+    model_config = ProtoModel._merge_config_with(json_schema_extra=ecp_json_schema_extra)
 
-    @validator("gaussian_exponents")
-    def _check_gaussian_exponents_length(cls, v, values):
-        len_exp = len(values["r_exponents"])
+    @field_validator("gaussian_exponents")
+    @classmethod
+    def _check_gaussian_exponents_length(cls, v, info):
+        len_exp = len(info.data["r_exponents"])
         if len(v) != len_exp:
             raise ValueError("The length of gaussian_exponents does not match the length of `r` exponents.")
 
         return v
 
-    @validator("coefficients")
-    def _check_coefficient_length(cls, v, values):
-        len_exp = len(values["r_exponents"])
+    @field_validator("coefficients")
+    @classmethod
+    def _check_coefficient_length(cls, v, info):
+        len_exp = len(info.data["r_exponents"])
         for row in v:
             if len(row) != len_exp:
                 raise ValueError("The length of coefficients does not match the length of `r` exponents.")
@@ -134,19 +141,25 @@ class ECPPotential(ProtoModel):
         return v
 
 
+def basis_center_json_schema_extras(schema, model):
+    schema["properties"]["electron_shells"].update({"uniqueItems": True})
+    schema["properties"]["ecp_potentials"].update({"uniqueItems": True})
+
+
 class BasisCenter(ProtoModel):
     """Data for a single atom/center in a basis set."""
 
-    electron_shells: List[ElectronShell] = Field(..., description="Electronic shells for this center.", min_items=1)
+    electron_shells: List[ElectronShell] = Field(..., description="Electronic shells for this center.", min_length=1)
     ecp_electrons: int = Field(0, description="Number of electrons replaced by ECP, MCP, or other field potentials.")
     ecp_potentials: Optional[List[ECPPotential]] = Field(
-        None, description="ECPs, MCPs, or other field potentials for this center.", min_items=1
+        None, description="ECPs, MCPs, or other field potentials for this center.", min_length=1
     )
 
-    class Config(ProtoModel.Config):
-        def schema_extra(schema, model):
-            schema["properties"]["electron_shells"].update({"uniqueItems": True})
-            schema["properties"]["ecp_potentials"].update({"uniqueItems": True})
+    model_config = ProtoModel._merge_config_with(json_schema_extra=basis_center_json_schema_extras)
+
+
+def basis_set_json_schema_extra(schema, model):
+    schema["$schema"] = qcschema_draft
 
 
 class BasisSet(ProtoModel):
@@ -154,13 +167,14 @@ class BasisSet(ProtoModel):
     A quantum chemistry basis description.
     """
 
-    schema_name: constr(strip_whitespace=True, regex="^(qcschema_basis)$") = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, pattern="^(qcschema_basis)$") = Field(  # type: ignore
         "qcschema_basis",
-        description=(f"The QCSchema specification to which this model conforms. Explicitly fixed as qcschema_basis."),
+        description=f"The QCSchema specification to which this model conforms. Explicitly fixed as qcschema_basis.",
     )
     schema_version: int = Field(  # type: ignore
         1,
-        description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` to which this model conforms.",
+        description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` "
+        "to which this model conforms.",
     )
 
     name: str = Field(..., description="The standard basis name if available (e.g., 'cc-pVDZ').")
@@ -172,19 +186,20 @@ class BasisSet(ProtoModel):
         ..., description="Mapping of all atoms/centers in the parent molecule to centers in ``center_data``."
     )
 
-    nbf: Optional[int] = Field(None, description="The number of basis functions. Use for convenience or as checksum")
+    nbf: Optional[int] = Field(
+        None, description="The number of basis functions. Use for convenience or as checksum", validate_default=True
+    )
 
-    class Config(ProtoModel.Config):
-        def schema_extra(schema, model):
-            schema["$schema"] = qcschema_draft
+    model_config = ProtoModel._merge_config_with(json_schema_extra=basis_set_json_schema_extra)
 
-    @validator("atom_map")
-    def _check_atom_map(cls, v, values):
+    @field_validator("atom_map")
+    @classmethod
+    def _check_atom_map(cls, v, info):
         sv = set(v)
 
         # Center_data validation error, skipping
         try:
-            missing = sv - values["center_data"].keys()
+            missing = sv - info.data["center_data"].keys()
         except KeyError:
             return v
 
@@ -193,11 +208,12 @@ class BasisSet(ProtoModel):
 
         return v
 
-    @validator("nbf", always=True)
-    def _check_nbf(cls, v, values):
+    @field_validator("nbf")
+    @classmethod
+    def _check_nbf(cls, v, info):
         # Bad construction, pass on errors
         try:
-            nbf = cls._calculate_nbf(values["atom_map"], values["center_data"])
+            nbf = cls._calculate_nbf(info.data["atom_map"], info.data["center_data"])
         except KeyError:
             return v
 

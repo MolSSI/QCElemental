@@ -38,7 +38,7 @@ water_dimer_minima = Molecule.from_data(
 
 
 def test_molecule_data_constructor_numpy():
-    water_psi = water_dimer_minima.copy()
+    water_psi = water_dimer_minima.model_copy()
     ele = np.array(water_psi.atomic_numbers).reshape(-1, 1)
     npwater = np.hstack((ele, water_psi.geometry * qcel.constants.conversion_factor("Bohr", "angstrom")))
 
@@ -53,13 +53,13 @@ def test_molecule_data_constructor_numpy():
 
 
 def test_molecule_data_constructor_dict():
-    water_psi = water_dimer_minima.copy()
+    water_psi = water_dimer_minima.model_copy()
 
     # Check the JSON construct/deconstruct
-    water_from_json = Molecule.from_data(water_psi.dict())
+    water_from_json = Molecule.from_data(water_psi.model_dump())
     assert water_psi == water_from_json
 
-    water_from_json = Molecule.from_data(water_psi.json(), "json")
+    water_from_json = Molecule.from_data(water_psi.model_dump_json(), "json")
     assert water_psi == water_from_json
     assert water_psi == Molecule.from_data(water_psi.to_string("psi4"), dtype="psi4")
 
@@ -128,22 +128,22 @@ def test_molecule_np_constructors():
     assert neon_from_psi == neon_from_np
 
     # Check the JSON construct/deconstruct
-    neon_from_json = Molecule.from_data(neon_from_psi.json(), dtype="json")
+    neon_from_json = Molecule.from_data(neon_from_psi.model_dump_json(), dtype="json")
     assert neon_from_psi == neon_from_json
     assert neon_from_json.get_molecular_formula() == "Ne4"
 
 
 def test_molecule_compare():
-    water_molecule2 = water_molecule.copy()
+    water_molecule2 = water_molecule.model_copy()
     assert water_molecule2 == water_molecule
 
-    water_molecule3 = water_molecule.copy(update={"geometry": (water_molecule.geometry + np.array([0.1, 0, 0]))})
+    water_molecule3 = water_molecule.model_copy(update={"geometry": (water_molecule.geometry + np.array([0.1, 0, 0]))})
     assert water_molecule != water_molecule3
 
 
 def test_water_minima_data():
     # Give it a name
-    mol_dict = water_dimer_minima.dict()
+    mol_dict = water_dimer_minima.model_dump()
     mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
 
@@ -174,7 +174,7 @@ def test_water_minima_data():
 
 
 def test_water_minima_fragment():
-    mol = water_dimer_minima.copy()
+    mol = water_dimer_minima.model_copy()
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
     assert frag_0.get_hash() == "5f31757232a9a594c46073082534ca8a6806d367"  # pragma: allowlist secret
@@ -194,12 +194,12 @@ def test_water_minima_fragment():
 
 
 def test_pretty_print():
-    mol = water_dimer_minima.copy()
+    mol = water_dimer_minima.model_copy()
     assert isinstance(mol.pretty_print(), str)
 
 
 def test_to_string():
-    mol = water_dimer_minima.copy()
+    mol = water_dimer_minima.model_copy()
     assert isinstance(mol.to_string("psi4"), str)
 
 
@@ -365,32 +365,32 @@ def test_water_orient():
 
 
 def test_molecule_errors_extra():
-    data = water_dimer_minima.dict(exclude_unset=True)
+    data = water_dimer_minima.model_dump(exclude_unset=True)
     data["whatever"] = 5
     with pytest.raises(Exception):
         Molecule(**data, validate=False)
 
 
 def test_molecule_errors_connectivity():
-    data = water_molecule.dict()
+    data = water_molecule.model_dump()
     data["connectivity"] = [(-1, 5, 5)]
     with pytest.raises(Exception):
         Molecule(**data)
 
 
 def test_molecule_errors_shape():
-    data = water_molecule.dict()
+    data = water_molecule.model_dump()
     data["geometry"] = list(range(8))
     with pytest.raises(Exception):
         Molecule(**data)
 
 
 def test_molecule_json_serialization():
-    assert isinstance(water_dimer_minima.json(), str)
+    assert isinstance(water_dimer_minima.model_dump_json(), str)
 
-    assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
+    assert isinstance(water_dimer_minima.model_dump(encoding="json")["geometry"], list)
 
-    assert water_dimer_minima == Molecule.from_data(water_dimer_minima.json(), dtype="json")
+    assert water_dimer_minima == Molecule.from_data(water_dimer_minima.model_dump_json(), dtype="json")
 
 
 @pytest.mark.parametrize("encoding", serialize_extensions)
@@ -521,10 +521,10 @@ def test_molecule_repeated_hashing():
     h1 = mol.get_hash()
     assert mol.get_molecular_formula() == "H2O2"
 
-    mol2 = Molecule(orient=False, **mol.dict())
+    mol2 = Molecule(orient=False, **mol.model_dump())
     assert h1 == mol2.get_hash()
 
-    mol3 = Molecule(orient=False, **mol2.dict())
+    mol3 = Molecule(orient=False, **mol2.model_dump())
     assert h1 == mol3.get_hash()
 
 
@@ -694,7 +694,7 @@ def test_sparse_molecule_fields(mol_string, extra_keys):
     if extra_keys is not None:
         expected_keys |= extra_keys
 
-    diff_keys = mol.dict().keys() ^ expected_keys
+    diff_keys = mol.model_dump().keys() ^ expected_keys
     assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
 
 
@@ -703,11 +703,11 @@ def test_sparse_molecule_connectivity():
     A bit of a weird test, but because we set connectivity it should carry through.
     """
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
-    assert "connectivity" in mol.dict()
-    assert mol.dict()["connectivity"] is None
+    assert "connectivity" in mol.model_dump()
+    assert mol.model_dump()["connectivity"] is None
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
-    assert "connectivity" not in mol.dict()
+    assert "connectivity" not in mol.model_dump()
 
 
 def test_bad_isotope_spec():

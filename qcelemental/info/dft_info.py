@@ -4,10 +4,7 @@ Contains metadata about density functionals
 
 from typing import Dict
 
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic import Field
 
 from ..models import ProtoModel
 
@@ -71,4 +68,4 @@ def get(name: str) -> DFTFunctionalInfo:
             name = name.replace(x, "")
             break
 
-    return dftfunctionalinfo.functionals[name].copy()
+    return dftfunctionalinfo.functionals[name].model_copy()

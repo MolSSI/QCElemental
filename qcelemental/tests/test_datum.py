@@ -1,11 +1,7 @@
 from decimal import Decimal
 
 import numpy as np
-
-try:
-    import pydantic.v1 as pydantic
-except ImportError:  # Will also trap ModuleNotFoundError
-    import pydantic
+import pydantic
 import pytest
 
 import qcelemental as qcel

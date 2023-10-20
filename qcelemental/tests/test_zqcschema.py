@@ -9,7 +9,7 @@ from .addons import _data_path
 
 @pytest.fixture(scope="module")
 def qcschema_models():
-    return {md.__name__: json.loads(md.schema_json()) for md in qcel.models.qcschema_models()}
+    return {md.__name__: md.model_json_schema() for md in qcel.models.qcschema_models()}
 
 
 files = sorted(_data_path.rglob("*.json"))

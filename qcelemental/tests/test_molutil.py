@@ -2,11 +2,7 @@ import math
 import pprint
 
 import numpy as np
-
-try:
-    import pydantic.v1 as pydantic
-except ImportError:  # Will also trap ModuleNotFoundError
-    import pydantic
+import pydantic
 import pytest
 
 import qcelemental as qcel
@@ -57,8 +53,8 @@ def test_relative_geoms_align_free(request):
             do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
 
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        rmolrec = qcel.molparse.from_schema(s22_12.model_dump())
+        cmolrec = qcel.molparse.from_schema(cmol.model_dump())
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
@@ -71,8 +67,8 @@ def test_relative_geoms_align_fixed(request):
             do_shift=False, do_rotate=False, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
 
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        rmolrec = qcel.molparse.from_schema(s22_12.model_dump())
+        cmolrec = qcel.molparse.from_schema(cmol.model_dump())
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
@@ -318,9 +314,9 @@ Rotation:
         "mirror": False,
     }
 
-    assert compare_recursive(mill_dict, mill.dict())
+    assert compare_recursive(mill_dict, mill.model_dump())
     mill_dict["rotation"] = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-    assert compare_recursive(mill_dict, mill.dict(encoding="json"))
+    assert compare_recursive(mill_dict, mill.model_dump(encoding="json"))
 
 
 def test_scramble_specific():
