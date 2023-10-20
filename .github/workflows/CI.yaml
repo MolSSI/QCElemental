@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
       - name: Install poetry
-        run: pip install poetry<1.4
+        run: pip install "poetry<1.4"
       # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed
       # -i is zero-length extension which does effectively in-place sub.
       # Can't do -i '' because Ubuntu sed is -i{suffix} whereas OSX sed is -i {suffix}... ugh
