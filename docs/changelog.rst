@@ -24,12 +24,19 @@ Breaking Changes
 
 New Features
 ++++++++++++
+- (:pr:`326`, :pr:`327`) New protocol option ``occupations_and_eigenvalues`` added to
+  ``WavefunctionProperties`` to store lightweight fields.
 
 Enhancements
 ++++++++++++
+- (:pr:`322`) Allow ``util.which`` to raise a clearer error when handling pyenv shims. Improve docs.
+- (:pr:`320`) Reset ``black`` formatting to 2022.
 
 Bug Fixes
 +++++++++
+- (:pr:`325`, :issue:`324`) Ensure ``util.measure_coordinates`` isn't returning NaN angles just
+   because floating-point errors are outside arccos's ``[-1, 1]`` bounds.
+- (:pr:`315`) Stop resetting numpy print formatting.
 
 
 0.26.0 / 2023-07-31
