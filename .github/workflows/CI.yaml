@@ -35,7 +35,9 @@ jobs:
         if: matrix.pydantic-version == '1'
       - name: Install repo with poetry (full deps)
         if: matrix.python-version != '3.9'
-        run: poetry install --no-interaction --no-ansi --all-extras
+        run: |
+          poetry config installer.max-workers 1
+          poetry install --no-interaction --no-ansi --all-extras
       - name: Install repo with poetry (min deps)
         if: matrix.python-version == '3.9'
         run: poetry install --no-interaction --no-ansi --extras test
