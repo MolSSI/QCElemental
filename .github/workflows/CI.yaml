@@ -5,15 +5,24 @@ on:
     branches:
       - master
   pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: "9 16 * * 1"
 
 jobs:
   test:
-    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.7", "3.9", "3.11", "3.12"]
         pydantic-version: ["1", "2"]
+        runs-on: [ubuntu-latest, windows-latest]
+        exclude:
+          - runs-on: windows-latest
+            pydantic-version: "1"
+    name: "🐍 ${{ matrix.python-version }} • ${{ matrix.pydantic-version }} • ${{ matrix.runs-on }}"
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,9 +39,9 @@ jobs:
       # ^ start of line, pydantic, optional spaces and > sign, capture the version, replace with ^{version}
       # Should avoid also replacing the autodoc-pydantic spec later on.
       - name: Sed replace pydantic on repo
+        if: matrix.pydantic-version == '1'
         run: |
           sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
-        if: matrix.pydantic-version == '1'
       - name: Install repo with poetry (full deps)
         if: matrix.python-version != '3.9'
         run: poetry install --no-interaction --no-ansi --all-extras
