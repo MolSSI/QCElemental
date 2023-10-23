@@ -40,11 +40,13 @@ Bug Fixes
 - (:pr:`325`, :issue:`324`) Ensure ``util.measure_coordinates`` isn't returning NaN angles just
    because floating-point errors are outside arccos's ``[-1, 1]`` bounds.
 - (:pr:`315`) Stop resetting numpy print formatting.
+- (:pr:`328`) TODO
 
 Misc.
 +++++
 - (:pr:`320`) Reset ``black`` formatting to 2022.
 - (:pr:`327`) Enable Python v3.12 in poetry.
+- (:pr:`328`) Test on Windows.
 
 
 0.26.0 / 2023-07-31
