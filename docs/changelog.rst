@@ -20,7 +20,7 @@ Changelog
 .. +++++
 
 
-0.27.0 / 2023-10-DD (Unreleased)
+0.27.0 / 2023-10-24
 -------------------
 
 Breaking Changes
