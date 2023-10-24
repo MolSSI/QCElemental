@@ -20,7 +20,7 @@ Changelog
 .. +++++
 
 
-Unreleased
+0.27.0 / 2023-10-DD (Unreleased)
 -------------------
 
 Breaking Changes
@@ -40,11 +40,15 @@ Bug Fixes
 - (:pr:`325`, :issue:`324`) Ensure ``util.measure_coordinates`` isn't returning NaN angles just
    because floating-point errors are outside arccos's ``[-1, 1]`` bounds.
 - (:pr:`315`) Stop resetting numpy print formatting.
+- (:pr:`328`) Add workaround for only python v3.12.0 and psi4 (can be expanded) to handle
+  ``util.which`` on Windows when a cmd (non-executable) and a cmd.<executable_extension> live
+  side-by-side. Otherwise see ``[WinError 193] %1 is not a valid Win32 application``.
 
 Misc.
 +++++
 - (:pr:`320`) Reset ``black`` formatting to 2022.
 - (:pr:`327`) Enable Python v3.12 in poetry.
+- (:pr:`328`) Start Windows testing and cron testing.
 
 
 0.26.0 / 2023-07-31

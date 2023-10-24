@@ -99,6 +99,11 @@ def which(
         lenv = {"PATH": os.pathsep.join([os.path.abspath(x) for x in env.split(os.pathsep) if x != ""])}
     lenv = {k: v for k, v in lenv.items() if v is not None}
 
+    if sys.platform == "win32" and sys.version_info >= (3, 12, 0) and sys.version_info < (3, 12, 1):
+        # https://github.com/python/cpython/issues/109590
+        if command == "psi4":
+            command = "psi4.bat"
+
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv["PATH"])
 
     # secondary check, see https://github.com/MolSSI/QCEngine/issues/292
