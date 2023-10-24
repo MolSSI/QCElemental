@@ -84,7 +84,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api.html">QCElemental API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#unreleased">Unreleased</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dd-unreleased">0.27.0 / 2023-10-DD (Unreleased)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#enhancements">Enhancements</a></li>
@@ -351,8 +351,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading"></a></h1>
-<section id="unreleased">
-<h2>Unreleased<a class="headerlink" href="#unreleased" title="Permalink to this heading"></a></h2>
+<section id="dd-unreleased">
+<h2>0.27.0 / 2023-10-DD (Unreleased)<a class="headerlink" href="#dd-unreleased" title="Permalink to this heading"></a></h2>
 <section id="breaking-changes">
 <h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this heading"></a></h3>
 </section>
@@ -378,6 +378,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 </li>
 <li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/315">GH#315</a>) Stop resetting numpy print formatting.</p></li>
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/328">GH#328</a>) Add workaround for only python v3.12.0 and psi4 (can be expanded) to handle
+<code class="docutils literal notranslate"><span class="pre">util.which</span></code> on Windows when a cmd (non-executable) and a cmd.&lt;executable_extension&gt; live
+side-by-side. Otherwise see <code class="docutils literal notranslate"><span class="pre">[WinError</span> <span class="pre">193]</span> <span class="pre">%1</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">Win32</span> <span class="pre">application</span></code>.</p></li>
 </ul>
 </section>
 <section id="misc">
@@ -385,6 +388,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul class="simple">
 <li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/320">GH#320</a>) Reset <code class="docutils literal notranslate"><span class="pre">black</span></code> formatting to 2022.</p></li>
 <li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/327">GH#327</a>) Enable Python v3.12 in poetry.</p></li>
+<li><p>(<a class="reference external" href="https://github.com/MolSSI/QCElemental/pull/328">GH#328</a>) Start Windows testing and cron testing.</p></li>
 </ul>
 </section>
 </section>
