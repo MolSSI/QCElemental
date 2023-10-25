@@ -104,9 +104,9 @@ def which(
     if sys.platform == "win32" and sys.version_info >= (3, 12, 0) and sys.version_info < (3, 12, 1):
         # https://github.com/python/cpython/issues/109590
         if command == "psi4":
-            ans = shutil.which("psi4.bat", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
+            ans = shutil.which("psi4.exe", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
             if ans is None:
-                ans = shutil.which("psi4.exe", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
+                ans = shutil.which("psi4.bat", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
 
     # secondary check, see https://github.com/MolSSI/QCEngine/issues/292
     local_raise_msg = ""
