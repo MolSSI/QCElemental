@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2023-MM-DD
+.. X.Y.0 / 2023-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -18,6 +18,15 @@ Changelog
 ..
 .. Misc.
 .. +++++
+
+
+0.27.1 / 2023-10-26 (Unreleased)
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`329`) Continues :pr:`328` adding ``util.which`` workaround for only python v3.12.0 and psi4
+  (can be expanded) to correctly select among cmd, cmd.bat, cmd.exe.
 
 
 0.27.0 / 2023-10-24
