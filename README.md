@@ -117,7 +117,7 @@ qcelemental.exceptions.DataUnavailableError: ('covalent radius', 'Lv')
 
 ### van der Waals Radii
 
-Van der Waals radii are accessible for tmost of the periodic table from [Mantina, J. Phys. Chem. A (2009) doi: 10.1021/jp8111556](https://pubs.acs.org/doi/10.1021/jp8111556) ([details](qcelemental/data/mantina_2009_vanderwaals_radii.py)).
+Van der Waals radii are accessible for most of the periodic table from [Mantina, J. Phys. Chem. A (2009) doi: 10.1021/jp8111556](https://pubs.acs.org/doi/10.1021/jp8111556) ([details](qcelemental/data/mantina_2009_vanderwaals_radii.py)).
 
 ```python
 >>> import qcelemental as qcel
