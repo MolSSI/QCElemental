@@ -20,6 +20,31 @@ Changelog
 .. +++++
 
 
+0.28.0 / 2023-12-DD (Unreleased)
+-------------------
+
+.. Breaking Changes
+.. ++++++++++++++++
+..
+.. New Features
+.. ++++++++++++
+
+Enhancements
+++++++++++++
+- UNMERGED (:pr:?) ``Molecule.to_string()`` learned to use arguments ``atom_format`` and
+  ``ghost_format`` for other than ``dtype="xyz"``. For the most part, specifying these will just
+  break the string for intended use. But if you're looking to adapt a format or want to suppress
+  ghost atoms with ``ghost_format=""``, it can be useful. The only way this can be breaking is if
+  users were explicitly passing ``atom_format`` or ``ghost_format`` not None and relying on it
+  doing nothing.
+
+.. Bug Fixes
+.. +++++++++
+..
+.. Misc.
+.. +++++
+
+
 0.27.1 / 2023-10-26
 -------------------
 
