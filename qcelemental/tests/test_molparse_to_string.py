@@ -278,7 +278,10 @@ QCElemental
         (("subject2", {"dtype": "nglview-sdf"}), "ans2_ngslviewsdf"),
         (("subject2", {"dtype": "qchem", "units": "bohr"}), "ans2_qchem_au"),
         (("subject2", {"dtype": "gamess", "units": "angstrom"}), "ans2_gamess_ang"),
-        (("subject2", {"dtype": "cfour", "units": "angstrom", "atom_format": "{elem} {elez}"}), "ans2_cfour_ang_format"),
+        (
+            ("subject2", {"dtype": "cfour", "units": "angstrom", "atom_format": "{elem} {elez}"}),
+            "ans2_cfour_ang_format",
+        ),
         (("subject2", {"dtype": "nwchem", "units": "angstrom", "ghost_format": ""}), "ans2_nwchem_ang_format"),
     ],
 )
