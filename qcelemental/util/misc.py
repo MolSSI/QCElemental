@@ -249,7 +249,7 @@ def compute_angle(points1, points2, points3, *, degrees: bool = False) -> np.nda
     v23 = points2 - points3
 
     denom = _norm(v12) * _norm(v23)
-    cosine_angle = np.einsum("ij,ij->i", v12, v23) / denom
+    cosine_angle = np.clip(np.einsum("ij,ij->i", v12, v23) / denom, -1, 1)
 
     angle = np.pi - np.arccos(cosine_angle)
 

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2023-MM-DD
+.. X.Y.0 / 2023-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -15,8 +15,21 @@ Changelog
 ..
 .. Bug Fixes
 .. +++++++++
+..
+.. Misc.
+.. +++++
 
-Unreleased
+
+0.27.1 / 2023-10-26
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`329`) Continues :pr:`328` adding ``util.which`` workaround for only python v3.12.0 and psi4
+  (can be expanded) to correctly select among cmd, cmd.bat, cmd.exe.
+
+
+0.27.0 / 2023-10-24
 -------------------
 
 Breaking Changes
@@ -24,12 +37,27 @@ Breaking Changes
 
 New Features
 ++++++++++++
+- (:pr:`326`, :pr:`327`) New protocol option ``occupations_and_eigenvalues`` added to
+  ``WavefunctionProperties`` to store lightweight fields.
 
 Enhancements
 ++++++++++++
+- (:pr:`322`) Allow ``util.which`` to raise a clearer error when handling pyenv shims. Improve docs.
 
 Bug Fixes
 +++++++++
+- (:pr:`325`, :issue:`324`) Ensure ``util.measure_coordinates`` isn't returning NaN angles just
+   because floating-point errors are outside arccos's ``[-1, 1]`` bounds.
+- (:pr:`315`) Stop resetting numpy print formatting.
+- (:pr:`328`) Add workaround for only python v3.12.0 and psi4 (can be expanded) to handle
+  ``util.which`` on Windows when a cmd (non-executable) and a cmd.<executable_extension> live
+  side-by-side. Otherwise see ``[WinError 193] %1 is not a valid Win32 application``.
+
+Misc.
++++++
+- (:pr:`320`) Reset ``black`` formatting to 2022.
+- (:pr:`327`) Enable Python v3.12 in poetry.
+- (:pr:`328`) Start Windows testing and cron testing.
 
 
 0.26.0 / 2023-07-31

@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "qcelemental"
-version = "0.26.0"
+version = "0.27.1"
 description = "Core data structures for Quantum Chemistry."
 authors = ["The QCArchive Development Team <qcarchive@molssi.org>"]
 license = "BSD-3-Clause"
@@ -22,12 +22,13 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.dependencies]
 numpy = [
     { version = ">=1.12.0", python = "3.8" },
-    { version = ">=1.24.1", python = ">=3.9" },
+    { version = ">=1.26.1", python = ">=3.9,<3.13" },
 ]
 python = "^3.7"
 pint = ">=0.10.0"
@@ -38,7 +39,7 @@ importlib-metadata = { version = ">=4.8", python = "<3.8" }
 networkx = { version = "<3.0", optional = true }
 scipy = [
     { version = ">=1.6.0", python = "<3.9", optional = true },
-    { version = ">=1.9.0", python = ">=3.9", optional = true },
+    { version = ">=1.9.0", python = ">=3.9,<3.13", optional = true },
 ]
 pytest = { version = "^7.2.2", optional = true }
 
@@ -48,7 +49,7 @@ align = ["networkx", "scipy"]
 test = ["pytest"]
 
 [tool.poetry.group.dev.dependencies]
-black = ">=23.1.0"
+black = ">=22.1.0,<23.0a0"
 mypy = "^1.1.1"
 isort = "5.11.5"
 flake8 = "<6.0.0"

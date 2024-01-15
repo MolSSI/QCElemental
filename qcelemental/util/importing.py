@@ -77,6 +77,21 @@ def which(
     ModuleNotFoundError
         When `raises_error=True` and command not found. Raises generic message plus any `raise_msg`.
 
+    Notes
+    -----
+
+    +-------------+-------------+---------------------------------+---------------------------+
+    | return_bool | raise_error | action if found                 | action if not found       |
+    +=============+=============+=================================+===========================+
+    | F (default) | F (default) | return <path to command> string | return None               |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | T           | F (default) | return True                     | return False              |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | F (default) | T           | return <path to command> string | raise ModuleNotFoundError |
+    +-------------+-------------+---------------------------------+---------------------------+
+    | T           | T           | return True                     | raise ModuleNotFoundError |
+    +-------------+-------------+---------------------------------+---------------------------+
+
     """
     if env is None:
         lenv = {"PATH": os.pathsep + os.environ.get("PATH", "") + os.pathsep + os.path.dirname(sys.executable)}
@@ -86,9 +101,24 @@ def which(
 
     ans = shutil.which(command, mode=os.F_OK | os.X_OK, path=lenv["PATH"])
 
+    if sys.platform == "win32" and sys.version_info >= (3, 12, 0) and sys.version_info < (3, 12, 1):
+        # https://github.com/python/cpython/issues/109590
+        if command == "psi4":
+            ans = shutil.which("psi4.exe", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
+            if ans is None:
+                ans = shutil.which("psi4.bat", mode=os.F_OK | os.X_OK, path=lenv["PATH"])
+
+    # secondary check, see https://github.com/MolSSI/QCEngine/issues/292
+    local_raise_msg = ""
+    if ans and (".pyenv/shims" in ans):
+        local_raise_msg += (
+            f"Pyenv shim detected; running {ans} and activating a suggested conda environment may provide '{command}'."
+        )
+        ans = None
+
     if raise_error and ans is None:
         raise ModuleNotFoundError(
-            f"Command '{command}' not found in envvar PATH.{' ' + raise_msg if raise_msg else ''}"
+            f"Command '{command}' not found in envvar PATH.{local_raise_msg}{' ' + raise_msg if raise_msg else ''}"
         )
 
     if return_bool:

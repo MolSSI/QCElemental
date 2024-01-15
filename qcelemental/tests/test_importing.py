@@ -117,7 +117,7 @@ def test_which_import_f_raisemsg_submodule():
 
 def test_which_t():
     ans = qcel.util.which("ls")
-    assert ans.split(os.path.sep)[-1] == "ls"
+    assert ans.split(os.path.sep)[-1] in ["ls", "ls.EXE"]
 
 
 def test_which_t_bool():
