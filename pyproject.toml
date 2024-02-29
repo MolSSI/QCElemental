@@ -31,7 +31,10 @@ numpy = [
     { version = ">=1.26.1", python = ">=3.9,<3.13" },
 ]
 python = "^3.7"
-pint = ">=0.10.0"
+pint = [
+    { version = ">=0.10", python = ">=3.7,<3.9" },
+    { version = ">=0.21", python = ">=3.9,<3.13" },
+]
 pydantic = ">=1.8.2"
 nglview = { version = "^3.0.3", optional = true }
 ipykernel = { version = "<6.0.0", optional = true }
