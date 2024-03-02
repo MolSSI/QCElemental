@@ -29,7 +29,6 @@ def to_string(
         Overall string format. Note that it's possible to request variations
         that don't fit the dtype spec so may not be re-readable (e.g., ghost
         and mass in nucleus label with ``'xyz'``).
-        'cfour' forces nucleus label, ignoring atom_format, ghost_format
     units
         Units in which to write string. Usually ``Angstrom`` or ``Bohr``
         but may be any length unit.  There is not an option to write in
@@ -42,9 +41,11 @@ def to_string(
         arrangement. For example, if a format naturally uses element symbol
         and you want atomic number instead with mass info, too, pass
         ``'{elez}@{mass}'``. See `ghost_format` for handling field 'real'.
+        Previous to v0.28.0, this argument only affected ``dtype='xyz'``/``'xyz+'``.
     ghost_format
         General format is ``'@{elem}'``. Like `atom_format`, but this formatter
         is used when `real=False`. To suppress ghost atoms, use `ghost_format=''`.
+        Previous to v0.28.0, this argument only affected ``dtype='xyz'``/``'xyz+'``.
     width
         Field width for formatting coordinate float.
     prec
@@ -142,8 +143,8 @@ def to_string(
         smol.extend(atoms)
 
     elif dtype == "orca":
-        atom_format = "{elem}"
-        ghost_format = "{elem}:"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "{elem}:" if ghost_format is None else ghost_format
         umap = {"bohr": "! Bohrs", "angstrom": "!"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -161,8 +162,8 @@ def to_string(
         # * casting 'molecular_charge' to int
         # * no spaces at the beginning of 1st/comment line is important
 
-        atom_format = "{elem}"
-        ghost_format = "GH"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "GH" if ghost_format is None else ghost_format
         # TODO handle which units valid
         umap = {"bohr": "bohr", "angstrom": "angstrom"}
 
@@ -180,8 +181,8 @@ def to_string(
         }
 
     elif dtype == "molpro":
-        atom_format = "{elem}"
-        ghost_format = "{elem}"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "{elem}" if ghost_format is None else ghost_format
         umap = {"bohr": "bohr", "angstrom": "angstrom"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -218,8 +219,8 @@ def to_string(
         smol.append(f"set,spin={molrec['molecular_multiplicity']-1}")
 
     elif dtype == "nwchem":
-        atom_format = "{elem}{elbl}"
-        ghost_format = "bq{elem}{elbl}"
+        atom_format = "{elem}{elbl}" if atom_format is None else atom_format
+        ghost_format = "bq{elem}{elbl}" if ghost_format is None else ghost_format
         # TODO handle which units valid
         umap = {"bohr": "bohr", "angstrom": "angstroms", "nm": "nanometers", "pm": "picometers"}
 
@@ -245,8 +246,8 @@ def to_string(
             data.keywords["mcscf__multiplicity"] = molrec["molecular_multiplicity"]
 
     elif dtype == "madness":
-        atom_format = "{elem}"
-        ghost_format = "GH"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "GH" if ghost_format is None else ghost_format
         # TODO handle which units valid
         umap = {"bohr": "au", "angstrom": "angstrom"}
 
@@ -273,8 +274,8 @@ def to_string(
         #   through ``fix_symmetry``. newline encoded here if needed.
         # * coord=prinaxis, as set up here, can't handle ghost atoms
 
-        atom_format = " {elem}{elbl} {elez}"
-        ghost_format = " {elem} -{elez}"
+        atom_format = " {elem}{elbl} {elez}" if atom_format is None else atom_format
+        ghost_format = " {elem} -{elez}" if ghost_format is None else ghost_format
         umap = {"bohr": "bohr", "angstrom": "angs"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -300,8 +301,8 @@ def to_string(
         }
 
     elif dtype == "terachem":
-        atom_format = "{elem}"
-        ghost_format = "X{elem}"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "X{elem}" if ghost_format is None else ghost_format
         umap = {"bohr": "au", "angstrom": ""}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -311,8 +312,8 @@ def to_string(
         smol.extend(atoms)
 
     elif dtype == "psi4":
-        atom_format = "{elem}{elbl}"
-        ghost_format = "Gh({elem}{elbl})"
+        atom_format = "{elem}{elbl}" if atom_format is None else atom_format
+        ghost_format = "Gh({elem}{elbl})" if ghost_format is None else ghost_format
         umap = {"bohr": "bohr", "angstrom": "angstrom"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -350,8 +351,8 @@ def to_string(
         # symbol comes afterwards.
         # Handling of ghost atoms is done in the basis section of the control
         # file by setting the nuclear charge of certain atoms to zero.
-        atom_format = "{elem}"
-        ghost_format = "{elem}"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "{elem}" if ghost_format is None else ghost_format
         umap = {"bohr": "bohr"}
         umap[units.lower()]  # trigger error if downstream can't handle
 
@@ -386,8 +387,8 @@ def to_string(
             smol.append(f" {(a1 + 1):2d} {(a2 + 1):2d}  {int(b):1d}  0  0  0  0")
 
     elif dtype == "qchem":
-        atom_format = "{elem}"
-        ghost_format = "@{elem}"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "@{elem}" if ghost_format is None else ghost_format
         umap = {"bohr": "True", "angstrom": "False"}
 
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
@@ -429,8 +430,8 @@ def to_string(
             data.keywords["symmetry"] = False
 
     elif dtype == "mrchem":
-        atom_format = "{elem}"
-        ghost_format = "{elem}"
+        atom_format = "{elem}" if atom_format is None else atom_format
+        ghost_format = "{elem}" if ghost_format is None else ghost_format
         atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
 
         smol = (
