@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
+from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 
 import numpy as np
 
@@ -609,7 +609,7 @@ class AtomicInput(ProtoModel):
 class AtomicResult(AtomicInput):
     r"""Results from a CMS program execution."""
 
-    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_output)$") = Field(  # type: ignore
+    schema_name: Literal["qcschema_output"] = Field(
         qcschema_output_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
