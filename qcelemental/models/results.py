@@ -1,6 +1,7 @@
 from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
+
 try:
     from typing import Literal
 except ImportError:
