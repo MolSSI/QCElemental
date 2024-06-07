@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+
 try:
     from typing import Literal
 except ImportError:
