@@ -24,7 +24,7 @@ class TypedArray(np.ndarray):
             items = {"type": "number", "multipleOf": 1.0}
         elif dt is float or np.issubdtype(dt, np.floating):
             items = {"type": "number"}
-        elif dt is str or np.issubdtype(dt, np.string_):
+        elif dt is str or np.issubdtype(dt, np.bytes_):
             items = {"type": "string"}
         elif dt is bool or np.issubdtype(dt, np.bool_):
             items = {"type": "boolean"}

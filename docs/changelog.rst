@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2023-MM-DD (Unreleased)
+.. X.Y.0 / 2024-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -18,6 +18,26 @@ Changelog
 ..
 .. Misc.
 .. +++++
+
+
+X.Y.0 / 2024-MM-DD (Unreleased)
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+- (:pr:`338`) Adapts for numpy v2. v1 still compatible.
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
 
 
 0.27.1 / 2023-10-26
