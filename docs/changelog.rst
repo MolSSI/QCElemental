@@ -27,12 +27,6 @@ Enhancements
 ++++++++++++
 - (:pr:`338`) Adapts for numpy v2 (only works with pint >= v0.24). v1 still compatible.
 - (:pr:`335`, :issue:`334`) Numpy >=1.26 only works with pint >=0.21. @
-- (:pr:`338`, :issue:`330`) Add molecular charge and multiplicity to Molecule repr formula,
-  so neutral singlet unchanged but radical cation has '2^formula+'.
-
-Misc.
-+++++
-- (:issue:`339`) PubChem REST API is broken upstream for loose (e.g., `water*`) searches.
 
 
 0.27.1 / 2023-10-26
