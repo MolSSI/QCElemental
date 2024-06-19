@@ -305,7 +305,7 @@ class Molecule(ProtoModel):
         serialize_skip_defaults = True
         repr_style = lambda self: [
             ("name", self.name),
-            ("formula", self.get_molecular_formula(chgmult=True)),
+            ("formula", self.get_molecular_formula()),
             ("hash", self.get_hash()[:7]),
         ]
         fields = {
@@ -1060,15 +1060,6 @@ class Molecule(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
-
-    def _compact_chgmult_repr(self) -> str:
-        if len(self.fragments) > 1:
-            # non-integer fragment charges are lost in this representation
-            fc = ",".join(format(x, ".0f") for x in self.fragment_charges)
-            mc = ",".join(format(x, ".0f") for x in self.fragment_multiplicities)
-            return f"{self.molecular_charge}={fc}", f"{self.molecular_multiplicity}={mc}"
-        else:
-            return self.molecular_charge, self.molecular_multiplicity
 
     def _ipython_display_(self, **kwargs) -> None:
         try:
