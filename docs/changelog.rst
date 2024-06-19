@@ -31,7 +31,7 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:`338`) Adapts for numpy v2. v1 still compatible.
+- (:pr:`338`) Adapts for numpy v2 (needs pint >= v0.24). v1 still compatible.
 
 Bug Fixes
 +++++++++
