@@ -49,7 +49,7 @@ jobs:
         if: matrix.python-version == '3.9'
         run: poetry install --no-interaction --no-ansi --extras test
       - name: Run tests
-        run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml -k "not pubchem_multiout_g"
+        run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3 # NEEDS UPDATE TO v3 https://github.com/codecov/codecov-action
       - name: QCSchema Examples Deploy

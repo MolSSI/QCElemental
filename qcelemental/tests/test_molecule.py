@@ -141,6 +141,51 @@ def test_molecule_compare():
     assert water_molecule != water_molecule3
 
 
+def test_molecule_repr_chgmult():
+    wat1 = water_molecule.copy()
+    assert "formula='H2O'," in wat1.__repr__(), "charge/mult wrongly present in Molecule repr"
+
+    wat2 = water_dimer_minima.dict()
+    wat2["fragment_charges"] = [1, 0]
+    for field in ["molecular_charge", "molecular_multiplicity", "fragment_multiplicities", "validated"]:
+        wat2.pop(field)
+    wat2 = Molecule(**wat2)
+    assert "formula='2^H4O2+'," in wat2.__repr__(), "charge/mult missing from Molecule repr"
+
+    two_pentanol_radcat = Molecule.from_data(
+        """
+        1 2
+        C         -4.43914        1.67538       -0.14135
+        C         -2.91385        1.70652       -0.10603
+        H         -4.82523        2.67391       -0.43607
+        H         -4.84330        1.41950        0.86129
+        H         -4.79340        0.92520       -0.88015
+        H         -2.59305        2.48187        0.62264
+        H         -2.53750        1.98573       -1.11429
+        C         -2.34173        0.34025        0.29616
+        H         -2.72306        0.06156        1.30365
+        C         -0.80326        0.34498        0.31454
+        H         -2.68994       -0.42103       -0.43686
+        O         -0.32958        1.26295        1.26740
+        H         -0.42012        0.59993       -0.70288
+        C         -0.26341       -1.04173        0.66218
+        H         -0.61130       -1.35318        1.67053
+        H          0.84725       -1.02539        0.65807
+        H         -0.60666       -1.78872       -0.08521
+        H         -0.13614        2.11102        0.78881
+    """
+    )
+    assert "formula='2^C5H12O+'," in two_pentanol_radcat.__repr__(), "charge/mult missing from Molecule repr"
+
+    Oanion = Molecule.from_data(
+        """
+        -2 1
+        O 0 0 0
+    """
+    )
+    assert "formula='O--'," in Oanion.__repr__(), "charge/mult missing from Molecule repr"
+
+
 def test_water_minima_data():
     # Give it a name
     mol_dict = water_dimer_minima.dict()

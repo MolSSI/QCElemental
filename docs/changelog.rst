@@ -20,21 +20,15 @@ Changelog
 .. +++++
 
 
-X.Y.0 / 2024-MM-DD (Unreleased)
+0.28.0 / 2024-06-19
 -------------------
-
-Breaking Changes
-++++++++++++++++
-
-New Features
-++++++++++++
 
 Enhancements
 ++++++++++++
-- (:pr:`338`) Adapts for numpy v2 (needs pint >= v0.24). v1 still compatible.
-
-Bug Fixes
-+++++++++
+- (:pr:`338`) Adapts for numpy v2 (only works with pint >= v0.24). v1 still compatible.
+- (:pr:`335`, :issue:`334`) Numpy >=1.26 only works with pint >=0.21. @
+- (:pr:`338`, :issue:`330`) Add molecular charge and multiplicity to Molecule repr formula,
+  so neutral singlet unchanged but radical cation has '2^formula+'.
 
 Misc.
 +++++
