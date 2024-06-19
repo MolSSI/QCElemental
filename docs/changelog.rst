@@ -38,6 +38,7 @@ Bug Fixes
 
 Misc.
 +++++
+- (:issue:`339`) PubChem REST API is broken upstream for loose (e.g., `water*`) searches.
 
 
 0.27.1 / 2023-10-26
