@@ -140,15 +140,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
+<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
 for RMSD purposes.</p></li>
-<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
+<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
 purposes. Must have same nat, units, and atom content as rgeom.</p></li>
-<li><p><strong>runiq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
+<li><p><strong>runiq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
 without changing the molecule. Generally hashes of element symbol and
 mass are used, but could be as simple as [‘C’, ‘H’, ‘H’, ‘D’, ‘H’] for
 monodeuterated methane.</p></li>
-<li><p><strong>cuniq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
+<li><p><strong>cuniq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
 See <cite>runiq</cite> for more details. Strings and count in <cite>cuniq</cite> must match
 <cite>runiq</cite>. That is, <cite>sorted(cuniq) == sorted(runiq)</cite>.</p></li>
 <li><p><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Pops up a mpl plot showing before, after, and ref geometries.</p></li>
