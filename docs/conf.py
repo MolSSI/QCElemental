@@ -202,6 +202,7 @@ intersphinx_mapping = {
     "matplotlib": ("https://matplotlib.org/stable/", None),
     "qcengine": ("https://molssi.github.io/QCEngine/", None),
     "qcfractal": ("https://molssi.github.io/QCFractal/", None),
+    "nglview": ("https://nglviewer.org/nglview/release/v2.7.7", None),
 }
 
 # -- Options for todo extension ----------------------------------------------

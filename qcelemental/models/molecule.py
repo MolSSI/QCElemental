@@ -16,6 +16,12 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import ConstrainedFloat, ConstrainedInt, Field, constr, validator
 
+try:
+    # purely for docs-build. not required except for Molecule.show()
+    import nglview
+except ModuleNotFoundError:
+    pass
+
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ..molparse.from_arrays import from_arrays
 from ..molparse.from_schema import from_schema
