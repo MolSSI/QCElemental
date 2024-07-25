@@ -72,6 +72,8 @@ jobs:
         name: Set up Python
         with:
           python-version: "3.10"
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v2
       - name: Install poetry
         run: pip install poetry
       # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed (see above for details)
