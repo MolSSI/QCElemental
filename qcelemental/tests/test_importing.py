@@ -147,3 +147,13 @@ def test_which_f_raisemsg():
         qcel.util.which("evills", raise_error=True, raise_msg="Install `evills`.")
 
     assert str(e.value).endswith("Command 'evills' not found in envvar PATH. Install `evills`.")
+
+
+def test_parse_version():
+    v = qcel.util.parse_version("5.3.1")
+    assert str(v) == "5.3.1"
+
+
+def test_safe_version():
+    v = qcel.util.safe_version("5.3.1")
+    assert v == "5.3.1"
