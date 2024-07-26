@@ -771,14 +771,16 @@ _ref_mol_multiplicity_hash = {
         pytest.param(1, 1, True, "singlet"),
         pytest.param(None, 1, False, "singlet"),
         pytest.param(None, 1, True, "singlet"),
+        # fmt: off
         pytest.param(3., 3, False, "triplet"),
         pytest.param(3., 3, True, "triplet"),
+        # fmt: on
     ],
 )
 def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
     # validate=False passes through pydantic validators. =True passes through molparse.
 
-    mol_args = {"symbols":["He"], "geometry":[0, 0, 0], "validate":validate}
+    mol_args = {"symbols": ["He"], "geometry": [0, 0, 0], "validate": validate}
     if mult_in is not None:
         mol_args["molecular_multiplicity"] = mult_in
 
@@ -797,7 +799,7 @@ def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
     ],
 )
 def test_mol_multiplicity_types_errors(mult_in, validate, error):
-    mol_args = {"symbols":["He"], "geometry":[0, 0, 0], "validate":validate}
+    mol_args = {"symbols": ["He"], "geometry": [0, 0, 0], "validate": validate}
     if mult_in is not None:
         mol_args["molecular_multiplicity"] = mult_in
 
@@ -816,8 +818,10 @@ def test_mol_multiplicity_types_errors(mult_in, validate, error):
         #   simply gets cast to int with no error. This will change soon. The validate=True throws a
         #   irreconcilable error.
         pytest.param(5, [3.1, 3.4], [3, 3], False, "ditriplet"),
+        # fmt: off
         pytest.param(5, [3.0, 3.], [3, 3], False, "ditriplet"),
         pytest.param(5, [3.0, 3.], [3, 3], True, "ditriplet"),
+        # fmt: on
         pytest.param(1, [1, 1], [1, 1], False, "disinglet"),
         pytest.param(1, [1, 1], [1, 1], True, "disinglet"),
         # None in frag_mult not allowed for validate=False
@@ -827,10 +831,17 @@ def test_mol_multiplicity_types_errors(mult_in, validate, error):
 def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp_hash):
     # validate=False passes through pydantic validators. =True passes through molparse.
 
-    mol_args = {"symbols":["He", "Ne"], "geometry":[0, 0, 0, 2, 0, 0], "fragments":[[0], [1]], "validate":validate,
+    mol_args = {
+        "symbols": ["He", "Ne"],
+        "geometry": [0, 0, 0, 2, 0, 0],
+        "fragments": [[0], [1]],
+        "validate": validate,
         # below three passed in so hashes match btwn validate=T/F. otherwise, validate=False never
         #   populates these fields
-        "molecular_charge": 0, "fragment_charges": [0,0], "molecular_multiplicity": mol_mult_in}
+        "molecular_charge": 0,
+        "fragment_charges": [0, 0],
+        "molecular_multiplicity": mol_mult_in,
+    }
     if mult_in is not None:
         mol_args["fragment_multiplicities"] = mult_in
 
@@ -849,7 +860,7 @@ def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp
     ],
 )
 def test_frag_multiplicity_types_errors(mult_in, validate, error):
-    mol_args = {"symbols":["He", "Ne"], "geometry":[0, 0, 0, 2, 0, 0], "fragments":[[0], [1]], "validate":validate}
+    mol_args = {"symbols": ["He", "Ne"], "geometry": [0, 0, 0, 2, 0, 0], "fragments": [[0], [1]], "validate": validate}
     if mult_in is not None:
         mol_args["fragment_multiplicities"] = mult_in
 

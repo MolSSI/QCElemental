@@ -759,7 +759,9 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
             try:
                 frm = [(f if f is None else float(f)) for f in fragment_multiplicities]
             except TypeError:
-                raise ValidationError("""fragment_multiplicities not among None or float: {}""".format(fragment_charges))
+                raise ValidationError(
+                    """fragment_multiplicities not among None or float: {}""".format(fragment_charges)
+                )
 
     if not (len(frc) == len(frm) == len(frs) + 1):
         raise ValidationError(
