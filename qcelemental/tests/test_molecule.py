@@ -322,16 +322,20 @@ def test_water_orient():
 
     # Make sure the fragments match
     assert frag_0.get_hash() == frag_1.get_hash()
+    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"
 
     # Make sure the complexes match
     frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=True)
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=True)
     assert frag_0_1.get_hash() == frag_1_0.get_hash()
+    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
 
     # Fragments not reordered, should be different molecules.
     frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=False)
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=False)
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
+    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
+    assert frag_1_0.get_hash() == "9ed8bdc4ae559c20816d65225fdb1ae3c29d149f"
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data(
@@ -354,6 +358,7 @@ def test_water_orient():
     # Make sure the fragments match
     assert frag_0.molecular_multiplicity == 1
     assert frag_0.get_hash() == frag_1.get_hash()
+    assert frag_0.get_hash() == "77b272802d61b578b1c65bb87747a89e53e015a7"
 
     # Make sure the complexes match
     frag_0_1 = mol.get_fragment(0, 1, orient=True)
@@ -362,6 +367,8 @@ def test_water_orient():
     # Ghost fragments should prevent overlap
     assert frag_0_1.molecular_multiplicity == 1
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
+    assert frag_0_1.get_hash() == "4a4cd4d0ab0eef8fed2221fb692c3b1fbf4834de"
+    assert frag_1_0.get_hash() == "4cc0b30f9f50dd85f4f2036a683865bf17ded803"
 
 
 def test_molecule_errors_extra():
@@ -477,10 +484,12 @@ def test_get_fragment(group_fragments, orient):
         assert dimers[0].get_hash() != dimers[3].get_hash()  # atoms out of order
         assert dimers[1].get_hash() != dimers[4].get_hash()  # atoms out of order
         assert dimers[2].get_hash() == dimers[5].get_hash()
+        assert dimers[5].get_hash() == "f1d6551f95ce9467dbcce7c48e11bb98d0f1fb98"
     elif not group_fragments and not orient:
         assert dimers[0].get_hash() == dimers[3].get_hash()
         assert dimers[1].get_hash() == dimers[4].get_hash()
         assert dimers[2].get_hash() == dimers[5].get_hash()
+        assert dimers[5].get_hash() == "1bd9100e99748a0c34b01cef558ea5cf4ae6ab85"
     else:
         assert 0
 
@@ -496,11 +505,13 @@ def test_get_fragment(group_fragments, orient):
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() == ghdimers[5].get_hash()
+        assert ghdimers[5].get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
     elif not group_fragments and not orient:
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
         assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
+        assert ghdimers[5].get_hash() == "9d1fd57e90735a47af4156e1d72b7e8e78fb44eb"
     else:
         assert 0
 
@@ -519,6 +530,7 @@ def test_molecule_repeated_hashing():
     )
 
     h1 = mol.get_hash()
+    assert h1 == "7e604937e8a0c8e4c6426906e25b3002f785b1fc"
     assert mol.get_molecular_formula() == "H2O2"
 
     mol2 = Molecule(orient=False, **mol.dict())
@@ -734,3 +746,62 @@ def test_extras():
 
     mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], extras={"foo": "bar"})
     assert mol.extras["foo"] == "bar"
+
+
+_ref_mol_multiplicity_hash = {
+    "singlet": "b3855c64",
+    "triplet": "7caca87a",
+}
+
+
+@pytest.mark.parametrize(
+    "mult_in,mult_store,validate,exp_hash",
+    [
+        pytest.param(3, 3, False, "triplet"),
+        pytest.param(3, 3, True, "triplet"),
+        # 3.1 -> 3 (validate=False) below documents the present bad behavior where a float mult
+        #   simply gets cast to int with no error. This will change soon. The validate=True throws a
+        #   nonspecific error that at least mentions type.
+        pytest.param(3.1, 3, False, "triplet"),
+        pytest.param(3.0, 3, False, "triplet"),
+        pytest.param(3.0, 3, True, "triplet"),
+        pytest.param(1, 1, False, "singlet"),
+        pytest.param(1, 1, True, "singlet"),
+        pytest.param(None, 1, False, "singlet"),
+        pytest.param(None, 1, True, "singlet"),
+        pytest.param(3., 3, False, "triplet"),
+        pytest.param(3., 3, True, "triplet"),
+    ],
+)
+def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
+    # validate=False passes through pydantic validators. =True passes through molparse.
+    # fractional can only use =False route b/c molparse can't check the physics of chg/mult for float multiplicity.
+    if mult_in is None:
+        mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], validate=validate)
+    else:
+        mol = qcel.models.Molecule(
+            symbols=["He"], geometry=[0, 0, 0], validate=validate, molecular_multiplicity=mult_in
+        )
+
+    assert mult_store == mol.molecular_multiplicity
+    assert type(mult_store) is type(mol.molecular_multiplicity)
+    assert mol.get_hash()[:8] == _ref_mol_multiplicity_hash[exp_hash]
+
+
+@pytest.mark.parametrize(
+    "mult_in,validate,error",
+    [
+        pytest.param(-3, False, "Multiplicity must be positive"),
+        pytest.param(-3, True, "Multiplicity must be positive"),
+    ],
+)
+def test_mol_multiplicity_types_errors(mult_in, validate, error):
+    with pytest.raises((ValueError, qcel.ValidationError)) as e:
+        if mult_in is None:
+            mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], validate=validate)
+        else:
+            mol = qcel.models.Molecule(
+                symbols=["He"], geometry=[0, 0, 0], validate=validate, molecular_multiplicity=mult_in
+            )
+
+    assert error in str(e.value)
