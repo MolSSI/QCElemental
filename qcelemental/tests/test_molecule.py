@@ -751,6 +751,8 @@ def test_extras():
 _ref_mol_multiplicity_hash = {
     "singlet": "b3855c64",
     "triplet": "7caca87a",
+    "disinglet": "83a85546",
+    "ditriplet": "71d6ba82",
 }
 
 
@@ -775,13 +777,12 @@ _ref_mol_multiplicity_hash = {
 )
 def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
     # validate=False passes through pydantic validators. =True passes through molparse.
-    # fractional can only use =False route b/c molparse can't check the physics of chg/mult for float multiplicity.
-    if mult_in is None:
-        mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], validate=validate)
-    else:
-        mol = qcel.models.Molecule(
-            symbols=["He"], geometry=[0, 0, 0], validate=validate, molecular_multiplicity=mult_in
-        )
+
+    mol_args = {"symbols":["He"], "geometry":[0, 0, 0], "validate":validate}
+    if mult_in is not None:
+        mol_args["molecular_multiplicity"] = mult_in
+
+    mol = qcel.models.Molecule(**mol_args)
 
     assert mult_store == mol.molecular_multiplicity
     assert type(mult_store) is type(mol.molecular_multiplicity)
@@ -796,12 +797,63 @@ def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
     ],
 )
 def test_mol_multiplicity_types_errors(mult_in, validate, error):
+    mol_args = {"symbols":["He"], "geometry":[0, 0, 0], "validate":validate}
+    if mult_in is not None:
+        mol_args["molecular_multiplicity"] = mult_in
+
     with pytest.raises((ValueError, qcel.ValidationError)) as e:
-        if mult_in is None:
-            mol = qcel.models.Molecule(symbols=["He"], geometry=[0, 0, 0], validate=validate)
-        else:
-            mol = qcel.models.Molecule(
-                symbols=["He"], geometry=[0, 0, 0], validate=validate, molecular_multiplicity=mult_in
-            )
+        qcel.models.Molecule(**mol_args)
+
+    assert error in str(e.value)
+
+
+@pytest.mark.parametrize(
+    "mol_mult_in,mult_in,mult_store,validate,exp_hash",
+    [
+        pytest.param(5, [3, 3], [3, 3], False, "ditriplet"),
+        pytest.param(5, [3, 3], [3, 3], True, "ditriplet"),
+        # 3.1 -> 3 (validate=False) below documents the present bad behavior where a float mult
+        #   simply gets cast to int with no error. This will change soon. The validate=True throws a
+        #   irreconcilable error.
+        pytest.param(5, [3.1, 3.4], [3, 3], False, "ditriplet"),
+        pytest.param(5, [3.0, 3.], [3, 3], False, "ditriplet"),
+        pytest.param(5, [3.0, 3.], [3, 3], True, "ditriplet"),
+        pytest.param(1, [1, 1], [1, 1], False, "disinglet"),
+        pytest.param(1, [1, 1], [1, 1], True, "disinglet"),
+        # None in frag_mult not allowed for validate=False
+        pytest.param(1, [None, None], [1, 1], True, "disinglet"),
+    ],
+)
+def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp_hash):
+    # validate=False passes through pydantic validators. =True passes through molparse.
+
+    mol_args = {"symbols":["He", "Ne"], "geometry":[0, 0, 0, 2, 0, 0], "fragments":[[0], [1]], "validate":validate,
+        # below three passed in so hashes match btwn validate=T/F. otherwise, validate=False never
+        #   populates these fields
+        "molecular_charge": 0, "fragment_charges": [0,0], "molecular_multiplicity": mol_mult_in}
+    if mult_in is not None:
+        mol_args["fragment_multiplicities"] = mult_in
+
+    mol = qcel.models.Molecule(**mol_args)
+
+    assert mult_store == mol.fragment_multiplicities
+    assert type(mult_store) is type(mol.fragment_multiplicities)
+    assert mol.get_hash()[:8] == _ref_mol_multiplicity_hash[exp_hash]
+
+
+@pytest.mark.parametrize(
+    "mult_in,validate,error",
+    [
+        pytest.param([-3, 1], False, "Multiplicity must be positive"),
+        pytest.param([-3, 1], True, "Multiplicity must be positive"),
+    ],
+)
+def test_frag_multiplicity_types_errors(mult_in, validate, error):
+    mol_args = {"symbols":["He", "Ne"], "geometry":[0, 0, 0, 2, 0, 0], "fragments":[[0], [1]], "validate":validate}
+    if mult_in is not None:
+        mol_args["fragment_multiplicities"] = mult_in
+
+    with pytest.raises((ValueError, qcel.ValidationError)) as e:
+        qcel.models.Molecule(**mol_args)
 
     assert error in str(e.value)

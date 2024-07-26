@@ -419,6 +419,8 @@ class Molecule(ProtoModel):
                 raise ValueError(
                     "Fragment Multiplicities must be same number of entries as Fragments"
                 )
+        if any([m<1.0 for m in v]):
+            raise ValueError(f"Fragment Multiplicity must be positive: {v}")
         return v
 
     @validator("molecular_multiplicity")
