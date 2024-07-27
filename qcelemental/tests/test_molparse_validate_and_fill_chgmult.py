@@ -87,6 +87,13 @@ working_chgmults = [
     (("Gh/He/Gh", 1, [None, None, None], None, [None, None, None]), (1, [0, 1, 0], 2, [1, 2, 1]), "54238534"),  # 64
     (("Ne/Ne", 2, [-2, None], None, [None, None]), (2, [-2, 4], 1, [1, 1]), "ffe022cd"),  # 65a
     (("Gh/Ne", 2, [-2, None], None, [None, None], {"zero_ghost_fragments": True}), (0, [0, 0], 1, [1, 1]), ""),  # 65c
+    (("Ne/Ne", None, [-2.1, 2.1], None, [None, None]), (0, [-2.1, 2.1], 1, [1, 1]), "684cec20"),  # 112
+    (("N/N/N", 3.3, [1, None, 1], 3, [None, 3, None]), (3.3, [1, 3.3 - 2, 1], 3, [1, 3, 1]), "7a5fd2d3"),  # 151
+    (
+        ("N/N/N", -2.4, [None, None, None], None, [None, None, None], {"verbose": 2}),
+        (-2.4, [-2.4, 0, 0], 3, [1, 2, 2]),
+        "a83a3356",
+    ),  # 166
 ]
 
 
