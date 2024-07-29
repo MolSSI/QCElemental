@@ -798,6 +798,15 @@ _ref_mol_multiplicity_hash = {
     "triplet": "7caca87a",
     "disinglet": "83a85546",
     "ditriplet": "71d6ba82",
+    # float mult
+    "singlet_point1": "4e9e2587",
+    "singlet_epsilon": "ad3f5fab",
+    "triplet_point1": "ad35cc28",
+    "triplet_point1_minus": "b63d6983",
+    "triplet_point00001": "7107b7ac",
+    "disinglet_epsilon": "fb0aaaca",
+    "ditriplet_point1": "33d47d5f",
+    "ditriplet_point00001": "7f0ac640",
 }
 
 
@@ -806,14 +815,26 @@ _ref_mol_multiplicity_hash = {
     [
         pytest.param(3, 3, False, "triplet"),
         pytest.param(3, 3, True, "triplet"),
-        # 3.1 -> 3 (validate=False) below documents the present bad behavior where a float mult
-        #   simply gets cast to int with no error. This will change soon. The validate=True throws a
-        #   nonspecific error that at least mentions type.
-        pytest.param(3.1, 3, False, "triplet"),
+        # before float multiplicity was allowed, 3.1 (below) was coerced into 3 with validate=False,
+        #   and validate=True threw a type-mentioning error. Now, 2.9 is allowed for both validate=T/F
+        pytest.param(3.1, 3.1, False, "triplet_point1"),
+        # validate=True counterpart fails b/c insufficient electrons in He for more than triplet
+        pytest.param(2.9, 2.9, False, "triplet_point1_minus"),
+        pytest.param(2.9, 2.9, True, "triplet_point1_minus"),
+        pytest.param(3.00001, 3.00001, False, "triplet_point00001"),
+        # validate=True counterpart fails like 3.1 above
+        pytest.param(2.99999, 2.99999, False, "triplet_point00001"),  # hash agrees w/3.00001 above b/c <CHARGE_NOISE
+        pytest.param(2.99999, 2.99999, True, "triplet_point00001"),
         pytest.param(3.0, 3, False, "triplet"),
         pytest.param(3.0, 3, True, "triplet"),
         pytest.param(1, 1, False, "singlet"),
         pytest.param(1, 1, True, "singlet"),
+        pytest.param(1.000000000000000000002, 1, False, "singlet"),
+        pytest.param(1.000000000000000000002, 1, True, "singlet"),
+        pytest.param(1.000000000000002, 1.000000000000002, False, "singlet_epsilon"),
+        pytest.param(1.000000000000002, 1.000000000000002, True, "singlet_epsilon"),
+        pytest.param(1.1, 1.1, False, "singlet_point1"),
+        pytest.param(1.1, 1.1, True, "singlet_point1"),
         pytest.param(None, 1, False, "singlet"),
         pytest.param(None, 1, True, "singlet"),
         # fmt: off
@@ -841,6 +862,9 @@ def test_mol_multiplicity_types(mult_in, mult_store, validate, exp_hash):
     [
         pytest.param(-3, False, "Multiplicity must be positive"),
         pytest.param(-3, True, "Multiplicity must be positive"),
+        pytest.param(0.9, False, "Multiplicity must be positive"),
+        pytest.param(0.9, True, "Multiplicity must be positive"),
+        pytest.param(3.1, True, "Inconsistent or unspecified chg/mult"),  # insufficient electrons in He
     ],
 )
 def test_mol_multiplicity_types_errors(mult_in, validate, error):
@@ -859,10 +883,11 @@ def test_mol_multiplicity_types_errors(mult_in, validate, error):
     [
         pytest.param(5, [3, 3], [3, 3], False, "ditriplet"),
         pytest.param(5, [3, 3], [3, 3], True, "ditriplet"),
-        # 3.1 -> 3 (validate=False) below documents the present bad behavior where a float mult
-        #   simply gets cast to int with no error. This will change soon. The validate=True throws a
-        #   irreconcilable error.
-        pytest.param(5, [3.1, 3.4], [3, 3], False, "ditriplet"),
+        # before float multiplicity was allowed, [3.1, 3.4] (below) were coerced into [3, 3] with validate=False.
+        #   Now, [2.9, 2.9] is allowed for both validate=T/F.
+        pytest.param(5, [3.1, 3.4], [3.1, 3.4], False, "ditriplet_point1"),
+        pytest.param(5, [2.99999, 3.00001], [2.99999, 3.00001], False, "ditriplet_point00001"),
+        pytest.param(5, [2.99999, 3.00001], [2.99999, 3.00001], True, "ditriplet_point00001"),
         # fmt: off
         pytest.param(5, [3.0, 3.], [3, 3], False, "ditriplet"),
         pytest.param(5, [3.0, 3.], [3, 3], True, "ditriplet"),
@@ -871,6 +896,10 @@ def test_mol_multiplicity_types_errors(mult_in, validate, error):
         pytest.param(1, [1, 1], [1, 1], True, "disinglet"),
         # None in frag_mult not allowed for validate=False
         pytest.param(1, [None, None], [1, 1], True, "disinglet"),
+        pytest.param(1, [1.000000000000000000002, 0.999999999999999999998], [1, 1], False, "disinglet"),
+        pytest.param(1, [1.000000000000000000002, 0.999999999999999999998], [1, 1], True, "disinglet"),
+        pytest.param(1, [1.000000000000002, 1.000000000000004], [1.000000000000002, 1.000000000000004], False, "disinglet_epsilon"),
+        pytest.param(1, [1.000000000000002, 1.000000000000004], [1.000000000000002, 1.000000000000004], True, "disinglet_epsilon"),
     ],
 )
 def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp_hash):
@@ -902,6 +931,7 @@ def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp
     [
         pytest.param([-3, 1], False, "Multiplicity must be positive"),
         pytest.param([-3, 1], True, "Multiplicity must be positive"),
+        pytest.param([3.1, 3.4], True, "Inconsistent or unspecified chg/mult"),  # insufficient e- for triplet+ on He in frag 1
     ],
 )
 def test_frag_multiplicity_types_errors(mult_in, validate, error):

@@ -19,7 +19,7 @@ def _high_spin_sum(mult_list):
 
 
 def _mult_ok(m):
-    return isinstance(m, (int, np.integer)) and m >= 1
+    return isinstance(m, (int, np.integer, float, np.float64)) and m >= 1
 
 
 def _sufficient_electrons_for_mult(z, c, m):
@@ -430,7 +430,14 @@ def validate_and_fill_chgmult(
     if molecular_multiplicity is None:  # unneeded, but shortens the exact lists
         frag_mult_hi = _high_spin_sum(_apply_default(fragment_multiplicities, 2))
         frag_mult_lo = _high_spin_sum(_apply_default(fragment_multiplicities, 1))
-        for m in range(frag_mult_lo, frag_mult_hi + 1):
+        try:
+            mult_range = range(frag_mult_lo, frag_mult_hi + 1)
+        except TypeError:
+            if frag_mult_lo == frag_mult_hi:
+                mult_range = [frag_mult_hi]
+            else:
+                raise ValidationError(f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}")
+        for m in mult_range:
             cgmp_exact_m.append(m)
 
     #   * (S6) suggest range of missing mult = tot - high_spin_sum(frag - 1),
@@ -450,7 +457,14 @@ def validate_and_fill_chgmult(
 
     for ifr in range(nfr):
         if fragment_multiplicities[ifr] is None:  # unneeded, but shortens the exact lists
-            for m in reversed(range(max(missing_mult_lo, 1), missing_mult_hi + 1)):
+            try:
+                mult_range = reversed(range(max(missing_mult_lo, 1), missing_mult_hi + 1))
+            except TypeError:
+                if missing_mult_lo == missing_mult_hi:
+                    mult_range = [missing_mult_hi]
+                else:
+                    raise ValidationError(f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}")
+            for m in mult_range:
                 cgmp_exact_fm[ifr].append(m)
             cgmp_exact_fm[ifr].append(1)
             cgmp_exact_fm[ifr].append(2)
