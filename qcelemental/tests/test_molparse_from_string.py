@@ -1666,7 +1666,8 @@ def test_badmult_error():
             variables=[("bond", "3")],
         )
 
-    assert "fragment_multiplicities not among None or positive integer" in str(e.value)
+    # formerly: assert "fragment_multiplicities not among None or positive integer" in str(e.value)
+    assert "Multiplicity must be positive" in str(e.value)
 
 
 def test_badchg_error():

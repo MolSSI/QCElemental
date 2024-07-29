@@ -300,6 +300,19 @@ def validate_and_fill_chgmult(
     log_brief = verbose >= 2  # TODO: Move back to 1
     text = []
 
+    def int_if_possible(val):
+        if isinstance(val, float) and val.is_integer():
+            return int(val)
+        else:
+            return val
+
+    molecular_multiplicity = int_if_possible(molecular_multiplicity)
+    fragment_multiplicities = [int_if_possible(m) for m in fragment_multiplicities]
+    if (molecular_multiplicity and molecular_multiplicity < 1.0) or any(m < 1.0 for m in fragment_multiplicities if m):
+        raise ValidationError(
+            f"validate_and_fill_chgmult(): Multiplicity must be positive. m: {molecular_multiplicity}, fm: {fragment_multiplicities}"
+        )
+
     felez = np.split(zeff, fragment_separators)
     nfr = len(felez)
     if log_full:
