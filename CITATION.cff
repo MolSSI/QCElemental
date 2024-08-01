@@ -18,6 +18,13 @@ authors:
     family-names: Smith
     affiliation: The Molecular Sciences Software Institute
     orcid: 'https://orcid.org/0000-0001-8626-0900'
+  - given-names: Levi N.
+    family-names: Naden
+    affiliation: The Molecular Sciences Software Institute
+    orcid: 'https://orcid.org/0000-0002-3692-5027'
+  - given-names: Matthew
+    family-names: Welborn
+    affiliation: The Molecular Sciences Software Institute
 identifiers:
   - type: doi
     value: 10.1002/wcms.1491
@@ -37,6 +44,7 @@ keywords:
   - periodic-table
   - codata
   - physical-constant
+  - schema
 license: BSD-3-Clause
 version: 0.28.0
 date-released: '2024-06-21'
