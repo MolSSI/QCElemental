@@ -6,7 +6,7 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import Field, conlist, constr, validator
 
-from ..util import provenance_stamp
+from ...util import provenance_stamp
 from .basemodels import ProtoModel
 from .common_models import (
     ComputeError,
