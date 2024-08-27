@@ -3,18 +3,7 @@ import pytest
 
 import qcelemental as qcel
 
-from .addons import drop_qcsk
-
-
-@pytest.fixture(scope="module", params=[None, "v1", "v2"])
-def schema_versions(request):
-    if request.param == "v1":
-        return qcel.models.v1
-    elif request.param == "v2":
-        return qcel.models.v1  # TODO v2
-    else:
-        return qcel.models
-
+from .addons import drop_qcsk, schema_versions
 
 center_data = {
     "bs_sto3g_h": {

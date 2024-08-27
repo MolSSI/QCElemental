@@ -86,3 +86,13 @@ def Molecule(request):
         return qcelemental.models.v1.Molecule  # TODO v2
     else:
         return qcelemental.models.Molecule
+
+
+@pytest.fixture(scope="function", params=[None, "v1", "v2"])
+def schema_versions(request):
+    if request.param == "v1":
+        return qcelemental.models.v1
+    elif request.param == "v2":
+        return qcelemental.models.v1  # TODO v2
+    else:
+        return qcelemental.models

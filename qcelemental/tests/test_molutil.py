@@ -7,12 +7,13 @@ try:
     import pydantic.v1 as pydantic
 except ImportError:  # Will also trap ModuleNotFoundError
     import pydantic
+
 import pytest
 
 import qcelemental as qcel
 from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values
 
-from .addons import drop_qcsk, using_networkx
+from .addons import Molecule, drop_qcsk, schema_versions, using_networkx
 
 pp = pprint.PrettyPrinter(width=120)
 
@@ -41,15 +42,15 @@ H    -0.8103758    2.3643033   -2.0618643
 
 
 @using_networkx
-def test_scramble_descrambles_plain():
-    s22_12 = qcel.models.Molecule.from_data(ss22_12)
+def test_scramble_descrambles_plain(Molecule):
+    s22_12 = Molecule.from_data(ss22_12)
 
     for trial in range(5):
         s22_12.scramble(do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_test=True)
 
 
-def test_relative_geoms_align_free(request):
-    s22_12 = qcel.models.Molecule.from_data(ss22_12)
+def test_relative_geoms_align_free(request, Molecule):
+    s22_12 = Molecule.from_data(ss22_12)
     drop_qcsk(s22_12, request.node.name)
 
     for trial in range(3):
@@ -62,8 +63,8 @@ def test_relative_geoms_align_free(request):
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
-def test_relative_geoms_align_fixed(request):
-    s22_12 = qcel.models.Molecule.from_data(ss22_12 + "nocom\nnoreorient\n")
+def test_relative_geoms_align_fixed(request, Molecule):
+    s22_12 = Molecule.from_data(ss22_12 + "nocom\nnoreorient\n")
     drop_qcsk(s22_12, request.node.name)
 
     for trial in range(3):
@@ -76,19 +77,19 @@ def test_relative_geoms_align_fixed(request):
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
-chiral = qcel.models.Molecule.from_data(
-    """
+chiral_data = """
  C     0.000000     0.000000     0.000000
 Br     0.000000     0.000000     1.949834
  F     1.261262     0.000000    -0.451181
 Cl    -0.845465     1.497406    -0.341118
  H    -0.524489    -0.897662    -0.376047
 """
-)
 
 
 @using_networkx
-def test_scramble_descrambles_chiral():
+def test_scramble_descrambles_chiral(Molecule):
+    chiral = Molecule.from_data(chiral_data)
+
     chiral.scramble(
         do_shift=True, do_rotate=True, do_resort=True, do_plot=False, verbose=0, do_mirror=False, do_test=True
     )
@@ -141,9 +142,9 @@ ref_rmsd = math.sqrt(2.0 * 0.2 * 0.2 / 3.0)  # RMSD always in Angstroms
 
 
 @using_networkx
-def test_error_bins_b787():
-    oco10 = qcel.models.Molecule.from_data(soco10)
-    oco12 = qcel.models.Molecule.from_data(s18ooc12)
+def test_error_bins_b787(Molecule):
+    oco10 = Molecule.from_data(soco10)
+    oco12 = Molecule.from_data(s18ooc12)
 
     with pytest.raises(qcel.ValidationError) as e:
         oco12.align(oco10, verbose=0)
@@ -152,9 +153,9 @@ def test_error_bins_b787():
 
 
 @using_networkx
-def test_error_nat_b787():
-    oco10 = qcel.models.Molecule.from_data(soco10)
-    oco12 = qcel.models.Molecule.from_data(sooco12)
+def test_error_nat_b787(Molecule):
+    oco10 = Molecule.from_data(soco10)
+    oco12 = Molecule.from_data(sooco12)
 
     with pytest.raises(qcel.ValidationError) as e:
         oco12.align(oco10, verbose=0)
@@ -162,16 +163,20 @@ def test_error_nat_b787():
     assert "natom doesn't match" in str(e.value)
 
 
-def test_mill_shift_error():
+def test_mill_shift_error(schema_versions):
+    AlignmentMill = schema_versions.AlignmentMill
+
     with pytest.raises(pydantic.ValidationError) as e:
-        qcel.models.AlignmentMill(shift=[0, 1])
+        AlignmentMill(shift=[0, 1])
 
     assert "Shift must be castable to shape" in str(e.value)
 
 
-def test_mill_rot_error():
+def test_mill_rot_error(schema_versions):
+    AlignmentMill = schema_versions.AlignmentMill
+
     with pytest.raises(pydantic.ValidationError) as e:
-        qcel.models.AlignmentMill(rotation=[0, 1, 3])
+        AlignmentMill(rotation=[0, 1, 3])
 
     assert "Rotation must be castable to shape" in str(e.value)
 
@@ -211,9 +216,9 @@ def test_b787_atomsmap():
 
 
 @using_networkx
-def test_model_b787():
-    oco10 = qcel.models.Molecule.from_data(soco10)
-    oco12 = qcel.models.Molecule.from_data(sooc12)
+def test_model_b787(Molecule):
+    oco10 = Molecule.from_data(soco10)
+    oco12 = Molecule.from_data(sooc12)
 
     mol, data = oco12.align(oco10, verbose=4)
 
@@ -242,8 +247,7 @@ def test_kabsch_identity():
     assert compare_values(np.zeros(3), shift, "identical COM")
 
 
-trop_cs = qcel.models.Molecule.from_data(
-    """
+trop_cs_data = """
      C        -3.19247825     2.43488661     0.00000000
      C        -4.39993972     0.13119097     0.00000000
      C        -3.25125097    -2.33609553     0.00000000
@@ -261,10 +265,8 @@ trop_cs = qcel.models.Molecule.from_data(
      H         4.95785438     0.85953513     0.00000000
      units au
 """
-)
 
-trop_gs_c2v = qcel.models.Molecule.from_data(
-    """
+trop_gs_c2v_data = """
      C         2.38842439     0.00000000    -3.20779039
      C         0.00000000     0.00000000    -4.37431891
      C        -2.38842439     0.00000000    -3.20779039
@@ -282,11 +284,13 @@ trop_gs_c2v = qcel.models.Molecule.from_data(
      H        -5.05910161     0.00000000    -0.16572021
      units au
 """
-)
 
 
 @using_networkx
-def test_tropolone_b787():
+def test_tropolone_b787(Molecule):
+    trop_gs_c2v = Molecule.from_data(trop_gs_c2v_data)
+    trop_cs = Molecule.from_data(trop_cs_data)
+
     mol, data = trop_cs.align(trop_gs_c2v, do_plot=False, verbose=0, uno_cutoff=0.5)
     assert compare_values(0.1413, data["rmsd"], "cs<-->c2v tropolones align", atol=1.0e-2)
 
@@ -350,7 +354,7 @@ Rotation:
     assert compare(mill_str, mill.pretty_print())
 
 
-def test_hessian_align(request):
+def test_hessian_align(request, Molecule):
     # from Psi4 test test_hessian_vs_cfour[HOOH_TS-H_analytic]
 
     rmill = """
@@ -729,8 +733,8 @@ Rotation:
         ]
     )
 
-    p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
-    c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
+    p4mol = Molecule.from_data(p4_hooh_xyz)
+    c4mol = Molecule.from_data(c4_hooh_xyz)
     drop_qcsk(c4mol, request.node.name)
     aqmol, data = p4mol.align(c4mol, atoms_map=True, mols_align=True, verbose=4)
     mill = data["mill"]
@@ -754,7 +758,7 @@ Rotation:
 
 
 @using_networkx
-def test_vector_gradient_align():
+def test_vector_gradient_align(Molecule):
     # HOOH TS (optimized to be very nearly planar)
     p4_hooh_xyz = """
     units au
@@ -876,8 +880,8 @@ def test_vector_gradient_align():
     )
     p4_hooh_dipder = np.concatenate((p4_hooh_dipder_x, p4_hooh_dipder_y, p4_hooh_dipder_z)).reshape(3, -1)
 
-    p4mol = qcel.models.Molecule.from_data(p4_hooh_xyz)
-    c4mol = qcel.models.Molecule.from_data(c4_hooh_xyz)
+    p4mol = Molecule.from_data(p4_hooh_xyz)
+    c4mol = Molecule.from_data(c4_hooh_xyz)
     aqmol, data = p4mol.align(c4mol, atoms_map=False, mols_align=True, verbose=4)
     mill = data["mill"]
 
