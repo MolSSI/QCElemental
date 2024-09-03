@@ -16,7 +16,7 @@ This project also contains a generator, validator, and translator for [Molecule 
 
 ## ✨ Getting Started
 
-- Installation. QCElemental supports Python 3.7+.
+- Installation. QCElemental supports Python 3.7+. We reserve the right to move to Python 3.9+ at no notice for new releases.
 
   ```sh
   python -m pip install qcelemental
