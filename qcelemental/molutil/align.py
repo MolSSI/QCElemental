@@ -1,15 +1,17 @@
 import collections
 import itertools
 import time
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Union
 
 import numpy as np
 
 from ..exceptions import ValidationError
-from ..models import AlignmentMill
 from ..physical_constants import constants
 from ..testing import compare_values
 from ..util import distance_matrix, linear_sum_assignment, random_rotation_matrix, uno, which_import
+
+if TYPE_CHECKING:
+    from qcelemental.models import AlignmentMill  # TODO: recheck if .v1 needed
 
 
 def _nre(Z, geom):
@@ -100,11 +102,13 @@ def B787(
     float, AlignmentMill
         First item is RMSD [A] between `rgeom` and the optimally aligned
         geometry computed.
-        Second item is a AlignmentMill with fields
+        Second item is an AlignmentMill with fields
         (shift, rotation, atommap, mirror) that prescribe the transformation
         from `cgeom` and the optimally aligned geometry.
 
     """
+    from qcelemental.models import AlignmentMill
+
     # validation
     if rgeom.shape != cgeom.shape or rgeom.shape[1] != 3:
         raise ValidationError("""natom doesn't match: {} != {}""".format(rgeom.shape, cgeom.shape))
@@ -564,7 +568,7 @@ def compute_scramble(
     do_rotate: Union[bool, List, np.ndarray] = True,
     deflection: float = 1.0,
     do_mirror: bool = False,
-) -> AlignmentMill:
+) -> "AlignmentMill":
     r"""Generate a random or directed translation, rotation, and atom shuffling.
 
     Parameters
@@ -595,6 +599,8 @@ def compute_scramble(
         as requested: identity, random, or specified.
 
     """
+    from qcelemental.models import AlignmentMill
+
     rand_elord = np.arange(nat)
     if do_resort is True:
         np.random.shuffle(rand_elord)

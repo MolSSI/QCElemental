@@ -62,7 +62,7 @@ database.
 
     >>> mol = qcel.models.Molecule(**{"symbols": ["He", "He"], "geometry": [0, 0, -3, 0, 0, 3]})
     >>> mol.get_hash()
-    '84872f975d19aafa62b188b40fbadaf26a3b1f84'
+    '84872f975d19aafa62b188b40fbadaf26a3b1f84'  # pragma: allowlist secret
 
 Molecular Formula
 +++++++++++++++++

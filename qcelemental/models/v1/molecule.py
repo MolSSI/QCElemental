@@ -23,15 +23,15 @@ except ModuleNotFoundError:
     pass
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
-from ..molparse.from_arrays import from_arrays
-from ..molparse.from_schema import from_schema
-from ..molparse.from_string import from_string
-from ..molparse.to_schema import to_schema
-from ..molparse.to_string import to_string
-from ..periodic_table import periodictable
-from ..physical_constants import constants
-from ..testing import compare, compare_values
-from ..util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
+from ...molparse.from_arrays import from_arrays
+from ...molparse.from_schema import from_schema
+from ...molparse.from_string import from_string
+from ...molparse.to_schema import to_schema
+from ...molparse.to_string import to_string
+from ...periodic_table import periodictable
+from ...physical_constants import constants
+from ...testing import compare, compare_values
+from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
 from .basemodels import ProtoModel, qcschema_draft
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
@@ -883,7 +883,7 @@ class Molecule(ProtoModel):
 
         """
 
-        from ..molutil import molecular_formula_from_symbols
+        from ...molutil import molecular_formula_from_symbols
 
         formula = molecular_formula_from_symbols(symbols=self.symbols, order=order)
 
@@ -1350,7 +1350,7 @@ class Molecule(ProtoModel):
             from `concern_mol` and the optimally aligned geometry.
 
         """
-        from ..molutil.align import B787
+        from ...molutil.align import B787
 
         rgeom = np.array(ref_mol.geometry)
         runiq = np.asarray(
@@ -1499,7 +1499,7 @@ class Molecule(ProtoModel):
             transformations.
 
         """
-        from ..molutil.align import compute_scramble
+        from ...molutil.align import compute_scramble
 
         ref_mol = self
         rgeom = ref_mol.geometry
