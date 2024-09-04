@@ -7,7 +7,7 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import Field, validator
 
-from ..util import blockwise_contract, blockwise_expand
+from ...util import blockwise_contract, blockwise_expand
 from .basemodels import ProtoModel
 from .types import Array
 

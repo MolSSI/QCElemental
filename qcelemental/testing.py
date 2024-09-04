@@ -2,7 +2,7 @@ import copy
 import logging
 import pprint
 import sys
-from typing import Callable, Dict, List, Tuple, Union
+from typing import TYPE_CHECKING, Callable, Dict, List, Tuple, Union
 
 import numpy as np
 
@@ -11,7 +11,8 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import BaseModel
 
-from qcelemental.models.basemodels import ProtoModel
+if TYPE_CHECKING:
+    from qcelemental.models import ProtoModel  # TODO: recheck if .v1 needed
 
 pp = pprint.PrettyPrinter(width=120)
 

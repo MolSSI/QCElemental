@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 import qcelemental as qcel
-from qcelemental.models import basis
+from qcelemental.models.v1 import basis  # TODO: generalize at parameterize v1/v2 stage
 
 from .addons import drop_qcsk
 

@@ -15,7 +15,7 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import Field, constr, validator
 
-from ..util import provenance_stamp
+from ...util import provenance_stamp
 from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
