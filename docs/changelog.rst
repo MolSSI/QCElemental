@@ -20,6 +20,26 @@ Changelog
 .. +++++
 
 
+0.30.0 / 2024-MM-DD (Unreleased)
+-------------------
+
+Breaking Changes
+++++++++++++++++
+* The very old model names `ResultInput`, `Result`, `ResultProperties`, `Optimization` deprecated in 2019 are now only available through `qcelelemental.models.v1`
+
+New Features
+++++++++++++
+* Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+
 
 0.28.0 / 2024-06-21
 -------------------

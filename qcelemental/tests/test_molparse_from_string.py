@@ -4,8 +4,9 @@ import numpy as np
 import pytest
 
 import qcelemental
-from qcelemental.models import Molecule
 from qcelemental.testing import compare, compare_molrecs, compare_recursive, compare_values, tnm
+
+from .addons import Molecule
 
 _arrays_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_arrays"}
 _string_prov_stamp = {"creator": "QCElemental", "version": "1.0", "routine": "qcelemental.molparse.from_string"}
@@ -99,7 +100,7 @@ fullans1c.update(
 )
 
 
-def test_psi4_qm_1a():
+def test_psi4_qm_1a(Molecule):
     subject = subject1
     fullans = copy.deepcopy(fullans1a)
     fullans["provenance"] = _string_prov_stamp
@@ -138,7 +139,7 @@ def test_psi4_qm_1b():
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
 
-def test_psi4_qm_1c():
+def test_psi4_qm_1c(Molecule):
     subject = "1 1\n  -- \n" + subject1
     ans = copy.deepcopy(ans1)
     ans.update({"molecular_charge": 1.0, "molecular_multiplicity": 1})
@@ -322,7 +323,7 @@ fullans2_unnp.update(
 )
 
 
-def test_psi4_qm_2a():
+def test_psi4_qm_2a(Molecule):
     subject = "\n--\n".join(subject2)
     fullans = copy.deepcopy(fullans2)
     fullans_unnp = copy.deepcopy(fullans2_unnp)
