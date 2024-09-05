@@ -3,7 +3,7 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare
 
-from .addons import drop_qcsk
+from .addons import Molecule, drop_qcsk
 
 # CODATA2014 = 1.05835442134
 # CODATA2018 = 1.058354421806
@@ -278,24 +278,18 @@ def test_to_string_xyz(inp, expected):
 
 
 _molecule_inputs = {
-    "subject1": qcel.models.Molecule(
-        **{
-            "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
-            "symbols": ["O", "H", "H"],
-            "connectivity": [[0, 1, 1], [0, 2, 1]],
-        }
-    ),
-    "subject1_nocon": qcel.models.Molecule(
-        **{"geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0], "symbols": ["O", "H", "H"]}
-    ),
-    "subject2": qcel.models.Molecule(
-        **{
-            "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
-            "symbols": ["O", "H", "H"],
-            "connectivity": [[0, 1, 1], [0, 2, 1]],
-            "real": [False, False, True],
-        }
-    ),
+    "subject1": {
+        "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+        "symbols": ["O", "H", "H"],
+        "connectivity": [[0, 1, 1], [0, 2, 1]],
+    },
+    "subject1_nocon": {"geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0], "symbols": ["O", "H", "H"]},
+    "subject2": {
+        "geometry": [0, 0, 0, 0, 0, 1.9, 0, -1.9, 0],
+        "symbols": ["O", "H", "H"],
+        "connectivity": [[0, 1, 1], [0, 2, 1]],
+        "real": [False, False, True],
+    },
 }
 
 _molecule_outputs = {
@@ -330,9 +324,11 @@ QCElemental
         ("subject2", {"dtype": "nglview-sdf"}, "ans2_ngslviewsdf"),
     ],
 )
-def test_molecule_to_string(inp, kwargs, expected, request):
-    smol = _molecule_inputs[inp].to_string(**kwargs)
-    drop_qcsk(_molecule_inputs[inp], request.node.name)
+def test_molecule_to_string(inp, kwargs, expected, request, Molecule):
+    mol = Molecule(**_molecule_inputs[inp])
+
+    smol = mol.to_string(**kwargs)
+    drop_qcsk(mol, request.node.name)
     assert compare(_molecule_outputs[expected], smol)
 
 

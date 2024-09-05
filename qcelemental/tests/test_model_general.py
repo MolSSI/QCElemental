@@ -1,19 +1,11 @@
 import pytest
 
-from qcelemental.models import (
-    AtomicInput,
-    AtomicResultProperties,
-    ComputeError,
-    FailedOperation,
-    OptimizationInput,
-    ProtoModel,
-    Provenance,
-)
-
-from .addons import drop_qcsk
+from .addons import drop_qcsk, schema_versions
 
 
-def test_result_properties_default_skip(request):
+def test_result_properties_default_skip(request, schema_versions):
+    AtomicResultProperties = schema_versions.AtomicResultProperties
+
     obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
     drop_qcsk(obj, request.node.name)
 
@@ -22,7 +14,9 @@ def test_result_properties_default_skip(request):
     assert obj.dict().keys() == {"scf_one_electron_energy"}
 
 
-def test_result_properties_default_repr():
+def test_result_properties_default_repr(schema_versions):
+    AtomicResultProperties = schema_versions.AtomicResultProperties
+
     obj = AtomicResultProperties(scf_one_electron_energy="-5.0")
     assert "none" not in str(obj).lower()
     assert "scf_one_electron_energy" in str(obj)
@@ -30,7 +24,9 @@ def test_result_properties_default_repr():
     assert len(repr(obj)) < 100
 
 
-def test_repr_provenance(request):
+def test_repr_provenance(request, schema_versions):
+    Provenance = schema_versions.Provenance
+
     prov = Provenance(creator="qcel", version="v0.3.2")
     drop_qcsk(prov, request.node.name)
 
@@ -38,14 +34,19 @@ def test_repr_provenance(request):
     assert "qcel" in repr(prov)
 
 
-def test_repr_compute_error():
+def test_repr_compute_error(schema_versions):
+    ComputeError = schema_versions.ComputeError
+
     ce = ComputeError(error_type="random_error", error_message="this is bad")
 
     assert "random_error" in str(ce)
     assert "random_error" in repr(ce)
 
 
-def test_repr_failed_op():
+def test_repr_failed_op(schema_versions):
+    ComputeError = schema_versions.ComputeError
+    FailedOperation = schema_versions.FailedOperation
+
     fail_op = FailedOperation(error=ComputeError(error_type="random_error", error_message="this is bad"))
     assert (
         str(fail_op)
@@ -53,7 +54,9 @@ def test_repr_failed_op():
     )
 
 
-def test_repr_result(request):
+def test_repr_result(request, schema_versions):
+    AtomicInput = schema_versions.AtomicInput
+
     result = AtomicInput(
         **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
     )
@@ -63,7 +66,9 @@ def test_repr_result(request):
     assert "'gradient'" in str(result)
 
 
-def test_repr_optimization():
+def test_repr_optimization(schema_versions):
+    OptimizationInput = schema_versions.OptimizationInput
+
     opt = OptimizationInput(
         **{
             "input_specification": {"driver": "gradient", "model": {"method": "UFF"}},
@@ -75,7 +80,9 @@ def test_repr_optimization():
     assert "molecule_hash" in repr(opt)
 
 
-def test_model_custom_repr():
+def test_model_custom_repr(schema_versions):
+    ProtoModel = schema_versions.ProtoModel
+
     class Model(ProtoModel):
         a: int
 

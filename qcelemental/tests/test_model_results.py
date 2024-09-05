@@ -2,9 +2,8 @@ import numpy as np
 import pytest
 
 import qcelemental as qcel
-from qcelemental.models.v1 import basis  # TODO: generalize at parameterize v1/v2 stage
 
-from .addons import drop_qcsk
+from .addons import drop_qcsk, schema_versions
 
 center_data = {
     "bs_sto3g_h": {
@@ -89,8 +88,10 @@ center_data = {
 
 
 @pytest.fixture(scope="function")
-def result_data_fixture():
-    mol = qcel.models.Molecule.from_data(
+def result_data_fixture(schema_versions):
+    Molecule = schema_versions.Molecule
+
+    mol = Molecule.from_data(
         """
         O 0 0 0
         H 0 0 2
@@ -111,10 +112,10 @@ def result_data_fixture():
 
 
 @pytest.fixture(scope="function")
-def wavefunction_data_fixture(result_data_fixture):
-    bas = basis.BasisSet(
-        name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]
-    )
+def wavefunction_data_fixture(result_data_fixture, schema_versions):
+    BasisSet = schema_versions.basis.BasisSet
+
+    bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
     result_data_fixture["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
@@ -186,12 +187,16 @@ def optimization_data_fixture(result_data_fixture):
 
 
 @pytest.mark.parametrize("center_name", center_data.keys())
-def test_basis_shell_centers(center_name):
-    assert basis.BasisCenter(**center_data[center_name])
+def test_basis_shell_centers(center_name, schema_versions):
+    BasisCenter = schema_versions.basis.BasisCenter
+
+    assert BasisCenter(**center_data[center_name])
 
 
-def test_basis_set_build(request):
-    bas = basis.BasisSet(
+def test_basis_set_build(request, schema_versions):
+    BasisSet = schema_versions.basis.BasisSet
+
+    bas = BasisSet(
         name="custom_basis",
         center_data=center_data,
         atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h", "bs_def2tzvp_zr"],
@@ -211,14 +216,16 @@ def test_basis_set_build(request):
     assert es[0].coefficients == [[0.15432899, 0.53532814, 0.44463454]]
 
 
-def test_basis_electron_center_raises():
+def test_basis_electron_center_raises(schema_versions):
+    ElectronShell = schema_versions.basis.ElectronShell
+
     data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
 
     # Check bad coefficient length
     bad_coef = data.copy()
     bad_coef["coefficients"] = [[5, 3]]
     with pytest.raises(ValueError) as e:
-        basis.ElectronShell(**bad_coef)
+        ElectronShell(**bad_coef)
 
     assert "does not match the" in str(e.value)
 
@@ -226,12 +233,14 @@ def test_basis_electron_center_raises():
     bad_fused = data.copy()
     bad_fused["angular_momentum"] = [0, 1]
     with pytest.raises(ValueError) as e:
-        basis.ElectronShell(**bad_fused)
+        ElectronShell(**bad_fused)
 
     assert "fused shell" in str(e.value)
 
 
-def test_basis_ecp_center_raises():
+def test_basis_ecp_center_raises(schema_versions):
+    basis = schema_versions.basis
+
     # Check coefficients
     data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
     data["coefficients"] = [[5, 3]]
@@ -247,42 +256,54 @@ def test_basis_ecp_center_raises():
         basis.ECPPotential(**data)
 
 
-def test_basis_map_raises():
+def test_basis_map_raises(schema_versions):
+    BasisSet = schema_versions.basis.BasisSet
+
     with pytest.raises(ValueError) as e:
-        assert basis.BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
+        assert BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
 
 
-def test_result_build(result_data_fixture, request):
-    ret = qcel.models.AtomicResult(**result_data_fixture)
+def test_result_build(result_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
+    ret = AtomicResult(**result_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
 
 
-def test_result_build_wavefunction_delete(wavefunction_data_fixture, request):
+def test_result_build_wavefunction_delete(wavefunction_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
     del wavefunction_data_fixture["protocols"]
-    ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
+    ret = AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
 
 
-def test_wavefunction_build(wavefunction_data_fixture, request):
-    ret = qcel.models.AtomicResult(**wavefunction_data_fixture)
+def test_wavefunction_build(wavefunction_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
+    ret = AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret
 
 
-def test_wavefunction_matrix_size_error(wavefunction_data_fixture):
+def test_wavefunction_matrix_size_error(wavefunction_data_fixture, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
     wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"] = np.random.rand(2, 2)
     with pytest.raises(ValueError) as e:
-        qcel.models.AtomicResult(**wavefunction_data_fixture)
+        AtomicResult(**wavefunction_data_fixture)
 
     assert "castable to shape" in str(e.value)
 
 
-def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
+def test_wavefunction_return_result_pointer(wavefunction_data_fixture, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
     del wavefunction_data_fixture["wavefunction"]["scf_orbitals_a"]
     with pytest.raises(ValueError) as e:
-        qcel.models.AtomicResult(**wavefunction_data_fixture)
+        AtomicResult(**wavefunction_data_fixture)
 
     assert "does not exist" in str(e.value)
 
@@ -321,7 +342,11 @@ def test_wavefunction_return_result_pointer(wavefunction_data_fixture):
         ),
     ],
 )
-def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefunction_data_fixture, request):
+def test_wavefunction_protocols(
+    protocol, restricted, provided, expected, wavefunction_data_fixture, request, schema_versions
+):
+    AtomicResult = schema_versions.AtomicResult
+
     wfn_data = wavefunction_data_fixture["wavefunction"]
 
     if protocol is None:
@@ -340,7 +365,7 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
         else:
             wfn_data[scf_name] = np.random.rand(bas.nbf, bas.nbf)
 
-    wfn = qcel.models.AtomicResult(**wavefunction_data_fixture)
+    wfn = AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(wfn, request.node.name)
 
     if len(expected) == 0:
@@ -361,7 +386,9 @@ def test_wavefunction_protocols(protocol, restricted, provided, expected, wavefu
         ("input", ["gms.dat"], ["input"]),
     ],
 )
-def test_native_protocols(protocol, provided, expected, native_data_fixture, request):
+def test_native_protocols(protocol, provided, expected, native_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
     native_data = native_data_fixture["native_files"]
 
     if protocol is None:
@@ -373,7 +400,7 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
         if name not in provided:
             native_data.pop(name)
 
-    wfn = qcel.models.AtomicResult(**native_data_fixture)
+    wfn = AtomicResult(**native_data_fixture)
     drop_qcsk(wfn, request.node.name)
 
     if len(expected) == 0:
@@ -387,10 +414,12 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     "keep, indices",
     [(None, [0, 1, 2, 3, 4]), ("all", [0, 1, 2, 3, 4]), ("initial_and_final", [0, 4]), ("final", [4]), ("none", [])],
 )
-def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture):
+def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture, schema_versions):
+    OptimizationResult = schema_versions.OptimizationResult
+
     if keep is not None:
         optimization_data_fixture["protocols"] = {"trajectory": keep}
-    opt = qcel.models.OptimizationResult(**optimization_data_fixture)
+    opt = OptimizationResult(**optimization_data_fixture)
 
     assert len(opt.trajectory) == len(indices)
     for result, index in zip(opt.trajectory, indices):
@@ -401,54 +430,68 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
     "default, defined, default_result, defined_result",
     [(None, None, True, None), (False, {"a": True}, False, {"a": True})],
 )
-def test_error_correction_protocol(default, defined, default_result, defined_result, result_data_fixture, request):
+def test_error_correction_protocol(
+    default, defined, default_result, defined_result, result_data_fixture, request, schema_versions
+):
+    AtomicResult = schema_versions.AtomicResult
+
     policy = {}
     if default is not None:
         policy["default_policy"] = default
     if defined is not None:
         policy["policies"] = defined
     result_data_fixture["protocols"] = {"error_correction": policy}
-    res = qcel.models.AtomicResult(**result_data_fixture)
+    res = AtomicResult(**result_data_fixture)
     drop_qcsk(res, request.node.name)
 
     assert res.protocols.error_correction.default_policy == default_result
     assert res.protocols.error_correction.policies == defined_result
 
 
-def test_error_correction_logic():
+def test_error_correction_logic(schema_versions):
+    ErrorCorrectionProtocol = schema_versions.results.ErrorCorrectionProtocol
+
     # Make sure we are permissive by default
-    correction_policy = qcel.models.results.ErrorCorrectionProtocol()
+    correction_policy = ErrorCorrectionProtocol()
     assert correction_policy.allows("a")
 
     # Add ability to turn off error correction
-    correction_policy = qcel.models.results.ErrorCorrectionProtocol(policies={"a": False})
+    correction_policy = ErrorCorrectionProtocol(policies={"a": False})
     correction_policy.policies["a"] = False
     assert not correction_policy.allows("a")
 
     # Try no execution by default
-    correction_policy = qcel.models.results.ErrorCorrectionProtocol(default_policy=False)
+    correction_policy = ErrorCorrectionProtocol(default_policy=False)
     assert not correction_policy.allows("a")
 
     # Make sure it is still overridable
-    correction_policy = qcel.models.results.ErrorCorrectionProtocol(default_policy=False, policies={"a": True})
+    correction_policy = ErrorCorrectionProtocol(default_policy=False, policies={"a": True})
     assert correction_policy.allows("a")
 
 
-def test_result_build_stdout_delete(result_data_fixture, request):
+def test_result_build_stdout_delete(result_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
     result_data_fixture["protocols"] = {"stdout": False}
-    ret = qcel.models.AtomicResult(**result_data_fixture)
+    ret = AtomicResult(**result_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.stdout is None
 
 
-def test_result_build_stdout(result_data_fixture, request):
-    ret = qcel.models.AtomicResult(**result_data_fixture)
+def test_result_build_stdout(result_data_fixture, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
+    ret = AtomicResult(**result_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.stdout == "I ran."
 
 
-def test_failed_operation(result_data_fixture, request):
-    water = qcel.models.Molecule.from_data(
+def test_failed_operation(result_data_fixture, request, schema_versions):
+    Molecule = schema_versions.Molecule
+    FailedOperation = schema_versions.FailedOperation
+    ComputeError = schema_versions.ComputeError
+
+    water = Molecule.from_data(
         """
         O 0 0 0
         H 0 0 2
@@ -457,22 +500,24 @@ def test_failed_operation(result_data_fixture, request):
     )
     drop_qcsk(water, request.node.name)
 
-    failed = qcel.models.FailedOperation(
+    failed = FailedOperation(
         extras={"garbage": water},
         input_data=result_data_fixture,
         error={"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
     )
-    assert isinstance(failed.error, qcel.models.ComputeError)
+    assert isinstance(failed.error, ComputeError)
     assert isinstance(failed.dict(), dict)
     failed_json = failed.json()
     assert isinstance(failed_json, str)
     assert "its all good" in failed_json
 
 
-def test_result_properties_array(request):
+def test_result_properties_array(request, schema_versions):
+    AtomicResultProperties = schema_versions.AtomicResultProperties
+
     lquad = [1, 2, 3, 2, 4, 5, 3, 5, 6]
 
-    obj = qcel.models.AtomicResultProperties(
+    obj = AtomicResultProperties(
         scf_one_electron_energy="-5.0", scf_dipole_moment=[1, 2, 3], scf_quadrupole_moment=lquad
     )
     drop_qcsk(obj, request.node.name)
@@ -487,12 +532,14 @@ def test_result_properties_array(request):
     assert np.array_equal(obj.dict()["scf_quadrupole_moment"], np.array(lquad).reshape(3, 3))  # now remains ndarray
 
 
-def test_result_derivatives_array(request):
+def test_result_derivatives_array(request, schema_versions):
+    AtomicResultProperties = schema_versions.AtomicResultProperties
+
     nat = 4
     lgrad = list(range(nat * 3))
     lhess = list(range(nat * nat * 9))
 
-    obj = qcel.models.AtomicResultProperties(calcinfo_natom=nat, return_gradient=lgrad, scf_total_hessian=lhess)
+    obj = AtomicResultProperties(calcinfo_natom=nat, return_gradient=lgrad, scf_total_hessian=lhess)
     drop_qcsk(obj, request.node.name)
 
     assert obj.calcinfo_natom == 4
@@ -504,25 +551,31 @@ def test_result_derivatives_array(request):
 @pytest.mark.parametrize(
     "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
 )
-def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
+def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, schema_versions):
+    Molecule = schema_versions.Molecule
+    AtomicResultProperties = schema_versions.AtomicResultProperties
+    AtomicInput = schema_versions.AtomicInput
+    AtomicResult = schema_versions.AtomicResult
+    OptimizationResult = schema_versions.OptimizationResult
+
     if smodel == "molecule":
-        model = qcel.models.Molecule
+        model = Molecule
         data = result_data_fixture["molecule"].dict()
 
     elif smodel == "atomicresultproperties":
-        model = qcel.models.AtomicResultProperties
+        model = AtomicResultProperties
         data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
 
     elif smodel == "atomicinput":
-        model = qcel.models.AtomicInput
+        model = AtomicInput
         data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
 
     elif smodel == "atomicresult":
-        model = qcel.models.AtomicResult
+        model = AtomicResult
         data = result_data_fixture
 
     elif smodel == "optimizationresult":
-        model = qcel.models.OptimizationResult
+        model = OptimizationResult
         data = optimization_data_fixture
 
     instance = model(**data)
@@ -531,13 +584,13 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel):
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
     with pytest.warns(DeprecationWarning):
-        qcel.models.ResultProperties(scf_one_electron_energy="-5.0")
+        qcel.models.v1.ResultProperties(scf_one_electron_energy="-5.0")
 
     with pytest.warns(DeprecationWarning):
-        qcel.models.ResultInput(**{k: result_data_fixture[k] for k in ["molecule", "model", "driver"]})
+        qcel.models.v1.ResultInput(**{k: result_data_fixture[k] for k in ["molecule", "model", "driver"]})
 
     with pytest.warns(DeprecationWarning):
-        qcel.models.Result(**result_data_fixture)
+        qcel.models.v1.Result(**result_data_fixture)
 
     with pytest.warns(DeprecationWarning):
-        qcel.models.Optimization(**optimization_data_fixture)
+        qcel.models.v1.Optimization(**optimization_data_fixture)
