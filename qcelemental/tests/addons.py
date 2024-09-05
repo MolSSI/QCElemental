@@ -75,3 +75,24 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
         else:
             raise TypeError
         json.dump(instance, fp, sort_keys=True, indent=2)
+
+
+@pytest.fixture(scope="function", params=[None, "v1", "v2"])
+def Molecule(request):
+    # for Molecule, qcsk v1 & v2 are schema_version v2 & v3
+    if request.param == "v1":
+        return qcelemental.models.v1.Molecule
+    elif request.param == "v2":
+        return qcelemental.models.v1.Molecule  # TODO v2
+    else:
+        return qcelemental.models.Molecule
+
+
+@pytest.fixture(scope="function", params=[None, "v1", "v2"])
+def schema_versions(request):
+    if request.param == "v1":
+        return qcelemental.models.v1
+    elif request.param == "v2":
+        return qcelemental.models.v1  # TODO v2
+    else:
+        return qcelemental.models

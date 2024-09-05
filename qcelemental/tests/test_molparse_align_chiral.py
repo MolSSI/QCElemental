@@ -1,17 +1,15 @@
 #! testing aligner on enantiomers based on Table 1 of 10.1021/ci100219f aka J Chem Inf Model 2010 50(12) 2129-2140
 
-import qcelemental as qcel
 from qcelemental.testing import compare, compare_values
 
-from .addons import using_networkx
+from .addons import Molecule, using_networkx
 
 do_plot = False
 verbose = 4
 run_mirror = True
 uno_cutoff = 0.1
 
-simpleR = qcel.models.Molecule.from_data(
-    """
+simpleR_data = """
 #FINAL HEAT OF FORMATION =   -50.881170
  C     0.000000     0.000000     0.000000
 Br     0.000000     0.000000     1.949834
@@ -19,10 +17,8 @@ Br     0.000000     0.000000     1.949834
 Cl    -0.845465     1.497406    -0.341118
  H    -0.524489    -0.897662    -0.376047
 """
-)
 
-simpleS = qcel.models.Molecule.from_data(
-    """
+simpleS_data = """
 #FINAL HEAT OF FORMATION =   -50.881200
  C     0.000000     0.000000     0.000000
 Br     0.000000     0.000000     1.949804
@@ -30,18 +26,19 @@ Br     0.000000     0.000000     1.949804
 Cl    -0.845116    -1.497706    -0.341045
  H    -0.524793     0.897448    -0.376232
 """
-)
 
 
 @using_networkx()
-def test_simpleS():
+def test_simpleS(Molecule):
+    simpleR = Molecule.from_data(simpleR_data)
+    simpleS = Molecule.from_data(simpleS_data)
+
     mol, data = simpleS.align(simpleR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
     assert compare_values(1.093e-4, data["rmsd"], "bromochlorofluoromethane R, S", atol=1.0e-4)
     assert compare(True, data["mill"].mirror, "bromochlorofluoromethane R, S enantiomers")
 
 
-clbrbutRR = qcel.models.Molecule.from_data(
-    """
+clbrbutRR_data = """
 #FINAL HEAT OF FORMATION =   -29.636550
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509728
@@ -58,10 +55,8 @@ Br     2.013324    -1.836057     1.828118
  H     0.857400    -0.536748     4.093681
  H     1.087887     1.206566     3.844299
 """
-)
 
-clbrbutRS = qcel.models.Molecule.from_data(
-    """
+clbrbutRS_data = """
 #FINAL HEAT OF FORMATION =   -30.277180
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509142
@@ -78,10 +73,8 @@ Br     2.082342     1.783785     1.662513
  H     0.881502     0.759255     4.041367
  H     1.035280    -1.006910     3.957479
 """
-)
 
-clbrbutSR = qcel.models.Molecule.from_data(
-    """
+clbrbutSR_data = """
 #FINAL HEAT OF FORMATION =   -30.275240
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509155
@@ -98,10 +91,8 @@ Br     2.086426    -1.779337     1.653668
  H     0.888172    -0.777962     4.036680
  H     1.023018     0.990363     3.964880
 """
-)
 
-clbrbutSS = qcel.models.Molecule.from_data(
-    """
+clbrbutSS_data = """
 #FINAL HEAT OF FORMATION =   -29.643460
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.509392
@@ -118,11 +109,13 @@ Br     2.010793     1.836814     1.833496
  H     0.847599     0.527095     4.093658
  H     1.098918    -1.213191     3.842777
 """
-)
 
 
 @using_networkx()
-def test_clbrbutSS():
+def test_clbrbutSS(Molecule):
+    clbrbutRR = Molecule.from_data(clbrbutRR_data)
+    clbrbutSS = Molecule.from_data(clbrbutSS_data)
+
     mol, data = clbrbutSS.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -131,7 +124,10 @@ def test_clbrbutSS():
 
 
 @using_networkx()
-def test_clbrbutSR_vs_RR():
+def test_clbrbutSR_vs_RR(Molecule):
+    clbrbutRR = Molecule.from_data(clbrbutRR_data)
+    clbrbutSR = Molecule.from_data(clbrbutSR_data)
+
     mol, data = clbrbutSR.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -139,7 +135,10 @@ def test_clbrbutSR_vs_RR():
 
 
 @using_networkx()
-def test_clbrbutRS():
+def test_clbrbutRS(Molecule):
+    clbrbutRR = Molecule.from_data(clbrbutRR_data)
+    clbrbutRS = Molecule.from_data(clbrbutRS_data)
+
     mol, data = clbrbutRS.align(
         clbrbutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -147,7 +146,10 @@ def test_clbrbutRS():
 
 
 @using_networkx()
-def test_clbrbutSR_vs_RS():
+def test_clbrbutSR_vs_RS(Molecule):
+    clbrbutRS = Molecule.from_data(clbrbutRS_data)
+    clbrbutSR = Molecule.from_data(clbrbutSR_data)
+
     mol, data = clbrbutSR.align(
         clbrbutRS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -155,8 +157,7 @@ def test_clbrbutSR_vs_RS():
     assert compare(True, data["mill"].mirror, "2-chloro-3-bromobutane RS, SR enantiomers")
 
 
-dibromobutSS = qcel.models.Molecule.from_data(
-    """
+dibromobutSS_data = """
 #FINAL HEAT OF FORMATION =   -22.937250
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.496279
@@ -173,10 +174,8 @@ Br     2.015868     1.817420     1.832045
  H     0.693388     0.572465     4.075885
  H     1.030818    -1.164970     3.906985
 """
-)
 
-dibromobutSR = qcel.models.Molecule.from_data(
-    """
+dibromobutSR_data = """
 #FINAL HEAT OF FORMATION =   -21.346970
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.495389
@@ -193,10 +192,8 @@ Br     2.112214    -1.739283     1.628669
  H     0.795144    -0.888367     4.010872
  H     0.887114     0.885089     4.029976
 """
-)
 
-dibromobutRS = qcel.models.Molecule.from_data(
-    """
+dibromobutRS_data = """
 #FINAL HEAT OF FORMATION =   -21.346980
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.495412
@@ -213,10 +210,8 @@ Br     2.112747     1.739065     1.629148
  H     0.891569    -0.888103     4.029483
  H     2.374702     0.092797     4.013327
 """
-)
 
-dibromobutRR = qcel.models.Molecule.from_data(
-    """
+dibromobutRR_data = """
 #FINAL HEAT OF FORMATION =   -22.930210
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.496210
@@ -233,11 +228,13 @@ Br     2.011720    -1.821637     1.845756
  H     0.719551    -0.577247     4.084122
  H     1.002433     1.167985     3.899397
 """
-)
 
 
 @using_networkx()
-def test_dibromobutRS_RR():
+def test_dibromobutRS_RR(Molecule):
+    dibromobutRS = Molecule.from_data(dibromobutRS_data)
+    dibromobutRR = Molecule.from_data(dibromobutRR_data)
+
     mol, data = dibromobutRS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -245,7 +242,10 @@ def test_dibromobutRS_RR():
 
 
 @using_networkx()
-def test_dibromobutSS_RR():
+def test_dibromobutSS_RR(Molecule):
+    dibromobutRR = Molecule.from_data(dibromobutRR_data)
+    dibromobutSS = Molecule.from_data(dibromobutSS_data)
+
     mol, data = dibromobutSS.align(
         dibromobutRR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -254,7 +254,10 @@ def test_dibromobutSS_RR():
 
 
 @using_networkx()
-def test_dibromobutRS_SS():
+def test_dibromobutRS_SS(Molecule):
+    dibromobutRS = Molecule.from_data(dibromobutRS_data)
+    dibromobutSS = Molecule.from_data(dibromobutSS_data)
+
     mol, data = dibromobutRS.align(
         dibromobutSS, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=run_mirror
     )
@@ -262,7 +265,10 @@ def test_dibromobutRS_SS():
 
 
 @using_networkx()
-def test_dibromobutRS_SR_nomirror():
+def test_dibromobutRS_SR_nomirror(Molecule):
+    dibromobutRS = Molecule.from_data(dibromobutRS_data)
+    dibromobutSR = Molecule.from_data(dibromobutSR_data)
+
     # Table satisfied by non-mirror identical, but 787 finds even better match
     mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=False
@@ -272,7 +278,10 @@ def test_dibromobutRS_SR_nomirror():
 
 
 @using_networkx()
-def test_dibromobutRS_SR():
+def test_dibromobutRS_SR(Molecule):
+    dibromobutRS = Molecule.from_data(dibromobutRS_data)
+    dibromobutSR = Molecule.from_data(dibromobutSR_data)
+
     mol, data = dibromobutRS.align(
         dibromobutSR, do_plot=do_plot, verbose=verbose, uno_cutoff=uno_cutoff, run_mirror=True
     )
@@ -280,8 +289,7 @@ def test_dibromobutRS_SR():
     assert compare(True, data["mill"].mirror, "2,3-dibromobutane SR, RS identical")
 
 
-chiralanem = qcel.models.Molecule.from_data(
-    """
+chiralanem_data = """
 C 0.000000 0 0.000000
 C 0.886800 -0.8868 0.886800
 C 0.886800 0.8868 -0.886800
@@ -338,10 +346,8 @@ H 0.019200 -0.8693 3.656500
 H -0.019200 -0.8693 -3.656500
 H 0.019200 0.8693 -3.656500
 """
-)
 
-chiralaneopt = qcel.models.Molecule.from_data(
-    """
+chiralaneopt_data = """
 #FINAL HEAT OF FORMATION =    47.217140
  C     0.000000     0.000000     0.000000
  C     0.000000     0.000000     1.535668
@@ -399,15 +405,13 @@ chiralaneopt = qcel.models.Molecule.from_data(
  H     0.122734     1.023670    -0.400858
  H    -0.965759    -0.365759    -0.396401
 """
-)
 
 
 def toobig2():
     chiralaneopt.align(chiralanem, do_plot=True, verbose=1, uno_cutoff=uno_cutoff, run_mirror=run_mirror)
 
 
-water16a = qcel.models.Molecule.from_data(
-    """
+water16a = """
 #Structure 1
    O    -0.084467    1.283579    2.178253  
    H     -0.214426    0.497331    1.648012 
@@ -458,10 +462,8 @@ water16a = qcel.models.Molecule.from_data(
    H     -1.374788   -1.163513    0.910194   
    H     -1.011241   -0.233905   -0.228031   
 """
-)
 
-water16b = qcel.models.Molecule.from_data(
-    """
+water16b_data = """
 #molden generated tinker .xyz (Wales)
    O     0.274606    2.281294    0.941720    
    H     -0.279583    3.044112    0.776748   
@@ -512,7 +514,6 @@ water16b = qcel.models.Molecule.from_data(
    H      0.215824    1.180728    3.877618    
    H     -0.167536    1.948370    2.630358   
 """
-)
 
 
 def toobig():
