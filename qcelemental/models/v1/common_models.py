@@ -2,20 +2,13 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 import numpy as np
-
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic.v1 import Field
 
 from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
 
 if TYPE_CHECKING:
-    try:
-        from pydantic.v1.typing import ReprArgs
-    except ImportError:  # Will also trap ModuleNotFoundError
-        from pydantic.typing import ReprArgs
+    from pydantic.v1.typing import ReprArgs
 
 
 # Encoders, to be deprecated

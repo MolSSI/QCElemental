@@ -10,11 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
 
 import numpy as np
-
-try:
-    from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import ConstrainedFloat, ConstrainedInt, Field, constr, validator
+from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...molparse.from_arrays import from_arrays
@@ -31,10 +27,7 @@ from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
-    try:
-        from pydantic.v1.typing import ReprArgs
-    except ImportError:  # Will also trap ModuleNotFoundError
-        from pydantic.typing import ReprArgs
+    from pydantic.v1.typing import ReprArgs
 
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
