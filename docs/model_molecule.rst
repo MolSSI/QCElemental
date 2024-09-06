@@ -127,6 +127,6 @@ Obtaining fragments with ghost atoms is also supported:
 API
 ---
 
-.. autopydantic_model:: qcelemental.models.Molecule
+.. autopydantic_model:: qcelemental.models.v2.Molecule
    :noindex:
 

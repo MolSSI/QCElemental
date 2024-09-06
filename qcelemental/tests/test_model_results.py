@@ -1,4 +1,5 @@
 import numpy as np
+import pydantic
 import pytest
 
 import qcelemental as qcel
@@ -549,40 +550,63 @@ def test_result_derivatives_array(request, schema_versions):
 
 
 @pytest.mark.parametrize(
-    "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult"]
+    "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult", "basisset"]
 )
-def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, schema_versions):
-    Molecule = schema_versions.Molecule
-    AtomicResultProperties = schema_versions.AtomicResultProperties
-    AtomicInput = schema_versions.AtomicInput
-    AtomicResult = schema_versions.AtomicResult
-    OptimizationResult = schema_versions.OptimizationResult
+def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, schema_versions, request):
+    qcsk_ver = "v2" if ("v2" in request.node.name) else "v1"
 
     if smodel == "molecule":
-        model = Molecule
+        model = schema_versions.Molecule
         data = result_data_fixture["molecule"].dict()
+        sver = (2, 2)  # TODO , 3)
 
     elif smodel == "atomicresultproperties":
-        model = AtomicResultProperties
+        model = schema_versions.AtomicResultProperties
         data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
+        sver = (None, 2)
 
     elif smodel == "atomicinput":
-        model = AtomicInput
+        model = schema_versions.AtomicInput
         data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
+        sver = (1, 2)
 
     elif smodel == "atomicresult":
-        model = AtomicResult
+        model = schema_versions.AtomicResult
         data = result_data_fixture
+        sver = (1, 2)
 
     elif smodel == "optimizationresult":
-        model = OptimizationResult
+        model = schema_versions.OptimizationResult
         data = optimization_data_fixture
+        sver = (1, 2)
+
+    elif smodel == "basisset":
+        model = schema_versions.basis.BasisSet
+        data = {"name": "custom", "center_data": center_data, "atom_map": ["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]}
+        sver = (1, 2)
+
+    def ver_tests(qcsk_ver):
+        if qcsk_ver == "v1":
+            if sver[0] is not None:
+                assert instance.schema_version == sver[0]
+            assert isinstance(instance, pydantic.v1.BaseModel)
+        elif qcsk_ver == "v2":
+            if sver[1] is not None:
+                assert instance.schema_version == sver[1]
+            assert isinstance(instance, pydantic.BaseModel)
 
     instance = model(**data)
-    assert model(**instance.dict())
+    ver_tests(qcsk_ver)
+    instance = model(**instance.dict())
+    assert instance
+    ver_tests(qcsk_ver)
 
 
-def test_result_model_deprecations(result_data_fixture, optimization_data_fixture):
+def test_result_model_deprecations(result_data_fixture, optimization_data_fixture, request):
+    if "v1" not in request.node.name:
+        # schema_versions coming from fixtures despite not being explicitly present
+        pytest.skip("Deprecations from 2019 only available from qcel.models.v1")
+
     with pytest.warns(DeprecationWarning):
         qcel.models.v1.ResultProperties(scf_one_electron_energy="-5.0")
 

@@ -7,10 +7,7 @@ except ImportError:
     # remove when minimum py38
     from typing_extensions import Literal
 
-try:
-    from pydantic.v1 import Field, conlist, constr, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field, conlist, constr, validator
+from pydantic.v1 import Field, conlist, constr, validator
 
 from ...util import provenance_stamp
 from .basemodels import ProtoModel
@@ -29,10 +26,7 @@ from .molecule import Molecule
 from .results import AtomicResult
 
 if TYPE_CHECKING:
-    try:
-        from pydantic.v1.typing import ReprArgs
-    except ImportError:  # Will also trap ModuleNotFoundError
-        from pydantic.typing import ReprArgs
+    from pydantic.v1.typing import ReprArgs
 
 
 class TrajectoryProtocolEnum(str, Enum):

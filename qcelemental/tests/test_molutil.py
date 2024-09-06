@@ -2,12 +2,7 @@ import math
 import pprint
 
 import numpy as np
-
-try:
-    import pydantic.v1 as pydantic
-except ImportError:  # Will also trap ModuleNotFoundError
-    import pydantic
-
+import pydantic
 import pytest
 
 import qcelemental as qcel
@@ -166,7 +161,7 @@ def test_error_nat_b787(Molecule):
 def test_mill_shift_error(schema_versions):
     AlignmentMill = schema_versions.AlignmentMill
 
-    with pytest.raises(pydantic.ValidationError) as e:
+    with pytest.raises((pydantic.v1.ValidationError, pydantic.ValidationError)) as e:
         AlignmentMill(shift=[0, 1])
 
     assert "Shift must be castable to shape" in str(e.value)
@@ -175,7 +170,7 @@ def test_mill_shift_error(schema_versions):
 def test_mill_rot_error(schema_versions):
     AlignmentMill = schema_versions.AlignmentMill
 
-    with pytest.raises(pydantic.ValidationError) as e:
+    with pytest.raises((pydantic.v1.ValidationError, pydantic.ValidationError)) as e:
         AlignmentMill(rotation=[0, 1, 3])
 
     assert "Rotation must be castable to shape" in str(e.value)

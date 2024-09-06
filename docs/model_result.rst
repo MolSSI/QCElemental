@@ -8,25 +8,25 @@ A Python implementation of the `MolSSI QCSchema
 AtomicInput
 -----------
 
-.. autopydantic_model:: qcelemental.models.AtomicInput
+.. autopydantic_model:: qcelemental.models.v2.AtomicInput
    :noindex:
 
 AtomicResult
 ------------
 
-.. autopydantic_model:: qcelemental.models.AtomicResult
+.. autopydantic_model:: qcelemental.models.v2.AtomicResult
    :noindex:
 
 
 API
 ---
 
-.. autopydantic_model:: qcelemental.models.results.AtomicResultProtocols
+.. autopydantic_model:: qcelemental.models.v2.results.AtomicResultProtocols
    :noindex:
 
-.. autopydantic_model:: qcelemental.models.results.AtomicResultProperties
+.. autopydantic_model:: qcelemental.models.v2.results.AtomicResultProperties
    :noindex:
 
-.. autopydantic_model:: qcelemental.models.results.WavefunctionProperties
+.. autopydantic_model:: qcelemental.models.v2.results.WavefunctionProperties
    :noindex:
 

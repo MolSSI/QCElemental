@@ -3,10 +3,11 @@ from enum import Enum, EnumMeta
 from textwrap import dedent, indent
 from typing import Any
 
-try:
-    from pydantic.v1 import BaseModel, BaseSettings
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel, BaseSettings
+from pydantic.v1 import BaseModel, BaseSettings
+
+# home-grown AutoDoc has been replaced autodoc-pydantic for Sphinx in QCElemental and QCEngine.
+# pre-next QCFractal was the last known user. Leaving this in pydantic v1 for now until removed entirely.
+
 
 __all__ = ["auto_gen_docs_on_demand", "get_base_docs", "AutoPydanticDocGenerator"]
 

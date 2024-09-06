@@ -5,10 +5,8 @@ from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 from pydantic import BaseModel, ConfigDict, model_serializer
-from pydantic_settings import BaseSettings  # remove when QCFractal merges `next`
 
 from qcelemental.util import deserialize, serialize
-from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 def _repr(self) -> str:
@@ -37,6 +35,8 @@ class ExtendedConfigDict(ConfigDict, total=False):
 
 
 class ProtoModel(BaseModel):
+    """QCSchema extension of pydantic.BaseModel."""
+
     model_config = ExtendedConfigDict(
         frozen=True,
         extra="forbid",
@@ -277,12 +277,6 @@ class ProtoModel(BaseModel):
         output_dict.update(kwargs)
         # Finally, check against the Extended Config Dict
         return ExtendedConfigDict(**output_dict)
-
-
-# remove when QCFractal merges `next`
-class AutodocBaseSettings(BaseSettings):
-    def __init_subclass__(cls) -> None:
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
 
 qcschema_draft = "http://json-schema.org/draft-04/schema#"

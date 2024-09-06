@@ -65,12 +65,14 @@ class QCInputSpecification(ProtoModel):
 
 
 class OptimizationInput(ProtoModel):
+    """QCSchema input directive for geometry optimization."""
+
     id: Optional[str] = None
     hash_index: Optional[str] = None
     schema_name: constr(  # type: ignore
         strip_whitespace=True, pattern=qcschema_optimization_input_default
     ) = qcschema_optimization_input_default
-    schema_version: int = 1
+    schema_version: int = 2
 
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
@@ -89,6 +91,8 @@ class OptimizationInput(ProtoModel):
 
 
 class OptimizationResult(OptimizationInput):
+    """QCSchema results model for geometry optimization."""
+
     schema_name: constr(  # type: ignore
         strip_whitespace=True, pattern=qcschema_optimization_output_default
     ) = qcschema_optimization_output_default
@@ -205,7 +209,7 @@ class TorsionDriveInput(ProtoModel):
     schema_name: constr(
         strip_whitespace=True, pattern=qcschema_torsion_drive_input_default
     ) = qcschema_torsion_drive_input_default  # type: ignore
-    schema_version: int = 1
+    schema_version: int = 2
 
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
@@ -239,7 +243,7 @@ class TorsionDriveResult(TorsionDriveInput):
     schema_name: constr(
         strip_whitespace=True, pattern=qcschema_torsion_drive_output_default
     ) = qcschema_torsion_drive_output_default  # type: ignore
-    schema_version: int = 1
+    schema_version: int = 2
 
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
@@ -261,18 +265,3 @@ class TorsionDriveResult(TorsionDriveInput):
     )
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-
-
-def Optimization(*args, **kwargs):
-    """QC Optimization Results Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.OptimizationResult` instead.
-
-    """
-    from warnings import warn
-
-    warn(
-        "Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0", DeprecationWarning
-    )
-    return OptimizationResult(*args, **kwargs)

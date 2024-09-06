@@ -2,6 +2,12 @@ from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
+
 import numpy as np
 from pydantic import Field, constr, field_validator
 
@@ -25,6 +31,17 @@ class AtomicResultProperties(ProtoModel):
     * nao: number of atomic orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nbasis`
     * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nmo`
     """
+
+    schema_name: Literal["qcschema_atomicproperties"] = Field(
+        "qcschema_atomicproperties",
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_atomicproperties."
+        ),
+    )
+    schema_version: int = Field(
+        2,
+        description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
+    )
 
     # Calcinfo
     calcinfo_nbasis: Optional[int] = Field(None, description="The number of basis functions for the computation.")
@@ -635,14 +652,14 @@ class AtomicInput(ProtoModel):
     r"""The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
-    schema_name: constr(strip_whitespace=True, pattern="^(qc_?schema_input)$") = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, pattern=r"^(qc\_?schema_input)$") = Field(  # type: ignore
         qcschema_input_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
         ),
     )
     schema_version: int = Field(
-        1,
+        2,
         description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
     )
 
@@ -676,7 +693,7 @@ class AtomicInput(ProtoModel):
 class AtomicResult(AtomicInput):
     r"""Results from a CMS program execution."""
 
-    schema_name: constr(strip_whitespace=True, pattern="^(qc_?schema_output)$") = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, pattern=r"^(qc\_?schema_output)$") = Field(  # type: ignore
         qcschema_output_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
@@ -831,69 +848,3 @@ class AtomicResult(AtomicInput):
         for rk in return_keep:
             ret[rk] = files.get(rk, None)
         return ret
-
-
-class ResultProperties(AtomicResultProperties):
-    """QC Result Properties Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResultProperties` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            "ResultProperties has been renamed to AtomicResultProperties and will be removed as soon as v0.13.0",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class ResultProtocols(AtomicResultProtocols):
-    """QC Result Protocols Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResultProtocols` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            "ResultProtocols has been renamed to AtomicResultProtocols and will be removed as soon as v0.13.0",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class ResultInput(AtomicInput):
-    """QC Input Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicInput` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn("ResultInput has been renamed to AtomicInput and will be removed as soon as v0.13.0", DeprecationWarning)
-        super().__init__(*args, **kwargs)
-
-
-class Result(AtomicResult):
-    """QC Result Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.AtomicResult` instead.
-
-    """
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn("Result has been renamed to AtomicResult and will be removed as soon as v0.13.0", DeprecationWarning)
-        super().__init__(*args, **kwargs)

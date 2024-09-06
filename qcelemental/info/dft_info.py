@@ -4,10 +4,7 @@ Contains metadata about density functionals
 
 from typing import Dict
 
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic.v1 import Field
 
 from ..models import ProtoModel
 
