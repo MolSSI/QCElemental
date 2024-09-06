@@ -13,6 +13,12 @@ import numpy as np
 from pydantic import Field, constr, field_validator, model_serializer
 from typing_extensions import Annotated
 
+try:
+    import nglview
+except ModuleNotFoundError:
+    # import is purely for forward reference for docs-build. import is not required except for Molecule.show()
+    pass
+
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...molparse.from_arrays import from_arrays
 from ...molparse.from_schema import from_schema

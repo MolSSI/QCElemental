@@ -8,10 +8,7 @@ from enum import Enum
 from functools import lru_cache
 from typing import List, Optional
 
-try:
-    from pydantic.v1 import Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import Field
+from pydantic.v1 import Field
 
 from ..models import ProtoModel
 

@@ -3,13 +3,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-
-try:
-    from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic.v1 import BaseModel
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseSettings  # remove when QCFractal merges `next`
-    from pydantic import BaseModel
+from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
+from pydantic.v1 import BaseModel
 
 from qcelemental.util import deserialize, serialize
 from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`

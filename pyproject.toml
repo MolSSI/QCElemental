@@ -23,6 +23,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
 ]
 
 [tool.poetry.dependencies]
@@ -36,13 +38,13 @@ packaging = [
     { version = ">=24.1", python = ">=3.8" },
 ]
 # qcel is compatible with most any numpy, v1 or v2, but numpy v2 only works with pint >=0.24, which is only available for py >=3.10
-python = "^3.7"
+python = "^3.7.1"
 pint = [
     { version = ">=0.10", python = ">=3.7,<3.9" },
     { version = ">=0.23", python = ">=3.9,<3.10" },
     { version = ">=0.24", python = ">=3.10,<3.13" },
 ]
-pydantic = ">=1.8.2"
+pydantic = ">=2.0"
 nglview = { version = "^3.0.3", optional = true }
 ipykernel = { version = "<6.0.0", optional = true }
 importlib-metadata = { version = ">=4.8", python = "<3.8" }
@@ -58,24 +60,55 @@ viz = ["nglview", "ipykernel"]
 align = ["networkx", "scipy"]
 test = ["pytest"]
 
+# Note that all the versions below are a farce for poetry's benefit.
+#   One needs a fairly recent sphinx, pydantic, and autodoc-pydantic for a
+#   successful docs build, and that likely requires py 3.9."
+
 [tool.poetry.group.dev.dependencies]
 black = ">=22.1.0,<23.0a0"
 mypy = "^1.1.1"
 isort = "5.11.5"
-flake8 = "<6.0.0"
-pre-commit = "<3.2.0"
+flake8 = [
+    { version = "<6.0.0", python = "<3.8.1" },
+    { version = "6.0.0", python = ">=3.8.1,<4.0.0" }
+]
+pre-commit = [
+    { version = "<3.2.0", python = "<3.9" },
+    { version = "^3.8.0", python = ">=3.9,<4.0.0" }
+]
 pytest-cov = "^4.0.0"
 autoflake = "^2.0.2"
-jsonschema = "^4.17.3"
-msgpack = "^1.0.5"
-numpydoc = "^1.5.0"
-docutils = "<0.19"
-sphinx = "<6.0.0"
+jsonschema = { version = "^4.23.0", python = ">=3.8,<4.0.0" }
+msgpack = { version = "^1.0.8", python = ">=3.8,<4.0.0" }
+numpydoc = [
+    { version = "^1.5.0", python = "<3.9" },
+    { version = "^1.8.0", python = ">=3.9,<4.0.0" }
+]
+docutils = [
+    { version = "<0.19", python = "<3.9" },
+    { version = "0.20.1", python = ">=3.9,<4.0.0" }
+]
+sphinx = [
+    { version = "<6.0.0", python = "<3.9" },
+    { version = "^7.0.0", python = ">=3.9,<4.0.0" }
+]
 sphinxcontrib-napoleon = "^0.7"
-sphinx-rtd-theme = "^1.2.0"
-autodoc-pydantic = "^1.8.0"
-sphinx-automodapi = "^0.15.0"
-sphinx-autodoc-typehints = "^1.22"
+sphinx-rtd-theme = [
+    { version = "^1.2.0", python = "<3.9" },
+    { version = "^2.0.0", python = ">=3.9,<4.0.0" }
+]
+autodoc-pydantic = [
+    { version = "^2.0.0", python = "<3.8" },
+    { version = "^2.1.0", python = ">=3.8,<4.0" }
+]
+sphinx-automodapi = [
+    { version = "^0.15.0", python = "<3.8" },
+    { version = "^0.17.0", python = ">=3.8,<4.0.0" }
+]
+sphinx-autodoc-typehints = [
+    { version = "^1.22", python = "<3.10" },
+    { version = "^2.3", python = ">=3.10,<4.0.0" }
+]
 graphviz = "^0.20.0"  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
 
 [tool.black]

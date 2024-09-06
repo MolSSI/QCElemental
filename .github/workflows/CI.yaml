@@ -17,13 +17,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.9", "3.11", "3.12"]
-        pydantic-version: ["1", "2"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        pydantic-version: ["2"]
         # runs-on: [ubuntu-latest, windows-latest]
         runs-on: [ubuntu-22.04, windows-latest]  # until drop py37
-        exclude:
-          - runs-on: windows-latest
-            pydantic-version: "1"
     name: "🐍 ${{ matrix.python-version }} • ${{ matrix.pydantic-version }} • ${{ matrix.runs-on }}"
     runs-on: ${{ matrix.runs-on }}
 
@@ -36,15 +33,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Install poetry
         run: pip install poetry
-      # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed
-      # -i is zero-length extension which does effectively in-place sub.
-      # Can't do -i '' because Ubuntu sed is -i{suffix} whereas OSX sed is -i {suffix}... ugh
-      # ^ start of line, pydantic, optional spaces and > sign, capture the version, replace with ^{version}
-      # Should avoid also replacing the autodoc-pydantic spec later on.
-      - name: Sed replace pydantic on repo
-        if: matrix.pydantic-version == '1'
-        run: |
-          sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
       - name: Install repo with poetry (full deps)
         if: matrix.python-version != '3.9'
         run: poetry install --no-interaction --no-ansi --all-extras
@@ -79,10 +67,6 @@ jobs:
         uses: ts-graphviz/setup-graphviz@v2
       - name: Install poetry
         run: pip install poetry
-      # Force pydantic 1.0 by modifying poetry dep "pydantic" string with in-place sed (see above for details)
-      - name: Sed replace pydantic on repo
-        run: |
-          sed -i 's/^pydantic *= *">*= *\([0-9.]*\)"/pydantic = "^\1"/' pyproject.toml
       - name: Install repo
         run: poetry install --no-interaction --no-ansi
       - name: Build Documentation

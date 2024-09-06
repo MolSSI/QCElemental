@@ -62,12 +62,13 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
-    if isinstance(instance, qcelemental.models.ProtoModel) and schema_name is None:
+    is_model = isinstance(instance, (qcelemental.models.v1.ProtoModel, qcelemental.models.v2.ProtoModel))
+    if is_model and schema_name is None:
         schema_name = type(instance).__name__
     drop = (_data_path / schema_name / tnm).with_suffix(".json")
 
     with open(drop, "w") as fp:
-        if isinstance(instance, qcelemental.models.ProtoModel):
+        if is_model:
             # fp.write(instance.json(exclude_unset=True, exclude_none=True))  # works but file is one-line
             instance = json.loads(instance.json(exclude_unset=True, exclude_none=True))
         elif isinstance(instance, dict):
@@ -83,7 +84,7 @@ def Molecule(request):
     if request.param == "v1":
         return qcelemental.models.v1.Molecule
     elif request.param == "v2":
-        return qcelemental.models.v1.Molecule  # TODO v2
+        return qcelemental.models.v2.Molecule
     else:
         return qcelemental.models.Molecule
 
@@ -93,6 +94,6 @@ def schema_versions(request):
     if request.param == "v1":
         return qcelemental.models.v1
     elif request.param == "v2":
-        return qcelemental.models.v1  # TODO v2
+        return qcelemental.models.v2
     else:
         return qcelemental.models
