@@ -1,11 +1,7 @@
 from decimal import Decimal
 
 import numpy as np
-
-try:
-    import pydantic.v1 as pydantic
-except ImportError:  # Will also trap ModuleNotFoundError
-    import pydantic
+import pydantic
 import pytest
 
 import qcelemental as qcel
@@ -46,10 +42,10 @@ def test_creation_nonnum(dataset):
 
 
 def test_creation_error():
-    with pytest.raises(pydantic.ValidationError):
+    with pytest.raises(pydantic.ValidationError) as e:
         qcel.Datum("ze lbl", "ze unit", "ze data")
 
-    # assert 'Datum data should be float' in str(e)
+    assert "Datum data should be float" in str(e.value)
 
 
 @pytest.mark.parametrize(
