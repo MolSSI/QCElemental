@@ -1,27 +1,50 @@
 import json
+import warnings
 from pathlib import Path
-from typing import Any, Dict, Optional, Set, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
-from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel, ConfigDict, model_serializer
 
 from qcelemental.util import deserialize, serialize
-from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
+# Encoders, to be deprecated at some point
+ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
+
+
+class ExtendedConfigDict(ConfigDict, total=False):
+    serialize_default_excludes: Set
+    """Add items to exclude from serialization"""
+
+    serialize_skip_defaults: bool
+    """When serializing, ignore default values (i.e. those not set by user)"""
+
+    force_skip_defaults: bool
+    """Manually force defaults to not be included in output dictionary"""
+
+    canonical_repr: bool
+    """Use canonical representation of the molecules"""
+
+    repr_style: Union[List[str], Callable]
+    """Representation styles"""
+
+
 class ProtoModel(BaseModel):
-    class Config:
-        allow_mutation: bool = False
-        extra: str = "forbid"
-        json_encoders: Dict[str, Any] = {np.ndarray: lambda v: v.flatten().tolist()}
-        serialize_default_excludes: Set = set()
-        serialize_skip_defaults: bool = False
-        force_skip_defaults: bool = False
+    """QCSchema extension of pydantic.BaseModel."""
+
+    model_config = ExtendedConfigDict(
+        frozen=True,
+        extra="forbid",
+        populate_by_name=True,  # Allows using alias to populate
+        serialize_default_excludes=set(),
+        serialize_skip_defaults=False,
+        force_skip_defaults=False,
+    )
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
@@ -37,6 +60,11 @@ class ProtoModel(BaseModel):
     def parse_raw(cls, data: Union[bytes, str], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""
         Parses raw string or bytes into a Model object.
+
+        This overwrites the deprecated parse_file of v2 Pydantic to eventually call parse_model or parse_model_json,
+        but is kept to preserve our own API
+
+        May also be deprecated from QCElemental in time
 
         Parameters
         ----------
@@ -60,17 +88,23 @@ class ProtoModel(BaseModel):
                 raise TypeError("Input is neither str nor bytes, please specify an encoding.")
 
         if encoding.endswith(("json", "javascript", "pickle")):
-            return super().parse_raw(data, content_type=encoding)
+            # return super().parse_raw(data, content_type=encoding)
+            return cls.model_validate_json(data)
         elif encoding in ["msgpack-ext", "json-ext", "msgpack"]:
             obj = deserialize(data, encoding)
         else:
             raise TypeError(f"Content type '{encoding}' not understood.")
 
-        return cls.parse_obj(obj)
+        return cls.model_validate(obj)
 
     @classmethod
     def parse_file(cls, path: Union[str, Path], *, encoding: Optional[str] = None) -> "ProtoModel":  # type: ignore
         r"""Parses a file into a Model object.
+
+        This overwrites the deprecated parse_file of v2 Pydantic to eventually call parse_model or parse_model_json,
+        but is kept to preserve our own API
+
+        May also be deprecated from QCElemental in time
 
         Parameters
         ----------
@@ -100,16 +134,50 @@ class ProtoModel(BaseModel):
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
     def dict(self, **kwargs) -> Dict[str, Any]:
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+        return self.model_dump(**kwargs)
+
+    @model_serializer(mode="wrap")
+    def _serialize_model(self, handler) -> Dict[str, Any]:
+        """
+        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested
+        models and any model config options.
+
+        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been
+        dumped/de-pydantic-ized.
+
+        DEVELOPER WARNING: If default values for nested ProtoModels are not validated and are also not the expected
+        model (e.g. Provenance fields are dicts by default), then this function will throw an error because the self
+        field becomes the current value, not the model.
+        """
+
+        # Get the default return, let the model_dump handle kwarg
+        default_result = handler(self)
+        exclusion_set = self.model_config["serialize_default_excludes"]
+        force_skip_default = self.model_config["force_skip_defaults"]
+        output_dict = {}
+        # Could handle this with a comprehension, easier this way
+        for key, value in default_result.items():
+            # Skip defaults on config level (skip default must be on and k has to be unset)
+            # Also check against exclusion set on a model_config level
+            if (force_skip_default and key not in self.model_fields_set) or key in exclusion_set:
+                continue
+            output_dict[key] = value
+        return output_dict
+
+    def model_dump(self, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
-        kwargs["exclude"] = (
-            kwargs.get("exclude", None) or set()
-        ) | self.__config__.serialize_default_excludes  # type: ignore
-        kwargs.setdefault("exclude_unset", self.__config__.serialize_skip_defaults)  # type: ignore
-        if self.__config__.force_skip_defaults:  # type: ignore
-            kwargs["exclude_unset"] = True
+        # kwargs["exclude"] = (
+        #     kwargs.get("exclude", None) or set()
+        # ) | self.model_config["serialize_default_excludes"]  # type: ignore
+        # kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
+        # if self.model_config["force_skip_defaults"]:  # type: ignore
+        #     kwargs["exclude_unset"] = True
 
-        data = super().dict(**kwargs)
+        # Model config defaults will be handled in the @model_serializer function
+        # The @model_serializer function will be called AFTER this is called
+        data = super().model_dump(**kwargs)
 
         if encoding is None:
             return data
@@ -163,12 +231,16 @@ class ProtoModel(BaseModel):
         if exclude_none:
             kwargs["exclude_none"] = exclude_none
 
-        data = self.dict(**kwargs)
+        data = self.model_dump(**kwargs)
 
         return serialize(data, encoding=encoding)
 
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
+        warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
+        return self.model_dump_json(**kwargs)
+
+    def model_dump_json(self, **kwargs):
         return self.serialize("json", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
@@ -190,11 +262,21 @@ class ProtoModel(BaseModel):
 
         return compare_recursive(self, other, **kwargs)
 
+    @classmethod
+    def _merge_config_with(cls, *args, **kwargs):
+        """
+        Helper function to merge protomodel's config with other args
 
-# remove when QCFractal merges `next`
-class AutodocBaseSettings(BaseSettings):
-    def __init_subclass__(cls) -> None:
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
+        args: other ExtendedConfigDict instances or equivalent dicts
+        kwargs: Keys to add into the dictionary raw
+        """
+        output_dict = {**cls.model_config}
+        for arg in args:  # Handle other dicts first
+            output_dict.update(arg)
+        # Update any specific keywords
+        output_dict.update(kwargs)
+        # Finally, check against the Extended Config Dict
+        return ExtendedConfigDict(**output_dict)
 
 
 qcschema_draft = "http://json-schema.org/draft-04/schema#"

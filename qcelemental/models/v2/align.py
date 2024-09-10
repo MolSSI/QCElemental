@@ -1,10 +1,10 @@
 from typing import Optional
 
 import numpy as np
-from pydantic.v1 import Field, validator
+from pydantic import Field, field_validator
 
 from ...util import blockwise_contract, blockwise_expand
-from .basemodels import ProtoModel
+from .basemodels import ExtendedConfigDict, ProtoModel
 from .types import Array
 
 __all__ = ["AlignmentMill"]
@@ -26,19 +26,20 @@ class AlignmentMill(ProtoModel):
     atommap: Optional[Array[int]] = Field(None, description="Atom exchange map (nat,) for coordinates.")  # type: ignore
     mirror: bool = Field(False, description="Do mirror invert coordinates?")
 
-    class Config:
-        force_skip_defaults = True
+    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
-    @validator("shift")
-    def _must_be_3(cls, v, values, **kwargs):
+    @field_validator("shift")
+    @classmethod
+    def _must_be_3(cls, v):
         try:
             v = v.reshape(3)
         except (ValueError, AttributeError):
             raise ValueError("Shift must be castable to shape (3,)!")
         return v
 
-    @validator("rotation")
-    def _must_be_33(cls, v, values, **kwargs):
+    @field_validator("rotation")
+    @classmethod
+    def _must_be_33(cls, v):
         try:
             v = v.reshape(3, 3)
         except (ValueError, AttributeError):

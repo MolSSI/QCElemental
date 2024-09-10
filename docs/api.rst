@@ -12,7 +12,6 @@ QCElemental API
 .. automodapi:: qcelemental.testing
    :skip:tnm
 
-.. automodapi:: qcelemental.models
-   :skip:Optimization
+.. automodapi:: qcelemental.models.v2
    :skip:qcschema_models
 

@@ -1,10 +1,10 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
-from pydantic.v1 import Field, conlist, constr, validator
+from pydantic import Field, conlist, constr, field_validator
 
 from ...util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ExtendedConfigDict, ProtoModel
 from .common_models import (
     ComputeError,
     DriverEnum,
@@ -20,7 +20,7 @@ from .molecule import Molecule
 from .results import AtomicResult
 
 if TYPE_CHECKING:
-    from pydantic.v1.typing import ReprArgs
+    from .common_models import ReprArgs
 
 
 class TrajectoryProtocolEnum(str, Enum):
@@ -43,8 +43,7 @@ class OptimizationProtocols(ProtoModel):
         TrajectoryProtocolEnum.all, description=str(TrajectoryProtocolEnum.__doc__)
     )
 
-    class Config:
-        force_skip_defaults = True
+    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
 class QCInputSpecification(ProtoModel):
@@ -52,7 +51,7 @@ class QCInputSpecification(ProtoModel):
     A compute description for energy, gradient, and Hessian computations used in a geometry optimization.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
+    schema_name: constr(strip_whitespace=True, pattern=qcschema_input_default) = qcschema_input_default  # type: ignore
     schema_version: int = 1
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
@@ -66,12 +65,14 @@ class QCInputSpecification(ProtoModel):
 
 
 class OptimizationInput(ProtoModel):
+    """QCSchema input directive for geometry optimization."""
+
     id: Optional[str] = None
     hash_index: Optional[str] = None
     schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_input_default
+        strip_whitespace=True, pattern=qcschema_optimization_input_default
     ) = qcschema_optimization_input_default
-    schema_version: int = 1
+    schema_version: int = 2
 
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
@@ -84,14 +85,16 @@ class OptimizationInput(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("model", self.input_specification.model.dict()),
+            ("model", self.input_specification.model.model_dump()),
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
         ]
 
 
 class OptimizationResult(OptimizationInput):
+    """QCSchema results model for geometry optimization."""
+
     schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_output_default
+        strip_whitespace=True, pattern=qcschema_optimization_output_default
     ) = qcschema_optimization_output_default
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
@@ -109,13 +112,14 @@ class OptimizationResult(OptimizationInput):
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    @validator("trajectory", each_item=False)
-    def _trajectory_protocol(cls, v, values):
+    @field_validator("trajectory")
+    @classmethod
+    def _trajectory_protocol(cls, v, info):
         # Do not propogate validation errors
-        if "protocols" not in values:
+        if "protocols" not in info.data:
             raise ValueError("Protocols was not properly formed.")
 
-        keep_enum = values["protocols"].trajectory
+        keep_enum = info.data["protocols"].trajectory
         if keep_enum == "all":
             pass
         elif keep_enum == "initial_and_final":
@@ -142,14 +146,17 @@ class OptimizationSpecification(ProtoModel):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
+    schema_name: constr(
+        strip_whitespace=True, pattern="qcschema_optimization_specification"
+    ) = "qcschema_optimization_specification"  # type: ignore
     schema_version: int = 1
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
 
-    @validator("procedure")
+    @field_validator("procedure")
+    @classmethod
     def _check_procedure(cls, v):
         return v.lower()
 
@@ -199,14 +206,16 @@ class TorsionDriveInput(ProtoModel):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_input_default) = qcschema_torsion_drive_input_default  # type: ignore
-    schema_version: int = 1
+    schema_name: constr(
+        strip_whitespace=True, pattern=qcschema_torsion_drive_input_default
+    ) = qcschema_torsion_drive_input_default  # type: ignore
+    schema_version: int = 2
 
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
 
     input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: conlist(item_type=Molecule, min_items=1) = Field(
+    initial_molecule: conlist(item_type=Molecule, min_length=1) = Field(
         ..., description="The starting molecule(s) for the torsion drive."
     )
 
@@ -216,7 +225,8 @@ class TorsionDriveInput(ProtoModel):
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
 
-    @validator("input_specification")
+    @field_validator("input_specification")
+    @classmethod
     def _check_input_specification(cls, value):
         assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
@@ -230,8 +240,10 @@ class TorsionDriveResult(TorsionDriveInput):
     * This class is still provisional and may be subject to removal and re-design.
     """
 
-    schema_name: constr(strip_whitespace=True, regex=qcschema_torsion_drive_output_default) = qcschema_torsion_drive_output_default  # type: ignore
-    schema_version: int = 1
+    schema_name: constr(
+        strip_whitespace=True, pattern=qcschema_torsion_drive_output_default
+    ) = qcschema_torsion_drive_output_default  # type: ignore
+    schema_version: int = 2
 
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
@@ -253,18 +265,3 @@ class TorsionDriveResult(TorsionDriveInput):
     )
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-
-
-def Optimization(*args, **kwargs):
-    """QC Optimization Results Schema.
-
-    .. deprecated:: 0.12
-       Use :py:func:`qcelemental.models.OptimizationResult` instead.
-
-    """
-    from warnings import warn
-
-    warn(
-        "Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0", DeprecationWarning
-    )
-    return OptimizationResult(*args, **kwargs)

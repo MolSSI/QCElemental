@@ -2,11 +2,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pytest
-
-try:
-    from pydantic.v1 import BaseModel, Field
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
@@ -16,6 +12,8 @@ from .addons import serialize_extensions
 
 @pytest.fixture(scope="function")
 def doc_fixture():
+    # associated with AutoDoc, so leaving at Pydantic v1 syntax
+
     class Nest(BaseModel):
         """A nested model"""
 
