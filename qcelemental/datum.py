@@ -3,7 +3,7 @@ Datum Object Model
 """
 
 from decimal import Decimal
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import numpy as np
 from pydantic import (
