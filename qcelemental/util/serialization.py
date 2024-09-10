@@ -3,6 +3,7 @@ from typing import Any, Union
 
 import numpy as np
 import pydantic
+from pydantic.v1.json import pydantic_encoder
 from pydantic_core import PydanticSerializationError, to_jsonable_python
 
 from .importing import which_import
@@ -41,7 +42,14 @@ def msgpackext_encode(obj: Any) -> Any:
     try:
         return to_jsonable_python(obj)
     except ValueError:
-        pass
+        # above to_jsonable_python is for Pydantic v2 API models
+        # below pydatnic_encoder is for Pydantic v1 API models
+        # tentative whether handling both together will work beyond tests
+        #   or if separate files called by models.v1 and .v2 will be req'd
+        try:
+            return pydantic_encoder(obj)
+        except TypeError:
+            pass
 
     if isinstance(obj, np.ndarray):
         if obj.shape:
@@ -127,7 +135,10 @@ class JSONExtArrayEncoder(json.JSONEncoder):
         try:
             return to_jsonable_python(obj)
         except ValueError:
-            pass
+            try:
+                return pydantic_encoder(obj)
+            except TypeError:
+                pass
 
         if isinstance(obj, np.ndarray):
             if obj.shape:
@@ -199,7 +210,10 @@ class JSONArrayEncoder(json.JSONEncoder):
         try:
             return to_jsonable_python(obj)
         except ValueError:
-            pass
+            try:
+                return pydantic_encoder(obj)
+            except TypeError:
+                pass
 
         # See if pydantic model can be just serialized if the above couldn't be dumped
         if isinstance(obj, pydantic.BaseModel):
@@ -273,7 +287,10 @@ def msgpack_encode(obj: Any) -> Any:
     try:
         return to_jsonable_python(obj)
     except ValueError:
-        pass
+        try:
+            return pydantic_encoder(obj)
+        except TypeError:
+            pass
 
     if isinstance(obj, np.ndarray):
         if obj.shape:

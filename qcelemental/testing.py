@@ -5,11 +5,7 @@ import sys
 from typing import TYPE_CHECKING, Callable, Dict, List, Tuple, Union
 
 import numpy as np
-
-try:
-    from pydantic.v1 import BaseModel
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel
+import pydantic
 
 if TYPE_CHECKING:
     from qcelemental.models import ProtoModel  # TODO: recheck if .v1 needed
@@ -313,10 +309,16 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False, equal_phas
     prefix = name + "."
 
     # Initial conversions if required
-    if isinstance(expected, BaseModel):
+    if isinstance(expected, pydantic.BaseModel):
+        expected = expected.model_dump()
+
+    if isinstance(computed, pydantic.BaseModel):
+        computed = computed.model_dump()
+
+    if isinstance(expected, pydantic.v1.BaseModel):
         expected = expected.dict()
 
-    if isinstance(computed, BaseModel):
+    if isinstance(computed, pydantic.v1.BaseModel):
         computed = computed.dict()
 
     if isinstance(expected, (str, int, bool, complex)):
@@ -381,8 +383,8 @@ def _compare_recursive(expected, computed, atol, rtol, _prefix=False, equal_phas
 
 
 def compare_recursive(
-    expected: Union[Dict, BaseModel, "ProtoModel"],  # type: ignore
-    computed: Union[Dict, BaseModel, "ProtoModel"],  # type: ignore
+    expected: Union[Dict, pydantic.BaseModel, pydantic.v1.BaseModel, "ProtoModel"],  # type: ignore
+    computed: Union[Dict, pydantic.BaseModel, pydantic.v1.BaseModel, "ProtoModel"],  # type: ignore
     label: str = None,
     *,
     atol: float = 1.0e-6,

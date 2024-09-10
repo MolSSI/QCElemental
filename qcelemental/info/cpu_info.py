@@ -11,7 +11,9 @@ from typing import List, Optional
 from pydantic import BeforeValidator, Field
 from typing_extensions import Annotated
 
-from ..models import ProtoModel
+from ..models.v2 import ProtoModel
+
+# ProcessorInfo models don't become parts of QCSchema models afaik, so pure pydantic v2 API
 
 
 class VendorEnum(str, Enum):

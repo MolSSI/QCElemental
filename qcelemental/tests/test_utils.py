@@ -7,7 +7,7 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
 
-from .addons import serialize_extensions
+from .addons import schema_versions, serialize_extensions
 
 
 @pytest.fixture(scope="function")
@@ -313,7 +313,7 @@ def test_serialization(obj, encoding):
 
 
 @pytest.fixture
-def atomic_result():
+def atomic_result_data():
     """Mock AtomicResult output which can be tested against for complex serialization methods"""
 
     data = {
@@ -385,10 +385,12 @@ def atomic_result():
         "success": True,
         "error": None,
     }
+    return data
 
-    yield qcel.models.results.AtomicResult(**data)
 
+def test_json_dumps(atomic_result_data, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
 
-def test_json_dumps(atomic_result):
+    atomic_result = AtomicResult(**atomic_result_data)
     ret = qcel.util.json_dumps(atomic_result)
     assert isinstance(ret, str)
