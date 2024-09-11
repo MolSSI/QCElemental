@@ -3,14 +3,61 @@ Datum Object Model
 """
 
 from decimal import Decimal
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import numpy as np
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    SerializationInfo,
+    SerializerFunctionWrapHandler,
+    WrapSerializer,
+    field_validator,
+    model_serializer,
+)
+from typing_extensions import Annotated
 
-try:
-    from pydantic.v1 import BaseModel, validator
-except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import BaseModel, validator
+
+def reduce_complex(data):
+    # Reduce Complex
+    if isinstance(data, complex):
+        return [data.real, data.imag]
+    # Fallback
+    return data
+
+
+def keep_decimal_cast_ndarray_complex(
+    v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
+) -> Union[list, Decimal, float]:
+    """
+    Ensure Decimal types are preserved on the way out
+
+    This arose because Decimal was serialized to string and "dump" is equal to "serialize" in v2 pydantic
+    https://docs.pydantic.dev/latest/migration/#changes-to-json-schema-generation
+
+
+    This also checks against NumPy Arrays and complex numbers in the instance of being in JSON mode
+    """
+    if isinstance(v, Decimal):
+        return v
+    if info.mode == "json":
+        if isinstance(v, complex):
+            return nxt(reduce_complex(v))
+        if isinstance(v, np.ndarray):
+            # Handle NDArray and complex NDArray
+            flat_list = v.flatten().tolist()
+            reduced_list = list(map(reduce_complex, flat_list))
+            return nxt(reduced_list)
+        try:
+            # Cast NumPy scalar data types to native Python data type
+            v = v.item()
+        except (AttributeError, ValueError):
+            pass
+    return nxt(v)
+
+
+# Only 1 serializer is allowed. You can't chain wrap serializers.
+AnyArrayComplex = Annotated[Any, WrapSerializer(keep_decimal_cast_ndarray_complex)]
 
 
 class Datum(BaseModel):
@@ -38,15 +85,15 @@ class Datum(BaseModel):
     numeric: bool
     label: str
     units: str
-    data: Any
+    data: AnyArrayComplex
     comment: str = ""
     doi: Optional[str] = None
     glossary: str = ""
 
-    class Config:
-        extra = "forbid"
-        allow_mutation = False
-        json_encoders = {np.ndarray: lambda v: v.flatten().tolist(), complex: lambda v: (v.real, v.imag)}
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+    )
 
     def __init__(self, label, units, data, *, comment=None, doi=None, glossary=None, numeric=True):
         kwargs = {"label": label, "units": units, "data": data, "numeric": numeric}
@@ -59,20 +106,21 @@ class Datum(BaseModel):
 
         super().__init__(**kwargs)
 
-    @validator("data")
-    def must_be_numerical(cls, v, values, **kwargs):
+    @field_validator("data")
+    @classmethod
+    def must_be_numerical(cls, v, info):
         try:
             1.0 * v
         except TypeError:
             try:
                 Decimal("1.0") * v
             except TypeError:
-                if values["numeric"]:
+                if info.data["numeric"]:
                     raise ValueError(f"Datum data should be float, Decimal, or np.ndarray, not {type(v)}.")
             else:
-                values["numeric"] = True
+                info.data["numeric"] = True
         else:
-            values["numeric"] = True
+            info.data["numeric"] = True
 
         return v
 
@@ -90,8 +138,35 @@ class Datum(BaseModel):
         text.append("-" * width)
         return "\n".join(text)
 
+    @model_serializer(mode="wrap")
+    def _serialize_model(self, handler) -> Dict[str, Any]:
+        """
+        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested
+        models and any model config options.
+
+        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been
+        dumped/de-pydantic-ized.
+        """
+
+        # Get the default return, let the model_dump handle kwarg
+        default_result = handler(self)
+        # Exclude unset always
+        output_dict = {key: value for key, value in default_result.items() if key in self.model_fields_set}
+        return output_dict
+
     def dict(self, *args, **kwargs):
-        return super().dict(*args, **{**kwargs, **{"exclude_unset": True}})
+        """
+        Passthrough to model_dump without deprecation warning
+        exclude_unset is forced through the model_serializer
+        """
+        return super().model_dump(*args, **kwargs)
+
+    def json(self, *args, **kwargs):
+        """
+        Passthrough to model_dump_sjon without deprecation warning
+        exclude_unset is forced through the model_serializer
+        """
+        return super().model_dump_json(*args, **kwargs)
 
     def to_units(self, units=None):
         from .physical_constants import constants

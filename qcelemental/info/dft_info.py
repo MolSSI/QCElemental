@@ -4,9 +4,12 @@ Contains metadata about density functionals
 
 from typing import Dict
 
-from pydantic.v1 import Field
+from pydantic import Field
+from typing_extensions import Annotated
 
-from ..models import ProtoModel
+from ..models.v2 import ProtoModel
+
+# DFTFunctional models don't become parts of QCSchema models afaik, so pure pydantic v2 API
 
 
 class DFTFunctionalInfo(ProtoModel):
@@ -68,4 +71,4 @@ def get(name: str) -> DFTFunctionalInfo:
             name = name.replace(x, "")
             break
 
-    return dftfunctionalinfo.functionals[name].copy()
+    return dftfunctionalinfo.functionals[name].model_copy()
