@@ -39,6 +39,7 @@ Enhancements
 * The ``models.v2`` ``AtomicResultProperties`` has been given a ``schema_name`` and ``schema_version`` (2) for the first time.
 * Note that ``models.v2`` ``QCInputSpecification`` and ``OptimizationSpecification`` have *not* had schema_version bumped.
 * All of ``Datum``, ``DFTFunctional``, and ``CPUInfo`` models, none of which are mixed with QCSchema models, are translated to Pydantic v2 API syntax.
+* Models ``procedures.TorsionDriveInput``, ``procedures.TorsionDriveResult``, ``common_models.Model``, ``results.AtomicResultProtocols`` are now importable from ``qcel.models`` (or its ``v1`` and ``v2`` sub) directly. For generic and v1, ``procedures.QCInputSpecification`` and ``procedures.OptimizationSpecification`` and ``procedures.TDKeywords`` are also importable from models.
 
 Bug Fixes
 +++++++++
