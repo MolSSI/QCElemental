@@ -311,7 +311,7 @@ class Molecule(ProtoModel):
         serialize_skip_defaults = True
         repr_style = lambda self: [
             ("name", self.name),
-            ("formula", self.get_molecular_formula()),
+            ("formula", self.get_molecular_formula(chgmult=True)),
             ("hash", self.get_hash()[:7]),
         ]
         fields = {
@@ -801,7 +801,7 @@ class Molecule(ProtoModel):
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
 
-    def get_molecular_formula(self, order: str = "alphabetical") -> str:
+    def get_molecular_formula(self, order: str = "alphabetical", chgmult: bool = False) -> str:
         r"""
         Returns the molecular formula for a molecule.
 
@@ -809,6 +809,8 @@ class Molecule(ProtoModel):
         ----------
         order: str, optional
             Sorting order of the formula. Valid choices are "alphabetical" and "hill".
+        chgmult
+            If not neutral singlet, return formula as {mult}^{formula}{chg}.
 
         Returns
         -------
@@ -835,11 +837,47 @@ class Molecule(ProtoModel):
         >>> hcl.get_molecular_formula()
         ClH
 
+        >>> two_pentanol_radcat = qcelemental.models.Molecule('''
+        ... 1 2
+        ... C         -4.43914        1.67538       -0.14135
+        ... C         -2.91385        1.70652       -0.10603
+        ... H         -4.82523        2.67391       -0.43607
+        ... H         -4.84330        1.41950        0.86129
+        ... H         -4.79340        0.92520       -0.88015
+        ... H         -2.59305        2.48187        0.62264
+        ... H         -2.53750        1.98573       -1.11429
+        ... C         -2.34173        0.34025        0.29616
+        ... H         -2.72306        0.06156        1.30365
+        ... C         -0.80326        0.34498        0.31454
+        ... H         -2.68994       -0.42103       -0.43686
+        ... O         -0.32958        1.26295        1.26740
+        ... H         -0.42012        0.59993       -0.70288
+        ... C         -0.26341       -1.04173        0.66218
+        ... H         -0.61130       -1.35318        1.67053
+        ... H          0.84725       -1.02539        0.65807
+        ... H         -0.60666       -1.78872       -0.08521
+        ... H         -0.13614        2.11102        0.78881
+        ... ''')
+        >>> two_pentanol_radcat.get_molecular_formula(chgmult=True)
+        2^C5H12O+
+
         """
 
         from ..molutil import molecular_formula_from_symbols
 
-        return molecular_formula_from_symbols(symbols=self.symbols, order=order)
+        formula = molecular_formula_from_symbols(symbols=self.symbols, order=order)
+
+        c, m = self.molecular_charge, self.molecular_multiplicity
+        if not chgmult or (c == 0.0 and m == 1):
+            return formula
+
+        if m > 1:
+            formula = f"{m}^{formula}"
+        if c < 0.0:
+            formula += abs(int(c)) * "-"
+        elif c > 0.0:
+            formula += int(c) * "+"
+        return formula
 
     ### Constructors
 
@@ -1065,7 +1103,11 @@ class Molecule(ProtoModel):
         return new_geometry
 
     def __repr_args__(self) -> "ReprArgs":
-        return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
+        return [
+            ("name", self.name),
+            ("formula", self.get_molecular_formula(chgmult=True)),
+            ("hash", self.get_hash()[:7]),
+        ]
 
     def _ipython_display_(self, **kwargs) -> None:
         try:

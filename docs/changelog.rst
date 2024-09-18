@@ -19,6 +19,9 @@ Changelog
 .. Misc.
 .. +++++
 
+- (:pr:`340`, :issue:`330`) Add molecular charge and multiplicity to Molecule repr formula,
+  so neutral singlet unchanged but radical cation has '2^formula+'.
+
 
 0.29.0 / 2024-MM-DD (Unreleased)
 --------------------------------
