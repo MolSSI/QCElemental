@@ -20,6 +20,26 @@ Changelog
 .. +++++
 
 
+0.29.0 / 2024-MM-DD (Unreleased)
+--------------------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+- (:pr:`342`) Update some docs settings and requirements for newer tools.
+
+
 0.28.0 / 2024-06-21
 -------------------
 

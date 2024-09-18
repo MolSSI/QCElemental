@@ -127,6 +127,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
     <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConstrainedFloat</span><span class="p">,</span> <span class="n">ConstrainedInt</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">nglview</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+    <span class="c1"># import is purely for forward reference for docs-build. import is not required except for Molecule.show()</span>
+    <span class="k">pass</span>
+
 <span class="c1"># molparse imports separated b/c https://github.com/python/mypy/issues/7203</span>
 <span class="kn">from</span> <span class="nn">..molparse.from_arrays</span> <span class="kn">import</span> <span class="n">from_arrays</span>
 <span class="kn">from</span> <span class="nn">..molparse.from_schema</span> <span class="kn">import</span> <span class="n">from_schema</span>

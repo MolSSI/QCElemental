@@ -131,6 +131,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="viewcode-block" id="ProtoModel"><a class="viewcode-back" href="../../../api/qcelemental.models.ProtoModel.html#qcelemental.models.ProtoModel">[docs]</a><span class="k">class</span> <span class="nc">ProtoModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema extension of pydantic.BaseModel.&quot;&quot;&quot;</span>
+
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="n">allow_mutation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;forbid&quot;</span>
@@ -309,6 +311,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="c1"># remove when QCFractal merges `next`</span>
 <div class="viewcode-block" id="AutodocBaseSettings"><a class="viewcode-back" href="../../../api/qcelemental.models.AutodocBaseSettings.html#qcelemental.models.AutodocBaseSettings">[docs]</a><span class="k">class</span> <span class="nc">AutodocBaseSettings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Old class for pydantic docstring before autodoc-pydantic came about.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">cls</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">AutoPydanticDocGenerator</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">always_apply</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
