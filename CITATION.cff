@@ -1,0 +1,50 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: QCElemental
+message: >-
+  Periodic table, physical constants, molecule parsing, and
+  QCSchema implementation for quantum chemistry
+type: software
+authors:
+  - given-names: Lori A.
+    family-names: Burns
+    affiliation: >-
+      Center for Computational Molecular Science and
+      Technology, Georgia Institute of Technology
+    orcid: 'https://orcid.org/0000-0003-2852-5864'
+  - given-names: Daniel G. A.
+    family-names: Smith
+    affiliation: The Molecular Sciences Software Institute
+    orcid: 'https://orcid.org/0000-0001-8626-0900'
+  - given-names: Levi N.
+    family-names: Naden
+    affiliation: The Molecular Sciences Software Institute
+    orcid: 'https://orcid.org/0000-0002-3692-5027'
+  - given-names: Matthew
+    family-names: Welborn
+    affiliation: The Molecular Sciences Software Institute
+identifiers:
+  - type: doi
+    value: 10.1002/wcms.1491
+    description: QCArchive article
+  - type: doi
+    value: 10.1063/5.0059356
+    description: QCEngine article
+repository-code: 'https://github.com/MolSSI/QCElemental/'
+url: 'https://molssi.github.io/QCElemental/'
+repository-artifact: 'https://anaconda.org/conda-forge/qcelemental/files'
+keywords:
+  - nist
+  - chemistry
+  - standards
+  - computational-chemistry
+  - quantum-chemistry
+  - periodic-table
+  - codata
+  - physical-constant
+  - schema
+license: BSD-3-Clause
+version: 0.28.0
+date-released: '2024-06-21'
