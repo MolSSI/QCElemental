@@ -1045,7 +1045,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schema Name&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The QCSchema specification this model conforms to. Explicitly fixed as qcschema_output.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qcschema_output&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;^(qc\\_?schema_output)$&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;enum&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">&quot;qcschema_output&quot;</span>
+<span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -2616,7 +2618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">protocols</span> <span class="pre">(qcelemental.models.results.AtomicResultProtocols)</span></code></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.provenance" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenance</span> <span class="pre">(qcelemental.models.common_models.Provenance)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.return_result" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_result</span> <span class="pre">(Union[float,</span> <span class="pre">qcelemental.models.types.Array,</span> <span class="pre">Dict[str,</span> <span class="pre">Any]])</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.schema_name" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(qcelemental.models.results.ConstrainedStrValue)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.schema_name" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_output'])</span></code></a></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_version</span> <span class="pre">(int)</span></code></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.stderr" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span> <span class="pre">(Optional[str])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.AtomicResult.html#qcelemental.models.AtomicResult.stdout" title="qcelemental.models.results.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stdout</span> <span class="pre">(Optional[str])</span></code></a></p></li>
@@ -2727,16 +2729,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedStrValue</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_output'</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code></a><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'qcschema_output'</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_output'</span></em></dt>
 <dd><p>The QCSchema specification this model conforms to. Explicitly fixed as qcschema_output.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pattern</strong> = ^(qc_?schema_output)$</p></li>
-</ul>
-</dd>
-<dt class="field-even">Validated by<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_input_to_output</span></code></p></li>
 </ul>
 </dd>
