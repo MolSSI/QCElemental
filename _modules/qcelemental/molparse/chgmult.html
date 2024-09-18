@@ -411,6 +411,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">log_brief</span> <span class="o">=</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span>  <span class="c1"># TODO: Move back to 1</span>
     <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">def</span> <span class="nf">int_if_possible</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">val</span>
+
+    <span class="n">molecular_multiplicity</span> <span class="o">=</span> <span class="n">int_if_possible</span><span class="p">(</span><span class="n">molecular_multiplicity</span><span class="p">)</span>
+    <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="p">[</span><span class="n">int_if_possible</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">molecular_multiplicity</span> <span class="ow">and</span> <span class="n">molecular_multiplicity</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span> <span class="k">if</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;validate_and_fill_chgmult(): Multiplicity must be positive. m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2">, fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
     <span class="n">felez</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">zeff</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="p">)</span>
     <span class="n">nfr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">felez</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
