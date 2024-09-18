@@ -407,14 +407,28 @@ class Molecule(ProtoModel):
             v = np.array([True for _ in range(n)])
         return v
 
-    @validator("fragment_charges_", "fragment_multiplicities_")
+    @validator("fragment_charges_")
     def _must_be_n_frag(cls, v, values, **kwargs):
         if "fragments_" in values and values["fragments_"] is not None:
             n = len(values["fragments_"])
             if len(v) != n:
-                raise ValueError(
-                    "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
-                )
+                raise ValueError("Fragment Charges must be same number of entries as Fragments")
+        return v
+
+    @validator("fragment_multiplicities_")
+    def _must_be_n_frag_mult(cls, v, values, **kwargs):
+        if "fragments_" in values and values["fragments_"] is not None:
+            n = len(values["fragments_"])
+            if len(v) != n:
+                raise ValueError("Fragment Multiplicities must be same number of entries as Fragments")
+        if any([m < 1.0 for m in v]):
+            raise ValueError(f"Fragment Multiplicity must be positive: {v}")
+        return v
+
+    @validator("molecular_multiplicity")
+    def _int_if_possible(cls, v, values, **kwargs):
+        if v < 1.0:
+            raise ValueError("Molecular Multiplicity must be positive")
         return v
 
     @property

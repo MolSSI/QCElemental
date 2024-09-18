@@ -753,12 +753,15 @@ def validate_and_fill_fragments(nat, fragment_separators=None, fragment_charges=
 
         if fragment_multiplicities is None:
             frm = [None] * nfr
-        elif all(f is None or (isinstance(f, (int, np.integer)) and f >= 1) for f in fragment_multiplicities):
-            frm = fragment_multiplicities
         else:
-            raise ValidationError(
-                """fragment_multiplicities not among None or positive integer: {}""".format(fragment_multiplicities)
-            )
+            # positive-ness checks and integer-if-possible casting now deferred to validate_and_fill_chgmult()
+            #   to match molecular_multiplicities handling
+            try:
+                frm = [(f if f is None else float(f)) for f in fragment_multiplicities]
+            except TypeError:
+                raise ValidationError(
+                    """fragment_multiplicities not among None or float: {}""".format(fragment_charges)
+                )
 
     if not (len(frc) == len(frm) == len(frs) + 1):
         raise ValidationError(
