@@ -436,7 +436,9 @@ def validate_and_fill_chgmult(
             if frag_mult_lo == frag_mult_hi:
                 mult_range = [frag_mult_hi]
             else:
-                raise ValidationError(f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}")
+                raise ValidationError(
+                    f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}"
+                )
         for m in mult_range:
             cgmp_exact_m.append(m)
 
@@ -463,7 +465,9 @@ def validate_and_fill_chgmult(
                 if missing_mult_lo == missing_mult_hi:
                     mult_range = [missing_mult_hi]
                 else:
-                    raise ValidationError(f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}")
+                    raise ValidationError(
+                        f"Cannot process: please fully specify float multiplicity: m: {molecular_multiplicity} fm: {fragment_multiplicities}"
+                    )
             for m in mult_range:
                 cgmp_exact_fm[ifr].append(m)
             cgmp_exact_fm[ifr].append(1)

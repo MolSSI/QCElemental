@@ -2,6 +2,7 @@
 Tests the imports and exports of the Molecule object.
 """
 
+
 import numpy as np
 import pytest
 
@@ -898,8 +899,16 @@ def test_mol_multiplicity_types_errors(mult_in, validate, error):
         pytest.param(1, [None, None], [1, 1], True, "disinglet"),
         pytest.param(1, [1.000000000000000000002, 0.999999999999999999998], [1, 1], False, "disinglet"),
         pytest.param(1, [1.000000000000000000002, 0.999999999999999999998], [1, 1], True, "disinglet"),
-        pytest.param(1, [1.000000000000002, 1.000000000000004], [1.000000000000002, 1.000000000000004], False, "disinglet_epsilon"),
-        pytest.param(1, [1.000000000000002, 1.000000000000004], [1.000000000000002, 1.000000000000004], True, "disinglet_epsilon"),
+        pytest.param(
+            1,
+            [1.000000000000002, 1.000000000000004],
+            [1.000000000000002, 1.000000000000004],
+            False,
+            "disinglet_epsilon",
+        ),
+        pytest.param(
+            1, [1.000000000000002, 1.000000000000004], [1.000000000000002, 1.000000000000004], True, "disinglet_epsilon"
+        ),
     ],
 )
 def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp_hash):
@@ -931,7 +940,9 @@ def test_frag_multiplicity_types(mol_mult_in, mult_in, mult_store, validate, exp
     [
         pytest.param([-3, 1], False, "Multiplicity must be positive"),
         pytest.param([-3, 1], True, "Multiplicity must be positive"),
-        pytest.param([3.1, 3.4], True, "Inconsistent or unspecified chg/mult"),  # insufficient e- for triplet+ on He in frag 1
+        pytest.param(
+            [3.1, 3.4], True, "Inconsistent or unspecified chg/mult"
+        ),  # insufficient e- for triplet+ on He in frag 1
     ],
 )
 def test_frag_multiplicity_types_errors(mult_in, validate, error):
