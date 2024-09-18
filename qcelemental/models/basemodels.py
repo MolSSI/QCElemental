@@ -20,6 +20,8 @@ def _repr(self) -> str:
 
 
 class ProtoModel(BaseModel):
+    """QCSchema extension of pydantic.BaseModel."""
+
     class Config:
         allow_mutation: bool = False
         extra: str = "forbid"
@@ -198,6 +200,8 @@ class ProtoModel(BaseModel):
 
 # remove when QCFractal merges `next`
 class AutodocBaseSettings(BaseSettings):
+    """Old class for pydantic docstring before autodoc-pydantic came about."""
+
     def __init_subclass__(cls) -> None:
         cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
