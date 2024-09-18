@@ -16,6 +16,12 @@ try:
 except ImportError:  # Will also trap ModuleNotFoundError
     from pydantic import ConstrainedFloat, ConstrainedInt, Field, constr, validator
 
+try:
+    import nglview
+except ModuleNotFoundError:
+    # import is purely for forward reference for docs-build. import is not required except for Molecule.show()
+    pass
+
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ..molparse.from_arrays import from_arrays
 from ..molparse.from_schema import from_schema
@@ -366,7 +372,11 @@ class Molecule(ProtoModel):
         values = self.__dict__
 
         if validate:
-            values["symbols"] = np.core.defchararray.title(self.symbols)  # Title case for consistency
+            # Title case for consistency
+            if np.lib.NumpyVersion(np.__version__) >= "2.0.0b1":
+                values["symbols"] = np.char.chararray.title(self.symbols)
+            else:
+                values["symbols"] = np.core.defchararray.title(self.symbols)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)

@@ -88,7 +88,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -115,7 +115,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = []  # "_static"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -187,8 +187,8 @@ texinfo_documents = [
 # -- Extension configuration -------------------------------------------------
 
 extlinks = {
-    "issue": ("https://github.com/MolSSI/QCElemental/issues/%s", "GH#"),
-    "pr": ("https://github.com/MolSSI/QCElemental/pull/%s", "GH#"),
+    "issue": ("https://github.com/MolSSI/QCElemental/issues/%s", "GH#%s"),
+    "pr": ("https://github.com/MolSSI/QCElemental/pull/%s", "GH#%s"),
 }
 
 
@@ -200,8 +200,9 @@ intersphinx_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
-    "qcengine": ("http://docs.qcarchive.molssi.org/projects/QCEngine/en/latest/", None),
-    "qcfractal": ("http://docs.qcarchive.molssi.org/projects/QCFractal/en/latest/", None),
+    "qcengine": ("https://molssi.github.io/QCEngine/", None),
+    "qcfractal": ("https://molssi.github.io/QCFractal/", None),
+    "nglview": ("https://nglviewer.org/nglview/release/v2.7.7", None),
 }
 
 # -- Options for todo extension ----------------------------------------------

@@ -129,7 +129,7 @@ def test_complex_scalar():
 
 
 def test_complex_array():
-    datum1 = qcel.Datum("complex array", "", np.arange(3, dtype=np.complex_) + 1j)
+    datum1 = qcel.Datum("complex array", "", np.arange(3, dtype=np.complex128) + 1j)
     ans = {
         "label": "complex array",
         "units": "",

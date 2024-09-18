@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2023-MM-DD (Unreleased)
+.. X.Y.0 / 2024-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -18,6 +18,35 @@ Changelog
 ..
 .. Misc.
 .. +++++
+
+
+0.29.0 / 2024-MM-DD (Unreleased)
+--------------------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+- (:pr:`342`) Update some docs settings and requirements for newer tools.
+
+
+0.28.0 / 2024-06-21
+-------------------
+
+Enhancements
+++++++++++++
+- (:pr:`338`) Adapts for numpy v2 (only works with pint >= v0.24). v1 still compatible.
+- (:pr:`335`, :issue:`334`) Numpy >=1.26 only works with pint >=0.21. @TyBalduf
 
 
 0.27.1 / 2023-10-26

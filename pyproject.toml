@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "qcelemental"
-version = "0.27.1"
+version = "0.28.0"
 description = "Core data structures for Quantum Chemistry."
 authors = ["The QCArchive Development Team <qcarchive@molssi.org>"]
 license = "BSD-3-Clause"
@@ -28,12 +28,19 @@ classifiers = [
 [tool.poetry.dependencies]
 numpy = [
     { version = ">=1.12.0", python = "3.8" },
+    { version = ">=1.26.1,<2.0", python = ">=3.9,<3.10" },
     { version = ">=1.26.1", python = ">=3.9,<3.13" },
 ]
+packaging = [
+    { version = ">=24.0", python = ">=3.7,<3.8" },
+    { version = ">=24.1", python = ">=3.8" },
+]
+# qcel is compatible with most any numpy, v1 or v2, but numpy v2 only works with pint >=0.24, which is only available for py >=3.10
 python = "^3.7"
 pint = [
     { version = ">=0.10", python = ">=3.7,<3.9" },
-    { version = ">=0.21", python = ">=3.9,<3.13" },
+    { version = ">=0.23", python = ">=3.9,<3.10" },
+    { version = ">=0.24", python = ">=3.10,<3.13" },
 ]
 pydantic = ">=1.8.2"
 nglview = { version = "^3.0.3", optional = true }
@@ -69,6 +76,7 @@ sphinx-rtd-theme = "^1.2.0"
 autodoc-pydantic = "^1.8.0"
 sphinx-automodapi = "^0.15.0"
 sphinx-autodoc-typehints = "^1.22"
+graphviz = "^0.20.0"  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
 
 [tool.black]
 line-length = 120

@@ -1,7 +1,10 @@
 import os
 import shutil
 import sys
-from typing import List, Union
+from typing import TYPE_CHECKING, List, Union
+
+if TYPE_CHECKING:
+    from packaging.version import Version
 
 
 def which_import(
@@ -127,20 +130,17 @@ def which(
         return ans
 
 
-def safe_version(*args, **kwargs) -> str:
+def safe_version(version) -> str:
     """
     Package resources is a very slow load
     """
-    import pkg_resources
-
-    version = pkg_resources.safe_version(*args, **kwargs)
-    return version
+    return str(parse_version(version))
 
 
-def parse_version(*args, **kwargs):
+def parse_version(version) -> "Version":
     """
     Package resources is a very slow load
     """
-    import pkg_resources
+    from packaging.version import parse
 
-    return pkg_resources.parse_version(*args, **kwargs)
+    return parse(version)

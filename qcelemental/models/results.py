@@ -574,7 +574,7 @@ class AtomicInput(ProtoModel):
     r"""The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
-    schema_name: constr(strip_whitespace=True, regex="^(qc_?schema_input)$") = Field(  # type: ignore
+    schema_name: constr(strip_whitespace=True, regex=r"^(qc\_?schema_input)$") = Field(  # type: ignore
         qcschema_input_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."

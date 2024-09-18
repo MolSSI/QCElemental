@@ -78,6 +78,8 @@ class QCInputSpecification(ProtoModel):
 
 
 class OptimizationInput(ProtoModel):
+    """QCSchema input directive for geometry optimization."""
+
     id: Optional[str] = None
     hash_index: Optional[str] = None
     schema_name: constr(  # type: ignore
@@ -102,6 +104,8 @@ class OptimizationInput(ProtoModel):
 
 
 class OptimizationResult(OptimizationInput):
+    """QCSchema results model for geometry optimization."""
+
     schema_name: constr(  # type: ignore
         strip_whitespace=True, regex=qcschema_optimization_output_default
     ) = qcschema_optimization_output_default
