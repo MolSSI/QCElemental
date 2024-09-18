@@ -1038,11 +1038,14 @@ returned values matters.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">get_molecular_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'alphabetical'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/molecule.html#Molecule.get_molecular_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">get_molecular_formula</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'alphabetical'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chgmult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qcelemental/models/molecule.html#Molecule.get_molecular_formula"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Returns the molecular formula for a molecule.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Sorting order of the formula. Valid choices are “alphabetical” and “hill”.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><em>optional</em>) – Sorting order of the formula. Valid choices are “alphabetical” and “hill”.</p></li>
+<li><p><strong>chgmult</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If not neutral singlet, return formula as {mult}^{formula}{chg}.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The molecular formula.</p>
@@ -1069,6 +1072,31 @@ returned values matters.</p></li>
 <span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hcl</span><span class="o">.</span><span class="n">get_molecular_formula</span><span class="p">()</span>
 <span class="go">ClH</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">two_pentanol_radcat</span> <span class="o">=</span> <span class="n">qcelemental</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="gp">... </span><span class="s1">1 2</span>
+<span class="gp">... </span><span class="s1">C         -4.43914        1.67538       -0.14135</span>
+<span class="gp">... </span><span class="s1">C         -2.91385        1.70652       -0.10603</span>
+<span class="gp">... </span><span class="s1">H         -4.82523        2.67391       -0.43607</span>
+<span class="gp">... </span><span class="s1">H         -4.84330        1.41950        0.86129</span>
+<span class="gp">... </span><span class="s1">H         -4.79340        0.92520       -0.88015</span>
+<span class="gp">... </span><span class="s1">H         -2.59305        2.48187        0.62264</span>
+<span class="gp">... </span><span class="s1">H         -2.53750        1.98573       -1.11429</span>
+<span class="gp">... </span><span class="s1">C         -2.34173        0.34025        0.29616</span>
+<span class="gp">... </span><span class="s1">H         -2.72306        0.06156        1.30365</span>
+<span class="gp">... </span><span class="s1">C         -0.80326        0.34498        0.31454</span>
+<span class="gp">... </span><span class="s1">H         -2.68994       -0.42103       -0.43686</span>
+<span class="gp">... </span><span class="s1">O         -0.32958        1.26295        1.26740</span>
+<span class="gp">... </span><span class="s1">H         -0.42012        0.59993       -0.70288</span>
+<span class="gp">... </span><span class="s1">C         -0.26341       -1.04173        0.66218</span>
+<span class="gp">... </span><span class="s1">H         -0.61130       -1.35318        1.67053</span>
+<span class="gp">... </span><span class="s1">H          0.84725       -1.02539        0.65807</span>
+<span class="gp">... </span><span class="s1">H         -0.60666       -1.78872       -0.08521</span>
+<span class="gp">... </span><span class="s1">H         -0.13614        2.11102        0.78881</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">two_pentanol_radcat</span><span class="o">.</span><span class="n">get_molecular_formula</span><span class="p">(</span><span class="n">chgmult</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">2^C5H12O+</span>
 </pre></div>
 </div>
 </dd></dl>
