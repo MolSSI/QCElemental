@@ -1,144 +1,20 @@
-import qcelemental as qcel
+from warnings import warn
 
-_nonapi_file = "procedures"
+import qcelemental
+
+_nonapi_file = "common_models"
 _shim_classes_removed_version = "0.40.0"
 
+warn(
+    f"qcelemental.models.{_nonapi_file} should be accessed through qcelemental.models (or qcelemental.models.v1 or .v2 for fixed QCSchema version). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
+    DeprecationWarning,
+)
 
-class OptimizationInput(qcel.models.v1.OptimizationInput):
-    """QC Geometry Optimization Input Schema.
+OptimizationInput = qcelemental.models.v1.OptimizationInput
+OptimizationResult = qcelemental.models.v1.OptimizationResult
+QCInputSpecification = qcelemental.models.v1.QCInputSpecification
 
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.OptimizationInput` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class OptimizationResult(qcel.models.v1.OptimizationResult):
-    """QC Geometry Optimization Output Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.OptimizationResult` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class QCInputSpecification(qcel.models.v1.QCInputSpecification):
-    """QC Single-Point Input for Geometry Optimization Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.QCInputSpecification` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class TDKeywords(qcel.models.v1.TDKeywords):
-    """QC Torsion Drive Options Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.TDKeywords` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class TorsionDriveInput(qcel.models.v1.TorsionDriveInput):
-    """QC Torsion Drive Input Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.TorsionDriveInput` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class TorsionDriveResult(qcel.models.v1.TorsionDriveResult):
-    """QC Torsion Drive Output Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.TorsionDriveResult` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
-
-
-class OptimizationSpecification(qcel.models.v1.OptimizationSpecification):
-    """QC Geometry Optimization Specification for Torsion Drive Schema.
-
-    .. deprecated:: 0.32
-       Use :py:func:`qcelemental.models.OptimizationSpecification` instead.
-
-    """
-
-    _model = __qualname__
-
-    def __init__(self, *args, **kwargs):
-        from warnings import warn
-
-        warn(
-            f"qcelemental.models.{_nonapi_file}.{self._model} should be accessed through qcelemental.models.{self._model} (or qcelemental.models.v1.{self._model} or v2 for QCSchema-version-fixed). The 'models.{_nonapi_file}' route will be removed as soon as v{_shim_classes_removed_version}",
-            DeprecationWarning,
-        )
-        super().__init__(*args, **kwargs)
+TDKeywords = qcelemental.models.v1.TDKeywords
+TorsionDriveInput = qcelemental.models.v1.TorsionDriveInput
+TorsionDriveResult = qcelemental.models.v1.TorsionDriveResult
+OptimizationSpecification = qcelemental.models.v1.OptimizationSpecification
