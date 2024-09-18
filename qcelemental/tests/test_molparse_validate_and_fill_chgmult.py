@@ -94,6 +94,12 @@ working_chgmults = [
         (-2.4, [-2.4, 0, 0], 3, [1, 2, 2]),
         "a83a3356",
     ),  # 166
+    (("He", None, [None], 2.8, [None]), (0, [0], 2.8, [2.8]), "3e10e7b5"),  # 180
+    (("He", None, [None], None, [2.8]), (0, [0], 2.8, [2.8]), "3e10e7b5"),  # 181
+    (("N/N/N", None, [None, None, None], 2.2, [2, 2, 2.2]), (0, [0, 0, 0], 2.2, [2, 2, 2.2]), "798ee5d4"),  # 183
+    (("N/N/N", None, [None, None, None], 4.2, [2, 2, 2.2]), (0, [0, 0, 0], 4.2, [2, 2, 2.2]), "ed6d1f35"),  # 185
+    (("N/N/N", None, [None, None, None], None, [2, 2, 2.2]), (0, [0, 0, 0], 4.2, [2, 2, 2.2]), "ed6d1f35"),  # 186
+    (("N/N/N", None, [2, -2, None], 2.2, [2, 2, 2.2]), (0, [2, -2, 0], 2.2, [2, 2, 2.2]), "66e655c0"),  # 187
 ]
 
 
@@ -153,6 +159,8 @@ def test_validate_and_fill_chgmult_mol_model(systemtranslator, inp, expected, ex
         ("Gh", None, [None], 3, [None]),  # 60
         ("Gh/He", None, [2, None], None, [None, None]),  # 62
         ("Gh/Ne", 2, [-2, None], None, [None, None]),  # 65b
+        ("He", None, [None], 3.2, [None]),  # 182
+        ("N/N/N", None, [None, None, None], 2.2, [None, None, 2.2]),  # 184
     ],
 )
 def test_validate_and_fill_chgmult_irreconcilable(systemtranslator, inp):
@@ -173,6 +181,8 @@ def test_validate_and_fill_chgmult_irreconcilable(systemtranslator, inp):
 # 35 - insufficient electrons
 # 55 - both (1, (1, 0.0, 0.0), 4, (1, 3, 2)) and (1, (0.0, 0.0, 1), 4, (2, 3, 1)) plausible
 # 65 - non-0/1 on Gh fragment errors normally but reset by zero_ghost_fragments
+# 182 - insufficient electrons on He
+# 184 - decline to guess fragment multiplicities when floats involved
 
 
 @pytest.fixture

@@ -19,28 +19,46 @@ Changelog
 .. Misc.
 .. +++++
 
-- (:pr:`340`, :issue:`330`) Add molecular charge and multiplicity to Molecule repr formula,
-  so neutral singlet unchanged but radical cation has '2^formula+'.
-
 
 0.29.0 / 2024-MM-DD (Unreleased)
 --------------------------------
 
 Breaking Changes
 ++++++++++++++++
+- (:pr:`341`) `packaging` is now a required dependency.
 
 New Features
 ++++++++++++
+- UNMERGED (:pr:`350`, :pr:`318`, :issue:`317`) Make behavior consistent between molecular_charge/
+  fragment_charges and molecular_multiplicity/fragment_multiplicities by allowing floating point
+  numbers for multiplicities. @awvwgk
 
 Enhancements
 ++++++++++++
+- (:pr:`340`, :issue:`330`) Add molecular charge and multiplicity to Molecule repr formula,
+  so neutral singlet unchanged but radical cation has '2^formula+'. @awvwgk
+- (:pr:`341`) Use `packaging` instead of deprecated `setuptools` to provide version parsing for
+  `qcelemental.util.parse_version` and `qcelemental.util.safe_version`. This behaves slightly
+  different; "v7.0.0+N/A" was processed ok before but fails with newer version. @berquist
+- (:pr:`343`) Molecular and fragment multiplicities are now always enforced to be >=1.0. Previously
+  this wasn't checked for `Molecule(..., validate=False)`. Error messages will change sometimes
+  change for `validate=True` (run by default).
+- (:pr:`343`) `qcelemental.molparse` newly allows floats that are ints (e.g., 1.0) for multiplicity.
+  Previously it would raise an error about not being an int.
+- (:pr:`337`) Solidify the (unchanged) schema_name for `QCInputSpecification` and `AtomicResult`
+  into Literals where previously they had been regex strings coerced into a single name. The literals
+  allow pydantic to discriminate models, which benefits GeneralizedOptimizationInput/Result in
+  QCManyBody/QCEngine/OptKing. The only way this can interfere is if schema producers have whitespace
+  around `schema_name` for these models or if any `AtomicResult`s are still using "qc_schema_output",
+  which looks to have only been added for compatibility with pre-pydantic QCSchema.
 
 Bug Fixes
 +++++++++
 
 Misc.
 +++++
-- (:pr:`342`) Update some docs settings and requirements for newer tools.
+- (:pr:`344`, :issue:`282`) Add a citation file since QCElemental doesn't have a paper. @lilyminium
+- (:pr:`342`, :issue:`333`) Update some docs settings and requirements for newer tools.
 
 
 0.28.0 / 2024-06-21
