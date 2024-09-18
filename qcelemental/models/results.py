@@ -2,6 +2,12 @@ from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
 
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
+
 import numpy as np
 
 try:
@@ -609,7 +615,7 @@ class AtomicInput(ProtoModel):
 class AtomicResult(AtomicInput):
     r"""Results from a CMS program execution."""
 
-    schema_name: constr(strip_whitespace=True, regex=r"^(qc\_?schema_output)$") = Field(  # type: ignore
+    schema_name: Literal["qcschema_output"] = Field(
         qcschema_output_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
