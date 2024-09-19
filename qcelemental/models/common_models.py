@@ -10,4 +10,8 @@ warn(
     DeprecationWarning,
 )
 
+# ComputeError = qcelemental.models.v1.ComputeError
+# DriverEnum = qcelemental.models.v1.DriverEnum
+# FailedOperation = qcelemental.models.v1.FailedOperation
 Model = qcelemental.models.v1.Model
+# Provenance = qcelemental.models.v1.Provenance

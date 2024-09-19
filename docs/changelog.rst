@@ -47,6 +47,8 @@ Bug Fixes
 Misc.
 +++++
 
+* added warnings to dummy files models/results.py etc. classes are rerouted to v1 so downstream can run w/o alteration with `from qcelemental.models.procedures import OptimizationInput`
+
 
 0.28.0 / 2024-06-21
 -------------------

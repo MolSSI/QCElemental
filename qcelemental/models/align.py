@@ -2,7 +2,7 @@ from warnings import warn
 
 import qcelemental
 
-_nonapi_file = "results"
+_nonapi_file = "align"
 _shim_classes_removed_version = "0.40.0"
 
 warn(
@@ -10,7 +10,4 @@ warn(
     DeprecationWarning,
 )
 
-# AtomicInput = qcelemental.models.v1.AtomicInput
-# AtomicResult = qcelemental.models.v1.AtomicResult
-# AtomicResultProperties = qcelemental.models.v1.AtomicResultProperties
-AtomicResultProtocols = qcelemental.models.v1.AtomicResultProtocols
+# AlignmentMill = qcelemental.models.v1.AlignmentMill

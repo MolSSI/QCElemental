@@ -2,7 +2,7 @@ from warnings import warn
 
 import qcelemental
 
-_nonapi_file = "common_models"
+_nonapi_file = "procedures"
 _shim_classes_removed_version = "0.40.0"
 
 warn(
