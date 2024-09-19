@@ -10,4 +10,4 @@ warn(
     DeprecationWarning,
 )
 
-# Molecule = qcelemental.models.v1.Molecule
+Molecule = qcelemental.models.v1.Molecule

@@ -10,7 +10,7 @@ warn(
     DeprecationWarning,
 )
 
-# AtomicInput = qcelemental.models.v1.AtomicInput
-# AtomicResult = qcelemental.models.v1.AtomicResult
-# AtomicResultProperties = qcelemental.models.v1.AtomicResultProperties
+AtomicInput = qcelemental.models.v1.AtomicInput
+AtomicResult = qcelemental.models.v1.AtomicResult
+AtomicResultProperties = qcelemental.models.v1.AtomicResultProperties
 AtomicResultProtocols = qcelemental.models.v1.AtomicResultProtocols

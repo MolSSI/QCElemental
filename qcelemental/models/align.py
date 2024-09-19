@@ -10,4 +10,4 @@ warn(
     DeprecationWarning,
 )
 
-# AlignmentMill = qcelemental.models.v1.AlignmentMill
+AlignmentMill = qcelemental.models.v1.AlignmentMill

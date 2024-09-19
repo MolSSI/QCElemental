@@ -10,4 +10,4 @@ warn(
     DeprecationWarning,
 )
 
-# BasisSet = qcelemental.models.v1.BasisSet
+BasisSet = qcelemental.models.v1.BasisSet

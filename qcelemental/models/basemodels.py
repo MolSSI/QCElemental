@@ -10,5 +10,5 @@ warn(
     DeprecationWarning,
 )
 
-# ProtoModel = qcelemental.models.v1.ProtoModel
+ProtoModel = qcelemental.models.v1.ProtoModel
 # AutodocBaseSettings if absolutely necessary
