@@ -48,6 +48,7 @@ Misc.
 +++++
 
 * added warnings to dummy files models/results.py etc. classes are rerouted to v1 so downstream can run w/o alteration with `from qcelemental.models.procedures import OptimizationInput`
+* copied in pkg_resources.safe_version code as follow-up to Eric switch to packaging as both nwchem and gamess were now working. the try_harder_safe_version might be even bettter
 
 
 0.28.0 / 2024-06-21
