@@ -129,6 +129,15 @@ class FailedOperation(ProtoModel):
         return [("error", self.error)]
 
 
+def check_convertible_version(ver: int, error: str):
+    if ver == 1:
+        return "self"
+    elif ver == 2:
+        return True
+    else:
+        raise ValueError(f"QCSchema {error} version={version} does not exist for conversion.")
+
+
 qcschema_input_default = "qcschema_input"
 qcschema_output_default = "qcschema_output"
 qcschema_optimization_input_default = "qcschema_optimization_input"

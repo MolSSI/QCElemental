@@ -1,5 +1,11 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
+
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
 
 from pydantic import Field, conlist, constr, field_validator
 
@@ -10,6 +16,7 @@ from .common_models import (
     DriverEnum,
     Model,
     Provenance,
+    check_convertible_version,
     qcschema_input_default,
     qcschema_optimization_input_default,
     qcschema_optimization_output_default,
@@ -52,7 +59,7 @@ class QCInputSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, pattern=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1
+    schema_version: int = 1  # TODO
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
@@ -72,7 +79,7 @@ class OptimizationInput(ProtoModel):
     schema_name: constr(  # type: ignore
         strip_whitespace=True, pattern=qcschema_optimization_input_default
     ) = qcschema_optimization_input_default
-    schema_version: int = 2
+    schema_version: Literal[2] = 2
 
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
@@ -89,6 +96,25 @@ class OptimizationInput(ProtoModel):
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
         ]
 
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.OptimizationInput", "qcelemental.models.v2.OptimizationInput"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="OptimizationInput") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.OptimizationInput(**dself)
+
+        return self_vN
+
 
 class OptimizationResult(OptimizationInput):
     """QCSchema results model for geometry optimization."""
@@ -96,6 +122,7 @@ class OptimizationResult(OptimizationInput):
     schema_name: constr(  # type: ignore
         strip_whitespace=True, pattern=qcschema_optimization_output_default
     ) = qcschema_optimization_output_default
+    schema_version: Literal[2] = 2
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
     trajectory: List[AtomicResult] = Field(
@@ -135,6 +162,25 @@ class OptimizationResult(OptimizationInput):
 
         return v
 
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="OptimizationResult") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.OptimizationResult(**dself)
+
+        return self_vN
+
 
 class OptimizationSpecification(ProtoModel):
     """
@@ -149,7 +195,7 @@ class OptimizationSpecification(ProtoModel):
     schema_name: constr(
         strip_whitespace=True, pattern="qcschema_optimization_specification"
     ) = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1
+    schema_version: int = 1  # TODO
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
@@ -209,7 +255,7 @@ class TorsionDriveInput(ProtoModel):
     schema_name: constr(
         strip_whitespace=True, pattern=qcschema_torsion_drive_input_default
     ) = qcschema_torsion_drive_input_default  # type: ignore
-    schema_version: int = 2
+    schema_version: Literal[2] = 2
 
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
     extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
@@ -231,6 +277,25 @@ class TorsionDriveInput(ProtoModel):
         assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
 
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.TorsionDriveInput", "qcelemental.models.v2.TorsionDriveInput"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="TorsionDriveInput") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.TorsionDriveInput(**dself)
+
+        return self_vN
+
 
 class TorsionDriveResult(TorsionDriveInput):
     """Results from running a torsion drive.
@@ -243,7 +308,7 @@ class TorsionDriveResult(TorsionDriveInput):
     schema_name: constr(
         strip_whitespace=True, pattern=qcschema_torsion_drive_output_default
     ) = qcschema_torsion_drive_output_default  # type: ignore
-    schema_version: int = 2
+    schema_version: Literal[2] = 2
 
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
@@ -265,3 +330,22 @@ class TorsionDriveResult(TorsionDriveInput):
     )
     error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
+
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.TorsionDriveResult", "qcelemental.models.v2.TorsionDriveResult"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="TorsionDriveResult") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.TorsionDriveResult(**dself)
+
+        return self_vN

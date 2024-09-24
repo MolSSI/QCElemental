@@ -35,6 +35,10 @@ New Features
 
 Enhancements
 ++++++++++++
+* ``AtomicInput`` and ``AtomicResult`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` (both versions) learned a ``.convert_v(ver)`` function that returns self or the other version.
+* The ``models.v2`` ``AtomicInput``, ``AtomicResult``, ``AtomicResultProperties`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` changed to a Literal[2] and validated so new instances will be 2, even if another value passed in.
+* The ``models.v1`` ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` changed to a Literal[1] and validated so new instances will be 1, even if another value passed in.
+* The ``models.v1`` and ``models.v2`` ``OptimizationResult`` given schema_version for the first time.
 * The ``models.v2`` have had their `schema_version` bumped for ``BasisSet``, ``AtomicInput``, ``OptimizationInput`` (implicit for ``AtomicResult`` and ``OptimizationResult``), ``TorsionDriveInput`` , and ``TorsionDriveResult``.
 * The ``models.v2`` ``AtomicResultProperties`` has been given a ``schema_name`` and ``schema_version`` (2) for the first time.
 * Note that ``models.v2`` ``QCInputSpecification`` and ``OptimizationSpecification`` have *not* had schema_version bumped.
