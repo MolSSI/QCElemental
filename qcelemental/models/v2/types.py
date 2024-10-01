@@ -11,16 +11,10 @@ from typing_extensions import Annotated, get_args
 
 def generate_caster(dtype):
     def cast_to_np(v):
-        # for driver=properties
-        if isinstance(v, dict):
-            vv = {}
-            for key, val in v.items():
-                try:
-                    val = np.asarray(val, dtype=dtype)
-                except ValueError:
-                    raise ValueError(f"Could not cast {val} to NumPy Array!")
-                vv[key] = val
-            return vv
+        if isinstance(v, (float, dict)):
+            return v
+        elif isinstance(v, int):
+            return float(v)
 
         try:
             v = np.asarray(v, dtype=dtype)
