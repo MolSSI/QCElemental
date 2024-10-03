@@ -39,12 +39,16 @@ Enhancements
 * The ``models.v2`` ``AtomicResultProperties`` has been given a ``schema_name`` and ``schema_version`` (2) for the first time.
 * Note that ``models.v2`` ``QCInputSpecification`` and ``OptimizationSpecification`` have *not* had schema_version bumped.
 * All of ``Datum``, ``DFTFunctional``, and ``CPUInfo`` models, none of which are mixed with QCSchema models, are translated to Pydantic v2 API syntax.
+* Models ``procedures.TorsionDriveInput``, ``procedures.TorsionDriveResult``, ``common_models.Model``, ``results.AtomicResultProtocols`` are now importable from ``qcel.models`` (or its ``v1`` and ``v2`` sub) directly. For generic and v1, ``procedures.QCInputSpecification`` and ``procedures.OptimizationSpecification`` and ``procedures.TDKeywords`` are also importable from models.
 
 Bug Fixes
 +++++++++
 
 Misc.
 +++++
+
+* added warnings to dummy files models/results.py etc. classes are rerouted to v1 so downstream can run w/o alteration with `from qcelemental.models.procedures import OptimizationInput`
+* copied in pkg_resources.safe_version code as follow-up to Eric switch to packaging as both nwchem and gamess were now working. the try_harder_safe_version might be even bettter
 
 
 0.29.0 / 2025-01-13

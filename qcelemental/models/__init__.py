@@ -8,3 +8,5 @@ except ImportError:  # pragma: no cover
 
 from . import v1, v2
 from .v1 import *
+
+# Note that changing .v1 as default requires changing the shim classes in this dir, too.
