@@ -154,6 +154,14 @@ def test_parse_version():
     assert str(v) == "5.3.1"
 
 
-def test_safe_version():
-    v = qcel.util.safe_version("5.3.1")
-    assert v == "5.3.1"
+@pytest.mark.parametrize(
+    "inp,out",
+    [
+        ("5.3.1", "5.3.1"),
+        ("30 SEP 2023 (R2)", "30.SEP.2023.-R2-"),
+        ("7.0.0+N/A", "7.0.0-N-A"),
+    ],
+)
+def test_safe_version(inp, out):
+    v = qcel.util.safe_version(inp)
+    assert v == out
