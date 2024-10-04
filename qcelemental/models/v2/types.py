@@ -11,6 +11,11 @@ from typing_extensions import Annotated, get_args
 
 def generate_caster(dtype):
     def cast_to_np(v):
+        if isinstance(v, (float, dict)):
+            return v
+        elif isinstance(v, int):
+            return float(v)
+
         try:
             v = np.asarray(v, dtype=dtype)
         except ValueError:
