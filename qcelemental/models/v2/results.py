@@ -14,7 +14,15 @@ from pydantic import Field, constr, field_validator
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, qcschema_draft
 from .basis import BasisSet
-from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
+from .common_models import (
+    ComputeError,
+    DriverEnum,
+    Model,
+    Provenance,
+    check_convertible_version,
+    qcschema_input_default,
+    qcschema_output_default,
+)
 from .molecule import Molecule
 from .types import Array
 
@@ -38,7 +46,7 @@ class AtomicResultProperties(ProtoModel):
             f"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_atomicproperties."
         ),
     )
-    schema_version: int = Field(
+    schema_version: Literal[2] = Field(
         2,
         description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
     )
@@ -302,6 +310,10 @@ class AtomicResultProperties(ProtoModel):
         except (ValueError, AttributeError):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
+
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
 
     def dict(self, *args, **kwargs):
         # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
@@ -658,7 +670,7 @@ class AtomicInput(ProtoModel):
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
         ),
     )
-    schema_version: int = Field(
+    schema_version: Literal[2] = Field(
         2,
         description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
     )
@@ -689,6 +701,27 @@ class AtomicInput(ProtoModel):
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
+        #   submodel version fields first.
+        return 2
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="AtomicInput") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.AtomicInput(**dself)
+
+        return self_vN
+
 
 class AtomicResult(AtomicInput):
     r"""Results from a CMS program execution."""
@@ -698,6 +731,10 @@ class AtomicResult(AtomicInput):
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
         ),
+    )
+    schema_version: Literal[2] = Field(
+        2,
+        description="The version number of :attr:`~qcelemental.models.AtomicResult.schema_name` to which this model conforms.",
     )
     properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
@@ -728,6 +765,10 @@ class AtomicResult(AtomicInput):
             "Only {0} or {1} is allowed for schema_name, "
             "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default)
         )
+
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
 
     @field_validator("return_result")
     @classmethod
@@ -848,3 +889,18 @@ class AtomicResult(AtomicInput):
         for rk in return_keep:
             ret[rk] = files.get(rk, None)
         return ret
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="AtomicResult") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.AtomicResult(**dself)
+
+        return self_vN

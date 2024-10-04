@@ -1,3 +1,6 @@
+import copy
+import warnings
+
 import numpy as np
 import pydantic
 import pytest
@@ -618,3 +621,35 @@ def test_result_model_deprecations(result_data_fixture, optimization_data_fixtur
 
     with pytest.warns(DeprecationWarning):
         qcel.models.v1.Optimization(**optimization_data_fixture)
+
+
+@pytest.mark.parametrize(
+    "retres,atprop,rettyp",
+    [
+        (15, "mp2_correlation_energy", float),
+        (15.0, "mp2_correlation_energy", float),
+        ([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0], "return_gradient", np.ndarray),
+        (np.array([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0]), "return_gradient", np.ndarray),
+        ({"cat1": "tail", "cat2": "whiskers"}, None, str),
+        ({"float1": 4.4, "float2": -9.9}, None, float),
+        ({"list1": [-1.0, 4.4], "list2": [-9.9, 2]}, None, list),
+        ({"arr1": np.array([-1.0, 4.4]), "arr2": np.array([-9.9, 2])}, None, np.ndarray),
+    ],
+)
+def test_return_result_types(result_data_fixture, retres, atprop, rettyp, request, schema_versions):
+    AtomicResult = schema_versions.AtomicResult
+
+    working_res = copy.deepcopy(result_data_fixture)
+    working_res["return_result"] = retres
+    if atprop:
+        working_res["properties"]["calcinfo_natom"] = 3
+        working_res["properties"][atprop] = retres
+    atres = AtomicResult(**working_res)
+
+    if isinstance(retres, dict):
+        for v in atres.return_result.values():
+            assert isinstance(v, rettyp)
+    else:
+        if atprop:
+            assert isinstance(getattr(atres.properties, atprop), rettyp)
+        assert isinstance(atres.return_result, rettyp)
