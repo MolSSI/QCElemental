@@ -163,7 +163,7 @@ class Datum(BaseModel):
 
     def json(self, *args, **kwargs):
         """
-        Passthrough to model_dump_sjon without deprecation warning
+        Passthrough to model_dump_json without deprecation warning
         exclude_unset is forced through the model_serializer
         """
         return super().model_dump_json(*args, **kwargs)

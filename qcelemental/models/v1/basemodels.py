@@ -120,6 +120,18 @@ class ProtoModel(BaseModel):
         else:
             raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json'.")
 
+    def model_dump(self, **kwargs):
+        # forwarding pydantic v2 API function to pydantic v1 API so downstream can unify on new syntax
+        return self.dict(**kwargs)
+
+    def model_dump_json(self, **kwargs):
+        # forwarding pydantic v2 API function to pydantic v1 API so downstream can unify on new syntax
+        return self.json(**kwargs)
+
+    def model_copy(self, **kwargs):
+        # forwarding pydantic v2 API function to pydantic v1 API so downstream can unify on new syntax
+        return self.copy(**kwargs)
+
     def serialize(
         self,
         encoding: str,

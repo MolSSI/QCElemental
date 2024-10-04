@@ -95,7 +95,7 @@ class FailedOperation(ProtoModel):
     and containing the reason and input data which generated the failure.
     """
 
-    id: str = Field(  # type: ignore
+    id: Optional[str] = Field(  # type: ignore
         None,
         description="A unique identifier which links this FailedOperation, often of the same Id of the operation "
         "should it have been successful. This will often be set programmatically by a database such as "
@@ -125,6 +125,30 @@ class FailedOperation(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.FailedOperation", "qcelemental.models.v2.FailedOperation"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="FailedOperation") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.FailedOperation(**dself)
+
+        return self_vN
+
+
+def check_convertible_version(ver: int, error: str):
+    if ver == 1:
+        return True
+    elif ver == 2:
+        return "self"
+    else:
+        raise ValueError(f"QCSchema {error} version={version} does not exist for conversion.")
 
 
 qcschema_input_default = "qcschema_input"
