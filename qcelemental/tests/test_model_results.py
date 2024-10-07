@@ -1,4 +1,5 @@
 import copy
+import json
 import warnings
 
 import numpy as np
@@ -624,19 +625,20 @@ def test_result_model_deprecations(result_data_fixture, optimization_data_fixtur
 
 
 @pytest.mark.parametrize(
-    "retres,atprop,rettyp",
+    "retres,atprop,rettyp,jsntyp",
     [
-        (15, "mp2_correlation_energy", float),
-        (15.0, "mp2_correlation_energy", float),
-        ([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0], "return_gradient", np.ndarray),
-        (np.array([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0]), "return_gradient", np.ndarray),
-        ({"cat1": "tail", "cat2": "whiskers"}, None, str),
-        ({"float1": 4.4, "float2": -9.9}, None, float),
-        ({"list1": [-1.0, 4.4], "list2": [-9.9, 2]}, None, list),
-        ({"arr1": np.array([-1.0, 4.4]), "arr2": np.array([-9.9, 2])}, None, np.ndarray),
+        (15, "mp2_correlation_energy", float, float),
+        (15.0, "mp2_correlation_energy", float, float),
+        (np.array([15.3]), "ccsd_total_energy", float, float),
+        ([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0], "return_gradient", np.ndarray, list),
+        (np.array([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0]), "return_gradient", np.ndarray, list),
+        ({"cat1": "tail", "cat2": "whiskers"}, None, str, str),
+        ({"float1": 4.4, "float2": -9.9}, None, float, float),
+        ({"list1": [-1.0, 4.4], "list2": [-9.9, 2]}, None, list, list),
+        ({"arr1": np.array([-1.0, 4.4]), "arr2": np.array([-9.9, 2])}, None, np.ndarray, list),
     ],
 )
-def test_return_result_types(result_data_fixture, retres, atprop, rettyp, request, schema_versions):
+def test_return_result_types(result_data_fixture, retres, atprop, rettyp, jsntyp, request, schema_versions):
     AtomicResult = schema_versions.AtomicResult
 
     working_res = copy.deepcopy(result_data_fixture)
@@ -653,3 +655,21 @@ def test_return_result_types(result_data_fixture, retres, atprop, rettyp, reques
         if atprop:
             assert isinstance(getattr(atres.properties, atprop), rettyp)
         assert isinstance(atres.return_result, rettyp)
+
+    datres = atres.model_dump()
+    if isinstance(retres, dict):
+        for v in datres["return_result"].values():
+            assert isinstance(v, rettyp)
+    else:
+        if atprop:
+            assert isinstance(datres["properties"][atprop], rettyp)
+        assert isinstance(datres["return_result"], rettyp)
+
+    jatres = json.loads(atres.model_dump_json())
+    if isinstance(retres, dict):
+        for v in jatres["return_result"].values():
+            assert isinstance(v, jsntyp)
+    else:
+        if atprop:
+            assert isinstance(jatres["properties"][atprop], jsntyp)
+        assert isinstance(jatres["return_result"], jsntyp)
