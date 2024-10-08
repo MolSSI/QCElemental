@@ -552,10 +552,12 @@ class Molecule(ProtoModel):
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
+        import qcelemental
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, Molecule):
+        elif isinstance(other, (qcelemental.models.v2.Molecule, Molecule)):
+            # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))

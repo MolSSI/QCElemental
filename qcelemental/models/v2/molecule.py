@@ -588,19 +588,23 @@ class Molecule(ProtoModel):
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
+        import qcelemental
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, Molecule):
+        elif isinstance(other, (Molecule, qcelemental.models.v1.Molecule)):
+            # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
         return self.get_hash() == other.get_hash()
 
-    def dict(self, **kwargs):
-        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
-        return self.model_dump(**kwargs)
+    # UNCOMMENT IF NEEDED FOR UPGRADE
+    # def dict(self, **kwargs):
+    #    warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+    #    return self.model_dump(**kwargs)
+    #    # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
 
     @model_serializer(mode="wrap")
     def _serialize_molecule(self, handler) -> Dict[str, Any]:

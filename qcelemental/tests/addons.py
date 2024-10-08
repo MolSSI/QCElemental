@@ -65,7 +65,8 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
-    is_model = isinstance(instance, (qcelemental.models.v1.ProtoModel, qcelemental.models.v2.ProtoModel))
+    # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.
+    is_model = isinstance(instance, (qcelemental.models.v2.ProtoModel, qcelemental.models.v1.ProtoModel))
     if is_model and schema_name is None:
         schema_name = type(instance).__name__
     drop = (_data_path / schema_name / tnm).with_suffix(".json")
@@ -73,7 +74,7 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
     with open(drop, "w") as fp:
         if is_model:
             # fp.write(instance.json(exclude_unset=True, exclude_none=True))  # works but file is one-line
-            instance = json.loads(instance.json(exclude_unset=True, exclude_none=True))
+            instance = json.loads(instance.model_dump_json(exclude_unset=True, exclude_none=True))
         elif isinstance(instance, dict):
             pass
         else:

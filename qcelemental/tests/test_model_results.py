@@ -377,7 +377,7 @@ def test_wavefunction_protocols(
         assert wfn.wavefunction is None
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
-        assert wfn.wavefunction.dict().keys() == expected_keys
+        assert wfn.wavefunction.model_dump().keys() == expected_keys
 
 
 @pytest.mark.parametrize(
@@ -511,10 +511,15 @@ def test_failed_operation(result_data_fixture, request, schema_versions):
         error={"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
     )
     assert isinstance(failed.error, ComputeError)
-    assert isinstance(failed.dict(), dict)
-    failed_json = failed.json()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        assert isinstance(failed.dict(), dict)
+    assert isinstance(failed.model_dump(), dict)
+
+    failed_json = failed.model_dump_json()
     assert isinstance(failed_json, str)
     assert "its all good" in failed_json
+    assert isinstance(failed_json, str)
 
 
 def test_result_properties_array(request, schema_versions):
@@ -531,10 +536,12 @@ def test_result_properties_array(request, schema_versions):
     assert obj.scf_dipole_moment.shape == (3,)
     assert obj.scf_quadrupole_moment.shape == (3, 3)
 
-    assert obj.dict().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
+    assert obj.model_dump().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
     assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
     # assert obj.dict()["scf_quadrupole_moment"] == lquad  # when properties.dict() was forced json
-    assert np.array_equal(obj.dict()["scf_quadrupole_moment"], np.array(lquad).reshape(3, 3))  # now remains ndarray
+    assert np.array_equal(
+        obj.model_dump()["scf_quadrupole_moment"], np.array(lquad).reshape(3, 3)
+    )  # now remains ndarray
 
 
 def test_result_derivatives_array(request, schema_versions):
@@ -550,7 +557,7 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.calcinfo_natom == 4
     assert obj.return_gradient.shape == (4, 3)
     assert obj.scf_total_hessian.shape == (12, 12)
-    assert obj.dict().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+    assert obj.model_dump().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
 
 
 @pytest.mark.parametrize(
@@ -561,7 +568,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, 
 
     if smodel == "molecule":
         model = schema_versions.Molecule
-        data = result_data_fixture["molecule"].dict()
+        data = result_data_fixture["molecule"].model_dump()
         sver = (2, 2)  # TODO , 3)
 
     elif smodel == "atomicresultproperties":
@@ -585,7 +592,7 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, 
         sver = (1, 2)
 
     elif smodel == "basisset":
-        model = schema_versions.basis.BasisSet
+        model = schema_versions.BasisSet
         data = {"name": "custom", "center_data": center_data, "atom_map": ["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]}
         sver = (1, 2)
 
@@ -601,8 +608,16 @@ def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, 
 
     instance = model(**data)
     ver_tests(qcsk_ver)
-    instance = model(**instance.dict())
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        instance = model(**instance.dict())
     assert instance
+    ver_tests(qcsk_ver)
+
+    instance2 = model(**data)
+    ver_tests(qcsk_ver)
+    instance2 = model(**instance2.model_dump())
+    assert instance2
     ver_tests(qcsk_ver)
 
 
