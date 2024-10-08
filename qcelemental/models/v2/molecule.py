@@ -334,7 +334,7 @@ class Molecule(ProtoModel):
         "never need to be manually set.",
     )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
@@ -382,7 +382,7 @@ class Molecule(ProtoModel):
             kwargs = {**kwargs, **schema}  # Allow any extra fields
             validate = True
 
-        if "extras" not in kwargs:
+        if "extras" not in kwargs or kwargs["extras"] is None:  # latter re-defaults to empty dict
             kwargs["extras"] = {}
         super().__init__(**kwargs)
 
