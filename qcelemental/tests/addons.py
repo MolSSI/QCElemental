@@ -11,10 +11,13 @@ from qcelemental.util import which_import
 
 def internet_connection():
     try:
-        socket.create_connection(("www.google.com", 80))
-        return True
+        scc = socket.create_connection(("www.google.com", 80))
     except OSError:
+        scc.close()
         return False
+    else:
+        scc.close()
+        return True
 
 
 using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
