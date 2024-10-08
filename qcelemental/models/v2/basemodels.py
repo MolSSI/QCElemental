@@ -237,11 +237,11 @@ class ProtoModel(BaseModel):
 
         return serialize(data, encoding=encoding)
 
-    # UNCOMMENT IF NEEDED FOR UPGRADE
-    # def json(self, **kwargs):
-    #     # Alias JSON here from BaseModel to reflect dict changes
-    #     warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
-    #     return self.model_dump_json(**kwargs)
+    # UNCOMMENT IF NEEDED FOR UPGRADE REDO!!!
+    def json(self, **kwargs):
+        # Alias JSON here from BaseModel to reflect dict changes
+        warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
+        return self.model_dump_json(**kwargs)
 
     def model_dump_json(self, **kwargs):
         return self.serialize("json", **kwargs)

@@ -27,7 +27,7 @@ Breaking Changes
 ++++++++++++++++
 * The very old model names `ResultInput`, `Result`, `ResultProperties`, `Optimization` deprecated in 2019 are now only available through `qcelelemental.models.v1`
 * ``models.v2`` do not support AutoDoc. The AutoDoc routines have been left at pydantic v1 syntax. Use autodoc-pydantic for Sphinx instead.
-* Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality.
+* Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality. v2.Molecule retains its dict for now
 
 New Features
 ++++++++++++

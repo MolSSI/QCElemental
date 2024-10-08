@@ -600,11 +600,11 @@ class Molecule(ProtoModel):
 
         return self.get_hash() == other.get_hash()
 
-    # UNCOMMENT IF NEEDED FOR UPGRADE
-    # def dict(self, **kwargs):
-    #    warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
-    #    return self.model_dump(**kwargs)
-    #    # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
+    # UNCOMMENT IF NEEDED FOR UPGRADE REDO??
+    def dict(self, **kwargs):
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+        return self.model_dump(**kwargs)
+        # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
 
     @model_serializer(mode="wrap")
     def _serialize_molecule(self, handler) -> Dict[str, Any]:
