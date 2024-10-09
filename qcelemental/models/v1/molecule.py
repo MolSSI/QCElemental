@@ -23,7 +23,7 @@ from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
 from .basemodels import ProtoModel, qcschema_draft
-from .common_models import Provenance, qcschema_molecule_default
+from .common_models import Provenance, check_convertible_version, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
@@ -290,7 +290,7 @@ class Molecule(ProtoModel):
         "never need to be manually set.",
     )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
@@ -350,7 +350,7 @@ class Molecule(ProtoModel):
             kwargs = {**kwargs, **schema}  # Allow any extra fields
             validate = True
 
-        if "extras" not in kwargs:
+        if "extras" not in kwargs or kwargs["extras"] is None:  # latter re-defaults to empty dict
             kwargs["extras"] = {}
         super().__init__(**kwargs)
 
@@ -552,10 +552,12 @@ class Molecule(ProtoModel):
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
+        import qcelemental
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, Molecule):
+        elif isinstance(other, (qcelemental.models.v2.Molecule, Molecule)):
+            # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
@@ -1412,6 +1414,19 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+    def convert_v(self, version):  # , *, **kwargs):
+        import qcelemental as qcel
+
+        # TODO: since Mol is v2/v3 while everything else is v1/v2, reconsider this
+        if check_convertible_version(version, error="Molecule") == "self":
+            return self
+
+        dself = self.dict()
+        if version == 2:
+            self_vN = qcel.models.v2.Molecule(**dself)
+
+        return self_vN
 
 
 def _filter_defaults(dicary):

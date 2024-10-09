@@ -30,7 +30,7 @@ from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
 from .basemodels import ProtoModel, qcschema_draft
-from .common_models import Provenance, qcschema_molecule_default
+from .common_models import Provenance, check_convertible_version, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
@@ -334,7 +334,7 @@ class Molecule(ProtoModel):
         "never need to be manually set.",
     )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
@@ -382,7 +382,7 @@ class Molecule(ProtoModel):
             kwargs = {**kwargs, **schema}  # Allow any extra fields
             validate = True
 
-        if "extras" not in kwargs:
+        if "extras" not in kwargs or kwargs["extras"] is None:  # latter re-defaults to empty dict
             kwargs["extras"] = {}
         super().__init__(**kwargs)
 
@@ -588,19 +588,23 @@ class Molecule(ProtoModel):
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
+        import qcelemental
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, Molecule):
+        elif isinstance(other, (Molecule, qcelemental.models.v1.Molecule)):
+            # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
         return self.get_hash() == other.get_hash()
 
+    # UNCOMMENT IF NEEDED FOR UPGRADE REDO??
     def dict(self, **kwargs):
         warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
         return self.model_dump(**kwargs)
+        # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
 
     @model_serializer(mode="wrap")
     def _serialize_molecule(self, handler) -> Dict[str, Any]:
@@ -1462,6 +1466,19 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+    def convert_v(self, version):
+        import qcelemental as qcel
+
+        # TODO: since Mol is v2/v3 while everything else is v1/v2, reconsider this
+        if check_convertible_version(version, error="Molecule") == "self":
+            return self
+
+        dself = self.model_dump()
+        if version == 1:
+            self_vN = qcel.models.v1.Molecule(**dself)
+
+        return self_vN
 
 
 def _filter_defaults(dicary):

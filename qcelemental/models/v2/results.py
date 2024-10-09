@@ -315,12 +315,13 @@ class AtomicResultProperties(ProtoModel):
     def _version_stamp(cls, v):
         return 2
 
-    def dict(self, *args, **kwargs):
-        # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
-        # Sep 2021: commenting below for now to allow recomposing AtomicResult.properties for qcdb.
-        #   This will break QCFractal tests for now, but future qcf will be ok with it.
-        # kwargs["encoding"] = "json"
-        return super().model_dump(*args, **kwargs)
+    # UNCOMMENT IF NEEDED FOR UPGRADE
+    # def dict(self, *args, **kwargs):
+    #     # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
+    #     # Sep 2021: commenting below for now to allow recomposing AtomicResult.properties for qcdb.
+    #     #   This will break QCFractal tests for now, but future qcf will be ok with it.
+    #     # kwargs["encoding"] = "json"
+    #     return super().model_dump(*args, **kwargs)
 
 
 class WavefunctionProperties(ProtoModel):
@@ -773,7 +774,10 @@ class AtomicResult(AtomicInput):
     @field_validator("return_result")
     @classmethod
     def _validate_return_result(cls, v, info):
-        if info.data["driver"] == "gradient":
+        if info.data["driver"] == "energy":
+            if isinstance(v, np.ndarray) and v.size == 1:
+                v = v.item(0)
+        elif info.data["driver"] == "gradient":
             v = np.asarray(v).reshape(-1, 3)
         elif info.data["driver"] == "hessian":
             v = np.asarray(v)

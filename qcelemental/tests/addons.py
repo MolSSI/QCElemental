@@ -11,10 +11,13 @@ from qcelemental.util import which_import
 
 def internet_connection():
     try:
-        socket.create_connection(("www.google.com", 80))
-        return True
+        scc = socket.create_connection(("www.google.com", 80))
     except OSError:
+        scc.close()
         return False
+    else:
+        scc.close()
+        return True
 
 
 using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
@@ -62,7 +65,8 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
-    is_model = isinstance(instance, (qcelemental.models.v1.ProtoModel, qcelemental.models.v2.ProtoModel))
+    # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.
+    is_model = isinstance(instance, (qcelemental.models.v2.ProtoModel, qcelemental.models.v1.ProtoModel))
     if is_model and schema_name is None:
         schema_name = type(instance).__name__
     drop = (_data_path / schema_name / tnm).with_suffix(".json")
@@ -70,7 +74,7 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
     with open(drop, "w") as fp:
         if is_model:
             # fp.write(instance.json(exclude_unset=True, exclude_none=True))  # works but file is one-line
-            instance = json.loads(instance.json(exclude_unset=True, exclude_none=True))
+            instance = json.loads(instance.model_dump_json(exclude_unset=True, exclude_none=True))
         elif isinstance(instance, dict):
             pass
         else:
@@ -78,12 +82,12 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
         json.dump(instance, fp, sort_keys=True, indent=2)
 
 
-@pytest.fixture(scope="function", params=[None, "v1", "v2"])
+@pytest.fixture(scope="function", params=[None, "as_v1", "as_v2", "to_v1", "to_v2"])
 def Molecule(request):
     # for Molecule, qcsk v1 & v2 are schema_version v2 & v3
-    if request.param == "v1":
+    if request.param in ["as_v1", "to_v2"]:
         return qcelemental.models.v1.Molecule
-    elif request.param == "v2":
+    elif request.param in ["as_v2", "to_v1"]:
         return qcelemental.models.v2.Molecule
     else:
         return qcelemental.models.Molecule
