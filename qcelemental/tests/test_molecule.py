@@ -82,7 +82,7 @@ def test_molecule_data_constructor_error(Molecule):
         Molecule.from_data({}, dtype="bad")
 
 
-def test_hash_canary(Molecule):
+def test_hash_canary(Molecule, request):
     water_dimer_minima = Molecule.from_data(
         """
     0 1
@@ -96,6 +96,9 @@ def test_hash_canary(Molecule):
     """,
         dtype="psi4",
     )
+
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
+
     assert water_dimer_minima.get_hash() == "42f3ac52af52cf2105c252031334a2ad92aa911c"  # pragma: allowlist secret
 
     # Check orientation
@@ -108,7 +111,43 @@ def test_hash_canary(Molecule):
     assert frag_1.get_hash() == "bdc1f75bd1b7b999ff24783d7c1673452b91beb9"  # pragma: allowlist secret
 
 
-def test_molecule_np_constructors(Molecule):
+def checkver_and_convert(mol, tnm, vercheck: bool = True):
+    def check_model_v1(m):
+        assert isinstance(m, pydantic.v1.BaseModel), f"type({m.__class__.__name__}) = {type(m)} ⊄ v1.BaseModel (Pyd v1)"
+        assert isinstance(
+            m, qcel.models.v1.basemodels.ProtoModel
+        ), f"type({m.__class__.__name__}) = {type(m)} ⊄ v1.ProtoModel"
+        if vercheck:
+            assert m.schema_version == 2, f"{m.__class__.__name__}.schema_version = {m.schema_version} != 2"
+
+    def check_model_v2(m):
+        assert isinstance(m, pydantic.BaseModel), f"type({m.__class__.__name__}) = {type(m)} ⊄ BaseModel (Pyd v2)"
+        assert isinstance(
+            m, qcel.models.v2.basemodels.ProtoModel
+        ), f"type({m.__class__.__name__}) = {type(m)} ⊄ v2.ProtoModel"
+        if vercheck:
+            # TODO mol.schema_version = 3
+            assert m.schema_version == 2, f"{m.__class__.__name__}.schema_version = {m.schema_version} != 2"
+
+    if "as_v1" in tnm or "to_v2" in tnm:
+        check_model_v1(mol)
+    elif "as_v2" in tnm or "to_v1" in tnm:
+        check_model_v2(mol)
+
+    if "to_v1" in tnm:
+        mol = mol.convert_v(1)
+    elif "to_v2" in tnm:
+        mol = mol.convert_v(2)
+
+    if "as_v1" in tnm or "to_v1" in tnm:
+        check_model_v1(mol)
+    elif "as_v2" in tnm or "to_v2" in tnm:
+        check_model_v2(mol)
+
+    return mol
+
+
+def test_molecule_np_constructors(Molecule, request):
     """
     Neon tetramer fun
     """
@@ -128,6 +167,7 @@ def test_molecule_np_constructors(Molecule):
     ele = np.array([10, 10, 10, 10]).reshape(-1, 1)
     npneon = np.hstack((ele, neon_from_psi.geometry))
     neon_from_np = Molecule.from_data(npneon, name="neon tetramer", dtype="numpy", frags=[1, 2, 3], units="bohr")
+    neon_from_np = checkver_and_convert(neon_from_np, request.node.name)
 
     assert neon_from_psi == neon_from_np
 
@@ -137,8 +177,9 @@ def test_molecule_np_constructors(Molecule):
     assert neon_from_json.get_molecular_formula() == "Ne4"
 
 
-def test_molecule_compare(Molecule, water_molecule_data):
+def test_molecule_compare(Molecule, water_molecule_data, request):
     water_molecule = Molecule.from_data(water_molecule_data)
+    water_molecule = checkver_and_convert(water_molecule, request.node.name)
 
     water_molecule2 = water_molecule.copy()
     assert water_molecule2 == water_molecule
@@ -147,13 +188,15 @@ def test_molecule_compare(Molecule, water_molecule_data):
     assert water_molecule != water_molecule3
 
 
-def test_water_minima_data(Molecule, water_dimer_minima_data):
+def test_water_minima_data(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     # Give it a name
     mol_dict = water_dimer_minima.dict()
     mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert len(mol.pretty_print()) == 661
     assert len(mol.to_string("psi4")) == 479
@@ -181,8 +224,9 @@ def test_water_minima_data(Molecule, water_dimer_minima_data):
     assert mol.get_hash() == "3c4b98f515d64d1adc1648fe1fe1d6789e978d34"  # pragma: allowlist secret
 
 
-def test_water_minima_fragment(Molecule, water_dimer_minima_data):
+def test_water_minima_fragment(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     mol = water_dimer_minima.copy()
     frag_0 = mol.get_fragment(0, orient=True)
@@ -203,15 +247,17 @@ def test_water_minima_fragment(Molecule, water_dimer_minima_data):
     assert np.allclose(np.hstack((mol.masses[3:], mol.masses[:3])), frag_1_0.masses)
 
 
-def test_pretty_print(Molecule, water_dimer_minima_data):
+def test_pretty_print(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
     mol = water_dimer_minima.copy()
+    mol = checkver_and_convert(mol, request.node.name)
     assert isinstance(mol.pretty_print(), str)
 
 
-def test_to_string(Molecule, water_dimer_minima_data):
+def test_to_string(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     mol = water_dimer_minima.copy()
     assert isinstance(mol.to_string("psi4"), str)
@@ -221,7 +267,7 @@ def test_to_string(Molecule, water_dimer_minima_data):
     "dtype, filext",
     [("json", "json"), ("xyz", "xyz"), ("numpy", "npy"), pytest.param("msgpack", "msgpack", marks=using_msgpack)],
 )
-def test_to_from_file_simple(tmp_path, dtype, filext, Molecule):
+def test_to_from_file_simple(tmp_path, dtype, filext, Molecule, request):
     benchmol = Molecule.from_data(
         """
     O 0 0 0
@@ -234,25 +280,28 @@ def test_to_from_file_simple(tmp_path, dtype, filext, Molecule):
     benchmol.to_file(p, dtype=dtype)
 
     mol = Molecule.from_file(p)
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert mol == benchmol
 
 
 @pytest.mark.parametrize("dtype", ["json", "psi4"])
-def test_to_from_file_complex(tmp_path, dtype, Molecule, water_dimer_minima_data):
+def test_to_from_file_complex(tmp_path, dtype, Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     p = tmp_path / ("water." + dtype)
     water_dimer_minima.to_file(p)
 
     mol = Molecule.from_file(p)
+    mol = checkver_and_convert(mol, request.node.name)
     assert mol == water_dimer_minima
 
 
 @pytest.mark.parametrize(
     "dtype, filext", [("json", "json"), ("xyz+", "xyz"), pytest.param("msgpack", "msgpack", marks=using_msgpack)]
 )
-def test_to_from_file_charge_spin(tmp_path, dtype, filext, Molecule):
+def test_to_from_file_charge_spin(tmp_path, dtype, filext, Molecule, request):
     benchmol = Molecule.from_data(
         """
     1 2
@@ -261,11 +310,13 @@ def test_to_from_file_charge_spin(tmp_path, dtype, filext, Molecule):
     H 0 0 1.5
     """
     )
+    benchmol = checkver_and_convert(benchmol, request.node.name)
 
     p = tmp_path / ("water." + filext)
     benchmol.to_file(p, dtype=dtype)
 
     mol = Molecule.from_file(p, dtype=dtype)
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert mol.molecular_charge == 1
     assert mol.molecular_multiplicity == 2
@@ -274,7 +325,7 @@ def test_to_from_file_charge_spin(tmp_path, dtype, filext, Molecule):
     assert mol == benchmol
 
 
-def test_from_data_kwargs(Molecule):
+def test_from_data_kwargs(Molecule, request):
     mol = Molecule.from_data(
         """
         O 0 0 0
@@ -286,6 +337,7 @@ def test_from_data_kwargs(Molecule):
         fragment_charges=[1],
         fragment_multiplicities=[2],
     )
+    mol = checkver_and_convert(mol, request.node.name)
     assert mol.molecular_charge == 1
     assert mol.molecular_multiplicity == 2
     assert mol.fragment_charges[0] == 1
@@ -300,6 +352,7 @@ def test_from_data_kwargs(Molecule):
         molecular_charge=1,
         molecular_multiplicity=2,
     )
+    mol = checkver_and_convert(mol, request.node.name)
     assert mol.molecular_charge == 1
     assert mol.molecular_multiplicity == 2
     assert mol.fragment_charges[0] == 1
@@ -319,7 +372,7 @@ def test_from_data_kwargs(Molecule):
     assert "Inconsistent or unspecified chg/mult" in str(e.value)
 
 
-def test_water_orient(Molecule):
+def test_water_orient(Molecule, request):
     # These are identical molecules, should find the correct results
     mol = Molecule.from_data(
         """
@@ -332,6 +385,7 @@ def test_water_orient(Molecule):
         H   0.040712  -0.599677  10.000000
         """
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
@@ -363,6 +417,7 @@ def test_water_orient(Molecule):
         dtype="psi4",
         orient=True,
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     frag_0 = mol.get_fragment(0, orient=True)
     frag_1 = mol.get_fragment(1, orient=True)
@@ -380,8 +435,9 @@ def test_water_orient(Molecule):
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
 
 
-def test_molecule_errors_extra(Molecule, water_dimer_minima_data):
+def test_molecule_errors_extra(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     data = water_dimer_minima.dict(exclude_unset=True)
     data["whatever"] = 5
@@ -389,17 +445,20 @@ def test_molecule_errors_extra(Molecule, water_dimer_minima_data):
         Molecule(**data, validate=False)
 
 
-def test_molecule_errors_connectivity(Molecule, water_molecule_data):
+def test_molecule_errors_connectivity(Molecule, water_molecule_data, request):
     water_molecule = Molecule.from_data(water_molecule_data)
+    water_molecule = checkver_and_convert(water_molecule, request.node.name)
 
     data = water_molecule.dict()
     data["connectivity"] = [(-1, 5, 5)]
     with pytest.raises(Exception):
+        # TODO right ver?
         Molecule(**data)
 
 
-def test_molecule_errors_shape(Molecule, water_molecule_data):
+def test_molecule_errors_shape(Molecule, water_molecule_data, request):
     water_molecule = Molecule.from_data(water_molecule_data)
+    water_molecule = checkver_and_convert(water_molecule, request.node.name)
 
     data = water_molecule.dict()
     data["geometry"] = list(range(8))
@@ -407,8 +466,9 @@ def test_molecule_errors_shape(Molecule, water_molecule_data):
         Molecule(**data)
 
 
-def test_molecule_json_serialization(Molecule, water_dimer_minima_data):
+def test_molecule_json_serialization(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     assert isinstance(water_dimer_minima.json(), str)
 
@@ -418,14 +478,14 @@ def test_molecule_json_serialization(Molecule, water_dimer_minima_data):
 
 
 @pytest.mark.parametrize("encoding", serialize_extensions)
-def test_molecule_serialization(encoding, Molecule, water_dimer_minima_data):
+def test_molecule_serialization(encoding, Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
     blob = water_dimer_minima.serialize(encoding)
     assert water_dimer_minima == Molecule.parse_raw(blob, encoding=encoding)
 
 
-def test_charged_fragment(Molecule):
+def test_charged_fragment(Molecule, request):
     mol = Molecule(
         symbols=["Li", "Li"],
         geometry=[0, 0, 0, 0, 0, 5],
@@ -433,6 +493,8 @@ def test_charged_fragment(Molecule):
         fragment_multiplicities=[2, 2],
         fragments=[[0], [1]],
     )
+    mol = checkver_and_convert(mol, request.node.name)
+
     assert mol.molecular_multiplicity == 3
     assert mol.molecular_charge == 0
     f1 = mol.get_fragment(0)
@@ -459,7 +521,7 @@ def test_charged_fragment(Molecule):
 
 
 @pytest.mark.parametrize("group_fragments, orient", [(True, True), (False, False)])  # original  # Psi4-like
-def test_get_fragment(group_fragments, orient, Molecule):
+def test_get_fragment(group_fragments, orient, Molecule, request):
     mol = Molecule(
         **{
             "fragments": [[0], [1, 2, 3], [4, 5, 6]],
@@ -479,6 +541,7 @@ def test_get_fragment(group_fragments, orient, Molecule):
             / qcel.constants.bohr2angstroms,
         }
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert mol.nelectrons() == 22
     assert compare_values(32.25894779318589, mol.nuclear_repulsion_energy(), atol=1.0e-5)
@@ -531,7 +594,7 @@ def test_get_fragment(group_fragments, orient, Molecule):
         assert 0
 
 
-def test_molecule_repeated_hashing(Molecule):
+def test_molecule_repeated_hashing(Molecule, request):
     mol = Molecule(
         **{
             "symbols": ["H", "O", "O", "H"],
@@ -543,14 +606,17 @@ def test_molecule_repeated_hashing(Molecule):
             ],
         }
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     h1 = mol.get_hash()
     assert mol.get_molecular_formula() == "H2O2"
 
     mol2 = Molecule(orient=False, **mol.dict())
+    mol2 = checkver_and_convert(mol2, request.node.name)
     assert h1 == mol2.get_hash()
 
     mol3 = Molecule(orient=False, **mol2.dict())
+    mol3 = checkver_and_convert(mol3, request.node.name)
     assert h1 == mol3.get_hash()
 
 
@@ -565,8 +631,9 @@ def test_molecule_repeated_hashing(Molecule):
         ([[0, 1, 2, 3], [3, 2, 1, 0]], [180.0, 180.0]),
     ],
 )
-def test_measurements(measure, result, Molecule, water_dimer_minima_data):
+def test_measurements(measure, result, Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     Molecule(
         **{
@@ -594,7 +661,7 @@ def test_measurements(measure, result, Molecule, water_dimer_minima_data):
         (-1, 1, 1, 1, 0.0, 1),
     ],
 )
-def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm, Molecule):
+def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm, Molecule, request):
     mol = Molecule.from_data(
         """
     {f1c} {f1m}
@@ -606,6 +673,7 @@ def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm, Molecule):
             f1c=f1c, f1m=f1m, f2c=f2c, f2m=f2m
         )
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert pytest.approx(mol.molecular_charge) == tc
     assert mol.molecular_multiplicity == tm
@@ -625,7 +693,7 @@ def test_fragment_charge_configurations(f1c, f1m, f2c, f2m, tc, tm, Molecule):
     assert mol.get_fragment(1, [0]).molecular_multiplicity == f2m
 
 
-def test_nuclearrepulsionenergy_nelectrons(Molecule):
+def test_nuclearrepulsionenergy_nelectrons(Molecule, request):
     mol = Molecule.from_data(
         """
     0 1
@@ -642,6 +710,7 @@ def test_nuclearrepulsionenergy_nelectrons(Molecule):
     units ang
     """
     )
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert compare_values(34.60370459, mol.nuclear_repulsion_energy(), "D", atol=1.0e-5)
     assert compare_values(4.275210518, mol.nuclear_repulsion_energy(ifr=0), "M1", atol=1.0e-5)
@@ -665,30 +734,35 @@ def test_nuclearrepulsionenergy_nelectrons(Molecule):
 
 
 @using_nglview
-def test_show(Molecule, water_dimer_minima_data):
+def test_show(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
+    water_dimer_minima = checkver_and_convert(water_dimer_minima, request.node.name)
 
     water_dimer_minima.show()
 
 
-def test_molecule_connectivity(Molecule):
+def test_molecule_connectivity(Molecule, request):
     data = {"geometry": np.random.rand(5, 3), "symbols": ["he"] * 5, "validate": False}
-    Molecule(**data, connectivity=None)
+    mymol = Molecule(**data, connectivity=None)
+    mymol = checkver_and_convert(mymol, request.node.name)
 
     connectivity = [[n, n + 1, 1] for n in range(4)]
-    Molecule(**data, connectivity=connectivity)
+    mymol = Molecule(**data, connectivity=connectivity)
+    mymol = checkver_and_convert(mymol, request.node.name)
 
     connectivity[0][0] = -1
     with pytest.raises(ValueError):
+        # TODO right ver?
         Molecule(**data, connectivity=connectivity)
 
 
-def test_orient_nomasses(Molecule):
+def test_orient_nomasses(Molecule, request):
     """
     Masses must be auto generated on the fly
     """
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], orient=True, validated=True)
+    mol = checkver_and_convert(mol, request.node.name)
 
     assert mol.__dict__["masses_"] is None
     assert compare_values([[2, 0, 0], [-2, 0, 0]], mol.geometry)
@@ -704,7 +778,7 @@ def test_orient_nomasses(Molecule):
         ("He@3.14 0 0 0", {"masses", "mass_numbers"}),
     ],
 )
-def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
+def test_sparse_molecule_fields(mol_string, extra_keys, Molecule, request):
     expected_keys = {
         "schema_name",
         "schema_version",
@@ -720,6 +794,7 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
         "extras",
     }
     mol = Molecule.from_data(mol_string)
+    mol = checkver_and_convert(mol, request.node.name)
 
     if extra_keys is not None:
         expected_keys |= extra_keys
@@ -728,15 +803,17 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
     assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
 
 
-def test_sparse_molecule_connectivity(Molecule):
+def test_sparse_molecule_connectivity(Molecule, request):
     """
     A bit of a weird test, but because we set connectivity it should carry through.
     """
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
+    mol = checkver_and_convert(mol, request.node.name)
     assert "connectivity" in mol.dict()
     assert mol.dict()["connectivity"] is None
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
+    mol = checkver_and_convert(mol, request.node.name)
     assert "connectivity" not in mol.dict()
 
 
