@@ -1,5 +1,6 @@
 import math
 import pprint
+import warnings
 
 import numpy as np
 import pydantic
@@ -53,8 +54,8 @@ def test_relative_geoms_align_free(request, Molecule):
             do_shift=True, do_rotate=True, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
 
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        rmolrec = qcel.molparse.from_schema(s22_12.model_dump())
+        cmolrec = qcel.molparse.from_schema(cmol.model_dump())
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 
@@ -67,8 +68,10 @@ def test_relative_geoms_align_fixed(request, Molecule):
             do_shift=False, do_rotate=False, do_resort=False, do_plot=False, verbose=2, do_test=True
         )
 
-        rmolrec = qcel.molparse.from_schema(s22_12.dict())
-        cmolrec = qcel.molparse.from_schema(cmol.dict())
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            rmolrec = qcel.molparse.from_schema(s22_12.dict())
+            cmolrec = qcel.molparse.from_schema(cmol.dict())
         assert compare_molrecs(rmolrec, cmolrec, atol=1.0e-4, relative_geoms="align")
 
 

@@ -133,9 +133,11 @@ class ProtoModel(BaseModel):
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
-    def dict(self, **kwargs) -> Dict[str, Any]:
-        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
-        return self.model_dump(**kwargs)
+    # UNCOMMENT IF NEEDED FOR UPGRADE
+    #   defining this is maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
+    # def dict(self, **kwargs) -> Dict[str, Any]:
+    #    warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+    #    return self.model_dump(**kwargs)
 
     @model_serializer(mode="wrap")
     def _serialize_model(self, handler) -> Dict[str, Any]:
@@ -235,6 +237,7 @@ class ProtoModel(BaseModel):
 
         return serialize(data, encoding=encoding)
 
+    # UNCOMMENT IF NEEDED FOR UPGRADE REDO!!!
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
         warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)

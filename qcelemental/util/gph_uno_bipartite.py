@@ -13,6 +13,8 @@ Copied Dec 2017 LAB Adapted from https://github.com/Xunius/bipartite_matching
 Updated Dec 2017 LAB for pep8, py3, more tests, starter_match, and simpler interface
 
 """
+import warnings
+
 import numpy as np
 
 # commented as untested [Apr 2019]
@@ -367,7 +369,9 @@ def _enumMaximumMatchingIter2(adj, matchadj, all_matches, n1, add_e=None, check_
     # -------------------Find cycles-------------------
     if check_cycle:
         d = matchadj.multiply(adj)
-        d[n1:, :] = adj[n1:, :] - matchadj[n1:, :].multiply(adj[n1:, :])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", sparse.SparseEfficiencyWarning)
+            d[n1:, :] = adj[n1:, :] - matchadj[n1:, :].multiply(adj[n1:, :])
 
         dg = nx.from_numpy_array(d.toarray(), create_using=nx.DiGraph())
         cycles = list(nx.simple_cycles(dg))
