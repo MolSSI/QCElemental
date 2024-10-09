@@ -23,7 +23,7 @@ from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
 from .basemodels import ProtoModel, qcschema_draft
-from .common_models import Provenance, qcschema_molecule_default
+from .common_models import Provenance, check_convertible_version, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
@@ -1414,6 +1414,19 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+    def convert_v(self, version):  # , *, **kwargs):
+        import qcelemental as qcel
+
+        # TODO: since Mol is v2/v3 while everything else is v1/v2, reconsider this
+        if check_convertible_version(version, error="Molecule") == "self":
+            return self
+
+        dself = self.dict()
+        if version == 2:
+            self_vN = qcel.models.v2.Molecule(**dself)
+
+        return self_vN
 
 
 def _filter_defaults(dicary):
