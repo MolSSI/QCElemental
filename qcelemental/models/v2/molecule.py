@@ -2,6 +2,7 @@
 Molecule Object Model
 """
 
+import collections
 import hashlib
 import json
 import warnings
@@ -180,7 +181,7 @@ class Molecule(ProtoModel):
         description="Additional comments for this molecule. Intended for pure human/user consumption and clarity.",
     )
     molecular_charge: float = Field(0.0, description="The net electrostatic charge of the molecule.")  # type: ignore
-    molecular_multiplicity: int = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
+    molecular_multiplicity: float = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
 
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
@@ -283,7 +284,7 @@ class Molecule(ProtoModel):
             "shape": ["nfr"],
         },
     )
-    fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
+    fragment_multiplicities_: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. "
         "The index of this list matches the 0-index indices of "
@@ -334,7 +335,7 @@ class Molecule(ProtoModel):
         "never need to be manually set.",
     )
     extras: Dict[str, Any] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the molecule. Use for schema development and scratch space.",
     )
 
@@ -343,7 +344,7 @@ class Molecule(ProtoModel):
         json_schema_extra=molecule_json_schema_extras,
         repr_style=lambda self: [
             ("name", self.name),
-            ("formula", self.get_molecular_formula()),
+            ("formula", self.get_molecular_formula(chgmult=True)),
             ("hash", self.get_hash()[:7]),
         ],
     )
@@ -382,7 +383,7 @@ class Molecule(ProtoModel):
             kwargs = {**kwargs, **schema}  # Allow any extra fields
             validate = True
 
-        if "extras" not in kwargs:
+        if "extras" not in kwargs or kwargs["extras"] is None:  # latter re-defaults to empty dict
             kwargs["extras"] = {}
         super().__init__(**kwargs)
 
@@ -429,15 +430,35 @@ class Molecule(ProtoModel):
             v = np.array([True for _ in range(n)])
         return v
 
-    @field_validator("fragment_charges_", "fragment_multiplicities_")
+    @field_validator("fragment_charges_")
     @classmethod
     def _must_be_n_frag(cls, v, info):
         if "fragments_" in info.data and info.data["fragments_"] is not None:
             n = len(info.data["fragments_"])
             if len(v) != n:
                 raise ValueError(
-                    "Fragment Charges and Fragment Multiplicities must be same number of entries as Fragments"
+                    "Fragment Charges must be same number of entries as Fragments"
                 )
+        return v
+
+    @field_validator("fragment_multiplicities_")
+    def _must_be_n_frag_mult(cls, v, info):
+        if "fragments_" in info.data and info.data["fragments_"] is not None:
+            n = len(info.data["fragments_"])
+            if len(v) != n:
+                raise ValueError("Fragment Multiplicities must be same number of entries as Fragments")
+        v = [(int(m) if m.is_integer() else m) for m in v]
+        if any([m < 1.0 for m in v]):
+            raise ValueError(f"Fragment Multiplicity must be positive: {v}")
+        return v
+
+    @field_validator("molecular_multiplicity")
+    def _int_if_possible(cls, v, info):
+        if v.is_integer():
+            # preserve existing hashes
+            v = int(v)
+        if v < 1.0:
+            raise ValueError("Molecular Multiplicity must be positive")
         return v
 
     @property
@@ -511,7 +532,7 @@ class Molecule(ProtoModel):
         return fragment_charges
 
     @property
-    def fragment_multiplicities(self) -> List[int]:
+    def fragment_multiplicities(self) -> List[float]:
         fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
         if fragment_multiplicities is None:
             fragment_multiplicities = [self.molecular_multiplicity]
@@ -588,19 +609,23 @@ class Molecule(ProtoModel):
         by scientific terms, and not programing terms, so it's less rigorous than
         a programmatic equality or a memory equivalent `is`.
         """
+        import qcelemental
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, Molecule):
+        elif isinstance(other, (Molecule, qcelemental.models.v1.Molecule)):
+            # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
         return self.get_hash() == other.get_hash()
 
+    # UNCOMMENT IF NEEDED FOR UPGRADE REDO??
     def dict(self, **kwargs):
         warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
         return self.model_dump(**kwargs)
+        # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
 
     @model_serializer(mode="wrap")
     def _serialize_molecule(self, handler) -> Dict[str, Any]:
@@ -826,9 +851,7 @@ class Molecule(ProtoModel):
             data = getattr(self, field)
             if field == "geometry":
                 data = float_prep(data, GEOMETRY_NOISE)
-            elif field == "fragment_charges":
-                data = float_prep(data, CHARGE_NOISE)
-            elif field == "molecular_charge":
+            elif field in ["fragment_charges", "molecular_charge", "fragment_multiplicities", "molecular_multiplicity"]:
                 data = float_prep(data, CHARGE_NOISE)
             elif field == "masses":
                 data = float_prep(data, MASS_NOISE)
@@ -838,7 +861,7 @@ class Molecule(ProtoModel):
         m.update(concat.encode("utf-8"))
         return m.hexdigest()
 
-    def get_molecular_formula(self, order: str = "alphabetical") -> str:
+    def get_molecular_formula(self, order: str = "alphabetical", chgmult: bool = False) -> str:
         r"""
         Returns the molecular formula for a molecule.
 
@@ -846,6 +869,8 @@ class Molecule(ProtoModel):
         ----------
         order: str, optional
             Sorting order of the formula. Valid choices are "alphabetical" and "hill".
+        chgmult
+            If not neutral singlet, return formula as {mult}^{formula}{chg}.
 
         Returns
         -------
@@ -872,11 +897,50 @@ class Molecule(ProtoModel):
         >>> hcl.get_molecular_formula()
         ClH
 
+        >>> two_pentanol_radcat = qcelemental.models.Molecule('''
+        ... 1 2
+        ... C         -4.43914        1.67538       -0.14135
+        ... C         -2.91385        1.70652       -0.10603
+        ... H         -4.82523        2.67391       -0.43607
+        ... H         -4.84330        1.41950        0.86129
+        ... H         -4.79340        0.92520       -0.88015
+        ... H         -2.59305        2.48187        0.62264
+        ... H         -2.53750        1.98573       -1.11429
+        ... C         -2.34173        0.34025        0.29616
+        ... H         -2.72306        0.06156        1.30365
+        ... C         -0.80326        0.34498        0.31454
+        ... H         -2.68994       -0.42103       -0.43686
+        ... O         -0.32958        1.26295        1.26740
+        ... H         -0.42012        0.59993       -0.70288
+        ... C         -0.26341       -1.04173        0.66218
+        ... H         -0.61130       -1.35318        1.67053
+        ... H          0.84725       -1.02539        0.65807
+        ... H         -0.60666       -1.78872       -0.08521
+        ... H         -0.13614        2.11102        0.78881
+        ... ''')
+        >>> two_pentanol_radcat.get_molecular_formula(chgmult=True)
+        2^C5H12O+
+        Notes
+        -----
+        This includes all atoms in the molecule, including ghost atoms. See :py:meth:`element_composition` to exclude.
+
         """
 
         from ...molutil import molecular_formula_from_symbols
 
-        return molecular_formula_from_symbols(symbols=self.symbols, order=order)
+        formula = molecular_formula_from_symbols(symbols=self.symbols, order=order)
+
+        c, m = self.molecular_charge, self.molecular_multiplicity
+        if not chgmult or (c == 0.0 and m == 1):
+            return formula
+
+        if m > 1:
+            formula = f"{m}^{formula}"
+        if c < 0.0:
+            formula += abs(int(c)) * "-"
+        elif c > 0.0:
+            formula += int(c) * "+"
+        return formula
 
     ### Constructors
 
@@ -1102,7 +1166,11 @@ class Molecule(ProtoModel):
         return new_geometry
 
     def __repr_args__(self) -> "ReprArgs":
-        return [("name", self.name), ("formula", self.get_molecular_formula()), ("hash", self.get_hash()[:7])]
+        return [
+            ("name", self.name),
+            ("formula", self.get_molecular_formula(chgmult=True)),
+            ("hash", self.get_hash()[:7]),
+        ]
 
     def _ipython_display_(self, **kwargs) -> None:
         try:
@@ -1132,13 +1200,15 @@ class Molecule(ProtoModel):
         tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
 
-    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
+    def nuclear_repulsion_energy(self, ifr: int = None, real_only: bool = True) -> float:
         r"""Nuclear repulsion energy.
 
         Parameters
         ----------
         ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
 
         Returns
         -------
@@ -1146,7 +1216,10 @@ class Molecule(ProtoModel):
             Nuclear repulsion energy in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        if real_only:
+            Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        else:
+            Zeff = self.atomic_numbers
         atoms = list(range(self.geometry.shape[0]))
 
         if ifr is not None:
@@ -1159,13 +1232,15 @@ class Molecule(ProtoModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr: int = None) -> int:
+    def nelectrons(self, ifr: int = None, real_only: bool = True) -> int:
         r"""Number of electrons.
 
         Parameters
         ----------
         ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
 
         Returns
         -------
@@ -1173,7 +1248,10 @@ class Molecule(ProtoModel):
             Number of electrons in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        if real_only:
+            Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        else:
+            Zeff = self.atomic_numbers
 
         if ifr is None:
             nel = sum(Zeff) - self.molecular_charge
@@ -1182,6 +1260,68 @@ class Molecule(ProtoModel):
             nel = sum([zf for iat, zf in enumerate(Zeff) if iat in self.fragments[ifr]]) - self.fragment_charges[ifr]
 
         return int(nel)
+
+    def molecular_weight(self, ifr: int = None, real_only: bool = True) -> float:
+        r"""Molecular weight in uamu.
+
+        Parameters
+        ----------
+        ifr
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
+
+        Returns
+        -------
+        mw : float
+            Molecular weight in entire molecule or in fragment.
+
+        """
+        if real_only:
+            masses = [mas * int(real) for mas, real in zip(cast(Iterable[float], self.masses), self.real)]
+        else:
+            masses = self.masses
+
+        if ifr is None:
+            mw = sum(masses)
+
+        else:
+            mw = sum([mas for iat, mas in enumerate(masses) if iat in self.fragments[ifr]])
+
+        return mw
+
+    def element_composition(self, ifr: int = None, real_only: bool = True) -> Dict[str, int]:
+        r"""Atomic count map.
+
+        Parameters
+        ----------
+        ifr
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms.
+
+        Returns
+        -------
+        composition : Dict[str, int]
+            Atomic count map.
+
+        Notes
+        -----
+        This excludes ghost atoms by default whereas get_molecular_formula always includes them.
+        """
+        if real_only:
+            symbols = [sym * int(real) for sym, real in zip(cast(Iterable[str], self.symbols), self.real)]
+        else:
+            symbols = self.symbols
+
+        if ifr is None:
+            count = collections.Counter(sym.title() for sym in symbols)
+
+        else:
+            count = collections.Counter(sym.title() for iat, sym in enumerate(symbols) if iat in self.fragments[ifr])
+
+        count.pop("", None)
+        return dict(count)
 
     def align(
         self,
