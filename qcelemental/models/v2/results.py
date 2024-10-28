@@ -773,7 +773,10 @@ class AtomicResult(AtomicInput):
     @field_validator("return_result")
     @classmethod
     def _validate_return_result(cls, v, info):
-        if info.data["driver"] == "gradient":
+        if info.data["driver"] == "energy":
+            if isinstance(v, np.ndarray) and v.size == 1:
+                v = v.item(0)
+        elif info.data["driver"] == "gradient":
             v = np.asarray(v).reshape(-1, 3)
         elif info.data["driver"] == "hessian":
             v = np.asarray(v)

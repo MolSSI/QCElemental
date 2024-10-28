@@ -46,10 +46,13 @@ def msgpackext_encode(obj: Any) -> Any:
         # below pydatnic_encoder is for Pydantic v1 API models
         # tentative whether handling both together will work beyond tests
         #   or if separate files called by models.v1 and .v2 will be req'd
-        try:
-            return pydantic_encoder(obj)
-        except TypeError:
+        if isinstance(obj, pydantic.BaseModel):
             pass
+        else:
+            try:
+                return pydantic_encoder(obj)
+            except TypeError:
+                pass
 
     if isinstance(obj, np.ndarray):
         if obj.shape:
@@ -135,10 +138,13 @@ class JSONExtArrayEncoder(json.JSONEncoder):
         try:
             return to_jsonable_python(obj)
         except ValueError:
-            try:
-                return pydantic_encoder(obj)
-            except TypeError:
+            if isinstance(obj, pydantic.BaseModel):
                 pass
+            else:
+                try:
+                    return pydantic_encoder(obj)
+                except TypeError:
+                    pass
 
         if isinstance(obj, np.ndarray):
             if obj.shape:
@@ -210,10 +216,14 @@ class JSONArrayEncoder(json.JSONEncoder):
         try:
             return to_jsonable_python(obj)
         except ValueError:
-            try:
-                return pydantic_encoder(obj)
-            except TypeError:
+            if isinstance(obj, pydantic.BaseModel):
+                # this block bypasses the else below for pyd v2 models to supress a warning
                 pass
+            else:
+                try:
+                    return pydantic_encoder(obj)
+                except TypeError:
+                    pass
 
         # See if pydantic model can be just serialized if the above couldn't be dumped
         if isinstance(obj, pydantic.BaseModel):
@@ -287,10 +297,13 @@ def msgpack_encode(obj: Any) -> Any:
     try:
         return to_jsonable_python(obj)
     except ValueError:
-        try:
-            return pydantic_encoder(obj)
-        except TypeError:
+        if isinstance(obj, pydantic.BaseModel):
             pass
+        else:
+            try:
+                return pydantic_encoder(obj)
+            except TypeError:
+                pass
 
     if isinstance(obj, np.ndarray):
         if obj.shape:
