@@ -36,6 +36,7 @@ New Features
 
 Enhancements
 ++++++++++++
+* issue 536 ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``error`` field removed. This isn't used now that ``success=True`` and failure should be routed to ``FailedOperation``.
 * Fix a lot of warnings originating in this project.
 * `Molecule.extras` now defaults to `{}` rather than None in both v1 and v2. Input None converts to {} upon instantiation.
 * ``v2.FailedOperation`` field `id` is becoming `Optional[str]` instead of plain `str` so that the default validates.

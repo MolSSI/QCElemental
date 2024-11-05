@@ -139,6 +139,7 @@ class FailedOperation(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            # TODO if FailedOp gets a schema_version, add a validator
             self_vN = qcel.models.v2.FailedOperation(**dself)
 
         return self_vN

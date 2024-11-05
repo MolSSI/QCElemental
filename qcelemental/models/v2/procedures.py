@@ -136,7 +136,6 @@ class OptimizationResult(OptimizationInput):
     success: bool = Field(
         ..., description="The success of a given programs execution. If False, other fields may be blank."
     )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("trajectory")
@@ -328,7 +327,6 @@ class TorsionDriveResult(TorsionDriveInput):
     success: bool = Field(
         ..., description="The success of a given programs execution. If False, other fields may be blank."
     )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("schema_version", mode="before")

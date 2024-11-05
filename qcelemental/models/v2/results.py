@@ -752,7 +752,6 @@ class AtomicResult(AtomicInput):
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
 
     success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("schema_name", mode="before")

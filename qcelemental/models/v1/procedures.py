@@ -173,6 +173,10 @@ class OptimizationResult(OptimizationInput):
 
         dself = self.dict()
         if version == 2:
+            # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
+            if dself.pop("error", None):
+                pass
+
             self_vN = qcel.models.v2.OptimizationResult(**dself)
 
         return self_vN
@@ -334,6 +338,10 @@ class TorsionDriveResult(TorsionDriveInput):
 
         dself = self.dict()
         if version == 2:
+            # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
+            if dself.pop("error", None):
+                pass
+
             self_vN = qcel.models.v2.TorsionDriveResult(**dself)
 
         return self_vN
