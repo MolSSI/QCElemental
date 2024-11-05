@@ -171,11 +171,14 @@ class OptimizationResult(OptimizationInput):
         if check_convertible_version(version, error="OptimizationResult") == "self":
             return self
 
+        trajectory_class = self.trajectory[0].__class__
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if dself.pop("error", None):
                 pass
+
+            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
 
             self_vN = qcel.models.v2.OptimizationResult(**dself)
 
@@ -336,11 +339,17 @@ class TorsionDriveResult(TorsionDriveInput):
         if check_convertible_version(version, error="TorsionDriveResult") == "self":
             return self
 
+        opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if dself.pop("error", None):
                 pass
+
+            dself["optimization_history"] = {
+                (k, [opthist_class(**res).convert_v(version) for res in lst])
+                for k, lst in dself["optimization_history"].items()
+            }
 
             self_vN = qcel.models.v2.TorsionDriveResult(**dself)
 
