@@ -46,10 +46,10 @@ class AtomicResultProperties(ProtoModel):
             f"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_atomicproperties."
         ),
     )
-    schema_version: Literal[2] = Field(
-        2,
-        description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
-    )
+    # TRIAL schema_version: Literal[2] = Field(
+    # TRIAL     2,
+    # TRIAL     description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
+    # TRIAL )
 
     # Calcinfo
     calcinfo_nbasis: Optional[int] = Field(None, description="The number of basis functions for the computation.")
@@ -311,9 +311,9 @@ class AtomicResultProperties(ProtoModel):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
+    # TRIAL @field_validator("schema_version", mode="before")
+    # TRIAL def _version_stamp(cls, v):
+    # TRIAL     return 2
 
     def dict(self, *args, **kwargs):
         # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
@@ -751,7 +751,9 @@ class AtomicResult(AtomicInput):
     stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
 
-    success: bool = Field(..., description="The success of program execution. If False, other fields may be blank.")
+    success: Literal[True] = Field(
+        True, description="The success of program execution. If False, other fields may be blank."
+    )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("schema_name", mode="before")
@@ -768,12 +770,6 @@ class AtomicResult(AtomicInput):
     @field_validator("schema_version", mode="before")
     def _version_stamp(cls, v):
         return 2
-
-    @field_validator("success")
-    def _must_success(cls, v):
-        if v is True:
-            return v
-        raise ValueError("Success signal must be True.")
 
     @field_validator("return_result")
     @classmethod

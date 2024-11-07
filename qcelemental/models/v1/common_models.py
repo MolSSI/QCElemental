@@ -120,7 +120,7 @@ class FailedOperation(ProtoModel):
         ":class:`ComputeError` for more details.",
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )

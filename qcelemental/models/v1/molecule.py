@@ -7,7 +7,7 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
 from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
@@ -119,7 +119,7 @@ class Molecule(ProtoModel):
             f"The QCSchema specification to which this model conforms. Explicitly fixed as {qcschema_molecule_default}."
         ),
     )
-    schema_version: int = Field(  # type: ignore
+    schema_version: Literal[2] = Field(  # type: ignore
         2,
         description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.",
     )
@@ -369,6 +369,12 @@ class Molecule(ProtoModel):
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
         elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], geometry_noise)
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
+        #   submodel version fields first.
+        return 2
 
     @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
 
 import numpy as np
 from pydantic import Field, field_validator
@@ -106,7 +106,7 @@ class FailedOperation(ProtoModel):
         description="The input data which was passed in that generated this failure. This should be the complete "
         "input which when attempted to be run, caused the operation to fail.",
     )
-    success: bool = Field(  # type: ignore
+    success: Literal[False] = Field(  # type: ignore
         False,
         description="A boolean indicator that the operation failed consistent with the model of successful operations. "
         "Should always be False. Allows programmatic assessment of all operations regardless of if they failed or "
@@ -118,20 +118,13 @@ class FailedOperation(ProtoModel):
         ":class:`ComputeError` for more details.",
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
-
-    @field_validator("success")
-    def _must_success(cls, v):
-        if v is False:
-            return v
-        else:
-            raise ValueError("Success signal must be False.")
 
     def convert_v(
         self, version: int

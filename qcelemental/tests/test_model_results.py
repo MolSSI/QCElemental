@@ -769,8 +769,8 @@ def every_model_fixture(request):
     return datas
 
 
+# fmt: off
 _model_classes_struct = [
-    # fmt: off
     # v1_class, v2_class, test ID
     pytest.param("Molecule-A",                  "Molecule-A",                   id="Mol-A"),
     pytest.param("Molecule-B",                  "Molecule-B",                   id="Mol-B"),
@@ -798,10 +798,9 @@ _model_classes_struct = [
     pytest.param("ManyBodyKeywords",            None,                           id="MBKw", marks=using_qcmb),
     pytest.param("ManyBodyProtocols",           None,                           id="MBPtcl", marks=using_qcmb),
     pytest.param("ManyBodyResult",              None,                           id="MBRes", marks=using_qcmb), 
-    pytest.param("ManyBodyResultProperties",    None,                           id="MBProp", marks=using_qcmb),
-    # TODO ManyBodyProperties
-    # fmt: on
+    pytest.param("ManyBodyResultProperties",    None,                           id="MBProp", marks=using_qcmb),  # TODO ManyBodyProperties
 ]
+# fmt: on
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -864,13 +863,139 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         data["success"] = not ans
         if "v2" in anskey:
             # v2 has enforced T/F
-            with pytest.raises((pydantic.v1.ValidationError, pydantic.ValidationError)) as e:
+            with pytest.raises(pydantic.ValidationError) as e:
                 instance = model(**data)
             assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
         else:
             # v1 can be reset to T/F
             instance = model(**data)
-            assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = {
+        # v2: In/Res + Mol/BasisSet/FailedOp, yes! Kw/Ptcl, no. Prop/Spec uncertain.
+        "v1-Mol-A"    : 2,    "v2-Mol-A"    : 2,  # TODO 3
+        "v1-Mol-B"    : 2,    "v2-Mol-B"    : 2,  # TODO 3
+        "v1-BasisSet" : 1,    "v2-BasisSet" : 2,  # TODO change for v2?
+        "v1-FailedOp" : None, "v2-FailedOp" : None,  # TODO 2
+        "v1-AtIn"     : 1,    "v2-AtIn"     : 2,
+        "v1-AtSpec"   : 1,    "v2-AtSpec"   : None,  # WAS 1,  # TODO 2
+        "v1-AtPtcl"   : None, "v2-AtPtcl"   : None,
+        "v1-AtRes"    : 1,    "v2-AtRes"    : 2,
+        "v1-AtProp"   : None, "v2-AtProp"   : None,  # WAS 2,
+        "v1-WfnProp"  : None, "v2-WfnProp"  : None,  # TODO 2
+        "v1-OptIn"    : 1,    "v2-OptIn"    : 2,
+        "v1-OptSpec"  : 1,    "v2-OptSpec"  : None,  # WAS 1,  # TODO 2
+        "v1-OptPtcl"  : None, "v2-OptPtcl"  : None,
+        "v1-OptRes"   : 1,    "v2-OptRes"   : 2,
+        "v1-OptProp"  : None, "v2-OptProp"  : None,  # WAS 2,     # v1 DNE
+        "v1-TDIn"     : 1,    "v2-TDIn"     : 2,
+        "v1-TDSpec"   : None, "v2-TDSpec"   : None,  # v1 DNE
+        "v1-TDKw"     : None, "v2-TDKw"     : None,  # TODO 2
+        "v1-TDPtcl"   : None, "v2-TDPtcl"   : None,  # v1 DNE
+        "v1-TDRes"    : 1,    "v2-TDRes"    : 2,
+        "v1-TDProp"   : None, "v2-TDProp"   : None,  # v1 DNE
+        "v1-MBIn"     : 1,    "v2-MBIn"     : 2,     # v2 DNE
+        "v1-MBSpec"   : 1,    "v2-MBSpec"   : 2,     # v2 DNE
+        "v1-MBKw"     : 1,    "v2-MBKw"     : 2,     # v2 DNE
+        "v1-MBPtcl"   : None, "v2-MBPtcl"   : None,  # v2 DNE
+        "v1-MBRes"    : 1,    "v2-MBRes"    : 2,     # v2 DNE
+        "v1-MBProp"   : 1,    "v2-MBProp"   : None,  # v2 DNE
+    }[anskey]
+    # fmt: on
+
+    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+    if "ManyBody" in smodel:
+        import qcmanybody
+
+        model = getattr(qcmanybody.models, smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+    data = every_model_fixture[smodel]
+
+    # check default version set
+    instance = model(**data)
+    fld = "schema_version"
+    if ans is None:
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+    else:
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+
+    # check version override
+    if ans is not None:
+        data["schema_version"] = 7
+        if "Molecule-B" in smodel:
+            # TODO fix mol validated pathway when upgrade Mol
+            with pytest.raises(qcel.ValidationError) as e:
+                instance = model(**data)
+        else:
+            instance = model(**data)
+            # "v1" used to be changeable, but now the version is a stamp, not a signal
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = {
+        # v2: roughly, all but Ptcl/Prop/Kw should have extras (& BasisSet)
+        "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
+        "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
+        "v1-BasisSet" : None,  "v2-BasisSet" : None,
+        "v1-FailedOp" : {},    "v2-FailedOp" : {},
+        "v1-AtIn"     : {},    "v2-AtIn"     : {},
+        "v1-AtSpec"   : {},    "v2-AtSpec"   : {},
+        "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
+        "v1-AtRes"    : {},    "v2-AtRes"    : {},
+        "v1-AtProp"   : None,  "v2-AtProp"   : None,
+        "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
+        "v1-OptIn"    : {},    "v2-OptIn"    : {},
+        "v1-OptSpec"  : None,  "v2-OptSpec"  : {},
+        "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
+        "v1-OptRes"   : {},    "v2-OptRes"   : {},
+        "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
+        "v1-TDIn"     : {},    "v2-TDIn"     : {},
+        "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
+        "v1-TDKw"     : None,  "v2-TDKw"     : None,
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
+        "v1-TDRes"    : {},    "v2-TDRes"    : {},
+        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
+        "v1-MBIn"     : {},    "v2-MBIn"     : {},    # v2 DNE
+        "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
+        "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
+        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
+        "v1-MBRes"    : {},    "v2-MBRes"    : {},    # v2 DNE
+        "v1-MBProp"   : None,  "v2-MBProp"   : None,  # v2 DNE
+    }[anskey]
+    # fmt: on
+
+    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+    if "ManyBody" in smodel:
+        import qcmanybody
+
+        model = getattr(qcmanybody.models, smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+    data = every_model_fixture[smodel]
+
+    # check default extras dict
+    instance = model(**data)
+    fld = "extras"
+    if ans is None:
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+    else:
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize(

@@ -60,7 +60,7 @@ class QCInputSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, regex=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1  # TODO
+    schema_version: Literal[1] = 1
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
@@ -70,6 +70,10 @@ class QCInputSpecification(ProtoModel):
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        return 1
 
 
 class OptimizationInput(ProtoModel):
@@ -196,11 +200,15 @@ class OptimizationSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1  # TODO
+    schema_version: Literal[1] = 1
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        return 1
 
     @validator("procedure")
     def _check_procedure(cls, v):

@@ -126,7 +126,7 @@ class Molecule(ProtoModel):
         ),
     )
     schema_version: int = Field(  # type: ignore
-        2,
+        2,  # TODO Turn to Literal[3] = Field(3)
         description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.",
     )
     validated: bool = Field(  # type: ignore
@@ -401,6 +401,12 @@ class Molecule(ProtoModel):
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
         elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], geometry_noise)
+
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
+        #   submodel version fields first.
+        return 2  # TODO 3
 
     @field_validator("geometry")
     @classmethod

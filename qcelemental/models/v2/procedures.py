@@ -59,7 +59,7 @@ class QCInputSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, pattern=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1  # TODO
+    # TRIAL schema_version: int = 1  # TODO
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
@@ -133,8 +133,8 @@ class OptimizationResult(OptimizationInput):
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    success: Literal[True] = Field(
+        True, description="The success of a given programs execution. If False, other fields may be blank."
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
@@ -165,12 +165,6 @@ class OptimizationResult(OptimizationInput):
     def _version_stamp(cls, v):
         return 2
 
-    @field_validator("success")
-    def _must_success(cls, v):
-        if v is True:
-            return v
-        raise ValueError("Success signal must be True.")
-
     def convert_v(
         self, version: int
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
@@ -200,11 +194,15 @@ class OptimizationSpecification(ProtoModel):
     schema_name: constr(
         strip_whitespace=True, pattern="qcschema_optimization_specification"
     ) = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1  # TODO
+    # TRIAL schema_version: int = 1  # TODO
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
     @field_validator("procedure")
     @classmethod
@@ -330,20 +328,14 @@ class TorsionDriveResult(TorsionDriveInput):
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    success: Literal[True] = Field(
+        True, description="The success of a given programs execution. If False, other fields may be blank."
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("schema_version", mode="before")
     def _version_stamp(cls, v):
         return 2
-
-    @field_validator("success")
-    def _must_success(cls, v):
-        if v is True:
-            return v
-        raise ValueError("Success signal must be True.")
 
     def convert_v(
         self, version: int
