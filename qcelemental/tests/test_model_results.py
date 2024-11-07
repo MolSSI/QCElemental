@@ -946,7 +946,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: roughly, all but Ptcl/Prop/Kw should have extras (& BasisSet)
+        # v2: Ptcl/Prop/Kw + BasisSet, no! others, yes.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
@@ -998,65 +998,50 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
 
-@pytest.mark.parametrize(
-    "smodel", ["molecule", "atomicresultproperties", "atomicinput", "atomicresult", "optimizationresult", "basisset"]
-)
-def test_model_dictable(result_data_fixture, optimization_data_fixture, smodel, schema_versions, request):
-    qcsk_ver = "v2" if ("v2" in request.node.name) else "v1"
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
 
-    if smodel == "molecule":
-        model = schema_versions.Molecule
-        data = result_data_fixture["molecule"].model_dump()
-        sver = (2, 2)  # TODO , 3)
+    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+    if "ManyBody" in smodel:
+        import qcmanybody
 
-    elif smodel == "atomicresultproperties":
-        model = schema_versions.AtomicResultProperties
-        data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
-        sver = (None, 2)
+        model = getattr(qcmanybody.models, smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+    data = every_model_fixture[smodel]
 
-    elif smodel == "atomicinput":
-        model = schema_versions.AtomicInput
-        data = {k: result_data_fixture[k] for k in ["molecule", "model", "driver"]}
-        sver = (1, 2)
-
-    elif smodel == "atomicresult":
-        model = schema_versions.AtomicResult
-        data = result_data_fixture
-        sver = (1, 2)
-
-    elif smodel == "optimizationresult":
-        model = schema_versions.OptimizationResult
-        data = optimization_data_fixture
-        sver = (1, 2)
-
-    elif smodel == "basisset":
-        model = schema_versions.BasisSet
-        data = {"name": "custom", "center_data": center_data, "atom_map": ["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]}
-        sver = (1, 2)
-
-    def ver_tests(qcsk_ver):
-        if qcsk_ver == "v1":
-            if sver[0] is not None:
-                assert instance.schema_version == sver[0]
-            assert isinstance(instance, pydantic.v1.BaseModel)
-        elif qcsk_ver == "v2":
-            if sver[1] is not None:
-                assert instance.schema_version == sver[1]
-            assert isinstance(instance, pydantic.BaseModel)
-
+    # check inheritance
     instance = model(**data)
-    ver_tests(qcsk_ver)
+    if "v2" in anskey:
+        assert isinstance(
+            instance, pydantic.BaseModel
+        ), f"type({instance.__class__.__name__}) = {type(instance)} ⊄ BaseModel (Pyd v2)"
+        assert isinstance(
+            instance, qcel.models.v2.basemodels.ProtoModel
+        ), f"type({instance.__class__.__name__}) = {type(instance)} ⊄ v2.ProtoModel"
+    else:
+        assert isinstance(
+            instance, pydantic.v1.BaseModel
+        ), f"type({instance.__class__.__name__}) = {type(instance)} ⊄ v1.BaseModel (Pyd v1)"
+        assert isinstance(
+            instance, qcel.models.v1.basemodels.ProtoModel
+        ), f"type({instance.__class__.__name__}) = {type(instance)} ⊄ v1.ProtoModel"
+
+    # check dict-ability
+    instance = model(**data)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         instance = model(**instance.dict())
     assert instance
-    ver_tests(qcsk_ver)
 
-    instance2 = model(**data)
-    ver_tests(qcsk_ver)
-    instance2 = model(**instance2.model_dump())
-    assert instance2
-    ver_tests(qcsk_ver)
+    # check model_dump-ability
+    instance = model(**data)
+    instance = model(**instance.model_dump())
+    assert instance
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture, request):
