@@ -769,6 +769,12 @@ class AtomicResult(AtomicInput):
     def _version_stamp(cls, v):
         return 2
 
+    @field_validator("success")
+    def _must_success(cls, v):
+        if v is True:
+            return v
+        raise ValueError("Success signal must be True.")
+
     @field_validator("return_result")
     @classmethod
     def _validate_return_result(cls, v, info):

@@ -4,8 +4,17 @@ from .basemodels import ProtoModel
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, FailedOperation, Model, Provenance
 from .molecule import Molecule
-from .procedures import OptimizationInput, OptimizationResult, TorsionDriveInput, TorsionDriveResult
-from .results import AtomicInput, AtomicResult, AtomicResultProperties, AtomicResultProtocols
+from .procedures import (
+    OptimizationInput,
+    OptimizationProtocols,
+    OptimizationResult,
+    OptimizationSpecification,
+    QCInputSpecification,
+    TDKeywords,
+    TorsionDriveInput,
+    TorsionDriveResult,
+)
+from .results import AtomicInput, AtomicResult, AtomicResultProperties, AtomicResultProtocols, WavefunctionProperties
 
 
 def qcschema_models():

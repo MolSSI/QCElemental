@@ -8,7 +8,7 @@ import pytest
 
 import qcelemental as qcel
 
-from .addons import drop_qcsk, schema_versions
+from .addons import drop_qcsk, schema_versions, using_qcmb
 
 center_data = {
     "bs_sto3g_h": {
@@ -186,6 +186,95 @@ def optimization_data_fixture(result_data_fixture):
         "success": True,
         "provenance": {"creator": "qcel"},
         "input_specification": {"model": {"method": "UFF"}},
+    }
+
+    return ret
+
+
+@pytest.fixture(scope="function")
+def ethane_data_fixture():
+    # from QCEngine stock_mols
+    return {
+        "geometry": [
+            [+1.54034068369141, -1.01730823913235, +0.93128102073425],
+            [+4.07197633001232, -0.09756825926424, -0.02203578938791],
+            [+0.00025636057017, +0.00139534039687, +0.00111211603233],
+            [+1.30983130616505, -3.03614919350581, +0.54918567185649],
+            [+1.38003941036405, -0.71812565437083, +2.97078783593882],
+            [+5.61209917480096, -1.11612498901607, +0.90799157528946],
+            [+4.30241880148479, +1.92102238874847, +0.36057345099335],
+            [+4.23222331256867, -0.39619160402976, -2.06158817835790],
+        ],
+        "symbols": ["C", "C", "H", "H", "H", "H", "H", "H"],
+        "connectivity": [[0, 1, 1], [0, 2, 1], [0, 3, 1], [0, 4, 1], [1, 5, 1], [1, 6, 1], [1, 7, 1]],
+    }
+
+
+@pytest.fixture(scope="function")
+def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture):
+    ethane = ethane_data_fixture.copy()
+    optres = optimization_data_fixture.copy()
+
+    input_data = {
+        "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
+        "input_specification": {"driver": "gradient", "model": {"method": "UFF", "basis": None}},
+        "initial_molecule": [ethane] * 2,
+        "optimization_spec": {
+            "procedure": "geomeTRIC",
+            "keywords": {
+                "coordsys": "hdlc",
+                "maxiter": 500,
+                "program": "rdkit",
+            },
+        },
+    }
+
+    ret = {
+        "success": True,
+        "provenance": {"creator": "qcel"},
+        "final_energies": {"180": -2.3, "0": -4.5},
+        "final_molecules": {"180": ethane, "0": ethane},
+        "optimization_history": {"180": [optres, optres], "0": [optres]},
+        **input_data,
+    }
+
+    return ret
+
+
+@pytest.fixture(scope="function")
+def manybody_data_fixture():
+    input_data = {
+        "molecule": {
+            "symbols": ["ne", "ne", "ne"],
+            "geometry": [[0, 0, 0], [0, 0, 2], [0, 0, 4]],
+            "fragments": [[0], [1], [2]],
+        },
+        "specification": {
+            "keywords": {
+                "bsse_type": ["nocp"],
+                "levels": {3: "(any)"},
+                "supersystem_ie_only": True,
+                "return_total_data": True,
+            },
+            "driver": "energy",
+            "specification": {
+                "(any)": {"program": "psi4", "driver": "energy", "model": {"method": "mp2", "basis": "cc-pvdz"}},
+            },
+        },
+    }
+
+    ret = {
+        "success": True,
+        "provenance": {"creator": "me"},
+        "input_data": input_data,
+        "return_result": -22,
+        "properties": {"calcinfo_nmc": 1, "return_energy": -22},
+        "component_properties": {
+            '["(any)", [1, 2, 3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -383.7231560517324},
+            '["(any)", [1], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613635},
+            '["(any)", [2], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68610979339851},
+            '["(any)", [3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613036},
+        },
     }
 
     return ret
@@ -558,6 +647,230 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.return_gradient.shape == (4, 3)
     assert obj.scf_total_hessian.shape == (12, 12)
     assert obj.model_dump().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+
+
+@pytest.fixture(scope="function")
+def every_model_fixture(request):
+    datas = {}
+
+    smodel = "Molecule-A"
+    data = request.getfixturevalue("result_data_fixture")
+    data = data["molecule"].model_dump()
+    datas[smodel] = data
+
+    smodel = "Molecule-B"
+    data = {"symbols": ["O", "H", "H"], "geometry": [0, 0, 0, 0, 0, 2, 0, 2, 0]}
+    datas[smodel] = data
+
+    smodel = "BasisSet"
+    data = {"name": "custom", "center_data": center_data, "atom_map": ["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]}
+    datas[smodel] = data
+
+    smodel = "FailedOperation"
+    data = {
+        "input_data": request.getfixturevalue("result_data_fixture"),
+        "error": {"error_type": "expected_testing_error", "error_message": "If you see this, its all good"},
+    }
+    datas[smodel] = data
+
+    smodel = "AtomicInput"
+    data = request.getfixturevalue("result_data_fixture")
+    data = {k: data[k] for k in ["molecule", "model", "driver"]}
+    datas[smodel] = data
+
+    smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
+    data = {"driver": "hessian", "model": {"basis": "def2-svp", "method": "CC"}}
+    datas[smodel] = data
+
+    smodel = "AtomicResultProtocols"  # TODO "AtomicProtocols"
+    data = {"wavefunction": "occupations_and_eigenvalues"}
+    datas[smodel] = data
+
+    smodel = "AtomicResult"
+    data = request.getfixturevalue("result_data_fixture")
+    datas[smodel] = data
+
+    smodel = "AtomicResultProperties"  # TODO "AtomicProperties"
+    data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
+    datas[smodel] = data
+
+    smodel = "WavefunctionProperties"
+    data = request.getfixturevalue("wavefunction_data_fixture")
+    data = data["wavefunction"]
+    datas[smodel] = data
+
+    smodel = "OptimizationInput"
+    data = request.getfixturevalue("optimization_data_fixture")
+    data = {k: data[k] for k in ["initial_molecule", "input_specification"]}
+    datas[smodel] = data
+
+    smodel = "OptimizationSpecification"
+    data = {"procedure": "pyberny"}
+    datas[smodel] = data
+
+    smodel = "OptimizationProtocols"
+    data = {"trajectory": "initial_and_final"}
+    datas[smodel] = data
+
+    smodel = "OptimizationResult"
+    data = request.getfixturevalue("optimization_data_fixture")
+    datas[smodel] = data
+
+    smodel = "OptimizationProperties"  # TODO actually collect
+    data = {"optimization_iterations": 14}
+    datas[smodel] = data
+
+    smodel = "TorsionDriveInput"
+    data = request.getfixturevalue("torsiondrive_data_fixture")
+    data = {k: data[k] for k in ["initial_molecule", "input_specification", "optimization_spec", "keywords"]}
+    datas[smodel] = data
+
+    # smodel = "TorsionDriveSpecification"  # DNE
+
+    smodel = "TDKeywords"  # TODO "TorsionDriveKeywords"
+    data = {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]}
+    datas[smodel] = data
+
+    # smodel = "TorsionDriveProtocols"  # DNE
+
+    smodel = "TorsionDriveResult"
+    data = request.getfixturevalue("torsiondrive_data_fixture")
+    datas[smodel] = data
+
+    # smodel = "TorsionDriveProperties"  # DNE
+
+    smodel = "ManyBodyInput"
+    data = request.getfixturevalue("manybody_data_fixture")
+    data = data["input_data"]
+    datas[smodel] = data
+
+    smodel = "ManyBodySpecification"
+    data = request.getfixturevalue("manybody_data_fixture")
+    data = data["input_data"]["specification"]
+    datas[smodel] = data
+
+    smodel = "ManyBodyKeywords"
+    data = {"bsse_type": "ssfc", "levels": {2: "md"}}
+    datas[smodel] = data
+
+    smodel = "ManyBodyProtocols"
+    data = {"component_results": "all"}
+    datas[smodel] = data
+
+    smodel = "ManyBodyResult"
+    data = request.getfixturevalue("manybody_data_fixture")
+    datas[smodel] = data
+
+    smodel = "ManyBodyResultProperties"  # "ManyBodyProperties"
+    data = request.getfixturevalue("manybody_data_fixture")
+    data = data["properties"]
+    datas[smodel] = data
+
+    return datas
+
+
+_model_classes_struct = [
+    # fmt: off
+    # v1_class, v2_class, test ID
+    pytest.param("Molecule-A",                  "Molecule-A",                   id="Mol-A"),
+    pytest.param("Molecule-B",                  "Molecule-B",                   id="Mol-B"),
+    pytest.param("BasisSet",                    "BasisSet",                     id="BasisSet"),
+    pytest.param("FailedOperation",             "FailedOperation",              id="FailedOp"),
+    pytest.param("AtomicInput",                 "AtomicInput",                  id="AtIn"),
+    pytest.param("QCInputSpecification",        "QCInputSpecification",         id="AtSpec"),  # TODO AtomicSpecification
+    pytest.param("AtomicResultProtocols",       "AtomicResultProtocols",        id="AtPtcl"),  # TODO AtomicProtocols
+    pytest.param("AtomicResult",                "AtomicResult",                 id="AtRes"),
+    pytest.param("AtomicResultProperties",      "AtomicResultProperties",       id="AtProp"),  # TODO AtomicProperties 
+    pytest.param("WavefunctionProperties",      "WavefunctionProperties",       id="WfnProp"),
+    pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"), 
+    pytest.param("OptimizationSpecification",   "OptimizationSpecification",    id="OptSpec"),
+    pytest.param("OptimizationProtocols",       "OptimizationProtocols",        id="OptPtcl"),
+    pytest.param("OptimizationResult",          "OptimizationResult",           id="OptRes"),
+    # pytest.param(None,                        "OptimizationProperties",       id="OptProp"),
+    pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"), 
+    # pytest.param(None,                        "TorsionDriveSpecification",    id="TDSpec"), 
+    pytest.param("TDKeywords",                  "TDKeywords",                   id="TDKw"),  # TODO TorsionDriveKeywords
+    # pytest.param(None,                        "TorsionDriveProtocols",        id="TDPtcl"),
+    pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
+    # pytest.param(None,                        "TorsionDriveProperties",       id="TDProp"),
+    pytest.param("ManyBodyInput",               None,                           id="MBIn", marks=using_qcmb), 
+    pytest.param("ManyBodySpecification",       None,                           id="MBSpec", marks=using_qcmb), 
+    pytest.param("ManyBodyKeywords",            None,                           id="MBKw", marks=using_qcmb),
+    pytest.param("ManyBodyProtocols",           None,                           id="MBPtcl", marks=using_qcmb),
+    pytest.param("ManyBodyResult",              None,                           id="MBRes", marks=using_qcmb), 
+    pytest.param("ManyBodyResultProperties",    None,                           id="MBProp", marks=using_qcmb),
+    # TODO ManyBodyProperties
+    # fmt: on
+]
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = {
+        "v1-Mol-A"    : None,  "v2-Mol-A"    : None,
+        "v1-Mol-B"    : None,  "v2-Mol-B"    : None,
+        "v1-BasisSet" : None,  "v2-BasisSet" : None,
+        "v1-FailedOp" : False, "v2-FailedOp" : False,
+        "v1-AtIn"     : None,  "v2-AtIn"     : None,
+        "v1-AtSpec"   : None,  "v2-AtSpec"   : None,
+        "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
+        "v1-AtRes"    : True,  "v2-AtRes"    : True,
+        "v1-AtProp"   : None,  "v2-AtProp"   : None,
+        "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
+        "v1-OptIn"    : None,  "v2-OptIn"    : None,
+        "v1-OptSpec"  : None,  "v2-OptSpec"  : None,
+        "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
+        "v1-OptRes"   : True,  "v2-OptRes"   : True,
+        "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
+        "v1-TDIn"     : None,  "v2-TDIn"     : None,
+        "v1-TDSpec"   : None,  "v2-TDSpec"   : None,  # v1 DNE
+        "v1-TDKw"     : None,  "v2-TDKw"     : None,
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
+        "v1-TDRes"    : True,  "v2-TDRes"    : True,
+        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
+        "v1-MBIn"     : None,  "v2-MBIn"     : None,  # v2 DNE
+        "v1-MBSpec"   : None,  "v2-MBSpec"   : None,  # v2 DNE
+        "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
+        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
+        "v1-MBRes"    : True,  "v2-MBRes"    : True,  # v2 DNE
+        "v1-MBProp"   : None,  "v2-MBProp"   : None,  # v2 DNE
+    }[anskey]
+    # fmt: on
+
+    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+    if "ManyBody" in smodel:
+        import qcmanybody
+
+        model = getattr(qcmanybody.models, smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+    data = every_model_fixture[smodel]
+
+    # check default success set
+    instance = model(**data)
+    fld = "success"
+    if ans is None:
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+    else:
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+
+    # check success override
+    if ans is not None:
+        data["success"] = not ans
+        if "v2" in anskey:
+            # v2 has enforced T/F
+            with pytest.raises((pydantic.v1.ValidationError, pydantic.ValidationError)) as e:
+                instance = model(**data)
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+        else:
+            # v1 can be reset to T/F
+            instance = model(**data)
+            assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize(

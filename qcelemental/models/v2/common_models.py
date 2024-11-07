@@ -2,7 +2,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple, Union
 
 import numpy as np
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from .basemodels import ProtoModel, qcschema_draft
 from .basis import BasisSet
@@ -125,6 +125,13 @@ class FailedOperation(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
+
+    @field_validator("success")
+    def _must_success(cls, v):
+        if v is False:
+            return v
+        else:
+            raise ValueError("Success signal must be False.")
 
     def convert_v(
         self, version: int

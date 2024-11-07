@@ -42,6 +42,11 @@ using_nglview = pytest.mark.skipif(
     reason="Not detecting module py3Dmol. Install package if necessary and add to envvar PYTHONPATH",
 )
 
+using_qcmb = pytest.mark.skipif(
+    which_import("qcmanybody", return_bool=True) is False,
+    reason="Not detecting module QCManyBody. Install package if necessary and add to envvar PYTHONPATH",
+)
+
 serialize_extensions = [
     "json",
     "json-ext",

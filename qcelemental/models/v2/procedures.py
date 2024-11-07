@@ -165,6 +165,12 @@ class OptimizationResult(OptimizationInput):
     def _version_stamp(cls, v):
         return 2
 
+    @field_validator("success")
+    def _must_success(cls, v):
+        if v is True:
+            return v
+        raise ValueError("Success signal must be True.")
+
     def convert_v(
         self, version: int
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
@@ -332,6 +338,12 @@ class TorsionDriveResult(TorsionDriveInput):
     @field_validator("schema_version", mode="before")
     def _version_stamp(cls, v):
         return 2
+
+    @field_validator("success")
+    def _must_success(cls, v):
+        if v is True:
+            return v
+        raise ValueError("Success signal must be True.")
 
     def convert_v(
         self, version: int
