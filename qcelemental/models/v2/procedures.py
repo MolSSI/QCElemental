@@ -111,6 +111,7 @@ class OptimizationInput(ProtoModel):
 
         dself = self.model_dump()
         if version == 1:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v1.OptimizationInput(**dself)
 
         return self_vN
@@ -176,6 +177,7 @@ class OptimizationResult(OptimizationInput):
 
         dself = self.model_dump()
         if version == 1:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v1.OptimizationResult(**dself)
 
         return self_vN

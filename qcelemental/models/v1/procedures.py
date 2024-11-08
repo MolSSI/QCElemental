@@ -114,6 +114,7 @@ class OptimizationInput(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v2.OptimizationInput(**dself)
 
         return self_vN
@@ -183,6 +184,7 @@ class OptimizationResult(OptimizationInput):
                 pass
 
             dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
+            dself["input_specification"].pop("schema_version", None)
 
             self_vN = qcel.models.v2.OptimizationResult(**dself)
 
