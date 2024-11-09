@@ -48,7 +48,7 @@ using_qcmb = pytest.mark.skipif(
     reason="Not detecting module QCManyBody. Install package if necessary and add to envvar PYTHONPATH",
 )
 
-py37_skip = pytest.mark.skipif(sys.version_info.major < 8, reason="Needs Python 3.8 features")
+py37_skip = pytest.mark.skipif(sys.version_info.minor < 8, reason="Needs Python 3.8 features")
 
 serialize_extensions = [
     "json",
