@@ -8,7 +8,7 @@ import pytest
 
 import qcelemental as qcel
 
-from .addons import drop_qcsk, schema_versions, using_qcmb
+from .addons import drop_qcsk, py37_skip, schema_versions, using_qcmb
 
 center_data = {
     "bs_sto3g_h": {
@@ -803,6 +803,7 @@ _model_classes_struct = [
 # fmt: on
 
 
+@py37_skip
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
 def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
@@ -872,6 +873,7 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
             assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
 
 
+@py37_skip
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
 def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
