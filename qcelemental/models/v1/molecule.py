@@ -7,7 +7,13 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
+
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
 
 import numpy as np
 from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator

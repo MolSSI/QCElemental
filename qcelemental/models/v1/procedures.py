@@ -299,6 +299,9 @@ class TorsionDriveInput(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            dself["input_specification"].pop("schema_version", None)
+            dself["optimization_spec"].pop("schema_version", None)
+
             self_vN = qcel.models.v2.TorsionDriveInput(**dself)
 
         return self_vN
