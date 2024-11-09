@@ -350,6 +350,9 @@ class TorsionDriveResult(TorsionDriveInput):
 
         dself = self.model_dump()
         if version == 1:
+            if dself["optimization_spec"].pop("extras", None):
+                pass
+
             self_vN = qcel.models.v1.TorsionDriveResult(**dself)
 
         return self_vN
