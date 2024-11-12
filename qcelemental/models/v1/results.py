@@ -811,6 +811,18 @@ class AtomicResult(AtomicInput):
             if dself.pop("error", None):
                 pass
 
+            input_data = {
+                k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
+            }
+            input_data["molecule"] = dself["molecule"]  # duplicate since input mol has been overwritten
+            # any input provenance has been overwritten
+            if dself["id"]:
+                input_data["id"] = dself["id"]  # in/out should likely match
+            input_data["extras"] = {
+                k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
+            }  # sep any merged extras
+            dself["input_data"] = input_data
+
             self_vN = qcel.models.v2.AtomicResult(**dself)
 
         return self_vN

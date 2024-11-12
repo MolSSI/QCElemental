@@ -175,9 +175,12 @@ class OptimizationResult(OptimizationInput):
         if check_convertible_version(version, error="OptimizationResult") == "self":
             return self
 
+        trajectory_class = self.trajectory[0].__class__
         dself = self.model_dump()
         if version == 1:
+            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
+
             self_vN = qcel.models.v1.OptimizationResult(**dself)
 
         return self_vN
@@ -297,6 +300,9 @@ class TorsionDriveInput(ProtoModel):
 
         dself = self.model_dump()
         if version == 1:
+            if dself["optimization_spec"].pop("extras", None):
+                pass
+
             self_vN = qcel.models.v1.TorsionDriveInput(**dself)
 
         return self_vN
@@ -348,10 +354,16 @@ class TorsionDriveResult(TorsionDriveInput):
         if check_convertible_version(version, error="TorsionDriveResult") == "self":
             return self
 
+        opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.model_dump()
         if version == 1:
             if dself["optimization_spec"].pop("extras", None):
                 pass
+
+            dself["optimization_history"] = {
+                k: [opthist_class(**res).convert_v(version) for res in lst]
+                for k, lst in dself["optimization_history"].items()
+            }
 
             self_vN = qcel.models.v1.TorsionDriveResult(**dself)
 

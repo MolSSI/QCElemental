@@ -93,7 +93,7 @@ center_data = {
 
 
 @pytest.fixture(scope="function")
-def result_data_fixture(schema_versions):
+def result_data_fixture(schema_versions, request):
     Molecule = schema_versions.Molecule
 
     mol = Molecule.from_data(
@@ -104,25 +104,39 @@ def result_data_fixture(schema_versions):
     """
     )
 
-    return {
-        "molecule": mol,
-        "driver": "energy",
-        "model": {"method": "UFF"},
-        "return_result": 5,
-        "success": True,
-        "properties": {},
-        "provenance": {"creator": "qcel"},
-        "stdout": "I ran.",
-    }
+    if "v2" in request.node.name:
+        return {
+            "molecule": mol,
+            "input_data": {"molecule": mol, "model": {"method": "UFF"}, "driver": "energy"},
+            "return_result": 5,
+            "success": True,
+            "properties": {},
+            "provenance": {"creator": "qcel"},
+            "stdout": "I ran.",
+        }
+    else:
+        return {
+            "molecule": mol,
+            "driver": "energy",
+            "model": {"method": "UFF"},
+            "return_result": 5,
+            "success": True,
+            "properties": {},
+            "provenance": {"creator": "qcel"},
+            "stdout": "I ran.",
+        }
 
 
 @pytest.fixture(scope="function")
-def wavefunction_data_fixture(result_data_fixture, schema_versions):
+def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
     BasisSet = schema_versions.basis.BasisSet
 
     bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
-    result_data_fixture["protocols"] = {"wavefunction": "all"}
+    if "v2" in request.node.name:
+        result_data_fixture["input_data"]["protocols"] = {"wavefunction": "all"}
+    else:
+        result_data_fixture["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
         "basis": bas,
         "restricted": True,
@@ -134,8 +148,11 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions):
 
 
 @pytest.fixture(scope="function")
-def native_data_fixture(result_data_fixture):
-    result_data_fixture["protocols"] = {"native_files": "all"}
+def native_data_fixture(result_data_fixture, request):
+    if "v2" in request.node.name:
+        result_data_fixture["input_data"]["protocols"] = {"native_files": "all"}
+    else:
+        result_data_fixture["protocols"] = {"native_files": "all"}
     result_data_fixture["native_files"] = {
         "input": """
 echo
@@ -368,7 +385,10 @@ def test_result_build(result_data_fixture, request, schema_versions):
 def test_result_build_wavefunction_delete(wavefunction_data_fixture, request, schema_versions):
     AtomicResult = schema_versions.AtomicResult
 
-    del wavefunction_data_fixture["protocols"]
+    if "v2" in request.node.name:
+        del wavefunction_data_fixture["input_data"]["protocols"]
+    else:
+        del wavefunction_data_fixture["protocols"]
     ret = AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.wavefunction is None
@@ -444,9 +464,15 @@ def test_wavefunction_protocols(
     wfn_data = wavefunction_data_fixture["wavefunction"]
 
     if protocol is None:
-        wavefunction_data_fixture.pop("protocols")
+        if "v2" in request.node.name:
+            wavefunction_data_fixture["input_data"].pop("protocols")
+        else:
+            wavefunction_data_fixture.pop("protocols")
     else:
-        wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
+        if "v2" in request.node.name:
+            wavefunction_data_fixture["input_data"]["protocols"]["wavefunction"] = protocol
+        else:
+            wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
 
     wfn_data["restricted"] = restricted
     bas = wfn_data["basis"]
@@ -486,9 +512,15 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     native_data = native_data_fixture["native_files"]
 
     if protocol is None:
-        native_data_fixture.pop("protocols")
+        if "v2" in request.node.name:
+            native_data_fixture["input_data"].pop("protocols")
+        else:
+            native_data_fixture.pop("protocols")
     else:
-        native_data_fixture["protocols"]["native_files"] = protocol
+        if "v2" in request.node.name:
+            native_data_fixture["input_data"]["protocols"]["native_files"] = protocol
+        else:
+            native_data_fixture["protocols"]["native_files"] = protocol
 
     for name in list(native_data.keys()):
         if name not in provided:
@@ -534,12 +566,16 @@ def test_error_correction_protocol(
         policy["default_policy"] = default
     if defined is not None:
         policy["policies"] = defined
-    result_data_fixture["protocols"] = {"error_correction": policy}
+    if "v2" in request.node.name:
+        result_data_fixture["input_data"]["protocols"] = {"error_correction": policy}
+    else:
+        result_data_fixture["protocols"] = {"error_correction": policy}
     res = AtomicResult(**result_data_fixture)
     drop_qcsk(res, request.node.name)
 
-    assert res.protocols.error_correction.default_policy == default_result
-    assert res.protocols.error_correction.policies == defined_result
+    base = res.input_data if "v2" in request.node.name else res
+    assert base.protocols.error_correction.default_policy == default_result
+    assert base.protocols.error_correction.policies == defined_result
 
 
 def test_error_correction_logic(schema_versions):
@@ -566,7 +602,10 @@ def test_error_correction_logic(schema_versions):
 def test_result_build_stdout_delete(result_data_fixture, request, schema_versions):
     AtomicResult = schema_versions.AtomicResult
 
-    result_data_fixture["protocols"] = {"stdout": False}
+    if "v2" in request.node.name:
+        result_data_fixture["input_data"]["protocols"] = {"stdout": False}
+    else:
+        result_data_fixture["protocols"] = {"stdout": False}
     ret = AtomicResult(**result_data_fixture)
     drop_qcsk(ret, request.node.name)
     assert ret.stdout is None
@@ -675,7 +714,10 @@ def every_model_fixture(request):
 
     smodel = "AtomicInput"
     data = request.getfixturevalue("result_data_fixture")
-    data = {k: data[k] for k in ["molecule", "model", "driver"]}
+    if "v2" in request.node.name:
+        data = data["input_data"]
+    else:
+        data = {k: data[k] for k in ["molecule", "model", "driver"]}
     datas[smodel] = data
 
     smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
@@ -1060,6 +1102,64 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     instance = model(**data)
     instance = model(**instance.model_dump())
     assert instance
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = [
+        # "v1-Mol-A"    ,  "v2-Mol-A"   ,   
+        # "v1-Mol-B"    ,  "v2-Mol-B"   ,   
+        # "v1-BasisSet" ,  "v2-BasisSet",
+        "v1-FailedOp" ,  "v2-FailedOp",
+        "v1-AtIn"     ,  "v2-AtIn"    ,
+        # "v1-AtSpec"   ,  "v2-AtSpec"  ,
+        # "v1-AtPtcl"   ,  "v2-AtPtcl"  ,
+        "v1-AtRes"    ,  "v2-AtRes"   ,
+        # "v1-AtProp"   ,  "v2-AtProp"  , 
+        # "v1-WfnProp"  ,  "v2-WfnProp" , 
+        "v1-OptIn"    ,  "v2-OptIn"   , 
+        # "v1-OptSpec"  ,  "v2-OptSpec" , 
+        # "v1-OptPtcl"  ,  "v2-OptPtcl" , 
+        "v1-OptRes"   ,  "v2-OptRes"  , 
+        # "v1-OptProp"  ,  "v2-OptProp" , 
+        "v1-TDIn"     ,  "v2-TDIn"    , 
+        # "v1-TDSpec"   ,  "v2-TDSpec"  , 
+        # "v1-TDKw"     ,  "v2-TDKw"    , 
+        # "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
+        "v1-TDRes"    ,  "v2-TDRes"   , 
+        # "v1-TDProp"   ,  "v2-TDProp"  , 
+        # "v1-MBIn"     ,  "v2-MBIn"    , 
+        # "v1-MBSpec"   ,  "v2-MBSpec"  , 
+        # "v1-MBKw"     ,  "v2-MBKw"    , 
+        # "v1-MBPtcl"   ,  "v2-MBPtcl"  , 
+        # "v1-MBRes"    .  "v2-MBRes"   , 
+        # "v1-MBProp"   ,  "v2-MBProp"  , 
+    ]
+    # fmt: on
+
+    smodel_fro = smodel2 if "v2" in anskey else smodel1
+    smodel_to = smodel1 if "v2" in anskey else smodel2
+    if smodel_fro is None or smodel_to is None:
+        pytest.skip("model not available for this schema version")
+    if anskey not in ans:
+        pytest.skip("model not yet convert_v()-able")
+    if "ManyBody" in smodel_fro:
+        import qcmanybody
+
+        # TODO
+        model = getattr(qcmanybody.models, smodel_fro.split("-")[0])
+    else:
+        model_fro = getattr(schema_versions, smodel_fro.split("-")[0])
+        models_to = qcel.models.v1 if "v2" in anskey else qcel.models.v2
+        model_to = getattr(models_to, smodel_to.split("-")[0])
+    data = every_model_fixture[smodel_fro]
+
+    # check converts and converts to expected class
+    instance_fro = model_fro(**data)
+    instance_to = instance_fro.convert_v(1 if "v2" in anskey else 2)
+    assert isinstance(instance_to, model_to), f"instance {model_fro} failed to convert to {model_to}"
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture, request):

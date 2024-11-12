@@ -359,8 +359,10 @@ class TorsionDriveResult(TorsionDriveInput):
             if dself.pop("error", None):
                 pass
 
+            dself["input_specification"].pop("schema_version", None)
+            dself["optimization_spec"].pop("schema_version", None)
             dself["optimization_history"] = {
-                (k, [opthist_class(**res).convert_v(version) for res in lst])
+                k: [opthist_class(**res).convert_v(version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
 
