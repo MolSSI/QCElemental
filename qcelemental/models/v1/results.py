@@ -797,9 +797,29 @@ class AtomicResult(AtomicInput):
         return ret
 
     def convert_v(
-        self, version: int
+        self,
+        version: int,
+        *,
+        external_input_data: Optional[Any] = None,
     ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
-        """Convert to instance of particular QCSchema version."""
+        """Convert to instance of particular QCSchema version.
+
+        Parameters
+        ----------
+        version
+            The version to convert to.
+        external_input_data
+            Since self contains data merged from input, this allows passing in the original input, particularly for `molecule` and `extras` fields.
+            Can be model or dictionary and should be *already* converted to the desired version.
+            Replaces ``input_data`` field entirely (not merges with extracts from self) and w/o consistency checking.
+
+        Returns
+        -------
+        AtomicResult
+            Returns self (not a copy) if ``version`` already satisfied.
+            Returns a new AtomicResult of ``version`` otherwise.
+
+        """
         import qcelemental as qcel
 
         if check_convertible_version(version, error="AtomicResult") == "self":
@@ -808,20 +828,27 @@ class AtomicResult(AtomicInput):
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            if dself.pop("error", None):
-                pass
+            dself.pop("error", None)
 
             input_data = {
                 k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
             }
             input_data["molecule"] = dself["molecule"]  # duplicate since input mol has been overwritten
             # any input provenance has been overwritten
-            if dself["id"]:
-                input_data["id"] = dself["id"]  # in/out should likely match
             input_data["extras"] = {
                 k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
             }  # sep any merged extras
-            dself["input_data"] = input_data
+            if external_input_data:
+                # Note: overwriting with external, not updating. reconsider?
+                dself["input_data"] = external_input_data
+                in_extras = (
+                    external_input_data.get("extras", {})
+                    if isinstance(external_input_data, dict)
+                    else external_input_data.extras
+                )
+                dself["extras"] = {k: v for k, v in dself["extras"].items() if (k, v) not in in_extras.items()}
+            else:
+                dself["input_data"] = input_data
 
             self_vN = qcel.models.v2.AtomicResult(**dself)
 

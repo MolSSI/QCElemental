@@ -931,7 +931,7 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         "v1-Mol-A"    : 2,    "v2-Mol-A"    : 2,  # TODO 3
         "v1-Mol-B"    : 2,    "v2-Mol-B"    : 2,  # TODO 3
         "v1-BasisSet" : 1,    "v2-BasisSet" : 2,  # TODO change for v2?
-        "v1-FailedOp" : None, "v2-FailedOp" : None,  # TODO 2
+        "v1-FailedOp" : None, "v2-FailedOp" : 2,
         "v1-AtIn"     : 1,    "v2-AtIn"     : 2,
         "v1-AtSpec"   : 1,    "v2-AtSpec"   : None,  # WAS 1,  # TODO 2
         "v1-AtPtcl"   : None, "v2-AtPtcl"   : None,

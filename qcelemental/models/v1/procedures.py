@@ -180,8 +180,7 @@ class OptimizationResult(OptimizationInput):
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            if dself.pop("error", None):
-                pass
+            dself.pop("error", None)
 
             dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
@@ -356,8 +355,7 @@ class TorsionDriveResult(TorsionDriveInput):
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            if dself.pop("error", None):
-                pass
+            dself.pop("error", None)
 
             dself["input_specification"].pop("schema_version", None)
             dself["optimization_spec"].pop("schema_version", None)

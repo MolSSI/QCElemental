@@ -101,6 +101,16 @@ class FailedOperation(ProtoModel):
     and containing the reason and input data which generated the failure.
     """
 
+    schema_name: Literal["qcschema_failed_operation"] = Field(
+        "qcschema_failed_operation",
+        description=(
+            f"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_failed_operation."
+        ),
+    )
+    schema_version: Literal[2] = Field(
+        2,
+        description="The version number of :attr:`~qcelemental.models.FailedOperation.schema_name` to which this model conforms.",
+    )
     id: Optional[str] = Field(  # type: ignore
         None,
         description="A unique identifier which links this FailedOperation, often of the same Id of the operation "
@@ -132,6 +142,10 @@ class FailedOperation(ProtoModel):
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
 
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2
+
     def convert_v(
         self, version: int
     ) -> Union["qcelemental.models.v1.FailedOperation", "qcelemental.models.v2.FailedOperation"]:
@@ -143,6 +157,9 @@ class FailedOperation(ProtoModel):
 
         dself = self.model_dump()
         if version == 1:
+            dself.pop("schema_name")
+            dself.pop("schema_version")
+
             self_vN = qcel.models.v1.FailedOperation(**dself)
 
         return self_vN
