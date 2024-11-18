@@ -781,7 +781,6 @@ class AtomicResult(ProtoModel):
     @field_validator("return_result")
     @classmethod
     def _validate_return_result(cls, v, info):
-        print(info)
         # Do not propagate validation errors
         if "input_data" not in info.data:
             raise ValueError("Input_data was not properly formed.")
