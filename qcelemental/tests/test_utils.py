@@ -383,7 +383,6 @@ def atomic_result_data():
         "stderr": None,
         "native_files": {},
         "success": True,
-        "error": None,
     }
     return data
 

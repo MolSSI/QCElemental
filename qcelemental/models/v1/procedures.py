@@ -66,7 +66,7 @@ class QCInputSpecification(ProtoModel):
     """
 
     schema_name: Literal["qcschema_input"] = Field(qcschema_input_default)
-    schema_version: int = 1  # TODO
+    schema_version: Literal[1] = 1
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
@@ -76,6 +76,10 @@ class QCInputSpecification(ProtoModel):
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        return 1
 
 
 class OptimizationInput(ProtoModel):
@@ -118,6 +122,7 @@ class OptimizationInput(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v2.OptimizationInput(**dself)
 
         return self_vN
@@ -181,8 +186,16 @@ class OptimizationResult(OptimizationInput):
         if check_convertible_version(version, error="OptimizationResult") == "self":
             return self
 
+        trajectory_class = self.trajectory[0].__class__
         dself = self.dict()
         if version == 2:
+            # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
+            if dself.pop("error", None):
+                pass
+
+            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
+            dself["input_specification"].pop("schema_version", None)
+
             self_vN = qcel.models.v2.OptimizationResult(**dself)
 
         return self_vN
@@ -199,11 +212,15 @@ class OptimizationSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, regex="qcschema_optimization_specification") = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1  # TODO
+    schema_version: Literal[1] = 1
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        return 1
 
     @validator("procedure")
     def _check_procedure(cls, v):
@@ -292,6 +309,9 @@ class TorsionDriveInput(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            dself["input_specification"].pop("schema_version", None)
+            dself["optimization_spec"].pop("schema_version", None)
+
             self_vN = qcel.models.v2.TorsionDriveInput(**dself)
 
         return self_vN
@@ -342,8 +362,18 @@ class TorsionDriveResult(TorsionDriveInput):
         if check_convertible_version(version, error="TorsionDriveResult") == "self":
             return self
 
+        opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.dict()
         if version == 2:
+            # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
+            if dself.pop("error", None):
+                pass
+
+            dself["optimization_history"] = {
+                (k, [opthist_class(**res).convert_v(version) for res in lst])
+                for k, lst in dself["optimization_history"].items()
+            }
+
             self_vN = qcel.models.v2.TorsionDriveResult(**dself)
 
         return self_vN

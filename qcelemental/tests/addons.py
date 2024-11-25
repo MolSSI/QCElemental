@@ -1,5 +1,6 @@
 import json
 import socket
+import sys
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -41,6 +42,13 @@ using_nglview = pytest.mark.skipif(
     which_import("nglview", return_bool=True) is False,
     reason="Not detecting module py3Dmol. Install package if necessary and add to envvar PYTHONPATH",
 )
+
+using_qcmb = pytest.mark.skipif(
+    which_import("qcmanybody", return_bool=True) is False,
+    reason="Not detecting module QCManyBody. Install package if necessary and add to envvar PYTHONPATH",
+)
+
+py37_skip = pytest.mark.skipif(sys.version_info.minor < 8, reason="Needs Python 3.8 features")
 
 serialize_extensions = [
     "json",
