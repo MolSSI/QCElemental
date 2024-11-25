@@ -107,7 +107,7 @@ def result_data_fixture(schema_versions, request):
     if "v2" in request.node.name:
         return {
             "molecule": mol,
-            "input_data": {"molecule": mol, "model": {"method": "UFF"}, "driver": "energy"},
+            "input_data": {"molecule": mol, "specification": {"model": {"method": "UFF"}, "driver": "energy"}},
             "return_result": 5,
             "success": True,
             "properties": {},
@@ -134,7 +134,7 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
     bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"wavefunction": "all"}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"wavefunction": "all"}
     else:
         result_data_fixture["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
@@ -150,7 +150,7 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
 @pytest.fixture(scope="function")
 def native_data_fixture(result_data_fixture, request):
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"native_files": "all"}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"native_files": "all"}
     else:
         result_data_fixture["protocols"] = {"native_files": "all"}
     result_data_fixture["native_files"] = {
@@ -386,7 +386,7 @@ def test_result_build_wavefunction_delete(wavefunction_data_fixture, request, sc
     AtomicResult = schema_versions.AtomicResult
 
     if "v2" in request.node.name:
-        del wavefunction_data_fixture["input_data"]["protocols"]
+        del wavefunction_data_fixture["input_data"]["specification"]["protocols"]
     else:
         del wavefunction_data_fixture["protocols"]
     ret = AtomicResult(**wavefunction_data_fixture)
@@ -465,12 +465,12 @@ def test_wavefunction_protocols(
 
     if protocol is None:
         if "v2" in request.node.name:
-            wavefunction_data_fixture["input_data"].pop("protocols")
+            wavefunction_data_fixture["input_data"]["specification"].pop("protocols")
         else:
             wavefunction_data_fixture.pop("protocols")
     else:
         if "v2" in request.node.name:
-            wavefunction_data_fixture["input_data"]["protocols"]["wavefunction"] = protocol
+            wavefunction_data_fixture["input_data"]["specification"]["protocols"]["wavefunction"] = protocol
         else:
             wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
 
@@ -513,12 +513,12 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
 
     if protocol is None:
         if "v2" in request.node.name:
-            native_data_fixture["input_data"].pop("protocols")
+            native_data_fixture["input_data"]["specification"].pop("protocols")
         else:
             native_data_fixture.pop("protocols")
     else:
         if "v2" in request.node.name:
-            native_data_fixture["input_data"]["protocols"]["native_files"] = protocol
+            native_data_fixture["input_data"]["specification"]["protocols"]["native_files"] = protocol
         else:
             native_data_fixture["protocols"]["native_files"] = protocol
 
@@ -567,13 +567,13 @@ def test_error_correction_protocol(
     if defined is not None:
         policy["policies"] = defined
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"error_correction": policy}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"error_correction": policy}
     else:
         result_data_fixture["protocols"] = {"error_correction": policy}
     res = AtomicResult(**result_data_fixture)
     drop_qcsk(res, request.node.name)
 
-    base = res.input_data if "v2" in request.node.name else res
+    base = res.input_data.specification if "v2" in request.node.name else res
     assert base.protocols.error_correction.default_policy == default_result
     assert base.protocols.error_correction.policies == defined_result
 
@@ -603,7 +603,7 @@ def test_result_build_stdout_delete(result_data_fixture, request, schema_version
     AtomicResult = schema_versions.AtomicResult
 
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"stdout": False}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"stdout": False}
     else:
         result_data_fixture["protocols"] = {"stdout": False}
     ret = AtomicResult(**result_data_fixture)
@@ -723,6 +723,8 @@ def every_model_fixture(request):
     smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
     data = {"driver": "hessian", "model": {"basis": "def2-svp", "method": "CC"}}
     datas[smodel] = data
+    smodel = "AtomicSpecification"
+    datas[smodel] = data
 
     smodel = "AtomicResultProtocols"  # TODO "AtomicProtocols"
     data = {"wavefunction": "occupations_and_eigenvalues"}
@@ -819,7 +821,7 @@ _model_classes_struct = [
     pytest.param("BasisSet",                    "BasisSet",                     id="BasisSet"),
     pytest.param("FailedOperation",             "FailedOperation",              id="FailedOp"),
     pytest.param("AtomicInput",                 "AtomicInput",                  id="AtIn"),
-    pytest.param("QCInputSpecification",        "QCInputSpecification",         id="AtSpec"),  # TODO AtomicSpecification
+    pytest.param("QCInputSpecification",        "AtomicSpecification",          id="AtSpec"),
     pytest.param("AtomicResultProtocols",       "AtomicResultProtocols",        id="AtPtcl"),  # TODO AtomicProtocols
     pytest.param("AtomicResult",                "AtomicResult",                 id="AtRes"),
     pytest.param("AtomicResultProperties",      "AtomicResultProperties",       id="AtProp"),  # TODO AtomicProperties 
@@ -1114,7 +1116,7 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
         # "v1-BasisSet" ,  "v2-BasisSet",
         "v1-FailedOp" ,  "v2-FailedOp",
         "v1-AtIn"     ,  "v2-AtIn"    ,
-        # "v1-AtSpec"   ,  "v2-AtSpec"  ,
+        "v1-AtSpec"   ,  "v2-AtSpec"  ,
         # "v1-AtPtcl"   ,  "v2-AtPtcl"  ,
         "v1-AtRes"    ,  "v2-AtRes"   ,
         # "v1-AtProp"   ,  "v2-AtProp"  , 

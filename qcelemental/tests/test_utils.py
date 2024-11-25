@@ -387,10 +387,12 @@ def atomic_result_data(request):
     if "v2" in request.node.name:
         data["input_data"] = {
             "molecule": data["molecule"],
-            "driver": data.pop("driver"),
-            "model": data.pop("model"),
-            "keywords": data.pop("keywords"),
-            "protocols": data.pop("protocols"),
+            "specification": {
+                "driver": data.pop("driver"),
+                "model": data.pop("model"),
+                "keywords": data.pop("keywords"),
+                "protocols": data.pop("protocols"),
+            },
         }
 
     return data

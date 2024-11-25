@@ -37,6 +37,7 @@ New Features
 
 Enhancements
 ++++++++++++
+- (536c) ``v2.AtomicInput`` gained a ``specification`` field where driver, model, keywords, and protocols now live. ``v2.AtomicSpecification`` and ``v1.QCInputSpecification`` (used by opt and td) learned a ``convert_v`` to interconvert.
 - (536b) ``v1.AtomicResult.convert_v`` learned a ``external_input_data`` option to inject that field (if known) rather than using incomplete reconstruction from the v1 Result. may not be the final sol'n.
 - (536b) ``v2.FailedOperation`` gained schema_name and schema_version=2.
 - (536b) ``v2.AtomicResult`` no longer inherits from ``v2.AtomicInput``. It gained a ``input_data`` field for the corresponding ``AtomicInput`` and independent ``id`` and ``molecule`` fields (the latter being equivalvent to ``v1.AtomicResult.molecule`` with the frame of the results; ``v2.AtomicResult.input_data.molecule`` is new, preserving the input frame). Gained independent ``extras``

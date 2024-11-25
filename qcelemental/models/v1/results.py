@@ -628,7 +628,15 @@ class AtomicInput(ProtoModel):
             return self
 
         dself = self.dict()
+        spec = {}
         if version == 2:
+            dself.pop("schema_name")  # changes in v2
+
+            spec["driver"] = dself.pop("driver")
+            spec["model"] = dself.pop("model")
+            spec["keywords"] = dself.pop("keywords", None)
+            spec["protocols"] = dself.pop("protocols", None)
+            dself["specification"] = spec
             self_vN = qcel.models.v2.AtomicInput(**dself)
 
         return self_vN
@@ -831,13 +839,17 @@ class AtomicResult(AtomicInput):
             dself.pop("error", None)
 
             input_data = {
-                k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
+                "specification": {
+                    k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
+                },
+                "molecule": dself["molecule"],  # duplicate since input mol has been overwritten
+                "extras": {
+                    k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
+                },  # sep any merged extras
             }
-            input_data["molecule"] = dself["molecule"]  # duplicate since input mol has been overwritten
             # any input provenance has been overwritten
-            input_data["extras"] = {
-                k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
-            }  # sep any merged extras
+            # if dself["id"]:
+            #     input_data["id"] = dself["id"]  # in/out should likely match
             if external_input_data:
                 # Note: overwriting with external, not updating. reconsider?
                 dself["input_data"] = external_input_data
