@@ -120,7 +120,7 @@ class FailedOperation(ProtoModel):
         ":class:`ComputeError` for more details.",
     )
     extras: Optional[Dict[str, Any]] = Field(  # type: ignore
-        None,
+        {},
         description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",
     )
@@ -139,6 +139,7 @@ class FailedOperation(ProtoModel):
 
         dself = self.dict()
         if version == 2:
+            # TODO if FailedOp gets a schema_version, add a validator
             self_vN = qcel.models.v2.FailedOperation(**dself)
 
         return self_vN

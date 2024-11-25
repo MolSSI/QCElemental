@@ -36,6 +36,12 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``success`` field enforced to ``True``. Previously it could be set T/F. Now validation errors if not T. Likewise ``v2.FailedOperation.success`` is enforced to ``False``.
+- (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``error`` field removed. This isn't used now that ``success=True`` and failure should be routed to ``FailedOperation``.
+- (:pr:`357`) ``v1.Molecule`` had its schema_version changed to a Literal[2] (remember Mol is one-ahead of general numbering scheme) so new instances will be 2 even if another value is passed in. Ditto ``v2.BasisSet.schema_version=2``. Ditto ``v1.BasisSet.schema_version=1`` Ditto ``v1.QCInputSpecification.schema_version=1`` and ``v1.OptimizationSpecification.schema_version=1``.
+- (:pr:`357`) ``v2.AtomicResultProperties``, ``v2.QCInputSpecification``, ``v2.OptimizationSpecification`` lost its schema_version until we see if its really needed.
+- (:pr:`357`) ``v2.OptimizationSpecification`` gained extras field
+- (:pr:`357`) ``v1.FailedOperation.extras`` and ``v2.FailedOperation.extras`` default changed from None to {}
 * Fix a lot of warnings originating in this project.
 * `Molecule.extras` now defaults to `{}` rather than None in both v1 and v2. Input None converts to {} upon instantiation.
 * ``v2.FailedOperation`` field `id` is becoming `Optional[str]` instead of plain `str` so that the default validates.

@@ -1,4 +1,4 @@
-from . import types
+from . import types  # ever used?
 from .align import AlignmentMill
 from .basemodels import AutodocBaseSettings  # remove when QCFractal merges `next`
 from .basemodels import ProtoModel
@@ -8,6 +8,7 @@ from .molecule import Molecule
 from .procedures import Optimization  # scheduled for removal
 from .procedures import (
     OptimizationInput,
+    OptimizationProtocols,
     OptimizationResult,
     OptimizationSpecification,
     QCInputSpecification,
@@ -18,7 +19,8 @@ from .procedures import (
 from .results import Result  # scheduled for removal
 from .results import ResultInput  # scheduled for removal
 from .results import ResultProperties  # scheduled for removal
-from .results import AtomicInput, AtomicResult, AtomicResultProperties, AtomicResultProtocols
+from .results import AtomicInput, AtomicResult, AtomicResultProperties, AtomicResultProtocols, WavefunctionProperties
+from .types import Array
 
 
 def qcschema_models():

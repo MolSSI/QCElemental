@@ -1,6 +1,12 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
+
 from pydantic.v1 import ConstrainedInt, Field, constr, validator
 
 from ...exceptions import ValidationError
@@ -155,7 +161,7 @@ class BasisSet(ProtoModel):
         "qcschema_basis",
         description=(f"The QCSchema specification to which this model conforms. Explicitly fixed as qcschema_basis."),
     )
-    schema_version: int = Field(  # type: ignore
+    schema_version: Literal[1] = Field(  # type: ignore
         1,
         description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` to which this model conforms.",
     )
@@ -174,6 +180,10 @@ class BasisSet(ProtoModel):
     class Config(ProtoModel.Config):
         def schema_extra(schema, model):
             schema["$schema"] = qcschema_draft
+
+    @validator("schema_version", pre=True)
+    def _version_stamp(cls, v):
+        return 1
 
     @validator("atom_map")
     def _check_atom_map(cls, v, values):

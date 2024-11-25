@@ -1,6 +1,12 @@
 from enum import Enum
 from typing import Dict, List, Optional
 
+try:
+    from typing import Literal
+except ImportError:
+    # remove when minimum py38
+    from typing_extensions import Literal
+
 from pydantic import Field, constr, field_validator
 from typing_extensions import Annotated
 
@@ -171,7 +177,7 @@ class BasisSet(ProtoModel):
         "qcschema_basis",
         description=f"The QCSchema specification to which this model conforms. Explicitly fixed as qcschema_basis.",
     )
-    schema_version: int = Field(  # type: ignore
+    schema_version: Literal[2] = Field(  # type: ignore
         2,
         description="The version number of :attr:`~qcelemental.models.BasisSet.schema_name` "
         "to which this model conforms.",
@@ -245,3 +251,7 @@ class BasisSet(ProtoModel):
             ret += center_count[center]
 
         return ret
+
+    @field_validator("schema_version", mode="before")
+    def _version_stamp(cls, v):
+        return 2

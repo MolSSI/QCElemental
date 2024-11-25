@@ -10,6 +10,6 @@ warn(
     DeprecationWarning,
 )
 
-# Array = qcelemental.models.v1.Array
+Array = qcelemental.models.v1.Array
 # ArrayMeta = qcelemental.models.v1.ArrayMeta
 # TypedArray = qcelemental.models.v1.TypedArray
