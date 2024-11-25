@@ -59,7 +59,7 @@ class QCInputSpecification(ProtoModel):
     """
 
     schema_name: constr(strip_whitespace=True, pattern=qcschema_input_default) = qcschema_input_default  # type: ignore
-    schema_version: int = 1  # TODO
+    # TRIAL schema_version: int = 1  # TODO
 
     driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
     model: Model = Field(..., description=str(Model.__doc__))
@@ -111,6 +111,7 @@ class OptimizationInput(ProtoModel):
 
         dself = self.model_dump()
         if version == 1:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v1.OptimizationInput(**dself)
 
         return self_vN
@@ -133,10 +134,9 @@ class OptimizationResult(OptimizationInput):
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    success: Literal[True] = Field(
+        True, description="The success of a given programs execution. If False, other fields may be blank."
     )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("trajectory")
@@ -177,6 +177,7 @@ class OptimizationResult(OptimizationInput):
 
         dself = self.model_dump()
         if version == 1:
+            dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v1.OptimizationResult(**dself)
 
         return self_vN
@@ -195,11 +196,15 @@ class OptimizationSpecification(ProtoModel):
     schema_name: constr(
         strip_whitespace=True, pattern="qcschema_optimization_specification"
     ) = "qcschema_optimization_specification"  # type: ignore
-    schema_version: int = 1  # TODO
+    # TRIAL schema_version: int = 1  # TODO
 
     procedure: str = Field(..., description="Optimization procedure to run the optimization with.")
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
     @field_validator("procedure")
     @classmethod
@@ -325,10 +330,9 @@ class TorsionDriveResult(TorsionDriveInput):
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
+    success: Literal[True] = Field(
+        True, description="The success of a given programs execution. If False, other fields may be blank."
     )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     @field_validator("schema_version", mode="before")
@@ -346,6 +350,9 @@ class TorsionDriveResult(TorsionDriveInput):
 
         dself = self.model_dump()
         if version == 1:
+            if dself["optimization_spec"].pop("extras", None):
+                pass
+
             self_vN = qcel.models.v1.TorsionDriveResult(**dself)
 
         return self_vN
