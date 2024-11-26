@@ -33,6 +33,7 @@ New Features
 ++++++++++++
 * Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
 * New pydantic v2 models available as ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
+- (:pr:`361`) Switch from poetry to setuptools build backend. 
 
 Enhancements
 ++++++++++++
