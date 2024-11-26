@@ -43,7 +43,7 @@ dependencies = [
 
 [project.optional-dependencies]
 viz = [
-    "nglview", 
+    "nglview",  # !py38
     "setuptools; python_version>='3.12'",  # nglview needs pkg_resources
     "ipykernel <6.0",
 ]
