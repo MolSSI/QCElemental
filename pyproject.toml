@@ -50,6 +50,8 @@ align = [
 ]
 test = [
     "pytest",
+    "pytest-cov",
+    "codecov",
 ]
 dev = [
     "pre-commit",
