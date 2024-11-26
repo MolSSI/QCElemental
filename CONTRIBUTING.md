@@ -16,21 +16,25 @@ We welcome contributions from external contributors, and this document describes
   git clone https://github.com/{YOUR-GITHUB-USERNAME}/QCElemental.git
   cd QCElemental
   ```
+<!--
 - Install [poetry](https://python-poetry.org/) if you do not have it on your system. Poetry will manage package dependencies and virtual environments for you.
   ```sh
   curl -sSL https://install.python-poetry.org | python3 -
   ```
+-->
 - Install QCElemental.
 
   ```sh
-  poetry install
+  pip install .
   ```
 
+<!--
 - Activate your new virtual environment. Many editors--like VS Code--will do this for you automatically when you open a directory that has been installed with `poetry`.
 
   ```sh
   poetry shell
   ```
+-->
 
 - Check your installation by running the tests.
 
@@ -84,12 +88,12 @@ We welcome contributions from external contributors, and this document describes
 - Build packages for distribution. Build artifacts will be in `dist/`:
 
   ```sh
-  poetry build
+  python -m build
   ```
 
 - Distribute built packages to PyPi:
   ```sh
-  poetry publish --username {pypi_username} --password {pypi_password}
+  python -m twine upload dist/*
   ```
 
 ## Additional Resources

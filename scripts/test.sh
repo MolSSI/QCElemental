@@ -1,3 +1,3 @@
 set -xe
 # Run tests
-poetry run pytest --cov-report html:htmlcov --cov
+pytest --cov-report html:htmlcov --cov

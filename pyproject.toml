@@ -1,126 +1,103 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
 
-
-[tool.poetry]
-name = "qcelemental"
-version = "0.28.0"
-description = "Core data structures for Quantum Chemistry."
-authors = ["The QCArchive Development Team <qcarchive@molssi.org>"]
-license = "BSD-3-Clause"
-readme = "README.md"
+[project.urls]
 homepage = "https://github.com/MolSSI/QCElemental"
+changelog = "https://github.com/MolSSI/QCElemental/docs/changelog.rst"
 documentation = "http://docs.qcarchive.molssi.org/projects/qcelemental/en/latest/"
+issues = "https://github.com/MolSSI/QCElemental/issues"
+
+[project]
+name = "qcelemental"
+#version = "0.28.0"
+dynamic = ["version"]
+requires-python = ">=3.8"
+description = "Core data structures for Quantum Chemistry."
+authors = [
+  { name="The QCArchive Development Team", email="qcarchive@molssi.org" },
+]
+license = { file="LICENSE" }
+readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Framework :: Pydantic",
     "Framework :: Pydantic :: 2",
 ]
+dependencies = [
+    "numpy >=1.12.0; python_version=='3.8'",
+    "numpy >=1.26.1; python_version>='3.9'",
+    "pint >=0.10; python_version=='3.8'",
+    "pint >=0.24; python_version>='3.9'",
+    "pydantic >=2.0",
+]
 
-[tool.poetry.dependencies]
-numpy = [
-    { version = ">=1.12.0", python = "3.8" },
-    { version = ">=1.26.1,<2.0", python = ">=3.9,<3.10" },
-    { version = ">=1.26.1", python = ">=3.9,<3.13" },
+[project.optional-dependencies]
+standard = [
+    "msgpack",
+    "jsonschema",
 ]
-packaging = [
-    { version = ">=24.0", python = ">=3.7,<3.8" },
-    { version = ">=24.1", python = ">=3.8" },
+viz = [
+    "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
+    "setuptools; python_version>='3.12'",  # nglview needs pkg_resources
+    "ipykernel <6.0",
 ]
-# qcel is compatible with most any numpy, v1 or v2, but numpy v2 only works with pint >=0.24, which is only available for py >=3.10
-python = "^3.7.1"
-pint = [
-    { version = ">=0.10", python = ">=3.7,<3.9" },
-    { version = ">=0.23", python = ">=3.9,<3.10" },
-    { version = ">=0.24", python = ">=3.10,<3.13" },
+align = [
+    "networkx <3.0", 
+    "scipy",
 ]
-pydantic = ">=2.0"
-nglview = { version = "^3.0.3", optional = true }
-ipykernel = { version = "<6.0.0", optional = true }
-importlib-metadata = { version = ">=4.8", python = "<3.8" }
-networkx = { version = "<3.0", optional = true }
-scipy = [
-    { version = ">=1.6.0", python = "<3.9", optional = true },
-    { version = ">=1.9.0", python = ">=3.9,<3.13", optional = true },
+test = [
+    "pytest",
+    "pytest-cov",
+    "codecov",
 ]
-pytest = { version = "^7.2.2", optional = true }
+lint = [
+    "pre-commit",
+    "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
+    "isort ==5.11.5",  # if running outside of pre-commit
+    # "mypy",
+    # "autoflake",
+    # "flake8",
+]
+docs = [  # probably >=py39
+    "numpydoc",
+    "docutils",
+    "sphinx >=7.0.0",
+    "sphinxcontrib-napoleon",
+    "sphinx-rtd-theme",
+    "autodoc-pydantic",
+    "sphinx-automodapi",
+    "sphinx-autodoc-typehints",
+    "pydantic ==2.5.0",  # for now
+    "pydantic-settings ==2.2.0",  # for now
+]
 
-[tool.poetry.extras]
-viz = ["nglview", "ipykernel"]
-align = ["networkx", "scipy"]
-test = ["pytest"]
+#[tool.poetry.dependencies]
+#packaging = ">=24.1"
+#pytest = { version = "^7.2.2", optional = true }
 
-# Note that all the versions below are a farce for poetry's benefit.
-#   One needs a fairly recent sphinx, pydantic, and autodoc-pydantic for a
-#   successful docs build, and that likely requires py 3.9."
-
-[tool.poetry.group.dev.dependencies]
-black = ">=22.1.0,<23.0a0"
-mypy = "^1.1.1"
-isort = "5.11.5"
-flake8 = [
-    { version = "<6.0.0", python = "<3.8.1" },
-    { version = "6.0.0", python = ">=3.8.1,<4.0.0" }
-]
-pre-commit = [
-    { version = "<3.2.0", python = "<3.9" },
-    { version = "^3.8.0", python = ">=3.9,<4.0.0" }
-]
-pytest-cov = "^4.0.0"
-autoflake = "^2.0.2"
-jsonschema = { version = "^4.23.0", python = ">=3.8,<4.0.0" }
-msgpack = { version = "^1.0.8", python = ">=3.8,<4.0.0" }
-numpydoc = [
-    { version = "^1.5.0", python = "<3.9" },
-    { version = "^1.8.0", python = ">=3.9,<4.0.0" }
-]
-docutils = [
-    { version = "<0.19", python = "<3.9" },
-    { version = "0.20.1", python = ">=3.9,<4.0.0" }
-]
-sphinx = [
-    { version = "<6.0.0", python = "<3.9" },
-    { version = "^7.0.0", python = ">=3.9,<4.0.0" }
-]
-sphinxcontrib-napoleon = "^0.7"
-sphinx-rtd-theme = [
-    { version = "^1.2.0", python = "<3.9" },
-    { version = "^2.0.0", python = ">=3.9,<4.0.0" }
-]
-autodoc-pydantic = [
-    { version = "^2.0.0", python = "<3.8" },
-    { version = "^2.1.0", python = ">=3.8,<4.0" }
-]
-sphinx-automodapi = [
-    { version = "^0.15.0", python = "<3.8" },
-    { version = "^0.17.0", python = ">=3.8,<4.0.0" }
-]
-sphinx-autodoc-typehints = [
-    { version = "^1.22", python = "<3.10" },
-    { version = "^2.3", python = ">=3.10,<4.0.0" }
-]
-graphviz = "^0.20.0"  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
+#[tool.poetry.group.dev.dependencies]
+#msgpack = "^1.0.8"
+#    { version = "^1.22", python = "<3.10" },
+#    { version = "^2.3", python = ">=3.10,<4.0.0" }
+#]
 
 [tool.black]
 line-length = 120
-target-version = ['py37']
+target-version = ['py38']
 
 [tool.isort]
-force_grid_wrap = 0
-include_trailing_comma = true
+profile = "black"
 line_length = 120
-multi_line_output = 3
-use_parentheses = true
 
 [tool.coverage.run]
 branch = true
@@ -135,3 +112,13 @@ init_forbid_extra = true
 init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
+
+[tool.setuptools]
+packages = ["qcelemental"]
+
+[tool.setuptools.package-data]
+
+[tool.setuptools_scm]
+
+[tool.versioningit.vcs]
+default-tag = "0.0.99" # useful for CI/shallow clones

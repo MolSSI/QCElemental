@@ -4,7 +4,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/MolSSI/QCElemental.svg?logo=Codecov&logoColor=white)](https://codecov.io/gh/MolSSI/QCElemental)
 [![Documentation Status](https://img.shields.io/github/actions/workflow/status/MolSSI/QCElemental/CI.yaml?label=docs&logo=readthedocs&logoColor=white)](https://molssi.github.io/QCElemental/)
 [![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM)
-![python](https://img.shields.io/badge/python-3.7+-blue.svg)
+![python](https://img.shields.io/badge/python-3.8+-blue.svg)
 
 **Documentation:** [GitHub Pages](https://molssi.github.io/QCElemental/)
 
@@ -16,7 +16,7 @@ This project also contains a generator, validator, and translator for [Molecule 
 
 ## ✨ Getting Started
 
-- Installation. QCElemental supports Python 3.7+. We reserve the right to move to Python 3.9+ at no notice for new releases.
+- Installation. QCElemental supports Python 3.8+. We reserve the right to move to Python 3.9+ at no notice for new releases.
 
   ```sh
   python -m pip install qcelemental
