@@ -56,7 +56,7 @@ test = [
     "pytest-cov",
     "codecov",
 ]
-dev = [
+lint = [
     "pre-commit",
     "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
     "isort",  # if running outside of pre-commit
