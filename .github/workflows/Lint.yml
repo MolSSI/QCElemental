@@ -10,11 +10,11 @@ jobs:
   black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.7"
+          python-version: "3.8"
       - name: Install black
         run: pip install "black>=22.1.0,<23.0a0"
       - name: Check code formatting with black
@@ -23,26 +23,24 @@ jobs:
   isort:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.7"
-      - name: Install poetry
-        run: pip install poetry
+          python-version: "3.8"
       - name: Install repo
-        run: poetry install --no-interaction --no-ansi
+        run: pip install '.[lint]'
       - name: Check import formatting with isort
-        run: poetry run isort --check-only --diff .
+        run: isort --check-only --diff .
 # TODO: Support flake8 when the repo is ready :)
 # flake8:
 #   runs-on: ubuntu-latest
 #   steps:
-#     - uses: actions/checkout@v3
+#     - uses: actions/checkout@v4
 #     - name: Set up Python
 #       uses: actions/setup-python@v4
 #       with:
-#         python-version: "3.7"
+#         python-version: "3.8"
 #     - name: Install flake8
 #       run: pip install flake8
 #     - name: Flake8
@@ -52,7 +50,7 @@ jobs:
 # mypy:
 #   runs-on: ubuntu-latest
 #   steps:
-#     - uses: actions/checkout@v3
+#     - uses: actions/checkout@v4
 #     - name: Set up Python
 #       uses: actions/setup-python@v4
 #       with:
