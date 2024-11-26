@@ -1,11 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
-
-try:
-    from typing import Literal
-except ImportError:
-    # remove when minimum py38
-    from typing_extensions import Literal
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
 from pydantic.v1 import Field, conlist, constr, validator
 

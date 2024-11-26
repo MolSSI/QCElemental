@@ -898,13 +898,9 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
     instance = model(**data)
     fld = "success"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
     # check success override
     if ans is not None:
@@ -913,15 +909,11 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
             # v2 has enforced T/F
             with pytest.raises(pydantic.ValidationError) as e:
                 instance = model(**data)
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == ans, f"[b] field {fld} = {cptd} != {ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
         else:
             # v1 can be reset to T/F
             instance = model(**data)
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -976,13 +968,9 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     instance = model(**data)
     fld = "schema_version"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
     # check version override
     if ans is not None:
@@ -994,9 +982,7 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         else:
             instance = model(**data)
             # "v1" used to be changeable, but now the version is a stamp, not a signal
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == ans, f"[b] field {fld} = {cptd} != {ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -1051,13 +1037,9 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     instance = model(**data)
     fld = "extras"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
