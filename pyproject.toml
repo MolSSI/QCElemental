@@ -59,7 +59,7 @@ test = [
 lint = [
     "pre-commit",
     "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
-    "isort",  # if running outside of pre-commit
+    "isort ==5.11.5",  # if running outside of pre-commit
 ]
 docs = [  # probably >=py39
     "numpydoc",
@@ -90,8 +90,11 @@ docs = [  # probably >=py39
 #]
 
 [tool.black]
-profile = "black"
 line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
 target-version = ['py38']
 
 [tool.coverage.run]
