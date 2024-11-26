@@ -42,6 +42,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+standard = [
+    "msgpack",
+    "jsonschema",
+]
 viz = [
     "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
     "setuptools; python_version>='3.12'",  # nglview needs pkg_resources
@@ -60,6 +64,9 @@ lint = [
     "pre-commit",
     "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
     "isort ==5.11.5",  # if running outside of pre-commit
+    # "mypy",
+    # "autoflake",
+    # "flake8",
 ]
 docs = [  # probably >=py39
     "numpydoc",
@@ -79,11 +86,6 @@ docs = [  # probably >=py39
 #pytest = { version = "^7.2.2", optional = true }
 
 #[tool.poetry.group.dev.dependencies]
-#mypy = "^1.1.1"
-#flake8 = "6.0.0"
-#pytest-cov = "^4.0.0"
-#autoflake = "^2.0.2"
-#jsonschema = "^4.23.0"
 #msgpack = "^1.0.8"
 #    { version = "^1.22", python = "<3.10" },
 #    { version = "^2.3", python = ">=3.10,<4.0.0" }
@@ -91,11 +93,11 @@ docs = [  # probably >=py39
 
 [tool.black]
 line-length = 120
+target-version = ['py38']
 
 [tool.isort]
 profile = "black"
 line_length = 120
-target-version = ['py38']
 
 [tool.coverage.run]
 branch = true
