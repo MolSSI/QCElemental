@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         pydantic-version: ["2"]
         runs-on: [ubuntu-latest, windows-latest]
     name: "🐍 ${{ matrix.python-version }} • ${{ matrix.pydantic-version }} • ${{ matrix.runs-on }}"
@@ -30,16 +30,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Install poetry
-        run: pip install poetry
       - name: Install repo with poetry (full deps)
         if: matrix.python-version != '3.9'
-        run: poetry install --no-interaction --no-ansi --all-extras
+        run: pip install '.[test,viz,align]'
       - name: Install repo with poetry (min deps)
         if: matrix.python-version == '3.9'
-        run: poetry install --no-interaction --no-ansi --extras test
+        run: pip install '.[test]'
       - name: Run tests
-        run: poetry run pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
+        run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3 # NEEDS UPDATE TO v3 https://github.com/codecov/codecov-action
       - name: QCSchema Examples Deploy
