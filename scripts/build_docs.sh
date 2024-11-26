@@ -1,3 +1,3 @@
 set -xe
 # Run tests
-poetry run sphinx-build docs/ build/docs
+sphinx-build docs/ build/docs
