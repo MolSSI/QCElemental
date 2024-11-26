@@ -43,7 +43,7 @@ dependencies = [
 
 [project.optional-dependencies]
 viz = [
-    "nglview",  # !py38
+    "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
     "setuptools; python_version>='3.12'",  # nglview needs pkg_resources
     "ipykernel <6.0",
 ]
@@ -61,7 +61,7 @@ dev = [
     "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
     "isort",  # if running outside of pre-commit
 ]
-docs = [
+docs = [  # probably >=py39
     "numpydoc",
     "docutils",
     "sphinx >=7.0.0",
@@ -70,7 +70,6 @@ docs = [
     "autodoc-pydantic",
     "sphinx-automodapi",
     "sphinx-autodoc-typehints",
-    "python >=3.9",
     "pydantic ==2.5.0",  # for now
     "pydantic-settings ==2.2.0",  # for now
 ]
@@ -89,7 +88,6 @@ docs = [
 #    { version = "^1.22", python = "<3.10" },
 #    { version = "^2.3", python = ">=3.10,<4.0.0" }
 #]
-#graphviz = "^0.20.0"  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
 
 [tool.black]
 profile = "black"
@@ -100,26 +98,22 @@ target-version = ['py38']
 branch = true
 omit = ["*/tests/*", "*/migrations/*", "*site-packages*", "*__init__.py"]
 
-#[tool.mypy]
-#plugins = "pydantic.mypy"
-#ignore_missing_imports = true
-#
-#[tool.pydantic-mypy]
-#init_forbid_extra = true
-#init_typed = true
-#warn_required_dynamic_aliases = true
-#warn_untyped_fields = true
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
 
 [tool.setuptools]
 packages = ["qcelemental"]
 
-# QCMayBody
-
 [tool.setuptools.package-data]
 
-
 [tool.setuptools_scm]
-
 
 [tool.versioningit.vcs]
 default-tag = "0.0.99" # useful for CI/shallow clones
