@@ -178,7 +178,7 @@ class OptimizationResult(OptimizationInput):
         dself = self.model_dump()
         if version == 1:
             trajectory_class = self.trajectory[0].__class__
-            
+
             dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
 
@@ -355,9 +355,10 @@ class TorsionDriveResult(TorsionDriveInput):
         if check_convertible_version(version, error="TorsionDriveResult") == "self":
             return self
 
-        opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.model_dump()
         if version == 1:
+            opthist_class = next(iter(self.optimization_history.values()))[0].__class__
+
             if dself["optimization_spec"].pop("extras", None):
                 pass
 
