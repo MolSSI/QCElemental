@@ -175,9 +175,10 @@ class OptimizationResult(OptimizationInput):
         if check_convertible_version(version, error="OptimizationResult") == "self":
             return self
 
-        trajectory_class = self.trajectory[0].__class__
         dself = self.model_dump()
         if version == 1:
+            trajectory_class = self.trajectory[0].__class__
+            
             dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
 

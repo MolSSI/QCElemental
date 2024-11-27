@@ -1108,7 +1108,7 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
 def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
-    ans = [
+    ans = {
         # "v1-Mol-A"    ,  "v2-Mol-A"   ,   
         # "v1-Mol-B"    ,  "v2-Mol-B"   ,   
         # "v1-BasisSet" ,  "v2-BasisSet",
@@ -1136,7 +1136,7 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
         # "v1-MBPtcl"   ,  "v2-MBPtcl"  , 
         # "v1-MBRes"    .  "v2-MBRes"   , 
         # "v1-MBProp"   ,  "v2-MBProp"  , 
-    ]
+    }
     # fmt: on
 
     smodel_fro = smodel2 if "v2" in anskey else smodel1
