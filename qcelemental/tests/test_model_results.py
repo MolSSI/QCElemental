@@ -990,29 +990,29 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: Ptcl/Prop/Kw + BasisSet, no! others, yes.
+        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others, yes. In is questionable.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
         "v1-FailedOp" : {},    "v2-FailedOp" : {},
-        "v1-AtIn"     : {},    "v2-AtIn"     : {},
+        "v1-AtIn"     : {},    "v2-AtIn"     : None,
         "v1-AtSpec"   : {},    "v2-AtSpec"   : {},
         "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
         "v1-AtRes"    : {},    "v2-AtRes"    : {},
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
-        "v1-OptIn"    : {},    "v2-OptIn"    : {},
+        "v1-OptIn"    : {},    "v2-OptIn"    : {},  # TODO None
         "v1-OptSpec"  : None,  "v2-OptSpec"  : {},
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
         "v1-OptRes"   : {},    "v2-OptRes"   : {},
         "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
-        "v1-TDIn"     : {},    "v2-TDIn"     : {},
+        "v1-TDIn"     : {},    "v2-TDIn"     : {},  # TODO None
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
         "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
         "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
-        "v1-MBIn"     : {},    "v2-MBIn"     : {},    # v2 DNE
+        "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
         "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
         "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
@@ -1213,3 +1213,25 @@ def test_return_result_types(result_data_fixture, retres, atprop, rettyp, jsntyp
         if atprop:
             assert isinstance(jatres["properties"][atprop], jsntyp)
         assert isinstance(jatres["return_result"], jsntyp)
+
+
+@pytest.mark.parametrize("smodel", ["AtomicResult", "OptimizationResult", "TorsionDriveResult"])
+def test_error_field_passthrough_v1(request, schema_versions, every_model_fixture, smodel):
+    if "v2" in request.node.name:
+        pytest.skip("test not appropriate for v2")
+
+    model = getattr(qcel.models.v1, smodel)
+    data = every_model_fixture[smodel]
+    instance = model(**data)
+    assert instance.success is True
+
+    data["error"] = {"error_type": "expected_testing_error", "error_message": "miscellaneous error"}
+    instance2 = model(**data)
+    assert instance2.error
+    with pytest.raises(pydantic.ValidationError):
+        instance2.convert_v(2)  # a filled error field can't be converted to v2
+
+    data["error"] = None
+    instance3 = model(**data)
+    assert not instance3.error
+    instance3.convert_v(2)  # empty error filtered correctly by converter

@@ -721,11 +721,6 @@ class AtomicInput(ProtoModel):
         ..., description="Additional fields specifying how to run the single-point computation."
     )
 
-    extras: Dict[str, Any] = Field(
-        {},
-        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
-    )
-
     provenance: Provenance = Field(
         default_factory=partial(provenance_stamp, __name__),
         description=str(Provenance.__doc__),
@@ -748,21 +743,21 @@ class AtomicInput(ProtoModel):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicInput") == "self":
+        if check_convertible_version(target_version, error="AtomicInput") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             dself["driver"] = dself["specification"].pop("driver")
             dself["model"] = dself["specification"].pop("model")
             dself["keywords"] = dself["specification"].pop("keywords", None)
             dself["protocols"] = dself["specification"].pop("protocols", None)
-            dself["extras"] = {**dself["specification"].pop("extras", {}), **dself["extras"]}
+            dself["extras"] = dself["specification"].pop("extras", {})
             dself["specification"].pop("program", None)  # TODO store?
             assert not dself["specification"], dself["specification"]
             dself.pop("specification")  # now empty
@@ -959,16 +954,16 @@ class AtomicResult(ProtoModel):
         return ret
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicResult") == "self":
+        if check_convertible_version(target_version, error="AtomicResult") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
             input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True

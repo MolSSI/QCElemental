@@ -613,23 +613,24 @@ class AtomicInput(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicInput") == "self":
+        if check_convertible_version(target_version, error="AtomicInput") == "self":
             return self
 
         dself = self.dict()
         spec = {}
-        if version == 2:
+        if target_version == 2:
             dself.pop("schema_name")  # changes in v2
 
             spec["driver"] = dself.pop("driver")
             spec["model"] = dself.pop("model")
             spec["keywords"] = dself.pop("keywords", None)
             spec["protocols"] = dself.pop("protocols", None)
+            spec["extras"] = dself.pop("extras", None)
             dself["specification"] = spec
             self_vN = qcel.models.v2.AtomicInput(**dself)
 
@@ -800,7 +801,8 @@ class AtomicResult(AtomicInput):
 
     def convert_v(
         self,
-        version: int,
+        target_version: int,
+        /,
         *,
         external_input_data: Optional[Any] = None,
     ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
@@ -808,51 +810,57 @@ class AtomicResult(AtomicInput):
 
         Parameters
         ----------
-        version
+        target_version
             The version to convert to.
         external_input_data
             Since self contains data merged from input, this allows passing in the original input, particularly for `molecule` and `extras` fields.
-            Can be model or dictionary and should be *already* converted to the desired version.
+            Can be model or dictionary and should be *already* converted to target_version.
             Replaces ``input_data`` field entirely (not merges with extracts from self) and w/o consistency checking.
 
         Returns
         -------
         AtomicResult
-            Returns self (not a copy) if ``version`` already satisfied.
-            Returns a new AtomicResult of ``version`` otherwise.
+            Returns self (not a copy) if ``target_version`` already satisfied.
+            Returns a new AtomicResult of ``target_version`` otherwise.
 
         """
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicResult") == "self":
+        if check_convertible_version(target_version, error="AtomicResult") == "self":
             return self
 
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            dself.pop("error", None)
+            if not dself.get("error", True):
+                dself.pop("error")
 
             input_data = {
                 "specification": {
                     k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
                 },
                 "molecule": dself["molecule"],  # duplicate since input mol has been overwritten
-                "extras": {
-                    k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
-                },  # sep any merged extras
             }
+            in_extras = {
+                k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
+            }  # sep any merged extras known to belong to input
+            input_data["specification"]["extras"] = in_extras
+
             # any input provenance has been overwritten
             # if dself["id"]:
             #     input_data["id"] = dself["id"]  # in/out should likely match
+
             if external_input_data:
                 # Note: overwriting with external, not updating. reconsider?
-                dself["input_data"] = external_input_data
-                in_extras = (
-                    external_input_data.get("extras", {})
-                    if isinstance(external_input_data, dict)
-                    else external_input_data.extras
-                )
+                if isinstance(external_input_data, dict):
+                    if isinstance(external_input_data["specification"], dict):
+                        in_extras = external_input_data["specification"].get("extras", {})
+                    else:
+                        in_extras = external_input_data["specification"].extras
+                else:
+                    in_extras = external_input_data.specification.extras
                 dself["extras"] = {k: v for k, v in dself["extras"].items() if (k, v) not in in_extras.items()}
+                dself["input_data"] = external_input_data
             else:
                 dself["input_data"] = input_data
 
