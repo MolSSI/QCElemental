@@ -313,7 +313,7 @@ def test_serialization(obj, encoding):
 
 
 @pytest.fixture
-def atomic_result_data():
+def atomic_result_data(request):
     """Mock AtomicResult output which can be tested against for complex serialization methods"""
 
     data = {
@@ -384,6 +384,15 @@ def atomic_result_data():
         "native_files": {},
         "success": True,
     }
+    if "v2" in request.node.name:
+        data["input_data"] = {
+            "molecule": data["molecule"],
+            "driver": data.pop("driver"),
+            "model": data.pop("model"),
+            "keywords": data.pop("keywords"),
+            "protocols": data.pop("protocols"),
+        }
+
     return data
 
 

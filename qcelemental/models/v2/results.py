@@ -723,7 +723,7 @@ class AtomicInput(ProtoModel):
         return self_vN
 
 
-class AtomicResult(AtomicInput):
+class AtomicResult(ProtoModel):
     r"""Results from a CMS program execution."""
 
     schema_name: constr(strip_whitespace=True, pattern=r"^(qc\_?schema_output)$") = Field(  # type: ignore
@@ -736,6 +736,9 @@ class AtomicResult(AtomicInput):
         2,
         description="The version number of :attr:`~qcelemental.models.AtomicResult.schema_name` to which this model conforms.",
     )
+    id: Optional[str] = Field(None, description="The optional ID for the computation.")
+    input_data: AtomicInput = Field(..., description=str(AtomicInput.__doc__))
+    molecule: Molecule = Field(..., description="The molecule with frame and orientation of the results.")
     properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
@@ -755,6 +758,10 @@ class AtomicResult(AtomicInput):
         True, description="The success of program execution. If False, other fields may be blank."
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
     @field_validator("schema_name", mode="before")
     @classmethod
@@ -774,12 +781,16 @@ class AtomicResult(AtomicInput):
     @field_validator("return_result")
     @classmethod
     def _validate_return_result(cls, v, info):
-        if info.data["driver"] == "energy":
+        # Do not propagate validation errors
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
+        driver = info.data["input_data"].driver
+        if driver == "energy":
             if isinstance(v, np.ndarray) and v.size == 1:
                 v = v.item(0)
-        elif info.data["driver"] == "gradient":
+        elif driver == "gradient":
             v = np.asarray(v).reshape(-1, 3)
-        elif info.data["driver"] == "hessian":
+        elif driver == "hessian":
             v = np.asarray(v)
             nsq = int(v.size**0.5)
             v.shape = (nsq, nsq)
@@ -800,8 +811,8 @@ class AtomicResult(AtomicInput):
             raise ValueError("wavefunction must be None, a dict, or a WavefunctionProperties object.")
 
         # Do not propagate validation errors
-        if "protocols" not in info.data:
-            raise ValueError("Protocols was not properly formed.")
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
 
         # Handle restricted
         restricted = wfn.get("restricted", None)
@@ -814,7 +825,7 @@ class AtomicResult(AtomicInput):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = info.data["protocols"].wavefunction
+        wfnp = info.data["input_data"].protocols.wavefunction
         return_keep = None
         if wfnp == "all":
             pass
@@ -861,10 +872,10 @@ class AtomicResult(AtomicInput):
     @classmethod
     def _stdout_protocol(cls, value, info):
         # Do not propagate validation errors
-        if "protocols" not in info.data:
-            raise ValueError("Protocols was not properly formed.")
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
 
-        outp = info.data["protocols"].stdout
+        outp = info.data["input_data"].protocols.stdout
         if outp is True:
             return value
         elif outp is False:
@@ -875,7 +886,11 @@ class AtomicResult(AtomicInput):
     @field_validator("native_files")
     @classmethod
     def _native_file_protocol(cls, value, info):
-        ancp = info.data["protocols"].native_files
+        # Do not propagate validation errors
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
+
+        ancp = info.data["input_data"].protocols.native_files
         if ancp == "all":
             return value
         elif ancp == "none":
@@ -905,6 +920,12 @@ class AtomicResult(AtomicInput):
 
         dself = self.model_dump()
         if version == 1:
+            # input_data = self.input_data.convert_v(1)  # TODO probably later
+            input_data = dself.pop("input_data")
+            input_data.pop("molecule", None)  # discard
+            input_data.pop("provenance", None)  # discard
+            dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
+            dself = {**input_data, **dself}
             self_vN = qcel.models.v1.AtomicResult(**dself)
 
         return self_vN
