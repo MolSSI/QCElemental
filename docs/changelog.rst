@@ -37,10 +37,14 @@ New Features
 
 Enhancements
 ++++++++++++
-- (536b) ``v1.AtomicResult.convert_v`` learned a ``external_input_data`` option to inject that field (if known) rather than using incomplete reconstruction from the v1 Result. may not be the final sol'n.
-- (536b) ``v2.FailedOperation`` gained schema_name and schema_version=2.
-- (536b) ``v2.AtomicResult`` no longer inherits from ``v2.AtomicInput``. It gained a ``input_data`` field for the corresponding ``AtomicInput`` and independent ``id`` and ``molecule`` fields (the latter being equivalvent to ``v1.AtomicResult.molecule`` with the frame of the results; ``v2.AtomicResult.input_data.molecule`` is new, preserving the input frame). Gained independent ``extras``
-- (536b) Both v1/v2 ``AtomicResult.convert_v()`` learned to handle the new ``input_data`` layout.
+- (:pr:`359`) ``v2.AtomicInput`` lost extras so extras belong unambiguously to the specification.
+- (:pr:`359`) ``v2.AtomicSpecification``, unlike ``v1.QCInputSpecification``, doesn't have schema_name and schema version.
+- (:pr:`359`) misc -- ``isort`` version bumped to 5.13 and imports and syntax take advantage of python 3.8+
+- (:pr:`359`) ``v2.AtomicInput`` gained a ``specification`` field where driver, model, keywords, extras, and protocols now live. ``v2.AtomicSpecification`` and ``v1.QCInputSpecification`` (used by opt and td) learned a ``convert_v`` to interconvert.
+- (:pr:`358`) ``v1.AtomicResult.convert_v`` learned a ``external_input_data`` option to inject that field (if known) rather than using incomplete reconstruction from the v1 Result. may not be the final sol'n.
+- (:pr:`358`) ``v2.FailedOperation`` gained schema_name and schema_version=2.
+- (:pr:`358`) ``v2.AtomicResult`` no longer inherits from ``v2.AtomicInput``. It gained a ``input_data`` field for the corresponding ``AtomicInput`` and independent ``id`` and ``molecule`` fields (the latter being equivalvent to ``v1.AtomicResult.molecule`` with the frame of the results; ``v2.AtomicResult.input_data.molecule`` is new, preserving the input frame). Gained independent ``extras``
+- (:pr:`358`) Both v1/v2 ``AtomicResult.convert_v()`` learned to handle the new ``input_data`` layout.
 - (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``success`` field enforced to ``True``. Previously it could be set T/F. Now validation errors if not T. Likewise ``v2.FailedOperation.success`` is enforced to ``False``.
 - (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``error`` field removed. This isn't used now that ``success=True`` and failure should be routed to ``FailedOperation``.
 - (:pr:`357`) ``v1.Molecule`` had its schema_version changed to a Literal[2] (remember Mol is one-ahead of general numbering scheme) so new instances will be 2 even if another value is passed in. Ditto ``v2.BasisSet.schema_version=2``. Ditto ``v1.BasisSet.schema_version=1`` Ditto ``v1.QCInputSpecification.schema_version=1`` and ``v1.OptimizationSpecification.schema_version=1``.

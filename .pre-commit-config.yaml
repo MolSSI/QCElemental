@@ -14,10 +14,8 @@ repos:
       - id: detect-secrets
         stages: [commit]
         exclude: "raw_data/nist_data/"
-  # TODO: Update to 5.12.x once we drop Python3.7 support
-  # https://levelup.gitconnected.com/fix-runtimeerror-poetry-isort-5db7c67b60ff
   - repo: https://github.com/PyCQA/isort
-    rev: 5.11.5
+    rev: 5.13.2
     hooks:
       - id: isort
   - repo: https://github.com/psf/black

@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install QCElemental (full deps)
         if: matrix.python-version != '3.8' && matrix.python-version != '3.10'
         run: pip install '.[test,viz,align,standard]'
@@ -39,9 +39,9 @@ jobs:
       - name: Run tests
         run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3 # NEEDS UPDATE TO v3 https://github.com/codecov/codecov-action
+        uses: codecov/codecov-action@v5
       - name: QCSchema Examples Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@v4
         #if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
         if: false
         with:
@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         name: Set up Python
         with:
@@ -67,7 +67,7 @@ jobs:
       - name: Build Documentation
         run: sphinx-build docs/ build/docs
       - name: GitHub Pages Deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@v4
         if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
         with:
           branch: gh-pages
