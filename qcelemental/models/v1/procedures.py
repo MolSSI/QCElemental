@@ -1,11 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Union
-
-try:
-    from typing import Literal
-except ImportError:
-    # remove when minimum py38
-    from typing_extensions import Literal
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
 try:
     from typing import Literal
@@ -80,6 +74,24 @@ class QCInputSpecification(ProtoModel):
     @validator("schema_version", pre=True)
     def _version_stamp(cls, v):
         return 1
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="QCInputSpecification") == "self":
+            return self
+
+        dself = self.dict()
+        if version == 2:
+            dself.pop("schema_name")
+            dself.pop("schema_version")
+
+            self_vN = qcel.models.v2.AtomicSpecification(**dself)
+
+        return self_vN
 
 
 class OptimizationInput(ProtoModel):
@@ -190,7 +202,8 @@ class OptimizationResult(OptimizationInput):
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            dself.pop("error", None)
+            if not dself.get("error", True):
+                dself.pop("error")
 
             dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
@@ -307,6 +320,7 @@ class TorsionDriveInput(ProtoModel):
             return self
 
         dself = self.dict()
+        # dself = self.model_dump(exclude_unset=True, exclude_none=True)
         if version == 2:
             dself["input_specification"].pop("schema_version", None)
             dself["optimization_spec"].pop("schema_version", None)
@@ -365,7 +379,8 @@ class TorsionDriveResult(TorsionDriveInput):
         dself = self.dict()
         if version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
-            dself.pop("error", None)
+            if not dself.get("error", True):
+                dself.pop("error")
 
             dself["input_specification"].pop("schema_version", None)
             dself["optimization_spec"].pop("schema_version", None)
@@ -373,6 +388,8 @@ class TorsionDriveResult(TorsionDriveInput):
                 k: [opthist_class(**res).convert_v(version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
+            # if dself["optimization_spec"].pop("extras", None):
+            #    pass
 
             self_vN = qcel.models.v2.TorsionDriveResult(**dself)
 

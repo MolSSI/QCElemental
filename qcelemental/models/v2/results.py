@@ -1,12 +1,6 @@
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Optional, Set, Union
-
-try:
-    from typing import Literal
-except ImportError:
-    # remove when minimum py38
-    from typing_extensions import Literal
+from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 
 import numpy as np
 from pydantic import Field, constr, field_validator
@@ -653,6 +647,52 @@ class AtomicResultProtocols(ProtoModel):
     model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
+class AtomicSpecification(ProtoModel):
+    """Specification for a single point QC calculation"""
+
+    # schema_name: Literal["qcschema_atomicspecification"] = "qcschema_atomicspecification"
+    # schema_version: Literal[2] = Field(
+    #     2,
+    #     description="The version number of ``schema_name`` to which this model conforms.",
+    # )
+    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    program: str = Field(
+        "", description="The program for which the Specification is intended."
+    )  # TODO interaction with cmdline
+    driver: DriverEnum = Field(..., description=DriverEnum.__doc__)
+    model: Model = Field(..., description=Model.__doc__)
+    protocols: AtomicResultProtocols = Field(
+        AtomicResultProtocols(),
+        description=AtomicResultProtocols.__doc__,
+    )
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
+
+    def convert_v(
+        self, version: int
+    ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(version, error="AtomicSpecification") == "self":
+            return self
+
+        loss_store = {}
+        dself = self.model_dump()
+        if version == 1:
+            loss_store["protocols"] = dself.pop("protocols")
+            loss_store["program"] = dself.pop("program")
+
+            if loss_store:
+                dself["extras"]["_qcsk_conversion_loss"] = loss_store
+
+            self_vN = qcel.models.v1.QCInputSpecification(**dself)
+
+        return self_vN
+
+
 ### Primary models
 
 
@@ -664,7 +704,7 @@ class AtomicInput(ProtoModel):
     r"""The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
-    schema_name: constr(strip_whitespace=True, pattern=r"^(qc\_?schema_input)$") = Field(  # type: ignore
+    schema_name: Literal["qcschema_input"] = Field(
         qcschema_input_default,
         description=(
             f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
@@ -672,18 +712,13 @@ class AtomicInput(ProtoModel):
     )
     schema_version: Literal[2] = Field(
         2,
-        description="The version number of :attr:`~qcelemental.models.AtomicInput.schema_name` to which this model conforms.",
+        description="The version number of ``schema_name`` to which this model conforms.",
     )
 
     molecule: Molecule = Field(..., description="The molecule to use in the computation.")
-    driver: DriverEnum = Field(..., description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program-specific keywords to be used.")
-    protocols: AtomicResultProtocols = Field(AtomicResultProtocols(), description=str(AtomicResultProtocols.__doc__))
 
-    extras: Dict[str, Any] = Field(
-        {},
-        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    specification: AtomicSpecification = Field(
+        ..., description="Additional fields specifying how to run the single-point computation."
     )
 
     provenance: Provenance = Field(
@@ -696,8 +731,8 @@ class AtomicInput(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         return [
-            ("driver", self.driver.value),
-            ("model", self.model.model_dump()),
+            ("driver", self.specification.driver.value),
+            ("model", self.specification.model.model_dump()),
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
@@ -708,16 +743,25 @@ class AtomicInput(ProtoModel):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicInput") == "self":
+        if check_convertible_version(target_version, error="AtomicInput") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
+            dself["driver"] = dself["specification"].pop("driver")
+            dself["model"] = dself["specification"].pop("model")
+            dself["keywords"] = dself["specification"].pop("keywords", None)
+            dself["protocols"] = dself["specification"].pop("protocols", None)
+            dself["extras"] = dself["specification"].pop("extras", {})
+            dself["specification"].pop("program", None)  # TODO store?
+            assert not dself["specification"], dself["specification"]
+            dself.pop("specification")  # now empty
+
             self_vN = qcel.models.v1.AtomicInput(**dself)
 
         return self_vN
@@ -784,7 +828,7 @@ class AtomicResult(ProtoModel):
         # Do not propagate validation errors
         if "input_data" not in info.data:
             raise ValueError("Input_data was not properly formed.")
-        driver = info.data["input_data"].driver
+        driver = info.data["input_data"].specification.driver
         if driver == "energy":
             if isinstance(v, np.ndarray) and v.size == 1:
                 v = v.item(0)
@@ -825,7 +869,7 @@ class AtomicResult(ProtoModel):
                     wfn.pop(k)
 
         # Handle protocols
-        wfnp = info.data["input_data"].protocols.wavefunction
+        wfnp = info.data["input_data"].specification.protocols.wavefunction
         return_keep = None
         if wfnp == "all":
             pass
@@ -875,7 +919,7 @@ class AtomicResult(ProtoModel):
         if "input_data" not in info.data:
             raise ValueError("Input_data was not properly formed.")
 
-        outp = info.data["input_data"].protocols.stdout
+        outp = info.data["input_data"].specification.protocols.stdout
         if outp is True:
             return value
         elif outp is False:
@@ -890,7 +934,7 @@ class AtomicResult(ProtoModel):
         if "input_data" not in info.data:
             raise ValueError("Input_data was not properly formed.")
 
-        ancp = info.data["input_data"].protocols.native_files
+        ancp = info.data["input_data"].specification.protocols.native_files
         if ancp == "all":
             return value
         elif ancp == "none":
@@ -910,22 +954,24 @@ class AtomicResult(ProtoModel):
         return ret
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicResult") == "self":
+        if check_convertible_version(target_version, error="AtomicResult") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
-            # input_data = self.input_data.convert_v(1)  # TODO probably later
-            input_data = dself.pop("input_data")
+        if target_version == 1:
+            # for input_data, work from model, not dict, to use convert_v
+            dself.pop("input_data")
+            input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
             input_data.pop("molecule", None)  # discard
             input_data.pop("provenance", None)  # discard
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
             dself = {**input_data, **dself}
+
             self_vN = qcel.models.v1.AtomicResult(**dself)
 
         return self_vN

@@ -107,7 +107,7 @@ def result_data_fixture(schema_versions, request):
     if "v2" in request.node.name:
         return {
             "molecule": mol,
-            "input_data": {"molecule": mol, "model": {"method": "UFF"}, "driver": "energy"},
+            "input_data": {"molecule": mol, "specification": {"model": {"method": "UFF"}, "driver": "energy"}},
             "return_result": 5,
             "success": True,
             "properties": {},
@@ -134,7 +134,7 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
     bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"wavefunction": "all"}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"wavefunction": "all"}
     else:
         result_data_fixture["protocols"] = {"wavefunction": "all"}
     result_data_fixture["wavefunction"] = {
@@ -150,7 +150,7 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
 @pytest.fixture(scope="function")
 def native_data_fixture(result_data_fixture, request):
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"native_files": "all"}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"native_files": "all"}
     else:
         result_data_fixture["protocols"] = {"native_files": "all"}
     result_data_fixture["native_files"] = {
@@ -386,7 +386,7 @@ def test_result_build_wavefunction_delete(wavefunction_data_fixture, request, sc
     AtomicResult = schema_versions.AtomicResult
 
     if "v2" in request.node.name:
-        del wavefunction_data_fixture["input_data"]["protocols"]
+        del wavefunction_data_fixture["input_data"]["specification"]["protocols"]
     else:
         del wavefunction_data_fixture["protocols"]
     ret = AtomicResult(**wavefunction_data_fixture)
@@ -465,12 +465,12 @@ def test_wavefunction_protocols(
 
     if protocol is None:
         if "v2" in request.node.name:
-            wavefunction_data_fixture["input_data"].pop("protocols")
+            wavefunction_data_fixture["input_data"]["specification"].pop("protocols")
         else:
             wavefunction_data_fixture.pop("protocols")
     else:
         if "v2" in request.node.name:
-            wavefunction_data_fixture["input_data"]["protocols"]["wavefunction"] = protocol
+            wavefunction_data_fixture["input_data"]["specification"]["protocols"]["wavefunction"] = protocol
         else:
             wavefunction_data_fixture["protocols"]["wavefunction"] = protocol
 
@@ -513,12 +513,12 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
 
     if protocol is None:
         if "v2" in request.node.name:
-            native_data_fixture["input_data"].pop("protocols")
+            native_data_fixture["input_data"]["specification"].pop("protocols")
         else:
             native_data_fixture.pop("protocols")
     else:
         if "v2" in request.node.name:
-            native_data_fixture["input_data"]["protocols"]["native_files"] = protocol
+            native_data_fixture["input_data"]["specification"]["protocols"]["native_files"] = protocol
         else:
             native_data_fixture["protocols"]["native_files"] = protocol
 
@@ -567,13 +567,13 @@ def test_error_correction_protocol(
     if defined is not None:
         policy["policies"] = defined
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"error_correction": policy}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"error_correction": policy}
     else:
         result_data_fixture["protocols"] = {"error_correction": policy}
     res = AtomicResult(**result_data_fixture)
     drop_qcsk(res, request.node.name)
 
-    base = res.input_data if "v2" in request.node.name else res
+    base = res.input_data.specification if "v2" in request.node.name else res
     assert base.protocols.error_correction.default_policy == default_result
     assert base.protocols.error_correction.policies == defined_result
 
@@ -603,7 +603,7 @@ def test_result_build_stdout_delete(result_data_fixture, request, schema_version
     AtomicResult = schema_versions.AtomicResult
 
     if "v2" in request.node.name:
-        result_data_fixture["input_data"]["protocols"] = {"stdout": False}
+        result_data_fixture["input_data"]["specification"]["protocols"] = {"stdout": False}
     else:
         result_data_fixture["protocols"] = {"stdout": False}
     ret = AtomicResult(**result_data_fixture)
@@ -723,6 +723,8 @@ def every_model_fixture(request):
     smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
     data = {"driver": "hessian", "model": {"basis": "def2-svp", "method": "CC"}}
     datas[smodel] = data
+    smodel = "AtomicSpecification"
+    datas[smodel] = data
 
     smodel = "AtomicResultProtocols"  # TODO "AtomicProtocols"
     data = {"wavefunction": "occupations_and_eigenvalues"}
@@ -819,7 +821,7 @@ _model_classes_struct = [
     pytest.param("BasisSet",                    "BasisSet",                     id="BasisSet"),
     pytest.param("FailedOperation",             "FailedOperation",              id="FailedOp"),
     pytest.param("AtomicInput",                 "AtomicInput",                  id="AtIn"),
-    pytest.param("QCInputSpecification",        "QCInputSpecification",         id="AtSpec"),  # TODO AtomicSpecification
+    pytest.param("QCInputSpecification",        "AtomicSpecification",          id="AtSpec"),
     pytest.param("AtomicResultProtocols",       "AtomicResultProtocols",        id="AtPtcl"),  # TODO AtomicProtocols
     pytest.param("AtomicResult",                "AtomicResult",                 id="AtRes"),
     pytest.param("AtomicResultProperties",      "AtomicResultProperties",       id="AtProp"),  # TODO AtomicProperties 
@@ -896,13 +898,9 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
     instance = model(**data)
     fld = "success"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
     # check success override
     if ans is not None:
@@ -911,15 +909,11 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
             # v2 has enforced T/F
             with pytest.raises(pydantic.ValidationError) as e:
                 instance = model(**data)
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == ans, f"[b] field {fld} = {cptd} != {ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
         else:
             # v1 can be reset to T/F
             instance = model(**data)
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -974,13 +968,9 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     instance = model(**data)
     fld = "schema_version"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
     # check version override
     if ans is not None:
@@ -992,9 +982,7 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         else:
             instance = model(**data)
             # "v1" used to be changeable, but now the version is a stamp, not a signal
-            cptd = getattr(instance, fld, "not found!")
-            assert cptd == ans, f"[b] field {fld} = {cptd} != {ans}"
-            # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -1002,29 +990,29 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: Ptcl/Prop/Kw + BasisSet, no! others, yes.
+        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others, yes. In is questionable.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
         "v1-FailedOp" : {},    "v2-FailedOp" : {},
-        "v1-AtIn"     : {},    "v2-AtIn"     : {},
+        "v1-AtIn"     : {},    "v2-AtIn"     : None,
         "v1-AtSpec"   : {},    "v2-AtSpec"   : {},
         "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
         "v1-AtRes"    : {},    "v2-AtRes"    : {},
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
-        "v1-OptIn"    : {},    "v2-OptIn"    : {},
+        "v1-OptIn"    : {},    "v2-OptIn"    : {},  # TODO None
         "v1-OptSpec"  : None,  "v2-OptSpec"  : {},
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
         "v1-OptRes"   : {},    "v2-OptRes"   : {},
         "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
-        "v1-TDIn"     : {},    "v2-TDIn"     : {},
+        "v1-TDIn"     : {},    "v2-TDIn"     : {},  # TODO None
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
         "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
         "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
-        "v1-MBIn"     : {},    "v2-MBIn"     : {},    # v2 DNE
+        "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
         "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
         "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
@@ -1049,13 +1037,9 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     instance = model(**data)
     fld = "extras"
     if ans is None:
-        cptd = getattr(instance, fieldsattr)
-        assert fld not in cptd, f"[a] field {fld} unexpectedly present: {cptd}"
-        # py38: assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
-        cptd = getattr(instance, fld, "not found!")
-        assert cptd == ans, f"[a] field {fld} = {cptd} != {ans}"
-        # py38: assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -1114,7 +1098,7 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
         # "v1-BasisSet" ,  "v2-BasisSet",
         "v1-FailedOp" ,  "v2-FailedOp",
         "v1-AtIn"     ,  "v2-AtIn"    ,
-        # "v1-AtSpec"   ,  "v2-AtSpec"  ,
+        "v1-AtSpec"   ,  "v2-AtSpec"  ,
         # "v1-AtPtcl"   ,  "v2-AtPtcl"  ,
         "v1-AtRes"    ,  "v2-AtRes"   ,
         # "v1-AtProp"   ,  "v2-AtProp"  , 
@@ -1229,3 +1213,25 @@ def test_return_result_types(result_data_fixture, retres, atprop, rettyp, jsntyp
         if atprop:
             assert isinstance(jatres["properties"][atprop], jsntyp)
         assert isinstance(jatres["return_result"], jsntyp)
+
+
+@pytest.mark.parametrize("smodel", ["AtomicResult", "OptimizationResult", "TorsionDriveResult"])
+def test_error_field_passthrough_v1(request, schema_versions, every_model_fixture, smodel):
+    if "v2" in request.node.name:
+        pytest.skip("test not appropriate for v2")
+
+    model = getattr(qcel.models.v1, smodel)
+    data = every_model_fixture[smodel]
+    instance = model(**data)
+    assert instance.success is True
+
+    data["error"] = {"error_type": "expected_testing_error", "error_message": "miscellaneous error"}
+    instance2 = model(**data)
+    assert instance2.error
+    with pytest.raises(pydantic.ValidationError):
+        instance2.convert_v(2)  # a filled error field can't be converted to v2
+
+    data["error"] = None
+    instance3 = model(**data)
+    assert not instance3.error
+    instance3.convert_v(2)  # empty error filtered correctly by converter

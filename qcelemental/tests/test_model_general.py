@@ -57,9 +57,17 @@ def test_repr_failed_op(schema_versions):
 def test_repr_result(request, schema_versions):
     AtomicInput = schema_versions.AtomicInput
 
-    result = AtomicInput(
-        **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
-    )
+    if "v2" in request.node.name:
+        result = AtomicInput(
+            **{
+                "specification": {"driver": "gradient", "model": {"method": "UFF"}},
+                "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+            }
+        )
+    else:
+        result = AtomicInput(
+            **{"driver": "gradient", "model": {"method": "UFF"}, "molecule": {"symbols": ["He"], "geometry": [0, 0, 0]}}
+        )
     drop_qcsk(result, request.node.name)
     assert "molecule_hash" in str(result)
     assert "molecule_hash" in repr(result)

@@ -14,7 +14,14 @@ from .procedures import (
     TorsionDriveInput,
     TorsionDriveResult,
 )
-from .results import AtomicInput, AtomicResult, AtomicResultProperties, AtomicResultProtocols, WavefunctionProperties
+from .results import (
+    AtomicInput,
+    AtomicResult,
+    AtomicResultProperties,
+    AtomicResultProtocols,
+    AtomicSpecification,
+    WavefunctionProperties,
+)
 
 
 def qcschema_models():
