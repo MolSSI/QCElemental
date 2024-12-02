@@ -70,20 +70,22 @@ class QCInputSpecification(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="QCInputSpecification") == "self":
+        if check_convertible_version(target_version, error="QCInputSpecification") == "self":
             return self
 
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
             self_vN = qcel.models.v2.AtomicSpecification(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -116,18 +118,20 @@ class OptimizationInput(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationInput", "qcelemental.models.v2.OptimizationInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationInput") == "self":
+        if check_convertible_version(target_version, error="OptimizationInput") == "self":
             return self
 
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v2.OptimizationInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -180,25 +184,27 @@ class OptimizationResult(OptimizationInput):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationResult") == "self":
+        if check_convertible_version(target_version, error="OptimizationResult") == "self":
             return self
 
         trajectory_class = self.trajectory[0].__class__
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
                 dself.pop("error")
 
-            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
+            dself["trajectory"] = [trajectory_class(**atres).convert_v(target_version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
 
             self_vN = qcel.models.v2.OptimizationResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -301,21 +307,23 @@ class TorsionDriveInput(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveInput", "qcelemental.models.v2.TorsionDriveInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveInput") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveInput") == "self":
             return self
 
         dself = self.dict()
         # dself = self.model_dump(exclude_unset=True, exclude_none=True)
-        if version == 2:
+        if target_version == 2:
             dself["input_specification"].pop("schema_version", None)
             dself["optimization_spec"].pop("schema_version", None)
 
             self_vN = qcel.models.v2.TorsionDriveInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -357,17 +365,17 @@ class TorsionDriveResult(TorsionDriveInput):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveResult", "qcelemental.models.v2.TorsionDriveResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveResult") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveResult") == "self":
             return self
 
         opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
                 dself.pop("error")
@@ -375,13 +383,15 @@ class TorsionDriveResult(TorsionDriveInput):
             dself["input_specification"].pop("schema_version", None)
             dself["optimization_spec"].pop("schema_version", None)
             dself["optimization_history"] = {
-                k: [opthist_class(**res).convert_v(version) for res in lst]
+                k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
             # if dself["optimization_spec"].pop("extras", None):
             #    pass
 
             self_vN = qcel.models.v2.TorsionDriveResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 

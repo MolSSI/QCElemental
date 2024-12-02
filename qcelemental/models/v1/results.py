@@ -622,10 +622,10 @@ class AtomicInput(ProtoModel):
             return self
 
         dself = self.dict()
-        spec = {}
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
 
+            spec = {}
             spec["driver"] = dself.pop("driver")
             spec["model"] = dself.pop("model")
             spec["keywords"] = dself.pop("keywords", None)
@@ -633,6 +633,8 @@ class AtomicInput(ProtoModel):
             spec["extras"] = dself.pop("extras", None)
             dself["specification"] = spec
             self_vN = qcel.models.v2.AtomicInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -865,6 +867,8 @@ class AtomicResult(AtomicInput):
                 dself["input_data"] = input_data
 
             self_vN = qcel.models.v2.AtomicResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 

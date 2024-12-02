@@ -141,20 +141,22 @@ class FailedOperation(ProtoModel):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.FailedOperation", "qcelemental.models.v2.FailedOperation"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="FailedOperation") == "self":
+        if check_convertible_version(target_version, error="FailedOperation") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
             self_vN = qcel.models.v1.FailedOperation(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 

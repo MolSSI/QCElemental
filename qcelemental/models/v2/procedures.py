@@ -95,18 +95,20 @@ class OptimizationInput(ProtoModel):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationInput", "qcelemental.models.v2.OptimizationInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationInput") == "self":
+        if check_convertible_version(target_version, error="OptimizationInput") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             dself["input_specification"].pop("schema_version", None)
             self_vN = qcel.models.v1.OptimizationInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -161,22 +163,24 @@ class OptimizationResult(OptimizationInput):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationResult") == "self":
+        if check_convertible_version(target_version, error="OptimizationResult") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             trajectory_class = self.trajectory[0].__class__
 
-            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
+            dself["trajectory"] = [trajectory_class(**atres).convert_v(target_version) for atres in dself["trajectory"]]
             dself["input_specification"].pop("schema_version", None)
 
             self_vN = qcel.models.v1.OptimizationResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -285,20 +289,22 @@ class TorsionDriveInput(ProtoModel):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveInput", "qcelemental.models.v2.TorsionDriveInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveInput") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveInput") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             if dself["optimization_spec"].pop("extras", None):
                 pass
 
             self_vN = qcel.models.v1.TorsionDriveInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -341,26 +347,28 @@ class TorsionDriveResult(TorsionDriveInput):
         return 2
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveResult", "qcelemental.models.v2.TorsionDriveResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveResult") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveResult") == "self":
             return self
 
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             opthist_class = next(iter(self.optimization_history.values()))[0].__class__
 
             if dself["optimization_spec"].pop("extras", None):
                 pass
 
             dself["optimization_history"] = {
-                k: [opthist_class(**res).convert_v(version) for res in lst]
+                k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
 
             self_vN = qcel.models.v1.TorsionDriveResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN

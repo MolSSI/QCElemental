@@ -671,17 +671,17 @@ class AtomicSpecification(ProtoModel):
     )
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicSpecification") == "self":
+        if check_convertible_version(target_version, error="AtomicSpecification") == "self":
             return self
 
         loss_store = {}
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
             loss_store["protocols"] = dself.pop("protocols")
             loss_store["program"] = dself.pop("program")
 
@@ -689,6 +689,8 @@ class AtomicSpecification(ProtoModel):
                 dself["extras"]["_qcsk_conversion_loss"] = loss_store
 
             self_vN = qcel.models.v1.QCInputSpecification(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -763,6 +765,8 @@ class AtomicInput(ProtoModel):
             dself.pop("specification")  # now empty
 
             self_vN = qcel.models.v1.AtomicInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -973,5 +977,7 @@ class AtomicResult(ProtoModel):
             dself = {**input_data, **dself}
 
             self_vN = qcel.models.v1.AtomicResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
