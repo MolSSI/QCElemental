@@ -63,7 +63,7 @@ test = [
 lint = [
     "pre-commit",
     "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
-    "isort ==5.11.5",  # if running outside of pre-commit
+    "isort >=5.13.2",  # if running outside of pre-commit
     # "mypy",
     # "autoflake",
     # "flake8",
