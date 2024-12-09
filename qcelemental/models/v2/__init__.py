@@ -6,6 +6,7 @@ from .common_models import ComputeError, DriverEnum, FailedOperation, Model, Pro
 from .molecule import Molecule
 from .procedures import (
     OptimizationInput,
+    OptimizationProperties,
     OptimizationProtocols,
     OptimizationResult,
     OptimizationSpecification,

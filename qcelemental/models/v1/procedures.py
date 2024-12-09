@@ -128,7 +128,19 @@ class OptimizationInput(ProtoModel):
 
         dself = self.dict()
         if target_version == 2:
-            dself["input_specification"].pop("schema_version", None)
+            dself.pop("hash_index", None)  # no longer used, so dropped in v2
+
+            spec = {}
+            spec["extras"] = dself.pop("extras")
+            spec["protocols"] = dself.pop("protocols")
+            spec["specification"] = self.input_specification.convert_v(target_version).model_dump()
+            dself.pop("input_specification")
+            spec["specification"]["program"] = dself["keywords"].pop(
+                "program", ""
+            )  # "" is when there's an implcit program, like nwchemopt
+            spec["keywords"] = dself.pop("keywords")
+            dself["specification"] = spec
+
             self_vN = qcel.models.v2.OptimizationInput(**dself)
         else:
             assert False, target_version
@@ -184,9 +196,30 @@ class OptimizationResult(OptimizationInput):
         return 1
 
     def convert_v(
-        self, target_version: int, /
+        self,
+        target_version: int,
+        /,
+        *,
+        external_input_data: Optional[Union[Dict[str, Any], "OptimizationInput"]] = None,
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
-        """Convert to instance of particular QCSchema version."""
+        """Convert to instance of particular QCSchema version.
+
+        Parameters
+        ----------
+        target_version
+            The version to convert to.
+        external_input_data
+            Since self contains data merged from input, this allows passing in the original input, particularly for `extras` fields.
+            Can be model or dictionary and should be *already* converted to target_version.
+            Replaces ``input_data`` field entirely (not merges with extracts from self) and w/o consistency checking.
+
+        Returns
+        -------
+        OptimizationResult
+            Returns self (not a copy) if ``target_version`` already satisfied.
+            Returns a new OptimizationResult of ``target_version`` otherwise.
+
+        """
         import qcelemental as qcel
 
         if check_convertible_version(target_version, error="OptimizationResult") == "self":
@@ -199,8 +232,58 @@ class OptimizationResult(OptimizationInput):
             if not dself.get("error", True):
                 dself.pop("error")
 
-            dself["trajectory"] = [trajectory_class(**atres).convert_v(target_version) for atres in dself["trajectory"]]
-            dself["input_specification"].pop("schema_version", None)
+            dself.pop("hash_index", None)  # no longer used, so dropped in v2
+
+            v1_input_data = {
+                k: dself.pop(k)
+                for k in list(dself.keys())
+                if k in ["initial_molecule", "protocols", "keywords", "input_specification"]
+            }
+            # sep any merged extras known to belong to input
+            v1_input_data["extras"] = {k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []}
+            v2_input_data = qcel.models.v1.OptimizationInput(**v1_input_data).convert_v(target_version)
+
+            # any input provenance has been overwritten
+            # if dself["id"]:
+            #     input_data["id"] = dself["id"]  # in/out should likely match
+
+            if external_input_data:
+                # Note: overwriting with external, not updating. reconsider?
+                if isinstance(external_input_data, dict):
+                    if isinstance(external_input_data["specification"], dict):
+                        in_extras = external_input_data["specification"].get("extras", {})
+                    else:
+                        in_extras = external_input_data["specification"].extras
+                else:
+                    in_extras = external_input_data.specification.extras
+                    optsubptcl = external_input_data.specification.specification.protocols
+                dself["extras"] = {k: v for k, v in dself["extras"].items() if (k, v) not in in_extras.items()}
+                dself["input_data"] = external_input_data
+            else:
+                dself["input_data"] = v2_input_data
+                optsubptcl = None
+
+            dself["properties"] = {
+                "return_energy": dself["energies"][-1],
+                "optimization_iterations": len(dself["energies"]),
+            }
+            if dself.get("trajectory", []):
+                if (
+                    last_grad := dself["trajectory"][-1].get("properties", {}).get("return_gradient", None)
+                ) is not None:
+                    dself["properties"]["return_gradient"] = last_grad
+            if len(dself.get("trajectory", [])) == len(dself["energies"]):
+                dself["trajectory_properties"] = [
+                    res["properties"] for res in dself["trajectory"]
+                ]  # TODO filter to key keys
+            dself["trajectory_properties"] = [{"return_energy": ene} for ene in dself["energies"]]
+            dself.pop("energies")
+
+            dself["trajectory_results"] = [
+                trajectory_class(**atres).convert_v(target_version, external_protocols=optsubptcl)
+                for atres in dself["trajectory"]
+            ]
+            dself.pop("trajectory")
 
             self_vN = qcel.models.v2.OptimizationResult(**dself)
         else:
@@ -233,6 +316,9 @@ class OptimizationSpecification(ProtoModel):
     @validator("procedure")
     def _check_procedure(cls, v):
         return v.lower()
+
+    # NOTE: def convert_v() is missing deliberately. Because the v1 schema has a minor and different role only for
+    #   TorsionDrive, it doesn't have nearly enough info to create a v2 schema.
 
 
 class TDKeywords(ProtoModel):

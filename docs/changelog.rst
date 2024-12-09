@@ -37,6 +37,26 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`363`) 
+- (:pr:`363`) 
+- (:pr:`363`) 
+- (:pr:`363`) allow nwchemdriver w/o driver=energy. provenance now nwchemdriver not nwchemrelax
+- (:pr:`363`) ``v2.AtomicResult.convert_v()`` learned external_protocols option to inject that field if known from OptIn
+- (:pr:`363`) Optking now fills in ``v2.OptimizationResult.stdout``. Through v2, once can alter gradient protocols in an optimization.
+- (:pr:`363`) OptimizationSpecification learned a ``convert_v`` function to interconvert.
+- (:pr:`363`) all the v2 models of ptcl/kw/spec/in/prop/res type have ``schema_name``.  ``qcschema_input`` and ``qcschema_output`` now are ``qcschema_atomic_input`` and ``qcschema_atomic_output``
+- (:pr:`363`) whereas ``v1.AtomicInput`` and ``v1.QCInputSpecification`` shared the same schema_name, ``v2.AtomicInput`` and ``v2.AtomicSpecification`` do not. This is a step towards more explicit schema names.
+- (:pr:`363`) ``v2.AtomicResult`` gets a literal schema_name and it no longer accepts the qc_schema*
+- (:pr:`363`) ``v2.OptimizatonResult.energies`` becomes ``v2.OptimizationResult.trajectory_properties`` and ManyBody allowed as well as atomic. Much expands information returned
+- (:pr:`363`) ``v2.OptimizatonResult.trajectory`` becomes ``v2.OptimizationResult.trajectory_results`` and ManyBody allowed as well as atomic.
+- (:pr:`363`) a new basic ``v2.OptimizationProperties`` for expansion later. for now has number of opt iter. help by `OptimizationResult.properties`
+- (:pr:`363`) ``v2.OptimizationResult`` gained a ``input_data`` field for the corresponding ``OptimizationInput`` and independent ``id`` and ``extras``. No longer inherits from ``OptimizationInput``.
+                 Literal schema_name. Added ``native_files`` field.
+- (:pr:`363`) ``v2.OptimizationInput`` got a Literal schema_name now. field ``specification`` now takes an ``OptimizationSpecification`` that itself takes an ``AtomicSpecification`` replaces field ``input_specification`` that took a ``QCInputSpecification``. ``v2.OptimizationInput`` gained a ``protocols`` field.
+              fields ``keywords``, ``extras``, and ``protocols`` from Input are now in ``OptimizationSpecification``
+- (:pr:`363`) ``v2.OptimizationSpecification`` now is used every optimization as ``v2.OptimizationInput.specification`` = ``OptimizationSpecification`` rather than only in torsion drives. No longer has schema_name and schema_version.
+              Its. ``procedures`` field is now ``program``. Gains new field ``specification`` that is most commonly ``AtomicSpecification`` but could be ``ManyBodySpecification`` or any other E/G/H producer.
+- (:pr:`363`) ``v2.OptimizationInput`` now takes consolidated ``AtomicSpecification`` rather than ``QCInputSpecification`` (now deleted)
 - (:pr:`359`) ``v2.AtomicInput`` lost extras so extras belong unambiguously to the specification.
 - (:pr:`359`) ``v2.AtomicSpecification``, unlike ``v1.QCInputSpecification``, doesn't have schema_name and schema version.
 - (:pr:`359`) misc -- ``isort`` version bumped to 5.13 and imports and syntax take advantage of python 3.8+

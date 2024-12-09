@@ -170,10 +170,6 @@ def check_convertible_version(ver: int, error: str):
         raise ValueError(f"QCSchema {error} version={version} does not exist for conversion.")
 
 
-qcschema_input_default = "qcschema_input"
-qcschema_output_default = "qcschema_output"
-qcschema_optimization_input_default = "qcschema_optimization_input"
-qcschema_optimization_output_default = "qcschema_optimization_output"
 qcschema_torsion_drive_input_default = "qcschema_torsion_drive_input"
 qcschema_torsion_drive_output_default = "qcschema_torsion_drive_output"
 qcschema_molecule_default = "qcschema_molecule"
