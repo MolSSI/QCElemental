@@ -1,5 +1,12 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Annotated, Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
+
+from typing import Dict, List, Optional
+try:
+    from typing import Annotated
+except ImportError:
+    # remove when minimum py39
+    from typing_extensions import Annotated
 
 from pydantic import Field, conlist, constr, field_validator
 
