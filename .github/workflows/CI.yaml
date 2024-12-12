@@ -37,7 +37,7 @@ jobs:
         if: matrix.python-version == '3.8' || matrix.python-version == '3.10'
         run: pip install '.[test]'
       - name: Run tests
-        run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  -k "not TD and not Torsion"  #-k "not pubchem_multiout_g"
+        run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
       - name: QCSchema Examples Deploy

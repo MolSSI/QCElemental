@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
-from typing import Dict, List, Optional
 try:
     from typing import Annotated
 except ImportError:
@@ -12,18 +11,9 @@ from pydantic import Field, conlist, constr, field_validator
 
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel
-from .common_models import (
-    ComputeError,
-    DriverEnum,
-    Model,
-    Provenance,
-    check_convertible_version,
-    qcschema_torsion_drive_input_default,
-    qcschema_torsion_drive_output_default,
-)
+from .common_models import ComputeError, DriverEnum, Model, Provenance, check_convertible_version
 from .molecule import Molecule
 from .results import AtomicResult, AtomicResultProperties, AtomicSpecification
-from .results import AtomicSpecification as QCInputSpecification  # TODO Undo after TD
 from .types import Array
 
 if TYPE_CHECKING:
@@ -267,8 +257,8 @@ class OptimizationResult(ProtoModel):
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    # TODO add native_files if any opt programs supply extra files or need an input file?
-    # native_files: Dict[str, Any] = Field({}, description="DSL files.")
+    # native_files placeholder for when any opt programs supply extra files or need an input file. no protocol at present
+    native_files: Dict[str, Any] = Field({}, description="DSL files.")
 
     properties: OptimizationProperties = Field(..., description=str(OptimizationProperties.__doc__))
 
@@ -322,6 +312,8 @@ class OptimizationResult(ProtoModel):
             input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
 
             dself.pop("properties")  # new in v2
+            dself.pop("native_files")  # new in v2
+
             dself["trajectory"] = [
                 trajectory_class(**atres).convert_v(target_version) for atres in dself["trajectory_results"]
             ]
@@ -339,6 +331,10 @@ class OptimizationResult(ProtoModel):
         return self_vN
 
 
+# ====  Protocols  ==============================================================
+# ====  Inputs (Kw/Spec/In)  ====================================================
+
+
 class TDKeywords(ProtoModel):
     """
     TorsionDriveRecord options
@@ -347,6 +343,11 @@ class TDKeywords(ProtoModel):
     -----
     * This class is still provisional and may be subject to removal and re-design.
     """
+
+    schema_name: Literal["qcschema_torsion_drive_keywords"] = Field(
+        "qcschema_torsion_drive_keywords",
+        description=f"The QCSchema specification to which this model conforms.",
+    )
 
     dihedrals: List[Tuple[int, int, int, int]] = Field(
         ...,
@@ -376,37 +377,61 @@ class TDKeywords(ProtoModel):
     )
 
 
-class TorsionDriveInput(ProtoModel):
-    """Inputs for running a torsion drive.
+class TorsionDriveSpecification(ProtoModel):
+    """Specification for how to run a torsion drive scan."""
 
-    Notes
-    -----
-    * This class is still provisional and may be subject to removal and re-design.
-    """
+    schema_name: Literal["qcschema_torsion_drive_specification"] = "qcschema_torsion_drive_specification"
+    # schema_version: Literal[2] = Field(
+    #     2,
+    #     description="The version number of ``schema_name`` to which this model conforms.",
+    # )
 
-    schema_name: constr(
-        strip_whitespace=True, pattern=qcschema_torsion_drive_input_default
-    ) = qcschema_torsion_drive_input_default  # type: ignore
-    schema_version: Literal[2] = 2
-
+    program: str = Field(
+        "", description="Torsion Drive CMS code / QCEngine procedure with which to run the torsion scan."
+    )
     keywords: TDKeywords = Field(..., description="The torsion drive specific keywords to be used.")
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
+    # protocols: TorsionDriveProtocols = Field(TorsionDriveProtocols(), description=str(TorsionDriveProtocols.__doc__))
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
+    specification: OptimizationSpecification = Field(
+        ...,
+        description="The specification for how to run optimizations for the torsion scan (within this is spec for gradients for the optimization.",
+    )
 
-    input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: conlist(item_type=Molecule, min_length=1) = Field(
+    @field_validator("program")
+    @classmethod
+    def _check_procedure(cls, v):
+        return v.lower()
+
+    # Note: no convert_v() method as TDSpec doesn't have a v1 equivalent
+
+
+class TorsionDriveInput(ProtoModel):
+    """Inputs for running a torsion drive."""
+
+    schema_name: Literal["qcschema_torsion_drive_input"] = "qcschema_torsion_drive_input"
+    schema_version: Literal[2] = Field(
+        2,
+        description="The version number of ``schema_name`` to which this model conforms.",
+    )
+
+    id: Optional[str] = None
+    initial_molecules: conlist(item_type=Molecule, min_length=1) = Field(
         ..., description="The starting molecule(s) for the torsion drive."
     )
 
-    optimization_spec: OptimizationSpecification = Field(
-        ..., description="Settings to use for optimizations at each grid angle."
-    )
+    specification: TorsionDriveSpecification = Field(..., description=str(TorsionDriveSpecification.__doc__))
 
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
 
-    @field_validator("input_specification")
+    @field_validator("specification")
     @classmethod
-    def _check_input_specification(cls, value):
-        assert value.driver == DriverEnum.gradient, "driver must be set to gradient"
+    def _check_input_specification(cls, value, info):
+        driver = value.specification.specification.driver
+
+        assert driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
 
     @field_validator("schema_version", mode="before")
@@ -424,8 +449,20 @@ class TorsionDriveInput(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
-            if dself["optimization_spec"].pop("extras", None):
-                pass
+            dself.pop("id")  # unused in v1
+            dself["extras"] = dself["specification"].pop("extras")
+            dself["initial_molecule"] = dself.pop("initial_molecules")
+            dself["keywords"] = dself["specification"].pop("keywords")
+            dself["keywords"].pop("schema_name")  # unused in v1
+
+            dself["optimization_spec"] = self.specification.specification.convert_v(target_version)
+            dself["input_specification"] = self.specification.specification.specification.convert_v(target_version)
+            dself["specification"].pop("specification")
+            dself["specification"].pop("schema_name")
+
+            td_program = dself["specification"].pop("program")
+            assert not dself["specification"], dself["specification"]
+            dself.pop("specification")  # now empty
 
             self_vN = qcel.models.v1.TorsionDriveInput(**dself)
         else:
@@ -434,26 +471,32 @@ class TorsionDriveInput(ProtoModel):
         return self_vN
 
 
-class TorsionDriveResult(TorsionDriveInput):
-    """Results from running a torsion drive.
+# ====  Properties  =============================================================
+# ========  Calcinfo  =======================================================
+# ========  Canonical  ======================================================
 
-    Notes
-    -----
-    * This class is still provisional and may be subject to removal and re-design.
-    """
 
-    schema_name: constr(
-        strip_whitespace=True, pattern=qcschema_torsion_drive_output_default
-    ) = qcschema_torsion_drive_output_default  # type: ignore
-    schema_version: Literal[2] = 2
+# ====  Results  ================================================================
 
+
+class TorsionDriveResult(ProtoModel):
+    """Results from running a torsion drive."""
+
+    schema_name: Literal["qcschema_torsion_drive_output"] = "qcschema_torsion_drive_output"
+    schema_version: Literal[2] = Field(
+        2,
+        description="The version number of ``schema_name`` to which this model conforms.",
+    )
+    id: Optional[str] = Field(None, description="The optional ID for the computation.")
+    input_data: TorsionDriveInput = Field(..., description=str(TorsionDriveInput.__doc__))
+
+    # final_energies, final_molecules, optimization_history I'm hoping to refactor into scan_properties and scan_results but need to talk to OpenFF folks
     final_energies: Dict[str, float] = Field(
         ..., description="The final energy at each angle of the TorsionDrive scan."
     )
     final_molecules: Dict[str, Molecule] = Field(
         ..., description="The final molecule at each angle of the TorsionDrive scan."
     )
-
     optimization_history: Dict[str, List[OptimizationResult]] = Field(
         ...,
         description="The map of each angle of the TorsionDrive scan to each optimization computations.",
@@ -461,6 +504,17 @@ class TorsionDriveResult(TorsionDriveInput):
 
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
+
+    # native_files placeholder for when any td programs supply extra files or need an input file. no protocol at present
+    native_files: Dict[str, Any] = Field({}, description="DSL files.")
+
+    # TODO add properties if a set can be collected
+    # properties: TorsionDriveProperties = Field(..., description=str(TorsionDriveProperties.__doc__))
+
+    extras: Dict[str, Any] = Field(
+        {},
+        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
+    )
 
     success: Literal[True] = Field(
         True, description="The success of a given programs execution. If False, other fields may be blank."
@@ -483,16 +537,34 @@ class TorsionDriveResult(TorsionDriveInput):
         dself = self.model_dump()
         if target_version == 1:
             opthist_class = next(iter(self.optimization_history.values()))[0].__class__
+            dtop = {}
 
-            if dself["optimization_spec"].pop("extras", None):
-                pass
+            # for input_data, work from model, not dict, to use convert_v
+            dself.pop("input_data")
+            input_data = self.input_data.convert_v(target_version).model_dump()
 
-            dself["optimization_history"] = {
+            dtop["final_energies"] = dself.pop("final_energies")
+            dtop["final_molecules"] = dself.pop("final_molecules")
+            dtop["optimization_history"] = {
                 k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
+            dself.pop("optimization_history")
 
-            self_vN = qcel.models.v1.TorsionDriveResult(**dself)
+            dself.pop("id")  # unused in v1
+            dself.pop("native_files")  # new in v2
+            dtop["provenance"] = dself.pop("provenance")
+            dtop["stdout"] = dself.pop("stdout")
+            dtop["stderr"] = dself.pop("stderr")
+            dtop["success"] = dself.pop("success")
+            dtop["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
+            dtop["schema_name"] = dself.pop("schema_name")  # otherwise merge below uses TDIn schema_name
+            dself.pop("schema_version")
+            assert not dself, dself
+
+            dtop = {**input_data, **dtop}
+
+            self_vN = qcel.models.v1.TorsionDriveResult(**dtop)
         else:
             assert False, target_version
 

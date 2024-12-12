@@ -39,10 +39,12 @@ Enhancements
 ++++++++++++
 - (:pr:`363`) 
 - (:pr:`363`) 
-- (:pr:`363`) 
-- (:pr:`363`) allow nwchemdriver w/o driver=energy. provenance now nwchemdriver not nwchemrelax
+- (:pr:`363`) ``v2.TorsionDriveResult`` no longer inherits from Input and now has indep id and extras and new native_files.
+- (:pr:`363`) ``v2.TorsionDriveInput.initial_molecule`` now ``initial_molecules`` as it's a list of >=1 molecules. keep change?
+- (:pr:`363`) ``v2. TorsionDriveSpecification`` is a new model. instead of ``v2.TorsionDriveInput`` having a ``input_specification`` and an ``optimization_spec`` fields, it has a ``specification`` field that is a ``TorsionDriveSpecification`` which in turn hold opt info and in turn gradient/atomic info. 
+- (:pr:`363`) ``v2.TDKeywords`` got a ``schema_name`` field.
+- (:pr:`363`) ``native_files`` field added to ``v2.OptimizationResult`` and ``v2.TorsionDriveResult`` gained a ``native_files`` field, though not protocols for user control.
 - (:pr:`363`) ``v2.AtomicResult.convert_v()`` learned external_protocols option to inject that field if known from OptIn
-- (:pr:`363`) Optking now fills in ``v2.OptimizationResult.stdout``. Through v2, once can alter gradient protocols in an optimization.
 - (:pr:`363`) OptimizationSpecification learned a ``convert_v`` function to interconvert.
 - (:pr:`363`) all the v2 models of ptcl/kw/spec/in/prop/res type have ``schema_name``.  ``qcschema_input`` and ``qcschema_output`` now are ``qcschema_atomic_input`` and ``qcschema_atomic_output``
 - (:pr:`363`) whereas ``v1.AtomicInput`` and ``v1.QCInputSpecification`` shared the same schema_name, ``v2.AtomicInput`` and ``v2.AtomicSpecification`` do not. This is a step towards more explicit schema names.

@@ -248,32 +248,63 @@ def ethane_data_fixture():
 
 
 @pytest.fixture(scope="function")
-def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture):
+def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, request):
     ethane = ethane_data_fixture.copy()
     optres = optimization_data_fixture.copy()
 
-    input_data = {
-        "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
-        "input_specification": {"driver": "gradient", "model": {"method": "UFF", "basis": None}},
-        "initial_molecule": [ethane] * 2,
-        "optimization_spec": {
-            "procedure": "geomeTRIC",
-            "keywords": {
-                "coordsys": "hdlc",
-                "maxiter": 500,
-                "program": "rdkit",
+    if "v2" in request.node.name:
+        input_data = {
+            "initial_molecules": [ethane] * 2,
+            "specification": {
+                "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
+                "specification": {
+                    "program": "geomeTRIC",
+                    "keywords": {
+                        "coordsys": "hdlc",
+                        "maxiter": 500,
+                        "program": "rdkit",
+                    },
+                    "specification": {
+                        "driver": "gradient",
+                        "model": {"method": "UFF", "basis": None},
+                        "program": "qcqc",
+                    },
+                },
             },
-        },
-    }
+        }
+    else:
+        input_data = {
+            "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
+            "input_specification": {"driver": "gradient", "model": {"method": "UFF", "basis": None}},
+            "initial_molecule": [ethane] * 2,
+            "optimization_spec": {
+                "procedure": "geomeTRIC",
+                "keywords": {
+                    "coordsys": "hdlc",
+                    "maxiter": 500,
+                    "program": "rdkit",
+                },
+            },
+        }
 
-    ret = {
-        "success": True,
-        "provenance": {"creator": "qcel"},
-        "final_energies": {"180": -2.3, "0": -4.5},
-        "final_molecules": {"180": ethane, "0": ethane},
-        "optimization_history": {"180": [optres, optres], "0": [optres]},
-        **input_data,
-    }
+    if "v2" in request.node.name:
+        ret = {
+            "input_data": input_data,
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "final_energies": {"180": -2.3, "0": -4.5},
+            "final_molecules": {"180": ethane, "0": ethane},
+            "optimization_history": {"180": [optres, optres], "0": [optres]},
+        }
+    else:
+        ret = {
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "final_energies": {"180": -2.3, "0": -4.5},
+            "final_molecules": {"180": ethane, "0": ethane},
+            "optimization_history": {"180": [optres, optres], "0": [optres]},
+            **input_data,
+        }
 
     return ret
 
@@ -797,10 +828,19 @@ def every_model_fixture(request):
 
     smodel = "TorsionDriveInput"
     data = request.getfixturevalue("torsiondrive_data_fixture")
-    data = {k: data[k] for k in ["initial_molecule", "input_specification", "optimization_spec", "keywords"]}
+    if "v2" in request.node.name:
+        data = data["input_data"]
+    else:
+        data = {k: data[k] for k in ["initial_molecule", "input_specification", "optimization_spec", "keywords"]}
     datas[smodel] = data
 
-    # smodel = "TorsionDriveSpecification"  # DNE
+    smodel = "TorsionDriveSpecification"
+    if "v2" in request.node.name:
+        data = request.getfixturevalue("torsiondrive_data_fixture")
+        data = data["input_data"]["specification"]
+    else:
+        data = {}  # DNE
+    datas[smodel] = data
 
     smodel = "TDKeywords"  # TODO "TorsionDriveKeywords"
     data = {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]}
@@ -863,7 +903,7 @@ _model_classes_struct = [
     pytest.param("OptimizationResult",          "OptimizationResult",           id="OptRes"),
     pytest.param(None,                          "OptimizationProperties",       id="OptProp"),
     pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"), 
-    # pytest.param(None,                        "TorsionDriveSpecification",    id="TDSpec"), 
+    pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"), 
     pytest.param("TDKeywords",                  "TDKeywords",                   id="TDKw"),  # TODO TorsionDriveKeywords
     # pytest.param(None,                        "TorsionDriveProtocols",        id="TDPtcl"),
     pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
@@ -1054,12 +1094,12 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
         "v1-OptRes"   : {},    "v2-OptRes"   : {},
         "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
-        "v1-TDIn"     : {},    "v2-TDIn"     : {},  # TODO None
+        "v1-TDIn"     : {},    "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
-        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1/v2 DNE 
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
-        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
+        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1/v2 DNE
         "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
         "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
@@ -1158,7 +1198,7 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
         "v1-OptRes"   ,  "v2-OptRes"  , 
         # "v1-OptProp"  ,  "v2-OptProp" , 
         "v1-TDIn"     ,  "v2-TDIn"    , 
-        # "v1-TDSpec"   ,  "v2-TDSpec"  , 
+        "v1-TDSpec"   ,  "v2-TDSpec"  , 
         # "v1-TDKw"     ,  "v2-TDKw"    , 
         # "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
         "v1-TDRes"    ,  "v2-TDRes"   , 

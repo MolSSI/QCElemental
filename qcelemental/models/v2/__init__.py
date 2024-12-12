@@ -10,10 +10,10 @@ from .procedures import (
     OptimizationProtocols,
     OptimizationResult,
     OptimizationSpecification,
-    QCInputSpecification,
     TDKeywords,
     TorsionDriveInput,
     TorsionDriveResult,
+    TorsionDriveSpecification,
 )
 from .results import (
     AtomicInput,
