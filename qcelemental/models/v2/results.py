@@ -8,20 +8,15 @@ from pydantic import Field, constr, field_validator
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, qcschema_draft
 from .basis import BasisSet
-from .common_models import (
-    ComputeError,
-    DriverEnum,
-    Model,
-    Provenance,
-    check_convertible_version,
-    qcschema_input_default,
-    qcschema_output_default,
-)
+from .common_models import ComputeError, DriverEnum, Model, Provenance, check_convertible_version
 from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
     from .common_models import ReprArgs
+
+
+# ====  Properties  =============================================================
 
 
 class AtomicResultProperties(ProtoModel):
@@ -34,25 +29,24 @@ class AtomicResultProperties(ProtoModel):
     * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nmo`
     """
 
-    schema_name: Literal["qcschema_atomicproperties"] = Field(
-        "qcschema_atomicproperties",
-        description=(
-            f"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_atomicproperties."
-        ),
+    schema_name: Literal["qcschema_atomic_properties"] = Field(
+        "qcschema_atomic_properties", description=(f"The QCSchema specification to which this model conforms.")
     )
     # TRIAL schema_version: Literal[2] = Field(
     # TRIAL     2,
     # TRIAL     description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
     # TRIAL )
 
-    # Calcinfo
+    # ========  Calcinfo  =======================================================
+
     calcinfo_nbasis: Optional[int] = Field(None, description="The number of basis functions for the computation.")
     calcinfo_nmo: Optional[int] = Field(None, description="The number of molecular orbitals for the computation.")
     calcinfo_nalpha: Optional[int] = Field(None, description="The number of alpha electrons in the computation.")
     calcinfo_nbeta: Optional[int] = Field(None, description="The number of beta electrons in the computation.")
     calcinfo_natom: Optional[int] = Field(None, description="The number of atoms in the computation.")
 
-    # Canonical
+    # ========  Canonical  ======================================================
+
     nuclear_repulsion_energy: Optional[float] = Field(None, description="The nuclear repulsion energy.")
     return_energy: Optional[float] = Field(
         None,
@@ -68,6 +62,8 @@ class AtomicResultProperties(ProtoModel):
         description=f"The Hessian of the requested method, identical to :attr:`~qcelemental.models.AtomicResult.return_result` for :attr:`~qcelemental.models.AtomicInput.driver`\\ =\\ :attr:`~qcelemental.models.DriverEnum.hessian` computations.",
         json_schema_extra={"units": "E_h/a0^2"},
     )
+
+    # ========  Method data  ====================================================
 
     # SCF Keywords
     scf_one_electron_energy: Optional[float] = Field(
@@ -335,6 +331,10 @@ class WavefunctionProperties(ProtoModel):
         "occupations_b",
     }
 
+    schema_name: Literal["qcschema_wavefunction_properties"] = Field(
+        "qcschema_wavefunction_properties", description=f"The QCSchema specification to which this model conforms."
+    )
+
     # The full basis set description of the quantities
     basis: BasisSet = Field(..., description=str(BasisSet.__doc__))
     restricted: bool = Field(
@@ -589,6 +589,9 @@ class WavefunctionProperties(ProtoModel):
         return v
 
 
+# ====  Protocols  ==============================================================
+
+
 class WavefunctionProtocolEnum(str, Enum):
     r"""Wavefunction to keep from a computation."""
 
@@ -632,6 +635,8 @@ class NativeFilesProtocolEnum(str, Enum):
 class AtomicResultProtocols(ProtoModel):
     r"""Protocols regarding the manipulation of computational result data."""
 
+    schema_name: Literal["qcschema_atomic_protocols"] = "qcschema_atomic_protocols"
+
     wavefunction: WavefunctionProtocolEnum = Field(
         WavefunctionProtocolEnum.none, description=str(WavefunctionProtocolEnum.__doc__)
     )
@@ -647,10 +652,13 @@ class AtomicResultProtocols(ProtoModel):
     model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
+# ====  Inputs (Kw/Spec/In)  ====================================================
+
+
 class AtomicSpecification(ProtoModel):
     """Specification for a single point QC calculation"""
 
-    # schema_name: Literal["qcschema_atomicspecification"] = "qcschema_atomicspecification"
+    schema_name: Literal["qcschema_atomic_specification"] = "qcschema_atomic_specification"
     # schema_version: Literal[2] = Field(
     #     2,
     #     description="The version number of ``schema_name`` to which this model conforms.",
@@ -671,17 +679,19 @@ class AtomicSpecification(ProtoModel):
     )
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="AtomicSpecification") == "self":
+        if check_convertible_version(target_version, error="AtomicSpecification") == "self":
             return self
 
         loss_store = {}
         dself = self.model_dump()
-        if version == 1:
+        if target_version == 1:
+            dself.pop("schema_name")
+
             loss_store["protocols"] = dself.pop("protocols")
             loss_store["program"] = dself.pop("program")
 
@@ -689,11 +699,10 @@ class AtomicSpecification(ProtoModel):
                 dself["extras"]["_qcsk_conversion_loss"] = loss_store
 
             self_vN = qcel.models.v1.QCInputSpecification(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
-
-
-### Primary models
 
 
 def atomic_input_json_schema_extra(schema, model):
@@ -704,11 +713,8 @@ class AtomicInput(ProtoModel):
     r"""The MolSSI Quantum Chemistry Schema"""
 
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
-    schema_name: Literal["qcschema_input"] = Field(
-        qcschema_input_default,
-        description=(
-            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_input_default}."
-        ),
+    schema_name: Literal["qcschema_atomic_input"] = Field(
+        "qcschema_atomic_input", description=(f"The QCSchema specification to which this model conforms.")
     )
     schema_version: Literal[2] = Field(
         2,
@@ -753,28 +759,33 @@ class AtomicInput(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            dself.pop("schema_name")
+
             dself["driver"] = dself["specification"].pop("driver")
             dself["model"] = dself["specification"].pop("model")
             dself["keywords"] = dself["specification"].pop("keywords", None)
             dself["protocols"] = dself["specification"].pop("protocols", None)
             dself["extras"] = dself["specification"].pop("extras", {})
             dself["specification"].pop("program", None)  # TODO store?
+            dself["specification"].pop("schema_name", None)
             assert not dself["specification"], dself["specification"]
             dself.pop("specification")  # now empty
 
             self_vN = qcel.models.v1.AtomicInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
+
+
+# ====  Results  ================================================================
 
 
 class AtomicResult(ProtoModel):
     r"""Results from a CMS program execution."""
 
-    schema_name: constr(strip_whitespace=True, pattern=r"^(qc\_?schema_output)$") = Field(  # type: ignore
-        qcschema_output_default,
-        description=(
-            f"The QCSchema specification this model conforms to. Explicitly fixed as {qcschema_output_default}."
-        ),
+    schema_name: Literal["qcschema_atomic_output"] = Field(
+        "qcschema_atomic_output", description=(f"The QCSchema specification to which this model conforms.")
     )
     schema_version: Literal[2] = Field(
         2,
@@ -806,17 +817,6 @@ class AtomicResult(ProtoModel):
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
-
-    @field_validator("schema_name", mode="before")
-    @classmethod
-    def _input_to_output(cls, v):
-        r"""If qcschema_input is passed in, cast it to output, otherwise no"""
-        if v.lower().strip() in [qcschema_input_default, qcschema_output_default]:
-            return qcschema_output_default
-        raise ValueError(
-            "Only {0} or {1} is allowed for schema_name, "
-            "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default)
-        )
 
     @field_validator("schema_version", mode="before")
     def _version_stamp(cls, v):
@@ -964,6 +964,8 @@ class AtomicResult(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            dself.pop("schema_name")
+
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
             input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
@@ -973,5 +975,7 @@ class AtomicResult(ProtoModel):
             dself = {**input_data, **dself}
 
             self_vN = qcel.models.v1.AtomicResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN

@@ -385,6 +385,7 @@ def atomic_result_data(request):
         "success": True,
     }
     if "v2" in request.node.name:
+        data["schema_name"] = "qcschema_atomic_output"
         data["input_data"] = {
             "molecule": data["molecule"],
             "specification": {
