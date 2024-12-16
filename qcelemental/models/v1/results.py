@@ -622,10 +622,10 @@ class AtomicInput(ProtoModel):
             return self
 
         dself = self.dict()
-        spec = {}
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
 
+            spec = {}
             spec["driver"] = dself.pop("driver")
             spec["model"] = dself.pop("model")
             spec["keywords"] = dself.pop("keywords", None)
@@ -633,6 +633,8 @@ class AtomicInput(ProtoModel):
             spec["extras"] = dself.pop("extras", None)
             dself["specification"] = spec
             self_vN = qcel.models.v2.AtomicInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -805,6 +807,7 @@ class AtomicResult(AtomicInput):
         /,
         *,
         external_input_data: Optional[Any] = None,
+        external_protocols: Optional[AtomicResultProtocols] = None,
     ) -> Union["qcelemental.models.v1.AtomicResult", "qcelemental.models.v2.AtomicResult"]:
         """Convert to instance of particular QCSchema version.
 
@@ -816,6 +819,8 @@ class AtomicResult(AtomicInput):
             Since self contains data merged from input, this allows passing in the original input, particularly for `molecule` and `extras` fields.
             Can be model or dictionary and should be *already* converted to target_version.
             Replaces ``input_data`` field entirely (not merges with extracts from self) and w/o consistency checking.
+        external_protocols
+            Allows overriding the AtomicProtocols field. Used for trajectory in user-v2+harness-v1 optimizers to correctly form the gradient schema.
 
         Returns
         -------
@@ -831,6 +836,8 @@ class AtomicResult(AtomicInput):
 
         dself = self.dict()
         if target_version == 2:
+            dself.pop("schema_name")  # changes in v2
+
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
                 dself.pop("error")
@@ -863,8 +870,12 @@ class AtomicResult(AtomicInput):
                 dself["input_data"] = external_input_data
             else:
                 dself["input_data"] = input_data
+                if external_protocols:
+                    dself["input_data"]["specification"]["protocols"] = external_protocols
 
             self_vN = qcel.models.v2.AtomicResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 

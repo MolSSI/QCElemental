@@ -186,24 +186,44 @@ CARBON      6.0      0.0000000000      0.0000000000     -0.1018060978
 
 
 @pytest.fixture(scope="function")
-def optimization_data_fixture(result_data_fixture):
+def optimization_data_fixture(result_data_fixture, request):
     trajectory = []
     energies = []
+    props = []
     for x in range(5):
         result = result_data_fixture.copy()
         result["return_result"] = x
         trajectory.append(result)
         energies.append(x)
+        props.append({"return_energy": x})
 
-    ret = {
-        "initial_molecule": result_data_fixture["molecule"],
-        "final_molecule": result_data_fixture["molecule"],
-        "trajectory": trajectory,
-        "energies": energies,
-        "success": True,
-        "provenance": {"creator": "qcel"},
-        "input_specification": {"model": {"method": "UFF"}},
-    }
+    if "v2" in request.node.name:
+        ret = {
+            "final_molecule": result_data_fixture["molecule"],
+            "trajectory_results": trajectory,
+            "trajectory_properties": props,
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "input_data": {
+                "initial_molecule": result_data_fixture["molecule"],
+                "specification": {
+                    "program": "an opt program",
+                    "specification": {"driver": "gradient", "model": {"method": "UFF"}, "program": "a qc program"},
+                },
+            },
+            "properties": {"optimization_iterations": 14},
+        }
+    else:
+        ret = {
+            "initial_molecule": result_data_fixture["molecule"],
+            "final_molecule": result_data_fixture["molecule"],
+            "trajectory": trajectory,
+            "energies": energies,
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "keywords": {"program": "a qc program"},
+            "input_specification": {"model": {"method": "UFF"}},
+        }
 
     return ret
 
@@ -228,32 +248,63 @@ def ethane_data_fixture():
 
 
 @pytest.fixture(scope="function")
-def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture):
+def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, request):
     ethane = ethane_data_fixture.copy()
     optres = optimization_data_fixture.copy()
 
-    input_data = {
-        "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
-        "input_specification": {"driver": "gradient", "model": {"method": "UFF", "basis": None}},
-        "initial_molecule": [ethane] * 2,
-        "optimization_spec": {
-            "procedure": "geomeTRIC",
-            "keywords": {
-                "coordsys": "hdlc",
-                "maxiter": 500,
-                "program": "rdkit",
+    if "v2" in request.node.name:
+        input_data = {
+            "initial_molecules": [ethane] * 2,
+            "specification": {
+                "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
+                "specification": {
+                    "program": "geomeTRIC",
+                    "keywords": {
+                        "coordsys": "hdlc",
+                        "maxiter": 500,
+                        "program": "rdkit",
+                    },
+                    "specification": {
+                        "driver": "gradient",
+                        "model": {"method": "UFF", "basis": None},
+                        "program": "qcqc",
+                    },
+                },
             },
-        },
-    }
+        }
+    else:
+        input_data = {
+            "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
+            "input_specification": {"driver": "gradient", "model": {"method": "UFF", "basis": None}},
+            "initial_molecule": [ethane] * 2,
+            "optimization_spec": {
+                "procedure": "geomeTRIC",
+                "keywords": {
+                    "coordsys": "hdlc",
+                    "maxiter": 500,
+                    "program": "rdkit",
+                },
+            },
+        }
 
-    ret = {
-        "success": True,
-        "provenance": {"creator": "qcel"},
-        "final_energies": {"180": -2.3, "0": -4.5},
-        "final_molecules": {"180": ethane, "0": ethane},
-        "optimization_history": {"180": [optres, optres], "0": [optres]},
-        **input_data,
-    }
+    if "v2" in request.node.name:
+        ret = {
+            "input_data": input_data,
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "final_energies": {"180": -2.3, "0": -4.5},
+            "final_molecules": {"180": ethane, "0": ethane},
+            "optimization_history": {"180": [optres, optres], "0": [optres]},
+        }
+    else:
+        ret = {
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "final_energies": {"180": -2.3, "0": -4.5},
+            "final_molecules": {"180": ethane, "0": ethane},
+            "optimization_history": {"180": [optres, optres], "0": [optres]},
+            **input_data,
+        }
 
     return ret
 
@@ -540,15 +591,19 @@ def test_native_protocols(protocol, provided, expected, native_data_fixture, req
     "keep, indices",
     [(None, [0, 1, 2, 3, 4]), ("all", [0, 1, 2, 3, 4]), ("initial_and_final", [0, 4]), ("final", [4]), ("none", [])],
 )
-def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture, schema_versions):
+def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixture, schema_versions, request):
     OptimizationResult = schema_versions.OptimizationResult
 
     if keep is not None:
-        optimization_data_fixture["protocols"] = {"trajectory": keep}
+        if "v2" in request.node.name:
+            optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory": keep}
+        else:
+            optimization_data_fixture["protocols"] = {"trajectory": keep}
     opt = OptimizationResult(**optimization_data_fixture)
 
-    assert len(opt.trajectory) == len(indices)
-    for result, index in zip(opt.trajectory, indices):
+    trajs_target = opt.trajectory_results if "v2" in request.node.name else opt.trajectory
+    assert len(trajs_target) == len(indices)
+    for result, index in zip(trajs_target, indices):
         assert result.return_result == index
 
 
@@ -745,11 +800,18 @@ def every_model_fixture(request):
 
     smodel = "OptimizationInput"
     data = request.getfixturevalue("optimization_data_fixture")
-    data = {k: data[k] for k in ["initial_molecule", "input_specification"]}
+    if "v2" in request.node.name:
+        data = data["input_data"]
+    else:
+        data = {k: data[k] for k in ["initial_molecule", "input_specification", "keywords"]}
     datas[smodel] = data
 
     smodel = "OptimizationSpecification"
-    data = {"procedure": "pyberny"}
+    if "v2" in request.node.name:
+        data = request.getfixturevalue("optimization_data_fixture")
+        data = data["input_data"]["specification"]
+    else:
+        data = {"procedure": "pyberny"}
     datas[smodel] = data
 
     smodel = "OptimizationProtocols"
@@ -766,10 +828,19 @@ def every_model_fixture(request):
 
     smodel = "TorsionDriveInput"
     data = request.getfixturevalue("torsiondrive_data_fixture")
-    data = {k: data[k] for k in ["initial_molecule", "input_specification", "optimization_spec", "keywords"]}
+    if "v2" in request.node.name:
+        data = data["input_data"]
+    else:
+        data = {k: data[k] for k in ["initial_molecule", "input_specification", "optimization_spec", "keywords"]}
     datas[smodel] = data
 
-    # smodel = "TorsionDriveSpecification"  # DNE
+    smodel = "TorsionDriveSpecification"
+    if "v2" in request.node.name:
+        data = request.getfixturevalue("torsiondrive_data_fixture")
+        data = data["input_data"]["specification"]
+    else:
+        data = {}  # DNE
+    datas[smodel] = data
 
     smodel = "TDKeywords"  # TODO "TorsionDriveKeywords"
     data = {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]}
@@ -830,9 +901,9 @@ _model_classes_struct = [
     pytest.param("OptimizationSpecification",   "OptimizationSpecification",    id="OptSpec"),
     pytest.param("OptimizationProtocols",       "OptimizationProtocols",        id="OptPtcl"),
     pytest.param("OptimizationResult",          "OptimizationResult",           id="OptRes"),
-    # pytest.param(None,                        "OptimizationProperties",       id="OptProp"),
+    pytest.param(None,                          "OptimizationProperties",       id="OptProp"),
     pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"), 
-    # pytest.param(None,                        "TorsionDriveSpecification",    id="TDSpec"), 
+    pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"), 
     pytest.param("TDKeywords",                  "TDKeywords",                   id="TDKw"),  # TODO TorsionDriveKeywords
     # pytest.param(None,                        "TorsionDriveProtocols",        id="TDPtcl"),
     pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
@@ -877,7 +948,7 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         "v1-MBSpec"   : None,  "v2-MBSpec"   : None,  # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
         "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
-        "v1-MBRes"    : True,  "v2-MBRes"    : True,  # v2 DNE
+        "v1-MBRes"    : True,  "v2-MBRes"    : None,  # v2 DNE  TODO v2 True
         "v1-MBProp"   : None,  "v2-MBProp"   : None,  # v2 DNE
     }[anskey]
     # fmt: on
@@ -904,16 +975,33 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
 
     # check success override
     if ans is not None:
-        data["success"] = not ans
+        data2 = copy.deepcopy(data)
+        data2["success"] = not ans
         if "v2" in anskey:
             # v2 has enforced T/F
             with pytest.raises(pydantic.ValidationError) as e:
-                instance = model(**data)
+                instance = model(**data2)
             assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
         else:
             # v1 can be reset to T/F
-            instance = model(**data)
+            instance = model(**data2)
             assert (cptd := getattr(instance, fld, "not found!")) == (not ans), f"[b] field {fld} = {cptd} != {not ans}"
+
+    # check inheritance
+    if smodel.endswith("Result"):
+        instance = model(**data)
+        smodelin = smodel.replace("Result", "Input")
+        if "ManyBody" in smodelin:
+            modelin = getattr(qcmanybody.models, smodelin)
+        else:
+            modelin = getattr(schema_versions, smodelin)
+
+        if "v2" in anskey or "ManyBody" in smodel:
+            # for v2, <>Result has a field that contains <>Input. ManyBody v1 led the way here.
+            assert not isinstance(instance, modelin), f"[c] v2 {smodel} unexpectedly inherits {smodelin}"
+        else:
+            # for v1, <>Result inherits <>Input
+            assert isinstance(instance, modelin), f"[c] v1 {smodel} does not inherit {smodelin}"
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
@@ -990,7 +1078,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others, yes. In is questionable.
+        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others, yes. <In> is questionable.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
@@ -1001,17 +1089,17 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-AtRes"    : {},    "v2-AtRes"    : {},
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
-        "v1-OptIn"    : {},    "v2-OptIn"    : {},  # TODO None
+        "v1-OptIn"    : {},    "v2-OptIn"    : None,
         "v1-OptSpec"  : None,  "v2-OptSpec"  : {},
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
         "v1-OptRes"   : {},    "v2-OptRes"   : {},
         "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
-        "v1-TDIn"     : {},    "v2-TDIn"     : {},  # TODO None
+        "v1-TDIn"     : {},    "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
-        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1/v2 DNE 
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
-        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
+        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1/v2 DNE
         "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
         "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
@@ -1093,9 +1181,10 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # "v1-Mol-A"    ,  "v2-Mol-A"   ,   
-        # "v1-Mol-B"    ,  "v2-Mol-B"   ,   
-        # "v1-BasisSet" ,  "v2-BasisSet",
+        # convert_v() for user-facing fns. uncomment lines if this expands
+        # "v1-Mol-A"    ,  "v2-Mol-A"   ,  # TODO
+        # "v1-Mol-B"    ,  "v2-Mol-B"   ,  # TODO
+        # "v1-BasisSet" ,  "v2-BasisSet",  # TODO
         "v1-FailedOp" ,  "v2-FailedOp",
         "v1-AtIn"     ,  "v2-AtIn"    ,
         "v1-AtSpec"   ,  "v2-AtSpec"  ,
@@ -1104,12 +1193,12 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
         # "v1-AtProp"   ,  "v2-AtProp"  , 
         # "v1-WfnProp"  ,  "v2-WfnProp" , 
         "v1-OptIn"    ,  "v2-OptIn"   , 
-        # "v1-OptSpec"  ,  "v2-OptSpec" , 
+        "v1-OptSpec"  ,  "v2-OptSpec" , 
         # "v1-OptPtcl"  ,  "v2-OptPtcl" , 
         "v1-OptRes"   ,  "v2-OptRes"  , 
         # "v1-OptProp"  ,  "v2-OptProp" , 
         "v1-TDIn"     ,  "v2-TDIn"    , 
-        # "v1-TDSpec"   ,  "v2-TDSpec"  , 
+        "v1-TDSpec"   ,  "v2-TDSpec"  , 
         # "v1-TDKw"     ,  "v2-TDKw"    , 
         # "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
         "v1-TDRes"    ,  "v2-TDRes"   , 
@@ -1141,9 +1230,84 @@ def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request
     data = every_model_fixture[smodel_fro]
 
     # check converts and converts to expected class
-    instance_fro = model_fro(**data)
-    instance_to = instance_fro.convert_v(1 if "v2" in anskey else 2)
-    assert isinstance(instance_to, model_to), f"instance {model_fro} failed to convert to {model_to}"
+    if anskey == "v1-OptSpec":
+        # v1 OptSpec has no convert_v
+        instance_fro = model_fro(**data)
+        with pytest.raises(AttributeError):
+            instance_to = instance_fro.convert_v(2)
+    else:
+        instance_fro = model_fro(**data)
+        instance_to = instance_fro.convert_v(1 if "v2" in anskey else 2)
+        assert isinstance(instance_to, model_to), f"instance {model_fro} failed to convert to {model_to}"
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = {
+        # v2: In/Res + Mol/BasisSet/FailedOp, yes! Kw/Ptcl, no. Prop/Spec uncertain.
+        # note output not result
+        "v1-Mol-A"    : "qcschema_molecule",                    "v2-Mol-A"    : "qcschema_molecule",
+        "v1-Mol-B"    : "qcschema_molecule",                    "v2-Mol-B"    : "qcschema_molecule",
+        "v1-BasisSet" : "qcschema_basis",                       "v2-BasisSet" : "qcschema_basis",  # TODO qcschema_basis_set?
+        "v1-FailedOp" : None,                                   "v2-FailedOp" : "qcschema_failed_operation",
+        "v1-AtIn"     : "qcschema_input",                       "v2-AtIn"     : "qcschema_atomic_input",  # TODO standardize!
+        "v1-AtSpec"   : "qcschema_input",                       "v2-AtSpec"   : "qcschema_atomic_specification",
+        "v1-AtPtcl"   : None,                                   "v2-AtPtcl"   : "qcschema_atomic_protocols",
+        "v1-AtRes"    : "qcschema_output",                      "v2-AtRes"    : "qcschema_atomic_output",  # TODO standardize! _result?
+        "v1-AtProp"   : None,                                   "v2-AtProp"   : "qcschema_atomic_properties",
+        "v1-WfnProp"  : None,                                   "v2-WfnProp"  : "qcschema_wavefunction_properties",
+        "v1-OptIn"    : "qcschema_optimization_input",          "v2-OptIn"    : "qcschema_optimization_input",
+        "v1-OptSpec"  : "qcschema_optimization_specification",  "v2-OptSpec"  : "qcschema_optimization_specification",
+        "v1-OptPtcl"  : None,                                   "v2-OptPtcl"  : "qcschema_optimization_protocols",
+        "v1-OptRes"   : "qcschema_optimization_output",         "v2-OptRes"   : "qcschema_optimization_output",  # TODO change to _result?
+        "v1-OptProp"  : None,                                   "v2-OptProp"  : "qcschema_optimization_properties",  # v1 DNE
+        "v1-TDIn"     : "qcschema_torsion_drive_input",         "v2-TDIn"     : "qcschema_torsion_drive_input",
+        "v1-TDSpec"   : None,                                   "v2-TDSpec"   : "qcschema_torsion_drive_specification",  # v1 DNE
+        "v1-TDKw"     : None,                                   "v2-TDKw"     : "qcschema_torsion_drive_keywords",
+        "v1-TDPtcl"   : None,                                   "v2-TDPtcl"   : None,  # v1 DNE, v2 DNE
+        "v1-TDRes"    : "qcschema_torsion_drive_output",        "v2-TDRes"    : "qcschema_torsion_drive_output",  # TODO change to _result?
+        "v1-TDProp"   : None,                                   "v2-TDProp"   : None,  # v1 DNE, v2 DNE
+        "v1-MBIn"     : "qcschema_manybodyinput",               "v2-MBIn"     : "qcschema_many_body_input",     # v2 DNE
+        "v1-MBSpec"   : "qcschema_manybodyspecification",       "v2-MBSpec"   : "qcschema_many_body_specification",  # v2 DNE
+        "v1-MBKw"     : "qcschema_manybodykeywords",            "v2-MBKw"     : "qcschema_many_body_keywords",       # v2 DNE
+        "v1-MBPtcl"   : None,                                   "v2-MBPtcl"   : "qcschema_many_body_protocols",  # v2 DNE
+        "v1-MBRes"    : "qcschema_manybodyresult",              "v2-MBRes"    : "qcschema_many_body_result",     # v2 DNE
+        "v1-MBProp"   : "qcschema_manybodyproperties",          "v2-MBProp"   : "qcschema_many_body_properties",  # v2 DNE
+    }[anskey]
+    # fmt: on
+
+    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+    if "ManyBody" in smodel:
+        import qcmanybody
+
+        model = getattr(qcmanybody.models, smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+    data = every_model_fixture[smodel]
+
+    # check default name set
+    instance = model(**data)
+    fld = "schema_name"
+    if ans is None:
+        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+    else:
+        assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
+
+    # check wrong name fatal
+    if ans is not None:
+        data["schema_name"] = "Asdf"
+        if "Molecule-B" in smodel:
+            # TODO fix mol validated pathway when upgrade Mol
+            with pytest.raises(qcel.ValidationError) as e:
+                instance = model(**data)
+        else:
+            with pytest.raises((pydantic.ValidationError, pydantic.v1.ValidationError)) as e:
+                instance = model(**data)
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture, request):

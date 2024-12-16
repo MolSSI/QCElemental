@@ -74,15 +74,20 @@ def test_repr_result(request, schema_versions):
     assert "'gradient'" in str(result)
 
 
-def test_repr_optimization(schema_versions):
+def test_repr_optimization(schema_versions, request):
     OptimizationInput = schema_versions.OptimizationInput
 
-    opt = OptimizationInput(
-        **{
+    if "v2" in request.node.name:
+        optin = {
+            "specification": {"specification": {"driver": "gradient", "model": {"method": "UFF"}}},
+            "initial_molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
+        }
+    else:
+        optin = {
             "input_specification": {"driver": "gradient", "model": {"method": "UFF"}},
             "initial_molecule": {"symbols": ["He"], "geometry": [0, 0, 0]},
         }
-    )
+    opt = OptimizationInput(**optin)
 
     assert "molecule_hash" in str(opt)
     assert "molecule_hash" in repr(opt)
