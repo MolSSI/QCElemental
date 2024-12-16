@@ -70,20 +70,22 @@ class QCInputSpecification(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.QCInputSpecification", "qcelemental.models.v2.AtomicSpecification"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="QCInputSpecification") == "self":
+        if check_convertible_version(target_version, error="QCInputSpecification") == "self":
             return self
 
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
             self_vN = qcel.models.v2.AtomicSpecification(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -116,18 +118,32 @@ class OptimizationInput(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationInput", "qcelemental.models.v2.OptimizationInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationInput") == "self":
+        if check_convertible_version(target_version, error="OptimizationInput") == "self":
             return self
 
         dself = self.dict()
-        if version == 2:
-            dself["input_specification"].pop("schema_version", None)
+        if target_version == 2:
+            dself.pop("hash_index", None)  # no longer used, so dropped in v2
+
+            spec = {}
+            spec["extras"] = dself.pop("extras")
+            spec["protocols"] = dself.pop("protocols")
+            spec["specification"] = self.input_specification.convert_v(target_version).model_dump()
+            dself.pop("input_specification")
+            spec["specification"]["program"] = dself["keywords"].pop(
+                "program", ""
+            )  # "" is when there's an implcit program, like nwchemopt
+            spec["keywords"] = dself.pop("keywords")
+            dself["specification"] = spec
+
             self_vN = qcel.models.v2.OptimizationInput(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -180,25 +196,98 @@ class OptimizationResult(OptimizationInput):
         return 1
 
     def convert_v(
-        self, version: int
+        self,
+        target_version: int,
+        /,
+        *,
+        external_input_data: Optional[Union[Dict[str, Any], "OptimizationInput"]] = None,
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
-        """Convert to instance of particular QCSchema version."""
+        """Convert to instance of particular QCSchema version.
+
+        Parameters
+        ----------
+        target_version
+            The version to convert to.
+        external_input_data
+            Since self contains data merged from input, this allows passing in the original input, particularly for `extras` fields.
+            Can be model or dictionary and should be *already* converted to target_version.
+            Replaces ``input_data`` field entirely (not merges with extracts from self) and w/o consistency checking.
+
+        Returns
+        -------
+        OptimizationResult
+            Returns self (not a copy) if ``target_version`` already satisfied.
+            Returns a new OptimizationResult of ``target_version`` otherwise.
+
+        """
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="OptimizationResult") == "self":
+        if check_convertible_version(target_version, error="OptimizationResult") == "self":
             return self
 
         trajectory_class = self.trajectory[0].__class__
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
                 dself.pop("error")
 
-            dself["trajectory"] = [trajectory_class(**atres).convert_v(version) for atres in dself["trajectory"]]
-            dself["input_specification"].pop("schema_version", None)
+            dself.pop("hash_index", None)  # no longer used, so dropped in v2
+
+            v1_input_data = {
+                k: dself.pop(k)
+                for k in list(dself.keys())
+                if k in ["initial_molecule", "protocols", "keywords", "input_specification"]
+            }
+            # sep any merged extras known to belong to input
+            v1_input_data["extras"] = {k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []}
+            v2_input_data = qcel.models.v1.OptimizationInput(**v1_input_data).convert_v(target_version)
+
+            # any input provenance has been overwritten
+            # if dself["id"]:
+            #     input_data["id"] = dself["id"]  # in/out should likely match
+
+            if external_input_data:
+                # Note: overwriting with external, not updating. reconsider?
+                if isinstance(external_input_data, dict):
+                    if isinstance(external_input_data["specification"], dict):
+                        in_extras = external_input_data["specification"].get("extras", {})
+                    else:
+                        in_extras = external_input_data["specification"].extras
+                else:
+                    in_extras = external_input_data.specification.extras
+                    optsubptcl = external_input_data.specification.specification.protocols
+                dself["extras"] = {k: v for k, v in dself["extras"].items() if (k, v) not in in_extras.items()}
+                dself["input_data"] = external_input_data
+            else:
+                dself["input_data"] = v2_input_data
+                optsubptcl = None
+
+            dself["properties"] = {
+                "return_energy": dself["energies"][-1],
+                "optimization_iterations": len(dself["energies"]),
+            }
+            if dself.get("trajectory", []):
+                if (
+                    last_grad := dself["trajectory"][-1].get("properties", {}).get("return_gradient", None)
+                ) is not None:
+                    dself["properties"]["return_gradient"] = last_grad
+            if len(dself.get("trajectory", [])) == len(dself["energies"]):
+                dself["trajectory_properties"] = [
+                    res["properties"] for res in dself["trajectory"]
+                ]  # TODO filter to key keys
+            dself["trajectory_properties"] = [{"return_energy": ene} for ene in dself["energies"]]
+            dself.pop("energies")
+
+            dself["trajectory_results"] = [
+                trajectory_class(**atres).convert_v(target_version, external_protocols=optsubptcl)
+                for atres in dself["trajectory"]
+            ]
+            dself.pop("trajectory")
 
             self_vN = qcel.models.v2.OptimizationResult(**dself)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -227,6 +316,9 @@ class OptimizationSpecification(ProtoModel):
     @validator("procedure")
     def _check_procedure(cls, v):
         return v.lower()
+
+    # NOTE: def convert_v() is missing deliberately. Because the v1 schema has a minor and different role only for
+    #   TorsionDrive, it doesn't have nearly enough info to create a v2 schema.
 
 
 class TDKeywords(ProtoModel):
@@ -301,21 +393,48 @@ class TorsionDriveInput(ProtoModel):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveInput", "qcelemental.models.v2.TorsionDriveInput"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveInput") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveInput") == "self":
             return self
 
         dself = self.dict()
         # dself = self.model_dump(exclude_unset=True, exclude_none=True)
-        if version == 2:
-            dself["input_specification"].pop("schema_version", None)
-            dself["optimization_spec"].pop("schema_version", None)
+        if target_version == 2:
+            gradspec = self.input_specification.convert_v(target_version).model_dump()
+            gradspec["program"] = dself["optimization_spec"]["keywords"].pop("program", "")
+            dself.pop("input_specification")
 
-            self_vN = qcel.models.v2.TorsionDriveInput(**dself)
+            optspec = {}
+            optspec["program"] = dself["optimization_spec"].pop("procedure")
+            optspec["protocols"] = dself["optimization_spec"].pop("protocols")
+            optspec["keywords"] = dself["optimization_spec"].pop("keywords")
+            optspec["specification"] = gradspec
+            dself["optimization_spec"].pop("schema_name")
+            dself["optimization_spec"].pop("schema_version")
+            assert not dself["optimization_spec"], dself["optimization_spec"]
+            dself.pop("optimization_spec")
+
+            tdspec = {}
+            tdspec["program"] = "torsiondrive"
+            tdspec["extras"] = dself.pop("extras")
+            tdspec["keywords"] = dself.pop("keywords")
+            tdspec["specification"] = optspec
+
+            dtop = {}
+            dtop["provenance"] = dself.pop("provenance")
+            dtop["initial_molecules"] = dself.pop("initial_molecule")
+            dtop["specification"] = tdspec
+            dself.pop("schema_name")
+            dself.pop("schema_version")
+            assert not dself, dself
+
+            self_vN = qcel.models.v2.TorsionDriveInput(**dtop)
+        else:
+            assert False, target_version
 
         return self_vN
 
@@ -357,31 +476,71 @@ class TorsionDriveResult(TorsionDriveInput):
         return 1
 
     def convert_v(
-        self, version: int
+        self, target_version: int, /, *, external_input_data: "TorsionDriveInput" = None
     ) -> Union["qcelemental.models.v1.TorsionDriveResult", "qcelemental.models.v2.TorsionDriveResult"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(version, error="TorsionDriveResult") == "self":
+        if check_convertible_version(target_version, error="TorsionDriveResult") == "self":
             return self
 
-        opthist_class = next(iter(self.optimization_history.values()))[0].__class__
         dself = self.dict()
-        if version == 2:
+        if target_version == 2:
+            opthist_class = next(iter(self.optimization_history.values()))[0].__class__
+            dtop = {}
+
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
                 dself.pop("error")
 
-            dself["input_specification"].pop("schema_version", None)
-            dself["optimization_spec"].pop("schema_version", None)
-            dself["optimization_history"] = {
-                k: [opthist_class(**res).convert_v(version) for res in lst]
+            v1_input_data = {
+                k: dself.pop(k)
+                for k in list(dself.keys())
+                if k in ["initial_molecule", "keywords", "optimization_spec", "input_specification"]  # protocols
+            }
+            # any input provenance has been overwritten
+            # sep any merged extras known to belong to input
+            v1_input_data["extras"] = {k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []}
+            v2_input_data = qcel.models.v1.TorsionDriveInput(**v1_input_data).convert_v(target_version)
+
+            # if dself["id"]:
+            #     input_data["id"] = dself["id"]  # in/out should likely match
+
+            if external_input_data:
+                # Note: overwriting with external, not updating. reconsider?
+                if isinstance(external_input_data, dict):
+                    if isinstance(external_input_data["specification"], dict):
+                        in_extras = external_input_data["specification"].get("extras", {})
+                    else:
+                        in_extras = external_input_data["specification"].extras
+                else:
+                    in_extras = external_input_data.specification.extras
+                dtop["extras"] = {k: v for k, v in dself["extras"].items() if (k, v) not in in_extras.items()}
+                dtop["input_data"] = external_input_data
+            else:
+                dtop["input_data"] = v2_input_data
+                dtop["extras"] = dself.pop("extras")
+
+            dtop["provenance"] = dself.pop("provenance")
+            dtop["stdout"] = dself.pop("stdout")
+            dtop["stderr"] = dself.pop("stderr")
+            dtop["success"] = dself.pop("success")
+            dtop["final_energies"] = dself.pop("final_energies")
+            dtop["final_molecules"] = dself.pop("final_molecules")
+            dtop["optimization_history"] = {
+                k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }
-            # if dself["optimization_spec"].pop("extras", None):
-            #    pass
+            dself.pop("optimization_history")
+            dself.pop("schema_name")
+            dself.pop("schema_version")
+            if "error" in dself:
+                dtop["error"] = dself.pop("error")  # guaranteed to be fatal
+            assert not dself, dself
 
-            self_vN = qcel.models.v2.TorsionDriveResult(**dself)
+            self_vN = qcel.models.v2.TorsionDriveResult(**dtop)
+        else:
+            assert False, target_version
 
         return self_vN
 
