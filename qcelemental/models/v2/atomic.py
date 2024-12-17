@@ -3,16 +3,18 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 
 import numpy as np
-from pydantic import Field, constr, field_validator
+from pydantic import Field, field_validator
 
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, qcschema_draft
 from .basis import BasisSet
-from .common_models import ComputeError, DriverEnum, Model, Provenance, check_convertible_version
+from .common_models import DriverEnum, Model, Provenance, check_convertible_version
 from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
+    import qcelemental
+
     from .common_models import ReprArgs
 
 

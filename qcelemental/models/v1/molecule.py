@@ -35,6 +35,8 @@ from .types import Array
 if TYPE_CHECKING:
     from pydantic.v1.typing import ReprArgs
 
+    import qcelemental
+
 # Rounding quantities for hashing
 GEOMETRY_NOISE = 8
 MASS_NOISE = 6

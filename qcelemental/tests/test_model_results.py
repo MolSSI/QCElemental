@@ -633,8 +633,12 @@ def test_error_correction_protocol(
     assert base.protocols.error_correction.policies == defined_result
 
 
-def test_error_correction_logic(schema_versions):
-    ErrorCorrectionProtocol = schema_versions.results.ErrorCorrectionProtocol
+def test_error_correction_logic(schema_versions, request):
+    ErrorCorrectionProtocol = (
+        schema_versions.atomic.ErrorCorrectionProtocol
+        if ("v2" in request.node.name)
+        else schema_versions.results.ErrorCorrectionProtocol
+    )
 
     # Make sure we are permissive by default
     correction_policy = ErrorCorrectionProtocol()

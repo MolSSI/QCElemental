@@ -37,13 +37,13 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:``) 
-- (:pr:``) 
-- (:pr:``) 
-- (:pr:``) ``schema_name`` output chanded to result ``qcschema_output`` to ``qcschema_atomic_result``. also opt
-- (:pr:``) ``TDKeywords`` renamed to ``TorsionDriveKeywords``
-- (:pr:``) ``AtomicResultProtocols`` renamed to ``AtomicProtocols`` and ``AtomicResultProperties`` to ``AtomicProperties``
-- (:pr:``) new ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of optimizationresults at each grid point. Use "all" for proper conversion to v1.
+- (:pr:`364`) 
+- (:pr:`364`) 
+- (:pr:`364`) separated procedures.py and renamed results.py so models are separated into atomic.py, optimization.py, torsion_drive.py, failure models moved to failed_operation.py
+- (:pr:`364`) ``schema_name`` output chanded to result ``qcschema_output`` to ``qcschema_atomic_result``. also opt
+- (:pr:`364`) ``TDKeywords`` renamed to ``TorsionDriveKeywords``
+- (:pr:`364`) ``AtomicResultProtocols`` renamed to ``AtomicProtocols`` and ``AtomicResultProperties`` to ``AtomicProperties``
+- (:pr:`364`) new ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of optimizationresults at each grid point. Use "all" for proper conversion to v1.
 - (:pr:`363`) ``v2.TorsionDriveResult`` no longer inherits from Input and now has indep id and extras and new native_files.
 - (:pr:`363`) ``v2.TorsionDriveInput.initial_molecule`` now ``initial_molecules`` as it's a list of >=1 molecules. keep change?
 - (:pr:`363`) ``v2. TorsionDriveSpecification`` is a new model. instead of ``v2.TorsionDriveInput`` having a ``input_specification`` and an ``optimization_spec`` fields, it has a ``specification`` field that is a ``TorsionDriveSpecification`` which in turn hold opt info and in turn gradient/atomic info. 

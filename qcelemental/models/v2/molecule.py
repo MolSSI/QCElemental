@@ -34,6 +34,8 @@ from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
 
 if TYPE_CHECKING:
+    import qcelemental
+
     from .common_models import ReprArgs
 
 # Rounding quantities for hashing

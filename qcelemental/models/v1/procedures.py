@@ -23,6 +23,8 @@ from .results import AtomicResult
 if TYPE_CHECKING:
     from pydantic.v1.typing import ReprArgs
 
+    import qcelemental
+
 
 class TrajectoryProtocolEnum(str, Enum):
     """
