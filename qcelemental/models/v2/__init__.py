@@ -10,16 +10,17 @@ from .procedures import (
     OptimizationProtocols,
     OptimizationResult,
     OptimizationSpecification,
-    TDKeywords,
     TorsionDriveInput,
+    TorsionDriveKeywords,
+    TorsionDriveProtocols,
     TorsionDriveResult,
     TorsionDriveSpecification,
 )
 from .results import (
     AtomicInput,
+    AtomicProperties,
+    AtomicProtocols,
     AtomicResult,
-    AtomicResultProperties,
-    AtomicResultProtocols,
     AtomicSpecification,
     WavefunctionProperties,
 )
@@ -29,7 +30,7 @@ def qcschema_models():
     return [
         AtomicInput,
         AtomicResult,
-        AtomicResultProperties,
+        AtomicProperties,
         BasisSet,
         Molecule,
         Provenance,

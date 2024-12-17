@@ -19,14 +19,14 @@ if TYPE_CHECKING:
 # ====  Properties  =============================================================
 
 
-class AtomicResultProperties(ProtoModel):
+class AtomicProperties(ProtoModel):
     r"""
     Named properties of quantum chemistry computations following the MolSSI QCSchema.
 
     All arrays are stored flat but must be reshapable into the dimensions in attribute ``shape``, with abbreviations as follows:
 
-    * nao: number of atomic orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nbasis`
-    * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicResultProperties.calcinfo_nmo`
+    * nao: number of atomic orbitals = :attr:`~qcelemental.models.AtomicProperties.calcinfo_nbasis`
+    * nmo: number of molecular orbitals = :attr:`~qcelemental.models.AtomicProperties.calcinfo_nmo`
     """
 
     schema_name: Literal["qcschema_atomic_properties"] = Field(
@@ -34,7 +34,7 @@ class AtomicResultProperties(ProtoModel):
     )
     # TRIAL schema_version: Literal[2] = Field(
     # TRIAL     2,
-    # TRIAL     description="The version number of :attr:`~qcelemental.models.AtomicResultProperties.schema_name` to which this model conforms.",
+    # TRIAL     description="The version number of :attr:`~qcelemental.models.AtomicProperties.schema_name` to which this model conforms.",
     # TRIAL )
 
     # ========  Calcinfo  =======================================================
@@ -632,7 +632,7 @@ class NativeFilesProtocolEnum(str, Enum):
     none = "none"
 
 
-class AtomicResultProtocols(ProtoModel):
+class AtomicProtocols(ProtoModel):
     r"""Protocols regarding the manipulation of computational result data."""
 
     schema_name: Literal["qcschema_atomic_protocols"] = "qcschema_atomic_protocols"
@@ -669,9 +669,9 @@ class AtomicSpecification(ProtoModel):
     )  # TODO interaction with cmdline
     driver: DriverEnum = Field(..., description=DriverEnum.__doc__)
     model: Model = Field(..., description=Model.__doc__)
-    protocols: AtomicResultProtocols = Field(
-        AtomicResultProtocols(),
-        description=AtomicResultProtocols.__doc__,
+    protocols: AtomicProtocols = Field(
+        AtomicProtocols(),
+        description=AtomicProtocols.__doc__,
     )
     extras: Dict[str, Any] = Field(
         {},
@@ -784,8 +784,8 @@ class AtomicInput(ProtoModel):
 class AtomicResult(ProtoModel):
     r"""Results from a CMS program execution."""
 
-    schema_name: Literal["qcschema_atomic_output"] = Field(
-        "qcschema_atomic_output", description=(f"The QCSchema specification to which this model conforms.")
+    schema_name: Literal["qcschema_atomic_result"] = Field(
+        "qcschema_atomic_result", description=(f"The QCSchema specification to which this model conforms.")
     )
     schema_version: Literal[2] = Field(
         2,
@@ -794,7 +794,7 @@ class AtomicResult(ProtoModel):
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
     input_data: AtomicInput = Field(..., description=str(AtomicInput.__doc__))
     molecule: Molecule = Field(..., description="The molecule with frame and orientation of the results.")
-    properties: AtomicResultProperties = Field(..., description=str(AtomicResultProperties.__doc__))
+    properties: AtomicProperties = Field(..., description=str(AtomicProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
     return_result: Union[float, Array[float], Dict[str, Any]] = Field(

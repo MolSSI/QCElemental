@@ -706,7 +706,9 @@ def test_failed_operation(result_data_fixture, request, schema_versions):
 
 
 def test_result_properties_array(request, schema_versions):
-    AtomicResultProperties = schema_versions.AtomicResultProperties
+    AtomicResultProperties = (
+        schema_versions.AtomicProperties if ("v2" in request.node.name) else schema_versions.AtomicResultProperties
+    )
 
     lquad = [1, 2, 3, 2, 4, 5, 3, 5, 6]
 
@@ -728,7 +730,9 @@ def test_result_properties_array(request, schema_versions):
 
 
 def test_result_derivatives_array(request, schema_versions):
-    AtomicResultProperties = schema_versions.AtomicResultProperties
+    AtomicResultProperties = (
+        schema_versions.AtomicProperties if ("v2" in request.node.name) else schema_versions.AtomicResultProperties
+    )
 
     nat = 4
     lgrad = list(range(nat * 3))
@@ -781,17 +785,19 @@ def every_model_fixture(request):
     smodel = "AtomicSpecification"
     datas[smodel] = data
 
-    smodel = "AtomicResultProtocols"  # TODO "AtomicProtocols"
+    smodel = "AtomicResultProtocols"
     data = {"wavefunction": "occupations_and_eigenvalues"}
     datas[smodel] = data
+    datas["AtomicProtocols"] = copy.deepcopy(data)
 
     smodel = "AtomicResult"
     data = request.getfixturevalue("result_data_fixture")
     datas[smodel] = data
 
-    smodel = "AtomicResultProperties"  # TODO "AtomicProperties"
+    smodel = "AtomicResultProperties"
     data = {"scf_one_electron_energy": "-5.0", "scf_dipole_moment": [1, 2, 3], "ccsd_dipole_moment": None}
     datas[smodel] = data
+    datas["AtomicProperties"] = copy.deepcopy(data)
 
     smodel = "WavefunctionProperties"
     data = request.getfixturevalue("wavefunction_data_fixture")
@@ -842,11 +848,14 @@ def every_model_fixture(request):
         data = {}  # DNE
     datas[smodel] = data
 
-    smodel = "TDKeywords"  # TODO "TorsionDriveKeywords"
+    smodel = "TDKeywords"
     data = {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]}
     datas[smodel] = data
+    datas["TorsionDriveKeywords"] = copy.deepcopy(data)
 
-    # smodel = "TorsionDriveProtocols"  # DNE
+    smodel = "TorsionDriveProtocols"
+    data = {"scan_results": "lowest"}
+    datas[smodel] = data
 
     smodel = "TorsionDriveResult"
     data = request.getfixturevalue("torsiondrive_data_fixture")
@@ -893,9 +902,9 @@ _model_classes_struct = [
     pytest.param("FailedOperation",             "FailedOperation",              id="FailedOp"),
     pytest.param("AtomicInput",                 "AtomicInput",                  id="AtIn"),
     pytest.param("QCInputSpecification",        "AtomicSpecification",          id="AtSpec"),
-    pytest.param("AtomicResultProtocols",       "AtomicResultProtocols",        id="AtPtcl"),  # TODO AtomicProtocols
+    pytest.param("AtomicResultProtocols",       "AtomicProtocols",              id="AtPtcl"),
     pytest.param("AtomicResult",                "AtomicResult",                 id="AtRes"),
-    pytest.param("AtomicResultProperties",      "AtomicResultProperties",       id="AtProp"),  # TODO AtomicProperties 
+    pytest.param("AtomicResultProperties",      "AtomicProperties",             id="AtProp"),
     pytest.param("WavefunctionProperties",      "WavefunctionProperties",       id="WfnProp"),
     pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"), 
     pytest.param("OptimizationSpecification",   "OptimizationSpecification",    id="OptSpec"),
@@ -904,8 +913,8 @@ _model_classes_struct = [
     pytest.param(None,                          "OptimizationProperties",       id="OptProp"),
     pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"), 
     pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"), 
-    pytest.param("TDKeywords",                  "TDKeywords",                   id="TDKw"),  # TODO TorsionDriveKeywords
-    # pytest.param(None,                        "TorsionDriveProtocols",        id="TDPtcl"),
+    pytest.param("TDKeywords",                  "TorsionDriveKeywords",         id="TDKw"),
+    pytest.param(None,                          "TorsionDriveProtocols",        id="TDPtcl"),
     pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
     # pytest.param(None,                        "TorsionDriveProperties",       id="TDProp"),
     pytest.param("ManyBodyInput",               None,                           id="MBIn", marks=using_qcmb), 
@@ -1015,19 +1024,19 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         "v1-BasisSet" : 1,    "v2-BasisSet" : 2,  # TODO change for v2?
         "v1-FailedOp" : None, "v2-FailedOp" : 2,
         "v1-AtIn"     : 1,    "v2-AtIn"     : 2,
-        "v1-AtSpec"   : 1,    "v2-AtSpec"   : None,  # WAS 1,  # TODO 2
+        "v1-AtSpec"   : 1,    "v2-AtSpec"   : None,
         "v1-AtPtcl"   : None, "v2-AtPtcl"   : None,
         "v1-AtRes"    : 1,    "v2-AtRes"    : 2,
-        "v1-AtProp"   : None, "v2-AtProp"   : None,  # WAS 2,
-        "v1-WfnProp"  : None, "v2-WfnProp"  : None,  # TODO 2
+        "v1-AtProp"   : None, "v2-AtProp"   : None,
+        "v1-WfnProp"  : None, "v2-WfnProp"  : None,
         "v1-OptIn"    : 1,    "v2-OptIn"    : 2,
-        "v1-OptSpec"  : 1,    "v2-OptSpec"  : None,  # WAS 1,  # TODO 2
+        "v1-OptSpec"  : 1,    "v2-OptSpec"  : None,
         "v1-OptPtcl"  : None, "v2-OptPtcl"  : None,
         "v1-OptRes"   : 1,    "v2-OptRes"   : 2,
-        "v1-OptProp"  : None, "v2-OptProp"  : None,  # WAS 2,     # v1 DNE
+        "v1-OptProp"  : None, "v2-OptProp"  : None,  # v1 DNE
         "v1-TDIn"     : 1,    "v2-TDIn"     : 2,
         "v1-TDSpec"   : None, "v2-TDSpec"   : None,  # v1 DNE
-        "v1-TDKw"     : None, "v2-TDKw"     : None,  # TODO 2
+        "v1-TDKw"     : None, "v2-TDKw"     : None,
         "v1-TDPtcl"   : None, "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : 1,    "v2-TDRes"    : 2,
         "v1-TDProp"   : None, "v2-TDProp"   : None,  # v1 DNE
@@ -1078,7 +1087,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others, yes. <In> is questionable.
+        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others (Spec/Res), yes. <In> is questionable.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
@@ -1252,22 +1261,22 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         "v1-Mol-B"    : "qcschema_molecule",                    "v2-Mol-B"    : "qcschema_molecule",
         "v1-BasisSet" : "qcschema_basis",                       "v2-BasisSet" : "qcschema_basis",  # TODO qcschema_basis_set?
         "v1-FailedOp" : None,                                   "v2-FailedOp" : "qcschema_failed_operation",
-        "v1-AtIn"     : "qcschema_input",                       "v2-AtIn"     : "qcschema_atomic_input",  # TODO standardize!
+        "v1-AtIn"     : "qcschema_input",                       "v2-AtIn"     : "qcschema_atomic_input",
         "v1-AtSpec"   : "qcschema_input",                       "v2-AtSpec"   : "qcschema_atomic_specification",
         "v1-AtPtcl"   : None,                                   "v2-AtPtcl"   : "qcschema_atomic_protocols",
-        "v1-AtRes"    : "qcschema_output",                      "v2-AtRes"    : "qcschema_atomic_output",  # TODO standardize! _result?
+        "v1-AtRes"    : "qcschema_output",                      "v2-AtRes"    : "qcschema_atomic_result",
         "v1-AtProp"   : None,                                   "v2-AtProp"   : "qcschema_atomic_properties",
         "v1-WfnProp"  : None,                                   "v2-WfnProp"  : "qcschema_wavefunction_properties",
         "v1-OptIn"    : "qcschema_optimization_input",          "v2-OptIn"    : "qcschema_optimization_input",
         "v1-OptSpec"  : "qcschema_optimization_specification",  "v2-OptSpec"  : "qcschema_optimization_specification",
         "v1-OptPtcl"  : None,                                   "v2-OptPtcl"  : "qcschema_optimization_protocols",
-        "v1-OptRes"   : "qcschema_optimization_output",         "v2-OptRes"   : "qcschema_optimization_output",  # TODO change to _result?
+        "v1-OptRes"   : "qcschema_optimization_output",         "v2-OptRes"   : "qcschema_optimization_result",
         "v1-OptProp"  : None,                                   "v2-OptProp"  : "qcschema_optimization_properties",  # v1 DNE
         "v1-TDIn"     : "qcschema_torsion_drive_input",         "v2-TDIn"     : "qcschema_torsion_drive_input",
         "v1-TDSpec"   : None,                                   "v2-TDSpec"   : "qcschema_torsion_drive_specification",  # v1 DNE
         "v1-TDKw"     : None,                                   "v2-TDKw"     : "qcschema_torsion_drive_keywords",
-        "v1-TDPtcl"   : None,                                   "v2-TDPtcl"   : None,  # v1 DNE, v2 DNE
-        "v1-TDRes"    : "qcschema_torsion_drive_output",        "v2-TDRes"    : "qcschema_torsion_drive_output",  # TODO change to _result?
+        "v1-TDPtcl"   : None,                                   "v2-TDPtcl"   : "qcschema_torsion_drive_protocols",  # v1 DNE
+        "v1-TDRes"    : "qcschema_torsion_drive_output",        "v2-TDRes"    : "qcschema_torsion_drive_result",
         "v1-TDProp"   : None,                                   "v2-TDProp"   : None,  # v1 DNE, v2 DNE
         "v1-MBIn"     : "qcschema_manybodyinput",               "v2-MBIn"     : "qcschema_many_body_input",     # v2 DNE
         "v1-MBSpec"   : "qcschema_manybodyspecification",       "v2-MBSpec"   : "qcschema_many_body_specification",  # v2 DNE

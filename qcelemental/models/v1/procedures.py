@@ -233,6 +233,7 @@ class OptimizationResult(OptimizationInput):
                 dself.pop("error")
 
             dself.pop("hash_index", None)  # no longer used, so dropped in v2
+            dself.pop("schema_name")  # changed in v2
 
             v1_input_data = {
                 k: dself.pop(k)
@@ -422,6 +423,7 @@ class TorsionDriveInput(ProtoModel):
             tdspec["program"] = "torsiondrive"
             tdspec["extras"] = dself.pop("extras")
             tdspec["keywords"] = dself.pop("keywords")
+            tdspec["protocols"] = {"scan_results": "all"}
             tdspec["specification"] = optspec
 
             dtop = {}
