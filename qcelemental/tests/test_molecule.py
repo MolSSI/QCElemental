@@ -932,7 +932,7 @@ _one_helium_mass = 4.00260325413
         ("4He 0 0 0", {}, "He", {"He": 1}, _one_helium_mass, 2, 0.0),
         ("5He4 0 0 0", {}, "He", {"He": 1}, 5.012057, 2, 0.0),  # suffix-4 is label
         ("He@3.14 0 0 0", {}, "He", {"He": 1}, 3.14, 2, 0.0),
-    ]
+    ],
 )
 def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_weight, nelec, nre):
     mol = Molecule.from_data(mol_string)
