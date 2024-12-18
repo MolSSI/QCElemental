@@ -934,7 +934,7 @@ _one_helium_mass = 4.00260325413
         ("He@3.14 0 0 0", {}, "He", {"He": 1}, 3.14, 2, 0.0),
     ],
 )
-def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_weight, nelec, nre, Molecule):
+def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_weight, nelec, nre):
     mol = Molecule.from_data(mol_string)
 
     assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
