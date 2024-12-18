@@ -939,7 +939,7 @@ def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_wei
 
     assert mol.molecular_weight(**args) == molecular_weight, f"molecular_weight: ret != {molecular_weight}"
     assert mol.nelectrons(**args) == nelec, f"nelectrons: ret != {nelec}"
-    assert (abs(mol.nuclear_repulsion_energy(**args) - nre) < 1.0e-5, f"nre: ret != {nre}"
+    assert abs(mol.nuclear_repulsion_energy(**args) - nre) < 1.0e-5, f"nre: ret != {nre}"
     assert mol.element_composition(**args) == formula_dict, f"element_composition: ret != {formula_dict}"
     assert mol.get_molecular_formula() == formula, f"get_molecular_formula: ret != {formula}"
 
