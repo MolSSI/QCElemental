@@ -937,8 +937,15 @@ _one_helium_mass = 4.00260325413
 def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_weight, nelec, nre):
     mol = Molecule.from_data(mol_string)
 
-    assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
-    assert (ret := mol.nelectrons(**args)) == nelec, f"nelectrons: {ret} != {nelec}"
-    assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
-    assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
-    assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"
+    assert mol.molecular_weight(**args) == molecular_weight, f"molecular_weight: ret != {molecular_weight}"
+    assert mol.nelectrons(**args) == nelec, f"nelectrons: ret != {nelec}"
+    assert (abs(mol.nuclear_repulsion_energy(**args) - nre) < 1.0e-5, f"nre: ret != {nre}"
+    assert mol.element_composition(**args) == formula_dict, f"element_composition: ret != {formula_dict}"
+    assert mol.get_molecular_formula() == formula, f"get_molecular_formula: ret != {formula}"
+
+    # after py38
+    # assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
+    # assert (ret := mol.nelectrons(**args)) == nelec, f"nelectrons: {ret} != {nelec}"
+    # assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
+    # assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
+    # assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"
