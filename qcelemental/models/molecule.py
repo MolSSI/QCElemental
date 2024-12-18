@@ -1171,7 +1171,6 @@ class Molecule(ProtoModel):
             Nuclear repulsion energy in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
         if real_only:
             Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
         else:
