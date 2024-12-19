@@ -28,7 +28,7 @@ from ...periodic_table import periodictable
 from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
-from .basemodels import ProtoModel, qcschema_draft
+from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .common_models import Provenance, qcschema_molecule_default
 from .types import Array
 
@@ -1505,6 +1505,24 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.Molecule", "qcelemental.models.v2.Molecule"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="Molecule") == "self":
+            return self
+
+        loss_store = {}
+        dself = self.model_dump()
+        if target_version == 2:
+            self_vN = qcel.models.v2.Molecule(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 def _filter_defaults(dicary):

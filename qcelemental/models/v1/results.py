@@ -6,22 +6,16 @@ import numpy as np
 from pydantic.v1 import Field, constr, validator
 
 from ...util import provenance_stamp
-from .basemodels import ProtoModel, qcschema_draft
+from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .basis import BasisSet
-from .common_models import (
-    ComputeError,
-    DriverEnum,
-    Model,
-    Provenance,
-    check_convertible_version,
-    qcschema_input_default,
-    qcschema_output_default,
-)
+from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
 from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
     from pydantic.v1.typing import ReprArgs
+
+    import qcelemental
 
 
 class AtomicResultProperties(ProtoModel):
@@ -502,6 +496,25 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.WavefunctionProperties", "qcelemental.models.v2.WavefunctionProperties"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="Molecule") == "self":
+            return self
+
+        dself = self.dict()
+        if target_version == 2:
+            dself["basis"] = self.basis.convert_v(target_version).model_dump()
+
+            self_vN = qcel.models.v2.WavefunctionProperties(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 class WavefunctionProtocolEnum(str, Enum):
     r"""Wavefunction to keep from a computation."""
@@ -625,9 +638,13 @@ class AtomicInput(ProtoModel):
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
 
+            # TODO consider Model.convert_v
+            model = dself.pop("model")
+            if isinstance(self.model.basis, BasisSet):
+                model["basis"] = self.model.basis.convert_v(target_version)
             spec = {}
             spec["driver"] = dself.pop("driver")
-            spec["model"] = dself.pop("model")
+            spec["model"] = model
             spec["keywords"] = dself.pop("keywords", None)
             spec["protocols"] = dself.pop("protocols", None)
             spec["extras"] = dself.pop("extras", None)
@@ -852,6 +869,9 @@ class AtomicResult(AtomicInput):
                 k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
             }  # sep any merged extras known to belong to input
             input_data["specification"]["extras"] = in_extras
+            # TODO consider Model.convert_v
+            if isinstance(self.model.basis, BasisSet):
+                input_data["specification"]["model"]["basis"] = self.model.basis.convert_v(target_version)
 
             # any input provenance has been overwritten
             # if dself["id"]:
@@ -872,6 +892,9 @@ class AtomicResult(AtomicInput):
                 dself["input_data"] = input_data
                 if external_protocols:
                     dself["input_data"]["specification"]["protocols"] = external_protocols
+
+            if self.wavefunction is not None:
+                dself["wavefunction"] = self.wavefunction.convert_v(target_version).model_dump()
 
             self_vN = qcel.models.v2.AtomicResult(**dself)
         else:

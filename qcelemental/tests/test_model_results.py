@@ -775,12 +775,23 @@ def every_model_fixture(request):
     }
     datas[smodel] = data
 
-    smodel = "AtomicInput"
+    smodel = "AtomicInput-A"
     data = request.getfixturevalue("result_data_fixture")
     if "v2" in request.node.name:
         data = data["input_data"]
     else:
         data = {k: data[k] for k in ["molecule", "model", "driver"]}
+    datas[smodel] = data
+
+    smodel = "AtomicInput-B"
+    data = copy.deepcopy(request.getfixturevalue("result_data_fixture"))
+    basB = {"name": "custom_basis", "center_data": center_data, "atom_map": ["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"]}
+    if "v2" in request.node.name:
+        data = data["input_data"]
+        data["specification"]["model"]["basis"] = basB
+    else:
+        data = {k: data[k] for k in ["molecule", "model", "driver"]}
+        data["model"]["basis"] = basB
     datas[smodel] = data
 
     smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
@@ -794,8 +805,20 @@ def every_model_fixture(request):
     datas[smodel] = data
     datas["AtomicProtocols"] = copy.deepcopy(data)
 
-    smodel = "AtomicResult"
-    data = request.getfixturevalue("result_data_fixture")
+    smodel = "AtomicResult-A"
+    data = copy.deepcopy(request.getfixturevalue("result_data_fixture"))
+    datas[smodel] = data
+
+    smodel = "AtomicResult-B"
+    data = copy.deepcopy(request.getfixturevalue("result_data_fixture"))
+    if "v2" in request.node.name:
+        data["input_data"]["specification"]["model"]["basis"] = basB
+    else:
+        data["model"]["basis"] = basB
+    datas[smodel] = data
+
+    smodel = "AtomicResult-C"
+    data = copy.deepcopy(request.getfixturevalue("wavefunction_data_fixture"))
     datas[smodel] = data
 
     smodel = "AtomicResultProperties"
@@ -804,7 +827,7 @@ def every_model_fixture(request):
     datas["AtomicProperties"] = copy.deepcopy(data)
 
     smodel = "WavefunctionProperties"
-    data = request.getfixturevalue("wavefunction_data_fixture")
+    data = copy.deepcopy(request.getfixturevalue("wavefunction_data_fixture"))
     data = data["wavefunction"]
     datas[smodel] = data
 
@@ -904,10 +927,13 @@ _model_classes_struct = [
     pytest.param("Molecule-B",                  "Molecule-B",                   id="Mol-B"),
     pytest.param("BasisSet",                    "BasisSet",                     id="BasisSet"),
     pytest.param("FailedOperation",             "FailedOperation",              id="FailedOp"),
-    pytest.param("AtomicInput",                 "AtomicInput",                  id="AtIn"),
+    pytest.param("AtomicInput-A",               "AtomicInput-A",                id="AtIn-A"),  # str basis
+    pytest.param("AtomicInput-B",               "AtomicInput-B",                id="AtIn-B"),  # model basis
     pytest.param("QCInputSpecification",        "AtomicSpecification",          id="AtSpec"),
     pytest.param("AtomicResultProtocols",       "AtomicProtocols",              id="AtPtcl"),
-    pytest.param("AtomicResult",                "AtomicResult",                 id="AtRes"),
+    pytest.param("AtomicResult-A",              "AtomicResult-A",               id="AtRes-A"),  # str basis
+    pytest.param("AtomicResult-B",              "AtomicResult-B",               id="AtRes-B"),  # model basis
+    pytest.param("AtomicResult-C",              "AtomicResult-C",               id="AtRes-C"),  # wfn
     pytest.param("AtomicResultProperties",      "AtomicProperties",             id="AtProp"),
     pytest.param("WavefunctionProperties",      "WavefunctionProperties",       id="WfnProp"),
     pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"), 
@@ -940,10 +966,13 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         "v1-Mol-B"    : None,  "v2-Mol-B"    : None,
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
         "v1-FailedOp" : False, "v2-FailedOp" : False,
-        "v1-AtIn"     : None,  "v2-AtIn"     : None,
+        "v1-AtIn-A"   : None,  "v2-AtIn-A"   : None,
+        "v1-AtIn-B"   : None,  "v2-AtIn-B"   : None,
         "v1-AtSpec"   : None,  "v2-AtSpec"   : None,
         "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
-        "v1-AtRes"    : True,  "v2-AtRes"    : True,
+        "v1-AtRes-A"  : True,  "v2-AtRes-A"  : True,
+        "v1-AtRes-B"  : True,  "v2-AtRes-B"  : True,
+        "v1-AtRes-C"  : True,  "v2-AtRes-C"  : True,
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
         "v1-OptIn"    : None,  "v2-OptIn"    : None,
@@ -1027,10 +1056,13 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         "v1-Mol-B"    : 2,    "v2-Mol-B"    : 2,  # TODO 3
         "v1-BasisSet" : 1,    "v2-BasisSet" : 2,  # TODO change for v2?
         "v1-FailedOp" : None, "v2-FailedOp" : 2,
-        "v1-AtIn"     : 1,    "v2-AtIn"     : 2,
+        "v1-AtIn-A"   : 1,    "v2-AtIn-A"   : 2,
+        "v1-AtIn-B"   : 1,    "v2-AtIn-B"   : 2,
         "v1-AtSpec"   : 1,    "v2-AtSpec"   : None,
         "v1-AtPtcl"   : None, "v2-AtPtcl"   : None,
-        "v1-AtRes"    : 1,    "v2-AtRes"    : 2,
+        "v1-AtRes-A"  : 1,    "v2-AtRes-A"  : 2,
+        "v1-AtRes-B"  : 1,    "v2-AtRes-B"  : 2,
+        "v1-AtRes-C"  : 1,    "v2-AtRes-C"  : 2,
         "v1-AtProp"   : None, "v2-AtProp"   : None,
         "v1-WfnProp"  : None, "v2-WfnProp"  : None,
         "v1-OptIn"    : 1,    "v2-OptIn"    : 2,
@@ -1091,15 +1123,18 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others (Spec/Res), yes. <In> is questionable.
+        # v2: In/Ptcl/Prop/Kw + BasisSet, no! others (Spec/Res + Mol), yes. <In> is questionable.
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
         "v1-FailedOp" : {},    "v2-FailedOp" : {},
-        "v1-AtIn"     : {},    "v2-AtIn"     : None,
+        "v1-AtIn-A"   : {},    "v2-AtIn-A"   : None,
+        "v1-AtIn-B"   : {},    "v2-AtIn-B"   : None,
         "v1-AtSpec"   : {},    "v2-AtSpec"   : {},
         "v1-AtPtcl"   : None,  "v2-AtPtcl"   : None,
-        "v1-AtRes"    : {},    "v2-AtRes"    : {},
+        "v1-AtRes-A"  : {},    "v2-AtRes-A"  : {},
+        "v1-AtRes-B"  : {},    "v2-AtRes-B"  : {},
+        "v1-AtRes-C"  : {},    "v2-AtRes-C"  : {},
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
         "v1-OptIn"    : {},    "v2-OptIn"    : None,
@@ -1110,7 +1145,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-TDIn"     : {},    "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
-        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1/v2 DNE 
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE 
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
         "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1/v2 DNE
         "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
@@ -1190,30 +1225,33 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
-def test_model_survey_convertable(smodel1, smodel2, every_model_fixture, request, schema_versions):
+def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
         # convert_v() for user-facing fns. uncomment lines if this expands
-        # "v1-Mol-A"    ,  "v2-Mol-A"   ,  # TODO
-        # "v1-Mol-B"    ,  "v2-Mol-B"   ,  # TODO
-        # "v1-BasisSet" ,  "v2-BasisSet",  # TODO
+        "v1-Mol-A"    ,  "v2-Mol-A"   ,
+        "v1-Mol-B"    ,  "v2-Mol-B"   ,
+        "v1-BasisSet" ,  "v2-BasisSet",
         "v1-FailedOp" ,  "v2-FailedOp",
-        "v1-AtIn"     ,  "v2-AtIn"    ,
+        "v1-AtIn-A"   ,  "v2-AtIn-A"  ,
+        "v1-AtIn-B"   ,  "v2-AtIn-B"  ,
         "v1-AtSpec"   ,  "v2-AtSpec"  ,
         # "v1-AtPtcl"   ,  "v2-AtPtcl"  ,
-        "v1-AtRes"    ,  "v2-AtRes"   ,
+        "v1-AtRes-A"  ,  "v2-AtRes-A" ,
+        "v1-AtRes-B"  ,  "v2-AtRes-B" ,
+        "v1-AtRes-C"  ,  "v2-AtRes-C" ,
         # "v1-AtProp"   ,  "v2-AtProp"  , 
-        # "v1-WfnProp"  ,  "v2-WfnProp" , 
+        "v1-WfnProp"  ,  "v2-WfnProp" , 
         "v1-OptIn"    ,  "v2-OptIn"   , 
         "v1-OptSpec"  ,  "v2-OptSpec" , 
-        # "v1-OptPtcl"  ,  "v2-OptPtcl" , 
+        # "v1-OptPtcl"  ,  "v2-OptPtcl" ,  # TODO enable
         "v1-OptRes"   ,  "v2-OptRes"  , 
-        # "v1-OptProp"  ,  "v2-OptProp" , 
+        "v1-OptProp"  ,  "v2-OptProp" ,
         "v1-TDIn"     ,  "v2-TDIn"    , 
         "v1-TDSpec"   ,  "v2-TDSpec"  , 
         # "v1-TDKw"     ,  "v2-TDKw"    , 
-        # "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
+        "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
         "v1-TDRes"    ,  "v2-TDRes"   , 
         # "v1-TDProp"   ,  "v2-TDProp"  , 
         # "v1-MBIn"     ,  "v2-MBIn"    , 
@@ -1263,12 +1301,15 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         # note output not result
         "v1-Mol-A"    : "qcschema_molecule",                    "v2-Mol-A"    : "qcschema_molecule",
         "v1-Mol-B"    : "qcschema_molecule",                    "v2-Mol-B"    : "qcschema_molecule",
-        "v1-BasisSet" : "qcschema_basis",                       "v2-BasisSet" : "qcschema_basis",  # TODO qcschema_basis_set?
+        "v1-BasisSet" : "qcschema_basis",                       "v2-BasisSet" : "qcschema_basis_set",
         "v1-FailedOp" : None,                                   "v2-FailedOp" : "qcschema_failed_operation",
-        "v1-AtIn"     : "qcschema_input",                       "v2-AtIn"     : "qcschema_atomic_input",
+        "v1-AtIn-A"   : "qcschema_input",                       "v2-AtIn-A"   : "qcschema_atomic_input",
+        "v1-AtIn-B"   : "qcschema_input",                       "v2-AtIn-B"   : "qcschema_atomic_input",
         "v1-AtSpec"   : "qcschema_input",                       "v2-AtSpec"   : "qcschema_atomic_specification",
         "v1-AtPtcl"   : None,                                   "v2-AtPtcl"   : "qcschema_atomic_protocols",
-        "v1-AtRes"    : "qcschema_output",                      "v2-AtRes"    : "qcschema_atomic_result",
+        "v1-AtRes-A"  : "qcschema_output",                      "v2-AtRes-A"  : "qcschema_atomic_result",
+        "v1-AtRes-B"  : "qcschema_output",                      "v2-AtRes-B"  : "qcschema_atomic_result",
+        "v1-AtRes-C"  : "qcschema_output",                      "v2-AtRes-C"  : "qcschema_atomic_result",
         "v1-AtProp"   : None,                                   "v2-AtProp"   : "qcschema_atomic_properties",
         "v1-WfnProp"  : None,                                   "v2-WfnProp"  : "qcschema_wavefunction_properties",
         "v1-OptIn"    : "qcschema_optimization_input",          "v2-OptIn"    : "qcschema_optimization_input",
@@ -1392,12 +1433,12 @@ def test_return_result_types(result_data_fixture, retres, atprop, rettyp, jsntyp
         assert isinstance(jatres["return_result"], jsntyp)
 
 
-@pytest.mark.parametrize("smodel", ["AtomicResult", "OptimizationResult", "TorsionDriveResult"])
+@pytest.mark.parametrize("smodel", ["AtomicResult-A", "OptimizationResult", "TorsionDriveResult"])
 def test_error_field_passthrough_v1(request, schema_versions, every_model_fixture, smodel):
     if "v2" in request.node.name:
         pytest.skip("test not appropriate for v2")
 
-    model = getattr(qcel.models.v1, smodel)
+    model = getattr(qcel.models.v1, smodel.split("-")[0])
     data = every_model_fixture[smodel]
     instance = model(**data)
     assert instance.success is True

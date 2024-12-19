@@ -11,12 +11,14 @@ from pydantic import Field, field_validator
 
 from ...util import provenance_stamp
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
-from .basemodels import ExtendedConfigDict, ProtoModel
-from .common_models import Provenance, check_convertible_version
+from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
+from .common_models import Provenance
 from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
+    import qcelemental
+
     from .common_models import ReprArgs
 
 

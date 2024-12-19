@@ -39,6 +39,16 @@ Enhancements
 ++++++++++++
 - (:pr:`364`) 
 - (:pr:`364`) 
+- (:pr:`364`) 
+- (:pr:`364`) 
+- (:pr:`364`) convert_v functions learned to handle model.basis=BasisSet, not just str.
+- (:pr:`364`) ``Molecule`` and ``BasisSet``  and ``WavefunctionProperties`` learned to ``convert_v`` to interconvert between v1 and v2. No layout changes. 
+  ``BasisSet.schema_name`` standardized to ``qcschema_basis_set``.
+  Both classes get their ``schema_name`` as Literal now
+- (:pr:`360`) ``Molecule`` learned new functions ``element_composition`` and ``molecular_weight``.
+  The first gives a dictionary of element symbols and counts, while the second gives the weight in amu.
+  Both can access the whole molecule or per-fragment like the existing ``nelectrons`` and
+  ``nuclear_repulsion_energy``. All four can now select all atoms or exclude ghosts (default).
 - (:pr:`364`) separated procedures.py and renamed results.py so models are separated into atomic.py, optimization.py, torsion_drive.py, failure models moved to failed_operation.py
 - (:pr:`364`) ``schema_name`` output chanded to result ``qcschema_output`` to ``qcschema_atomic_result``. also opt
 - (:pr:`364`) ``TDKeywords`` renamed to ``TorsionDriveKeywords``

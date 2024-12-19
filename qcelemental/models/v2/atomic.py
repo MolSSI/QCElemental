@@ -6,9 +6,9 @@ import numpy as np
 from pydantic import Field, field_validator
 
 from ...util import provenance_stamp
-from .basemodels import ExtendedConfigDict, ProtoModel, qcschema_draft
+from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version, qcschema_draft
 from .basis import BasisSet
-from .common_models import DriverEnum, Model, Provenance, check_convertible_version
+from .common_models import DriverEnum, Model, Provenance
 from .molecule import Molecule
 from .types import Array
 
@@ -521,6 +521,9 @@ class WavefunctionProperties(ProtoModel):
         None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
+    # Note that serializing WfnProp skips unset fields (and indeed the validator will error upon None values)
+    #   while including all fields for the submodel BasisSet. This is the right behavior, imo, but note that
+    #   v1 skips unset fields in BasisSet as well as the top-level model.
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
     @field_validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
@@ -589,6 +592,25 @@ class WavefunctionProperties(ProtoModel):
         if info.data.get(v, None) is None:
             raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.WavefunctionProperties", "qcelemental.models.v2.WavefunctionProperties"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="WavefunctionProperties") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version == 1:
+            dself["basis"] = self.basis.convert_v(target_version).dict()
+
+            self_vN = qcel.models.v1.WavefunctionProperties(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 # ====  Protocols  ==============================================================
@@ -698,7 +720,8 @@ class AtomicSpecification(ProtoModel):
             loss_store["program"] = dself.pop("program")
 
             if loss_store:
-                dself["extras"]["_qcsk_conversion_loss"] = loss_store
+                pass
+                # TODO dself["extras"]["_qcsk_conversion_loss"] = loss_store
 
             self_vN = qcel.models.v1.QCInputSpecification(**dself)
         else:
@@ -763,8 +786,13 @@ class AtomicInput(ProtoModel):
         if target_version == 1:
             dself.pop("schema_name")
 
+            # TODO consider Model.convert_v
+            model = dself["specification"].pop("model")
+            if isinstance(self.specification.model.basis, BasisSet):
+                model["basis"] = self.specification.model.basis.convert_v(target_version)
+
             dself["driver"] = dself["specification"].pop("driver")
-            dself["model"] = dself["specification"].pop("model")
+            dself["model"] = model
             dself["keywords"] = dself["specification"].pop("keywords", None)
             dself["protocols"] = dself["specification"].pop("protocols", None)
             dself["extras"] = dself["specification"].pop("extras", {})
@@ -970,9 +998,11 @@ class AtomicResult(ProtoModel):
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
-            input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
+            input_data = self.input_data.convert_v(target_version).model_dump()  # exclude_unset=True, exclude_none=True
             input_data.pop("molecule", None)  # discard
             input_data.pop("provenance", None)  # discard
+            if self.wavefunction is not None:
+                dself["wavefunction"] = self.wavefunction.convert_v(target_version).model_dump()
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
             dself = {**input_data, **dself}
 

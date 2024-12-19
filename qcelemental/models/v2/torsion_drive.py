@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Uni
 from pydantic import Field, conlist, field_validator
 
 from ...util import provenance_stamp
-from .basemodels import ExtendedConfigDict, ProtoModel
-from .common_models import DriverEnum, Provenance, check_convertible_version
+from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
+from .common_models import DriverEnum, Provenance
 from .molecule import Molecule
 from .optimization import OptimizationResult, OptimizationSpecification
 from .types import Array

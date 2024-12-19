@@ -8,7 +8,7 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
 from pydantic import Field, constr, field_validator, model_serializer
@@ -30,8 +30,8 @@ from ...periodic_table import periodictable
 from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
-from .basemodels import ProtoModel, qcschema_draft
-from .common_models import Provenance, qcschema_molecule_default
+from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
+from .common_models import Provenance
 from .types import Array
 
 if TYPE_CHECKING:
@@ -122,11 +122,8 @@ class Molecule(ProtoModel):
 
     """
 
-    schema_name: constr(strip_whitespace=True, pattern="^(qcschema_molecule)$") = Field(  # type: ignore
-        qcschema_molecule_default,
-        description=(
-            f"The QCSchema specification to which this model conforms. Explicitly fixed as {qcschema_molecule_default}."
-        ),
+    schema_name: Literal["qcschema_molecule"] = Field(
+        "qcschema_molecule", description=(f"The QCSchema specification to which this model conforms.")
     )
     schema_version: int = Field(  # type: ignore
         2,  # TODO Turn to Literal[3] = Field(3)
@@ -1552,6 +1549,23 @@ class Molecule(ProtoModel):
                 assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.Molecule", "qcelemental.models.v2.Molecule"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="Molecule") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version == 1:
+            self_vN = qcel.models.v1.Molecule(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 def _filter_defaults(dicary):

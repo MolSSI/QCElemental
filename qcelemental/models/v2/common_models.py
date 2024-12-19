@@ -63,15 +63,3 @@ class DriverEnum(str, Enum):
             return 0
         else:
             return egh.index(self)
-
-
-def check_convertible_version(ver: int, error: str):
-    if ver == 1:
-        return True
-    elif ver == 2:
-        return "self"
-    else:
-        raise ValueError(f"QCSchema {error} version={version} does not exist for conversion.")
-
-
-qcschema_molecule_default = "qcschema_molecule"

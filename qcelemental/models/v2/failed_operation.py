@@ -2,8 +2,7 @@ from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple,
 
 from pydantic import Field, field_validator
 
-from .basemodels import ProtoModel
-from .common_models import check_convertible_version
+from .basemodels import ProtoModel, check_convertible_version
 
 if TYPE_CHECKING:
     import qcelemental

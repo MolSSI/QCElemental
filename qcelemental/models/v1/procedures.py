@@ -4,13 +4,13 @@ from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Uni
 from pydantic.v1 import Field, conlist, constr, validator
 
 from ...util import provenance_stamp
-from .basemodels import ProtoModel
+from .basemodels import ProtoModel, check_convertible_version
+from .basis import BasisSet
 from .common_models import (
     ComputeError,
     DriverEnum,
     Model,
     Provenance,
-    check_convertible_version,
     qcschema_input_default,
     qcschema_optimization_input_default,
     qcschema_optimization_output_default,
@@ -84,6 +84,12 @@ class QCInputSpecification(ProtoModel):
         if target_version == 2:
             dself.pop("schema_name")
             dself.pop("schema_version")
+
+            # TODO consider Model.convert_v
+            model = dself.pop("model")
+            if isinstance(self.model.basis, BasisSet):
+                model["basis"] = self.model.basis.convert_v(target_version)
+            dself["model"] = model
 
             self_vN = qcel.models.v2.AtomicSpecification(**dself)
         else:
