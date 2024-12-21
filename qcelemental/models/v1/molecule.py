@@ -378,12 +378,6 @@ class Molecule(ProtoModel):
         elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], geometry_noise)
 
-    @validator("schema_version", pre=True)
-    def _version_stamp(cls, v):
-        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
-        #   submodel version fields first.
-        return 2
-
     @validator("geometry")
     def _must_be_3n(cls, v, values, **kwargs):
         n = len(values["symbols"])
@@ -1518,6 +1512,10 @@ class Molecule(ProtoModel):
         loss_store = {}
         dself = self.model_dump()
         if target_version == 2:
+            # below is assignment rather than popping so Mol() records as set and future Mol.model_dump() includes the field.
+            #   QCEngine _build_model convert_v(2) can lose it otherwise, and molparse machinery wants to see the field.
+            dself["schema_version"] = 3
+
             self_vN = qcel.models.v2.Molecule(**dself)
         else:
             assert False, target_version

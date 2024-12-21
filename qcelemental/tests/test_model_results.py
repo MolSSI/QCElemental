@@ -794,7 +794,7 @@ def every_model_fixture(request):
         data["model"]["basis"] = basB
     datas[smodel] = data
 
-    smodel = "QCInputSpecification"  # TODO "AtomicSpecification"
+    smodel = "QCInputSpecification"
     data = {"driver": "hessian", "model": {"basis": "def2-svp", "method": "CC"}}
     datas[smodel] = data
     smodel = "AtomicSpecification"
@@ -1052,9 +1052,9 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     # fmt: off
     ans = {
         # v2: In/Res + Mol/BasisSet/FailedOp, yes! Kw/Ptcl, no. Prop/Spec uncertain.
-        "v1-Mol-A"    : 2,    "v2-Mol-A"    : 2,  # TODO 3
-        "v1-Mol-B"    : 2,    "v2-Mol-B"    : 2,  # TODO 3
-        "v1-BasisSet" : 1,    "v2-BasisSet" : 2,  # TODO change for v2?
+        "v1-Mol-A"    : 2,    "v2-Mol-A"    : 3,
+        "v1-Mol-B"    : 2,    "v2-Mol-B"    : 3,
+        "v1-BasisSet" : 1,    "v2-BasisSet" : 2,
         "v1-FailedOp" : None, "v2-FailedOp" : 2,
         "v1-AtIn-A"   : 1,    "v2-AtIn-A"   : 2,
         "v1-AtIn-B"   : 1,    "v2-AtIn-B"   : 2,
@@ -1108,14 +1108,24 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     # check version override
     if ans is not None:
         data["schema_version"] = 7
-        if "Molecule-B" in smodel:
-            # TODO fix mol validated pathway when upgrade Mol
-            with pytest.raises(qcel.ValidationError) as e:
-                instance = model(**data)
-        else:
+        # qcel.ValidationError is for Molecule-B since molparse catches the error differently
+        with pytest.raises((pydantic.ValidationError, pydantic.v1.ValidationError, qcel.ValidationError)) as e:
             instance = model(**data)
-            # "v1" used to be changeable, but now the version is a stamp, not a signal
-            assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+
+            # Note: this block *can* override the wrong 7 with the correct 1/2 and pass the following assert
+            #   if the models have a validator like the below. This is handy for early conver_v developement
+            #   when fundamental models are unchanged and their constructor can do all the work besides the version change.
+
+            # instance = model(**data)
+            ## "v1" used to be changeable, but now the version is a stamp, not a signal
+            # assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[b] field {fld} = {cptd} != {ans}"
+
+            # v1: @validator("schema_version", pre=True)
+            # v2: @field_validator("schema_version", mode="before")
+            # def _version_stamp(cls, v):
+            #     # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
+            #     #   submodel version fields first.
+            #     return 1
 
 
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)

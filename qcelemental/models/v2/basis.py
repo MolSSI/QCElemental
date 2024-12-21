@@ -248,10 +248,6 @@ class BasisSet(ProtoModel):
 
         return ret
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.BasisSet", "qcelemental.models.v2.BasisSet"]:
@@ -264,6 +260,7 @@ class BasisSet(ProtoModel):
         dself = self.model_dump()
         if target_version == 1:
             dself.pop("schema_name")  # changes in v1
+            dself.pop("schema_version")  # changes in v1
 
             self_vN = qcel.models.v1.BasisSet(**dself)
         else:

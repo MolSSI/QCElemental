@@ -178,10 +178,6 @@ class BasisSet(ProtoModel):
         def schema_extra(schema, model):
             schema["$schema"] = qcschema_draft
 
-    @validator("schema_version", pre=True)
-    def _version_stamp(cls, v):
-        return 1
-
     @validator("atom_map")
     def _check_atom_map(cls, v, values):
         sv = set(v)
@@ -246,6 +242,7 @@ class BasisSet(ProtoModel):
         dself = self.model_dump()
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
+            dself.pop("schema_version")  # changes in v2
 
             self_vN = qcel.models.v2.BasisSet(**dself)
         else:

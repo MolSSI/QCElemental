@@ -80,10 +80,6 @@ class OptimizationSpecification(ProtoModel):
     """Specification for how to run a geometry optimization."""
 
     schema_name: Literal["qcschema_optimization_specification"] = "qcschema_optimization_specification"
-    # schema_version: Literal[2] = Field(
-    #     2,
-    #     description="The version number of ``schema_name`` to which this model conforms.",
-    # )
 
     # right default for program?
     program: str = Field(
@@ -153,10 +149,6 @@ class OptimizationInput(ProtoModel):
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
         ]
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationInput", "qcelemental.models.v2.OptimizationInput"]:
@@ -168,6 +160,10 @@ class OptimizationInput(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            dself.pop("schema_version")
+
+            dself["initial_molecule"] = self.initial_molecule.convert_v(target_version)
+
             dself["extras"] = dself["specification"].pop("extras")
             dself["protocols"] = dself["specification"].pop("protocols")
             dself["keywords"] = dself["specification"].pop("keywords")
@@ -200,10 +196,6 @@ class OptimizationProperties(ProtoModel):
         "qcschema_optimization_properties",
         description=f"The QCSchema specification to which this model conforms.",
     )
-    # schema_version: Literal[2] = Field(
-    #     2,
-    #     description="The version number of :attr:`~qcelemental.models.OptimizationProperties.schema_name` to which this model conforms.",
-    # )
 
     # ========  Calcinfo  =======================================================
     # ========  Canonical  ======================================================
@@ -292,10 +284,6 @@ class OptimizationResult(ProtoModel):
 
         return v
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationResult", "qcelemental.models.v2.OptimizationResult"]:
@@ -312,10 +300,11 @@ class OptimizationResult(ProtoModel):
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
             input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
-            input_data.pop("schema_name")  # prevent inheriting
 
             dself.pop("properties")  # new in v2
             dself.pop("native_files")  # new in v2
+
+            dself["final_molecule"] = self.final_molecule.convert_v(target_version)
 
             dself["trajectory"] = [
                 trajectory_class(**atres).convert_v(target_version) for atres in dself["trajectory_results"]
@@ -325,8 +314,10 @@ class OptimizationResult(ProtoModel):
             dself.pop("trajectory_properties")
 
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
-            dself.pop("schema_name")  # changed in v1
+
             dself = {**input_data, **dself}
+            dself.pop("schema_name")  # changed in v1
+            dself.pop("schema_version")  # changed in v1
 
             self_vN = qcel.models.v1.OptimizationResult(**dself)
         else:

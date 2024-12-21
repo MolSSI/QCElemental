@@ -34,10 +34,6 @@ class AtomicProperties(ProtoModel):
     schema_name: Literal["qcschema_atomic_properties"] = Field(
         "qcschema_atomic_properties", description=(f"The QCSchema specification to which this model conforms.")
     )
-    # TRIAL schema_version: Literal[2] = Field(
-    # TRIAL     2,
-    # TRIAL     description="The version number of :attr:`~qcelemental.models.AtomicProperties.schema_name` to which this model conforms.",
-    # TRIAL )
 
     # ========  Calcinfo  =======================================================
 
@@ -302,10 +298,6 @@ class AtomicProperties(ProtoModel):
         except (ValueError, AttributeError):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
-
-    # TRIAL @field_validator("schema_version", mode="before")
-    # TRIAL def _version_stamp(cls, v):
-    # TRIAL     return 2
 
     def dict(self, *args, **kwargs):
         # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
@@ -683,10 +675,7 @@ class AtomicSpecification(ProtoModel):
     """Specification for a single point QC calculation"""
 
     schema_name: Literal["qcschema_atomic_specification"] = "qcschema_atomic_specification"
-    # schema_version: Literal[2] = Field(
-    #     2,
-    #     description="The version number of ``schema_name`` to which this model conforms.",
-    # )
+
     keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
     program: str = Field(
         "", description="The program for which the Specification is intended."
@@ -767,12 +756,6 @@ class AtomicInput(ProtoModel):
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
-        #   submodel version fields first.
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
@@ -785,12 +768,14 @@ class AtomicInput(ProtoModel):
         dself = self.model_dump()
         if target_version == 1:
             dself.pop("schema_name")
+            dself.pop("schema_version")
 
             # TODO consider Model.convert_v
             model = dself["specification"].pop("model")
             if isinstance(self.specification.model.basis, BasisSet):
                 model["basis"] = self.specification.model.basis.convert_v(target_version)
 
+            dself["molecule"] = self.molecule.convert_v(target_version).model_dump()
             dself["driver"] = dself["specification"].pop("driver")
             dself["model"] = model
             dself["keywords"] = dself["specification"].pop("keywords", None)
@@ -847,10 +832,6 @@ class AtomicResult(ProtoModel):
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
-
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
 
     @field_validator("return_result")
     @classmethod
@@ -995,6 +976,7 @@ class AtomicResult(ProtoModel):
         dself = self.model_dump()
         if target_version == 1:
             dself.pop("schema_name")
+            dself.pop("schema_version")
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
@@ -1003,6 +985,7 @@ class AtomicResult(ProtoModel):
             input_data.pop("provenance", None)  # discard
             if self.wavefunction is not None:
                 dself["wavefunction"] = self.wavefunction.convert_v(target_version).model_dump()
+            dself["molecule"] = self.molecule.convert_v(target_version)
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
             dself = {**input_data, **dself}
 

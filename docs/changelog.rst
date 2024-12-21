@@ -38,9 +38,12 @@ New Features
 Enhancements
 ++++++++++++
 - (:pr:`364`) 
-- (:pr:`364`) 
-- (:pr:`364`) 
-- (:pr:`364`) 
+- (:pr:`364`) molparse learns to pass through schema v3, though no new field for Mol yet.
+- (:pr:`364`) ``v2.FailedOperation`` gained schema_name and schema_version=2. unversioned in v1
+- (:pr:`364`) ``v2.BasisSet.schema_version`` is now 2, with no layout change.
+- (:pr:`364`) ``v2.Molecule.schema_version`` is now 3. convert_v of all the models learned to handle the new schema_version.
+- (:pr:`364`) v2: standardizing on In/Res get versions, Ptcl/Kw/Spec get only schema_name. At, Opt, TD
+- (:pr:`364`) v1/v2: removing the version_stamps from the models: At, Opt, TD, Fail, BAsis, Mol. so it will error rather than clobber if constructed with wrong version. convert_v now handles.
 - (:pr:`364`) convert_v functions learned to handle model.basis=BasisSet, not just str.
 - (:pr:`364`) ``Molecule`` and ``BasisSet``  and ``WavefunctionProperties`` learned to ``convert_v`` to interconvert between v1 and v2. No layout changes. 
   ``BasisSet.schema_name`` standardized to ``qcschema_basis_set``.

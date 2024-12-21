@@ -81,10 +81,6 @@ class FailedOperation(ProtoModel):
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.FailedOperation", "qcelemental.models.v2.FailedOperation"]:

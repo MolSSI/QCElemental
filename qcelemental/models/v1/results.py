@@ -619,12 +619,6 @@ class AtomicInput(ProtoModel):
             ("molecule_hash", self.molecule.get_hash()[:7]),
         ]
 
-    @validator("schema_version", pre=True)
-    def _version_stamp(cls, v):
-        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
-        #   submodel version fields first.
-        return 1
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.AtomicInput", "qcelemental.models.v2.AtomicInput"]:
@@ -637,11 +631,14 @@ class AtomicInput(ProtoModel):
         dself = self.dict()
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
+            dself.pop("schema_version")  # changes in v2
 
             # TODO consider Model.convert_v
             model = dself.pop("model")
             if isinstance(self.model.basis, BasisSet):
                 model["basis"] = self.model.basis.convert_v(target_version)
+            dself["molecule"] = self.molecule.convert_v(target_version)
+
             spec = {}
             spec["driver"] = dself.pop("driver")
             spec["model"] = model
@@ -697,10 +694,6 @@ class AtomicResult(AtomicInput):
             "Only {0} or {1} is allowed for schema_name, "
             "which will be converted to {0}".format(qcschema_output_default, qcschema_input_default)
         )
-
-    @validator("schema_version", pre=True)
-    def _version_stamp(cls, v):
-        return 1
 
     @validator("return_result")
     def _validate_return_result(cls, v, values):
@@ -854,6 +847,9 @@ class AtomicResult(AtomicInput):
         dself = self.dict()
         if target_version == 2:
             dself.pop("schema_name")  # changes in v2
+            dself.pop("schema_version")  # changes in v2
+
+            molecule = self.molecule.convert_v(target_version)
 
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
             if not dself.get("error", True):
@@ -863,7 +859,7 @@ class AtomicResult(AtomicInput):
                 "specification": {
                     k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
                 },
-                "molecule": dself["molecule"],  # duplicate since input mol has been overwritten
+                "molecule": molecule,  # duplicate since input mol has been overwritten
             }
             in_extras = {
                 k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
@@ -893,6 +889,7 @@ class AtomicResult(AtomicInput):
                 if external_protocols:
                     dself["input_data"]["specification"]["protocols"] = external_protocols
 
+            dself["molecule"] = molecule
             if self.wavefunction is not None:
                 dself["wavefunction"] = self.wavefunction.convert_v(target_version).model_dump()
 

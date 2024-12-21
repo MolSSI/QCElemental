@@ -125,8 +125,8 @@ class Molecule(ProtoModel):
     schema_name: Literal["qcschema_molecule"] = Field(
         "qcschema_molecule", description=(f"The QCSchema specification to which this model conforms.")
     )
-    schema_version: int = Field(  # type: ignore
-        2,  # TODO Turn to Literal[3] = Field(3)
+    schema_version: Literal[3] = Field(
+        3,
         description="The version number of :attr:`~qcelemental.models.Molecule.schema_name` to which this model conforms.",
     )
     validated: bool = Field(  # type: ignore
@@ -369,7 +369,7 @@ class Molecule(ProtoModel):
 
         if validate:
             kwargs["schema_name"] = kwargs.pop("schema_name", "qcschema_molecule")
-            kwargs["schema_version"] = kwargs.pop("schema_version", 2)
+            kwargs["schema_version"] = kwargs.pop("schema_version", 3)
             # original_keys = set(kwargs.keys())  # revive when ready to revisit sparsity
 
             nonphysical = kwargs.pop("nonphysical", False)
@@ -401,12 +401,6 @@ class Molecule(ProtoModel):
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
         elif validate or geometry_prep:
             values["geometry"] = float_prep(values["geometry"], geometry_noise)
-
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        # seemingly unneeded, this lets conver_v re-label the model w/o discarding model and
-        #   submodel version fields first.
-        return 2  # TODO 3
 
     @field_validator("geometry")
     @classmethod
@@ -941,7 +935,7 @@ class Molecule(ProtoModel):
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
             mol_dict = from_string(data, dtype if dtype != "string" else None)
             assert isinstance(mol_dict, dict)
-            input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
+            input_dict = to_schema(mol_dict["qm"], dtype=3, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
             input_dict["_geometry_prep"] = True
@@ -953,7 +947,7 @@ class Molecule(ProtoModel):
                 "units": kwargs.pop("units", "Angstrom"),
                 "fragment_separators": kwargs.pop("frags", []),
             }
-            input_dict = to_schema(from_arrays(**data), dtype=2, np_out=True)
+            input_dict = to_schema(from_arrays(**data), dtype=3, np_out=True)
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
             input_dict["_geometry_prep"] = True
@@ -1561,6 +1555,10 @@ class Molecule(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            # below is assignment rather than popping so Mol() records as set and future Mol.model_dump() includes the field.
+            #   needed for QCEngine Psi4.
+            dself["schema_version"] = 2
+
             self_vN = qcel.models.v1.Molecule(**dself)
         else:
             assert False, target_version

@@ -91,10 +91,6 @@ class TorsionDriveSpecification(ProtoModel):
     """Specification for how to run a torsion drive scan."""
 
     schema_name: Literal["qcschema_torsion_drive_specification"] = "qcschema_torsion_drive_specification"
-    # schema_version: Literal[2] = Field(
-    #     2,
-    #     description="The version number of ``schema_name`` to which this model conforms.",
-    # )
 
     program: str = Field(
         "", description="Torsion Drive CMS code / QCEngine procedure with which to run the torsion scan."
@@ -144,10 +140,6 @@ class TorsionDriveInput(ProtoModel):
         assert driver == DriverEnum.gradient, "driver must be set to gradient"
         return value
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.TorsionDriveInput", "qcelemental.models.v2.TorsionDriveInput"]:
@@ -159,9 +151,11 @@ class TorsionDriveInput(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            dself.pop("schema_version")  # changed in v1
             dself.pop("id")  # unused in v1
             dself["extras"] = dself["specification"].pop("extras")
-            dself["initial_molecule"] = dself.pop("initial_molecules")
+            dself.pop("initial_molecules")
+            dself["initial_molecule"] = [m.convert_v(target_version) for m in self.initial_molecules]
             dself["keywords"] = dself["specification"].pop("keywords")
             dself["keywords"].pop("schema_name")  # unused in v1
 
@@ -232,10 +226,6 @@ class TorsionDriveResult(ProtoModel):
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    @field_validator("schema_version", mode="before")
-    def _version_stamp(cls, v):
-        return 2
-
     @field_validator("optimization_history")  # TODO "scan_results")
     @classmethod
     def _scan_protocol(cls, v, info):
@@ -290,7 +280,8 @@ class TorsionDriveResult(ProtoModel):
             input_data.pop("schema_name")  # prevent inheriting
 
             dtop["final_energies"] = dself.pop("final_energies")
-            dtop["final_molecules"] = dself.pop("final_molecules")
+            dself.pop("final_molecules")
+            dtop["final_molecules"] = {k: m.convert_v(target_version) for k, m in self.final_molecules.items()}
             dtop["optimization_history"] = {
                 k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
