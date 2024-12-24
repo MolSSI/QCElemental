@@ -38,6 +38,9 @@ New Features
 Enhancements
 ++++++++++++
 - (:pr:`364`) 
+- (:pr:`364`) default of OptimizationProtocol.trajectory_results changed to "none" from "all" in v1. much info can now come from properties.
+- (:pr:`364`) v2.OptimizationProtocol renamed trajectory_results from trajectory in accordance with the protocol naming the controlled field. no default change yet.
+- (:pr:`364`) v1/v2: import ElectronShell, BasisCenter, ECPPotential from top level models
 - (:pr:`364`) molparse learns to pass through schema v3, though no new field for Mol yet.
 - (:pr:`364`) ``v2.FailedOperation`` gained schema_name and schema_version=2. unversioned in v1
 - (:pr:`364`) ``v2.BasisSet.schema_version`` is now 2, with no layout change.
@@ -52,7 +55,7 @@ Enhancements
   The first gives a dictionary of element symbols and counts, while the second gives the weight in amu.
   Both can access the whole molecule or per-fragment like the existing ``nelectrons`` and
   ``nuclear_repulsion_energy``. All four can now select all atoms or exclude ghosts (default).
-- (:pr:`364`) separated procedures.py and renamed results.py so models are separated into atomic.py, optimization.py, torsion_drive.py, failure models moved to failed_operation.py
+- (:pr:`364`) separated procedures.py and renamed results.py so models are separated into atomic.py, optimization.py, torsion_drive.py, failure models moved to failed_operation.py. basis.py to basis_set.py
 - (:pr:`364`) ``schema_name`` output chanded to result ``qcschema_output`` to ``qcschema_atomic_result``. also opt
 - (:pr:`364`) ``TDKeywords`` renamed to ``TorsionDriveKeywords``
 - (:pr:`364`) ``AtomicResultProtocols`` renamed to ``AtomicProtocols`` and ``AtomicResultProperties`` to ``AtomicProperties``

@@ -9,7 +9,7 @@ from .atomic import (
     WavefunctionProperties,
 )
 from .basemodels import ProtoModel
-from .basis import BasisSet
+from .basis_set import BasisCenter, BasisSet, ECPPotential, ElectronShell
 from .common_models import DriverEnum, Model, Provenance
 from .failed_operation import ComputeError, FailedOperation
 from .molecule import Molecule

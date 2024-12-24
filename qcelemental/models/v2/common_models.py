@@ -5,7 +5,7 @@ import numpy as np
 from pydantic import Field, field_validator
 
 from .basemodels import ProtoModel, qcschema_draft
-from .basis import BasisSet
+from .basis_set import BasisSet
 
 if TYPE_CHECKING:
     ReprArgs = Sequence[Tuple[Optional[str], Any]]

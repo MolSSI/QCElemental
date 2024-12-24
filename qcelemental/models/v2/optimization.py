@@ -42,11 +42,32 @@ class OptimizationProtocols(ProtoModel):
     """
 
     schema_name: Literal["qcschema_optimization_protocols"] = "qcschema_optimization_protocols"
-    trajectory: TrajectoryProtocolEnum = Field(
-        TrajectoryProtocolEnum.all, description=str(TrajectoryProtocolEnum.__doc__)
+    trajectory_results: TrajectoryProtocolEnum = Field(
+        TrajectoryProtocolEnum.none, description=str(TrajectoryProtocolEnum.__doc__)
     )
 
     model_config = ExtendedConfigDict(force_skip_defaults=True)
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.OptimizationProtocols", "qcelemental.models.v2.OptimizationProtocols"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="OptimizationProtocols") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version == 1:
+            # serialization is compact, so use model to assure value
+            dself.pop("trajectory_results", None)
+            dself["trajectory"] = self.trajectory_results.value
+
+            self_vN = qcel.models.v1.OptimizationProtocols(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 # ====  Inputs (Kw/Spec/In)  ====================================================
@@ -114,6 +135,7 @@ class OptimizationSpecification(ProtoModel):
         if target_version == 1:
             dself["procedure"] = dself.pop("program")
             dself["keywords"]["program"] = dself["specification"].pop("program")
+            dself["protocols"] = self.protocols.convert_v(target_version)
 
             loss_store["extras"] = dself.pop("extras")
             loss_store["specification"] = dself.pop("specification")
@@ -165,7 +187,8 @@ class OptimizationInput(ProtoModel):
             dself["initial_molecule"] = self.initial_molecule.convert_v(target_version)
 
             dself["extras"] = dself["specification"].pop("extras")
-            dself["protocols"] = dself["specification"].pop("protocols")
+            dself["specification"].pop("protocols")
+            dself["protocols"] = self.specification.protocols.convert_v(target_version)
             dself["keywords"] = dself["specification"].pop("keywords")
 
             dself["input_specification"] = self.specification.specification.convert_v(target_version)
@@ -218,6 +241,8 @@ class OptimizationProperties(ProtoModel):
         None, description="The number of geometry iterations taken before convergence."
     )
 
+    final_rms_force: Optional[float] = Field(None, description="The final RMS gradient of the molecule in Eh/Bohr.")
+
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
 
@@ -268,7 +293,7 @@ class OptimizationResult(ProtoModel):
         if "input_data" not in info.data:
             raise ValueError("Input_data was not properly formed.")
 
-        keep_enum = info.data["input_data"].specification.protocols.trajectory
+        keep_enum = info.data["input_data"].specification.protocols.trajectory_results
         if keep_enum == "all":
             pass
         elif keep_enum == "initial_and_final":
@@ -295,7 +320,10 @@ class OptimizationResult(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
-            trajectory_class = self.trajectory_results[0].__class__
+            try:
+                trajectory_class = self.trajectory_results[0].__class__
+            except IndexError:
+                trajectory_class = None
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")

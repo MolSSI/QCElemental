@@ -129,7 +129,7 @@ def result_data_fixture(schema_versions, request):
 
 @pytest.fixture(scope="function")
 def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
-    BasisSet = schema_versions.basis.BasisSet
+    BasisSet = schema_versions.basis_set.BasisSet if "v2" in request.node.name else schema_versions.basis.BasisSet
 
     bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
     c_matrix = np.random.rand(bas.nbf, bas.nbf)
@@ -350,13 +350,13 @@ def manybody_data_fixture():
 
 @pytest.mark.parametrize("center_name", center_data.keys())
 def test_basis_shell_centers(center_name, schema_versions):
-    BasisCenter = schema_versions.basis.BasisCenter
+    BasisCenter = schema_versions.BasisCenter
 
     assert BasisCenter(**center_data[center_name])
 
 
 def test_basis_set_build(request, schema_versions):
-    BasisSet = schema_versions.basis.BasisSet
+    BasisSet = schema_versions.BasisSet
 
     bas = BasisSet(
         name="custom_basis",
@@ -378,8 +378,12 @@ def test_basis_set_build(request, schema_versions):
     assert es[0].coefficients == [[0.15432899, 0.53532814, 0.44463454]]
 
 
-def test_basis_electron_center_raises(schema_versions):
-    ElectronShell = schema_versions.basis.ElectronShell
+def test_basis_electron_center_raises(schema_versions, request):
+    # define both ways just to check imports
+    ElectronShell = (
+        schema_versions.basis_set.ElectronShell if "v2" in request.node.name else schema_versions.basis.ElectronShell
+    )
+    ElectronShell = schema_versions.ElectronShell
 
     data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
 
@@ -400,8 +404,8 @@ def test_basis_electron_center_raises(schema_versions):
     assert "fused shell" in str(e.value)
 
 
-def test_basis_ecp_center_raises(schema_versions):
-    basis = schema_versions.basis
+def test_basis_ecp_center_raises(schema_versions, request):
+    basis = schema_versions.basis_set if "v2" in request.node.name else schema_versions.basis
 
     # Check coefficients
     data = center_data["bs_def2tzvp_zr"]["ecp_potentials"][0].copy()
@@ -419,7 +423,7 @@ def test_basis_ecp_center_raises(schema_versions):
 
 
 def test_basis_map_raises(schema_versions):
-    BasisSet = schema_versions.basis.BasisSet
+    BasisSet = schema_versions.BasisSet
 
     with pytest.raises(ValueError) as e:
         assert BasisSet(name="custom_basis", center_data=center_data, atom_map=["something_odd"])
@@ -596,9 +600,11 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
 
     if keep is not None:
         if "v2" in request.node.name:
-            optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory": keep}
+            optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory_results": keep}
         else:
             optimization_data_fixture["protocols"] = {"trajectory": keep}
+    if "v2" in request.node.name and keep is None:
+        indices = []  # default has changed in v2
     opt = OptimizationResult(**optimization_data_fixture)
 
     trajs_target = opt.trajectory_results if "v2" in request.node.name else opt.trajectory
@@ -848,7 +854,10 @@ def every_model_fixture(request):
     datas[smodel] = data
 
     smodel = "OptimizationProtocols"
-    data = {"trajectory": "initial_and_final"}
+    if "v2" in request.node.name:
+        data = {"trajectory_results": "initial_and_final"}
+    else:
+        data = {"trajectory": "initial_and_final"}
     datas[smodel] = data
 
     smodel = "OptimizationResult"
@@ -1255,7 +1264,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         "v1-WfnProp"  ,  "v2-WfnProp" , 
         "v1-OptIn"    ,  "v2-OptIn"   , 
         "v1-OptSpec"  ,  "v2-OptSpec" , 
-        # "v1-OptPtcl"  ,  "v2-OptPtcl" ,  # TODO enable
+        "v1-OptPtcl"  ,  "v2-OptPtcl" ,
         "v1-OptRes"   ,  "v2-OptRes"  , 
         "v1-OptProp"  ,  "v2-OptProp" ,
         "v1-TDIn"     ,  "v2-TDIn"    , 

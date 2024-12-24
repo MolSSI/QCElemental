@@ -7,7 +7,7 @@ from pydantic import Field, field_validator
 
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version, qcschema_draft
-from .basis import BasisSet
+from .basis_set import BasisSet
 from .common_models import DriverEnum, Model, Provenance
 from .molecule import Molecule
 from .types import Array

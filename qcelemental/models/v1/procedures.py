@@ -49,6 +49,27 @@ class OptimizationProtocols(ProtoModel):
     class Config:
         force_skip_defaults = True
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.OptimizationProtocols", "qcelemental.models.v2.OptimizationProtocols"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="OptimizationProtocols") == "self":
+            return self
+
+        dself = self.dict()
+        if target_version == 2:
+            # serialization is compact, so use model to assure value
+            dself.pop("trajectory", None)
+            dself["trajectory_results"] = self.trajectory.value
+
+            self_vN = qcel.models.v2.OptimizationProtocols(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 class QCInputSpecification(ProtoModel):
     """
@@ -135,7 +156,8 @@ class OptimizationInput(ProtoModel):
 
             spec = {}
             spec["extras"] = dself.pop("extras")
-            spec["protocols"] = dself.pop("protocols")
+            dself.pop("protocols")
+            spec["protocols"] = self.protocols.convert_v(target_version).model_dump()
             spec["specification"] = self.input_specification.convert_v(target_version).model_dump()
             dself.pop("input_specification")
             spec["specification"]["program"] = dself["keywords"].pop(
@@ -224,7 +246,11 @@ class OptimizationResult(OptimizationInput):
         if check_convertible_version(target_version, error="OptimizationResult") == "self":
             return self
 
-        trajectory_class = self.trajectory[0].__class__
+        try:
+            trajectory_class = self.trajectory[0].__class__
+        except IndexError:
+            trajectory_class = None
+
         dself = self.dict()
         if target_version == 2:
             # remove harmless empty error field that v2 won't accept. if populated, pydantic will catch it.
@@ -266,6 +292,7 @@ class OptimizationResult(OptimizationInput):
 
             dself["final_molecule"] = self.final_molecule.convert_v(target_version)
             dself["properties"] = {
+                "nuclear_repulsion_energy": self.final_molecule.nuclear_repulsion_energy(),
                 "return_energy": dself["energies"][-1],
                 "optimization_iterations": len(dself["energies"]),
             }
@@ -404,7 +431,8 @@ class TorsionDriveInput(ProtoModel):
 
             optspec = {}
             optspec["program"] = dself["optimization_spec"].pop("procedure")
-            optspec["protocols"] = dself["optimization_spec"].pop("protocols")
+            dself["optimization_spec"].pop("protocols")
+            optspec["protocols"] = self.optimization_spec.protocols.convert_v(target_version).model_dump()
             optspec["keywords"] = dself["optimization_spec"].pop("keywords")
             optspec["specification"] = gradspec
             dself["optimization_spec"].pop("schema_name")
