@@ -158,10 +158,10 @@ def test_molecule_repr_chgmult(Molecule, water_molecule_data, water_dimer_minima
     water_molecule = Molecule.from_data(water_molecule_data)
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
-    wat1 = water_molecule.copy()
+    wat1 = water_molecule.model_copy()
     assert "formula='H2O'," in wat1.__repr__(), "charge/mult wrongly present in Molecule repr"
 
-    wat2 = water_dimer_minima.dict()
+    wat2 = water_dimer_minima.model_dump()
     wat2["fragment_charges"] = [1, 0]
     for field in ["molecular_charge", "molecular_multiplicity", "fragment_multiplicities", "validated"]:
         wat2.pop(field)
@@ -395,20 +395,20 @@ def test_water_orient(Molecule):
 
     # Make sure the fragments match
     assert frag_0.get_hash() == frag_1.get_hash()
-    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"
+    assert frag_0.get_hash() == "d0b499739f763e8d3a5556b4ddaeded6a148e4d5"  # pragma: allowlist secret
 
     # Make sure the complexes match
     frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=True)
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=True)
     assert frag_0_1.get_hash() == frag_1_0.get_hash()
-    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
+    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"  # pragma: allowlist secret
 
     # Fragments not reordered, should be different molecules.
     frag_0_1 = mol.get_fragment(0, 1, orient=True, group_fragments=False)
     frag_1_0 = mol.get_fragment(1, 0, orient=True, group_fragments=False)
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
-    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
-    assert frag_1_0.get_hash() == "9ed8bdc4ae559c20816d65225fdb1ae3c29d149f"
+    assert frag_0_1.get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"  # pragma: allowlist secret
+    assert frag_1_0.get_hash() == "9ed8bdc4ae559c20816d65225fdb1ae3c29d149f"  # pragma: allowlist secret
 
     # These are identical molecules, but should be different with ghost
     mol = Molecule.from_data(
@@ -431,7 +431,7 @@ def test_water_orient(Molecule):
     # Make sure the fragments match
     assert frag_0.molecular_multiplicity == 1
     assert frag_0.get_hash() == frag_1.get_hash()
-    assert frag_0.get_hash() == "77b272802d61b578b1c65bb87747a89e53e015a7"
+    assert frag_0.get_hash() == "77b272802d61b578b1c65bb87747a89e53e015a7"  # pragma: allowlist secret
 
     # Make sure the complexes match
     frag_0_1 = mol.get_fragment(0, 1, orient=True)
@@ -440,8 +440,8 @@ def test_water_orient(Molecule):
     # Ghost fragments should prevent overlap
     assert frag_0_1.molecular_multiplicity == 1
     assert frag_0_1.get_hash() != frag_1_0.get_hash()
-    assert frag_0_1.get_hash() == "4a4cd4d0ab0eef8fed2221fb692c3b1fbf4834de"
-    assert frag_1_0.get_hash() == "4cc0b30f9f50dd85f4f2036a683865bf17ded803"
+    assert frag_0_1.get_hash() == "4a4cd4d0ab0eef8fed2221fb692c3b1fbf4834de"  # pragma: allowlist secret
+    assert frag_1_0.get_hash() == "4cc0b30f9f50dd85f4f2036a683865bf17ded803"  # pragma: allowlist secret
 
 
 def test_molecule_errors_extra(Molecule, water_dimer_minima_data):
@@ -571,12 +571,12 @@ def test_get_fragment(group_fragments, orient, Molecule):
         assert dimers[0].get_hash() != dimers[3].get_hash()  # atoms out of order
         assert dimers[1].get_hash() != dimers[4].get_hash()  # atoms out of order
         assert dimers[2].get_hash() == dimers[5].get_hash()
-        assert dimers[5].get_hash() == "f1d6551f95ce9467dbcce7c48e11bb98d0f1fb98"
+        assert dimers[5].get_hash() == "f1d6551f95ce9467dbcce7c48e11bb98d0f1fb98"  # pragma: allowlist secret
     elif not group_fragments and not orient:
         assert dimers[0].get_hash() == dimers[3].get_hash()
         assert dimers[1].get_hash() == dimers[4].get_hash()
         assert dimers[2].get_hash() == dimers[5].get_hash()
-        assert dimers[5].get_hash() == "1bd9100e99748a0c34b01cef558ea5cf4ae6ab85"
+        assert dimers[5].get_hash() == "1bd9100e99748a0c34b01cef558ea5cf4ae6ab85"  # pragma: allowlist secret
     else:
         assert 0
 
@@ -592,13 +592,13 @@ def test_get_fragment(group_fragments, orient, Molecule):
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() == ghdimers[5].get_hash()
-        assert ghdimers[5].get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"
+        assert ghdimers[5].get_hash() == "bd23a8a5e48a3a6a32011559fdddc958bb70343b"  # pragma: allowlist secret
     elif not group_fragments and not orient:
         assert ghdimers[0].get_hash() != ghdimers[3].get_hash()  # diff atoms ghosted
         assert ghdimers[1].get_hash() != ghdimers[4].get_hash()  # diff atoms ghosted
         assert ghdimers[2].get_hash() != ghdimers[5].get_hash()  # real pattern different
         assert not np.allclose(ghdimers[2].real, ghdimers[5].real)
-        assert ghdimers[5].get_hash() == "9d1fd57e90735a47af4156e1d72b7e8e78fb44eb"
+        assert ghdimers[5].get_hash() == "9d1fd57e90735a47af4156e1d72b7e8e78fb44eb"  # pragma: allowlist secret
     else:
         assert 0
 
@@ -617,7 +617,7 @@ def test_molecule_repeated_hashing(Molecule):
     )
 
     h1 = mol.get_hash()
-    assert h1 == "7e604937e8a0c8e4c6426906e25b3002f785b1fc"
+    assert h1 == "7e604937e8a0c8e4c6426906e25b3002f785b1fc"  # pragma: allowlist secret
     assert mol.get_molecular_formula() == "H2O2"
 
     mol2 = Molecule(orient=False, **mol.model_dump())
@@ -1023,15 +1023,8 @@ _one_helium_mass = 4.00260325413
 def test_molecular_weight(Molecule, mol_string, args, formula, formula_dict, molecular_weight, nelec, nre):
     mol = Molecule.from_data(mol_string)
 
-    assert mol.molecular_weight(**args) == molecular_weight, f"molecular_weight: ret != {molecular_weight}"
-    assert mol.nelectrons(**args) == nelec, f"nelectrons: ret != {nelec}"
-    assert abs(mol.nuclear_repulsion_energy(**args) - nre) < 1.0e-5, f"nre: ret != {nre}"
-    assert mol.element_composition(**args) == formula_dict, f"element_composition: ret != {formula_dict}"
-    assert mol.get_molecular_formula() == formula, f"get_molecular_formula: ret != {formula}"
-
-    # after py38
-    # assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
-    # assert (ret := mol.nelectrons(**args)) == nelec, f"nelectrons: {ret} != {nelec}"
-    # assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
-    # assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
-    # assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"
+    assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
+    assert (ret := mol.nelectrons(**args)) == nelec, f"nelectrons: {ret} != {nelec}"
+    assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
+    assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
+    assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"
