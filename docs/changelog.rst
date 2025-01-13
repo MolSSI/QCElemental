@@ -29,9 +29,13 @@ Breaking Changes
 
 New Features
 ++++++++++++
-- UNMERGED (:pr:`350`, :pr:`318`, :issue:`317`) Make behavior consistent between molecular_charge/
+- (:pr:`350`, :pr:`318`, :issue:`317`) Make behavior consistent between molecular_charge/
   fragment_charges and molecular_multiplicity/fragment_multiplicities by allowing floating point
   numbers for multiplicities. @awvwgk
+- (:pr:`360`) ``Molecule`` learned new functions ``element_composition`` and ``molecular_weight``.
+  The first gives a dictionary of element symbols and counts, while the second gives the weight in amu.
+  Both can access the whole molecule or per-fragment like the existing ``nelectrons`` and
+  ``nuclear_repulsion_energy``. All four can now select all atoms or exclude ghosts (default).
 
 Enhancements
 ++++++++++++
@@ -59,6 +63,8 @@ Misc.
 +++++
 - (:pr:`344`, :issue:`282`) Add a citation file since QCElemental doesn't have a paper. @lilyminium
 - (:pr:`342`, :issue:`333`) Update some docs settings and requirements for newer tools.
+- (:pr:`353`) copied in pkg_resources.safe_version code as follow-up to Eric switch to packaging as both nwchem and gamess were now working. 
+the try_harder_safe_version might be even bettter
 
 
 0.28.0 / 2024-06-21
