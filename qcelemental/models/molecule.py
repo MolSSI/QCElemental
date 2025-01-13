@@ -185,7 +185,7 @@ class Molecule(ProtoModel):
         description="Additional comments for this molecule. Intended for pure human/user consumption and clarity.",
     )
     molecular_charge: float = Field(0.0, description="The net electrostatic charge of the molecule.")  # type: ignore
-    molecular_multiplicity: int = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
+    molecular_multiplicity: float = Field(1, description="The total multiplicity of the molecule.")  # type: ignore
 
     # Atom data
     masses_: Optional[Array[float]] = Field(  # type: ignore
@@ -257,7 +257,7 @@ class Molecule(ProtoModel):
         "if not provided (and :attr:`~qcelemental.models.Molecule.fragments` are specified).",
         shape=["nfr"],
     )
-    fragment_multiplicities_: Optional[List[int]] = Field(  # type: ignore
+    fragment_multiplicities_: Optional[List[float]] = Field(  # type: ignore
         None,
         description="The multiplicity of each fragment in the :attr:`~qcelemental.models.Molecule.fragments` list. The index of this "
         "list matches the 0-index indices of :attr:`~qcelemental.models.Molecule.fragments` list. Will be filled in based on a set of "
@@ -421,12 +421,16 @@ class Molecule(ProtoModel):
             n = len(values["fragments_"])
             if len(v) != n:
                 raise ValueError("Fragment Multiplicities must be same number of entries as Fragments")
+        v = [(int(m) if m.is_integer() else m) for m in v]
         if any([m < 1.0 for m in v]):
             raise ValueError(f"Fragment Multiplicity must be positive: {v}")
         return v
 
     @validator("molecular_multiplicity")
     def _int_if_possible(cls, v, values, **kwargs):
+        if v.is_integer():
+            # preserve existing hashes
+            v = int(v)
         if v < 1.0:
             raise ValueError("Molecular Multiplicity must be positive")
         return v
@@ -502,7 +506,7 @@ class Molecule(ProtoModel):
         return fragment_charges
 
     @property
-    def fragment_multiplicities(self) -> List[int]:
+    def fragment_multiplicities(self) -> List[float]:
         fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
         if fragment_multiplicities is None:
             fragment_multiplicities = [self.molecular_multiplicity]
@@ -803,9 +807,7 @@ class Molecule(ProtoModel):
             data = getattr(self, field)
             if field == "geometry":
                 data = float_prep(data, GEOMETRY_NOISE)
-            elif field == "fragment_charges":
-                data = float_prep(data, CHARGE_NOISE)
-            elif field == "molecular_charge":
+            elif field in ["fragment_charges", "molecular_charge", "fragment_multiplicities", "molecular_multiplicity"]:
                 data = float_prep(data, CHARGE_NOISE)
             elif field == "masses":
                 data = float_prep(data, MASS_NOISE)
