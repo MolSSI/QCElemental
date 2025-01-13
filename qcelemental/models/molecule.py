@@ -1,7 +1,7 @@
 """
 Molecule Object Model
 """
-
+import collections
 import hashlib
 import json
 import warnings
@@ -875,6 +875,10 @@ class Molecule(ProtoModel):
         >>> two_pentanol_radcat.get_molecular_formula(chgmult=True)
         2^C5H12O+
 
+        Notes
+        -----
+        This includes all atoms in the molecule, including ghost atoms. See :py:meth:`element_composition` to exclude.
+
         """
 
         from ..molutil import molecular_formula_from_symbols
@@ -1151,13 +1155,15 @@ class Molecule(ProtoModel):
         tensor[2][1] = tensor[1][2] = -1.0 * np.sum(weight * geom[:, 1] * geom[:, 2])
         return tensor
 
-    def nuclear_repulsion_energy(self, ifr: int = None) -> float:
+    def nuclear_repulsion_energy(self, ifr: int = None, real_only: bool = True) -> float:
         r"""Nuclear repulsion energy.
 
         Parameters
         ----------
         ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
 
         Returns
         -------
@@ -1165,7 +1171,10 @@ class Molecule(ProtoModel):
             Nuclear repulsion energy in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        if real_only:
+            Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        else:
+            Zeff = self.atomic_numbers
         atoms = list(range(self.geometry.shape[0]))
 
         if ifr is not None:
@@ -1178,13 +1187,15 @@ class Molecule(ProtoModel):
                 nre += Zeff[at1] * Zeff[at2] / dist
         return nre
 
-    def nelectrons(self, ifr: int = None) -> int:
+    def nelectrons(self, ifr: int = None, real_only: bool = True) -> int:
         r"""Number of electrons.
 
         Parameters
         ----------
         ifr
             If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
 
         Returns
         -------
@@ -1192,7 +1203,10 @@ class Molecule(ProtoModel):
             Number of electrons in entire molecule or in fragment.
 
         """
-        Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        if real_only:
+            Zeff = [z * int(real) for z, real in zip(cast(Iterable[int], self.atomic_numbers), self.real)]
+        else:
+            Zeff = self.atomic_numbers
 
         if ifr is None:
             nel = sum(Zeff) - self.molecular_charge
@@ -1201,6 +1215,69 @@ class Molecule(ProtoModel):
             nel = sum([zf for iat, zf in enumerate(Zeff) if iat in self.fragments[ifr]]) - self.fragment_charges[ifr]
 
         return int(nel)
+
+    def molecular_weight(self, ifr: int = None, real_only: bool = True) -> float:
+        r"""Molecular weight in uamu.
+
+        Parameters
+        ----------
+        ifr
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms in the sum.
+
+        Returns
+        -------
+        mw : float
+            Molecular weight in entire molecule or in fragment.
+
+        """
+        if real_only:
+            masses = [mas * int(real) for mas, real in zip(cast(Iterable[float], self.masses), self.real)]
+        else:
+            masses = self.masses
+
+        if ifr is None:
+            mw = sum(masses)
+
+        else:
+            mw = sum([mas for iat, mas in enumerate(masses) if iat in self.fragments[ifr]])
+
+        return mw
+
+    def element_composition(self, ifr: int = None, real_only: bool = True) -> Dict[str, int]:
+        r"""Atomic count map.
+
+        Parameters
+        ----------
+        ifr
+            If not `None`, only compute for the `ifr`-th (0-indexed) fragment.
+        real_only
+            Only include real atoms.
+
+        Returns
+        -------
+        composition : Dict[str, int]
+            Atomic count map.
+
+        Notes
+        -----
+        This excludes ghost atoms by default whereas get_molecular_formula always includes them.
+
+        """
+        if real_only:
+            symbols = [sym * int(real) for sym, real in zip(cast(Iterable[str], self.symbols), self.real)]
+        else:
+            symbols = self.symbols
+
+        if ifr is None:
+            count = collections.Counter(sym.title() for sym in symbols)
+
+        else:
+            count = collections.Counter(sym.title() for iat, sym in enumerate(symbols) if iat in self.fragments[ifr])
+
+        count.pop("", None)
+        return dict(count)
 
     def align(
         self,

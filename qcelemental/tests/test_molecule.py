@@ -913,3 +913,39 @@ def test_frag_multiplicity_types_errors(mult_in, validate, error):
         qcel.models.Molecule(**mol_args)
 
     assert error in str(e.value)
+
+
+_one_helium_mass = 4.00260325413
+
+
+@pytest.mark.parametrize(
+    "mol_string,args,formula,formula_dict,molecular_weight,nelec,nre",
+    [
+        ("He 0 0 0", {}, "He", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("He 0 0 0\n--\nHe 0 0 5", {}, "He2", {"He": 2}, 2 * _one_helium_mass, 4, 0.4233417684),
+        ("He 0 0 0\n--\n@He 0 0 5", {}, "He2", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("He 0 0 0\n--\n@He 0 0 5", {"ifr": 0}, "He2", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("He 0 0 0\n--\n@He 0 0 5", {"ifr": 1}, "He2", {}, 0.0, 0, 0.0),
+        ("He 0 0 0\n--\n@He 0 0 5", {"real_only": False}, "He2", {"He": 2}, 2 * _one_helium_mass, 4, 0.4233417684),
+        ("He 0 0 0\n--\n@He 0 0 5", {"real_only": False, "ifr": 0}, "He2", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("He 0 0 0\n--\n@He 0 0 5", {"real_only": False, "ifr": 1}, "He2", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("4He 0 0 0", {}, "He", {"He": 1}, _one_helium_mass, 2, 0.0),
+        ("5He4 0 0 0", {}, "He", {"He": 1}, 5.012057, 2, 0.0),  # suffix-4 is label
+        ("He@3.14 0 0 0", {}, "He", {"He": 1}, 3.14, 2, 0.0),
+    ],
+)
+def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_weight, nelec, nre):
+    mol = Molecule.from_data(mol_string)
+
+    assert mol.molecular_weight(**args) == molecular_weight, f"molecular_weight: ret != {molecular_weight}"
+    assert mol.nelectrons(**args) == nelec, f"nelectrons: ret != {nelec}"
+    assert abs(mol.nuclear_repulsion_energy(**args) - nre) < 1.0e-5, f"nre: ret != {nre}"
+    assert mol.element_composition(**args) == formula_dict, f"element_composition: ret != {formula_dict}"
+    assert mol.get_molecular_formula() == formula, f"get_molecular_formula: ret != {formula}"
+
+    # after py38
+    # assert (ret := mol.molecular_weight(**args)) == molecular_weight, f"molecular_weight: {ret} != {molecular_weight}"
+    # assert (ret := mol.nelectrons(**args)) == nelec, f"nelectrons: {ret} != {nelec}"
+    # assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
+    # assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
+    # assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"

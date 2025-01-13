@@ -31,6 +31,10 @@ Breaking Changes
 
 New Features
 ++++++++++++
+- (:pr:`360`) ``Molecule`` learned new functions ``element_composition`` and ``molecular_weight``.
+  The first gives a dictionary of element symbols and counts, while the second gives the weight in amu.
+  Both can access the whole molecule or per-fragment like the existing ``nelectrons`` and
+  ``nuclear_repulsion_energy``. All four can now select all atoms or exclude ghosts (default).
 
 Enhancements
 ++++++++++++
