@@ -41,6 +41,8 @@ Bug Fixes
 Misc.
 +++++
 - (:pr:`342`) Update some docs settings and requirements for newer tools.
+- (:pr:`353`) copied in pkg_resources.safe_version code as follow-up to Eric switch to packaging as both nwchem and gamess were now working. 
+the try_harder_safe_version might be even bettter
 
 
 0.28.0 / 2024-06-21
