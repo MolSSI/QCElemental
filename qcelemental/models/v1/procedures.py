@@ -450,7 +450,7 @@ class TorsionDriveInput(ProtoModel):
             dtop = {}
             dtop["provenance"] = dself.pop("provenance")
             dself.pop("initial_molecule")
-            dtop["initial_molecules"] = [mol.convert_v(target_version) for mol in self.initial_molecule]
+            dtop["initial_molecule"] = [mol.convert_v(target_version) for mol in self.initial_molecule]
             dtop["specification"] = tdspec
             dself.pop("schema_name")
             dself.pop("schema_version")
@@ -548,7 +548,7 @@ class TorsionDriveResult(TorsionDriveInput):
             dtop["final_energies"] = dself.pop("final_energies")
             dself.pop("final_molecules")
             dtop["final_molecules"] = {k: m.convert_v(target_version) for k, m in self.final_molecules.items()}
-            dtop["optimization_history"] = {
+            dtop["scan_results"] = {
                 k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
             }

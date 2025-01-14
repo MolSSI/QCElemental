@@ -254,7 +254,7 @@ def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, re
 
     if "v2" in request.node.name:
         input_data = {
-            "initial_molecules": [ethane] * 2,
+            "initial_molecule": [ethane] * 2,
             "specification": {
                 "keywords": {"dihedrals": [(2, 0, 1, 5)], "grid_spacing": [180]},
                 "specification": {
@@ -294,7 +294,7 @@ def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, re
             "provenance": {"creator": "qcel"},
             "final_energies": {"180": -2.3, "0": -4.5},
             "final_molecules": {"180": ethane, "0": ethane},
-            "optimization_history": {"180": [optres, optres], "0": [optres]},
+            "scan_results": {"180": [optres, optres], "0": [optres]},
         }
     else:
         ret = {

@@ -38,6 +38,10 @@ New Features
 Enhancements
 ++++++++++++
 - (:pr:`364`) 
+- (:pr:`364`) 
+- (:pr:`364`) 
+- (:pr:`364`) main storage for ``v2.TorsionDriveResult`` moved from ``optimization_history`` to ``scan_results``.
+- (:pr:`364`) ``v2.TorsionDriveInput.initial_molecule`` restored from ``initial_molecules``.
 - (:pr:`364`) default of OptimizationProtocol.trajectory_results changed to "none" from "all" in v1. much info can now come from properties.
 - (:pr:`364`) v2.OptimizationProtocol renamed trajectory_results from trajectory in accordance with the protocol naming the controlled field. no default change yet.
 - (:pr:`364`) v1/v2: import ElectronShell, BasisCenter, ECPPotential from top level models

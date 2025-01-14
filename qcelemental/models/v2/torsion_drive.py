@@ -124,7 +124,7 @@ class TorsionDriveInput(ProtoModel):
     )
 
     id: Optional[str] = None
-    initial_molecules: conlist(item_type=Molecule, min_length=1) = Field(
+    initial_molecule: conlist(item_type=Molecule, min_length=1) = Field(
         ..., description="The starting molecule(s) for the torsion drive."
     )
 
@@ -154,8 +154,7 @@ class TorsionDriveInput(ProtoModel):
             dself.pop("schema_version")  # changed in v1
             dself.pop("id")  # unused in v1
             dself["extras"] = dself["specification"].pop("extras")
-            dself.pop("initial_molecules")
-            dself["initial_molecule"] = [m.convert_v(target_version) for m in self.initial_molecules]
+            dself["initial_molecule"] = [m.convert_v(target_version) for m in self.initial_molecule]
             dself["keywords"] = dself["specification"].pop("keywords")
             dself["keywords"].pop("schema_name")  # unused in v1
 
@@ -202,7 +201,7 @@ class TorsionDriveResult(ProtoModel):
     final_molecules: Dict[str, Molecule] = Field(
         ..., description="The final molecule at each angle of the TorsionDrive scan."
     )
-    optimization_history: Dict[str, List[OptimizationResult]] = Field(
+    scan_results: Dict[str, List[OptimizationResult]] = Field(
         ...,
         description="The map of each angle of the TorsionDrive scan to each optimization computations.",
     )
@@ -226,7 +225,7 @@ class TorsionDriveResult(ProtoModel):
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
-    @field_validator("optimization_history")  # TODO "scan_results")
+    @field_validator("scan_results")
     @classmethod
     def _scan_protocol(cls, v, info):
         # Do not propogate validation errors
@@ -269,7 +268,7 @@ class TorsionDriveResult(ProtoModel):
         dself = self.model_dump()
         if target_version == 1:
             try:
-                opthist_class = next(iter(self.optimization_history.values()))[0].__class__
+                opthist_class = next(iter(self.scan_results.values()))[0].__class__
             except StopIteration:
                 opthist_class = None
             dtop = {}
@@ -284,9 +283,9 @@ class TorsionDriveResult(ProtoModel):
             dtop["final_molecules"] = {k: m.convert_v(target_version) for k, m in self.final_molecules.items()}
             dtop["optimization_history"] = {
                 k: [opthist_class(**res).convert_v(target_version) for res in lst]
-                for k, lst in dself["optimization_history"].items()
+                for k, lst in dself["scan_results"].items()
             }
-            dself.pop("optimization_history")
+            dself.pop("scan_results")
 
             dself.pop("id")  # unused in v1
             dself.pop("native_files")  # new in v2
