@@ -292,9 +292,10 @@ def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, re
             "input_data": input_data,
             "success": True,
             "provenance": {"creator": "qcel"},
-            "final_energies": {"180": -2.3, "0": -4.5},
+            "scan_properties": {"180": {"return_energy": -2.3}, "0": {"return_energy": -4.5}},
             "final_molecules": {"180": ethane, "0": ethane},
             "scan_results": {"180": [optres, optres], "0": [optres]},
+            "properties": {"calcinfo_ngrid": 1},
         }
     else:
         ret = {
@@ -897,7 +898,9 @@ def every_model_fixture(request):
     data = request.getfixturevalue("torsiondrive_data_fixture")
     datas[smodel] = data
 
-    # smodel = "TorsionDriveProperties"  # DNE
+    smodel = "TorsionDriveProperties"
+    data = {"calcinfo_ngrid": 1}
+    datas[smodel] = data
 
     smodel = "ManyBodyInput"
     data = request.getfixturevalue("manybody_data_fixture")
@@ -955,7 +958,7 @@ _model_classes_struct = [
     pytest.param("TDKeywords",                  "TorsionDriveKeywords",         id="TDKw"),
     pytest.param(None,                          "TorsionDriveProtocols",        id="TDPtcl"),
     pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
-    # pytest.param(None,                        "TorsionDriveProperties",       id="TDProp"),
+    pytest.param(None,                          "TorsionDriveProperties",       id="TDProp"),
     pytest.param("ManyBodyInput",               None,                           id="MBIn", marks=using_qcmb), 
     pytest.param("ManyBodySpecification",       None,                           id="MBSpec", marks=using_qcmb), 
     pytest.param("ManyBodyKeywords",            None,                           id="MBKw", marks=using_qcmb),
@@ -1166,7 +1169,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
         "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE 
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
-        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1/v2 DNE
+        "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
         "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
         "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
         "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
@@ -1272,7 +1275,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         # "v1-TDKw"     ,  "v2-TDKw"    , 
         "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
         "v1-TDRes"    ,  "v2-TDRes"   , 
-        # "v1-TDProp"   ,  "v2-TDProp"  , 
+        "v1-TDProp"   ,  "v2-TDProp"  , 
         # "v1-MBIn"     ,  "v2-MBIn"    , 
         # "v1-MBSpec"   ,  "v2-MBSpec"  , 
         # "v1-MBKw"     ,  "v2-MBKw"    , 
@@ -1341,7 +1344,7 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         "v1-TDKw"     : None,                                   "v2-TDKw"     : "qcschema_torsion_drive_keywords",
         "v1-TDPtcl"   : None,                                   "v2-TDPtcl"   : "qcschema_torsion_drive_protocols",  # v1 DNE
         "v1-TDRes"    : "qcschema_torsion_drive_output",        "v2-TDRes"    : "qcschema_torsion_drive_result",
-        "v1-TDProp"   : None,                                   "v2-TDProp"   : None,  # v1 DNE, v2 DNE
+        "v1-TDProp"   : None,                                   "v2-TDProp"   : "qcschema_torsion_drive_properties",  # v1 DNE
         "v1-MBIn"     : "qcschema_manybodyinput",               "v2-MBIn"     : "qcschema_many_body_input",     # v2 DNE
         "v1-MBSpec"   : "qcschema_manybodyspecification",       "v2-MBSpec"   : "qcschema_many_body_specification",  # v2 DNE
         "v1-MBKw"     : "qcschema_manybodykeywords",            "v2-MBKw"     : "qcschema_many_body_keywords",       # v2 DNE

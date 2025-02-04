@@ -549,12 +549,23 @@ class TorsionDriveResult(TorsionDriveInput):
             dtop["stdout"] = dself.pop("stdout")
             dtop["stderr"] = dself.pop("stderr")
             dtop["success"] = dself.pop("success")
-            dtop["final_energies"] = dself.pop("final_energies")
+            dtop["scan_properties"] = {
+                k: {
+                    "nuclear_repulsion_energy": mol.nuclear_repulsion_energy(),
+                    "return_energy": dself["final_energies"][k],
+                    # "optimization_iterations":
+                }
+                for k, mol in self.final_molecules.items()
+            }
+            dself.pop("final_energies")
             dself.pop("final_molecules")
             dtop["final_molecules"] = {k: m.convert_v(target_version) for k, m in self.final_molecules.items()}
             dtop["scan_results"] = {
                 k: [opthist_class(**res).convert_v(target_version) for res in lst]
                 for k, lst in dself["optimization_history"].items()
+            }
+            dtop["properties"] = {
+                "calcinfo_ngrid": len(dtop["scan_results"]),
             }
             dself.pop("optimization_history")
             dself.pop("schema_name")

@@ -23,6 +23,7 @@ from .optimization import (
 from .torsion_drive import (
     TorsionDriveInput,
     TorsionDriveKeywords,
+    TorsionDriveProperties,
     TorsionDriveProtocols,
     TorsionDriveResult,
     TorsionDriveSpecification,
