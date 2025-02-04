@@ -37,6 +37,8 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`367`) ``v1.TorsionDriveResult.final_energies`` replaced by larger ``v2.TorsionDriveResult.scan_properties``. the former is present in the latter as ``return_energy``.
+- (:pr:`367`) ``v2.TorsionDriveProperties`` added mostly as a placeholder class (one obvious prop at present).
 - (:pr:`366`) main storage for ``v2.TorsionDriveResult`` moved from ``optimization_history`` to ``scan_results``.
 - (:pr:`366`) ``v2.TorsionDriveInput.initial_molecule`` restored from ``initial_molecules``.
 - (:pr:`366`) default of OptimizationProtocol.trajectory_results changed to "none" from "all" in v1. much info can now come from properties.

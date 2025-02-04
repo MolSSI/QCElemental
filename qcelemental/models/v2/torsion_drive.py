@@ -7,7 +7,7 @@ from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
 from .common_models import DriverEnum, Provenance
 from .molecule import Molecule
-from .optimization import OptimizationResult, OptimizationSpecification
+from .optimization import OptimizationProperties, OptimizationResult, OptimizationSpecification
 from .types import Array
 
 if TYPE_CHECKING:
@@ -176,8 +176,27 @@ class TorsionDriveInput(ProtoModel):
 
 
 # ====  Properties  =============================================================
-# ========  Calcinfo  =======================================================
-# ========  Canonical  ======================================================
+
+# This is mostly a placeholder class until properties developed
+
+
+class TorsionDriveProperties(ProtoModel):
+    r"""
+    Named properties of torsion drive computations following the MolSSI QCSchema.
+    """
+
+    schema_name: Literal["qcschema_torsion_drive_properties"] = Field(
+        "qcschema_torsion_drive_properties",
+        description=f"The QCSchema specification to which this model conforms.",
+    )
+
+    # ========  Calcinfo  =======================================================
+
+    calcinfo_ngrid: Optional[int] = Field(None, description="The number of dihedral constraints optimized.")
+
+    # ========  Canonical  ======================================================
+
+    model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
 
 # ====  Results  ================================================================
@@ -194,12 +213,13 @@ class TorsionDriveResult(ProtoModel):
     id: Optional[str] = Field(None, description="The optional ID for the computation.")
     input_data: TorsionDriveInput = Field(..., description=str(TorsionDriveInput.__doc__))
 
-    # final_energies, final_molecules, optimization_history I'm hoping to refactor into scan_properties and scan_results but need to talk to OpenFF folks
-    final_energies: Dict[str, float] = Field(
-        ..., description="The final energy at each angle of the TorsionDrive scan."
-    )
     final_molecules: Dict[str, Molecule] = Field(
         ..., description="The final molecule at each angle of the TorsionDrive scan."
+    )
+    # Note: scan_results includes all opts at each point (best and intermediate), while
+    #   scan_properties and final_molecules include only the best opt. other choices could be made.
+    scan_properties: Dict[str, OptimizationProperties] = Field(
+        ..., description="The map of energies and other properties for each angle of the TorsionDrive scan."
     )
     scan_results: Dict[str, List[OptimizationResult]] = Field(
         ...,
@@ -212,8 +232,7 @@ class TorsionDriveResult(ProtoModel):
     # native_files placeholder for when any td programs supply extra files or need an input file. no protocol at present
     native_files: Dict[str, Any] = Field({}, description="DSL files.")
 
-    # TODO add properties if a set can be collected
-    # properties: TorsionDriveProperties = Field(..., description=str(TorsionDriveProperties.__doc__))
+    properties: TorsionDriveProperties = Field(..., description=str(TorsionDriveProperties.__doc__))
 
     extras: Dict[str, Any] = Field(
         {},
@@ -278,7 +297,8 @@ class TorsionDriveResult(ProtoModel):
             input_data = self.input_data.convert_v(target_version).model_dump()
             input_data.pop("schema_name")  # prevent inheriting
 
-            dtop["final_energies"] = dself.pop("final_energies")
+            dtop["final_energies"] = {k: prop["return_energy"] for k, prop in dself["scan_properties"].items()}
+            dself.pop("scan_properties")
             dself.pop("final_molecules")
             dtop["final_molecules"] = {k: m.convert_v(target_version) for k, m in self.final_molecules.items()}
             dtop["optimization_history"] = {
@@ -288,6 +308,7 @@ class TorsionDriveResult(ProtoModel):
             dself.pop("scan_results")
 
             dself.pop("id")  # unused in v1
+            dself.pop("properties")  # new in v2
             dself.pop("native_files")  # new in v2
             dtop["provenance"] = dself.pop("provenance")
             dtop["stdout"] = dself.pop("stdout")
