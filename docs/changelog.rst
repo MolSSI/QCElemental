@@ -20,7 +20,7 @@ Changelog
 .. +++++
 
 
-X.Y.0 / 2025-MM-DD (Unreleased)
+0.30.0 / 2025-MM-DD (Unreleased)
 -------------------
 
 Breaking Changes
@@ -39,6 +39,7 @@ Bug Fixes
 
 Misc.
 +++++
+- (:pr:`371`) Extend poetry constraints to allow Python 3.13.
 
 
 0.29.0 / 2025-01-13
