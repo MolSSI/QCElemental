@@ -54,7 +54,7 @@ scipy = [
 pytest = { version = "^7.2.2", optional = true }
 
 [tool.poetry.extras]
-viz = ["nglview", "ipykernel", "setuptools"]
+viz = ["nglview", "ipykernel", "pkg_resources"]
 align = ["networkx", "scipy"]
 test = ["pytest"]
 
