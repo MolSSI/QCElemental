@@ -20,6 +20,27 @@ Changelog
 .. +++++
 
 
+X.Y.0 / 2025-MM-DD (Unreleased)
+-------------------
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+- (:pr:`371`) Add `setuptools` as general dependency just in case nglview is present, so
+  `pkg_resources` can be imported. After next nglview release, this can be removed.
+
+Misc.
++++++
+
+
 0.29.0 / 2025-01-13
 -------------------
 
