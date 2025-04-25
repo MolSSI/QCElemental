@@ -109,25 +109,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.testing</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 
-<span class="kn">from</span> <span class="nn">qcelemental.models.basemodels</span> <span class="kn">import</span> <span class="n">ProtoModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span>
 
 <span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_handle_return</span><span class="p">(</span><span class="n">passfail</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_handle_return</span><span class="p">(</span><span class="n">passfail</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to print a &#39;*label*...PASSED&#39; line to log.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">quiet</span><span class="p">:</span>
@@ -143,13 +143,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">passfail</span>
 
 
-<span class="k">def</span> <span class="nf">tnm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tnm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the name of the calling function, usually name of test case.&quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
 
 
-<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_values.html#qcelemental.compare_values">[docs]</a><span class="k">def</span> <span class="nf">compare_values</span><span class="p">(</span>
+<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_values.html#qcelemental.compare_values">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_values</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -295,11 +295,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_rms</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rms</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
 
 
-<div class="viewcode-block" id="compare"><a class="viewcode-back" href="../../api/qcelemental.testing.compare.html#qcelemental.compare">[docs]</a><span class="k">def</span> <span class="nf">compare</span><span class="p">(</span>
+<div class="viewcode-block" id="compare"><a class="viewcode-back" href="../../api/qcelemental.testing.compare.html#qcelemental.compare">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -417,7 +417,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">_prefix</span> <span class="ow">or</span> <span class="s2">&quot;root&quot;</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
@@ -490,7 +490,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">errors</span>
 
 
-<div class="viewcode-block" id="compare_recursive"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_recursive.html#qcelemental.compare_recursive">[docs]</a><span class="k">def</span> <span class="nf">compare_recursive</span><span class="p">(</span>
+<div class="viewcode-block" id="compare_recursive"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_recursive.html#qcelemental.compare_recursive">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_recursive</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
     <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -602,7 +602,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret_msg_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">ret_msg_str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="compare_molrecs"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_molrecs.html#qcelemental.compare_molrecs">[docs]</a><span class="k">def</span> <span class="nf">compare_molrecs</span><span class="p">(</span>
+<div class="viewcode-block" id="compare_molrecs"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_molrecs.html#qcelemental.compare_molrecs">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_molrecs</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">,</span>
     <span class="n">computed</span><span class="p">,</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -620,7 +620,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">xptd</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
     <span class="n">cptd</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">computed</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">massage_dicts</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">massage_dicts</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
         <span class="c1"># if &#39;fix_symmetry&#39; in dicary:</span>
         <span class="c1">#     dicary[&#39;fix_symmetry&#39;] = str(dicary[&#39;fix_symmetry&#39;])</span>
         <span class="c1"># if &#39;units&#39; in dicary:</span>
@@ -656,7 +656,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="c1">#   they overlap and that the translation/rotation arrays jibe with</span>
         <span class="c1">#   fix_com/orientation, then attach the oriented geom to computed before the</span>
         <span class="c1">#   recursive dict comparison.</span>
-        <span class="kn">from</span> <span class="nn">.molutil.align</span> <span class="kn">import</span> <span class="n">B787</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.molutil.align</span><span class="w"> </span><span class="kn">import</span> <span class="n">B787</span>
 
         <span class="n">cgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cptd</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">rgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xptd</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>

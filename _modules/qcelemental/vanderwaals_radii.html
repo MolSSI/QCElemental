@@ -113,16 +113,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">Contains van der Waals radii</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">.datum</span> <span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">DataUnavailableError</span>
-<span class="kn">from</span> <span class="nn">.periodic_table</span> <span class="kn">import</span> <span class="n">periodictable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.datum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataUnavailableError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.periodic_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">periodictable</span>
 
 
-<div class="viewcode-block" id="VanderWaalsRadii"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii">[docs]</a><span class="k">class</span> <span class="nc">VanderWaalsRadii</span><span class="p">:</span>
+<div class="viewcode-block" id="VanderWaalsRadii"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">VanderWaalsRadii</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Van der Waals radii sets.</span>
 
 <span class="sd">    Parameters</span>
@@ -149,10 +149,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MANTINA2009&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;MANTINA2009&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vdwr</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-        <span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">mantina_2009_vanderwaals_radii</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">mantina_2009_vanderwaals_radii</span>
 
         <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;MANTINA2009&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">mantina_2009_vanderwaals_radii</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
@@ -167,10 +167,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">context</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mantina_2009_vanderwaals_radii</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">][:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;VanderWaalsRadii(context=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="VanderWaalsRadii.get"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+<div class="viewcode-block" id="VanderWaalsRadii.get"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.get">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="n">missing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;Datum&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -228,19 +228,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">return_tuple</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">missing</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">DataUnavailableError</span><span class="p">(</span><span class="s2">&quot;vanderwaals radius&quot;</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+                <span class="k">raise</span> <span class="n">DataUnavailableError</span><span class="p">(</span><span class="s2">&quot;vanderwaals radius&quot;</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">if</span> <span class="n">return_tuple</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qca</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qca</span><span class="o">.</span><span class="n">to_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VanderWaalsRadii.string_representation"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.string_representation">[docs]</a>    <span class="k">def</span> <span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="VanderWaalsRadii.string_representation"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.string_representation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print name, value, and units of all van der Waals radii.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">print_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vdwr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VanderWaalsRadii.write_c_header"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.write_c_header">[docs]</a>    <span class="k">def</span> <span class="nf">write_c_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;vdwrad.h&quot;</span><span class="p">,</span> <span class="n">missing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="VanderWaalsRadii.write_c_header"><a class="viewcode-back" href="../../api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii.write_c_header">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_c_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;vdwrad.h&quot;</span><span class="p">,</span> <span class="n">missing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Write C header file defining Van der Waals radii array.</span>
 
 <span class="sd">        Parameters</span>

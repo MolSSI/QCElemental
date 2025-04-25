@@ -109,23 +109,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.models.procedures</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="c1"># remove when minimum py38</span>
-    <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Literal</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">conlist</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">conlist</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">conlist</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">conlist</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
 
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">provenance_stamp</span>
-<span class="kn">from</span> <span class="nn">.basemodels</span> <span class="kn">import</span> <span class="n">ProtoModel</span>
-<span class="kn">from</span> <span class="nn">.common_models</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ComputeError</span><span class="p">,</span>
     <span class="n">DriverEnum</span><span class="p">,</span>
     <span class="n">Model</span><span class="p">,</span>
@@ -136,17 +136,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">qcschema_torsion_drive_input_default</span><span class="p">,</span>
     <span class="n">qcschema_torsion_drive_output_default</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.molecule</span> <span class="kn">import</span> <span class="n">Molecule</span>
-<span class="kn">from</span> <span class="nn">.results</span> <span class="kn">import</span> <span class="n">AtomicResult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.results</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicResult</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">pydantic.v1.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-        <span class="kn">from</span> <span class="nn">pydantic.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
 
 
-<span class="k">class</span> <span class="nc">TrajectoryProtocolEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TrajectoryProtocolEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Which gradient evaluations to keep in an optimization trajectory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -157,7 +157,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">none</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
 
 
-<span class="k">class</span> <span class="nc">OptimizationProtocols</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationProtocols</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Protocols regarding the manipulation of a Optimization output data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -166,11 +166,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="n">all</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
         <span class="n">force_skip_defaults</span> <span class="o">=</span> <span class="kc">True</span>
 
 
-<span class="k">class</span> <span class="nc">QCInputSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QCInputSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A compute description for energy, gradient, and Hessian computations used in a geometry optimization.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -188,7 +188,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="OptimizationInput"><a class="viewcode-back" href="../../../api/qcelemental.models.OptimizationInput.html#qcelemental.models.OptimizationInput">[docs]</a><span class="k">class</span> <span class="nc">OptimizationInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="OptimizationInput"><a class="viewcode-back" href="../../../api/qcelemental.models.OptimizationInput.html#qcelemental.models.OptimizationInput">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">OptimizationInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema input directive for geometry optimization.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -207,14 +207,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Provenance</span><span class="p">(</span><span class="o">**</span><span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_specification</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">dict</span><span class="p">()),</span>
             <span class="p">(</span><span class="s2">&quot;molecule_hash&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()[:</span><span class="mi">7</span><span class="p">]),</span>
         <span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="OptimizationResult"><a class="viewcode-back" href="../../../api/qcelemental.models.OptimizationResult.html#qcelemental.models.OptimizationResult">[docs]</a><span class="k">class</span> <span class="nc">OptimizationResult</span><span class="p">(</span><span class="n">OptimizationInput</span><span class="p">):</span>
+<div class="viewcode-block" id="OptimizationResult"><a class="viewcode-back" href="../../../api/qcelemental.models.OptimizationResult.html#qcelemental.models.OptimizationResult">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">OptimizationResult</span><span class="p">(</span><span class="n">OptimizationInput</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema results model for geometry optimization.&quot;&quot;&quot;</span>
 
     <span class="n">schema_name</span><span class="p">:</span> <span class="n">constr</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -237,7 +237,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;trajectory&quot;</span><span class="p">,</span> <span class="n">each_item</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_trajectory_protocol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_trajectory_protocol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="c1"># Do not propogate validation errors</span>
         <span class="k">if</span> <span class="s2">&quot;protocols&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Protocols was not properly formed.&quot;</span><span class="p">)</span>
@@ -259,7 +259,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span></div>
 
 
-<span class="k">class</span> <span class="nc">OptimizationSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A specification for how a geometry optimization should be performed **inside** of</span>
 <span class="sd">    another procedure.</span>
@@ -277,11 +277,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">protocols</span><span class="p">:</span> <span class="n">OptimizationProtocols</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;procedure&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_check_procedure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_procedure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">TDKeywords</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TDKeywords</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    TorsionDriveRecord options</span>
 
@@ -318,7 +318,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">TorsionDriveInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Inputs for running a torsion drive.</span>
 
 <span class="sd">    Notes</span>
@@ -344,12 +344,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Provenance</span><span class="p">(</span><span class="o">**</span><span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;input_specification&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_check_input_specification</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_input_specification</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">driver</span> <span class="o">==</span> <span class="n">DriverEnum</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="s2">&quot;driver must be set to gradient&quot;</span>
         <span class="k">return</span> <span class="n">value</span>
 
 
-<span class="k">class</span> <span class="nc">TorsionDriveResult</span><span class="p">(</span><span class="n">TorsionDriveInput</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveResult</span><span class="p">(</span><span class="n">TorsionDriveInput</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Results from running a torsion drive.</span>
 
 <span class="sd">    Notes</span>
@@ -382,14 +382,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">Optimization</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Optimization</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QC Optimization Results Schema.</span>
 
 <span class="sd">    .. deprecated:: 0.12</span>
 <span class="sd">       Use :py:func:`qcelemental.models.OptimizationResult` instead.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
     <span class="n">warn</span><span class="p">(</span>
         <span class="s2">&quot;Optimization has been renamed to OptimizationResult and will be removed as soon as v0.13.0&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span>

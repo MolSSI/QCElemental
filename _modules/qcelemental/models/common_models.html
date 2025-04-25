@@ -109,31 +109,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.models.common_models</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">Field</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
-<span class="kn">from</span> <span class="nn">.basemodels</span> <span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
-<span class="kn">from</span> <span class="nn">.basis</span> <span class="kn">import</span> <span class="n">BasisSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basis</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisSet</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">pydantic.v1.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-        <span class="kn">from</span> <span class="nn">pydantic.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
 
 
 <span class="c1"># Encoders, to be deprecated</span>
 <span class="n">ndarray_encoder</span> <span class="o">=</span> <span class="p">{</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span>
 
 
-<div class="viewcode-block" id="Provenance"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.Provenance">[docs]</a><span class="k">class</span> <span class="nc">Provenance</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="Provenance"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.Provenance">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Provenance</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provenance information.&quot;&quot;&quot;</span>
 
     <span class="n">creator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the program, library, or person who created the object.&quot;</span><span class="p">)</span>
@@ -143,15 +143,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
     <span class="n">routine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the routine or function within the creator, blank otherwise.&quot;</span><span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
         <span class="n">canonical_repr</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
 
-        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
             <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;$schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qcschema_draft</span></div>
 
 
-<span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The computational molecular sciences model to run.&quot;&quot;&quot;</span>
 
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -167,12 +167,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="c1"># basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
         <span class="n">canonical_repr</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">extra</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
 
 
-<div class="viewcode-block" id="DriverEnum"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.DriverEnum">[docs]</a><span class="k">class</span> <span class="nc">DriverEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="DriverEnum"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.DriverEnum">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DriverEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Allowed computation driver values.&quot;&quot;&quot;</span>
 
     <span class="n">energy</span> <span class="o">=</span> <span class="s2">&quot;energy&quot;</span>
@@ -180,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">hessian</span> <span class="o">=</span> <span class="s2">&quot;hessian&quot;</span>
     <span class="n">properties</span> <span class="o">=</span> <span class="s2">&quot;properties&quot;</span>
 
-<div class="viewcode-block" id="DriverEnum.derivative_int"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.DriverEnum.derivative_int">[docs]</a>    <span class="k">def</span> <span class="nf">derivative_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DriverEnum.derivative_int"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.DriverEnum.derivative_int">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">derivative_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">egh</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;gradient&quot;</span><span class="p">,</span> <span class="s2">&quot;hessian&quot;</span><span class="p">,</span> <span class="s2">&quot;third&quot;</span><span class="p">,</span> <span class="s2">&quot;fourth&quot;</span><span class="p">,</span> <span class="s2">&quot;fifth&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="s2">&quot;properties&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -188,7 +188,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">return</span> <span class="n">egh</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ComputeError"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ComputeError">[docs]</a><span class="k">class</span> <span class="nc">ComputeError</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="ComputeError"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.ComputeError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ComputeError</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete description of the error from an unsuccessful program execution.&quot;&quot;&quot;</span>
 
     <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -205,14 +205,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the error.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
         <span class="n">repr_style</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;error_type&quot;</span><span class="p">,</span> <span class="s2">&quot;error_message&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[(</span><span class="s2">&quot;error_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;error_message&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="FailedOperation"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.FailedOperation">[docs]</a><span class="k">class</span> <span class="nc">FailedOperation</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="FailedOperation"><a class="viewcode-back" href="../../../model_common.html#qcelemental.models.FailedOperation">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FailedOperation</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -243,7 +243,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="s2">&quot;to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)]</span></div>
 
 

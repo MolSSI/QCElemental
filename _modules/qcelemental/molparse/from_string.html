@@ -109,20 +109,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.molparse.from_string</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ChoicesError</span><span class="p">,</span> <span class="n">MoleculeFormatError</span><span class="p">,</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">filter_comments</span><span class="p">,</span> <span class="n">provenance_stamp</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pubchem</span>
-<span class="kn">from</span> <span class="nn">.from_arrays</span> <span class="kn">import</span> <span class="n">from_input_arrays</span>
-<span class="kn">from</span> <span class="nn">.regex</span> <span class="kn">import</span> <span class="n">CARTXYZ</span><span class="p">,</span> <span class="n">CHGMULT</span><span class="p">,</span> <span class="n">ENDL</span><span class="p">,</span> <span class="n">NUCLEUS</span><span class="p">,</span> <span class="n">NUMBER</span><span class="p">,</span> <span class="n">SEP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChoicesError</span><span class="p">,</span> <span class="n">MoleculeFormatError</span><span class="p">,</span> <span class="n">ValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">filter_comments</span><span class="p">,</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">pubchem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.from_arrays</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_input_arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.regex</span><span class="w"> </span><span class="kn">import</span> <span class="n">CARTXYZ</span><span class="p">,</span> <span class="n">CHGMULT</span><span class="p">,</span> <span class="n">ENDL</span><span class="p">,</span> <span class="n">NUCLEUS</span><span class="p">,</span> <span class="n">NUMBER</span><span class="p">,</span> <span class="n">SEP</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;from_string&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="from_string"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string">[docs]</a><span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span>
+<div class="viewcode-block" id="from_string"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span>
     <span class="n">molstr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -289,7 +289,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1"># &lt;&lt; 1 &gt;&gt;  str--&gt;str -- discard comments</span>
     <span class="n">molstr</span> <span class="o">=</span> <span class="n">filter_comments</span><span class="p">(</span><span class="n">molstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">parse_as_xyz_ish</span><span class="p">(</span><span class="n">molstr</span><span class="p">,</span> <span class="n">strict</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_as_xyz_ish</span><span class="p">(</span><span class="n">molstr</span><span class="p">,</span> <span class="n">strict</span><span class="p">):</span>
         <span class="n">molinit</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># &lt;&lt; 2 &gt;&gt;  str--&gt;dict -- process atoms, units[, chg, mult]</span>
@@ -301,7 +301,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">molstr</span><span class="p">,</span> <span class="n">molinit</span>
 
-    <span class="k">def</span> <span class="nf">parse_as_psi4_ish</span><span class="p">(</span><span class="n">molstr</span><span class="p">,</span> <span class="n">unsettled</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_as_psi4_ish</span><span class="p">(</span><span class="n">molstr</span><span class="p">,</span> <span class="n">unsettled</span><span class="p">):</span>
         <span class="n">molinit</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Notes</span>
@@ -417,7 +417,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="n">pubchemre</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\Apubchem&quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;\s*:\s*&quot;</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;(?P&lt;pubsearch&gt;(([\S ]+)))\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_pubchem</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_pubchem</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find any &quot;pubchem:&quot; lines in `string`, make call to the pubchem database</span>
 <span class="sd">    and return the XYZ results back to `string`.</span>
 
@@ -425,7 +425,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_pubchem</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_pubchem</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">pubsearch</span> <span class="o">=</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;pubsearch&quot;</span><span class="p">)</span>
 
         <span class="c1"># search pubchem for the provided string</span>
@@ -472,7 +472,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reconstitute</span><span class="p">),</span> <span class="n">processed</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_kwargs</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fix_com</span><span class="p">,</span> <span class="n">fix_orientation</span><span class="p">,</span> <span class="n">fix_symmetry</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_kwargs</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fix_com</span><span class="p">,</span> <span class="n">fix_orientation</span><span class="p">,</span> <span class="n">fix_symmetry</span><span class="p">):</span>
     <span class="n">processed</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
@@ -492,7 +492,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="n">symmetry</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\Asymmetry[\s=]+(?P&lt;pg&gt;\w+)\Z&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_universals</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_universals</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Process multiline `string` for fix_ and unit markers,</span>
 <span class="sd">    returning a string of unprocessed `string` and a dictionary of</span>
 <span class="sd">    processed fields.</span>
@@ -505,22 +505,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_com</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_com</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fix_com&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_orient</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_orient</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fix_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_bohrang</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_bohrang</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;uang&quot;</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Angstrom&quot;</span>
         <span class="k">elif</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;ubohr&quot;</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_symmetry</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_symmetry</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fix_symmetry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;pg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
@@ -564,8 +564,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="c1"># fmt: on</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_libefp</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">process_efpxyzabc</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_libefp</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_efpxyzabc</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fragment_files&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;efpfile&quot;</span><span class="p">))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;hint_types&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;xyzabc&quot;</span><span class="p">)</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom_hints&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -580,7 +580,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_efppoints</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_efppoints</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fragment_files&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;efpfile&quot;</span><span class="p">))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;hint_types&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;points&quot;</span><span class="p">)</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom_hints&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -651,7 +651,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="c1"># fmt: on</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_mints</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">unsettled</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_mints</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">unsettled</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle extracting fragment, atom, and chg/mult lines from `string`.</span>
 
 <span class="sd">    Returns</span>
@@ -678,32 +678,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_system_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_system_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles optional special first fragment with sole contents overall chg/mult.&quot;&quot;&quot;</span>
 
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;chg&quot;</span><span class="p">))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;mult&quot;</span><span class="p">))</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">filter_fragment</span><span class="p">(</span><span class="n">fstring</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter_fragment</span><span class="p">(</span><span class="n">fstring</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles extraction from everything within a fragment marker &quot;--&quot; of a</span>
 <span class="sd">        single chg/mult (or None/None) and multiple atom lines.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">process_fragment_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">process_fragment_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fragment_charges&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;chg&quot;</span><span class="p">)))</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;mult&quot;</span><span class="p">)))</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">process_atom_cartesian</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">process_atom_cartesian</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nucleus&quot;</span><span class="p">))</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)))</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)))</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">)))</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">process_atom_unsettled</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">process_atom_unsettled</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nucleus&quot;</span><span class="p">))</span>
             <span class="n">geo</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">if</span> <span class="s2">&quot;Xval&quot;</span> <span class="ow">in</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">groupdict</span><span class="p">():</span>
@@ -722,7 +722,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom_unsettled&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo</span><span class="p">)</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">process_variable</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">process_variable</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;varname&quot;</span><span class="p">),</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;varvalue&quot;</span><span class="p">)))</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
@@ -792,7 +792,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_xyz</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">strict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_xyz</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">strict</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle extracting atom, units, and chg/mult lines from `string`.</span>
 
 <span class="sd">    Parameters</span>
@@ -818,7 +818,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_bohrang</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_bohrang</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">nat</span> <span class="o">=</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nat&quot;</span><span class="p">)</span>  <span class="c1"># lgtm[py/unused-local-variable]</span>
         <span class="k">if</span> <span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;uang&quot;</span><span class="p">):</span>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Angstrom&quot;</span>
@@ -826,12 +826,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_system_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_system_cgmp</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;molecular_charge&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;chg&quot;</span><span class="p">))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;mult&quot;</span><span class="p">))</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">process_atom_cartesian</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_atom_cartesian</span><span class="p">(</span><span class="n">matchobj</span><span class="p">):</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;elbl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;nucleus&quot;</span><span class="p">))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)))</span>
         <span class="n">processed</span><span class="p">[</span><span class="s2">&quot;geom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">matchobj</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)))</span>

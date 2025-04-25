@@ -109,16 +109,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.molparse.from_schema</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">provenance_stamp</span>
-<span class="kn">from</span> <span class="nn">.from_arrays</span> <span class="kn">import</span> <span class="n">from_arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.from_arrays</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_arrays</span>
 
 
-<div class="viewcode-block" id="from_schema"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema">[docs]</a><span class="k">def</span> <span class="nf">from_schema</span><span class="p">(</span><span class="n">molschema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<div class="viewcode-block" id="from_schema"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">from_schema</span><span class="p">(</span><span class="n">molschema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct molecule dictionary representation from non-Psi4 schema.</span>
 
 <span class="sd">    Parameters</span>
@@ -206,7 +206,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">molrec</span></div>
 
 
-<div class="viewcode-block" id="contiguize_from_fragment_pattern"><a class="viewcode-back" href="../../../api/qcelemental.molparse.contiguize_from_fragment_pattern.html#qcelemental.molparse.contiguize_from_fragment_pattern">[docs]</a><span class="k">def</span> <span class="nf">contiguize_from_fragment_pattern</span><span class="p">(</span>
+<div class="viewcode-block" id="contiguize_from_fragment_pattern"><a class="viewcode-back" href="../../../api/qcelemental.molparse.contiguize_from_fragment_pattern.html#qcelemental.molparse.contiguize_from_fragment_pattern">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">contiguize_from_fragment_pattern</span><span class="p">(</span>
     <span class="n">frag_pattern</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">geom</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -291,7 +291,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">geom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">ncgeom</span><span class="p">[</span><span class="n">fr</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frag_pattern</span><span class="p">])</span>
         <span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reorder</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">nat</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;wrong number of atoms in array: nat = </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)[</span><span class="n">fr</span><span class="p">]</span> <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">frag_pattern</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>

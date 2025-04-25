@@ -112,46 +112,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Molecule Object Model</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">ConstrainedFloat</span><span class="p">,</span> <span class="n">ConstrainedInt</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConstrainedFloat</span><span class="p">,</span> <span class="n">ConstrainedInt</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConstrainedFloat</span><span class="p">,</span> <span class="n">ConstrainedInt</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConstrainedFloat</span><span class="p">,</span> <span class="n">ConstrainedInt</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">validator</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">nglview</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">nglview</span>
 <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
     <span class="c1"># import is purely for forward reference for docs-build. import is not required except for Molecule.show()</span>
     <span class="k">pass</span>
 
 <span class="c1"># molparse imports separated b/c https://github.com/python/mypy/issues/7203</span>
-<span class="kn">from</span> <span class="nn">..molparse.from_arrays</span> <span class="kn">import</span> <span class="n">from_arrays</span>
-<span class="kn">from</span> <span class="nn">..molparse.from_schema</span> <span class="kn">import</span> <span class="n">from_schema</span>
-<span class="kn">from</span> <span class="nn">..molparse.from_string</span> <span class="kn">import</span> <span class="n">from_string</span>
-<span class="kn">from</span> <span class="nn">..molparse.to_schema</span> <span class="kn">import</span> <span class="n">to_schema</span>
-<span class="kn">from</span> <span class="nn">..molparse.to_string</span> <span class="kn">import</span> <span class="n">to_string</span>
-<span class="kn">from</span> <span class="nn">..periodic_table</span> <span class="kn">import</span> <span class="n">periodictable</span>
-<span class="kn">from</span> <span class="nn">..physical_constants</span> <span class="kn">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">..testing</span> <span class="kn">import</span> <span class="n">compare</span><span class="p">,</span> <span class="n">compare_values</span>
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">deserialize</span><span class="p">,</span> <span class="n">measure_coordinates</span><span class="p">,</span> <span class="n">msgpackext_loads</span><span class="p">,</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">which_import</span>
-<span class="kn">from</span> <span class="nn">.basemodels</span> <span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
-<span class="kn">from</span> <span class="nn">.common_models</span> <span class="kn">import</span> <span class="n">Provenance</span><span class="p">,</span> <span class="n">qcschema_molecule_default</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..molparse.from_arrays</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..molparse.from_schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..molparse.from_string</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..molparse.to_schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..molparse.to_string</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..periodic_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">periodictable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..physical_constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare</span><span class="p">,</span> <span class="n">compare_values</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">deserialize</span><span class="p">,</span> <span class="n">measure_coordinates</span><span class="p">,</span> <span class="n">msgpackext_loads</span><span class="p">,</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">which_import</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provenance</span><span class="p">,</span> <span class="n">qcschema_molecule_default</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">pydantic.v1.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-        <span class="kn">from</span> <span class="nn">pydantic.typing</span> <span class="kn">import</span> <span class="n">ReprArgs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
 
 <span class="c1"># Rounding quantities for hashing</span>
 <span class="n">GEOMETRY_NOISE</span> <span class="o">=</span> <span class="mi">8</span>
@@ -168,7 +168,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">float_prep</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">around</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">float_prep</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">around</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Rounds floats to a common value and build positive zeros to prevent hash conflicts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -188,16 +188,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">array</span>
 
 
-<span class="k">class</span> <span class="nc">NonnegativeInt</span><span class="p">(</span><span class="n">ConstrainedInt</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NonnegativeInt</span><span class="p">(</span><span class="n">ConstrainedInt</span><span class="p">):</span>
     <span class="n">ge</span> <span class="o">=</span> <span class="mi">0</span>
 
 
-<span class="k">class</span> <span class="nc">BondOrderFloat</span><span class="p">(</span><span class="n">ConstrainedFloat</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BondOrderFloat</span><span class="p">(</span><span class="n">ConstrainedFloat</span><span class="p">):</span>
     <span class="n">ge</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">le</span> <span class="o">=</span> <span class="mi">5</span>
 
 
-<span class="k">class</span> <span class="nc">Identifiers</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Identifiers</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Canonical chemical identifiers&quot;&quot;&quot;</span>
 
     <span class="n">molecule_hash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -214,11 +214,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">pubchem_sid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PubChem Substance ID&quot;</span><span class="p">)</span>
     <span class="n">pubchem_conformerid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PubChem Conformer ID&quot;</span><span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
         <span class="n">serialize_skip_defaults</span> <span class="o">=</span> <span class="kc">True</span>
 
 
-<div class="viewcode-block" id="Molecule"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule">[docs]</a><span class="k">class</span> <span class="nc">Molecule</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Molecule</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The physical Cartesian representation of the molecular system.</span>
 
@@ -418,7 +418,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the molecule. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">ProtoModel</span><span class="o">.</span><span class="n">Config</span><span class="p">):</span>
         <span class="n">serialize_skip_defaults</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">repr_style</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
@@ -437,11 +437,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="s2">&quot;fragment_multiplicities_&quot;</span><span class="p">:</span> <span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
             <span class="c1"># below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .</span>
             <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;$schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qcschema_draft</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initializes the molecule object from dictionary-like values.</span>
 
 <span class="sd">        Parameters</span>
@@ -495,7 +495,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">values</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">float_prep</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">],</span> <span class="n">geometry_noise</span><span class="p">)</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_3n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_3n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -504,14 +504,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;masses_&quot;</span><span class="p">,</span> <span class="s2">&quot;real_&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Masses and Real must be same number of entries as Symbols&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;real_&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_populate_real</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populate_real</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Can&#39;t use geometry here since its already been validated and not in values</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -519,7 +519,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;fragment_charges_&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_n_frag</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n_frag</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;fragments_&quot;</span> <span class="ow">in</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
@@ -527,7 +527,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;fragment_multiplicities_&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_n_frag_mult</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n_frag_mult</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;fragments_&quot;</span> <span class="ow">in</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">values</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
@@ -538,7 +538,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_int_if_possible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_int_if_possible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
             <span class="c1"># preserve existing hashes</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -547,7 +547,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">hash_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hash_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="s2">&quot;symbols&quot;</span><span class="p">,</span>
             <span class="s2">&quot;masses&quot;</span><span class="p">,</span>
@@ -562,62 +562,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">masses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">masses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="n">masses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;masses_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">masses</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">masses</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">real</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">real</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
         <span class="n">real</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;real_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">real</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">real</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">atom_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atom_labels_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">atom_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">atom_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">atom_labels</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">atomic_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atomic_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
         <span class="n">atomic_numbers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atomic_numbers_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">atomic_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">atomic_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_Z</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">atomic_numbers</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mass_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mass_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
         <span class="n">mass_numbers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mass_numbers_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mass_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mass_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_A</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">mass_numbers</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">connectivity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">connectivity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="n">connectivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connectivity_&quot;</span><span class="p">)</span>
         <span class="c1"># default is None, not []</span>
         <span class="k">return</span> <span class="n">connectivity</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
         <span class="n">fragments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragments_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fragments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fragments</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">fragments</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fragment_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragment_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="n">fragment_charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_charges_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fragment_charges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fragment_charges</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">fragment_charges</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">fragment_multiplicities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragment_multiplicities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_multiplicities_&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fragment_multiplicities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_multiplicity</span><span class="p">]</span>
@@ -625,7 +625,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="c1">### Non-Pydantic API functions</span>
 
-<div class="viewcode-block" id="Molecule.show"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ngl_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;nglview.NGLWidget&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+<div class="viewcode-block" id="Molecule.show"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.show">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ngl_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;nglview.NGLWidget&quot;</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Creates a 3D representation of a molecule that can be manipulated in Jupyter Notebooks and exported as</span>
 <span class="sd">        images (`.png`).</span>
 
@@ -645,7 +645,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="sa">f</span><span class="s2">&quot;Python module nglwview not found. Solve by installing it: `conda install -c conda-forge nglview`&quot;</span>
             <span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
-        <span class="kn">import</span> <span class="nn">nglview</span> <span class="k">as</span> <span class="nn">nv</span>  <span class="c1"># type: ignore</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">nglview</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nv</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">if</span> <span class="n">ngl_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ngl_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -654,7 +654,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">widget</span> <span class="o">=</span> <span class="n">nv</span><span class="o">.</span><span class="n">NGLWidget</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="o">**</span><span class="n">ngl_kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">widget</span></div>
 
-<div class="viewcode-block" id="Molecule.measure"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.measure">[docs]</a>    <span class="k">def</span> <span class="nf">measure</span><span class="p">(</span>
+<div class="viewcode-block" id="Molecule.measure"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.measure">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">measurements</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]],</span> <span class="o">*</span><span class="p">,</span> <span class="n">degrees</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
@@ -676,19 +676,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">measure_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">measurements</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="n">degrees</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.orient_molecule"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.orient_molecule">[docs]</a>    <span class="k">def</span> <span class="nf">orient_molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule.orient_molecule"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.orient_molecule">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">orient_molecule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Centers the molecule and orients via inertia tensor before returning a new Molecule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Molecule.compare"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule.compare"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.compare">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Molecule.compare is deprecated and will be removed in v0.13.0. Use == instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if two molecules are identical. This is a molecular identity defined</span>
 <span class="sd">        by scientific terms, and not programing terms, so it&#39;s less rigorous than</span>
@@ -704,12 +704,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Molecule.dict"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule.dict"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.dict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;by_alias&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;exclude_unset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.pretty_print"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.pretty_print">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule.pretty_print"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.pretty_print">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.</span>
 <span class="sd">        (method name in libmints is print_in_angstrom)</span>
 
@@ -733,7 +733,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">text</span></div>
 
-<div class="viewcode-block" id="Molecule.get_fragment"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">get_fragment</span><span class="p">(</span>
+<div class="viewcode-block" id="Molecule.get_fragment"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_fragment">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_fragment</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">real</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">],</span>
         <span class="n">ghost</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -877,7 +877,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span> <span class="o">**</span><span class="n">constructor_dict</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.to_string"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+<div class="viewcode-block" id="Molecule.to_string"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.to_string">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_string</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -906,7 +906,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">return_data</span><span class="o">=</span><span class="n">return_data</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.get_hash"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_hash">[docs]</a>    <span class="k">def</span> <span class="nf">get_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Molecule.get_hash"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_hash">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the hash of the molecule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -928,7 +928,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">m</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">concat</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Molecule.get_molecular_formula"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_molecular_formula">[docs]</a>    <span class="k">def</span> <span class="nf">get_molecular_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span> <span class="n">chgmult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="Molecule.get_molecular_formula"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.get_molecular_formula">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_molecular_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span> <span class="n">chgmult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the molecular formula for a molecule.</span>
 
@@ -994,7 +994,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">..molutil</span> <span class="kn">import</span> <span class="n">molecular_formula_from_symbols</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..molutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecular_formula_from_symbols</span>
 
         <span class="n">formula</span> <span class="o">=</span> <span class="n">molecular_formula_from_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
 
@@ -1013,7 +1013,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">### Constructors</span>
 
 <div class="viewcode-block" id="Molecule.from_data"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_data</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span>
         <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1100,7 +1100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="n">validate</span><span class="p">,</span> <span class="o">**</span><span class="n">input_dict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Molecule.from_file"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.from_file">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">orient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">orient</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructs a molecule object from a file.</span>
 
@@ -1150,7 +1150,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.to_file"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Molecule.to_file"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.to_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Writes the Molecule to a file.</span>
 
 <span class="sd">        Parameters</span>
@@ -1188,7 +1188,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="c1">### Non-Pydantic internal functions</span>
 
-    <span class="k">def</span> <span class="nf">_orient_molecule_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_orient_molecule_internal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Centers the molecule and orients via inertia tensor before returning a new set of the</span>
 <span class="sd">        molecule geometry</span>
@@ -1233,23 +1233,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="k">break</span>
         <span class="k">return</span> <span class="n">new_geometry</span>
 
-    <span class="k">def</span> <span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_molecular_formula</span><span class="p">(</span><span class="n">chgmult</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
             <span class="p">(</span><span class="s2">&quot;hash&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()[:</span><span class="mi">7</span><span class="p">]),</span>
         <span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ipython_display_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span><span class="o">.</span><span class="n">_ipython_display_</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
             <span class="n">display</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Install nglview for interactive visualization.&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_inertial_tensor</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_inertial_tensor</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the moment inertia tensor for a given geometry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1268,7 +1268,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">tensor</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weight</span> <span class="o">*</span> <span class="n">geom</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">geom</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">tensor</span>
 
-<div class="viewcode-block" id="Molecule.nuclear_repulsion_energy"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.nuclear_repulsion_energy">[docs]</a>    <span class="k">def</span> <span class="nf">nuclear_repulsion_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="Molecule.nuclear_repulsion_energy"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.nuclear_repulsion_energy">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">nuclear_repulsion_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Nuclear repulsion energy.</span>
 
 <span class="sd">        Parameters</span>
@@ -1300,7 +1300,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="n">nre</span> <span class="o">+=</span> <span class="n">Zeff</span><span class="p">[</span><span class="n">at1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Zeff</span><span class="p">[</span><span class="n">at2</span><span class="p">]</span> <span class="o">/</span> <span class="n">dist</span>
         <span class="k">return</span> <span class="n">nre</span></div>
 
-<div class="viewcode-block" id="Molecule.nelectrons"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.nelectrons">[docs]</a>    <span class="k">def</span> <span class="nf">nelectrons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="Molecule.nelectrons"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.nelectrons">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">nelectrons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Number of electrons.</span>
 
 <span class="sd">        Parameters</span>
@@ -1329,7 +1329,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">nel</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.molecular_weight"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.molecular_weight">[docs]</a>    <span class="k">def</span> <span class="nf">molecular_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<div class="viewcode-block" id="Molecule.molecular_weight"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.molecular_weight">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">molecular_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Molecular weight in uamu.</span>
 
 <span class="sd">        Parameters</span>
@@ -1358,7 +1358,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">mw</span></div>
 
-<div class="viewcode-block" id="Molecule.element_composition"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.element_composition">[docs]</a>    <span class="k">def</span> <span class="nf">element_composition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<div class="viewcode-block" id="Molecule.element_composition"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.element_composition">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">element_composition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ifr</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">real_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Atomic count map.</span>
 
 <span class="sd">        Parameters</span>
@@ -1392,7 +1392,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">count</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">count</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Molecule.align"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.align">[docs]</a>    <span class="k">def</span> <span class="nf">align</span><span class="p">(</span>
+<div class="viewcode-block" id="Molecule.align"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.align">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ref_mol</span><span class="p">:</span> <span class="s2">&quot;Molecule&quot;</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1461,7 +1461,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">            from `concern_mol` and the optimally aligned geometry.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">..molutil.align</span> <span class="kn">import</span> <span class="n">B787</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..molutil.align</span><span class="w"> </span><span class="kn">import</span> <span class="n">B787</span>
 
         <span class="n">rgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
         <span class="n">runiq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
@@ -1543,7 +1543,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">amol</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rmsd&quot;</span><span class="p">:</span> <span class="n">rmsd</span><span class="p">,</span> <span class="s2">&quot;mill&quot;</span><span class="p">:</span> <span class="n">solution</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="Molecule.scramble"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.scramble">[docs]</a>    <span class="k">def</span> <span class="nf">scramble</span><span class="p">(</span>
+<div class="viewcode-block" id="Molecule.scramble"><a class="viewcode-back" href="../../../model_molecule.html#qcelemental.models.Molecule.scramble">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">scramble</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">do_shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -1610,7 +1610,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">            transformations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">..molutil.align</span> <span class="kn">import</span> <span class="n">compute_scramble</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..molutil.align</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_scramble</span>
 
         <span class="n">ref_mol</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">rgeom</span> <span class="o">=</span> <span class="n">ref_mol</span><span class="o">.</span><span class="n">geometry</span>
@@ -1673,7 +1673,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">cmol</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rmsd&quot;</span><span class="p">:</span> <span class="n">rmsd</span><span class="p">,</span> <span class="s2">&quot;mill&quot;</span><span class="p">:</span> <span class="n">perturbation</span><span class="p">}</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_filter_defaults</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_filter_defaults</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
     <span class="n">nat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
     <span class="n">default_mass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dicary</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]])</span>
 

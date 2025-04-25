@@ -109,21 +109,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.molparse.from_arrays</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pprint</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
-<span class="kn">from</span> <span class="nn">..physical_constants</span> <span class="kn">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">unnp</span><span class="p">,</span> <span class="n">update_with_error</span>
-<span class="kn">from</span> <span class="nn">.chgmult</span> <span class="kn">import</span> <span class="n">validate_and_fill_chgmult</span>
-<span class="kn">from</span> <span class="nn">.nucleus</span> <span class="kn">import</span> <span class="n">reconcile_nucleus</span>
-<span class="kn">from</span> <span class="nn">.regex</span> <span class="kn">import</span> <span class="n">VERSION_PATTERN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..physical_constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">unnp</span><span class="p">,</span> <span class="n">update_with_error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.chgmult</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_and_fill_chgmult</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.nucleus</span><span class="w"> </span><span class="kn">import</span> <span class="n">reconcile_nucleus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.regex</span><span class="w"> </span><span class="kn">import</span> <span class="n">VERSION_PATTERN</span>
 
 
-<div class="viewcode-block" id="from_input_arrays"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_input_arrays.html#qcelemental.molparse.from_input_arrays">[docs]</a><span class="k">def</span> <span class="nf">from_input_arrays</span><span class="p">(</span>
+<div class="viewcode-block" id="from_input_arrays"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_input_arrays.html#qcelemental.molparse.from_input_arrays">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">from_input_arrays</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">enable_qm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">enable_efp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -244,7 +244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">molinit</span></div>
 
 
-<div class="viewcode-block" id="from_arrays"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_arrays.html#qcelemental.molparse.from_arrays">[docs]</a><span class="k">def</span> <span class="nf">from_arrays</span><span class="p">(</span>
+<div class="viewcode-block" id="from_arrays"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_arrays.html#qcelemental.molparse.from_arrays">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">from_arrays</span><span class="p">(</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">geom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">elea</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -519,7 +519,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">molinit</span></div>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_units</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_units</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">units</span><span class="o">=</span><span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span>
     <span class="n">input_units_to_au</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -536,7 +536,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">molinit</span><span class="p">[</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span>
 
-    <span class="k">def</span> <span class="nf">validate_provenance</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_provenance</span><span class="p">(</span><span class="n">dicary</span><span class="p">):</span>
         <span class="n">expected_prov_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;creator&quot;</span><span class="p">,</span> <span class="s2">&quot;routine&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">prov_keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dicary</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -612,7 +612,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">molinit</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_frame</span><span class="p">(</span><span class="n">extern</span><span class="p">,</span> <span class="n">fix_com</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_frame</span><span class="p">(</span><span class="n">extern</span><span class="p">,</span> <span class="n">fix_com</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_orientation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fix_symmetry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">fix_com</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">com</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">elif</span> <span class="n">fix_com</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -658,7 +658,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">molinit</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_efp</span><span class="p">(</span><span class="n">fragment_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hint_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geom_hints</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_efp</span><span class="p">(</span><span class="n">fragment_files</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hint_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geom_hints</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">fragment_files</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="ow">or</span> <span class="n">hint_types</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -702,7 +702,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;fragment_files&quot;</span><span class="p">:</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;hint_types&quot;</span><span class="p">:</span> <span class="n">types</span><span class="p">,</span> <span class="s2">&quot;geom_hints&quot;</span><span class="p">:</span> <span class="n">hints</span><span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_geometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tooclose</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_geometry</span><span class="p">(</span><span class="n">geom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tooclose</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check `geom` for overlapping atoms. Return flattened&quot;&quot;&quot;</span>
 
     <span class="n">npgeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -727,7 +727,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;geom&quot;</span><span class="p">:</span> <span class="n">npgeom</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">))}</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_nuclei</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_nuclei</span><span class="p">(</span>
     <span class="n">nat</span><span class="p">,</span>
     <span class="n">elea</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">elez</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -813,7 +813,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_fragments</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_fragments</span><span class="p">(</span><span class="n">nat</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_multiplicities</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check consistency of fragment specifiers wrt type and length. For</span>
 <span class="sd">    charge &amp; multiplicity, scientific defaults are not computed or applied;</span>
 <span class="sd">    rather, missing slots are filled with `None` for later processing.</span>
@@ -884,7 +884,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;fragment_separators&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">frs</span><span class="p">),</span> <span class="s2">&quot;fragment_charges&quot;</span><span class="p">:</span> <span class="n">frc</span><span class="p">,</span> <span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">:</span> <span class="n">frm</span><span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">validate_and_fill_unsettled_geometry</span><span class="p">(</span><span class="n">geom_unsettled</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_and_fill_unsettled_geometry</span><span class="p">(</span><span class="n">geom_unsettled</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
     <span class="n">lgeom</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">geom_unsettled</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">lgeom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>

@@ -114,10 +114,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="NotAnElementError"><a class="viewcode-back" href="../../api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError">[docs]</a><span class="k">class</span> <span class="nc">NotAnElementError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="NotAnElementError"><a class="viewcode-back" href="../../api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">NotAnElementError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error when element or nuclide can&#39;t be identified.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;atomic number or element&quot;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -125,38 +125,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Atom identifier (</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2">) uninterpretable as </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="DataUnavailableError"><a class="viewcode-back" href="../../api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError">[docs]</a><span class="k">class</span> <span class="nc">DataUnavailableError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="DataUnavailableError"><a class="viewcode-back" href="../../api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DataUnavailableError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error when dataset incomplete and otherwise valid query can&#39;t be fulfilled.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Dataset (</span><span class="si">{}</span><span class="s2">) missing value for key (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">atom</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MoleculeFormatError"><a class="viewcode-back" href="../../api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError">[docs]</a><span class="k">class</span> <span class="nc">MoleculeFormatError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="MoleculeFormatError"><a class="viewcode-back" href="../../api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">MoleculeFormatError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error called when a molparse.from_string contains unparsable lines.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Molecule line uninterpretable: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ValidationError"><a class="viewcode-back" href="../../api/qcelemental.ValidationError.html#qcelemental.ValidationError">[docs]</a><span class="k">class</span> <span class="nc">ValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="ValidationError"><a class="viewcode-back" href="../../api/qcelemental.ValidationError.html#qcelemental.ValidationError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error called for problems with syntax input file. Prints</span>
 <span class="sd">    error message *msg* to standard output stream.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Input Error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ChoicesError"><a class="viewcode-back" href="../../api/qcelemental.ChoicesError.html#qcelemental.ChoicesError">[docs]</a><span class="k">class</span> <span class="nc">ChoicesError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="ChoicesError"><a class="viewcode-back" href="../../api/qcelemental.ChoicesError.html#qcelemental.ChoicesError">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ChoicesError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Error called for problems with syntax input file. Prints</span>
 <span class="sd">    error message *msg* to standard output stream. Also attaches</span>
 <span class="sd">    `choices` dictionary with options to proceed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Input Error: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">choices</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">choices</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">choices</span></div>
 </pre></div>

@@ -113,20 +113,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">Contains relevant physical constants</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">..datum</span> <span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
-<span class="kn">from</span> <span class="nn">.ureg</span> <span class="kn">import</span> <span class="n">build_units_registry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..datum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Datum</span><span class="p">,</span> <span class="n">print_variables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ureg</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_units_registry</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>  <span class="c1"># lgtm: [py/unused-import]</span>
-    <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span>  <span class="c1"># lgtm: [py/unused-import]</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>  <span class="c1"># lgtm: [py/unused-import]</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">UnitRegistry</span>  <span class="c1"># lgtm: [py/unused-import]</span>
 
 
-<div class="viewcode-block" id="PhysicalConstantsContext"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">[docs]</a><span class="k">class</span> <span class="nc">PhysicalConstantsContext</span><span class="p">:</span>
+<div class="viewcode-block" id="PhysicalConstantsContext"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">PhysicalConstantsContext</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;CODATA physical constants set from NIST.</span>
 
 <span class="sd">    Parameters</span>
@@ -180,16 +180,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">na</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">me</span><span class="p">:</span> <span class="nb">float</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;CODATA2014&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;CODATA2014&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pc</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2014&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">nist_2014_codata</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">nist_2014_codata</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">nist_2014_codata</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">raw_codata</span> <span class="o">=</span> <span class="n">nist_2014_codata</span><span class="p">[</span><span class="s2">&quot;constants&quot;</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">context</span> <span class="o">==</span> <span class="s2">&quot;CODATA2018&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">..data</span> <span class="kn">import</span> <span class="n">nist_2018_codata</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">..data</span><span class="w"> </span><span class="kn">import</span> <span class="n">nist_2018_codata</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">nist_2018_codata</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">raw_codata</span> <span class="o">=</span> <span class="n">nist_2018_codata</span><span class="p">[</span><span class="s2">&quot;constants&quot;</span><span class="p">]</span>
@@ -314,11 +314,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">callname</span> <span class="o">=</span> <span class="n">qca</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transtable</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callname</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">qca</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;PhysicalConstantsContext(context=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ureg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;UnitRegistry&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ureg</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;UnitRegistry&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns the internal Pint units registry.</span>
 
 <span class="sd">        Returns</span>
@@ -331,7 +331,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ureg</span>
 
-<div class="viewcode-block" id="PhysicalConstantsContext.get"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">physical_constant</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]:</span>
+<div class="viewcode-block" id="PhysicalConstantsContext.get"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.get">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">physical_constant</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_tuple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Datum</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Access a physical constant, `physical_constant`.</span>
 
 <span class="sd">        Parameters</span>
@@ -381,13 +381,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">#       na                        &#39;Avogadro constant&#39;                         = 6.02214179E23        # Avogadro&#39;s number</span>
     <span class="c1">#       me                        &#39;electron mass&#39;                             = 9.10938215E-31       # Electron rest mass (in kg)</span>
 
-<div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span> <span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="PhysicalConstantsContext.Quantity"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.Quantity">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">Quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a Pint Quantity.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PhysicalConstantsContext.conversion_factor"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.conversion_factor">[docs]</a>    <span class="nd">@lru_cache</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">conversion_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">conversion_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">],</span> <span class="n">conv_unit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;_Quantity&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Provides the conversion factor from one unit to another.</span>
 
 <span class="sd">        The conversion factor is based on the current contexts CODATA.</span>
@@ -419,7 +419,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="c1"># Add a little magic in case the incoming values have scalars</span>
 
-        <span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span> <span class="k">as</span> <span class="n">_Quantity</span>
 
         <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span>
 
@@ -441,25 +441,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">factor</span><span class="p">,</span> <span class="n">base_unit</span><span class="p">,</span> <span class="n">conv_unit</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PhysicalConstantsContext.string_representation"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.string_representation">[docs]</a>    <span class="k">def</span> <span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="PhysicalConstantsContext.string_representation"><a class="viewcode-back" href="../../../api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext.string_representation">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">string_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Print name, value, and units of all physical constants.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">print_variables</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">run_comparison</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_comparison</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare the existing physical constant information for Psi4 (in checkup_data folder) to object instantiation from</span>
 <span class="sd">    `context`. Specialized use.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">checkup_data</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">checkup_data</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info for comparison (directory checkup_data) not installed. Run from source.&quot;</span><span class="p">)</span>
         <span class="k">raise</span>
 
-    <span class="k">class</span> <span class="nc">bcolors</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">bcolors</span><span class="p">:</span>
         <span class="n">HEADER</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
         <span class="n">OKBLUE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m&quot;</span>
         <span class="n">OKGREEN</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m&quot;</span>
@@ -487,13 +487,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Physical Constant </span><span class="si">{}</span><span class="s2"> ratio differs by </span><span class="si">{:12.8f}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> (this) vs </span><span class="si">{}</span><span class="s2"> (psi)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">rat</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">run_internal_comparison</span><span class="p">(</span><span class="n">old_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_internal_comparison</span><span class="p">(</span><span class="n">old_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compare two physical constant versions. Useful when adding new version.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">old_context</span><span class="p">)</span>
     <span class="n">other</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">new_context</span><span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">bcolors</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">bcolors</span><span class="p">:</span>
         <span class="n">HEADER</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[95m&quot;</span>
         <span class="n">OKBLUE</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[94m&quot;</span>
         <span class="n">OKGREEN</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[92m&quot;</span>
@@ -544,7 +544,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Decimal&quot;</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_pi</span><span class="p">(</span><span class="n">from_scratch</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Decimal&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get pi to 36 digits (or more with mpmath).</span>
 
 <span class="sd">    Parameters</span>
@@ -559,7 +559,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">from_scratch</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="kn">from</span> <span class="nn">mpmath</span> <span class="kn">import</span> <span class="n">mp</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mpmath</span><span class="w"> </span><span class="kn">import</span> <span class="n">mp</span>
 
         <span class="n">mp</span><span class="o">.</span><span class="n">dps</span> <span class="o">=</span> <span class="mi">36</span>
         <span class="k">return</span> <span class="n">mp</span><span class="o">.</span><span class="n">pi</span>
@@ -567,7 +567,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">&quot;3.14159265358979323846264338327950288&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">write_c_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.h&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_c_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.h&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write C header file defining physical constants and pi, constants names are prefixed.&quot;&quot;&quot;</span>
 
     <span class="bp">self</span> <span class="o">=</span> <span class="n">PhysicalConstantsContext</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
@@ -607,7 +607,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File written (</span><span class="si">{}</span><span class="s2">). Remember to add license and clang-format it.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">write_fortran_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.fh&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_fortran_header</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;physconst.fh&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;pc_&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Fortran include file defining physical constants and pi, constants names are prefixed.</span>
 <span class="sd">    The name of the kind parameter can be passed as well.&quot;&quot;&quot;</span>
 

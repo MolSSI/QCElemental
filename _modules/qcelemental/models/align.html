@@ -109,23 +109,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.models.align</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pydantic.v1</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
 
-<span class="kn">from</span> <span class="nn">..util</span> <span class="kn">import</span> <span class="n">blockwise_contract</span><span class="p">,</span> <span class="n">blockwise_expand</span>
-<span class="kn">from</span> <span class="nn">.basemodels</span> <span class="kn">import</span> <span class="n">ProtoModel</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">blockwise_contract</span><span class="p">,</span> <span class="n">blockwise_expand</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AlignmentMill&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="AlignmentMill"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill">[docs]</a><span class="k">class</span> <span class="nc">AlignmentMill</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AlignmentMill</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Facilitates the application of the simple transformation operations</span>
 <span class="sd">    defined by ``shift``, ``rotation``, ``atommap`` arrays and ``mirror``</span>
 <span class="sd">    boolean as recipe to the data structures</span>
@@ -141,11 +141,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">atommap</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Atom exchange map (nat,) for coordinates.&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="n">mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Do mirror invert coordinates?&quot;</span><span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
         <span class="n">force_skip_defaults</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;shift&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_3</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_3</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
@@ -153,7 +153,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;rotation&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_must_be_33</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_33</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
@@ -162,7 +162,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="c1">### Non-Pydantic API functions</span>
 
-<div class="viewcode-block" id="AlignmentMill.pretty_print"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.pretty_print">[docs]</a>    <span class="k">def</span> <span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="AlignmentMill.pretty_print"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.pretty_print">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">width</span> <span class="o">=</span> <span class="mi">40</span>
         <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
@@ -178,7 +178,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_coordinates"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">align_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="AlignmentMill.align_coordinates"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_coordinates">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;suitable for geometry or displaced geometry&quot;&quot;&quot;</span>
 
         <span class="n">algeom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
@@ -197,12 +197,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">algeom</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_atoms"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_atoms">[docs]</a>    <span class="k">def</span> <span class="nf">align_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ats</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill.align_atoms"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_atoms">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ats</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;suitable for masses, symbols, Zs, etc.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">ats</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">atommap</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_vector"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_vector">[docs]</a>    <span class="k">def</span> <span class="nf">align_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill.align_vector"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_vector">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;suitable for vector attached to molecule&quot;&quot;&quot;</span>
 
         <span class="c1"># sensible? TODO</span>
@@ -211,7 +211,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="c1">#    alvec[:, 1] *= -1</span>
         <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_gradient"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">align_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="AlignmentMill.align_gradient"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_gradient">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;suitable for vector system attached to atoms&quot;&quot;&quot;</span>
 
         <span class="n">algrad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
@@ -222,7 +222,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">algrad</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_hessian"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">align_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hess</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="AlignmentMill.align_hessian"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_hessian">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hess</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
         <span class="n">blocked_hess</span> <span class="o">=</span> <span class="n">blockwise_expand</span><span class="p">(</span><span class="n">hess</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
         <span class="n">alhess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">blocked_hess</span><span class="p">)</span>
 
@@ -236,7 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">alhess</span> <span class="o">=</span> <span class="n">blockwise_contract</span><span class="p">(</span><span class="n">alhess</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">alhess</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_vector_gradient"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_vector_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">align_vector_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_derivatives</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill.align_vector_gradient"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_vector_gradient">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_vector_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu_derivatives</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Align the nuclear gradients of vector components (e.g. dipole derivatives).&quot;&quot;&quot;</span>
         <span class="c1"># Input data is assumed to be organized into outermost x, y, z vector components.</span>
         <span class="c1"># Organize derivatives for each atom into 3x3 and transform it.</span>
@@ -256,7 +256,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">al_mu</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">at</span> <span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">at</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Datom</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">al_mu</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_system"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_system">[docs]</a>    <span class="k">def</span> <span class="nf">align_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">elez</span><span class="p">,</span> <span class="n">uniq</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill.align_system"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_system">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">elez</span><span class="p">,</span> <span class="n">uniq</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For AlignmentRecipe `ar`, apply its translation, rotation, and atom map.&quot;&quot;&quot;</span>
 
         <span class="n">nugeom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_coordinates</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span>
@@ -267,7 +267,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">return</span> <span class="n">nugeom</span><span class="p">,</span> <span class="n">numass</span><span class="p">,</span> <span class="n">nuelem</span><span class="p">,</span> <span class="n">nuelez</span><span class="p">,</span> <span class="n">nuuniq</span></div>
 
-<div class="viewcode-block" id="AlignmentMill.align_mini_system"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_mini_system">[docs]</a>    <span class="k">def</span> <span class="nf">align_mini_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">uniq</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="AlignmentMill.align_mini_system"><a class="viewcode-back" href="../../../api/qcelemental.models.AlignmentMill.html#qcelemental.models.AlignmentMill.align_mini_system">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">align_mini_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">uniq</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">reverse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For AlignmentRecipe `ar`, apply its translation, rotation, and atom map.&quot;&quot;&quot;</span>
 
         <span class="n">nugeom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_coordinates</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="n">reverse</span><span class="p">)</span>
