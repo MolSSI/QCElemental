@@ -161,7 +161,10 @@ def test_pubchem_multiout_g():
         # NOTE: 193687 no longer returned by PubChem. Adding a new choice
         # this is a brittle test due to changes on PubChem's end.
         # assert e.choices[193687] == "2-hydroxy-3-iodo-6-propan-2-ylcyclohepta-2,4,6-trien-1-one"
-        assert e.choices[85783535] == "(4-hydroxy-5-oxocyclohepta-1,3,6-trien-1-yl) dodecanoate"
+        # May 2025: 85783535 stopped responding due to changes on PubChem's end.
+        # assert e.choices[85783535] == "(4-hydroxy-5-oxocyclohepta-1,3,6-trien-1-yl) dodecanoate"
+        assert e.choices[564118] == "6-ethyl-2-hydroxy-3-iodo-5-[(4-methylphenyl)diazenyl]cyclohepta-2,4,6-trien-1-one"
+        assert e.choices[571356] == "N-[2-[benzoyl-(4-hydroxy-5-oxocyclohepta-1,3,6-trien-1-yl)amino]phenyl]benzamide"
 
 
 subject13 = """pubchem :ammonium\n"""
