@@ -36,6 +36,7 @@ Bug Fixes
 +++++++++
 - (:pr:`371`) Add `setuptools` as general dependency just in case nglview is present, so
   `pkg_resources` can be imported. After next nglview release, this can be removed.
+- (:pr:`372`) Fix some PubChem lookups that stopped working.
 
 Misc.
 +++++
