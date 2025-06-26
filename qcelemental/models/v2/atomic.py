@@ -8,7 +8,7 @@ from pydantic import Field, field_validator
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
-from .common_models import DriverEnum, Model, Provenance
+from .common_models import DriverEnum, Model, Provenance, NativeFilesProtocolEnum
 from .molecule import Molecule
 from .types import Array
 
@@ -640,14 +640,6 @@ class ErrorCorrectionProtocol(ProtoModel):
         return self.policies.get(policy, self.default_policy)
 
 
-class NativeFilesProtocolEnum(str, Enum):
-    r"""CMS program files to keep from a computation."""
-
-    all = "all"
-    input = "input"
-    none = "none"
-
-
 class AtomicProtocols(ProtoModel):
     r"""Protocols regarding the manipulation of computational result data."""
 
@@ -822,7 +814,7 @@ class AtomicResult(ProtoModel):
         description="The primary logging output of the program, whether natively standard output or a file. Presence vs. absence (or null-ness?) configurable by protocol.",
     )
     stderr: Optional[str] = Field(None, description="The standard error of the program execution.")
-    native_files: Dict[str, Any] = Field({}, description="DSL files.")
+    native_files: Dict[str, Any] = Field({}, description="Other program-specific files returned from the computation.")
 
     success: Literal[True] = Field(
         True, description="The success of program execution. If False, other fields may be blank."

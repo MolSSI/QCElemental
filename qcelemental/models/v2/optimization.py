@@ -12,7 +12,7 @@ from pydantic import Field, field_validator
 from ...util import provenance_stamp
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
-from .common_models import Provenance
+from .common_models import Provenance, NativeFilesProtocolEnum
 from .molecule import Molecule
 from .types import Array
 
@@ -38,12 +38,16 @@ class TrajectoryProtocolEnum(str, Enum):
 
 class OptimizationProtocols(ProtoModel):
     """
-    Protocols regarding the manipulation of a Optimization output data.
+    Protocols regarding the manipulation of Optimization output data.
     """
 
     schema_name: Literal["qcschema_optimization_protocols"] = "qcschema_optimization_protocols"
     trajectory_results: TrajectoryProtocolEnum = Field(
         TrajectoryProtocolEnum.none, description=str(TrajectoryProtocolEnum.__doc__)
+    )
+    native_files: NativeFilesProtocolEnum = Field(
+        NativeFilesProtocolEnum.none,
+        description="Policies for keeping processed files from the computation",
     )
 
     model_config = ExtendedConfigDict(force_skip_defaults=True)
@@ -51,7 +55,7 @@ class OptimizationProtocols(ProtoModel):
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.OptimizationProtocols", "qcelemental.models.v2.OptimizationProtocols"]:
-        """Convert to instance of particular QCSchema version."""
+        """Convert to an instance of a particular QCSchema version."""
         import qcelemental as qcel
 
         if check_convertible_version(target_version, error="OptimizationProtocols") == "self":
@@ -61,6 +65,7 @@ class OptimizationProtocols(ProtoModel):
         if target_version == 1:
             # serialization is compact, so use model to assure value
             dself.pop("trajectory_results", None)
+            dself.pop("native_files", None)
             dself["trajectory"] = self.trajectory_results.value
 
             self_vN = qcel.models.v1.OptimizationProtocols(**dself)
@@ -277,7 +282,7 @@ class OptimizationResult(ProtoModel):
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
 
     # native_files placeholder for when any opt programs supply extra files or need an input file. no protocol at present
-    native_files: Dict[str, Any] = Field({}, description="DSL files.")
+    native_files: Dict[str, Any] = Field({}, description="Other program-specific files returned from the computation.")
 
     properties: OptimizationProperties = Field(..., description=str(OptimizationProperties.__doc__))
 
@@ -308,6 +313,32 @@ class OptimizationResult(ProtoModel):
             raise ValueError(f"Protocol `trajectory:{keep_enum}` is not understood.")
 
         return v
+
+    @field_validator("native_files")
+    @classmethod
+    def _native_file_protocol(cls, value, info):
+        # Do not propagate validation errors
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
+
+        ancp = info.data["input_data"].specification.protocols.native_files
+        if ancp == "all":
+            return value
+        elif ancp == "none":
+            return {}
+        elif ancp == "input":
+            return_keep = ["input"]
+            if value is None:
+                files = {}
+            else:
+                files = value.copy()
+        else:
+            raise ValueError(f"Protocol `native_files:{ancp}` is not understood")
+
+        ret = {}
+        for rk in return_keep:
+            ret[rk] = files.get(rk, None)
+        return ret
 
     def convert_v(
         self, target_version: int, /

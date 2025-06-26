@@ -3,17 +3,14 @@ from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Uni
 
 from pydantic import Field, conlist, field_validator
 
-from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
-from .common_models import DriverEnum, Provenance
+from .common_models import DriverEnum, Provenance, NativeFilesProtocolEnum
 from .molecule import Molecule
 from .optimization import OptimizationProperties, OptimizationResult, OptimizationSpecification
-from .types import Array
+from ...util import provenance_stamp
 
 if TYPE_CHECKING:
     import qcelemental
-
-    from .common_models import ReprArgs
 
 
 # ====  Protocols  ==============================================================
@@ -37,6 +34,11 @@ class TorsionDriveProtocols(ProtoModel):
     schema_name: Literal["qcschema_torsion_drive_protocols"] = "qcschema_torsion_drive_protocols"
     scan_results: ScanResultsProtocolEnum = Field(
         ScanResultsProtocolEnum.none, description=str(ScanResultsProtocolEnum.__doc__)
+    )
+
+    native_files: NativeFilesProtocolEnum = Field(
+        NativeFilesProtocolEnum.none,
+        description="Policies for keeping processed files from the computation",
     )
 
     model_config = ExtendedConfigDict(force_skip_defaults=True)
@@ -229,8 +231,8 @@ class TorsionDriveResult(ProtoModel):
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")
 
-    # native_files placeholder for when any td programs supply extra files or need an input file. no protocol at present
-    native_files: Dict[str, Any] = Field({}, description="DSL files.")
+    # native_files placeholder for when any opt programs supply extra files or need an input file. no protocol at present
+    native_files: Dict[str, Any] = Field({}, description="Other program-specific files returned from the computation.")
 
     properties: TorsionDriveProperties = Field(..., description=str(TorsionDriveProperties.__doc__))
 
@@ -268,6 +270,32 @@ class TorsionDriveResult(ProtoModel):
             raise ValueError(f"Protocol `scan_results:{keep_enum}` is not understood.")
 
         return v
+
+    @field_validator("native_files")
+    @classmethod
+    def _native_file_protocol(cls, value, info):
+        # Do not propagate validation errors
+        if "input_data" not in info.data:
+            raise ValueError("Input_data was not properly formed.")
+
+        ancp = info.data["input_data"].specification.protocols.native_files
+        if ancp == "all":
+            return value
+        elif ancp == "none":
+            return {}
+        elif ancp == "input":
+            return_keep = ["input"]
+            if value is None:
+                files = {}
+            else:
+                files = value.copy()
+        else:
+            raise ValueError(f"Protocol `native_files:{ancp}` is not understood")
+
+        ret = {}
+        for rk in return_keep:
+            ret[rk] = files.get(rk, None)
+        return ret
 
     def convert_v(
         self, target_version: int, /

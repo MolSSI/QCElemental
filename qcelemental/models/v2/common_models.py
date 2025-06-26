@@ -63,3 +63,11 @@ class DriverEnum(str, Enum):
             return 0
         else:
             return egh.index(self)
+
+
+class NativeFilesProtocolEnum(str, Enum):
+    r"""Program-specific to keep from a computation."""
+
+    all = "all"
+    input = "input"
+    none = "none"
