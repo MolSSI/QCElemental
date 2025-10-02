@@ -1524,7 +1524,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">amol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">(),</span>
             <span class="s2">&quot;Q: concern_mol--&gt;returned_mol NRE uncorrupted&quot;</span><span class="p">,</span>
             <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span>
-            <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">mols_align</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span>
@@ -1532,13 +1532,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="n">amol</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">(),</span>
                 <span class="s2">&quot;Q: concern_mol--&gt;returned_mol NRE matches ref_mol&quot;</span><span class="p">,</span>
                 <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span>
-                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">assert</span> <span class="n">compare</span><span class="p">(</span>
                 <span class="kc">True</span><span class="p">,</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">amol</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
                 <span class="s2">&quot;Q: concern_mol--&gt;returned_mol geometry matches ref_mol&quot;</span><span class="p">,</span>
-                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">),</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">amol</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rmsd&quot;</span><span class="p">:</span> <span class="n">rmsd</span><span class="p">,</span> <span class="s2">&quot;mill&quot;</span><span class="p">:</span> <span class="n">solution</span><span class="p">}</span></div>
@@ -1658,17 +1658,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">solution</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mill&quot;</span><span class="p">]</span>
 
             <span class="k">assert</span> <span class="n">compare</span><span class="p">(</span>
-                <span class="kc">True</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">),</span> <span class="s2">&quot;shifts equiv&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="kc">True</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">),</span> <span class="s2">&quot;shifts equiv&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">do_resort</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">compare</span><span class="p">(</span>
                     <span class="kc">True</span><span class="p">,</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">solution</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">.</span><span class="n">rotation</span><span class="p">),</span>
                     <span class="s2">&quot;rotations transpose&quot;</span><span class="p">,</span>
-                    <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">solution</span><span class="o">.</span><span class="n">mirror</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">compare</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">do_mirror</span><span class="p">,</span> <span class="s2">&quot;mirror allowed&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">assert</span> <span class="n">compare</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">do_mirror</span><span class="p">,</span> <span class="s2">&quot;mirror allowed&quot;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">cmol</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rmsd&quot;</span><span class="p">:</span> <span class="n">rmsd</span><span class="p">,</span> <span class="s2">&quot;mill&quot;</span><span class="p">:</span> <span class="n">perturbation</span><span class="p">}</span></div></div>
 
