@@ -595,10 +595,13 @@ class WavefunctionProperties(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, -12]:
             dself["basis"] = self.basis.convert_v(target_version).dict()
 
-            self_vN = qcel.models.v1.WavefunctionProperties(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.WavefunctionProperties(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.WavefunctionProperties(**dself)
         else:
             assert False, target_version
 
@@ -766,7 +769,7 @@ class AtomicInput(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, -12]:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
@@ -786,7 +789,10 @@ class AtomicInput(ProtoModel):
             assert not dself["specification"], dself["specification"]
             dself.pop("specification")  # now empty
 
-            self_vN = qcel.models.v1.AtomicInput(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.AtomicInput(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.AtomicInput(**dself)
         else:
             assert False, target_version
 
@@ -974,9 +980,7 @@ class AtomicResult(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
-            dself.pop("schema_name")
-            dself.pop("schema_version")
+        if target_version in [1, -12]:
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
@@ -989,7 +993,13 @@ class AtomicResult(ProtoModel):
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
             dself = {**input_data, **dself}
 
-            self_vN = qcel.models.v1.AtomicResult(**dself)
+            dself.pop("schema_name")  # changed in v1
+            dself.pop("schema_version")  # changed in v1
+
+            if target_version == 1:
+                self_vN = qcel.models.v1.AtomicResult(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.AtomicResult(**dself)
         else:
             assert False, target_version
 

@@ -120,9 +120,9 @@ class OptimizationInput(ProtoModel):
 
     id: Optional[str] = None
     hash_index: Optional[str] = None
-    schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_input_default
-    ) = qcschema_optimization_input_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_input_default) = (  # type: ignore
+        qcschema_optimization_input_default
+    )
     schema_version: Literal[1] = 1
 
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
@@ -178,9 +178,9 @@ class OptimizationInput(ProtoModel):
 class OptimizationResult(OptimizationInput):
     """QCSchema results model for geometry optimization."""
 
-    schema_name: constr(  # type: ignore
-        strip_whitespace=True, regex=qcschema_optimization_output_default
-    ) = qcschema_optimization_output_default
+    schema_name: constr(strip_whitespace=True, regex=qcschema_optimization_output_default) = (  # type: ignore
+        qcschema_optimization_output_default
+    )
     # Note no schema_version: Literal[1] = Field(1) b/c inherited from OptimizationInput
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")

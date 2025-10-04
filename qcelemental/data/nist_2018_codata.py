@@ -2,13 +2,12 @@
 This is a automatically generated file from the 2018 NIST fundamental constants.
 Title: NIST-CODATA Internationally Recommended 2018 Values of the Fundamental Physical Constants - SRD 121
 Date: 2019-05-20
-DOI: 
+DOI:
 URL: https://physics.nist.gov/cuu/Constants/Table/allascii.txt
 Access Date: 2020-01-16 23:03:16.193457 UTC
 
 File Authors: QCElemental Authors
 """
-
 
 # fmt: off
 nist_2018_codata = {
