@@ -517,8 +517,9 @@ def validate_and_fill_chgmult(
         err = """Inconsistent or unspecified chg/mult: sys chg: {}, frag chg: {}, sys mult: {}, frag mult: {}""".format(
             molecular_charge, fragment_charges, molecular_multiplicity, fragment_multiplicities
         )
-        if verbose > -1:
-            print("\n\n" + "\n".join(text))
+        extra_err = [ln for ln in text if "candidate" in ln]
+        if extra_err:
+            err += "\n\n" + "\n".join(extra_err)
         raise ValidationError(err)
 
     def stringify(start, final):

@@ -124,7 +124,7 @@ def from_input_arrays(
             nonphysical=nonphysical,
             mtol=mtol,
             copy=copy,
-            verbose=1,
+            verbose=verbose,
         )
         update_with_error(molinit, {"qm": processed})
         if molinit["qm"] == {}:

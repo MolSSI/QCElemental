@@ -279,6 +279,7 @@ def from_string(
         enable_efp=enable_efp,
         missing_enabled_return_qm=missing_enabled_return_qm,
         missing_enabled_return_efp=missing_enabled_return_efp,
+        verbose=verbose,
         **molinit,
     )
 

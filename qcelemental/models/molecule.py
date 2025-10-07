@@ -946,7 +946,11 @@ class Molecule(ProtoModel):
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
-            mol_dict = from_string(data, dtype if dtype != "string" else None)
+            subkwargs = {}
+            for key in ["verbose"]:
+                if key in kwargs:
+                    subkwargs[key] = kwargs.pop(key)
+            mol_dict = from_string(data, dtype if dtype != "string" else None, **subkwargs)
             assert isinstance(mol_dict, dict)
             input_dict = to_schema(mol_dict["qm"], dtype=2, np_out=True)
             input_dict = _filter_defaults(input_dict)

@@ -20,8 +20,13 @@ Changelog
 .. +++++
 
 
-0.30.0 / 2025-MM-DD (Unreleased)
+0.30.0 / 2026-01-07
 -------------------
+
+Enhancements
+++++++++++++
+- (:issue:`368`, :pr:`379`) Remove uneeded printing and hook up verbosity control for
+  charge/multiplicity reconciliation for ``Molecule.from_data``. @jaclark5
 
 Bug Fixes
 +++++++++

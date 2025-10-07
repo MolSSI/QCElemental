@@ -990,3 +990,41 @@ def test_molecular_weight(mol_string, args, formula, formula_dict, molecular_wei
     # assert (abs(ret := mol.nuclear_repulsion_energy(**args)) - nre) < 1.0e-5, f"nre: {ret} != {nre}"
     # assert (ret := mol.element_composition(**args)) == formula_dict, f"element_composition: {ret} != {formula_dict}"
     # assert (ret := mol.get_molecular_formula()) == formula, f"get_molecular_formula: {ret} != {formula}"
+
+
+@pytest.mark.parametrize("verbose", [1, 5])
+def test_molecule_verbose(capsys, verbose):
+    Molecule.from_data("""0 3\nNe 0 0 0\n--\nNe 2 2 2\n""", verbose=verbose)
+    captured = capsys.readouterr()
+    if verbose > 1:
+        assert "Assess candidate" in captured.out
+    else:
+        assert captured.out == ""
+    assert captured.err == ""
+
+
+@pytest.mark.parametrize("verbose", [1, 2])
+def test_molecule_verbose_368(capsys, verbose):
+    with pytest.raises(qcel.ValidationError) as e:
+        qcel.models.Molecule(
+            symbols=["C", "C", "Pd", "C", "H", "H", "H", "H", "H"],
+            geometry=[
+                [-39.98282536, -71.86061537, 15.18016997],
+                [-38.04585608, -70.66630846, 16.10613577],
+                [-36.50194984, -73.22499764, 13.02399246],
+                [-35.83676624, -71.39763247, 16.918718],
+                [-40.95225486, -73.22688736, 16.41038167],
+                [-41.39256105, -70.74756668, 14.13326169],
+                [-37.87578073, -68.8030385, 15.20284668],
+                [-34.33821343, -69.96522007, 17.07556527],
+                [-35.77818473, -72.64674144, 18.57978727],
+            ],
+            molecular_charge=0,
+            molecular_multiplicity=3,
+            verbose=verbose,
+        )
+    captured = capsys.readouterr()
+
+    # check https://github.com/MolSSI/QCElemental/pull/379 sticks, regardless of verbose
+    assert "fm: [3, 1, 2]" not in captured.out
+    assert "Inconsistent or unspecified chg/mult" in str(e.value)
