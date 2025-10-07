@@ -20,17 +20,8 @@ Changelog
 .. +++++
 
 
-0.30.0 / 2025-MM-DD (Unreleased)
+0.30.0 / 2025-10-07 (Unreleased)
 -------------------
-
-Breaking Changes
-++++++++++++++++
-
-New Features
-++++++++++++
-
-Enhancements
-++++++++++++
 
 Bug Fixes
 +++++++++
@@ -38,6 +29,7 @@ Bug Fixes
   `pkg_resources` can be imported. After next nglview release, this can be removed.
   nglview v4.0 released early October but still very new so setuptools stays.
 - (:pr:`372`) Fix some PubChem lookups that stopped working.
+- (:pr:`376`) Fix verbosity of models/molecule.py log messages
 
 Misc.
 +++++
