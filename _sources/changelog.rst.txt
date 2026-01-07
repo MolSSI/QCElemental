@@ -23,24 +23,18 @@ Changelog
 0.30.0 / 2025-MM-DD (Unreleased)
 -------------------
 
-Breaking Changes
-++++++++++++++++
-
-New Features
-++++++++++++
-
-Enhancements
-++++++++++++
-
 Bug Fixes
 +++++++++
 - (:pr:`371`) Add `setuptools` as general dependency just in case nglview is present, so
   `pkg_resources` can be imported. After next nglview release, this can be removed.
+  nglview v4.0 released early October but still very new so setuptools stays.
 - (:pr:`372`) Fix some PubChem lookups that stopped working.
+- (:pr:`376`) Fix verbosity of models/molecule.py log messages
 
 Misc.
 +++++
 - (:pr:`371`) Extend poetry constraints to allow Python 3.13.
+- (:pr:`378`) Extend poetry constraints to forbid Python 3.14 due to `pydantic.v1` not available for QCSchema.
 
 
 0.29.0 / 2025-01-13
