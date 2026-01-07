@@ -20,7 +20,7 @@ Changelog
 .. +++++
 
 
-0.30.0 / 2025-10-07 (Unreleased)
+0.30.0 / 2025-MM-DD (Unreleased)
 -------------------
 
 Bug Fixes
