@@ -987,7 +987,11 @@ class Molecule(ProtoModel):
                 raise TypeError("Input type not understood, please supply the 'dtype' kwarg.")
 
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
-            mol_dict = from_string(data, dtype if dtype != "string" else None)
+            subkwargs = {}
+            for key in ["verbose"]:
+                if key in kwargs:
+                    subkwargs[key] = kwargs.pop(key)
+            mol_dict = from_string(data, dtype if dtype != "string" else None, **subkwargs)
             assert isinstance(mol_dict, dict)
             input_dict = to_schema(mol_dict["qm"], dtype=3, np_out=True)
             input_dict = _filter_defaults(input_dict)
@@ -1454,7 +1458,7 @@ class Molecule(ProtoModel):
             amol.nuclear_repulsion_energy(),
             "Q: concern_mol-->returned_mol NRE uncorrupted",
             atol=1.0e-4,
-            quiet=(verbose > 1),
+            quiet=(verbose < 1),
         )
         if mols_align:
             assert compare_values(
@@ -1462,13 +1466,13 @@ class Molecule(ProtoModel):
                 amol.nuclear_repulsion_energy(),
                 "Q: concern_mol-->returned_mol NRE matches ref_mol",
                 atol=1.0e-4,
-                quiet=(verbose > 1),
+                quiet=(verbose < 1),
             )
             assert compare(
                 True,
                 np.allclose(ref_mol.geometry, amol.geometry, atol=4),
                 "Q: concern_mol-->returned_mol geometry matches ref_mol",
-                quiet=(verbose > 1),
+                quiet=(verbose < 1),
             )
 
         return amol, {"rmsd": rmsd, "mill": solution}
@@ -1588,17 +1592,17 @@ class Molecule(ProtoModel):
             solution = data["mill"]
 
             assert compare(
-                True, np.allclose(solution.shift, perturbation.shift, atol=1.0e-6), "shifts equiv", quiet=(verbose > 1)
+                True, np.allclose(solution.shift, perturbation.shift, atol=1.0e-6), "shifts equiv", quiet=(verbose < 1)
             )
             if not do_resort:
                 assert compare(
                     True,
                     np.allclose(solution.rotation.T, perturbation.rotation),
                     "rotations transpose",
-                    quiet=(verbose > 1),
+                    quiet=(verbose < 1),
                 )
             if solution.mirror:
-                assert compare(True, do_mirror, "mirror allowed", quiet=(verbose > 1))
+                assert compare(True, do_mirror, "mirror allowed", quiet=(verbose < 1))
 
         return cmol, {"rmsd": rmsd, "mill": perturbation}
 

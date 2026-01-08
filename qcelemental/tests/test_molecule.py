@@ -1031,7 +1031,7 @@ def test_molecular_weight(Molecule, mol_string, args, formula, formula_dict, mol
 
 
 @pytest.mark.parametrize("verbose", [1, 5])
-def test_molecule_verbose(capsys, verbose):
+def test_molecule_verbose(Molecule, capsys, verbose):
     Molecule.from_data("""0 3\nNe 0 0 0\n--\nNe 2 2 2\n""", verbose=verbose)
     captured = capsys.readouterr()
     if verbose > 1:
@@ -1042,9 +1042,9 @@ def test_molecule_verbose(capsys, verbose):
 
 
 @pytest.mark.parametrize("verbose", [1, 2])
-def test_molecule_verbose_368(capsys, verbose):
+def test_molecule_verbose_368(Molecule, capsys, verbose):
     with pytest.raises(qcel.ValidationError) as e:
-        qcel.models.Molecule(
+        Molecule(
             symbols=["C", "C", "Pd", "C", "H", "H", "H", "H", "H"],
             geometry=[
                 [-39.98282536, -71.86061537, 15.18016997],

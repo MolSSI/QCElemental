@@ -12,7 +12,8 @@ issues = "https://github.com/MolSSI/QCElemental/issues"
 name = "qcelemental"
 #version = "0.30.0"
 dynamic = ["version"]
-requires-python = ">=3.8"
+# pydantic.v1 not available for py >=3.14
+requires-python = ">=3.8,<3.14"
 description = "Core data structures for Quantum Chemistry."
 authors = [
   { name="The QCArchive Development Team", email="qcarchive@molssi.org" },
@@ -49,10 +50,10 @@ standard = [
 ]
 viz = [
     "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
-    "setuptools; python_version>='3.12'",  # nglview needs pkg_resources
+    "setuptools >=68.0.0; python_version>='3.12'",  # nglview needs pkg_resources
+                # setuptools is needed temporarily to avoid pkg_resources error with ngl_view. remove from here after next nglview release beyond v1.3.4
     "ipykernel <6.0",
 ]
-# pydantic.v1 not available for py >=3.14
 align = [
     "networkx <3.0", 
     "scipy",

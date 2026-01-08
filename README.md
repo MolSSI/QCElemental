@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/MolSSI/QCElemental/workflows/CI/badge.svg?branch=master)](https://github.com/MolSSI/QCElemental/actions?query=workflow%3ACI)
 [![codecov](https://img.shields.io/codecov/c/github/MolSSI/QCElemental.svg?logo=Codecov&logoColor=white)](https://codecov.io/gh/MolSSI/QCElemental)
 [![Documentation Status](https://img.shields.io/github/actions/workflow/status/MolSSI/QCElemental/CI.yaml?label=docs&logo=readthedocs&logoColor=white)](https://molssi.github.io/QCElemental/)
-[![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/enQtNDIzNTQ2OTExODk0LTE3MWI0YzBjNzVhNzczNDM0ZTA5MmQ1ODcxYTc0YTA1ZDQ2MTk1NDhlMjhjMmQ0YWYwOGMzYzJkZTM2NDlmOGM)
+[![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/zt-3calopudd-2rtUC~XN1tj1Zn9MHkV6GQ)
 ![python](https://img.shields.io/badge/python-3.8+-blue.svg)
 
 **Documentation:** [GitHub Pages](https://molssi.github.io/QCElemental/)
