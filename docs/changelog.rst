@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2025-MM-DD (Unreleased)
+.. X.Y.0 / 2026-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -20,7 +20,7 @@ Changelog
 .. +++++
 
 
-0.50.0 / 2025-MM-DD (Unreleased) (aka "next" aka "QCSchema v2 available")
+0.50.0 / 2026-MM-DD (Unreleased) (aka "next" aka "QCSchema v2 available")
 -------------------
 
 Breaking Changes
