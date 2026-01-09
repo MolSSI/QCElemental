@@ -113,6 +113,7 @@ jobs:
           rm -rf $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/examples
           ln -s $GITHUB_WORKSPACE/geomeTRIC/geometric/data $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/geometric/data
           ln -s $GITHUB_WORKSPACE/geomeTRIC/examples $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/examples
+          sed -i "s;< 100;< 10;g" $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/geometric/tests/test_irc.py
           pytest -rws -v --color=yes -n auto --durations 15 --pyargs geometric \
             -k "irc and not neb_service"
           # two dimension mismatch test failures
