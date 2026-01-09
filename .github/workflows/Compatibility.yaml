@@ -114,7 +114,7 @@ jobs:
           ln -s $GITHUB_WORKSPACE/geomeTRIC/geometric/data $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/geometric/data
           ln -s $GITHUB_WORKSPACE/geomeTRIC/examples $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/examples
           pytest -rws -v --color=yes -n auto --durations 15 --pyargs geometric \
-            -k "irc not neb_service"
+            -k "irc and not neb_service"
           # two dimension mismatch test failures
 
       - name: Fail job if any piece failed
