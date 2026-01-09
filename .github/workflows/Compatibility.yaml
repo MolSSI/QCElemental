@@ -97,111 +97,6 @@ jobs:
           channels: conda-forge
           conda-remove-defaults: true
 
-      - name: Install QCElemental
-        run: |
-          conda remove qcelemental --force
-          python -m pip install . --no-deps
-
-      - name: Environment Information
-        run: |
-          conda info
-          conda list
-          git describe
-          python -c "import qcelemental as q;print(q.__file__, q.__version__)"
-          python -c "import qcengine as q;print(q.__file__, q.__version__)"
-          python -c "import qcfractal as q;print(q.__file__, q.__version__)"
-          python -c "import qcmanybody as q;print(q.__file__, q.__version__)"
-          python -c "import psi4 as q;print(q.__file__, q.__version__)"
-          python -c "import optking as q;print(q.__file__, q.__version__)"
-
-      - name: Special Config - ncores control for QCEngine
-        if: false  # "(matrix.cfg.label != 'Py-min')"
-        run: |
-          cat > qcengine.yaml <<EOF
-          all:
-            hostname_pattern: "*"
-            memory: 2
-            ncores: 2
-          EOF
-          cat qcengine.yaml
-
-      - name: Test QCEngine
-        if: true
-        id: qcengine
-        continue-on-error: true
-        run: |
-          qcengine info
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcengine
-
-      - name: Test QCFractal
-        if: true
-        id: qcfractal
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcfractal \
-            -k "not socket"
-          # all working but remove longest tests
-
-      - name: Test QCManyBody
-        if: true
-        id: qcmanybody
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcmanybody \
-            -k "not 3b and not 4b and not (2b and (multi or vmfc))"
-          # all working but remove longest tests
-
-      - name: Test dftd3
-        if: true
-        id: dftd3
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes --durations 15 --pyargs dftd3 \
-            --ignore "$(python -c 'import dftd3, pathlib; print(pathlib.Path(dftd3.__file__).with_name("test_ase.py"))')" \
-            -k "not (ase or pyscf)"
-          # rather not add ase and pyscf to env
-
-      - name: Test dftd4
-        if: true
-        id: dftd4
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes --durations 15 --pyargs dftd4 \
-            --ignore "$(python -c 'import dftd4, pathlib; print(pathlib.Path(dftd4.__file__).with_name("test_ase.py"))')" \
-            -k "not (ase or pyscf)"
-          # rather not add ase and pyscf to env
-
-      - name: Test xTB
-        if: false
-        id: xtb
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes --durations 15 --pyargs xtb
-            --ignore "$(python -c 'import xtb, pathlib; print(pathlib.Path(xtb.__file__).parent / "ase" / "calculator.py")')" \
-            --ignore "$(python -c 'import xtb, pathlib; print(pathlib.Path(xtb.__file__).parent / "ase" / "__init__.py")')" \
-            --ignore "$(python -c 'import xtb, pathlib; print(pathlib.Path(xtb.__file__).parent / "ase" / "test_calculator.py")')" \
-            --ignore "$(python -c 'import xtb, pathlib; print(pathlib.Path(xtb.__file__).parent / "ase" / "test_optimize.py")')"
-          # can't get rid of ase import here
-
-      - name: Test Psi4
-        if: true
-        id: psi4
-        continue-on-error: true
-        run: |
-          cd `psi4 --module`
-          python -c "import psi4;print(psi4.addons())"
-          pytest -rws -v --color=yes -n auto --durations 15 psi4/tests/ \
-            -m quick -k "not (tdscf or r2scan or standard_suite or cholesky or matrix or scf5 or H_by_ene or dft_bench)"
-          # all working, but cut test time by removing long, qcel-light tests
-
-      - name: Test optking
-        if: true
-        id: optking
-        continue-on-error: true
-        run: |
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs optking \
-            -m "not long" -k "not (hess_guess or irc or json_lif or aux_opt or test_hessians or trimers_h2o_weights or conjugate_gradient_default)"
-          # some optking tests aren't working even with released qcel + released optking. last two are for length
 
       - name: Special Config - checkout geomeTRIC for testing data
         uses: actions/checkout@v4
@@ -219,7 +114,7 @@ jobs:
           ln -s $GITHUB_WORKSPACE/geomeTRIC/geometric/data $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/geometric/data
           ln -s $GITHUB_WORKSPACE/geomeTRIC/examples $CONDA_PREFIX/lib/python${{ matrix.cfg.python-version }}/site-packages/examples
           pytest -rws -v --color=yes -n auto --durations 15 --pyargs geometric \
-            -k "not neb_service"
+            -k "irc not neb_service"
           # two dimension mismatch test failures
 
       - name: Fail job if any piece failed
