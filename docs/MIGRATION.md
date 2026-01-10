@@ -11,6 +11,8 @@ This project ships two QCSchema families:
   - Standardize naming and field availability to be more predictable
   - Bring visible change to accompany the Pydantic v2 transition
 
+- This guide is AI generated and edited with some care. But a better guide is the [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf).
+
 ---
 
 ## TODO Immediately
