@@ -1,7 +1,7 @@
 Changelog
 =========
 
-.. X.Y.0 / 2025-MM-DD (Unreleased)
+.. X.Y.0 / 2026-MM-DD (Unreleased)
 .. -------------------
 ..
 .. Breaking Changes
@@ -20,105 +20,119 @@ Changelog
 .. +++++
 
 
-0.50.0 / 2025-MM-DD (Unreleased) (aka "next" aka "QCSchema v2 available")
--------------------
+0.50.0 / 2026-MM-DD (aka "next" aka "QCSchema v2 available") (Unreleased)
+------------------------------------------------------------
 
 Breaking Changes
 ++++++++++++++++
-* The very old model names `ResultInput`, `Result`, `ResultProperties`, `Optimization` deprecated in 2019 are now only available through `qcelelemental.models.v1`
-* ``models.v2`` do not support AutoDoc. The AutoDoc routines have been left at pydantic v1 syntax. Use autodoc-pydantic for Sphinx instead.
-* Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality. v2.Molecule retains its dict for now
+- (:pr:`377`) Note that Pydantic doesn't offer its v1 API within version v2 for Python >=3.14. For 314, while all imports will work, attempting to instantiate a QCSchema v1 model will raise a ``RuntimeError``.
+
+Breaking Changes (long expired)
++++++++++++++++++++++++++++++++
+- (:pr:`346`) The very old model names `ResultInput`, `Result`, `ResultProperties`, `Optimization` deprecated in 2019 are now only available through `qcelelemental.models.v1`
+- (:pr:`347`) ``models.v2`` do not support AutoDoc. The AutoDoc routines have been left at pydantic v1 syntax. Use autodoc-pydantic for Sphinx instead.
 
 New Features
 ++++++++++++
-* Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
-* New pydantic v2 models available as ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
 - (:pr:`361`) Switch from poetry to setuptools build backend.
+- (:pr:`346`) Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
+- (:pr:`347`) Introduces QCSchema v2 models written in Pydantic v2 API. New models available as ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
+- There is a graphical [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf) comparing QCSchema v1 and v2. There is also a [migration guide](docs/MIGRATION.md)
+- (:pr:`352`)  ``AtomicInput`` and ``AtomicResult`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``FailedOperation`` (both versions) learned a ``.convert_v(ver)`` function that returns self or the other version.
+- (:pr:`354`) Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality. v2.Molecule retains its dict for now
 
 Enhancements
 ++++++++++++
-- (:pr:`367`) ``v1.TorsionDriveResult.final_energies`` replaced by larger ``v2.TorsionDriveResult.scan_properties``. the former is present in the latter as ``return_energy``.
-- (:pr:`367`) ``v2.TorsionDriveProperties`` added mostly as a placeholder class (one obvious prop at present).
-- (:pr:`366`) main storage for ``v2.TorsionDriveResult`` moved from ``optimization_history`` to ``scan_results``.
-- (:pr:`366`) ``v2.TorsionDriveInput.initial_molecule`` restored from ``initial_molecules``.
-- (:pr:`366`) default of OptimizationProtocol.trajectory_results changed to "none" from "all" in v1. much info can now come from properties.
-- (:pr:`366`) v2.OptimizationProtocol renamed trajectory_results from trajectory in accordance with the protocol naming the controlled field. no default change yet.
-- (:pr:`366`) v1/v2: import ElectronShell, BasisCenter, ECPPotential from top level models
-- (:pr:`366`) molparse learns to pass through schema v3, though no new field for Mol yet.
-- (:pr:`366`) ``v2.FailedOperation`` gained schema_name and schema_version=2. unversioned in v1
-- (:pr:`366`) ``v2.BasisSet.schema_version`` is now 2, with no layout change.
-- (:pr:`366`) ``v2.Molecule.schema_version`` is now 3. convert_v of all the models learned to handle the new schema_version.
-- (:pr:`366`) v2: standardizing on In/Res get versions, Ptcl/Kw/Spec get only schema_name. At, Opt, TD
-- (:pr:`366`) v1/v2: removing the version_stamps from the models: At, Opt, TD, Fail, BAsis, Mol. so it will error rather than clobber if constructed with wrong version. convert_v now handles.
-- (:pr:`366`) convert_v functions learned to handle model.basis=BasisSet, not just str.
-- (:pr:`366`) ``Molecule`` and ``BasisSet``  and ``WavefunctionProperties`` learned to ``convert_v`` to interconvert between v1 and v2. No layout changes.
-  ``BasisSet.schema_name`` standardized to ``qcschema_basis_set``.
-  Both classes get their ``schema_name`` as Literal now
-- (:pr:`360`) ``Molecule`` learned new functions ``element_composition`` and ``molecular_weight``.
-  The first gives a dictionary of element symbols and counts, while the second gives the weight in amu.
-  Both can access the whole molecule or per-fragment like the existing ``nelectrons`` and
-  ``nuclear_repulsion_energy``. All four can now select all atoms or exclude ghosts (default).
-- (:pr:`366`) separated procedures.py and renamed results.py so models are separated into atomic.py, optimization.py, torsion_drive.py, failure models moved to failed_operation.py. basis.py to basis_set.py
-- (:pr:`366`) ``schema_name`` output chanded to result ``qcschema_output`` to ``qcschema_atomic_result``. also opt
-- (:pr:`366`) ``TDKeywords`` renamed to ``TorsionDriveKeywords``
-- (:pr:`366`) ``AtomicResultProtocols`` renamed to ``AtomicProtocols`` and ``AtomicResultProperties`` to ``AtomicProperties``
-- (:pr:`366`) new ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of optimizationresults at each grid point. Use "all" for proper conversion to v1.
-- (:pr:`363`) ``v2.TorsionDriveResult`` no longer inherits from Input and now has indep id and extras and new native_files.
-- (:pr:`363`) ``v2.TorsionDriveInput.initial_molecule`` now ``initial_molecules`` as it's a list of >=1 molecules. keep change?
-- (:pr:`363`) ``v2. TorsionDriveSpecification`` is a new model. instead of ``v2.TorsionDriveInput`` having a ``input_specification`` and an ``optimization_spec`` fields, it has a ``specification`` field that is a ``TorsionDriveSpecification`` which in turn hold opt info and in turn gradient/atomic info.
-- (:pr:`363`) ``v2.TDKeywords`` got a ``schema_name`` field.
-- (:pr:`363`) ``native_files`` field added to ``v2.OptimizationResult`` and ``v2.TorsionDriveResult`` gained a ``native_files`` field, though not protocols for user control.
-- (:pr:`363`) ``v2.AtomicResult.convert_v()`` learned external_protocols option to inject that field if known from OptIn
-- (:pr:`363`) OptimizationSpecification learned a ``convert_v`` function to interconvert.
-- (:pr:`363`) all the v2 models of ptcl/kw/spec/in/prop/res type have ``schema_name``.  ``qcschema_input`` and ``qcschema_output`` now are ``qcschema_atomic_input`` and ``qcschema_atomic_output``
-- (:pr:`363`) whereas ``v1.AtomicInput`` and ``v1.QCInputSpecification`` shared the same schema_name, ``v2.AtomicInput`` and ``v2.AtomicSpecification`` do not. This is a step towards more explicit schema names.
-- (:pr:`363`) ``v2.AtomicResult`` gets a literal schema_name and it no longer accepts the qc_schema*
-- (:pr:`363`) ``v2.OptimizatonResult.energies`` becomes ``v2.OptimizationResult.trajectory_properties`` and ManyBody allowed as well as atomic. Much expands information returned
-- (:pr:`363`) ``v2.OptimizatonResult.trajectory`` becomes ``v2.OptimizationResult.trajectory_results`` and ManyBody allowed as well as atomic.
-- (:pr:`363`) a new basic ``v2.OptimizationProperties`` for expansion later. for now has number of opt iter. help by `OptimizationResult.properties`
-- (:pr:`363`) ``v2.OptimizationResult`` gained a ``input_data`` field for the corresponding ``OptimizationInput`` and independent ``id`` and ``extras``. No longer inherits from ``OptimizationInput``.
-                 Literal schema_name. Added ``native_files`` field.
-- (:pr:`363`) ``v2.OptimizationInput`` got a Literal schema_name now. field ``specification`` now takes an ``OptimizationSpecification`` that itself takes an ``AtomicSpecification`` replaces field ``input_specification`` that took a ``QCInputSpecification``. ``v2.OptimizationInput`` gained a ``protocols`` field.
-              fields ``keywords``, ``extras``, and ``protocols`` from Input are now in ``OptimizationSpecification``
-- (:pr:`363`) ``v2.OptimizationSpecification`` now is used every optimization as ``v2.OptimizationInput.specification`` = ``OptimizationSpecification`` rather than only in torsion drives. No longer has schema_name and schema_version.
-              Its. ``procedures`` field is now ``program``. Gains new field ``specification`` that is most commonly ``AtomicSpecification`` but could be ``ManyBodySpecification`` or any other E/G/H producer.
-- (:pr:`363`) ``v2.OptimizationInput`` now takes consolidated ``AtomicSpecification`` rather than ``QCInputSpecification`` (now deleted)
-- (:pr:`359`) ``v2.AtomicInput`` lost extras so extras belong unambiguously to the specification.
-- (:pr:`359`) ``v2.AtomicSpecification``, unlike ``v1.QCInputSpecification``, doesn't have schema_name and schema version.
-- (:pr:`359`) misc -- ``isort`` version bumped to 5.13 and imports and syntax take advantage of python 3.8+
-- (:pr:`359`) ``v2.AtomicInput`` gained a ``specification`` field where driver, model, keywords, extras, and protocols now live. ``v2.AtomicSpecification`` and ``v1.QCInputSpecification`` (used by opt and td) learned a ``convert_v`` to interconvert.
+
+Build, Maintenance, & Versions
+------------------------------
+- (:pr:`361`) Move from poetry to setuptools build backend and versioneer to scm-version for versioning.
+- Pydantic 2 now required. v2.12 for Python 3.14.
+- (:pr:`377`) Now all python versions can import everything (even if no good b/c Pydantic v1 API not available for Python 3.14). There's FutureWarnings thrown (no more DeprecationWarnings) on any import. Python 3.14 will fail to instantiate the forbidden models and raise a RuntimeError, but otherwise all Pythons are operational.
+- (:pr:`345`) Set up precommit.
+- (:pr:`359`) ``isort`` version bumped to 5.13 and imports and syntax take advantage of python 3.8+
+
+Imports, module layout
+----------------------
+- (:pr:`345`) Move `models` to `models.v1` to preserve the longstanding QCSchema v1.
+- (:pr:`349`) Dummy files added to `models/` directory to mirror v1 layout (e.g., `models/results.py`). These reroute imports to v1/ so downstream can run w/o alteration with `from qcelemental.models.procedures import OptimizationInput`, etc. Warnings are added to the dummy files to promote loading from `models`, `models.v1`, or `models.v2`, not `models.v1.results` etc.
+- (:pr:`349`, :pr:`366`) Many more of the lesser-used models are importable from ``qcel.models`` (or its ``v1`` and ``v2`` subdirectories). This includes ``TorsionDriveInput``, ``TorsionDriveResult``, ``Model``, ``AtomicResultProtocols``, ``QCInputSpecification``, ``OptimizationSpecification``, and ``TDKeywords`` (PR 349). Also, ElectronShell, BasisCenter, ECPPotential importable from top level ``models`` (PR 366). This is part of a recommended change to always import directly from ``models``, ``models.v1``, etc.
+- (:pr:`366`) For `models.v2`, procedures.py was separated (into opt and td) and results.py was renamed, so models are separated into atomic.py, optimization.py, and torsion_drive.py. Failure models were moved to failed_operation.py. Also, basis.py was renamed to basis_set.py .
+- (:pr:`377`) **Not part of API.** If you must have QCSchema v1 in Pydantic v2 API (for Python 3.14), ask @loriab about the _v1v2 transition class. **Never** return objects of these classes.
+
+Slight alterations to v1 QCSchema
+---------------------------------
+- ``models.v1`` models ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``Molecule``, ``BasisSet``, ``QCInputSpecification``, ``OptimizationSpecification``, ``OptimizationProtocols``, ``WavefunctionProperties`` learned a `.convert_v(target_version)` to return either itself (with `target_version=1`) or convert to QCSchema v2 (with `target_version=2`). This is recommended to use over hand-mapping.
+- (:pr:`352`, :pr:`357`) The ``models.v1`` ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` (PR 352) and ``BasisSet``, ``QCInputSpecification``, ``OptimizationSpecification`` (PR 357) had their `schema_version` changed from an int to a Literal[1]. "Result"s given `schema_version` in their own right rather than inheriting from Input. (Intermediate PRs in `next` branch added validation to `schema_version` so new instances stamped as 1, even if another value passed in. By the time of `next` merge, all such translation is handled in `convert_v`, so incorrent values will fail instantiation.)
+- (:pr:`357`) ``v1.Molecule`` had its schema_version changed to a Literal[2] (remember Mol is one-ahead of general numbering scheme) so new instances will be 2 even if another value is passed in.
+- (:pr:`354`, :pr:`357`) ``Molecule.extras`` (PR 354) and ``FailedOperation.extras`` (PR 357) default changed from None to `{}` rather in both v1 and v2. Input None converts to {} upon instantiation.
+- (:pr:`352`) v1.ProtoModel learned `model_copy`, `model_dump`, `model_dump_json` methods (all w/o warnings) so downstream can unify on newer Pydantic v2 syntax. (Levi's work alternately/additionally taught v2 `copy`, `dict`, `json` (all w/warning) but dict has an alternate use in Pydantic v2.)
 - (:pr:`358`) ``v1.AtomicResult.convert_v`` learned a ``external_input_data`` option to inject that field (if known) rather than using incomplete reconstruction from the v1 Result. may not be the final sol'n.
-- (:pr:`358`) ``v2.FailedOperation`` gained schema_name and schema_version=2.
-- (:pr:`358`) ``v2.AtomicResult`` no longer inherits from ``v2.AtomicInput``. It gained a ``input_data`` field for the corresponding ``AtomicInput`` and independent ``id`` and ``molecule`` fields (the latter being equivalvent to ``v1.AtomicResult.molecule`` with the frame of the results; ``v2.AtomicResult.input_data.molecule`` is new, preserving the input frame). Gained independent ``extras``
-- (:pr:`358`) Both v1/v2 ``AtomicResult.convert_v()`` learned to handle the new ``input_data`` layout.
+
+New v2 Schema: generic changes wrt v1
+-------------------------------------
+- ``models.v2`` models ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``Molecule``, ``BasisSet``, ``AtomicSpecification``, ``OptimizationSpecification``, ``OptimizationProtocols``, ``WavefunctionProperties`` learned a `.convert_v(target_version)` to return either itself (with `target_version=2`) or convert to QCSchema v1 (with `target_version=1`). This is recommended to use over hand-mapping.
+- (:pr:`363`) All the v2 models (Protocols/Keywords/Specification/Input/Properties/Result) get Literal ``schema_name`` starting with "qcschema_" (many v1 models didn't have a name; some v1 models allowed "qc_schema_").
+- (:pr:`347`) The ``models.v2`` have had their `schema_version` bumped for ``BasisSet``, ``AtomicInput``, ``OptimizationInput`` (implicit for ``AtomicResult`` and ``OptimizationResult``), ``TorsionDriveInput`` , and ``TorsionDriveResult``.
+- (:pr:`347`, :pr:`352`) The ``models.v2`` ``BasisSet``, ``AtomicInput``, ``AtomicResult``, ``AtomicResultProperties`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` bumped (PR 347) and changed to a Literal[2] (PR 352).
+- (:pr:`366`) v2: standardizing on Input/Result get `schema_version`, Protocols/Keywords/Specification get only `schema_name`. (v1 models gave schema_version to Input/Specification and Result inherited from Input.)
 - (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``success`` field enforced to ``True``. Previously it could be set T/F. Now validation errors if not T. Likewise ``v2.FailedOperation.success`` is enforced to ``False``.
 - (:pr:`357`, :issue:`536`) ``v2.AtomicResult``, ``v2.OptimizationResult``, and ``v2.TorsionDriveResult`` have the ``error`` field removed. This isn't used now that ``success=True`` and failure should be routed to ``FailedOperation``.
-- (:pr:`357`) ``v1.Molecule`` had its schema_version changed to a Literal[2] (remember Mol is one-ahead of general numbering scheme) so new instances will be 2 even if another value is passed in. Ditto ``v2.BasisSet.schema_version=2``. Ditto ``v1.BasisSet.schema_version=1`` Ditto ``v1.QCInputSpecification.schema_version=1`` and ``v1.OptimizationSpecification.schema_version=1``.
-- (:pr:`357`) ``v2.AtomicResultProperties``, ``v2.QCInputSpecification``, ``v2.OptimizationSpecification`` lost its schema_version until we see if its really needed.
-- (:pr:`357`) ``v2.OptimizationSpecification`` gained extras field
-- (:pr:`357`) ``v1.FailedOperation.extras`` and ``v2.FailedOperation.extras`` default changed from None to {}
-* Fix a lot of warnings originating in this project.
-* `Molecule.extras` now defaults to `{}` rather than None in both v1 and v2. Input None converts to {} upon instantiation.
-* ``v2.FailedOperation`` field `id` is becoming `Optional[str]` instead of plain `str` so that the default validates.
-* v1.ProtoModel learned `model_copy`, `model_dump`, `model_dump_json` methods (all w/o warnings) so downstream can unify on newer syntax. Levi's work alternately/additionally taught v2 `copy`, `dict`, `json` (all w/warning) but dict has an alternate use in Pydantic v2.
-* ``AtomicInput`` and ``AtomicResult`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``FailedOperation`` (both versions) learned a ``.convert_v(ver)`` function that returns self or the other version.
-* The ``models.v2`` ``AtomicInput``, ``AtomicResult``, ``AtomicResultProperties`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` changed to a Literal[2] and validated so new instances will be 2, even if another value passed in.
-* The ``models.v1`` ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` changed to a Literal[1] and validated so new instances will be 1, even if another value passed in.
-* The ``models.v1`` and ``models.v2`` ``OptimizationResult`` given schema_version for the first time.
-* The ``models.v2`` have had their `schema_version` bumped for ``BasisSet``, ``AtomicInput``, ``OptimizationInput`` (implicit for ``AtomicResult`` and ``OptimizationResult``), ``TorsionDriveInput`` , and ``TorsionDriveResult``.
-* The ``models.v2`` ``AtomicResultProperties`` has been given a ``schema_name`` and ``schema_version`` (2) for the first time.
-* Note that ``models.v2`` ``QCInputSpecification`` and ``OptimizationSpecification`` have *not* had schema_version bumped.
-* All of ``Datum``, ``DFTFunctional``, and ``CPUInfo`` models, none of which are mixed with QCSchema models, are translated to Pydantic v2 API syntax.
-* Models ``procedures.TorsionDriveInput``, ``procedures.TorsionDriveResult``, ``common_models.Model``, ``results.AtomicResultProtocols`` are now importable from ``qcel.models`` (or its ``v1`` and ``v2`` sub) directly. For generic and v1, ``procedures.QCInputSpecification`` and ``procedures.OptimizationSpecification`` and ``procedures.TDKeywords`` are also importable from models.
+- Of the top-level fields normally in a Input schema in v1, only molecule remains in v2; others are moved to a Specification schema. For example, `OptimizationInput.specification = OptimizationSpecification`. This helps schema be more composible and reuseable.
+- Result schema classes no longer inherit from Input as in v1. Now input is stored as a field in result, e.g., `OptimizationResult.input_data = OptimizationInput`. This helps preserve info for restart and prevent overwriting Molecule and Provenance.
 
-Bug Fixes
-+++++++++
+New v2 Schema: Molecule, BasisSet, FailedOperation changes wrt v1
+-----------------------------------------------------------------
+- (:pr:`366`) ``v2.Molecule.schema_version`` is now 3, with no layout change.
+- (:pr:`366`) molparse learns to pass through schema v3, though no new field for Mol yet.
+- (:pr:`366`) ``v2.BasisSet.schema_version`` is now 2, with no layout change. ``BasisSet.schema_name`` standardized to ``qcschema_basis_set``.
+- (:pr:`366`) ``Molecule`` and ``BasisSet``  and ``WavefunctionProperties`` learned to ``convert_v`` to interconvert between v1 and v2. No layout changes.
+- (:pr:`358`, :pr:`366`) ``v2.FailedOperation`` gained schema_name and schema_version=2. unversioned in v1
+- (:pr:`352`) ``v2.FailedOperation`` field `id` is becoming `Optional[str]` instead of plain `str` so that the default validates.
+
+New v2 Schema: Atomic changes wrt v1
+------------------------------------
+- (:pr:`366`) ``AtomicResultProtocols`` renamed to ``AtomicProtocols`` and ``AtomicResultProperties`` to ``AtomicProperties``
+- (:pr:`359`) ``v2.AtomicInput`` gained a ``specification`` field where driver, model, keywords, extras, and protocols now live. ``v2.AtomicSpecification`` and ``v1.QCInputSpecification`` (used by opt and td) learned a ``convert_v`` to interconvert.
+- (:pr:`359`) ``v2.AtomicSpecification``, unlike ``v1.QCInputSpecification``, doesn't have schema_name and schema version.
+- (:pr:`363`) Whereas ``v1.AtomicInput`` and ``v1.QCInputSpecification`` shared the same schema_name, ``v2.AtomicInput`` and ``v2.AtomicSpecification`` do not. This is a step towards more explicit schema names.
+- (:pr:`359`) ``v2.AtomicInput`` lost extras so extras belong unambiguously to the ``AtomicSpecification``.
+- (:pr:`358`) ``v2.AtomicResult`` no longer inherits from ``v2.AtomicInput``. It gained a ``input_data`` field for the corresponding ``AtomicInput`` and independent ``id`` and ``molecule`` fields (the latter being equivalvent to ``v1.AtomicResult.molecule`` with the frame of the results; ``v2.AtomicResult.input_data.molecule`` is new, preserving the input frame). ``AtomicResult`` gained an independent ``extras``.
+- (:pr:`363`, :pr:`366`) ``v2.AtomicResult.schema_name`` becomes a Literal, no longer accepts "qc_schema*", and changes from ``qcschema_output`` to ``qcschema_atomic_result``.
+- (:pr:`363`) ``qcschema_input`` and ``qcschema_output`` now are ``qcschema_atomic_input`` and ``qcschema_atomic_output``
+- (:pr:`363`) ``v2.AtomicResult.convert_v()`` learned external_protocols option to inject that field if known from OptIn
+
+New v2 Schema: Optimization changes wrt v1
+------------------------------------------
+- (:pr:`366`) ``v2.OptimizationProtocol`` renamed ``trajectory_results`` from ``trajectory`` in accordance with the protocol naming the controlled field. No default change yet.
+- (:pr:`366`) Default of ``OptimizationProtocol.trajectory_results`` changed to "none" from "all" in v1. Much info can now come from ``trajectory_properties``.
+- (:pr:`363`) ``v2.OptimizationInput`` got a Literal ``schema_name`` now. Field ``specification`` now takes an ``OptimizationSpecification`` that itself takes an ``AtomicSpecification``. This replaces from v1 field ``input_specification`` that took a ``QCInputSpecification``. ``v2.OptimizationInput`` gained a ``protocols`` field. Fields ``keywords``, ``extras``, and ``protocols`` from Input are now in ``OptimizationSpecification``.
+- (:pr:`363`) ``v2.OptimizationSpecification`` now is used every optimization as ``v2.OptimizationInput.specification`` = ``OptimizationSpecification`` rather than only in torsion drives. No longer has schema_name and schema_version. Its. ``procedures`` field is now ``program``. Gains new field ``specification`` that is most commonly ``AtomicSpecification`` but could be ``ManyBodySpecification`` or any other E/G/H producer.
+- (:pr:`357`) ``v2.OptimizationSpecification`` lost its schema_version (compared to v1) but gained an ``extras`` field.
+- (:pr:`366`) ``v2.OptimizationResult.schema_name`` changed from ``qcschema_optimization_output`` to ``qcschema_optimization_result``.
+- (:pr:`352`) The ``models.v1`` and ``models.v2`` ``OptimizationResult`` given schema_version for the first time.
+- (:pr:`363`) ``v2.OptimizationResult`` gained a ``input_data`` field for the corresponding ``OptimizationInput`` and independent ``id`` and ``extras``. No longer inherits from ``OptimizationInput``.  Literal schema_name.
+- (:pr:`363`) ``v2.OptimizationResult`` gained a ``native_files`` field, though not protocols for user control.
+- (:pr:`363`) ``v2.OptimizatonResult.energies`` becomes ``v2.OptimizationResult.trajectory_properties`` and ManyBody allowed as well as atomic. Much expands information returned.
+- (:pr:`363`) ``v2.OptimizatonResult.trajectory`` becomes ``v2.OptimizationResult.trajectory_results`` and ManyBody allowed as well as atomic.
+- (:pr:`363`) Added a new basic ``v2.OptimizationProperties`` for expansion later. for now has number of opt iter. Lodged in ``OptimizationResult.properties``.
+
+New v2 Schema: TorsionDrive changes wrt v1
+------------------------------------------
+- (:pr:`363`, :pr:`366`) ``v2.TDKeywords`` got a ``schema_name`` field and was renamed to ``TorsionDriveKeywords``
+- (:pr:`366`) New ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of ``OptimizationResult``s at each grid point. Use "all" for proper conversion to v1.
+- (:pr:`363`) ``v2. TorsionDriveSpecification`` is a new model. instead of ``v2.TorsionDriveInput`` having a ``input_specification`` and an ``optimization_spec`` fields, it has a ``specification`` field that is a ``TorsionDriveSpecification`` which in turn hold opt info and in turn gradient/atomic info.
+- (:pr:`363`) ``v2.TorsionDriveResult`` no longer inherits from Input and now has indep id and extras and new native_files.
+- (:pr:`367`) ``v1.TorsionDriveResult.final_energies`` replaced by larger ``v2.TorsionDriveResult.scan_properties``. The former is present in the latter as ``return_energy``.
+- (:pr:`366`) main storage for ``v2.TorsionDriveResult`` moved from ``optimization_history`` to ``scan_results``.
+- (:pr:`363`) ``v2.TorsionDriveResult`` gained a ``native_files`` field, though not protocols for user control.
+- (:pr:`367`) ``v2.TorsionDriveProperties`` added mostly as a placeholder class (one obvious prop at present).
 
 Misc.
 +++++
-
-* added warnings to dummy files models/results.py etc. classes are rerouted to v1 so downstream can run w/o alteration with `from qcelemental.models.procedures import OptimizationInput`
-* copied in pkg_resources.safe_version code as follow-up to Eric switch to packaging as both nwchem and gamess were now working. the try_harder_safe_version might be even bettter
+- (:pr:`354`) Fix a lot of warnings originating in this project.
+- (:pr:`348`) All of ``Datum``, ``DFTFunctional``, and ``CPUInfo`` models, none of which are mixed with QCSchema models, are translated to Pydantic v2 API syntax.
+- (:pr:`377`) no longer testing/ensuring np.array([single-float]) are coerced into float property results
 
 
 0.30.0 / 2026-01-07

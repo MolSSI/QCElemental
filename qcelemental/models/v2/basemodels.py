@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Union
 import numpy as np
 from pydantic import BaseModel, ConfigDict, model_serializer
 
-from qcelemental.util import deserialize, serialize
+from ...util import deserialize, serialize
 
 
 def _repr(self) -> str:
@@ -289,6 +289,9 @@ def check_convertible_version(ver: int, error: str):
         return True
     elif ver == 2:
         return "self"
+    elif ver == -12:
+        # signal to create the emergency _v1v2 objects defined for some models
+        return True
     else:
         raise ValueError(f"QCSchema {error} version={ver} does not exist for conversion.")
 

@@ -610,7 +610,9 @@ class Molecule(ProtoModel):
 
         if isinstance(other, dict):
             other = Molecule(orient=False, **other)
-        elif isinstance(other, (Molecule, qcelemental.models.v1.Molecule)):
+        elif isinstance(other, Molecule) or (
+            sys.version_info < (3, 14) and isinstance(other, (Molecule, qcelemental.models.v1.Molecule))
+        ):
             # allow v2 on grounds of "scientific, not programming terms"
             pass
         else:
@@ -634,7 +636,7 @@ class Molecule(ProtoModel):
             if key not in self.model_fields_set:
                 continue
             # Handle "by_alias" is always true
-            alias = self.model_fields[key].alias
+            alias = self.__class__.model_fields[key].alias
             output_key = alias if alias is not None else key
             output_dict[output_key] = value
         return output_dict
@@ -1616,12 +1618,15 @@ class Molecule(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, -12]:
             # below is assignment rather than popping so Mol() records as set and future Mol.model_dump() includes the field.
             #   needed for QCEngine Psi4.
             dself["schema_version"] = 2
 
-            self_vN = qcel.models.v1.Molecule(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.Molecule(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.Molecule(**dself)
         else:
             assert False, target_version
 

@@ -6,8 +6,8 @@ import numpy as np
 from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
 from pydantic.v1 import BaseModel
 
-from qcelemental.util import deserialize, serialize
-from qcelemental.util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
+from ...util import deserialize, serialize
+from ...util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 def _repr(self) -> str:

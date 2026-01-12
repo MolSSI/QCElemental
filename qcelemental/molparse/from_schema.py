@@ -25,7 +25,6 @@ def from_schema(molschema: Dict, *, nonphysical: bool = False, verbose: int = 1)
         Dictionary representation of instance.
 
     """
-
     if (
         molschema.get("schema_name", "").startswith("qc_schema")
         or molschema.get("schema_name", "").startswith("qcschema")

@@ -7,7 +7,7 @@ import pytest
 import qcelemental as qcel
 from qcelemental.testing import compare_recursive, compare_values
 
-from .addons import schema_versions, serialize_extensions
+from .addons import schema_versions, serialize_extensions, using_pydv1
 
 
 @pytest.fixture(scope="function")
@@ -255,6 +255,7 @@ def test_dihedral2():
     _test_dihedral(p7, p5, p4, p1, -177.63641151521261)
 
 
+@using_pydv1
 def test_auto_gen_doc(doc_fixture):
     assert "this is complicated" not in doc_fixture.__doc__
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
@@ -264,12 +265,14 @@ def test_auto_gen_doc(doc_fixture):
     assert doc_fixture.__doc__.count("z3 : float, Optional") == 1
 
 
+@using_pydv1
 def test_auto_gen_doc_exiting(doc_fixture):
     doc_fixture.__doc__ = "Parameters\n"
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" not in doc_fixture.__doc__
 
 
+@using_pydv1
 def test_auto_gen_doc_reapply_failure(doc_fixture):
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     with pytest.raises(ValueError):
@@ -277,6 +280,7 @@ def test_auto_gen_doc_reapply_failure(doc_fixture):
         qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=True, ignore_reapply=False)
 
 
+@using_pydv1
 def test_auto_gen_doc_delete(doc_fixture):
     qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
     assert "this is complicated" in doc_fixture.__doc__

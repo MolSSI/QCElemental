@@ -8,7 +8,12 @@ _nonapi_file = "basis"
 
 warn(
     f"qcelemental.models.{_nonapi_file} should be accessed through qcelemental.models (or qcelemental.models.v1 or .v2 for fixed QCSchema version). The 'models.{_nonapi_file}' route will be removed as soon as v{_qcsk_v2_default_v1_importpathschange}.",
-    DeprecationWarning,
+    FutureWarning,
 )
 
+BasisCenter = qcelemental.models.v1.BasisCenter
 BasisSet = qcelemental.models.v1.BasisSet
+ECPPotential = qcelemental.models.v1.ECPPotential
+ElectronShell = qcelemental.models.v1.ElectronShell
+HarmonicType = qcelemental.models.v1.HarmonicType
+ECPType = qcelemental.models.v1.ECPType

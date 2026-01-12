@@ -502,7 +502,7 @@ class WavefunctionProperties(ProtoModel):
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
-        if check_convertible_version(target_version, error="Molecule") == "self":
+        if check_convertible_version(target_version, error="WavefunctionProperties") == "self":
             return self
 
         dself = self.dict()

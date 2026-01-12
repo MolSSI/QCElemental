@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import pytest
 
@@ -130,7 +132,9 @@ def test_validate_and_fill_chgmult_mol_model(systemtranslator, inp, expected, ex
     fidx = np.split(np.arange(nat), sep)
     fragments = [fr.tolist() for fr in fidx]
 
-    mol = qcelemental.models.Molecule(symbols=symbols, geometry=geometry, fragments=fragments, **input_chgmults)
+    # this use of Mol is just a check so GHA lanes provide adequate coverage w/o parametrization
+    Molecule = qcelemental.models.v2.Molecule if (sys.version_info >= (3, 14)) else qcelemental.models.Molecule
+    mol = Molecule(symbols=symbols, geometry=geometry, fragments=fragments, **input_chgmults)
 
     assert mol.molecular_charge == expected[0]
     assert mol.fragment_charges == expected[1]

@@ -91,11 +91,14 @@ class FailedOperation(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, -12]:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
-            self_vN = qcel.models.v1.FailedOperation(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.FailedOperation(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.FailedOperation(**dself)
         else:
             assert False, target_version
 

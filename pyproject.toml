@@ -12,8 +12,7 @@ issues = "https://github.com/MolSSI/QCElemental/issues"
 name = "qcelemental"
 #version = "0.30.0"
 dynamic = ["version"]
-# pydantic.v1 not available for py >=3.14
-requires-python = ">=3.8,<3.14"
+requires-python = ">=3.9"
 description = "Core data structures for Quantum Chemistry."
 authors = [
   { name="The QCArchive Development Team", email="qcarchive@molssi.org" },
@@ -25,22 +24,21 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Framework :: Pydantic",
     "Framework :: Pydantic :: 2",
 ]
 dependencies = [
-    "numpy >=1.12.0; python_version=='3.8'",
-    "numpy >=1.26.1; python_version>='3.9'",
-    "pint >=0.10; python_version=='3.8'",
-    "pint >=0.24; python_version>='3.9'",
-    "pydantic >=2.0",
-    "typing_extensions; python_version<'3.9'",
+    "numpy; python_version <'3.14'",
+    "numpy >=2.3.3; python_version >='3.14'",
+    "pint >=0.24",
+    "pydantic >=2.0; python_version <'3.14'",
+    "pydantic >=2.12; python_version >='3.14'",
 ]
 
 [project.optional-dependencies]
@@ -49,7 +47,7 @@ standard = [
     "jsonschema",
 ]
 viz = [
-    "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda.
+    "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda. !py314
     "setuptools >=68.0.0; python_version>='3.12'",  # nglview needs pkg_resources
                 # setuptools is needed temporarily to avoid pkg_resources error with ngl_view. remove from here after next nglview release beyond v1.3.4
     "ipykernel <6.0",
@@ -65,8 +63,8 @@ test = [
 ]
 lint = [
     "pre-commit",
-    "black >=22.1.0,<23.0a0",  # if running outside of pre-commit
-    "isort >=5.13.2",  # if running outside of pre-commit
+    "black >=25.1.0,<26.0a0",  # if running outside of pre-commit
+    "isort >=6.1.0",  # if running outside of pre-commit
     # "mypy",
     # "autoflake",
     # "flake8",
@@ -96,7 +94,7 @@ docs = [  # probably >=py39
 
 [tool.black]
 line-length = 120
-target-version = ['py38']
+target-version = ['py310']
 
 [tool.isort]
 profile = "black"

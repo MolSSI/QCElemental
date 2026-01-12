@@ -8,7 +8,7 @@ import pytest
 
 import qcelemental as qcel
 
-from .addons import drop_qcsk, schema_versions, using_qcmb
+from .addons import drop_qcsk, schema_versions, using_pydv1, using_qcmb
 
 center_data = {
     "bs_sto3g_h": {
@@ -1023,7 +1023,9 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
     instance = model(**data)
     fld = "success"
     if ans is None:
-        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (
+            cptd := getattr(instance.__class__, fieldsattr)
+        ), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
         assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
@@ -1113,7 +1115,9 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     instance = model(**data)
     fld = "schema_version"
     if ans is None:
-        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (
+            cptd := getattr(instance.__class__, fieldsattr)
+        ), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
         assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
@@ -1195,7 +1199,9 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     instance = model(**data)
     fld = "extras"
     if ans is None:
-        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (
+            cptd := getattr(instance.__class__, fieldsattr)
+        ), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
         assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
@@ -1204,7 +1210,6 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
 def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
 
-    fieldsattr = "model_fields" if "v2" in anskey else "__fields__"
     smodel = smodel2 if "v2" in anskey else smodel1
     if smodel is None:
         pytest.skip("model not available for this schema version")
@@ -1246,6 +1251,7 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     assert instance
 
 
+@using_pydv1
 @pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
 def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
@@ -1370,7 +1376,9 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
     instance = model(**data)
     fld = "schema_name"
     if ans is None:
-        assert fld not in (cptd := getattr(instance, fieldsattr)), f"[a] field {fld} unexpectedly present: {cptd}"
+        assert fld not in (
+            cptd := getattr(instance.__class__, fieldsattr)
+        ), f"[a] field {fld} unexpectedly present: {cptd}"
     else:
         assert (cptd := getattr(instance, fld, "not found!")) == ans, f"[a] field {fld} = {cptd} != {ans}"
 
@@ -1409,7 +1417,12 @@ def test_result_model_deprecations(result_data_fixture, optimization_data_fixtur
     [
         (15, "mp2_correlation_energy", float, float),
         (15.0, "mp2_correlation_energy", float, float),
-        (np.array([15.3]), "ccsd_total_energy", float, float),
+        (15.3, "ccsd_total_energy", float, float),
+        (np.float64(15.3), "ccsd_total_energy", float, float),
+        # LAB, Dec 2025, I guess I was wrong that single-item lists should reliably coerce to floats.
+        #   While np should do so, in practice it's inconsistent for newer pydantics/pythons.
+        # ([15.3], "ccsd_total_energy", float, float),
+        # (np.array([15.3]), "ccsd_total_energy", float, float),
         ([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0], "return_gradient", np.ndarray, list),
         (np.array([1.0, -2.5, 3, 0, 0, 0, 0, 0, 0]), "return_gradient", np.ndarray, list),
         ({"cat1": "tail", "cat2": "whiskers"}, None, str, str),

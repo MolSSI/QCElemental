@@ -258,11 +258,14 @@ class BasisSet(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, -12]:
             dself.pop("schema_name")  # changes in v1
             dself.pop("schema_version")  # changes in v1
 
-            self_vN = qcel.models.v1.BasisSet(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.BasisSet(**dself)
+            elif target_version == -12:
+                self_vN = qcel.models._v1v2.BasisSet(**dself)
         else:
             assert False, target_version
 

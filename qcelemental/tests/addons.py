@@ -50,6 +50,8 @@ using_qcmb = pytest.mark.skipif(
 
 py37_skip = pytest.mark.skipif(sys.version_info.minor < 8, reason="Needs Python 3.8 features")
 
+using_pydv1 = pytest.mark.skipif(sys.version_info.minor > 13, reason="QCSchema v1 models (Pyd v1 API) need Py <=3.14")
+
 serialize_extensions = [
     "json",
     "json-ext",
@@ -60,6 +62,8 @@ serialize_extensions = [
 
 @contextmanager
 def xfail_on_pubchem_busy():
+    import qcelemental
+
     try:
         yield
     except qcelemental.ValidationError as e:
@@ -73,8 +77,13 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
+    import qcelemental
+
     # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.
-    is_model = isinstance(instance, (qcelemental.models.v2.ProtoModel, qcelemental.models.v1.ProtoModel))
+    if sys.version_info >= (3, 14):
+        is_model = isinstance(instance, qcelemental.models.v2.ProtoModel)
+    else:
+        is_model = isinstance(instance, (qcelemental.models.v2.ProtoModel, qcelemental.models.v1.ProtoModel))
     if is_model and schema_name is None:
         schema_name = type(instance).__name__
     drop = (_data_path / schema_name / tnm).with_suffix(".json")
@@ -94,18 +103,30 @@ def drop_qcsk(instance, tnm: str, schema_name: str = None):
 def Molecule(request):
     # for Molecule, qcsk v1 & v2 are schema_version v2 & v3
     if request.param == "v1":
-        return qcelemental.models.v1.Molecule
+        if sys.version_info >= (3, 14):
+            pytest.skip("no QCSchema v1 with py314+")
+        else:
+            return qcelemental.models.v1.Molecule
     elif request.param == "v2":
         return qcelemental.models.v2.Molecule
     else:
-        return qcelemental.models.Molecule
+        if sys.version_info >= (3, 14):
+            pytest.skip("no QCSchema v1 with py314+")
+        else:
+            return qcelemental.models.Molecule
 
 
 @pytest.fixture(scope="function", params=[None, "v1", "v2"])
 def schema_versions(request):
     if request.param == "v1":
-        return qcelemental.models.v1
+        if sys.version_info >= (3, 14):
+            pytest.skip("no QCSchema v1 with py314+")
+        else:
+            return qcelemental.models.v1
     elif request.param == "v2":
         return qcelemental.models.v2
     else:
-        return qcelemental.models
+        if sys.version_info >= (3, 14):
+            pytest.skip("no QCSchema v1 with py314+")
+        else:
+            return qcelemental.models

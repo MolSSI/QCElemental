@@ -2,9 +2,7 @@
 # * https://github.com/psi4/psi4/blob/1.2.x/psi4/driver/qcdb/periodictable.py
 # * https://github.com/psi4/psi4/blob/1.2.x/psi4/include/psi4/masses.h
 
-"""Elemental masses (most common isotope), symbols, and atomic numbers from psi4.
-
-"""
+"""Elemental masses (most common isotope), symbols, and atomic numbers from psi4."""
 
 # fmt: off
 

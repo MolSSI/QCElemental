@@ -1,16 +1,16 @@
 """Queries the PubChem database using a compound name (i.e. 1,3,5-hexatriene)
-   to obtain a molecule string that can be passed to Molecule. ::
+to obtain a molecule string that can be passed to Molecule. ::
 
-      results = getPubChemObj("1,3,5-hexatriene")
+   results = getPubChemObj("1,3,5-hexatriene")
 
-      Results is an array of results from PubChem matches to your query.
-        for entry in results:
-           entry["CID"]         => PubChem compound identifer
-           entry["IUPAC"]       => IUPAC name for the resulting compound
-           entry["PubChemObj"]  => instance of PubChemObj for this compound
+   Results is an array of results from PubChem matches to your query.
+     for entry in results:
+        entry["CID"]         => PubChem compound identifer
+        entry["IUPAC"]       => IUPAC name for the resulting compound
+        entry["PubChemObj"]  => instance of PubChemObj for this compound
 
-           entry["PubChemObj"].get_molecule_string()   => returns a string compatible
-                                                        with Psi4's Molecule creation
+        entry["PubChemObj"].get_molecule_string()   => returns a string compatible
+                                                     with Psi4's Molecule creation
 
 """
 

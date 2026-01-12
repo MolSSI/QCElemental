@@ -13,6 +13,7 @@ Copied Dec 2017 LAB Adapted from https://github.com/Xunius/bipartite_matching
 Updated Dec 2017 LAB for pep8, py3, more tests, starter_match, and simpler interface
 
 """
+
 import warnings
 
 import numpy as np

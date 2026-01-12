@@ -11,7 +11,7 @@ from ..testing import compare_values
 from ..util import distance_matrix, linear_sum_assignment, random_rotation_matrix, uno, which_import
 
 if TYPE_CHECKING:
-    from qcelemental.models import AlignmentMill  # TODO: recheck if .v1 needed
+    from qcelemental.models.v2 import AlignmentMill  # v2 so accessible to all Python versions
 
 
 def _nre(Z, geom):
@@ -69,7 +69,7 @@ def B787(
         See `runiq` for more details. Strings and count in `cuniq` must match
         `runiq`. That is, `sorted(cuniq) == sorted(runiq)`.
     do_plot
-        Pops up a mpl plot showing before, after, and ref geometries.
+        Pops up a mpl plot showing before, after, and ref geometries. NOT AVAILABLE
     verbose
         Quantity of printing. 0 to silence.
     atoms_map
@@ -107,7 +107,7 @@ def B787(
         from `cgeom` and the optimally aligned geometry.
 
     """
-    from qcelemental.models import AlignmentMill
+    from ..models.v2 import AlignmentMill
 
     # validation
     if rgeom.shape != cgeom.shape or rgeom.shape[1] != 3:
@@ -270,7 +270,8 @@ def B787(
 
     if do_plot:
         # TODO Missing import
-        plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment="Final RMSD = {:8.4f}".format(final_rmsd))
+        # plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment="Final RMSD = {:8.4f}".format(final_rmsd))
+        raise NotImplementedError("do_plot not implemented")  # pragma: no cover
 
     # sanity checks
     assert compare_values(
@@ -599,7 +600,7 @@ def compute_scramble(
         as requested: identity, random, or specified.
 
     """
-    from qcelemental.models import AlignmentMill
+    from ..models.v2 import AlignmentMill
 
     rand_elord = np.arange(nat)
     if do_resort is True:

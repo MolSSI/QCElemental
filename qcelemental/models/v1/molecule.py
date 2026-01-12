@@ -1,6 +1,7 @@
 """
 Molecule Object Model
 """
+
 import collections
 import hashlib
 import json
