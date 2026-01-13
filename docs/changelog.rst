@@ -20,8 +20,8 @@ Changelog
 .. +++++
 
 
-0.50.0 / 2026-MM-DD (aka "next" aka "QCSchema v2 available") (Unreleased)
-------------------------------------------------------------
+0.50.0rc1 / 2026-01-13 (aka "next" aka "QCSchema v2 available") (Prerelease)
+----------------------------------------------------------------------------
 
 Breaking Changes
 ++++++++++++++++
