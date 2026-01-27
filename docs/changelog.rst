@@ -24,7 +24,7 @@ Changelog
 
 Breaking Changes
 ++++++++++++++++
-- (:pr:`382`) Remove CPU and DFT info functionality
+- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
 
 
 New Features
