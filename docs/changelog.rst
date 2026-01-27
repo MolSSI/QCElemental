@@ -19,6 +19,22 @@ Changelog
 .. Misc.
 .. +++++
 
+0.50.0rc2 / 2026-XX-XX (Unreleased)
+----------------------------------------------------------------------------
+
+Breaking Changes
+++++++++++++++++
+- (:pr:`382`) Remove CPU and DFT info functionality
+
+
+New Features
+++++++++++++
+
+
+Enhancements
+++++++++++++
+
+
 
 0.50.0rc1 / 2026-01-13 (aka "next" aka "QCSchema v2 available") (Prerelease)
 ----------------------------------------------------------------------------
