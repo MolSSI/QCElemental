@@ -20,6 +20,15 @@ Changelog
 .. +++++
 
 
+0.30.1 / 2026-02-10
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`384`) Update nglview optional dep to accommodate setuptools 82.0 w/o pkg_resources.
+  Either use the new version of nglview or an older version of both nglview and setuptools.
+
+
 0.30.0 / 2026-01-07
 -------------------
 
