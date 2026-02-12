@@ -2,8 +2,10 @@ Overview
 ========
 
 Python implementations of the `MolSSI QCSchema <https://github.com/MolSSI/QCSchema>`_
-are available within QCElemental. These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
-as their base to provide serialization, validation, and manipluation.
+are available within QCElemental.
+Note that the QCElemental reference implementation here is more up-to-date than the QCSchema repository.
+These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
+as their base to provide serialization, validation, and manipulation.
 
 
 Basics
@@ -122,15 +124,25 @@ Starting with QCElemental v0.50.0, a new "v2" version of QCSchema is accessible.
 * QCSchema v2 has certain field rearrangements that make procedure models more composable. They also make v1 and v2 distinguishable in dictionary form.
 * QCSchema v2 does not include new features. It is purely a technical upgrade.
 
-Also see https://github.com/MolSSI/QCElemental/issues/323 for details and progress. The changelog contains details.
+Also see https://github.com/MolSSI/QCElemental/issues/323 for details and progress.
+The :ref:`Changelog <sec:cl0500rc1>` and
+a `Migration Guide <https://github.com/MolSSI/QCElemental/blob/next2026/docs/MIGRATION.md>`_ contain details.
+
+.. figure:: qcschema_cheatsheet_9Jan2026.*
+   :alt: map to QCSchema
+   :width: 240px
+
+   Migration guide in visual form.
+
 
 The anticipated timeline is:
 
-* v0.50 — QCSchema v2 available. QCSchema v1 unchanged (files moved but imports will work w/o change). There will be beta releases.
+* v0.50 — QCSchema v2 available. QCSchema v1 unchanged (files moved but imports will work w/o change). There will be prereleases. This has been accelerated by the need for v2 for Python 3.14+ compatibility. Schema layout to be finalized by v0.60
+* v0.60 — QCSchema v2 layout finalized.
 * v0.70 — QCSchema v2 will become the default. QCSchema v1 will remain available, but it will require specific import paths (available as soon as v0.50).
-* v1.0 — QCSchema v2 unchanged. QCSchema v1 dropped. Earliest 1 Jan 2026.
+* v1.0 — QCSchema v2 unchanged. QCSchema v1 dropped. Earliest 1 Jan 2027.
 
-Both QCSchema v1 and v2 will be available for quite awhile to allow downstream projects time to adjust.
+Both QCSchema v1 and v2 will be available for quite a while to allow downstream projects time to adjust.
 
 To make sure you're using QCSchema v1:
 

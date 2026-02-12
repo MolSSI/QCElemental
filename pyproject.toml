@@ -78,8 +78,8 @@ docs = [  # probably >=py39
     "autodoc-pydantic",
     "sphinx-automodapi",
     "sphinx-autodoc-typehints",
-    "pydantic ==2.5.0",  # for now
-    "pydantic-settings ==2.2.0",  # for now
+    "pydantic",
+    "pydantic-settings",
 ]
 
 #[tool.poetry.dependencies]

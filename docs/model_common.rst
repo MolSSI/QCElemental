@@ -9,13 +9,22 @@ BasisSet
 .. autopydantic_model:: qcelemental.models.v2.BasisSet
    :noindex:
 
-.. autopydantic_model:: qcelemental.models.v2.basis.BasisCenter
+.. autofunction:: qcelemental.models.v2.BasisSet.convert_v
    :noindex:
 
-.. autopydantic_model:: qcelemental.models.v2.basis.ElectronShell
+.. autopydantic_model:: qcelemental.models.v2.BasisCenter
    :noindex:
 
-.. autopydantic_model:: qcelemental.models.v2.basis.ECPPotential
+.. autopydantic_model:: qcelemental.models.v2.ElectronShell
+   :noindex:
+
+.. autofunction:: qcelemental.models.v2.ElectronShell.nfunctions
+   :noindex:
+
+.. autofunction:: qcelemental.models.v2.ElectronShell.is_contracted
+   :noindex:
+
+.. autopydantic_model:: qcelemental.models.v2.ECPPotential
    :noindex:
 
 ComputeError
@@ -28,6 +37,9 @@ FailedOperation
 ---------------
 
 .. autopydantic_model:: qcelemental.models.v2.FailedOperation
+   :noindex:
+
+.. autofunction:: qcelemental.models.v2.FailedOperation.convert_v
    :noindex:
 
 Provenance
@@ -43,4 +55,10 @@ DriverEnum
    :noindex:
    :members:
    :undoc-members:
+
+AlignmentMill
+-------------
+
+.. autopydantic_model:: qcelemental.models.v2.AlignmentMill
+   :noindex:
 
