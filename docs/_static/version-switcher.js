@@ -1,5 +1,27 @@
 (async function () {
-  if (!document || !document.querySelector) return;
+  function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  // Wait for RTD sidebar to exist (theme may build it after our script loads)
+  async function waitForSidebar(maxTries = 50, delayMs = 100) {
+    for (let i = 0; i < maxTries; i++) {
+      const search = document.querySelector(".wy-side-nav-search");
+      const scroll = document.querySelector(".wy-side-scroll");
+      if (search || scroll) return { search, scroll };
+      await sleep(delayMs);
+    }
+    return { search: null, scroll: null };
+  }
+
+  const { search, scroll } = await waitForSidebar();
+  if (!search && !scroll) {
+    console.warn("[version-switcher] RTD sidebar not found.");
+    return;
+  }
+
+  // Avoid duplicates (important if theme re-renders and script runs again)
+  if (document.querySelector(".version-switcher")) return;
 
   // --- UI ---
   const container = document.createElement("div");
@@ -20,93 +42,61 @@
   container.appendChild(label);
   container.appendChild(select);
 
-  // Place under RTD search box (left sidebar)
-  const search = document.querySelector(".wy-side-nav-search");
+  // Insert under the search box if possible
   if (search && search.parentNode) {
     search.insertAdjacentElement("afterend", container);
   } else {
-    const sidebarScroll = document.querySelector(".wy-side-scroll");
-    if (!sidebarScroll) return;
-    sidebarScroll.prepend(container);
+    scroll.prepend(container);
   }
 
-  // Disabled until we populate
+  // --- Load versions.json ---
   select.disabled = true;
-  const loadingOpt = document.createElement("option");
-  loadingOpt.textContent = "Loading…";
-  select.appendChild(loadingOpt);
+  select.innerHTML = `<option>Loading…</option>`;
 
-  // --- Find versions.json ---
-  async function tryFetch(url) {
-    try {
-      const resp = await fetch(url, { cache: "no-store" });
-      if (!resp.ok) return null;
-      const data = await resp.json();
-      return data;
-    } catch {
-      return null;
+  async function fetchJson(url) {
+    const resp = await fetch(url, { cache: "no-store" });
+    if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+    return resp.json();
+  }
+
+  // For local http://localhost:8000/ this will work.
+  // For GitHub project pages it will also work if versions.json is at the root of the published site.
+  let versions;
+  try {
+    versions = await fetchJson(`${window.location.origin}/versions.json`);
+  } catch (e) {
+    // GitHub project page fallback: /QCElemental/versions.json
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    if (parts.length) {
+      try {
+        versions = await fetchJson(`${window.location.origin}/${parts[0]}/versions.json`);
+      } catch (e2) {
+        console.warn("[version-switcher] Could not load versions.json", e, e2);
+        select.innerHTML = `<option>No versions.json</option>`;
+        return;
+      }
+    } else {
+      console.warn("[version-switcher] Could not load versions.json", e);
+      select.innerHTML = `<option>No versions.json</option>`;
+      return;
     }
   }
 
-  // Candidate URLs, from most local to more global
-  const origin = window.location.origin;
-  const pathname = window.location.pathname; // e.g. /QCElemental/dev/index.html
-
-  const parts = pathname.split("/").filter(Boolean); // ["QCElemental","dev","index.html"]
-  const projectRoot = parts.length ? `/${parts[0]}/` : "/"; // "/QCElemental/" or "/"
-
-  const candidates = [
-    // relative (useful for local build if versions.json copied to root)
-    "versions.json",
-    "../versions.json",
-    "../../versions.json",
-
-    // absolute roots
-    origin + projectRoot + "versions.json",
-    origin + "/versions.json",
-  ];
-
-  let data = null;
-  let usedBase = null;
-
-  for (const url of candidates) {
-    data = await tryFetch(url);
-    if (data) {
-      // derive base URL from the successful URL (strip trailing "versions.json")
-      usedBase = url.replace(/versions\.json.*$/, "");
-      // ensure base is absolute
-      if (!usedBase.startsWith("http")) usedBase = origin + (usedBase.startsWith("/") ? usedBase : "/" + usedBase);
-      if (!usedBase.endsWith("/")) usedBase += "/";
-      break;
-    }
-  }
-
-  if (!data || !usedBase) {
-    console.warn("[version-switcher] Could not load versions.json. Tried:", candidates);
-    select.innerHTML = "";
-    const opt = document.createElement("option");
-    opt.textContent = "No versions.json";
-    select.appendChild(opt);
-    return; // keep it visible so you notice the problem
-  }
-
-  // --- Populate ---
+  // Populate
   select.innerHTML = "";
-  data.forEach((v) => {
+  for (const v of versions) {
     const opt = document.createElement("option");
-    opt.value = v.path;          // e.g. "dev/" or "v0.30.1/"
-    opt.textContent = v.label;   // e.g. "dev"
+    opt.value = v.path;        // "dev/" etc.
+    opt.textContent = v.label; // "dev"
     select.appendChild(opt);
-  });
+  }
 
-  // Determine current version folder (if any)
-  // If hosted at /QCElemental/dev/... then currentVersion is "dev"
-  const rel = pathname.startsWith(projectRoot)
-    ? pathname.slice(projectRoot.length)
-    : pathname.replace(/^\//, "");
-  const currentVersion = rel.split("/")[0] || "";
+  // Determine current "version folder" (dev / v0.30.1 / etc.)
+  // If you're at /dev/index.html => currentVersion = "dev"
+  // If you're at /index.html => currentVersion = ""
+  const pathParts = window.location.pathname.split("/").filter(Boolean);
+  const currentVersion = pathParts.length >= 2 ? pathParts[1] : pathParts[0] || "";
 
-  // Select matching option if present
   for (const opt of select.options) {
     if (opt.value.replace(/\/+$/, "") === currentVersion) {
       opt.selected = true;
@@ -116,12 +106,13 @@
 
   select.disabled = false;
 
-  // Navigate on change; preserve rest-of-path after version folder if possible
+  // Navigate on change; for local dev it’s simplest to go to version root
   select.addEventListener("change", () => {
-    const targetVersionPath = select.value; // "dev/" etc.
-    const rest = rel.split("/").slice(1).join("/"); // drop currentVersion
-    const target = usedBase + targetVersionPath + rest;
-    window.location.href = target;
+    const target = select.value; // e.g. "dev/"
+    // If on GitHub project site, keep the project prefix automatically.
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const prefix = parts.length ? `/${parts[0]}/` : "/";
+    window.location.href = `${window.location.origin}${prefix}${target}`;
   });
 })();
 
