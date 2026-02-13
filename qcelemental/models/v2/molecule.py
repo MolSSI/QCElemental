@@ -5,13 +5,14 @@ Molecule Object Model
 import collections
 import hashlib
 import json
+import sys
 import warnings
 from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
-from pydantic import Field, constr, field_validator, model_serializer
+from pydantic import Field, field_validator, model_serializer
 from typing_extensions import Annotated
 
 try:
