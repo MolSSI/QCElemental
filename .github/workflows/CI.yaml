@@ -97,21 +97,15 @@ jobs:
 
       - name: GitHub Pages Deploy (versioned, keep old)
         uses: JamesIves/github-pages-deploy-action@v4
-        #if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' )
-        if: github.event_name == 'push' && github.repository == 'loriab/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref ==
-'refs/heads/v2docs' )
+        if: github.event_name == 'push' && github.repository == 'loriab/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/v2docs' )
         with:
           branch: gh-pages
           folder: build/docs/
           target-folder: ${{ steps.target.outputs.target_folder }}
           clean: false
 
-      # Update versions.json to contain exactly: dev, v0.30.1, v0.50.0rc1
-      # (and optionally any newly-tagged version if you push another tag later)
       - name: Update versions.json
-        #if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master' )
-        if: github.event_name == 'push' && github.repository == 'loriab/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref ==
-'refs/heads/v2docs' )
+        if: github.event_name == 'push' && github.repository == 'loriab/QCElemental' && ( startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/v2docs' )
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -119,46 +113,26 @@ jobs:
           TARGET_FOLDER: ${{ steps.target.outputs.target_folder }}
         run: |
           set -euo pipefail
-
           rm -rf _ghp
           git clone --depth 1 --branch gh-pages "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" _ghp
           cd _ghp
-
-          # Create a baseline versions.json if missing
-          if [[ ! -f versions.json ]]; then
-            cat > versions.json <<'JSON'
-  [
-    {"label":"dev","path":"dev/"},
-    {"label":"v0.50.0rc1","path":"v0.50.0rc1/"},
-    {"label":"v0.30.1","path":"v0.30.1/"}
-  ]
-  JSON
-          fi
-
-          # Ensure dev exists and ensure current deployed version exists.
-          # Keep only dev + the two pinned releases (exactly what you asked for).
           python - <<'PY'
-  import json, pathlib
-
-  p = pathlib.Path("versions.json")
-  data = json.loads(p.read_text())
-
-  # Your pinned list:
-  pinned = [
-      {"label": "dev", "path": "dev/"},
-      {"label": "v0.50.0rc1", "path": "v0.50.0rc1/"},
-      {"label": "v0.30.1", "path": "v0.30.1/"},
-  ]
-
-  import os
-  lbl = os.environ.get("VERSION_LABEL","")
-  tgt = os.environ.get("TARGET_FOLDER","")
-  if lbl and lbl not in ("dev",) and tgt:
-      pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
-
-  p.write_text(json.dumps(pinned, indent=2) + "\n")
-  PY
-
+import json, pathlib
+p = pathlib.Path("versions.json")
+data = json.loads(p.read_text())
+# Your pinned list:
+pinned = [
+    {"label": "dev", "path": "dev/"},
+    {"label": "v0.50.0rc1", "path": "v0.50.0rc1/"},
+    {"label": "v0.30.1", "path": "v0.30.1/"},
+]
+import os
+lbl = os.environ.get("VERSION_LABEL","")
+tgt = os.environ.get("TARGET_FOLDER","")
+if lbl and lbl not in ("dev",) and tgt:
+    pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
+p.write_text(json.dumps(pinned, indent=2) + "\n")
+PY
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
