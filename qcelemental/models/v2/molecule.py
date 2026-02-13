@@ -593,7 +593,7 @@ class Molecule(ProtoModel):
         r"""
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
-        return Molecule(orient=True, **self.model_dump())
+        return type(self)(orient=True, **self.model_dump())
 
     def compare(self, other):
         warnings.warn(
@@ -610,7 +610,7 @@ class Molecule(ProtoModel):
         import qcelemental
 
         if isinstance(other, dict):
-            other = Molecule(orient=False, **other)
+            other = type(self)(orient=False, **other)
         elif isinstance(other, Molecule) or (
             sys.version_info < (3, 14) and isinstance(other, (Molecule, qcelemental.models.v1.Molecule))
         ):
@@ -808,7 +808,7 @@ class Molecule(ProtoModel):
         constructor_dict["real"] = real_atoms
         constructor_dict["masses"] = masses
 
-        return Molecule(orient=orient, **constructor_dict)
+        return type(self)(orient=orient, **constructor_dict)
 
     def to_string(  # type: ignore
         self,
@@ -1451,7 +1451,7 @@ class Molecule(ProtoModel):
         adict = {**concern_mol.model_dump(), **aupdate}
 
         # preserve intrinsic symmetry with lighter truncation
-        amol = Molecule(validate=True, **adict, geometry_noise=13)
+        amol = type(self)(validate=True, **adict, geometry_noise=13)
 
         # TODO -- can probably do more with fragments in amol now that
         #         Mol is something with non-contig frags. frags now discarded.
@@ -1575,7 +1575,7 @@ class Molecule(ProtoModel):
         cdict = {**ref_mol.model_dump(), **cupdate}
 
         # preserve intrinsic symmetry with lighter truncation
-        cmol = Molecule(validate=True, **cdict, geometry_noise=13)
+        cmol = type(self)(validate=True, **cdict, geometry_noise=13)
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
         if verbose >= 1:
