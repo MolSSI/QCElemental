@@ -116,23 +116,38 @@ jobs:
           rm -rf _ghp
           git clone --depth 1 --branch gh-pages "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" _ghp
           cd _ghp
+
+          # Create versions.json if it doesn't exist yet
+          if [[ ! -f versions.json ]]; then
+            cat > versions.json <<'JSON'
+          [
+            {"label": "dev", "path": "dev/"},
+            {"label": "v0.50.0rc1", "path": "v0.50.0rc1/"},
+            {"label": "v0.30.1", "path": "v0.30.1/"}
+          ]
+          JSON
+          fi
+
           python - <<'PY'
-import json, pathlib
-p = pathlib.Path("versions.json")
-data = json.loads(p.read_text())
-# Your pinned list:
-pinned = [
-    {"label": "dev", "path": "dev/"},
-    {"label": "v0.50.0rc1", "path": "v0.50.0rc1/"},
-    {"label": "v0.30.1", "path": "v0.30.1/"},
-]
-import os
-lbl = os.environ.get("VERSION_LABEL","")
-tgt = os.environ.get("TARGET_FOLDER","")
-if lbl and lbl not in ("dev",) and tgt:
-    pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
-p.write_text(json.dumps(pinned, indent=2) + "\n")
-PY
+          import json, pathlib, os
+
+          p = pathlib.Path("versions.json")
+          data = json.loads(p.read_text())
+
+          pinned = [
+              {"label": "dev", "path": "dev/"},
+              {"label": "v0.50.0rc1", "path": "v0.50.0rc1/"},
+              {"label": "v0.30.1", "path": "v0.30.1/"},
+          ]
+
+          lbl = os.environ.get("VERSION_LABEL", "")
+          tgt = os.environ.get("TARGET_FOLDER", "")
+          if lbl and lbl not in ("dev",) and tgt:
+              pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
+
+          p.write_text(json.dumps(pinned, indent=2) + "\n")
+          PY
+
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
