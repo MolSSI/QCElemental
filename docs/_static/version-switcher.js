@@ -30,14 +30,17 @@
   container.style.display = "flex";
   container.style.gap = "0.5rem";
   container.style.alignItems = "center";
+  container.style.justifyContent = "center";
 
   const label = document.createElement("span");
   label.textContent = "Version:";
   label.style.fontSize = "0.9em";
+  label.className = "vs-label";
 
   const select = document.createElement("select");
   select.setAttribute("aria-label", "Select documentation version");
-  select.style.width = "100%";
+  select.style.width = "50%";
+  select.style.borderRadius = "20px";
 
   container.appendChild(label);
   container.appendChild(select);
