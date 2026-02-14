@@ -92,7 +92,7 @@ jobs:
       - name: Install repo
         run: poetry install --no-interaction --no-ansi
       - name: Build Documentation
-        run: sphinx-build docs/ build/docs
+        run: bash scripts/build_docs.sh
       # Decide where to deploy: dev/ for master, <tag>/ for tags
       - name: Compute docs deploy target
         id: target
