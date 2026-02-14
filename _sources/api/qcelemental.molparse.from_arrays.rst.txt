@@ -1,6 +1,0 @@
-from_arrays
-===========
-
-.. currentmodule:: qcelemental.molparse
-
-.. autofunction:: from_arrays

@@ -1,6 +1,0 @@
-AtomicResultProperties
-======================
-
-.. currentmodule:: qcelemental.models
-
-.. autopydantic_model:: AtomicResultProperties

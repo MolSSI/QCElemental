@@ -1,6 +1,0 @@
-kabsch_align
-============
-
-.. currentmodule:: qcelemental.molutil
-
-.. autofunction:: kabsch_align

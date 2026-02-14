@@ -1,6 +1,0 @@
-constants
-=========
-
-.. currentmodule:: qcelemental
-
-.. autodata:: constants

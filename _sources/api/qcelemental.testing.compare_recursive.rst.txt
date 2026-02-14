@@ -1,6 +1,0 @@
-compare_recursive
-=================
-
-.. currentmodule:: qcelemental.testing
-
-.. autofunction:: compare_recursive

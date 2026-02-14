@@ -1,6 +1,0 @@
-MoleculeFormatError
-===================
-
-.. currentmodule:: qcelemental
-
-.. autoexception:: MoleculeFormatError
