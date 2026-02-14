@@ -1,6 +1,0 @@
-AlignmentMill
-=============
-
-.. currentmodule:: qcelemental.models
-
-.. autopydantic_model:: AlignmentMill

@@ -1,6 +1,0 @@
-ComputeError
-============
-
-.. currentmodule:: qcelemental.models
-
-.. autopydantic_model:: ComputeError

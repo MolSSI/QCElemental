@@ -1,6 +1,0 @@
-Result
-======
-
-.. currentmodule:: qcelemental.models
-
-.. autopydantic_model:: Result

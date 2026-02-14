@@ -1,6 +1,0 @@
-covalentradii
-=============
-
-.. currentmodule:: qcelemental
-
-.. autodata:: covalentradii
