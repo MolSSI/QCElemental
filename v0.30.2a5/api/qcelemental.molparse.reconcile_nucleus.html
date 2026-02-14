@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>reconcile_nucleus &mdash; QCElemental 0.30.2a5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/version-switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="to_schema" href="qcelemental.molparse.to_schema.html" />
+    <link rel="prev" title="parse_nucleus_label" href="qcelemental.molparse.parse_nucleus_label.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+              <div class="version">
+                0.30.2a5
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">AtomicResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id1">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_arrays.html">from_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_schema.html">from_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_string.html">from_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_schema.html">to_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_string.html">to_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.validate_and_fill_chgmult.html">validate_and_fill_chgmult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models">qcelemental.models Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
+      <li class="breadcrumb-item active">reconcile_nucleus</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/qcelemental.molparse.reconcile_nucleus.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reconcile-nucleus">
+<h1>reconcile_nucleus<a class="headerlink" href="#reconcile-nucleus" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.molparse.reconcile_nucleus">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">reconcile_nucleus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speclabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonphysical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/nucleus.html#reconcile_nucleus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.reconcile_nucleus" title="Permalink to this definition"></a></dt>
+<dd><p>Forms consistent set of nucleus descriptors from all information
+from arguments, supplemented by the periodic table. At the least,
+must provide element identity somehow. Defaults to most-abundant
+isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Mass number, number of protons and neutrons.</p></li>
+<li><p><strong>Z</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Atomic number, number of protons.</p></li>
+<li><p><strong>E</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Element symbol from periodic table.</p></li>
+<li><p><strong>mass</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – Atomic mass [u].</p></li>
+<li><p><strong>real</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]) – Whether real or ghost/absent.</p></li>
+<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Atom label according to <code class="xref py py-data docutils literal notranslate"><span class="pre">qcelemental.molparse.regex.NUCLEUS</span></code>.</p></li>
+<li><p><strong>speclabel</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – If <cite>True</cite>, interpret <cite>label</cite> as potentially full nucleus spec including
+ghosting, isotope, mass, tagging information, e.g., <code class="docutils literal notranslate"><span class="pre">&#64;13C_mine</span></code> or
+<code class="docutils literal notranslate"><span class="pre">He4&#64;4.01</span></code>. If <cite>False</cite>, interpret <cite>label</cite> as only the user/tagging
+extension to nucleus label, e.g. <code class="docutils literal notranslate"><span class="pre">_mine</span></code> or <code class="docutils literal notranslate"><span class="pre">4</span></code> in the previous examples.</p></li>
+<li><p><strong>nonphysical</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – When <cite>True</cite>, turns off sanity checking that prevents periodic table
+violations (e.g, light uranium: <code class="docutils literal notranslate"><span class="pre">1U&#64;1.007</span></code>).</p></li>
+<li><p><strong>mtol</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – How different <cite>mass</cite> can be from a known nuclide mass and still
+merit the mass number assignment. Note that for elements dominated
+by a single isotope, the default may not be tight enough to
+prevent standard atomic weight (abundance-average of isotopes)
+from being labeled as the dominant isotope for A.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Quantity of printing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A, Z, E, mass, real, userlabel</strong> – mass number, unless clues don’t point to a known nuclide, in which case <cite>-1</cite>.
+atomic number.
+element symbol, capitalized.
+mass value [u].
+real/ghost.
+user portion of <cite>label</cite> if present, else ‘’.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)">bool</a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>qcelemental.NotAnElementError</strong></a> – </p></li>
+<li><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933195048</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="s1">&#39;CO&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933195048</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;59co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;co@58.933195048&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933195048</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;co@58.933195048&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933195048</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;27@58.933195048&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;27&#39;</span><span class="p">)</span>
+<span class="go">59, 27, &#39;Co&#39;, 58.933195048, True, &#39;&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;co_miNe&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;co_mIne@58.933195048&#39;</span><span class="p">)</span>
+<span class="go">59, 27, &#39;Co&#39;, 58.933195048, True, &#39;_mine&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;cO@58.933&#39;</span><span class="p">)</span>
+<span class="go">59, 27, &#39;Co&#39;, 58.933, True, &#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="mf">58.933</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;&#39;</span> <span class="o">==</span> <span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;cO&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">58.933</span><span class="p">,</span> <span class="n">mtol</span><span class="o">=</span><span class="mf">1.e-4</span><span class="p">))</span>
+<span class="go">AssertionError</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;60Co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;27&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">)</span>
+<span class="go">60, 27, &#39;Co&#39;, 59.933817059, True, &#39;&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">E</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;@60Co&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Gh(27)&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;@Co&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">59.933817059</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Gh(Co)&#39;</span><span class="p">))</span>
+<span class="go">60, 27, &#39;Co&#39;, 59.933817059, False, &#39;&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">nonphysical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">60, 27, &#39;Co&#39;, 200.00000000, True, &#39;&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">60.6</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">60.6</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="s1">&#39;Co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">60.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;27&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Co@60.6&#39;</span><span class="p">)</span>
+<span class="go">-1, 27, &#39;Co&#39;, 60.6, True, &#39;&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">60.6</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="mi">61</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=-</span><span class="mi">200</span><span class="p">,</span> <span class="n">nonphysical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=-</span><span class="mi">27</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">nonphysical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;he&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;3he&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;@U&#39;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reconcile_nucleus</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">real</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">ValidationError</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qcelemental.molparse.parse_nucleus_label.html" class="btn btn-neutral float-left" title="parse_nucleus_label" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.molparse.to_schema.html" class="btn btn-neutral float-right" title="to_schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
