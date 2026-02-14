@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "qcelemental"
-version = "0.30.2a4"
+version = "0.30.2a5"
 description = "Core data structures for Quantum Chemistry."
 authors = ["The QCArchive Development Team <qcarchive@molssi.org>"]
 license = "BSD-3-Clause"
