@@ -1,0 +1,6 @@
+from_string
+===========
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: from_string

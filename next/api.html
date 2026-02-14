@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QCElemental API &mdash; QCElemental 0.1.dev1+g4e3b97565 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2233dc65"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/version-switcher.js?v=313414bb"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="compare" href="api/qcelemental.compare.html" />
+    <link rel="prev" title="van der Waals Radii" href="vanderwaals_radii.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QCElemental API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-qcelemental">qcelemental Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.compare.html">compare</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.compare_recursive.html">compare_recursive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.compare_values.html">compare_values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.ChoicesError.html">ChoicesError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.CovalentRadii.html">CovalentRadii</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.DataUnavailableError.html">DataUnavailableError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.Datum.html">Datum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.MoleculeFormatError.html">MoleculeFormatError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.NotAnElementError.html">NotAnElementError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.PhysicalConstantsContext.html">PhysicalConstantsContext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.ValidationError.html">ValidationError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.VanderWaalsRadii.html">VanderWaalsRadii</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.constants.html">constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.covalentradii.html">covalentradii</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.periodictable.html">periodictable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.vdwradii.html">vdwradii</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-qcelemental.molparse">qcelemental.molparse Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_arrays.html">from_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_schema.html">from_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_string.html">from_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.to_schema.html">to_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.to_string.html">to_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.validate_and_fill_chgmult.html">validate_and_fill_chgmult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-qcelemental.molutil">qcelemental.molutil Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.B787.html">B787</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.compute_scramble.html">compute_scramble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.guess_connectivity.html">guess_connectivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.kabsch_align.html">kabsch_align</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.molecular_formula_from_symbols.html">molecular_formula_from_symbols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molutil.order_molecular_formula.html">order_molecular_formula</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-qcelemental.testing">qcelemental.testing Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.testing.compare.html">compare</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.testing.compare_molrecs.html">compare_molrecs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.testing.compare_recursive.html">compare_recursive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.testing.compare_values.html">compare_values</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-qcelemental.models.v2">qcelemental.models.v2 Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AlignmentMill.html">AlignmentMill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AtomicInput.html">AtomicInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AtomicProperties.html">AtomicProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AtomicProtocols.html">AtomicProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html">AtomicResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html">AtomicSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.BasisCenter.html">BasisCenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.BasisSet.html">BasisSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html">ComputeError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.DriverEnum.html">DriverEnum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.ECPPotential.html">ECPPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.ElectronShell.html">ElectronShell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html">FailedOperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.Molecule.html">Molecule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.OptimizationInput.html">OptimizationInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.OptimizationProperties.html">OptimizationProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.OptimizationProtocols.html">OptimizationProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.OptimizationResult.html">OptimizationResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.OptimizationSpecification.html">OptimizationSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.ProtoModel.html">ProtoModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.Provenance.html">Provenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveInput.html">TorsionDriveInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveKeywords.html">TorsionDriveKeywords</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveProperties.html">TorsionDriveProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveProtocols.html">TorsionDriveProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveResult.html">TorsionDriveResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveSpecification.html">TorsionDriveSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.models.v2.WavefunctionProperties.html">WavefunctionProperties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">QCElemental API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="qcelemental-api">
+<h1>QCElemental API<a class="headerlink" href="#qcelemental-api" title="Link to this heading"></a></h1>
+<section id="module-qcelemental">
+<span id="qcelemental-package"></span><h2>qcelemental Package<a class="headerlink" href="#module-qcelemental" title="Link to this heading"></a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.compare.html#qcelemental.compare" title="qcelemental.compare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare</span></code></a>(expected, computed[, label, ...])</p></td>
+<td><p>Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.compare_recursive.html#qcelemental.compare_recursive" title="qcelemental.compare_recursive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_recursive</span></code></a>(expected, computed[, ...])</p></td>
+<td><p>Recursively compares nested structures such as dictionaries and lists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.compare_values.html#qcelemental.compare_values" title="qcelemental.compare_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_values</span></code></a>(expected, computed[, label, ...])</p></td>
+<td><p>Returns True if two floats or float arrays are element-wise equal within a tolerance.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.ChoicesError.html#qcelemental.ChoicesError" title="qcelemental.ChoicesError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChoicesError</span></code></a>(msg[, choices])</p></td>
+<td><p>Error called for problems with syntax input file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii" title="qcelemental.CovalentRadii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CovalentRadii</span></code></a>([context])</p></td>
+<td><p>Covalent radii sets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError" title="qcelemental.DataUnavailableError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataUnavailableError</span></code></a>(dataset, atom)</p></td>
+<td><p>Error when dataset incomplete and otherwise valid query can't be fulfilled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.Datum.html#qcelemental.Datum" title="qcelemental.Datum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Datum</span></code></a></p></td>
+<td><p>Facilitates the storage of quantum chemical results by labeling them with basic metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError" title="qcelemental.MoleculeFormatError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MoleculeFormatError</span></code></a>(msg)</p></td>
+<td><p>Error called when a molparse.from_string contains unparsable lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NotAnElementError</span></code></a>(atom[, strict])</p></td>
+<td><p>Error when element or nuclide can't be identified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext" title="qcelemental.PhysicalConstantsContext"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhysicalConstantsContext</span></code></a>([context])</p></td>
+<td><p>CODATA physical constants set from NIST.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValidationError</span></code></a>(msg)</p></td>
+<td><p>Error called for problems with syntax input file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii" title="qcelemental.VanderWaalsRadii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VanderWaalsRadii</span></code></a>([context])</p></td>
+<td><p>Van der Waals radii sets.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.constants.html#qcelemental.constants" title="qcelemental.constants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants</span></code></a></p></td>
+<td><p>CODATA physical constants set from NIST.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.covalentradii.html#qcelemental.covalentradii" title="qcelemental.covalentradii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">covalentradii</span></code></a></p></td>
+<td><p>Covalent radii sets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.periodictable.html#qcelemental.periodictable" title="qcelemental.periodictable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodictable</span></code></a></p></td>
+<td><p>Nuclear and mass data about chemical elements from NIST.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.vdwradii.html#qcelemental.vdwradii" title="qcelemental.vdwradii"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vdwradii</span></code></a></p></td>
+<td><p>Van der Waals radii sets.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="class-inheritance-diagram">
+<h3>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Link to this heading"></a></h3>
+<div class="graphviz"><img src="_images/inheritance-83763ecccc32ef2622820989df76c2c71954dd58.png" alt="Inheritance diagram of qcelemental.exceptions.ChoicesError, qcelemental.covalent_radii.CovalentRadii, qcelemental.exceptions.DataUnavailableError, qcelemental.datum.Datum, qcelemental.exceptions.MoleculeFormatError, qcelemental.exceptions.NotAnElementError, qcelemental.physical_constants.context.PhysicalConstantsContext, qcelemental.exceptions.ValidationError, qcelemental.vanderwaals_radii.VanderWaalsRadii" usemap="#inheritance3e7a5ab12f" class="inheritance graphviz" /></div>
+<map id="inheritance3e7a5ab12f" name="inheritance3e7a5ab12f">
+<area shape="rect" id="node5" href="api/qcelemental.Datum.html#qcelemental.Datum" target="_top" title="Facilitates the storage of quantum chemical results by labeling them with basic metadata." alt="" coords="245,400,317,425"/>
+<area shape="rect" id="node2" href="api/qcelemental.ChoicesError.html#qcelemental.ChoicesError" target="_top" title="Error called for problems with syntax input file. Prints" alt="" coords="49,351,153,376"/>
+<area shape="rect" id="node3" href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii" target="_top" title="Covalent radii sets." alt="" coords="45,301,158,327"/>
+<area shape="rect" id="node4" href="api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError" target="_top" title="Error when dataset incomplete and otherwise valid query can&#39;t be fulfilled." alt="" coords="20,252,183,277"/>
+<area shape="rect" id="node6" href="api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError" target="_top" title="Error called when a molparse.from_string contains unparsable lines." alt="" coords="22,203,181,228"/>
+<area shape="rect" id="node7" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" target="_top" title="Error when element or nuclide can&#39;t be identified." alt="" coords="28,153,175,179"/>
+<area shape="rect" id="node8" href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext" target="_top" title="CODATA physical constants set from NIST." alt="" coords="5,104,197,129"/>
+<area shape="rect" id="node9" href="api/qcelemental.ValidationError.html#qcelemental.ValidationError" target="_top" title="Error called for problems with syntax input file. Prints" alt="" coords="42,55,161,80"/>
+<area shape="rect" id="node10" href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii" target="_top" title="Van der Waals radii sets." alt="" coords="32,5,171,31"/>
+</map></section>
+</section>
+<section id="module-qcelemental.molparse">
+<span id="qcelemental-molparse-package"></span><h2>qcelemental.molparse Package<a class="headerlink" href="#module-qcelemental.molparse" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Functions<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.contiguize_from_fragment_pattern.html#qcelemental.molparse.contiguize_from_fragment_pattern" title="qcelemental.molparse.contiguize_from_fragment_pattern"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contiguize_from_fragment_pattern</span></code></a>(frag_pattern, *)</p></td>
+<td><p>Take (nat, ?) array-like arrays and return with atoms arranged by (nfr, ?) <cite>frag_pattern</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_arrays.html#qcelemental.molparse.from_arrays" title="qcelemental.molparse.from_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_arrays</span></code></a>(*[, geom, elea, elez, elem, ...])</p></td>
+<td><p>Compose a Molecule dict from unvalidated arrays and variables, returning dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_input_arrays.html#qcelemental.molparse.from_input_arrays" title="qcelemental.molparse.from_input_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_input_arrays</span></code></a>(*[, enable_qm, ...])</p></td>
+<td><p>Compose a Molecule dict from unvalidated arrays and variables in multiple domains.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema" title="qcelemental.molparse.from_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_schema</span></code></a>(molschema, *[, nonphysical, verbose])</p></td>
+<td><p>Construct molecule dictionary representation from non-Psi4 schema.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string" title="qcelemental.molparse.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(molstr[, dtype, name, fix_com, ...])</p></td>
+<td><p>Construct a molecule dictionary from any recognized string format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.parse_nucleus_label.html#qcelemental.molparse.parse_nucleus_label" title="qcelemental.molparse.parse_nucleus_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_nucleus_label</span></code></a>(label)</p></td>
+<td><p>Separate molecule nucleus string into fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.reconcile_nucleus.html#qcelemental.molparse.reconcile_nucleus" title="qcelemental.molparse.reconcile_nucleus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconcile_nucleus</span></code></a>([A, Z, E, mass, real, ...])</p></td>
+<td><p>Forms consistent set of nucleus descriptors from all information from arguments, supplemented by the periodic table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.to_schema.html#qcelemental.molparse.to_schema" title="qcelemental.molparse.to_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_schema</span></code></a>(molrec, dtype[, units, np_out, copy])</p></td>
+<td><p>Translate molparse internal Molecule spec into dictionary from other schemas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.to_string.html#qcelemental.molparse.to_string" title="qcelemental.molparse.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>(molrec, dtype[, units, ...])</p></td>
+<td><p>Format a string representation of QM molecule.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.validate_and_fill_chgmult.html#qcelemental.molparse.validate_and_fill_chgmult" title="qcelemental.molparse.validate_and_fill_chgmult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_and_fill_chgmult</span></code></a>(zeff, ...[, ...])</p></td>
+<td><p>Forms molecular and fragment charge and multiplicity specification by completing and reconciling information from argument, supplemented by physical constraints and sensible defaults.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-qcelemental.molutil">
+<span id="qcelemental-molutil-package"></span><h2>qcelemental.molutil Package<a class="headerlink" href="#module-qcelemental.molutil" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Functions<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molutil.B787.html#qcelemental.molutil.B787" title="qcelemental.molutil.B787"><code class="xref py py-obj docutils literal notranslate"><span class="pre">B787</span></code></a>(cgeom, rgeom, cuniq, runiq[, do_plot, ...])</p></td>
+<td><p>Use Kabsch algorithm to find best alignment of geometry <cite>cgeom</cite> onto <cite>rgeom</cite> while sampling atom mappings restricted by <cite>runiq</cite> and <cite>cuniq</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molutil.compute_scramble.html#qcelemental.molutil.compute_scramble" title="qcelemental.molutil.compute_scramble"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_scramble</span></code></a>(nat[, do_resort, do_shift, ...])</p></td>
+<td><p>Generate a random or directed translation, rotation, and atom shuffling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molutil.guess_connectivity.html#qcelemental.molutil.guess_connectivity" title="qcelemental.molutil.guess_connectivity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">guess_connectivity</span></code></a>(symbols, geometry[, ...])</p></td>
+<td><p>Finds connected atoms based off of a covalent radii metric.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molutil.kabsch_align.html#qcelemental.molutil.kabsch_align" title="qcelemental.molutil.kabsch_align"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kabsch_align</span></code></a>(rgeom, cgeom[, weight])</p></td>
+<td><p>Finds optimal translation and rotation to align <cite>cgeom</cite> onto <cite>rgeom</cite> via Kabsch algorithm by minimizing the norm of the residual, <span class="math notranslate nohighlight">\(|| R - U * C ||\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molutil.molecular_formula_from_symbols.html#qcelemental.molutil.molecular_formula_from_symbols" title="qcelemental.molutil.molecular_formula_from_symbols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecular_formula_from_symbols</span></code></a>(symbols[, order])</p></td>
+<td><p>Returns the molecular formula for a list of symbols.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molutil.order_molecular_formula.html#qcelemental.molutil.order_molecular_formula" title="qcelemental.molutil.order_molecular_formula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order_molecular_formula</span></code></a>(formula[, order])</p></td>
+<td><p>Reorders a molecular formula.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-qcelemental.testing">
+<span id="qcelemental-testing-module"></span><h2>qcelemental.testing Module<a class="headerlink" href="#module-qcelemental.testing" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Functions<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.testing.compare.html#qcelemental.testing.compare" title="qcelemental.testing.compare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare</span></code></a>(expected, computed[, label, ...])</p></td>
+<td><p>Returns True if two integers, strings, booleans, or integer arrays are element-wise equal.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.testing.compare_molrecs.html#qcelemental.testing.compare_molrecs" title="qcelemental.testing.compare_molrecs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_molrecs</span></code></a>(expected, computed[, label, ...])</p></td>
+<td><p>Function to compare Molecule dictionaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.testing.compare_recursive.html#qcelemental.testing.compare_recursive" title="qcelemental.testing.compare_recursive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_recursive</span></code></a>(expected, computed[, ...])</p></td>
+<td><p>Recursively compares nested structures such as dictionaries and lists.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.testing.compare_values.html#qcelemental.testing.compare_values" title="qcelemental.testing.compare_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare_values</span></code></a>(expected, computed[, label, ...])</p></td>
+<td><p>Returns True if two floats or float arrays are element-wise equal within a tolerance.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-qcelemental.models.v2">
+<span id="qcelemental-models-v2-package"></span><h2>qcelemental.models.v2 Package<a class="headerlink" href="#module-qcelemental.models.v2" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>Classes<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AlignmentMill.html#qcelemental.models.v2.AlignmentMill" title="qcelemental.models.v2.AlignmentMill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlignmentMill</span></code></a></p></td>
+<td><p>Facilitates the application of the simple transformation operations defined by <code class="docutils literal notranslate"><span class="pre">shift</span></code>, <code class="docutils literal notranslate"><span class="pre">rotation</span></code>, <code class="docutils literal notranslate"><span class="pre">atommap</span></code> arrays and <code class="docutils literal notranslate"><span class="pre">mirror</span></code> boolean as recipe to the data structures describing Cartesian molecular coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicInput.html#qcelemental.models.v2.AtomicInput" title="qcelemental.models.v2.AtomicInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtomicInput</span></code></a></p></td>
+<td><p>The MolSSI Quantum Chemistry Schema</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicProperties.html#qcelemental.models.v2.AtomicProperties" title="qcelemental.models.v2.AtomicProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtomicProperties</span></code></a></p></td>
+<td><p>Named properties of quantum chemistry computations following the MolSSI QCSchema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicProtocols.html#qcelemental.models.v2.AtomicProtocols" title="qcelemental.models.v2.AtomicProtocols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtomicProtocols</span></code></a></p></td>
+<td><p>Protocols regarding the manipulation of computational result data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult" title="qcelemental.models.v2.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtomicResult</span></code></a></p></td>
+<td><p>Results from a CMS program execution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification" title="qcelemental.models.v2.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AtomicSpecification</span></code></a></p></td>
+<td><p>Specification for a single point QC calculation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.BasisCenter.html#qcelemental.models.v2.BasisCenter" title="qcelemental.models.v2.BasisCenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisCenter</span></code></a></p></td>
+<td><p>Data for a single atom/center in a basis set.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.BasisSet.html#qcelemental.models.v2.BasisSet" title="qcelemental.models.v2.BasisSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BasisSet</span></code></a></p></td>
+<td><p>A quantum chemistry basis description.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError" title="qcelemental.models.v2.ComputeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComputeError</span></code></a></p></td>
+<td><p>Complete description of the error from an unsuccessful program execution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.DriverEnum.html#qcelemental.models.v2.DriverEnum" title="qcelemental.models.v2.DriverEnum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DriverEnum</span></code></a>(value)</p></td>
+<td><p>Allowed computation driver values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.ECPPotential.html#qcelemental.models.v2.ECPPotential" title="qcelemental.models.v2.ECPPotential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ECPPotential</span></code></a></p></td>
+<td><p>Information for a single ECP potential.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.ElectronShell.html#qcelemental.models.v2.ElectronShell" title="qcelemental.models.v2.ElectronShell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ElectronShell</span></code></a></p></td>
+<td><p>Information for a single electronic shell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation" title="qcelemental.models.v2.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FailedOperation</span></code></a></p></td>
+<td><p>Record indicating that a given operation (program, procedure, etc.) has failed and containing the reason and input data which generated the failure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.Model.html#qcelemental.models.v2.Model" title="qcelemental.models.v2.Model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Model</span></code></a></p></td>
+<td><p>The computational molecular sciences model to run.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.Molecule.html#qcelemental.models.v2.Molecule" title="qcelemental.models.v2.Molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Molecule</span></code></a></p></td>
+<td><p>The physical Cartesian representation of the molecular system.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.OptimizationInput.html#qcelemental.models.v2.OptimizationInput" title="qcelemental.models.v2.OptimizationInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationInput</span></code></a></p></td>
+<td><p>QCSchema input directive for geometry optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.OptimizationProperties.html#qcelemental.models.v2.OptimizationProperties" title="qcelemental.models.v2.OptimizationProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationProperties</span></code></a></p></td>
+<td><p>Named properties of geometry optimization computations following the MolSSI QCSchema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.OptimizationProtocols.html#qcelemental.models.v2.OptimizationProtocols" title="qcelemental.models.v2.OptimizationProtocols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationProtocols</span></code></a></p></td>
+<td><p>Protocols regarding the manipulation of a Optimization output data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.OptimizationResult.html#qcelemental.models.v2.OptimizationResult" title="qcelemental.models.v2.OptimizationResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationResult</span></code></a></p></td>
+<td><p>QCSchema results model for geometry optimization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.OptimizationSpecification.html#qcelemental.models.v2.OptimizationSpecification" title="qcelemental.models.v2.OptimizationSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OptimizationSpecification</span></code></a></p></td>
+<td><p>Specification for how to run a geometry optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel" title="qcelemental.models.v2.ProtoModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProtoModel</span></code></a></p></td>
+<td><p>QCSchema extension of pydantic.BaseModel.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.Provenance.html#qcelemental.models.v2.Provenance" title="qcelemental.models.v2.Provenance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provenance</span></code></a></p></td>
+<td><p>Provenance information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveInput.html#qcelemental.models.v2.TorsionDriveInput" title="qcelemental.models.v2.TorsionDriveInput"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveInput</span></code></a></p></td>
+<td><p>Inputs for running a torsion drive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveKeywords.html#qcelemental.models.v2.TorsionDriveKeywords" title="qcelemental.models.v2.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveKeywords</span></code></a></p></td>
+<td><p>TorsionDriveRecord options</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveProperties.html#qcelemental.models.v2.TorsionDriveProperties" title="qcelemental.models.v2.TorsionDriveProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveProperties</span></code></a></p></td>
+<td><p>Named properties of torsion drive computations following the MolSSI QCSchema.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveProtocols.html#qcelemental.models.v2.TorsionDriveProtocols" title="qcelemental.models.v2.TorsionDriveProtocols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveProtocols</span></code></a></p></td>
+<td><p>Protocols regarding the manipulation of a Torsion Drive subcalculation history.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveResult.html#qcelemental.models.v2.TorsionDriveResult" title="qcelemental.models.v2.TorsionDriveResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveResult</span></code></a></p></td>
+<td><p>Results from running a torsion drive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.models.v2.TorsionDriveSpecification.html#qcelemental.models.v2.TorsionDriveSpecification" title="qcelemental.models.v2.TorsionDriveSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorsionDriveSpecification</span></code></a></p></td>
+<td><p>Specification for how to run a torsion drive scan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.models.v2.WavefunctionProperties.html#qcelemental.models.v2.WavefunctionProperties" title="qcelemental.models.v2.WavefunctionProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WavefunctionProperties</span></code></a></p></td>
+<td><p>Wavefunction properties resulting from a computation.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3>Class Inheritance Diagram<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="graphviz"><img src="_images/inheritance-229f8d4e8cb1947b6d844746dae2cf1d759ad5a0.png" alt="Inheritance diagram of qcelemental.models.v2.align.AlignmentMill, qcelemental.models.v2.atomic.AtomicInput, qcelemental.models.v2.atomic.AtomicProperties, qcelemental.models.v2.atomic.AtomicProtocols, qcelemental.models.v2.atomic.AtomicResult, qcelemental.models.v2.atomic.AtomicSpecification, qcelemental.models.v2.basis_set.BasisCenter, qcelemental.models.v2.basis_set.BasisSet, qcelemental.models.v2.failed_operation.ComputeError, qcelemental.models.v2.common_models.DriverEnum, qcelemental.models.v2.basis_set.ECPPotential, qcelemental.models.v2.basis_set.ElectronShell, qcelemental.models.v2.failed_operation.FailedOperation, qcelemental.models.v2.common_models.Model, qcelemental.models.v2.molecule.Molecule, qcelemental.models.v2.optimization.OptimizationInput, qcelemental.models.v2.optimization.OptimizationProperties, qcelemental.models.v2.optimization.OptimizationProtocols, qcelemental.models.v2.optimization.OptimizationResult, qcelemental.models.v2.optimization.OptimizationSpecification, qcelemental.models.v2.basemodels.ProtoModel, qcelemental.models.v2.common_models.Provenance, qcelemental.models.v2.torsion_drive.TorsionDriveInput, qcelemental.models.v2.torsion_drive.TorsionDriveKeywords, qcelemental.models.v2.torsion_drive.TorsionDriveProperties, qcelemental.models.v2.torsion_drive.TorsionDriveProtocols, qcelemental.models.v2.torsion_drive.TorsionDriveResult, qcelemental.models.v2.torsion_drive.TorsionDriveSpecification, qcelemental.models.v2.atomic.WavefunctionProperties" usemap="#inheritance93c5ac65e4" class="inheritance graphviz" /></div>
+<map id="inheritance93c5ac65e4" name="inheritance93c5ac65e4">
+<area shape="rect" id="node1" href="api/qcelemental.models.v2.AlignmentMill.html#qcelemental.models.v2.AlignmentMill" target="_top" title="Facilitates the application of the simple transformation operations" alt="" coords="291,5,390,27"/>
+<area shape="rect" id="node2" href="api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel" target="_top" title="QCSchema extension of pydantic.BaseModel." alt="" coords="130,565,214,587"/>
+<area shape="rect" id="node3" href="api/qcelemental.models.v2.AtomicInput.html#qcelemental.models.v2.AtomicInput" target="_top" title="The MolSSI Quantum Chemistry Schema" alt="" coords="296,48,384,70"/>
+<area shape="rect" id="node4" href="api/qcelemental.models.v2.AtomicProperties.html#qcelemental.models.v2.AtomicProperties" target="_top" title="Named properties of quantum chemistry computations following the MolSSI QCSchema." alt="" coords="281,91,399,113"/>
+<area shape="rect" id="node5" href="api/qcelemental.models.v2.AtomicProtocols.html#qcelemental.models.v2.AtomicProtocols" target="_top" title="Protocols regarding the manipulation of computational result data." alt="" coords="284,134,396,156"/>
+<area shape="rect" id="node6" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult" target="_top" title="Results from a CMS program execution." alt="" coords="292,177,388,199"/>
+<area shape="rect" id="node7" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification" target="_top" title="Specification for a single point QC calculation" alt="" coords="274,220,406,242"/>
+<area shape="rect" id="node9" href="api/qcelemental.models.v2.BasisCenter.html#qcelemental.models.v2.BasisCenter" target="_top" title="Data for a single atom/center in a basis set." alt="" coords="296,263,384,285"/>
+<area shape="rect" id="node10" href="api/qcelemental.models.v2.BasisSet.html#qcelemental.models.v2.BasisSet" target="_top" title="A quantum chemistry basis description." alt="" coords="306,306,374,328"/>
+<area shape="rect" id="node11" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError" target="_top" title="Complete description of the error from an unsuccessful program execution." alt="" coords="291,349,389,372"/>
+<area shape="rect" id="node14" href="api/qcelemental.models.v2.ECPPotential.html#qcelemental.models.v2.ECPPotential" target="_top" title="Information for a single ECP potential." alt="" coords="294,393,386,415"/>
+<area shape="rect" id="node15" href="api/qcelemental.models.v2.ElectronShell.html#qcelemental.models.v2.ElectronShell" target="_top" title="Information for a single electronic shell." alt="" coords="294,436,387,458"/>
+<area shape="rect" id="node16" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation" target="_top" title="Record indicating that a given operation (program, procedure, etc.) has failed" alt="" coords="286,479,394,501"/>
+<area shape="rect" id="node17" href="api/qcelemental.models.v2.Model.html#qcelemental.models.v2.Model" target="_top" title="The computational molecular sciences model to run." alt="" coords="309,522,372,544"/>
+<area shape="rect" id="node18" href="api/qcelemental.models.v2.Molecule.html#qcelemental.models.v2.Molecule" target="_top" title="The physical Cartesian representation of the molecular system." alt="" coords="305,565,376,587"/>
+<area shape="rect" id="node19" href="api/qcelemental.models.v2.OptimizationInput.html#qcelemental.models.v2.OptimizationInput" target="_top" title="QCSchema input directive for geometry optimization." alt="" coords="280,608,401,630"/>
+<area shape="rect" id="node20" href="api/qcelemental.models.v2.OptimizationProperties.html#qcelemental.models.v2.OptimizationProperties" target="_top" title="Named properties of geometry optimization computations following the MolSSI QCSchema." alt="" coords="265,651,415,673"/>
+<area shape="rect" id="node21" href="api/qcelemental.models.v2.OptimizationProtocols.html#qcelemental.models.v2.OptimizationProtocols" target="_top" title="Protocols regarding the manipulation of a Optimization output data." alt="" coords="267,694,413,716"/>
+<area shape="rect" id="node22" href="api/qcelemental.models.v2.OptimizationResult.html#qcelemental.models.v2.OptimizationResult" target="_top" title="QCSchema results model for geometry optimization." alt="" coords="276,737,404,759"/>
+<area shape="rect" id="node23" href="api/qcelemental.models.v2.OptimizationSpecification.html#qcelemental.models.v2.OptimizationSpecification" target="_top" title="Specification for how to run a geometry optimization." alt="" coords="257,780,423,803"/>
+<area shape="rect" id="node24" href="api/qcelemental.models.v2.Provenance.html#qcelemental.models.v2.Provenance" target="_top" title="Provenance information." alt="" coords="297,824,383,846"/>
+<area shape="rect" id="node25" href="api/qcelemental.models.v2.TorsionDriveInput.html#qcelemental.models.v2.TorsionDriveInput" target="_top" title="Inputs for running a torsion drive." alt="" coords="281,867,400,889"/>
+<area shape="rect" id="node26" href="api/qcelemental.models.v2.TorsionDriveKeywords.html#qcelemental.models.v2.TorsionDriveKeywords" target="_top" title="TorsionDriveRecord options" alt="" coords="267,910,413,932"/>
+<area shape="rect" id="node27" href="api/qcelemental.models.v2.TorsionDriveProperties.html#qcelemental.models.v2.TorsionDriveProperties" target="_top" title="Named properties of torsion drive computations following the MolSSI QCSchema." alt="" coords="266,953,414,975"/>
+<area shape="rect" id="node28" href="api/qcelemental.models.v2.TorsionDriveProtocols.html#qcelemental.models.v2.TorsionDriveProtocols" target="_top" title="Protocols regarding the manipulation of a Torsion Drive subcalculation history." alt="" coords="269,996,411,1018"/>
+<area shape="rect" id="node29" href="api/qcelemental.models.v2.TorsionDriveResult.html#qcelemental.models.v2.TorsionDriveResult" target="_top" title="Results from running a torsion drive." alt="" coords="277,1039,403,1061"/>
+<area shape="rect" id="node30" href="api/qcelemental.models.v2.TorsionDriveSpecification.html#qcelemental.models.v2.TorsionDriveSpecification" target="_top" title="Specification for how to run a torsion drive scan." alt="" coords="259,1082,422,1104"/>
+<area shape="rect" id="node31" href="api/qcelemental.models.v2.WavefunctionProperties.html#qcelemental.models.v2.WavefunctionProperties" target="_top" title="Wavefunction properties resulting from a computation." alt="" coords="263,1125,418,1147"/>
+<area shape="rect" id="node12" href="api/qcelemental.models.v2.DriverEnum.html#qcelemental.models.v2.DriverEnum" target="_top" title="Allowed computation driver values." alt="" coords="129,522,215,544"/>
+<area shape="rect" id="node13" href="https://docs.python.org/3.10/library/enum.html#enum.Enum" target="_top" title="Generic enumeration." alt="" coords="15,522,77,544"/>
+</map></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vanderwaals_radii.html" class="btn btn-neutral float-left" title="van der Waals Radii" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/qcelemental.compare.html" class="btn btn-neutral float-right" title="compare" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
