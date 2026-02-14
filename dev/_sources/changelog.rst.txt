@@ -26,7 +26,7 @@ Changelog
 -------------------
 
 `Docs <https://MolSSI.github.io/QCElemental/v0.30.2/>`_
-`Docs <https://MolSSI.github.io/QCElemental/v0.30.2a1/>`_
+`Docs <https://MolSSI.github.io/QCElemental/v0.30.2a2/>`_
 
 Enhancements
 ++++++++++++
