@@ -74,23 +74,6 @@ Index
 
    install
 
-**Quantities**
-
-* :doc:`physconst`
-* :doc:`periodic_table`
-* :doc:`covalent_radii`
-* :doc:`vanderwaals_radii`
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   :caption: Quantities
-
-   physconst
-   periodic_table
-   covalent_radii
-   vanderwaals_radii
-
 **QCSchema Models**
 
 Implementation descriptions of QCSchema objects in Python.
@@ -110,7 +93,25 @@ Implementation descriptions of QCSchema objects in Python.
    model_molecule
    model_result
    model_opt
+   model_td
    model_common
+
+**Quantities**
+
+* :doc:`physconst`
+* :doc:`periodic_table`
+* :doc:`covalent_radii`
+* :doc:`vanderwaals_radii`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Quantities
+
+   physconst
+   periodic_table
+   covalent_radii
+   vanderwaals_radii
 
 **Developer Documentation**
 

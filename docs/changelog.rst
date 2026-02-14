@@ -22,10 +22,15 @@ Changelog
 0.50.0rc2 / 2026-XX-XX (Unreleased)
 ----------------------------------------------------------------------------
 
+`Docs <https://MolSSI.github.io/QCElemental/next/>`_
+`Docs for QCSchema v1<https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+
 Breaking Changes
 ++++++++++++++++
-- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
 
+Breaking Changes (low impact)
++++++++++++++++++++++++++++++
+- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
 
 New Features
 ++++++++++++
@@ -33,6 +38,7 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`385`) Start building docs for QCSchema v2 models.
 
 
 .. _`sec:cl0500rc1`:
