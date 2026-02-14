@@ -22,10 +22,15 @@ Changelog
 0.50.0rc2 / 2026-XX-XX (Unreleased)
 ----------------------------------------------------------------------------
 
+`Docs <https://MolSSI.github.io/QCElemental/next/>`_
+`Docs for QCSchema v1<https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+
 Breaking Changes
 ++++++++++++++++
-- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
 
+Breaking Changes (low impact)
++++++++++++++++++++++++++++++
+- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
 
 New Features
 ++++++++++++
@@ -33,8 +38,10 @@ New Features
 
 Enhancements
 ++++++++++++
+- (:pr:`385`) Start building docs for QCSchema v2 models.
 
 
+.. _`sec:cl0500rc1`:
 
 0.50.0rc1 / 2026-01-13 (aka "next" aka "QCSchema v2 available") (Prerelease)
 ----------------------------------------------------------------------------
@@ -88,7 +95,7 @@ Slight alterations to v1 QCSchema
 New v2 Schema: generic changes wrt v1
 -------------------------------------
 - ``models.v2`` models ``AtomicInput``, ``AtomicResult``, ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``Molecule``, ``BasisSet``, ``AtomicSpecification``, ``OptimizationSpecification``, ``OptimizationProtocols``, ``WavefunctionProperties`` learned a `.convert_v(target_version)` to return either itself (with `target_version=2`) or convert to QCSchema v1 (with `target_version=1`). This is recommended to use over hand-mapping.
-- (:pr:`363`) All the v2 models (Protocols/Keywords/Specification/Input/Properties/Result) get Literal ``schema_name`` starting with "qcschema_" (many v1 models didn't have a name; some v1 models allowed "qc_schema_").
+- (:pr:`363`) All the v2 models (Protocols/Keywords/Specification/Input/Properties/Result) get Literal ``schema_name`` starting with "qcschema_" (many v1 models didn't have a name; some v1 models allowed "qc\_schema_").
 - (:pr:`347`) The ``models.v2`` have had their `schema_version` bumped for ``BasisSet``, ``AtomicInput``, ``OptimizationInput`` (implicit for ``AtomicResult`` and ``OptimizationResult``), ``TorsionDriveInput`` , and ``TorsionDriveResult``.
 - (:pr:`347`, :pr:`352`) The ``models.v2`` ``BasisSet``, ``AtomicInput``, ``AtomicResult``, ``AtomicResultProperties`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult`` had their `schema_version` bumped (PR 347) and changed to a Literal[2] (PR 352).
 - (:pr:`366`) v2: standardizing on Input/Result get `schema_version`, Protocols/Keywords/Specification get only `schema_name`. (v1 models gave schema_version to Input/Specification and Result inherited from Input.)
@@ -136,7 +143,7 @@ New v2 Schema: Optimization changes wrt v1
 New v2 Schema: TorsionDrive changes wrt v1
 ------------------------------------------
 - (:pr:`363`, :pr:`366`) ``v2.TDKeywords`` got a ``schema_name`` field and was renamed to ``TorsionDriveKeywords``
-- (:pr:`366`) New ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of ``OptimizationResult``s at each grid point. Use "all" for proper conversion to v1.
+- (:pr:`366`) New ``v2.TorsionDriveProtocols`` model with field ``scan_results`` to control all/none/lowest saving of ``OptimizationResult`` s at each grid point. Use "all" for proper conversion to v1.
 - (:pr:`363`) ``v2. TorsionDriveSpecification`` is a new model. instead of ``v2.TorsionDriveInput`` having a ``input_specification`` and an ``optimization_spec`` fields, it has a ``specification`` field that is a ``TorsionDriveSpecification`` which in turn hold opt info and in turn gradient/atomic info.
 - (:pr:`363`) ``v2.TorsionDriveResult`` no longer inherits from Input and now has indep id and extras and new native_files.
 - (:pr:`367`) ``v1.TorsionDriveResult.final_energies`` replaced by larger ``v2.TorsionDriveResult.scan_properties``. The former is present in the latter as ``return_energy``.
@@ -205,11 +212,11 @@ Enhancements
   change for `validate=True` (run by default).
 - (:pr:`343`) `qcelemental.molparse` newly allows floats that are ints (e.g., 1.0) for multiplicity.
   Previously it would raise an error about not being an int.
-- (:pr:`337`) Solidify the (unchanged) schema_name for `QCInputSpecification` and `AtomicResult`
+- (:pr:`337`) Solidify the (unchanged) ``schema_name`` for `QCInputSpecification` and `AtomicResult`
   into Literals where previously they had been regex strings coerced into a single name. The literals
   allow pydantic to discriminate models, which benefits GeneralizedOptimizationInput/Result in
   QCManyBody/QCEngine/OptKing. The only way this can interfere is if schema producers have whitespace
-  around `schema_name` for these models or if any `AtomicResult`s are still using "qc_schema_output",
+  around `schema_name` for these models or if any `AtomicResult` s are still using "qc_schema_output",
   which looks to have only been added for compatibility with pre-pydantic QCSchema.
 
 Bug Fixes

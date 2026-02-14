@@ -7,8 +7,10 @@
 QCElemental
 ===========
 
-*QCElemental is a resource module for quantum chemistry containing physical
-constants and periodic table data from NIST and molecule handlers.*
+*QCElemental is a resource module for quantum chemistry (QC) containing physical
+constants and periodic table data from NIST. It also contains molecule handlers
+(suitable for QC parsing and input files) and the QC data exchange format known
+as QCSchema.*
 
 Physical Constants
 ------------------
@@ -72,6 +74,28 @@ Index
 
    install
 
+**QCSchema Models**
+
+Implementation descriptions of QCSchema objects in Python.
+
+* :doc:`models`
+* :doc:`model_molecule`
+* :doc:`model_result`
+* :doc:`model_opt`
+* :doc:`model_common`
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: QCSchema Models
+
+   models
+   model_molecule
+   model_result
+   model_opt
+   model_td
+   model_common
+
 **Quantities**
 
 * :doc:`physconst`
@@ -88,25 +112,6 @@ Index
    periodic_table
    covalent_radii
    vanderwaals_radii
-
-**QCSchema Models**
-
-Implementation descriptions of QCSchema objects in Python.
-
-* :doc:`models`
-* :doc:`model_molecule`
-* :doc:`model_result`
-* :doc:`model_common`
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   :caption: QCSchema Models
-
-   models
-   model_molecule
-   model_result
-   model_common
 
 **Developer Documentation**
 

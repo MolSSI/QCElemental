@@ -1,3 +1,4 @@
+import os
 import sys
 import warnings
 from typing import Any, Dict
@@ -63,7 +64,10 @@ class ValidatableArrayAnnotation:
     def __get_pydantic_json_schema__(cls, _core_schema, handler) -> Dict[str, Any]:
         # Old __modify_schema__ method from v1 setup in v2 and customized for our purposes
         # Get the dtype metadata from our original schema
-        dt = _core_schema["metadata"]["dtype"]
+        if os.environ.get("SPHINX_BUILD") == "1":
+            dt = float
+        else:
+            dt = _core_schema["metadata"]["dtype"]
         output_schema = {}
         if dt is int or np.issubdtype(dt, np.integer):
             items = {"type": "number", "multipleOf": 1.0}

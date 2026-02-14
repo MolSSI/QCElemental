@@ -66,6 +66,7 @@ jobs:
               - geometric
               - dftd3-python
               - dftd4-python
+              - setuptools <82.0  # for dftd
               # Testing
               - pytest
               - pytest-xdist
