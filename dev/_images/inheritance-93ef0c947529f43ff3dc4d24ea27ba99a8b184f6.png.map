@@ -1,0 +1,12 @@
+<map id="inheritance3e7a5ab12f" name="inheritance3e7a5ab12f">
+<area shape="rect" id="node6" href="api/qcelemental.Datum.html#qcelemental.Datum" target="_top" title="Facilitates the storage of quantum chemical results by labeling them with basic metadata." alt="" coords="388,400,460,425"/>
+<area shape="rect" id="node2" title="Mixin to provide __str__, __repr__, and __pretty__ methods. See #884 for more details." alt="" coords="41,400,162,425"/>
+<area shape="rect" id="node3" href="api/qcelemental.ChoicesError.html#qcelemental.ChoicesError" target="_top" title="Error called for problems with syntax input file. Prints" alt="" coords="49,351,153,376"/>
+<area shape="rect" id="node4" href="api/qcelemental.CovalentRadii.html#qcelemental.CovalentRadii" target="_top" title="Covalent radii sets." alt="" coords="45,301,158,327"/>
+<area shape="rect" id="node5" href="api/qcelemental.DataUnavailableError.html#qcelemental.DataUnavailableError" target="_top" title="Error when dataset incomplete and otherwise valid query can&#39;t be fulfilled." alt="" coords="20,252,183,277"/>
+<area shape="rect" id="node7" href="api/qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError" target="_top" title="Error called when a molparse.from_string contains unparsable lines." alt="" coords="22,203,181,228"/>
+<area shape="rect" id="node8" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" target="_top" title="Error when element or nuclide can&#39;t be identified." alt="" coords="28,153,175,179"/>
+<area shape="rect" id="node9" href="api/qcelemental.PhysicalConstantsContext.html#qcelemental.PhysicalConstantsContext" target="_top" title="CODATA physical constants set from NIST." alt="" coords="5,104,197,129"/>
+<area shape="rect" id="node10" href="api/qcelemental.ValidationError.html#qcelemental.ValidationError" target="_top" title="Error called for problems with syntax input file. Prints" alt="" coords="42,55,161,80"/>
+<area shape="rect" id="node11" href="api/qcelemental.VanderWaalsRadii.html#qcelemental.VanderWaalsRadii" target="_top" title="Van der Waals radii sets." alt="" coords="32,5,171,31"/>
+</map>

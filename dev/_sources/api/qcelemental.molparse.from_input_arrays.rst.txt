@@ -1,0 +1,6 @@
+from_input_arrays
+=================
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: from_input_arrays
