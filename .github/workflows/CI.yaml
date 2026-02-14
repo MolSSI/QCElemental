@@ -99,20 +99,20 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "target_folder=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "version_label=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+          elif [[ "${GITHUB_REF_NAME}" == "master" || "${GITHUB_REF_NAME}" == "verdocs" ]]; then
             echo "target_folder=dev" >> "$GITHUB_OUTPUT"
             echo "version_label=dev" >> "$GITHUB_OUTPUT"
-          elif [[ "${GITHUB_REF}" == "refs/heads/verdocs" ]]; then
-            echo "target_folder=dev" >> "$GITHUB_OUTPUT"
-            echo "version_label=dev" >> "$GITHUB_OUTPUT"
-          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            tag="${GITHUB_REF#refs/tags/}"
-            echo "target_folder=${tag}" >> "$GITHUB_OUTPUT"
-            echo "version_label=${tag}" >> "$GITHUB_OUTPUT"
+
           else
             echo "target_folder=" >> "$GITHUB_OUTPUT"
             echo "version_label=" >> "$GITHUB_OUTPUT"
           fi
+
       - name: GitHub Pages Deploy (versioned, keep old)
         uses: JamesIves/github-pages-deploy-action@v4
         if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/verdocs' )
