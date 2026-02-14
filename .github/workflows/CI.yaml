@@ -100,6 +100,9 @@ jobs:
         run: |
           set -euo pipefail
 
+          echo GITHUB_REF_TYPE ${GITHUB_REF_TYPE}
+          echo GITHUB_REF_NAME ${GITHUB_REF_NAME}
+          echo GITHUB_REF ${GITHUB_REF}
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
             echo "target_folder=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
             echo "version_label=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
@@ -112,6 +115,7 @@ jobs:
             echo "target_folder=" >> "$GITHUB_OUTPUT"
             echo "version_label=" >> "$GITHUB_OUTPUT"
           fi
+          echo GITHUB_OUTPUT ${GITHUB_OUTPUT}
 
       - name: GitHub Pages Deploy (versioned, keep old)
         uses: JamesIves/github-pages-deploy-action@v4
