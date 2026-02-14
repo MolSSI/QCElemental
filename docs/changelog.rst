@@ -20,6 +20,19 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0302`:
+
+0.30.2 / 2026-02-13
+-------------------
+
+`Docs <https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+
+Enhancements
+++++++++++++
+- (:pr:``) Store versions of documentation for each tag.
+
+
+
 0.30.1 / 2026-02-10
 -------------------
 

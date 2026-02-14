@@ -2,7 +2,9 @@ Overview
 ========
 
 Python implementations of the `MolSSI QCSchema <https://github.com/MolSSI/QCSchema>`_
-are available within QCElemental. These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
+are available within QCElemental.
+Note that the QCElemental reference implementation here is more up-to-date than the QCSchema repository.
+These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
 as their base to provide serialization, validation, and manipluation.
 
 
