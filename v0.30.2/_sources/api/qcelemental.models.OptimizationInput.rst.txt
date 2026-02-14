@@ -1,0 +1,6 @@
+OptimizationInput
+=================
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: OptimizationInput

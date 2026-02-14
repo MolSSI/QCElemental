@@ -1,0 +1,6 @@
+AtomicInput
+===========
+
+.. currentmodule:: qcelemental.models
+
+.. autopydantic_model:: AtomicInput
