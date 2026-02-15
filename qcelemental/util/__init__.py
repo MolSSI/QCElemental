@@ -1,4 +1,3 @@
-from .autodocs import auto_gen_docs_on_demand, get_base_docs
 from .gph_uno_bipartite import uno
 from .importing import parse_version, safe_version, which, which_import
 from .internal import provenance_stamp
