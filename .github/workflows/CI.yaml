@@ -162,7 +162,7 @@ jobs:
           ]
           lbl = os.environ.get("VERSION_LABEL", "")
           tgt = os.environ.get("TARGET_FOLDER", "")
-          if lbl and lbl not in ("dev",) and tgt:
+          if lbl and lbl not in ("dev", "next") and tgt:
               pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
           p.write_text(json.dumps(pinned, indent=2) + "\n")
           PY
