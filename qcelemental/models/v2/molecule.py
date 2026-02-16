@@ -96,8 +96,6 @@ class Identifiers(ProtoModel):
     pubchem_sid: Optional[str] = Field(None, description="PubChem Substance ID")
     pubchem_conformerid: Optional[str] = Field(None, description="PubChem Conformer ID")
 
-    model_config = ProtoModel._merge_config_with(serialize_skip_defaults=True)
-
 
 def molecule_json_schema_extras(schema, model):
     # below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .
