@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version

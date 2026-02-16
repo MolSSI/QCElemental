@@ -4,7 +4,6 @@ from typing import Any, Dict
 
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import SerializerFunctionWrapHandler
 from pydantic_core import core_schema
 from typing_extensions import Annotated, get_args
 
@@ -23,20 +22,6 @@ def generate_caster(dtype):
         return v
 
     return cast_to_np
-
-
-def listandstr_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
-    """Special helper to list NumPy arrays before serializing"""
-    if isinstance(v, np.ndarray):
-        return f"{nxt(v.tolist())}"
-    return f"{nxt(v)}"
-
-
-def flatten_ndarray(v: Any, nxt: SerializerFunctionWrapHandler) -> np.ndarray:
-    """Special helper to first flatten NumPy arrays before serializing with json"""
-    if isinstance(v, np.ndarray):
-        return nxt(v.flatten())
-    return nxt(v)
 
 
 class ValidatableArrayAnnotation:

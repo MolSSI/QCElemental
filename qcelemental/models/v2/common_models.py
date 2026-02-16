@@ -1,8 +1,7 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple, Union
 
-import numpy as np
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from .basemodels import ProtoModel, qcschema_draft
 from .basis_set import BasisSet

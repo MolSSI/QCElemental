@@ -1,20 +1,16 @@
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import Any, Dict, Optional, Set, Union
 
-import numpy as np
 from pydantic import BaseModel, ConfigDict, model_serializer
 
+from qcelemental.models import QCEL_V1V2_SHIM_CODE
 from ...util import deserialize, serialize
 
 
 def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
-
-
-# Encoders, to be deprecated at some point
-ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
 
 
 class ExtendedConfigDict(ConfigDict, total=False):
@@ -38,7 +34,6 @@ class ProtoModel(BaseModel):
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls.__base_doc__ = ""  # remove when QCFractal merges `next`
 
         if "pydantic" in cls.__repr__.__module__:
             cls.__repr__ = _repr
