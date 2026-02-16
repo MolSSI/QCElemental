@@ -3,11 +3,9 @@ from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
 import numpy as np
-from pydantic.v1 import BaseSettings  # remove when QCFractal merges `next`
 from pydantic.v1 import BaseModel
 
 from ...util import deserialize, serialize
-from ...util.autodocs import AutoPydanticDocGenerator  # remove when QCFractal merges `next`
 
 
 def _repr(self) -> str:
@@ -214,14 +212,6 @@ def check_convertible_version(ver: int, error: str):
         return True
     else:
         raise ValueError(f"QCSchema {error} version={ver} does not exist for conversion.")
-
-
-# remove when QCFractal merges `next`
-class AutodocBaseSettings(BaseSettings):
-    """Old class for pydantic docstring before autodoc-pydantic came about."""
-
-    def __init_subclass__(cls) -> None:
-        cls.__doc__ = AutoPydanticDocGenerator(cls, always_apply=True)
 
 
 qcschema_draft = "http://json-schema.org/draft-04/schema#"

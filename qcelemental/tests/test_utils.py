@@ -10,45 +10,6 @@ from qcelemental.testing import compare_recursive, compare_values
 from .addons import schema_versions, serialize_extensions, using_pydv1
 
 
-@pytest.fixture(scope="function")
-def doc_fixture():
-    # associated with AutoDoc, so leaving at Pydantic v1 syntax
-
-    class Nest(pydantic.v1.BaseModel):
-        """A nested model"""
-
-        n: float = 56
-
-    class X(pydantic.v1.BaseModel):
-        """A Pydantic model made up of many, many different combinations of ways of mapping types in Pydantic"""
-
-        x: int
-        y: str = pydantic.v1.Field(...)
-        n: Nest
-        n2: Nest = pydantic.v1.Field(Nest(), description="A detailed description")
-        z: float = 5
-        z2: float = None
-        z3: Optional[float]
-        z4: Optional[float] = pydantic.v1.Field(5, description="Some number I just made up")
-        z5: Optional[Union[float, int]]
-        z6: Optional[List[int]]
-        l: List[int]
-        l2: List[Union[int, str]]
-        t: Tuple[str, int]
-        t2: Tuple[List[int]]
-        t3: Tuple[Any]
-        d: Dict[str, Any]
-        dlu: Dict[Union[int, str], List[Union[int, str, float]]] = pydantic.v1.Field(
-            ..., description="this is complicated"
-        )
-        dlu2: Dict[Any, List[Union[int, str, float]]]
-        dlu3: Dict[str, Any]
-        si: int = pydantic.v1.Field(..., description="A level of constraint", gt=0)
-        sf: float = pydantic.v1.Field(None, description="Optional Constrained Number", le=100.3)
-
-    yield X
-
-
 @pytest.mark.parametrize("inp,expected", [(["AAAABBBCCDAABBB"], "ABCD"), (["ABBCcAD", str.lower], "ABCD")])
 def test_unique_everseen(inp, expected):
     ue = qcel.util.unique_everseen(*inp)
@@ -253,41 +214,6 @@ def test_dihedral2():
 
     _test_dihedral(p1, p4, p5, p7, -177.63641151521261)
     _test_dihedral(p7, p5, p4, p1, -177.63641151521261)
-
-
-@using_pydv1
-def test_auto_gen_doc(doc_fixture):
-    assert "this is complicated" not in doc_fixture.__doc__
-    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
-    assert "this is complicated" in doc_fixture.__doc__
-    assert "z3 : float, Optional" in doc_fixture.__doc__
-    # Check that docstring does not get duplicated for some reason
-    assert doc_fixture.__doc__.count("z3 : float, Optional") == 1
-
-
-@using_pydv1
-def test_auto_gen_doc_exiting(doc_fixture):
-    doc_fixture.__doc__ = "Parameters\n"
-    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
-    assert "this is complicated" not in doc_fixture.__doc__
-
-
-@using_pydv1
-def test_auto_gen_doc_reapply_failure(doc_fixture):
-    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
-    with pytest.raises(ValueError):
-        # Allow true here because we are testing application, not errors in the doc generation itself
-        qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=True, ignore_reapply=False)
-
-
-@using_pydv1
-def test_auto_gen_doc_delete(doc_fixture):
-    qcel.util.auto_gen_docs_on_demand(doc_fixture, allow_failure=False, ignore_reapply=False)
-    assert "this is complicated" in doc_fixture.__doc__
-    assert "A Pydantic model" in doc_fixture.__doc__
-    del doc_fixture.__doc__
-    assert "this is complicated" not in doc_fixture.__doc__
-    assert "A Pydantic model" in doc_fixture.__doc__
 
 
 @pytest.mark.parametrize(

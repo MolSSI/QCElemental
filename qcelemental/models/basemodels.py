@@ -12,4 +12,3 @@ warn(
 )
 
 ProtoModel = qcelemental.models.v1.ProtoModel
-# AutodocBaseSettings if absolutely necessary

@@ -66,7 +66,6 @@ def _make_placeholder(name: str):
 # Names this module should export (keeps parity with the previous file layout)
 _EXPORT_NAMES = [
     "AlignmentMill",
-    "AutodocBaseSettings",
     "ProtoModel",
     "BasisCenter",
     "BasisSet",
@@ -118,7 +117,6 @@ def _use_real_if_possible():
     # Map where names are defined in the original layout. Import cautiously.
     mapping = {
         "AlignmentMill": (".align", "AlignmentMill"),
-        "AutodocBaseSettings": (".basemodels", "AutodocBaseSettings"),
         "ProtoModel": (".basemodels", "ProtoModel"),
         "BasisCenter": (".basis", "BasisCenter"),
         "BasisSet": (".basis", "BasisSet"),
