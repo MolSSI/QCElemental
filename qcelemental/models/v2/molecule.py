@@ -17,9 +17,6 @@ import numpy as np
 from pydantic import Field, field_validator, model_serializer
 from typing_extensions import Annotated
 
-from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
-from .common_models import Provenance
-from .types import Array
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...molparse.from_arrays import from_arrays
 from ...molparse.from_schema import from_schema
@@ -30,6 +27,9 @@ from ...periodic_table import periodictable
 from ...physical_constants import constants
 from ...testing import compare, compare_values
 from ...util import deserialize, measure_coordinates, msgpackext_loads, provenance_stamp, which_import
+from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
+from .common_models import Provenance
+from .types import Array
 
 if TYPE_CHECKING:
     import nglview
