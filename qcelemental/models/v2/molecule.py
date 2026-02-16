@@ -341,11 +341,6 @@ class Molecule(ProtoModel):
     model_config = ProtoModel._merge_config_with(
         serialize_skip_defaults=True,
         json_schema_extra=molecule_json_schema_extras,
-        repr_style=lambda self: [
-            ("name", self.name),
-            ("formula", self.get_molecular_formula(chgmult=True)),
-            ("hash", self.get_hash()[:7]),
-        ],
     )
     # Alias fields are handled with the Field objects above
 

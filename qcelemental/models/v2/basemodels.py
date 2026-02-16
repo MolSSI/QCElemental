@@ -27,12 +27,6 @@ class ExtendedConfigDict(ConfigDict, total=False):
     force_skip_defaults: bool
     """Manually force defaults to not be included in output dictionary"""
 
-    canonical_repr: bool
-    """Use canonical representation of the molecules"""
-
-    repr_style: Union[List[str], Callable]
-    """Representation styles"""
-
 
 class ProtoModel(BaseModel):
     """QCSchema extension of pydantic.BaseModel."""

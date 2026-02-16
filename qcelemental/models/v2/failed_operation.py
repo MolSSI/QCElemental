@@ -29,8 +29,6 @@ class ComputeError(ProtoModel):
         description="Additional information to bundle with the error.",
     )
 
-    model_config = ProtoModel._merge_config_with(repr_style=["error_type", "error_message"])
-
     def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]
 
