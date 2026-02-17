@@ -76,7 +76,6 @@ docs = [
     "sphinx-rtd-theme",
     "autodoc-pydantic >2.0",
     "sphinx-automodapi",
-    "sphinx-autodoc-typehints",
 ]
 
 #[tool.poetry.dependencies]

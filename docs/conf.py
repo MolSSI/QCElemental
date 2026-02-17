@@ -58,7 +58,6 @@ extensions = [
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.automodsumm",
     "sphinx_automodapi.smart_resolver",
-    "sphinx_autodoc_typehints",
     "sphinxcontrib.autodoc_pydantic",
 ]
 
@@ -212,7 +211,7 @@ intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
     "qcengine": ("https://molssi.github.io/QCEngine/next", None),
-    "qcfractal": ("https://molssi.github.io/QCFractal/", None),
+    "qcfractal": ("https://docs.qcarchive.molssi.org/", None),
     "nglview": ("https://nglviewer.org/nglview/release/v2.7.7", None),
 }
 

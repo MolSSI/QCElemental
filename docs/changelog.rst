@@ -37,6 +37,8 @@ Breaking Changes (low impact)
 Enhancements
 ++++++++++++
 - (:pr:`390`) Removed the "Imports will provide non-functional placeholders" FutureWarning for <py314
+- (:pr:`390`) Added `qcelemental.models.QCEL_V1V2_SHIM_CODE` as magic var to signal returning `_v1v2` model.
+- (:pr:`390`)) Removed sphinx-autodoc-typehints
 - (:pr:`388`) Molecule: Fix imports, typing, `@property` logic (exp. `connectivity`, printing of
   float multiplicity, and returning `type(self)` to handle derived classes
 - (:pr:`385`) Start building docs for QCSchema v2 models.
