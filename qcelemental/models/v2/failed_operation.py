@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple,
 
 from pydantic import Field, field_validator
 
+from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version
 
 if TYPE_CHECKING:
@@ -91,13 +92,13 @@ class FailedOperation(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
             if target_version == 1:
                 self_vN = qcel.models.v1.FailedOperation(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.FailedOperation(**dself)
         else:
             assert False, target_version
