@@ -603,7 +603,7 @@ class Molecule(ProtoModel):
         """
         text = ""
 
-        text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:d}:\n\n""".format(
+        text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:.2f}:\n\n""".format(
             "Angstrom", self.molecular_charge, self.molecular_multiplicity
         )
         text += """       Center              X                  Y                   Z       \n"""

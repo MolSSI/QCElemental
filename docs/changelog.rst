@@ -31,6 +31,7 @@ Breaking Changes
 Breaking Changes (low impact)
 +++++++++++++++++++++++++++++
 - (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
+- (:pr:`388`) Molecule: Fix imports, typing, `@property` logic, printing of float multiplicity, and returning `type(self)` to handle derived classes
 - (:pr:`389`) Remove the QCElemental pydantic autodoc module (`util.autodocs` module, classes `AutoPydanticDocGenerator` and `AutodocBaseSettings`)
 
 New Features

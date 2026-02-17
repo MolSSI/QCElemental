@@ -2,23 +2,20 @@
 Molecule Object Model
 """
 
+from __future__ import annotations
+
 import collections
 import hashlib
 import json
+import sys
 import warnings
 from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
-from pydantic import Field, constr, field_validator, model_serializer
+from pydantic import Field, field_validator, model_serializer
 from typing_extensions import Annotated
-
-try:
-    import nglview
-except ModuleNotFoundError:
-    # import is purely for forward reference for docs-build. import is not required except for Molecule.show()
-    pass
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...molparse.from_arrays import from_arrays
@@ -35,6 +32,9 @@ from .common_models import Provenance
 from .types import Array
 
 if TYPE_CHECKING:
+    import nglview
+    from numpy.typing import NDArray
+
     import qcelemental
 
     from .common_models import ReprArgs
@@ -246,14 +246,13 @@ class Molecule(ProtoModel):
     )
 
     # Fragment and connection data
-    connectivity_: Optional[List[Tuple[NonnegativeInt, NonnegativeInt, BondOrderFloat]]] = Field(  # type: ignore
+    connectivity: Optional[List[Tuple[NonnegativeInt, NonnegativeInt, BondOrderFloat]]] = Field(  # type: ignore
         None,
         description="A list of bonds within the molecule. "
         "Each entry is a tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "
         "matches the 0-indexed indices of all other per-atom settings like "
         ":attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. "
         "Bonds may be freely reordered and inverted.",
-        alias="connectivity",
         min_length=1,
     )
     fragments_: Optional[List[Array[np.int32]]] = Field(  # type: ignore
@@ -474,66 +473,60 @@ class Molecule(ProtoModel):
         ]
 
     @property
-    def masses(self) -> Array[float]:
-        masses = self.__dict__.get("masses_")
-        if masses is None:
-            masses = np.array([periodictable.to_mass(x) for x in self.symbols])
-        return masses
+    def masses(self) -> NDArray[np.float64]:
+        if self.masses_ is not None:
+            return self.masses_
+
+        return np.array([periodictable.to_mass(x) for x in self.symbols])
 
     @property
-    def real(self) -> Array[bool]:
-        real = self.__dict__.get("real_")
-        if real is None:
-            real = np.array([True for x in self.symbols])
-        return real
+    def real(self) -> NDArray[np.bool_]:
+        if self.real_ is not None:
+            return self.real_
+
+        return np.array([True for _ in self.symbols])
 
     @property
-    def atom_labels(self) -> Array[str]:
-        atom_labels = self.__dict__.get("atom_labels_")
-        if atom_labels is None:
-            atom_labels = np.array(["" for x in self.symbols])
-        return atom_labels
+    def atom_labels(self) -> NDArray[np.str_]:
+        if self.atom_labels_ is not None:
+            return self.atom_labels_
+
+        return np.array(["" for x in self.symbols])
 
     @property
-    def atomic_numbers(self) -> Array[np.int16]:
-        atomic_numbers = self.__dict__.get("atomic_numbers_")
-        if atomic_numbers is None:
-            atomic_numbers = np.array([periodictable.to_Z(x) for x in self.symbols])
-        return atomic_numbers
+    def atomic_numbers(self) -> NDArray[np.int16]:
+        if self.atomic_numbers_ is not None:
+            return self.atomic_numbers_
+
+        return np.array([periodictable.to_Z(x) for x in self.symbols], dtype=np.int16)
 
     @property
-    def mass_numbers(self) -> Array[np.int16]:
-        mass_numbers = self.__dict__.get("mass_numbers_")
-        if mass_numbers is None:
-            mass_numbers = np.array([periodictable.to_A(x) for x in self.symbols])
-        return mass_numbers
+    def mass_numbers(self) -> NDArray[np.int16]:
+        if self.mass_numbers_ is not None:
+            return self.mass_numbers_
+
+        return np.array([periodictable.to_A(x) for x in self.symbols], dtype=np.int16)
 
     @property
-    def connectivity(self) -> List[Tuple[int, int, float]]:
-        connectivity = self.__dict__.get("connectivity_")
-        # default is None, not []
-        return connectivity
+    def fragments(self) -> List[NDArray[np.int32]]:
+        if self.fragments_ is not None:
+            return self.fragments_
 
-    @property
-    def fragments(self) -> List[Array[np.int32]]:
-        fragments = self.__dict__.get("fragments_")
-        if fragments is None:
-            fragments = [np.arange(len(self.symbols), dtype=np.int32)]
-        return fragments
+        return [np.arange(len(self.symbols), dtype=np.int32)]
 
     @property
     def fragment_charges(self) -> List[float]:
-        fragment_charges = self.__dict__.get("fragment_charges_")
-        if fragment_charges is None:
-            fragment_charges = [self.molecular_charge]
-        return fragment_charges
+        if self.fragment_charges_ is not None:
+            return self.fragment_charges_
+
+        return [self.molecular_charge]
 
     @property
     def fragment_multiplicities(self) -> List[float]:
-        fragment_multiplicities = self.__dict__.get("fragment_multiplicities_")
-        if fragment_multiplicities is None:
-            fragment_multiplicities = [self.molecular_multiplicity]
-        return fragment_multiplicities
+        if self.fragment_multiplicities_ is not None:
+            return self.fragment_multiplicities_
+
+        return [self.molecular_multiplicity]
 
     ### Non-Pydantic API functions
 
@@ -592,7 +585,7 @@ class Molecule(ProtoModel):
         r"""
         Centers the molecule and orients via inertia tensor before returning a new Molecule
         """
-        return Molecule(orient=True, **self.model_dump())
+        return type(self)(orient=True, **self.model_dump())
 
     def compare(self, other):
         warnings.warn(
@@ -609,7 +602,7 @@ class Molecule(ProtoModel):
         import qcelemental
 
         if isinstance(other, dict):
-            other = Molecule(orient=False, **other)
+            other = type(self)(orient=False, **other)
         elif isinstance(other, Molecule) or (
             sys.version_info < (3, 14) and isinstance(other, (Molecule, qcelemental.models.v1.Molecule))
         ):
@@ -648,7 +641,7 @@ class Molecule(ProtoModel):
         """
         text = ""
 
-        text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:d}:\n\n""".format(
+        text += """    Geometry (in {0:s}), charge = {1:.1f}, multiplicity = {2:.2f}:\n\n""".format(
             "Angstrom", self.molecular_charge, self.molecular_multiplicity
         )
         text += """       Center              X                  Y                   Z       \n"""
@@ -807,7 +800,7 @@ class Molecule(ProtoModel):
         constructor_dict["real"] = real_atoms
         constructor_dict["masses"] = masses
 
-        return Molecule(orient=orient, **constructor_dict)
+        return type(self)(orient=orient, **constructor_dict)
 
     def to_string(  # type: ignore
         self,
@@ -879,7 +872,7 @@ class Molecule(ProtoModel):
         Examples
         --------
 
-        >>> methane = qcelemental.models.Molecule('''
+        >>> methane = qcelemental.models.v2.Molecule.from_data('''
         ... H      0.5288      0.1610      0.9359
         ... C      0.0000      0.0000      0.0000
         ... H      0.2051      0.8240     -0.6786
@@ -889,14 +882,14 @@ class Molecule(ProtoModel):
         >>> methane.get_molecular_formula()
         CH4
 
-        >>> hcl = qcelemental.models.Molecule('''
+        >>> hcl = qcelemental.models.v2.Molecule.from_data('''
         ... H      0.0000      0.0000      0.0000
         ... Cl     0.0000      0.0000      1.2000
         ... ''')
         >>> hcl.get_molecular_formula()
         ClH
 
-        >>> two_pentanol_radcat = qcelemental.models.Molecule('''
+        >>> two_pentanol_radcat = qcelemental.models.v2.Molecule.from_data('''
         ... 1 2
         ... C         -4.43914        1.67538       -0.14135
         ... C         -2.91385        1.70652       -0.10603
@@ -1450,7 +1443,7 @@ class Molecule(ProtoModel):
         adict = {**concern_mol.model_dump(), **aupdate}
 
         # preserve intrinsic symmetry with lighter truncation
-        amol = Molecule(validate=True, **adict, geometry_noise=13)
+        amol = type(self)(validate=True, **adict, geometry_noise=13)
 
         # TODO -- can probably do more with fragments in amol now that
         #         Mol is something with non-contig frags. frags now discarded.
@@ -1482,8 +1475,8 @@ class Molecule(ProtoModel):
     def scramble(
         self,
         *,
-        do_shift: Union[bool, Array[float], List] = True,
-        do_rotate: Union[bool, Array[float], List[List]] = True,
+        do_shift: Union[bool, NDArray[np.float64], List] = True,
+        do_rotate: Union[bool, NDArray[np.float64], List[List]] = True,
         do_resort: Union[bool, List] = True,
         deflection: float = 1.0,
         do_mirror: bool = False,
@@ -1574,7 +1567,7 @@ class Molecule(ProtoModel):
         cdict = {**ref_mol.model_dump(), **cupdate}
 
         # preserve intrinsic symmetry with lighter truncation
-        cmol = Molecule(validate=True, **cdict, geometry_noise=13)
+        cmol = type(self)(validate=True, **cdict, geometry_noise=13)
 
         rmsd = np.linalg.norm(cgeom - rgeom) * constants.bohr2angstroms / np.sqrt(nat)
         if verbose >= 1:
