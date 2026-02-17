@@ -24,8 +24,7 @@ Changelog
 0.50.0rc2 / 2026-02-17
 ----------------------
 
-`Docs <https://MolSSI.github.io/QCElemental/v0.50.0rc2/>`_
-`Docs for QCSchema v1<https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+:docs:`v0.50.0rc2` for current. :docs:`v0.30.2` for QCSchema v1.
 
 Breaking Changes (low impact)
 +++++++++++++++++++++++++++++
@@ -50,7 +49,7 @@ Enhancements
 
     "qcelemental": ("https://molssi.github.io/QCElemental/next/", None),
     "qcengine": ("https://molssi.github.io/QCEngine/next/", None),
-    "qcfractal": ("https://molssi.github.io/QCFractal/", None),
+    "qcfractal": ("https://docs.qcarchive.molssi.org/", None),
 
 
 .. _`sec:cl0500rc1`:

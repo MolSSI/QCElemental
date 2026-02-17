@@ -199,6 +199,7 @@ texinfo_documents = [
 extlinks = {
     "issue": ("https://github.com/MolSSI/QCElemental/issues/%s", "GH#%s"),
     "pr": ("https://github.com/MolSSI/QCElemental/pull/%s", "GH#%s"),
+    "docs": ("https://MolSSI.github.io/QCElemental/%s", "Docs %s"),
 }
 
 
