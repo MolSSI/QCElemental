@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.molecule &mdash; QCElemental 0.1.dev1+g0b0cf4ccf documentation</title>
+  <title>qcelemental.models.v2.molecule &mdash; QCElemental 0.1.dev1+g8255bfac5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=b61bacb1"></script>
+      <script src="../../../../_static/documentation_options.js?v=38b0b5cf"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -112,23 +112,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">Molecule Object Model</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">constr</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_serializer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_serializer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">nglview</span>
-<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-    <span class="c1"># import is purely for forward reference for docs-build. import is not required except for Molecule.show()</span>
-    <span class="k">pass</span>
 
 <span class="c1"># molparse imports separated b/c https://github.com/python/mypy/issues/7203</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...molparse.from_arrays</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_arrays</span>
@@ -145,6 +142,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">nglview</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
@@ -358,14 +358,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
 
     <span class="c1"># Fragment and connection data</span>
-    <span class="n">connectivity_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">NonnegativeInt</span><span class="p">,</span> <span class="n">NonnegativeInt</span><span class="p">,</span> <span class="n">BondOrderFloat</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+    <span class="n">connectivity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">NonnegativeInt</span><span class="p">,</span> <span class="n">NonnegativeInt</span><span class="p">,</span> <span class="n">BondOrderFloat</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of bonds within the molecule. &quot;</span>
         <span class="s2">&quot;Each entry is a tuple of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` &quot;</span>
         <span class="s2">&quot;matches the 0-indexed indices of all other per-atom settings like &quot;</span>
         <span class="s2">&quot;:attr:`~qcelemental.models.Molecule.symbols` and :attr:`~qcelemental.models.Molecule.real`. &quot;</span>
         <span class="s2">&quot;Bonds may be freely reordered and inverted.&quot;</span><span class="p">,</span>
-        <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;connectivity&quot;</span><span class="p">,</span>
         <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">fragments_</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
@@ -586,66 +585,60 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">masses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="n">masses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;masses_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">masses</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">masses</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">masses</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">masses_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">real</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
-        <span class="n">real</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;real_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">real</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">real</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">real</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">real</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="n">atom_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atom_labels_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">atom_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">atom_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">atom_labels</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">str_</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">atomic_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
-        <span class="n">atomic_numbers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atomic_numbers_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">atomic_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">atomic_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_Z</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">atomic_numbers</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atomic_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_numbers_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_Z</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">mass_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
-        <span class="n">mass_numbers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mass_numbers_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mass_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">mass_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_A</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">mass_numbers</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mass_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_numbers_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_numbers_</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_A</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">connectivity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-        <span class="n">connectivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;connectivity_&quot;</span><span class="p">)</span>
-        <span class="c1"># default is None, not []</span>
-        <span class="k">return</span> <span class="n">connectivity</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragments_</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
-        <span class="n">fragments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragments_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">fragments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fragments</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)]</span>
-        <span class="k">return</span> <span class="n">fragments</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">fragment_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="n">fragment_charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_charges_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">fragment_charges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fragment_charges</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">fragment_charges</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_charges_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_charges_</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">fragment_multiplicities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fragment_multiplicities_&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">fragment_multiplicities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_multiplicity</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">fragment_multiplicities</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_multiplicities_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fragment_multiplicities_</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">molecular_multiplicity</span><span class="p">]</span>
 
     <span class="c1">### Non-Pydantic API functions</span>
 
@@ -712,7 +705,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Centers the molecule and orients via inertia tensor before returning a new Molecule</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">orient</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="Molecule.compare">
@@ -733,7 +726,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">other</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">other</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">orient</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">other</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">qcelemental</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">Molecule</span><span class="p">))</span>
         <span class="p">):</span>
@@ -777,7 +770,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;    Geometry (in </span><span class="si">{0:s}</span><span class="s2">), charge = </span><span class="si">{1:.1f}</span><span class="s2">, multiplicity = </span><span class="si">{2:d}</span><span class="s2">:</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;    Geometry (in </span><span class="si">{0:s}</span><span class="s2">), charge = </span><span class="si">{1:.1f}</span><span class="s2">, multiplicity = </span><span class="si">{2:.2f}</span><span class="s2">:</span><span class="se">\n\n</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="s2">&quot;Angstrom&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecular_multiplicity</span>
         <span class="p">)</span>
         <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;       Center              X                  Y                   Z       </span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
@@ -939,7 +932,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">constructor_dict</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">real_atoms</span>
         <span class="n">constructor_dict</span><span class="p">[</span><span class="s2">&quot;masses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">masses</span>
 
-        <span class="k">return</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span> <span class="o">**</span><span class="n">constructor_dict</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">orient</span><span class="o">=</span><span class="n">orient</span><span class="p">,</span> <span class="o">**</span><span class="n">constructor_dict</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Molecule.to_string">
@@ -1020,7 +1013,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; methane = qcelemental.models.Molecule(&#39;&#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; methane = qcelemental.models.v2.Molecule.from_data(&#39;&#39;&#39;</span>
 <span class="sd">        ... H      0.5288      0.1610      0.9359</span>
 <span class="sd">        ... C      0.0000      0.0000      0.0000</span>
 <span class="sd">        ... H      0.2051      0.8240     -0.6786</span>
@@ -1030,14 +1023,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">        &gt;&gt;&gt; methane.get_molecular_formula()</span>
 <span class="sd">        CH4</span>
 
-<span class="sd">        &gt;&gt;&gt; hcl = qcelemental.models.Molecule(&#39;&#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; hcl = qcelemental.models.v2.Molecule.from_data(&#39;&#39;&#39;</span>
 <span class="sd">        ... H      0.0000      0.0000      0.0000</span>
 <span class="sd">        ... Cl     0.0000      0.0000      1.2000</span>
 <span class="sd">        ... &#39;&#39;&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; hcl.get_molecular_formula()</span>
 <span class="sd">        ClH</span>
 
-<span class="sd">        &gt;&gt;&gt; two_pentanol_radcat = qcelemental.models.Molecule(&#39;&#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; two_pentanol_radcat = qcelemental.models.v2.Molecule.from_data(&#39;&#39;&#39;</span>
 <span class="sd">        ... 1 2</span>
 <span class="sd">        ... C         -4.43914        1.67538       -0.14135</span>
 <span class="sd">        ... C         -2.91385        1.70652       -0.10603</span>
@@ -1615,7 +1608,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">adict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">concern_mol</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span> <span class="o">**</span><span class="n">aupdate</span><span class="p">}</span>
 
         <span class="c1"># preserve intrinsic symmetry with lighter truncation</span>
-        <span class="n">amol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">adict</span><span class="p">,</span> <span class="n">geometry_noise</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+        <span class="n">amol</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">adict</span><span class="p">,</span> <span class="n">geometry_noise</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 
         <span class="c1"># TODO -- can probably do more with fragments in amol now that</span>
         <span class="c1">#         Mol is something with non-contig frags. frags now discarded.</span>
@@ -1650,8 +1643,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">def</span><span class="w"> </span><span class="nf">scramble</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">do_shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">do_rotate</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">do_shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">do_rotate</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">do_resort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">deflection</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">do_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1742,7 +1735,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">cdict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">ref_mol</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span> <span class="o">**</span><span class="n">cupdate</span><span class="p">}</span>
 
         <span class="c1"># preserve intrinsic symmetry with lighter truncation</span>
-        <span class="n">cmol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">cdict</span><span class="p">,</span> <span class="n">geometry_noise</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+        <span class="n">cmol</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">cdict</span><span class="p">,</span> <span class="n">geometry_noise</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 
         <span class="n">rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">cgeom</span> <span class="o">-</span> <span class="n">rgeom</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">nat</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
