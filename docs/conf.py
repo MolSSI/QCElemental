@@ -211,7 +211,7 @@ intersphinx_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
-    "qcengine": ("https://molssi.github.io/QCEngine/", None),
+    "qcengine": ("https://molssi.github.io/QCEngine/next", None),
     "qcfractal": ("https://molssi.github.io/QCFractal/", None),
     "nglview": ("https://nglviewer.org/nglview/release/v2.7.7", None),
 }

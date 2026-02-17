@@ -14,14 +14,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
+from numpy.typing import NDArray
 from pydantic import Field, field_validator, model_serializer
 from typing_extensions import Annotated
-
-try:
-    import nglview
-except ModuleNotFoundError:
-    # import is purely for forward reference for docs-build. import is not required except for Molecule.show()
-    pass
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...molparse.from_arrays import from_arrays
@@ -39,7 +34,6 @@ from .types import Array
 
 if TYPE_CHECKING:
     import nglview
-    from numpy.typing import NDArray
 
     import qcelemental
 

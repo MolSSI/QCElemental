@@ -34,9 +34,6 @@ TorsionDriveSpecification
 .. autopydantic_model:: qcelemental.models.v2.TorsionDriveSpecification
    :noindex:
 
-.. autofunction:: qcelemental.models.v2.TorsionDriveSpecification.convert_v
-   :noindex:
-
 TorsionDriveKeywords
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -47,9 +44,6 @@ TorsionDriveProtocols
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. autopydantic_model:: qcelemental.models.v2.TorsionDriveProtocols
-   :noindex:
-
-.. autofunction:: qcelemental.models.v2.TorsionDriveProtocols.convert_v
    :noindex:
 
 TorsionDriveProperties
