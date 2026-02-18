@@ -19,28 +19,37 @@ Changelog
 .. Misc.
 .. +++++
 
-0.50.0rc2 / 2026-XX-XX (Unreleased)
-----------------------------------------------------------------------------
+.. _`sec:cl0500rc2`:
 
-`Docs <https://MolSSI.github.io/QCElemental/next/>`_
-`Docs for QCSchema v1<https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+0.50.0rc2 / 2026-02-17
+----------------------
 
-Breaking Changes
-++++++++++++++++
+:docs:`v0.50.0rc2` for current. :docs:`v0.30.2` for QCSchema v1.
 
 Breaking Changes (low impact)
 +++++++++++++++++++++++++++++
-- (:pr:`382`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
-- (:pr:`388`) Molecule: Fix imports, typing, `@property` logic, printing of float multiplicity, and returning `type(self)` to handle derived classes
-- (:pr:`389`) Remove the QCElemental pydantic autodoc module (`util.autodocs` module, classes `AutoPydanticDocGenerator` and `AutodocBaseSettings`)
-
-New Features
-++++++++++++
-
+- (:pr:`382`, :pr:`383`) Remove CPU (`ProcessorInfo` and `ProcessorContext`) and DFT info
+  (`DFTFunctionalInfo` and `DFTFunctionalContext`) classes and functionality
+- (:pr:`389`) Remove the QCElemental pydantic autodoc module (`util.autodocs` module, classes
+  `AutoPydanticDocGenerator` and `AutodocBaseSettings`)
 
 Enhancements
 ++++++++++++
+- (:pr:`390`) Removed the "Imports will provide non-functional placeholders" FutureWarning for <py314
+- (:pr:`390`) Added `qcelemental.models.QCEL_V1V2_SHIM_CODE` as magic var to signal returning `_v1v2` model.
+- (:pr:`390`)) Removed sphinx-autodoc-typehints
+- (:pr:`388`) Molecule: Fix imports, typing, `@property` logic (exp. `connectivity`, printing of
+  float multiplicity, and returning `type(self)` to handle derived classes
 - (:pr:`385`) Start building docs for QCSchema v2 models.
+  If downstream docs builds are complaining about `dtype` here, add `os.environ["SPHINX_BUILD"] = "1"`
+  to Sphinx conf.py
+  Note that this changes intersphinx links. Below is current (for next2026).
+
+.. code:: python
+
+    "qcelemental": ("https://molssi.github.io/QCElemental/next/", None),
+    "qcengine": ("https://molssi.github.io/QCEngine/next/", None),
+    "qcfractal": ("https://docs.qcarchive.molssi.org/", None),
 
 
 .. _`sec:cl0500rc1`:

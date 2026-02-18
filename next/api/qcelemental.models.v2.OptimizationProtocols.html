@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OptimizationProtocols &mdash; QCElemental 0.1.dev1+g8255bfac5 documentation</title>
+  <title>OptimizationProtocols &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=38b0b5cf"></script>
+      <script src="../_static/documentation_options.js?v=96671694"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -204,12 +204,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.OptimizationProtocols.schema_name">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code></a><span class="pre">[</span><code class="docutils literal notranslate"><span class="pre">'qcschema_optimization_protocols'</span></code><span class="pre">]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_optimization_protocols'</span></em><a class="headerlink" href="#qcelemental.models.v2.OptimizationProtocols.schema_name" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'qcschema_optimization_protocols'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_optimization_protocols'</span></em><a class="headerlink" href="#qcelemental.models.v2.OptimizationProtocols.schema_name" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.OptimizationProtocols.trajectory_results">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trajectory_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">TrajectoryProtocolEnum</span></code></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TrajectoryProtocolEnum.none</span></em><a class="headerlink" href="#qcelemental.models.v2.OptimizationProtocols.trajectory_results" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trajectory_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TrajectoryProtocolEnum</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TrajectoryProtocolEnum.none</span></em><a class="headerlink" href="#qcelemental.models.v2.OptimizationProtocols.trajectory_results" title="Link to this definition"></a></dt>
 <dd><p>Which gradient evaluations to keep in an optimization trajectory.</p>
 </dd></dl>
 
@@ -218,11 +218,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sig-name descname"><span class="pre">convert_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_version</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/models/v2/optimization.html#OptimizationProtocols.convert_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.v2.OptimizationProtocols.convert_v" title="Link to this definition"></a></dt>
 <dd><p>Convert to instance of particular QCSchema version.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">OptimizationProtocols</span></code>, <a class="reference internal" href="#qcelemental.models.v2.OptimizationProtocols" title="qcelemental.models.v2.optimization.OptimizationProtocols"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimizationProtocols</span></code></a>]</span></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>target_version</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>)</p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>target_version</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>)</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>qcelemental.models.v1.OptimizationProtocols | <a class="reference internal" href="#qcelemental.models.v2.OptimizationProtocols" title="qcelemental.models.v2.OptimizationProtocols">qcelemental.models.v2.OptimizationProtocols</a></p>
 </dd>
 </dl>
 </dd></dl>

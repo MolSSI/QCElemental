@@ -7,7 +7,7 @@ Note that the QCElemental reference implementation here is more up-to-date than 
 These models use `Pydantic <https://pydantic-docs.helpmanual.io>`_
 as their base to provide serialization, validation, and manipulation.
 
-.. note:: QCSchema v2 is documented here. `Docs for QCSchema v1<https://MolSSI.github.io/QCElemental/v0.30.2/>`_
+.. note:: QCSchema v2 is documented here. Docs for QCSchema v1 at :docs:`v0.30.2` .
 
 Basics
 ------

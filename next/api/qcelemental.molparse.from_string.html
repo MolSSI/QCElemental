@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>from_string &mdash; QCElemental 0.1.dev1+g8255bfac5 documentation</title>
+  <title>from_string &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=38b0b5cf"></script>
+      <script src="../_static/documentation_options.js?v=96671694"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -142,41 +142,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>molstr</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Multiline string specification of molecule in a recognized format.</p></li>
-<li><p><strong>dtype</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – {‘xyz’, ‘xyz+’, ‘psi4’, ‘psi4+’}
+<li><p><strong>molstr</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Multiline string specification of molecule in a recognized format.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> | </em><em>None</em>) – {‘xyz’, ‘xyz+’, ‘psi4’, ‘psi4+’}
 Molecule format name; see below for details.</p></li>
-<li><p><strong>return_processed</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Additionally return intermediate dictionary.</p></li>
-<li><p><strong>enable_qm</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Consider quantum mechanical domain in processing the string constants
+<li><p><strong>return_processed</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Additionally return intermediate dictionary.</p></li>
+<li><p><strong>enable_qm</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Consider quantum mechanical domain in processing the string constants
 into the returned molrec.</p></li>
-<li><p><strong>enable_efp</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Consider effective fragment potential domain in processing the string
+<li><p><strong>enable_efp</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Consider effective fragment potential domain in processing the string
 contents into the returned molrec. Only relevant if <cite>dtype</cite> supports EFP.</p></li>
-<li><p><strong>missing_enabled_return_qm</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – {‘minimal’, ‘none’, ‘error’}
+<li><p><strong>missing_enabled_return_qm</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – {‘minimal’, ‘none’, ‘error’}
 If <cite>enable_qm=True</cite>, what to do if it has no atoms/fragments?
 Respectively, return a fully valid but empty molrec, return empty
 dictionary, or throw error.</p></li>
-<li><p><strong>missing_enabled_return_efp</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – {‘minimal’, ‘none’, ‘error’}
+<li><p><strong>missing_enabled_return_efp</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – {‘minimal’, ‘none’, ‘error’}
 If <cite>enable_efp=True</cite>, what to do if it has no atoms/fragments?
 Respectively, return a fully valid but empty molrec, return empty
 dictionary, or throw error.</p></li>
-<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Override <cite>molstr</cite> information for label for molecule; should
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> | </em><em>None</em>) – Override <cite>molstr</cite> information for label for molecule; should
 be valid Python identifier. One of a very limited number of
 fields (three others follow) for trumping <cite>molstr</cite>. Provided
 for convenience, since the alternative would be collect the
 resulting molrec (discarding the Mol if called from class),
 editing it, then remaking the Mol.</p></li>
-<li><p><strong>fix_com</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – Override <cite>molstr</cite> information for whether translation of <cite>geom</cite>
+<li><p><strong>fix_com</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em> | </em><em>None</em>) – Override <cite>molstr</cite> information for whether translation of <cite>geom</cite>
 is allowed or disallowed.</p></li>
-<li><p><strong>fix_orientation</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – Override <cite>molstr</cite> information for whether rotation of <cite>geom</cite>
+<li><p><strong>fix_orientation</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em> | </em><em>None</em>) – Override <cite>molstr</cite> information for whether rotation of <cite>geom</cite>
 is allowed or disallowed.</p></li>
-<li><p><strong>fix_symmetry</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Override <cite>molstr</cite> information for maximal point group symmetry
+<li><p><strong>fix_symmetry</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> | </em><em>None</em>) – Override <cite>molstr</cite> information for maximal point group symmetry
 which geometry should be treated.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Tuple" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>]]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>molrec</strong> (<em>dict</em>) – Molecule dictionary spec. See <a class="reference internal" href="qcelemental.molparse.from_arrays.html#qcelemental.molparse.from_arrays" title="qcelemental.molparse.from_arrays"><code class="xref py py-func docutils literal notranslate"><span class="pre">from_arrays()</span></code></a>.</p></li>
 <li><p><strong>molinit</strong> (<em>dict, optional</em>) – Intermediate “molrec”-like dictionary containing <cite>molstr</cite> info after
 parsing by this function but before the validation and defaulting of
@@ -185,9 +182,12 @@ Only provided if <cite>return_processed</cite> is True.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError" title="qcelemental.MoleculeFormatError"><strong>qcelemental.MoleculeFormatError</strong></a> – After processing of <cite>molstr</cite>, only an empty string should remain.
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="qcelemental.MoleculeFormatError.html#qcelemental.MoleculeFormatError" title="qcelemental.MoleculeFormatError"><strong>qcelemental.MoleculeFormatError</strong></a> – After processing of <cite>molstr</cite>, only an empty string should remain.
     Anything left is a syntax error.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a> | <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Tuple" title="(in Python v3.10)"><em>Tuple</em></a>[<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>, <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Periodic Table &mdash; QCElemental 0.1.dev1+g8255bfac5 documentation</title>
+  <title>Periodic Table &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=38b0b5cf"></script>
+      <script src="_static/documentation_options.js?v=96671694"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -159,25 +159,25 @@ isotope symbol, and name can all be passed:</p>
 <p>Top level user functions:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mass</span></code>(*[, return_decimal])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mass</span></code>(atom, *[, return_decimal])</p></td>
 <td><p>Get atomic mass of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mass_number</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mass_number</span></code>(atom)</p></td>
 <td><p>Get mass number of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_atomic_number</span></code>([strict])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_atomic_number</span></code>(atom[, strict])</p></td>
 <td><p>Get atomic number of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_symbol</span></code>([strict])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_symbol</span></code>(atom[, strict])</p></td>
 <td><p>Get element symbol of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_name</span></code>([strict])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_name</span></code>(atom[, strict])</p></td>
 <td><p>Get element name of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_period</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_period</span></code>(atom)</p></td>
 <td><p>Get period (horizontal row in periodic table) of <cite>atom</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_group</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_group</span></code>(atom)</p></td>
 <td><p>Get group (vertical column in periodic table) of <cite>atom</cite>.</p></td>
 </tr>
 </tbody>
@@ -192,8 +192,8 @@ isotope symbol, and name can all be passed:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
-<li><p><strong>return_decimal</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to preserve significant figures information by returning as Decimal (<cite>True</cite>) or to convert to float (<cite>False</cite>).</p></li>
+<li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
+<li><p><strong>return_decimal</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Whether to preserve significant figures information by returning as Decimal (<cite>True</cite>) or to convert to float (<cite>False</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -223,7 +223,7 @@ isotope symbol, and name can all be passed:</p>
 <p>Functions <code class="xref py py-func docutils literal notranslate"><span class="pre">to_A()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">to_mass_number()</span></code> are aliases.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
+<dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p>Mass number, number of protons and neutrons.</p>
@@ -253,8 +253,8 @@ isotope symbol, and name can all be passed:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
-<li><p><strong>strict</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
+<li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
+<li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -278,8 +278,8 @@ isotope symbol, and name can all be passed:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
-<li><p><strong>strict</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
+<li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
+<li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -303,8 +303,8 @@ isotope symbol, and name can all be passed:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
-<li><p><strong>strict</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
+<li><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p></li>
+<li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Allow only element identification in <cite>atom</cite>, not nuclide.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -326,7 +326,7 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get period (horizontal row in periodic table) of <cite>atom</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
+<dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Period between 1 (e.g., <cite>He</cite>) and 7 (e.g., <cite>U238</cite>).</p>
@@ -346,20 +346,20 @@ isotope symbol, and name can all be passed:</p>
 <dd><p>Get group (vertical column in periodic table) of <cite>atom</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>atom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
+<dd class="field-odd"><p><strong>atom</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Identifier for element or nuclide, e.g., <cite>H</cite>, <cite>D</cite>, <cite>H2</cite>, <cite>He</cite>, <cite>hE4</cite>.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>int</em> – Group between 1 (e.g., <cite>Li</cite>) and 18 (e.g., <cite>KR84</cite>).</p></li>
 <li><p><em>None</em> – If one of the 30 Lanthanides (Z=57-71) or Actinides (Z=89-103).</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="api/qcelemental.NotAnElementError.html#qcelemental.NotAnElementError" title="qcelemental.NotAnElementError"><strong>NotAnElementError</strong></a> – If <cite>atom</cite> cannot be resolved into an element or nuclide.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a> | None</p>
 </dd>
 </dl>
 </dd></dl>

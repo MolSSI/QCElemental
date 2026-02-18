@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>B787 &mdash; QCElemental 0.1.dev1+g8255bfac5 documentation</title>
+  <title>B787 &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=38b0b5cf"></script>
+      <script src="../_static/documentation_options.js?v=96671694"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -139,34 +139,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rgeom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
+<li><p><strong>rgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nat, 3) array of reference/target/unchanged geometry. Assumed [a0]
 for RMSD purposes.</p></li>
-<li><p><strong>cgeom</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
+<li><p><strong>cgeom</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nat, 3) array of concern/changeable geometry. Assumed [a0] for RMSD
 purposes. Must have same nat, units, and atom content as rgeom.</p></li>
-<li><p><strong>runiq</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
+<li><p><strong>runiq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nat,) array of str indicating which rows (atoms) in <cite>rgeom</cite> are shuffleable
 without changing the molecule. Generally hashes of element symbol and
 mass are used, but could be as simple as [‘C’, ‘H’, ‘H’, ‘D’, ‘H’] for
 monodeuterated methane.</p></li>
-<li><p><strong>cuniq</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></span>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
+<li><p><strong>cuniq</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nat,) array of str indicating which rows (atoms) in <cite>cgeom</cite> are shuffleable.
 See <cite>runiq</cite> for more details. Strings and count in <cite>cuniq</cite> must match
 <cite>runiq</cite>. That is, <cite>sorted(cuniq) == sorted(runiq)</cite>.</p></li>
-<li><p><strong>do_plot</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Pops up a mpl plot showing before, after, and ref geometries. NOT AVAILABLE</p></li>
-<li><p><strong>verbose</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – Quantity of printing. 0 to silence.</p></li>
-<li><p><strong>atoms_map</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether atom1 of rgeom already corresponds to atom1 of cgeom and so on.
+<li><p><strong>do_plot</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Pops up a mpl plot showing before, after, and ref geometries. NOT AVAILABLE</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Quantity of printing. 0 to silence.</p></li>
+<li><p><strong>atoms_map</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Whether atom1 of rgeom already corresponds to atom1 of cgeom and so on.
 If <cite>True</cite>, no resorting will be run, parameters <cite>runiq</cite> and <cite>cuniq</cite>
 may be passed as <cite>None</cite>, and much time will be saved.</p></li>
-<li><p><strong>run_resorting</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Run the resorting machinery even if unnecessary because <cite>atoms_map=True</cite>.</p></li>
-<li><p><strong>mols_align</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – Whether ref_mol and concern_mol have identical geometries by eye
+<li><p><strong>run_resorting</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Run the resorting machinery even if unnecessary because <cite>atoms_map=True</cite>.</p></li>
+<li><p><strong>mols_align</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Whether ref_mol and concern_mol have identical geometries by eye
 (barring orientation or atom mapping) and expected final RMSD = 0.
 If <cite>True</cite>, procedure is truncated when RMSD condition met, saving time.
 If float, convcrit at which search for minimium truncates.</p></li>
-<li><p><strong>run_to_completion</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Run reorderings to completion (past RMSD = 0) even if unnecessary because
+<li><p><strong>run_to_completion</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Run reorderings to completion (past RMSD = 0) even if unnecessary because
 <cite>mols_align=True</cite>. Used to test worst-case timings.</p></li>
-<li><p><strong>algorithm</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – {‘hungarian_uno’, ‘permutative’}
+<li><p><strong>algorithm</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – {‘hungarian_uno’, ‘permutative’}
 When <cite>atoms_map=False</cite>, screening algorithm for plausible atom mappings.
 <cite>permutative</cite> suitable only for small systems.</p></li>
-<li><p><strong>uno_cutoff</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – TODO</p></li>
-<li><p><strong>run_mirror</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Run alternate geometries potentially allowing best match to <cite>rgeom</cite>
+<li><p><strong>uno_cutoff</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – TODO</p></li>
+<li><p><strong>run_mirror</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Run alternate geometries potentially allowing best match to <cite>rgeom</cite>
 from mirror image of <cite>cgeom</cite>. Only run if system confirmed to
 be nonsuperimposable upon mirror reflection.</p></li>
 </ul>
