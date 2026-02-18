@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.50.0rc2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=07a46bff"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.models.v2.optimization</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qcelemental.models.v2.optimization</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># remove when minimum py39</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.atomic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicProperties</span><span class="p">,</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">AtomicSpecification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedConfigDict</span><span class="p">,</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provenance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
+
+
+<span class="c1"># ====  Protocols  ==============================================================</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TrajectoryProtocolEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Which gradient evaluations to keep in an optimization trajectory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">all</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+    <span class="n">initial_and_final</span> <span class="o">=</span> <span class="s2">&quot;initial_and_final&quot;</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="s2">&quot;final&quot;</span>
+    <span class="n">none</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+
+
+<div class="viewcode-block" id="OptimizationProtocols">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationProtocols">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationProtocols</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Protocols regarding the manipulation of a Optimization output data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_optimization_protocols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_optimization_protocols&quot;</span>
+    <span class="n">trajectory_results</span><span class="p">:</span> <span class="n">TrajectoryProtocolEnum</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="n">none</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ExtendedConfigDict</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OptimizationProtocols.convert_v">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationProtocols.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.OptimizationProtocols&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.OptimizationProtocols&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;OptimizationProtocols&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># serialization is compact, so use model to assure value</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;trajectory_results&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;trajectory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_results</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationProtocols</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+
+
+<span class="c1"># ====  Inputs (Kw/Spec/In)  ====================================================</span>
+
+<span class="n">OptSubSpecs</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicSpecification</span><span class="p">],</span>  <span class="c1"># , ManyBodySpecification],</span>
+    <span class="n">Field</span><span class="p">(</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A directive to compute a gradient. Either an ordinary atomic/single-point or a many-body spec.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">OptSubProps</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">],</span>  <span class="c1"># , ManyBodyProperties],</span>
+    <span class="n">Field</span><span class="p">(</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An abridged single-geometry property set. Either an ordinary atomic/single-point or a many-body properties.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">OptSubRes</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">],</span>  <span class="c1"># ManyBodyResult],</span>
+    <span class="n">Field</span><span class="p">(</span>
+        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A single-geometry result. Either an ordinary atomic/single-point or a many-body result.&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="OptimizationSpecification">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationSpecification">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specification for how to run a geometry optimization.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_optimization_specification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_optimization_specification&quot;</span>
+
+    <span class="c1"># right default for program?</span>
+    <span class="n">program</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Optimizer CMS code / QCEngine procedure to run the geometry optimization with.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">keywords</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">({},</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The optimization specific keywords to be used.&quot;</span><span class="p">)</span>
+    <span class="n">protocols</span><span class="p">:</span> <span class="n">OptimizationProtocols</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">specification</span><span class="p">:</span> <span class="n">AtomicSpecification</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The specification for how to run gradients for the optimization.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_procedure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<div class="viewcode-block" id="OptimizationSpecification.convert_v">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationSpecification.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.OptimizationSpecification&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.OptimizationSpecification&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;OptimizationSpecification&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">loss_store</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;procedure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">][</span><span class="s2">&quot;program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;protocols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocols</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+
+            <span class="n">loss_store</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">)</span>
+            <span class="n">loss_store</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>
+
+            <span class="c1"># if loss_store:</span>
+            <span class="c1">#     dself[&quot;extras&quot;][&quot;_qcsk_conversion_loss&quot;] = loss_store</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationSpecification</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OptimizationInput">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationInput">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema input directive for geometry optimization.&quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_optimization_input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_optimization_input&quot;</span>
+    <span class="n">schema_version</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of ``schema_name`` to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">specification</span><span class="p">:</span> <span class="n">OptimizationSpecification</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationSpecification</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+    <span class="n">initial_molecule</span><span class="p">:</span> <span class="n">Molecule</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The starting molecule for the geometry optimization.&quot;</span><span class="p">)</span>
+
+    <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Provenance</span><span class="p">(</span><span class="o">**</span><span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s2">&quot;molecule_hash&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()[:</span><span class="mi">7</span><span class="p">]),</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="OptimizationInput.convert_v">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationInput.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.OptimizationInput&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.OptimizationInput&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;OptimizationInput&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;initial_molecule&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;protocols&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;protocols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">protocols</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;keywords&quot;</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;input_specification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">][</span><span class="s2">&quot;program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">][</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>
+
+            <span class="n">opt_program</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">],</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>  <span class="c1"># now empty</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationInput</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+
+
+<span class="c1"># ====  Properties  =============================================================</span>
+
+
+<div class="viewcode-block" id="OptimizationProperties">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationProperties">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationProperties</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Named properties of geometry optimization computations following the MolSSI QCSchema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_optimization_properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;qcschema_optimization_properties&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The QCSchema specification to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ========  Calcinfo  =======================================================</span>
+    <span class="c1"># ========  Canonical  ======================================================</span>
+
+    <span class="n">nuclear_repulsion_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The nuclear repulsion energy.&quot;</span><span class="p">)</span>
+
+    <span class="n">return_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The energy of the final optimized molecule. Always available. Identical to the final :attr:`~qcelemental.models.OptimizationResult.trajectory_properties.return_energy`.&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;E_h&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="n">return_gradient</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Array</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The gradient of the final optimized molecule. Always available. Identical to :attr:`~qcelemental.models.OptimizationResult.trajectory_properties.return_gradient`.&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;E_h/a0&quot;</span><span class="p">,</span> <span class="s2">&quot;shape&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;nat&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]},</span>
+    <span class="p">)</span>
+
+    <span class="n">optimization_iterations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of geometry iterations taken before convergence.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">final_rms_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final RMS gradient of the molecule in Eh/Bohr.&quot;</span><span class="p">)</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ====  Results  ================================================================</span>
+
+
+<div class="viewcode-block" id="OptimizationResult">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OptimizationResult</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema results model for geometry optimization.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_optimization_result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_optimization_result&quot;</span>
+    <span class="n">schema_version</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of ``schema_name`` to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The optional ID for the computation.&quot;</span><span class="p">)</span>
+    <span class="n">input_data</span><span class="p">:</span> <span class="n">OptimizationInput</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationInput</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="n">final_molecule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final molecule of the geometry optimization.&quot;</span><span class="p">)</span>
+    <span class="n">trajectory_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of ordered Result objects for each step in the optimization.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">trajectory_properties</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of ordered energies and other properties for each step in the optimization.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">stdout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard output of the program.&quot;</span><span class="p">)</span>
+    <span class="n">stderr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard error of the program.&quot;</span><span class="p">)</span>
+
+    <span class="n">success</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The success of a given programs execution. If False, other fields may be blank.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="c1"># native_files placeholder for when any opt programs supply extra files or need an input file. no protocol at present</span>
+    <span class="n">native_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">({},</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;DSL files.&quot;</span><span class="p">)</span>
+
+    <span class="n">properties</span><span class="p">:</span> <span class="n">OptimizationProperties</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationProperties</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;trajectory_results&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_trajectory_protocol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="c1"># Do not propogate validation errors</span>
+        <span class="k">if</span> <span class="s2">&quot;input_data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input_data was not properly formed.&quot;</span><span class="p">)</span>
+
+        <span class="n">keep_enum</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;input_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">protocols</span><span class="o">.</span><span class="n">trajectory_results</span>
+        <span class="k">if</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;initial_and_final&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;final&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Protocol `trajectory:</span><span class="si">{</span><span class="n">keep_enum</span><span class="si">}</span><span class="s2">` is not understood.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+<div class="viewcode-block" id="OptimizationResult.convert_v">
+<a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationResult.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.OptimizationResult&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.OptimizationResult&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;OptimizationResult&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">trajectory_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="n">trajectory_class</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># for input_data, work from model, not dict, to use convert_v</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;input_data&quot;</span><span class="p">)</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># exclude_unset=True, exclude_none=True</span>
+
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">)</span>  <span class="c1"># new in v2</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;native_files&quot;</span><span class="p">)</span>  <span class="c1"># new in v2</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;final_molecule&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_molecule</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;trajectory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">trajectory_class</span><span class="p">(</span><span class="o">**</span><span class="n">atres</span><span class="p">)</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">atres</span> <span class="ow">in</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;trajectory_results&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;trajectory_results&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;energies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">atprop</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;return_energy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">atprop</span> <span class="ow">in</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;trajectory_properties&quot;</span><span class="p">]]</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;trajectory_properties&quot;</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="o">**</span><span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">,</span> <span class="p">{})}</span>  <span class="c1"># merge</span>
+
+            <span class="n">dself</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="p">,</span> <span class="o">**</span><span class="n">dself</span><span class="p">}</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>  <span class="c1"># changed in v1</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>  <span class="c1"># changed in v1</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationResult</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

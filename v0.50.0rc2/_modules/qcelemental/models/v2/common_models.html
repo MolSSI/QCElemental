@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qcelemental.models.v2.common_models &mdash; QCElemental 0.50.0rc2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=07a46bff"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.models.v2.common_models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qcelemental.models.v2.common_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basis_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisSet</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="n">ReprArgs</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">provenance_json_schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;$schema&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qcschema_draft</span>
+
+
+<div class="viewcode-block" id="Provenance">
+<a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.Provenance">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Provenance</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provenance information.&quot;&quot;&quot;</span>
+
+    <span class="n">creator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the program, library, or person who created the object.&quot;</span><span class="p">)</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version of the creator, blank otherwise. &quot;</span>
+        <span class="s2">&quot;This should be sortable by the very broad `PEP 440 &lt;https://www.python.org/dev/peps/pep-0440/&gt;`_.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">routine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the routine or function within the creator, blank otherwise.&quot;</span><span class="p">)</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span>
+        <span class="n">canonical_repr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="n">provenance_json_schema_extra</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Model">
+<a class="viewcode-back" href="../../../../api/qcelemental.models.v2.Model.html#qcelemental.models.v2.Model">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The computational molecular sciences model to run.&quot;&quot;&quot;</span>
+
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The quantum chemistry method to evaluate (e.g., B3LYP, PBE, ...). &quot;</span>
+        <span class="s2">&quot;For MM, name of the force field.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">basis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BasisSet</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The quantum chemistry basis set to evaluate (e.g., 6-31g, cc-pVDZ, ...). Can be ``None`` for &quot;</span>
+        <span class="s2">&quot;methods without basis sets. For molecular mechanics, name of the atom-typer.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">canonical_repr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DriverEnum">
+<a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.DriverEnum">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DriverEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allowed computation driver values.&quot;&quot;&quot;</span>
+
+    <span class="n">energy</span> <span class="o">=</span> <span class="s2">&quot;energy&quot;</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="s2">&quot;gradient&quot;</span>
+    <span class="n">hessian</span> <span class="o">=</span> <span class="s2">&quot;hessian&quot;</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="s2">&quot;properties&quot;</span>
+
+<div class="viewcode-block" id="DriverEnum.derivative_int">
+<a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.DriverEnum.derivative_int">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">derivative_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">egh</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">,</span> <span class="s2">&quot;gradient&quot;</span><span class="p">,</span> <span class="s2">&quot;hessian&quot;</span><span class="p">,</span> <span class="s2">&quot;third&quot;</span><span class="p">,</span> <span class="s2">&quot;fourth&quot;</span><span class="p">,</span> <span class="s2">&quot;fifth&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="s2">&quot;properties&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">egh</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
