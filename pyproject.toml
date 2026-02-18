@@ -37,8 +37,7 @@ dependencies = [
     "numpy; python_version <'3.14'",
     "numpy >=2.3.3; python_version >='3.14'",
     "pint >=0.24",
-    "pydantic >=2.0; python_version <'3.14'",
-    "pydantic >=2.12; python_version >='3.14'",
+    "pydantic >=2.12",
 ]
 
 [project.optional-dependencies]
@@ -75,11 +74,8 @@ docs = [
     "sphinx >=7.0.0",
     "sphinxcontrib-napoleon",
     "sphinx-rtd-theme",
-    "autodoc-pydantic",
+    "autodoc-pydantic >2.0",
     "sphinx-automodapi",
-    "sphinx-autodoc-typehints",
-    "pydantic",
-    "pydantic-settings",
 ]
 
 #[tool.poetry.dependencies]

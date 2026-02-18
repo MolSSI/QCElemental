@@ -28,7 +28,8 @@ _MSG = (
 
 # Warn on import so users see the incompatibility when they explicitly import v1
 # Use FutureWarning (visible by default) so users notice the issue during import
-warnings.warn(_MSG, FutureWarning, stacklevel=2)
+if sys.version_info >= (3, 14):
+    warnings.warn(_MSG, FutureWarning, stacklevel=2)
 
 
 def _make_placeholder(name: str):

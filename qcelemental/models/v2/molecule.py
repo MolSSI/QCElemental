@@ -14,10 +14,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, Tuple, Union, cast
 
 import numpy as np
+from numpy.typing import NDArray
 from pydantic import Field, field_validator, model_serializer
 from typing_extensions import Annotated
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
+from ...models import QCEL_V1V2_SHIM_CODE
 from ...molparse.from_arrays import from_arrays
 from ...molparse.from_schema import from_schema
 from ...molparse.from_string import from_string
@@ -33,7 +35,6 @@ from .types import Array
 
 if TYPE_CHECKING:
     import nglview
-    from numpy.typing import NDArray
 
     import qcelemental
 
@@ -1611,14 +1612,14 @@ class Molecule(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             # below is assignment rather than popping so Mol() records as set and future Mol.model_dump() includes the field.
             #   needed for QCEngine Psi4.
             dself["schema_version"] = 2
 
             if target_version == 1:
                 self_vN = qcel.models.v1.Molecule(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.Molecule(**dself)
         else:
             assert False, target_version

@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 import numpy as np
 from pydantic import Field, field_validator
 
+from ...models import QCEL_V1V2_SHIM_CODE
 from ...util import provenance_stamp
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
@@ -595,12 +596,12 @@ class WavefunctionProperties(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself["basis"] = self.basis.convert_v(target_version).dict()
 
             if target_version == 1:
                 self_vN = qcel.models.v1.WavefunctionProperties(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.WavefunctionProperties(**dself)
         else:
             assert False, target_version
@@ -769,7 +770,7 @@ class AtomicInput(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_name")
             dself.pop("schema_version")
 
@@ -791,7 +792,7 @@ class AtomicInput(ProtoModel):
 
             if target_version == 1:
                 self_vN = qcel.models.v1.AtomicInput(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.AtomicInput(**dself)
         else:
             assert False, target_version
@@ -980,7 +981,7 @@ class AtomicResult(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
@@ -998,7 +999,7 @@ class AtomicResult(ProtoModel):
 
             if target_version == 1:
                 self_vN = qcel.models.v1.AtomicResult(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.AtomicResult(**dself)
         else:
             assert False, target_version

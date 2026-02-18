@@ -5,6 +5,7 @@ from pydantic import Field, constr, field_validator
 from typing_extensions import Annotated
 
 from ...exceptions import ValidationError
+from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 
 if TYPE_CHECKING:
@@ -258,13 +259,13 @@ class BasisSet(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [1, -12]:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_name")  # changes in v1
             dself.pop("schema_version")  # changes in v1
 
             if target_version == 1:
                 self_vN = qcel.models.v1.BasisSet(**dself)
-            elif target_version == -12:
+            elif target_version == QCEL_V1V2_SHIM_CODE:
                 self_vN = qcel.models._v1v2.BasisSet(**dself)
         else:
             assert False, target_version

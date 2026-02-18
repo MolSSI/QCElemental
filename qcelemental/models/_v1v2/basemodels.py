@@ -3,7 +3,7 @@ def check_convertible_version(ver: int, error: str):
 
     if ver in [1, 2]:
         return True
-    elif ver == -12:
+    elif ver == QCEL_V1V2_SHIM_CODE:
         return "self"
     else:
         raise ValueError(f"QCSchema {error} version={ver} does not exist for conversion.")

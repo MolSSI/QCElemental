@@ -8,6 +8,8 @@ except ImportError:  # pragma: no cover
 
 import sys
 
+QCEL_V1V2_SHIM_CODE = -12
+
 from . import v1, v2
 from .v1 import *
 
