@@ -311,13 +311,16 @@ def torsiondrive_data_fixture(ethane_data_fixture, optimization_data_fixture, re
 
 
 @pytest.fixture(scope="function")
-def manybody_data_fixture():
+def manybody_data_fixture(request, result_data_fixture):
+    atres = result_data_fixture.copy()
+
+    mol = {
+        "symbols": ["ne", "ne", "ne"],
+        "geometry": [[0, 0, 0], [0, 0, 2], [0, 0, 4]],
+        "fragments": [[0], [1], [2]],
+    }
     input_data = {
-        "molecule": {
-            "symbols": ["ne", "ne", "ne"],
-            "geometry": [[0, 0, 0], [0, 0, 2], [0, 0, 4]],
-            "fragments": [[0], [1], [2]],
-        },
+        "molecule": mol,
         "specification": {
             "keywords": {
                 "bsse_type": ["nocp"],
@@ -332,19 +335,33 @@ def manybody_data_fixture():
         },
     }
 
-    ret = {
-        "success": True,
-        "provenance": {"creator": "me"},
-        "input_data": input_data,
-        "return_result": -22,
-        "properties": {"calcinfo_nmc": 1, "return_energy": -22},
-        "component_properties": {
-            '["(any)", [1, 2, 3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -383.7231560517324},
-            '["(any)", [1], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613635},
-            '["(any)", [2], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68610979339851},
-            '["(any)", [3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613036},
-        },
+    component_properties = {
+        '["(any)", [1, 2, 3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -383.7231560517324},
+        '["(any)", [1], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613635},
+        '["(any)", [2], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68610979339851},
+        '["(any)", [3], [1, 2, 3]]': {"calcinfo_natom": 3, "return_energy": -128.68201344613036},
     }
+
+    if "v2" in request.node.name:
+        ret = {
+            "success": True,
+            "provenance": {"creator": "me"},
+            "input_data": input_data,
+            "molecule": mol,
+            "return_result": -22,
+            "properties": {"calcinfo_nmc": 1, "return_energy": -22},
+            "cluster_properties": component_properties,
+            "cluster_results": {'["(any)", [1, 2, 3], [1, 2, 3]]': atres},  # not at all complete or corresponding
+        }
+    else:
+        ret = {
+            "success": True,
+            "provenance": {"creator": "me"},
+            "input_data": input_data,
+            "return_result": -22,
+            "properties": {"calcinfo_nmc": 1, "return_energy": -22},
+            "component_properties": component_properties,
+        }
 
     return ret
 
@@ -917,17 +934,21 @@ def every_model_fixture(request):
     datas[smodel] = data
 
     smodel = "ManyBodyProtocols"
-    data = {"component_results": "all"}
+    if "v2" in request.node.name:
+        data = {"cluster_results": "all"}
+    else:
+        data = {"component_results": "all"}
     datas[smodel] = data
 
     smodel = "ManyBodyResult"
     data = request.getfixturevalue("manybody_data_fixture")
     datas[smodel] = data
 
-    smodel = "ManyBodyResultProperties"  # "ManyBodyProperties"
+    smodel = "ManyBodyResultProperties"
     data = request.getfixturevalue("manybody_data_fixture")
     data = data["properties"]
     datas[smodel] = data
+    datas["ManyBodyProperties"] = copy.deepcopy(data)
 
     return datas
 
@@ -948,23 +969,23 @@ _model_classes_struct = [
     pytest.param("AtomicResult-C",              "AtomicResult-C",               id="AtRes-C"),  # wfn
     pytest.param("AtomicResultProperties",      "AtomicProperties",             id="AtProp"),
     pytest.param("WavefunctionProperties",      "WavefunctionProperties",       id="WfnProp"),
-    pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"), 
+    pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"),
     pytest.param("OptimizationSpecification",   "OptimizationSpecification",    id="OptSpec"),
     pytest.param("OptimizationProtocols",       "OptimizationProtocols",        id="OptPtcl"),
     pytest.param("OptimizationResult",          "OptimizationResult",           id="OptRes"),
     pytest.param(None,                          "OptimizationProperties",       id="OptProp"),
-    pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"), 
-    pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"), 
+    pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"),
+    pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"),
     pytest.param("TDKeywords",                  "TorsionDriveKeywords",         id="TDKw"),
     pytest.param(None,                          "TorsionDriveProtocols",        id="TDPtcl"),
-    pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"), 
+    pytest.param("TorsionDriveResult",          "TorsionDriveResult",           id="TDRes"),
     pytest.param(None,                          "TorsionDriveProperties",       id="TDProp"),
-    pytest.param("ManyBodyInput",               None,                           id="MBIn", marks=using_qcmb), 
-    pytest.param("ManyBodySpecification",       None,                           id="MBSpec", marks=using_qcmb), 
-    pytest.param("ManyBodyKeywords",            None,                           id="MBKw", marks=using_qcmb),
-    pytest.param("ManyBodyProtocols",           None,                           id="MBPtcl", marks=using_qcmb),
-    pytest.param("ManyBodyResult",              None,                           id="MBRes", marks=using_qcmb), 
-    pytest.param("ManyBodyResultProperties",    None,                           id="MBProp", marks=using_qcmb),  # TODO ManyBodyProperties
+    pytest.param("ManyBodyInput",               "ManyBodyInput",                id="MBIn", marks=using_qcmb),
+    pytest.param("ManyBodySpecification",       "ManyBodySpecification",        id="MBSpec", marks=using_qcmb),
+    pytest.param("ManyBodyKeywords",            "ManyBodyKeywords",             id="MBKw", marks=using_qcmb),
+    pytest.param("ManyBodyProtocols",           "ManyBodyProtocols",            id="MBPtcl", marks=using_qcmb),
+    pytest.param("ManyBodyResult",              "ManyBodyResult",               id="MBRes", marks=using_qcmb),
+    pytest.param("ManyBodyResultProperties",    "ManyBodyProperties",           id="MBProp", marks=using_qcmb),
 ]
 # fmt: on
 
@@ -998,12 +1019,12 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : True,  "v2-TDRes"    : True,
         "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
-        "v1-MBIn"     : None,  "v2-MBIn"     : None,  # v2 DNE
-        "v1-MBSpec"   : None,  "v2-MBSpec"   : None,  # v2 DNE
-        "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
-        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
-        "v1-MBRes"    : True,  "v2-MBRes"    : None,  # v2 DNE  TODO v2 True
-        "v1-MBProp"   : None,  "v2-MBProp"   : None,  # v2 DNE
+        "v1-MBIn"     : None,  "v2-MBIn"     : None,
+        "v1-MBSpec"   : None,  "v2-MBSpec"   : None,
+        "v1-MBKw"     : None,  "v2-MBKw"     : None,
+        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,
+        "v1-MBRes"    : True,  "v2-MBRes"    : True,
+        "v1-MBProp"   : None,  "v2-MBProp"   : None,
     }[anskey]
     # fmt: on
 
@@ -1012,9 +1033,7 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
     if smodel is None:
         pytest.skip("model not available for this schema version")
     if "ManyBody" in smodel:
-        import qcmanybody
-
-        model = getattr(qcmanybody.models, smodel.split("-")[0])
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
     else:
         model = getattr(schema_versions, smodel.split("-")[0])
     data = every_model_fixture[smodel]
@@ -1048,7 +1067,7 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         instance = model(**data)
         smodelin = smodel.replace("Result", "Input")
         if "ManyBody" in smodelin:
-            modelin = getattr(qcmanybody.models, smodelin)
+            modelin = getattr(qcmb_import(schema_versions), smodelin)
         else:
             modelin = getattr(schema_versions, smodelin)
 
@@ -1090,12 +1109,12 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         "v1-TDPtcl"   : None, "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : 1,    "v2-TDRes"    : 2,
         "v1-TDProp"   : None, "v2-TDProp"   : None,  # v1 DNE
-        "v1-MBIn"     : 1,    "v2-MBIn"     : 2,     # v2 DNE
-        "v1-MBSpec"   : 1,    "v2-MBSpec"   : 2,     # v2 DNE
-        "v1-MBKw"     : 1,    "v2-MBKw"     : 2,     # v2 DNE
-        "v1-MBPtcl"   : None, "v2-MBPtcl"   : None,  # v2 DNE
-        "v1-MBRes"    : 1,    "v2-MBRes"    : 2,     # v2 DNE
-        "v1-MBProp"   : 1,    "v2-MBProp"   : None,  # v2 DNE
+        "v1-MBIn"     : 1,    "v2-MBIn"     : 2,
+        "v1-MBSpec"   : 1,    "v2-MBSpec"   : None,
+        "v1-MBKw"     : 1,    "v2-MBKw"     : None,
+        "v1-MBPtcl"   : None, "v2-MBPtcl"   : None,
+        "v1-MBRes"    : 1,    "v2-MBRes"    : 2,
+        "v1-MBProp"   : 1,    "v2-MBProp"   : None,
     }[anskey]
     # fmt: on
 
@@ -1104,9 +1123,7 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     if smodel is None:
         pytest.skip("model not available for this schema version")
     if "ManyBody" in smodel:
-        import qcmanybody
-
-        model = getattr(qcmanybody.models, smodel.split("-")[0])
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
     else:
         model = getattr(schema_versions, smodel.split("-")[0])
     data = every_model_fixture[smodel]
@@ -1171,15 +1188,15 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-TDIn"     : {},    "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
-        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE 
+        "v1-TDPtcl"   : None,  "v2-TDPtcl"   : None,  # v1 DNE
         "v1-TDRes"    : {},    "v2-TDRes"    : {},
         "v1-TDProp"   : None,  "v2-TDProp"   : None,  # v1 DNE
-        "v1-MBIn"     : {},    "v2-MBIn"     : None,  # v2 DNE
-        "v1-MBSpec"   : {},    "v2-MBSpec"   : {},    # v2 DNE
-        "v1-MBKw"     : None,  "v2-MBKw"     : None,  # v2 DNE
-        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,  # v2 DNE
-        "v1-MBRes"    : {},    "v2-MBRes"    : {},    # v2 DNE
-        "v1-MBProp"   : None,  "v2-MBProp"   : None,  # v2 DNE
+        "v1-MBIn"     : {},    "v2-MBIn"     : None,
+        "v1-MBSpec"   : {},    "v2-MBSpec"   : {},
+        "v1-MBKw"     : None,  "v2-MBKw"     : None,
+        "v1-MBPtcl"   : None,  "v2-MBPtcl"   : None,
+        "v1-MBRes"    : {},    "v2-MBRes"    : {},
+        "v1-MBProp"   : None,  "v2-MBProp"   : None,
     }[anskey]
     # fmt: on
 
@@ -1188,9 +1205,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     if smodel is None:
         pytest.skip("model not available for this schema version")
     if "ManyBody" in smodel:
-        import qcmanybody
-
-        model = getattr(qcmanybody.models, smodel.split("-")[0])
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
     else:
         model = getattr(schema_versions, smodel.split("-")[0])
     data = every_model_fixture[smodel]
@@ -1214,9 +1229,7 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     if smodel is None:
         pytest.skip("model not available for this schema version")
     if "ManyBody" in smodel:
-        import qcmanybody
-
-        model = getattr(qcmanybody.models, smodel.split("-")[0])
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
     else:
         model = getattr(schema_versions, smodel.split("-")[0])
     data = every_model_fixture[smodel]
@@ -1274,20 +1287,20 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         "v1-OptIn"    ,  "v2-OptIn"   , 
         "v1-OptSpec"  ,  "v2-OptSpec" , 
         "v1-OptPtcl"  ,  "v2-OptPtcl" ,
-        "v1-OptRes"   ,  "v2-OptRes"  , 
+        "v1-OptRes"   ,  "v2-OptRes"  ,
         "v1-OptProp"  ,  "v2-OptProp" ,
-        "v1-TDIn"     ,  "v2-TDIn"    , 
-        "v1-TDSpec"   ,  "v2-TDSpec"  , 
-        # "v1-TDKw"     ,  "v2-TDKw"    , 
-        "v1-TDPtcl"   ,  "v2-TDPtcl"  , 
-        "v1-TDRes"    ,  "v2-TDRes"   , 
-        "v1-TDProp"   ,  "v2-TDProp"  , 
-        # "v1-MBIn"     ,  "v2-MBIn"    , 
-        # "v1-MBSpec"   ,  "v2-MBSpec"  , 
-        # "v1-MBKw"     ,  "v2-MBKw"    , 
-        # "v1-MBPtcl"   ,  "v2-MBPtcl"  , 
-        # "v1-MBRes"    .  "v2-MBRes"   , 
-        # "v1-MBProp"   ,  "v2-MBProp"  , 
+        "v1-TDIn"     ,  "v2-TDIn"    ,
+        "v1-TDSpec"   ,  "v2-TDSpec"  ,
+        # "v1-TDKw"     ,  "v2-TDKw"    ,
+        "v1-TDPtcl"   ,  "v2-TDPtcl"  ,
+        "v1-TDRes"    ,  "v2-TDRes"   ,
+        "v1-TDProp"   ,  "v2-TDProp"  ,
+        "v1-MBIn"     ,  "v2-MBIn"    ,
+        "v1-MBSpec"   ,  "v2-MBSpec"  ,
+        # "v1-MBKw"     ,  "v2-MBKw"    ,  # TODO
+        "v1-MBPtcl"   ,  "v2-MBPtcl"  ,
+        "v1-MBRes"    ,  "v2-MBRes"   ,
+        # "v1-MBProp"   ,  "v2-MBProp"  ,  # TODO
     }
     # fmt: on
 
@@ -1298,10 +1311,9 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
     if anskey not in ans:
         pytest.skip("model not yet convert_v()-able")
     if "ManyBody" in smodel_fro:
-        import qcmanybody
-
-        # TODO
-        model = getattr(qcmanybody.models, smodel_fro.split("-")[0])
+        model_fro = getattr(qcmb_import(schema_versions), smodel_fro.split("-")[0])
+        qcel_models_to = qcel.models.v1 if "v2" in anskey else qcel.models.v2
+        model_to = getattr(qcmb_import(qcel_models_to), smodel_to.split("-")[0])
     else:
         model_fro = getattr(schema_versions, smodel_fro.split("-")[0])
         models_to = qcel.models.v1 if "v2" in anskey else qcel.models.v2
@@ -1351,12 +1363,12 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         "v1-TDPtcl"   : None,                                   "v2-TDPtcl"   : "qcschema_torsion_drive_protocols",  # v1 DNE
         "v1-TDRes"    : "qcschema_torsion_drive_output",        "v2-TDRes"    : "qcschema_torsion_drive_result",
         "v1-TDProp"   : None,                                   "v2-TDProp"   : "qcschema_torsion_drive_properties",  # v1 DNE
-        "v1-MBIn"     : "qcschema_manybodyinput",               "v2-MBIn"     : "qcschema_many_body_input",     # v2 DNE
-        "v1-MBSpec"   : "qcschema_manybodyspecification",       "v2-MBSpec"   : "qcschema_many_body_specification",  # v2 DNE
-        "v1-MBKw"     : "qcschema_manybodykeywords",            "v2-MBKw"     : "qcschema_many_body_keywords",       # v2 DNE
-        "v1-MBPtcl"   : None,                                   "v2-MBPtcl"   : "qcschema_many_body_protocols",  # v2 DNE
-        "v1-MBRes"    : "qcschema_manybodyresult",              "v2-MBRes"    : "qcschema_many_body_result",     # v2 DNE
-        "v1-MBProp"   : "qcschema_manybodyproperties",          "v2-MBProp"   : "qcschema_many_body_properties",  # v2 DNE
+        "v1-MBIn"     : "qcschema_manybodyinput",               "v2-MBIn"     : "qcschema_many_body_input",
+        "v1-MBSpec"   : "qcschema_manybodyspecification",       "v2-MBSpec"   : "qcschema_many_body_specification",
+        "v1-MBKw"     : "qcschema_manybodykeywords",            "v2-MBKw"     : "qcschema_many_body_keywords",
+        "v1-MBPtcl"   : None,                                   "v2-MBPtcl"   : "qcschema_many_body_protocols",
+        "v1-MBRes"    : "qcschema_manybodyresult",              "v2-MBRes"    : "qcschema_many_body_result",
+        "v1-MBProp"   : "qcschema_manybodyproperties",          "v2-MBProp"   : "qcschema_many_body_properties",
     }[anskey]
     # fmt: on
 
@@ -1365,9 +1377,7 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
     if smodel is None:
         pytest.skip("model not available for this schema version")
     if "ManyBody" in smodel:
-        import qcmanybody
-
-        model = getattr(qcmanybody.models, smodel.split("-")[0])
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
     else:
         model = getattr(schema_versions, smodel.split("-")[0])
     data = every_model_fixture[smodel]
@@ -1488,3 +1498,13 @@ def test_error_field_passthrough_v1(request, schema_versions, every_model_fixtur
     instance3 = model(**data)
     assert not instance3.error
     instance3.convert_v(2)  # empty error filtered correctly by converter
+
+
+def qcmb_import(sch_ver):
+    import qcmanybody
+
+    return {
+        qcel.models: qcmanybody.models,  # TODO
+        qcel.models.v1: qcmanybody.models.v1,
+        qcel.models.v2: qcmanybody.models.v2,
+    }[sch_ver]
