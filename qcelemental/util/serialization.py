@@ -227,10 +227,7 @@ class JSONArrayEncoder(json.JSONEncoder):
 
         # See if pydantic model can be just serialized if the above couldn't be dumped
         if isinstance(obj, pydantic.BaseModel):
-            try:
-                return obj.model_dump_json()
-            except PydanticSerializationError:
-                pass
+            return obj.model_dump_json()
 
         if isinstance(obj, np.ndarray):
             if obj.shape:
