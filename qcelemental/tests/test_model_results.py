@@ -605,7 +605,7 @@ def test_wavefunction_protocols(
         assert wfn.wavefunction is None
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
-        assert wfn.wavefunction.model_dump().keys() == expected_keys
+        assert wfn.wavefunction.model_dump(exclude_unset=True).keys() == expected_keys
 
 
 @pytest.mark.parametrize(
@@ -789,7 +789,11 @@ def test_result_properties_array(request, schema_versions):
     assert obj.scf_dipole_moment.shape == (3,)
     assert obj.scf_quadrupole_moment.shape == (3, 3)
 
-    assert obj.model_dump().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
+    assert obj.model_dump(exclude_unset=True).keys() == {
+        "scf_one_electron_energy",
+        "scf_dipole_moment",
+        "scf_quadrupole_moment",
+    }
     assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
     # assert obj.dict()["scf_quadrupole_moment"] == lquad  # when properties.dict() was forced json
     assert np.array_equal(
@@ -812,7 +816,7 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.calcinfo_natom == 4
     assert obj.return_gradient.shape == (4, 3)
     assert obj.scf_total_hessian.shape == (12, 12)
-    assert obj.model_dump().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+    assert obj.model_dump(exclude_unset=True).keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
 
 
 @pytest.fixture(scope="function")
@@ -1335,7 +1339,12 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     instance = model(**data)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        instance = model(**instance.dict())
+
+        if "v2" in anskey:
+            instance = model(**instance.model_dump())
+        else:
+            instance = model(**instance.dict())
+
     assert instance
 
     # check model_dump-ability

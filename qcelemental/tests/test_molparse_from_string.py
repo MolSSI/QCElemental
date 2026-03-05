@@ -113,7 +113,7 @@ def test_psi4_qm_1a(Molecule):
     kmol = Molecule.from_data(subject)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        _check_eq_molrec_minimal_model([], kmol.dict(), fullans)
+        _check_eq_molrec_minimal_model([], kmol.model_dump(exclude_unset=True), fullans)
 
 
 def test_psi4_qm_1ab():
@@ -154,7 +154,7 @@ def test_psi4_qm_1c(Molecule):
     assert compare_molrecs(fullans, final["qm"], tnm() + ": full")
 
     kmol = Molecule.from_data(subject)
-    _check_eq_molrec_minimal_model([], kmol.model_dump(), fullans)
+    _check_eq_molrec_minimal_model([], kmol.model_dump(exclude_unset=True), fullans)
 
 
 def test_psi4_qm_1d():
@@ -350,7 +350,7 @@ def test_psi4_qm_2a(Molecule):
     kmol = Molecule.from_data(subject)
     _check_eq_molrec_minimal_model(
         ["fragments", "fragment_charges", "fragment_multiplicities", "mass_numbers", "masses", "atom_labels", "real"],
-        kmol.model_dump(),
+        kmol.model_dump(exclude_unset=True),
         fullans,
     )
 

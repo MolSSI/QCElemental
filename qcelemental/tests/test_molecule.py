@@ -208,7 +208,7 @@ def test_water_minima_data(Molecule, water_dimer_minima_data):
     # Give it a name
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        mol_dict = water_dimer_minima.dict()
+        mol_dict = water_dimer_minima.model_dump()
     mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
 
@@ -473,14 +473,17 @@ def test_molecule_errors_shape(Molecule, water_molecule_data):
         Molecule(**data)
 
 
-def test_molecule_json_serialization(Molecule, water_dimer_minima_data):
+def test_molecule_json_serialization(Molecule, water_dimer_minima_data, request):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
     assert isinstance(water_dimer_minima.model_dump_json(), str)
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
+        if "v2" in request.node.name:
+            assert isinstance(water_dimer_minima.model_dump(mode="json")["geometry"], list)
+        else:
+            assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
 
     assert water_dimer_minima == Molecule.from_data(water_dimer_minima.model_dump_json(), dtype="json")
 
@@ -797,7 +800,7 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
     if extra_keys is not None:
         expected_keys |= extra_keys
 
-    diff_keys = mol.model_dump().keys() ^ expected_keys
+    diff_keys = mol.model_dump(exclude_unset=True).keys() ^ expected_keys
     assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
 
 
@@ -810,7 +813,8 @@ def test_sparse_molecule_connectivity(Molecule):
     assert mol.model_dump()["connectivity"] is None
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
-    assert "connectivity" not in mol.model_dump()
+    assert mol.connectivity is None
+    assert "connectivity" not in mol.model_dump(exclude_unset=True)
 
 
 def test_bad_isotope_spec(Molecule):
