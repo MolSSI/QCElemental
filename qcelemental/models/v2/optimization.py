@@ -11,7 +11,7 @@ from pydantic import Discriminator, Field, Tag, field_validator
 
 from ...util import provenance_stamp, which_import
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
-from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
+from .basemodels import ProtoModel, check_convertible_version
 from .common_models import Provenance
 from .molecule import Molecule
 from .types import Array
@@ -47,8 +47,6 @@ class OptimizationProtocols(ProtoModel):
     trajectory_results: TrajectoryProtocolEnum = Field(
         TrajectoryProtocolEnum.none, description=str(TrajectoryProtocolEnum.__doc__)
     )
-
-    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
     def convert_v(
         self, target_version: int, /
