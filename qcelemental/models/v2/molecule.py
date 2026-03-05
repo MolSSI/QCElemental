@@ -405,6 +405,8 @@ class Molecule(ProtoModel):
     @field_validator("masses_", "real_")
     @classmethod
     def _must_be_n(cls, v, info):
+        if v is None:
+            return None
         n = len(info.data["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
@@ -414,6 +416,8 @@ class Molecule(ProtoModel):
     @classmethod
     def _populate_real(cls, v, info):
         # Can't use geometry here since its already been validated and not in values
+        if v is None:
+            return None
         n = len(info.data["symbols"])
         if len(v) == 0:
             v = np.array([True for _ in range(n)])
@@ -422,6 +426,8 @@ class Molecule(ProtoModel):
     @field_validator("fragment_charges_")
     @classmethod
     def _must_be_n_frag(cls, v, info):
+        if v is None:
+            return None
         if "fragments_" in info.data and info.data["fragments_"] is not None:
             n = len(info.data["fragments_"])
             if len(v) != n:
@@ -429,7 +435,10 @@ class Molecule(ProtoModel):
         return v
 
     @field_validator("fragment_multiplicities_")
+    @classmethod
     def _must_be_n_frag_mult(cls, v, info):
+        if v is None:
+            return None
         if "fragments_" in info.data and info.data["fragments_"] is not None:
             n = len(info.data["fragments_"])
             if len(v) != n:
@@ -440,7 +449,8 @@ class Molecule(ProtoModel):
         return v
 
     @field_validator("molecular_multiplicity")
-    def _int_if_possible(cls, v, info):
+    @classmethod
+    def _int_if_possible(cls, v):
         if v.is_integer():
             # preserve existing hashes
             v = int(v)
