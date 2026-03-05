@@ -385,10 +385,7 @@ class Molecule(ProtoModel):
 
         if validate:
             # Title case for consistency
-            if np.lib.NumpyVersion(np.__version__) >= "2.0.0b1":
-                values["symbols"] = np.char.chararray.title(self.symbols)
-            else:
-                values["symbols"] = np.core.defchararray.title(self.symbols)
+            values["symbols"] = np.char.chararray.title(self.symbols)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
