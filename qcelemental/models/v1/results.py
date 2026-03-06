@@ -6,7 +6,6 @@ import numpy as np
 from pydantic.v1 import Field, constr, validator
 
 from ...util import provenance_stamp
-from .. import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
@@ -311,9 +310,8 @@ class AtomicResultProperties(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [2, QCEL_V1V2_SHIM_CODE]:
-            if target_version == 2:
-                self_vN = qcel.models.v2.AtomicProperties(**dself)
+        if target_version == 2:
+            self_vN = qcel.models.v2.AtomicProperties(**dself)
         else:
             assert False, target_version
 
@@ -603,9 +601,8 @@ class AtomicResultProtocols(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version in [2, QCEL_V1V2_SHIM_CODE]:
-            if target_version == 2:
-                self_vN = qcel.models.v2.AtomicProtocols(**dself)
+        if target_version == 2:
+            self_vN = qcel.models.v2.AtomicProtocols(**dself)
         else:
             assert False, target_version
 

@@ -385,7 +385,7 @@ class Molecule(ProtoModel):
 
         if validate:
             # Title case for consistency
-            values["symbols"] = np.char.chararray.title(self.symbols)
+            values["symbols"] = np.char.title(self.symbols)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
