@@ -6,6 +6,7 @@ import numpy as np
 from pydantic.v1 import Field, constr, validator
 
 from ...util import provenance_stamp
+from .. import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .basis import BasisSet
 from .common_models import ComputeError, DriverEnum, Model, Provenance, qcschema_input_default, qcschema_output_default
@@ -300,6 +301,26 @@ class AtomicResultProperties(ProtoModel):
         # kwargs["encoding"] = "json"
         return super().dict(*args, **kwargs)
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProperties", "qcelemental.models.v2.AtomicProperties"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicResultProperties") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version in [2, QCEL_V1V2_SHIM_CODE]:
+            if target_version == 2:
+                self_vN = qcel.models.v2.AtomicProperties(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.AtomicProperties(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 class WavefunctionProperties(ProtoModel):
     r"""Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
@@ -573,6 +594,26 @@ class AtomicResultProtocols(ProtoModel):
 
     class Config:
         force_skip_defaults = True
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProtocols", "qcelemental.models.v2.AtomicProtocols"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicResultProtocols") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version in [2, QCEL_V1V2_SHIM_CODE]:
+            if target_version == 2:
+                self_vN = qcel.models.v2.AtomicProtocols(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.AtomicProtocols(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 ### Primary models

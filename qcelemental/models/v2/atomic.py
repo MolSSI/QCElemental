@@ -706,7 +706,7 @@ class AtomicProtocols(ProtoModel):
 
     def convert_v(
         self, target_version: int, /
-    ) -> Union["qcelemental.models.v1.AtomicProtocols", "qcelemental.models.v2.AtomicProtocols"]:
+    ) -> Union["qcelemental.models.v1.AtomicResultProtocols", "qcelemental.models.v2.AtomicProtocols"]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
