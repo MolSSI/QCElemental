@@ -307,6 +307,28 @@ class AtomicProperties(ProtoModel):
         # kwargs["encoding"] = "json"
         return super().model_dump(*args, **kwargs)
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProperties", "qcelemental.models.v2.AtomicProperties"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicProperties") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
+            dself.pop("schema_name", None)
+
+            if target_version == 1:
+                self_vN = qcel.models.v1.AtomicResultProperties(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.AtomicProperties(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 class WavefunctionProperties(ProtoModel):
     r"""Wavefunction properties resulting from a computation.
@@ -522,6 +544,8 @@ class WavefunctionProperties(ProtoModel):
     @field_validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     @classmethod
     def _assert1d(cls, v):
+        if v is None:
+            return v
         try:
             v = v.reshape(-1)
         except (ValueError, AttributeError):
@@ -531,6 +555,9 @@ class WavefunctionProperties(ProtoModel):
     @field_validator("scf_orbitals_a", "scf_orbitals_b")
     @classmethod
     def _assert2d_nao_x(cls, v, info):
+        if v is None:
+            return v
+
         bas = info.data.get("basis", None)
 
         # Do not raise multiple errors
@@ -556,6 +583,9 @@ class WavefunctionProperties(ProtoModel):
     )
     @classmethod
     def _assert2d(cls, v, info):
+        if v is None:
+            return v
+
         bas = info.data.get("basis", None)
 
         # Do not raise multiple errors
@@ -582,6 +612,9 @@ class WavefunctionProperties(ProtoModel):
     )
     @classmethod
     def _assert_exists(cls, v, info):
+        if v is None:
+            return v
+
         if info.data.get(v, None) is None:
             raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
@@ -670,6 +703,28 @@ class AtomicProtocols(ProtoModel):
     )
 
     model_config = ExtendedConfigDict(force_skip_defaults=True)
+
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProtocols", "qcelemental.models.v2.AtomicProtocols"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicProtocols") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
+            dself.pop("schema_name", None)
+
+            if target_version == 1:
+                self_vN = qcel.models.v1.AtomicResultProtocols(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.AtomicProtocols(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
 
 
 # ====  Inputs (Kw/Spec/In)  ====================================================
@@ -783,7 +838,10 @@ class AtomicInput(ProtoModel):
             dself["driver"] = dself["specification"].pop("driver")
             dself["model"] = model
             dself["keywords"] = dself["specification"].pop("keywords", None)
-            dself["protocols"] = dself["specification"].pop("protocols", None)
+
+            dself["protocols"] = self.specification.protocols.convert_v(target_version)
+            dself["specification"].pop("protocols", None)
+
             dself["extras"] = dself["specification"].pop("extras", {})
             dself["specification"].pop("program", None)  # TODO store?
             dself["specification"].pop("schema_name", None)
@@ -993,6 +1051,9 @@ class AtomicResult(ProtoModel):
             dself["molecule"] = self.molecule.convert_v(target_version)
             dself["extras"] = {**input_data.pop("extras", {}), **dself.pop("extras", {})}  # merge
             dself = {**input_data, **dself}
+
+            if self.properties is not None:
+                dself["properties"] = self.properties.convert_v(target_version)
 
             dself.pop("schema_name")  # changed in v1
             dself.pop("schema_version")  # changed in v1

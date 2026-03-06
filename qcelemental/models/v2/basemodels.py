@@ -1,10 +1,11 @@
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import Any, Dict, Optional, Set, Union
 
-import numpy as np
 from pydantic import BaseModel, ConfigDict, model_serializer
+
+from qcelemental.models import QCEL_V1V2_SHIM_CODE
 
 from ...util import deserialize, serialize
 
@@ -13,25 +14,12 @@ def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
-# Encoders, to be deprecated at some point
-ndarray_encoder = {np.ndarray: lambda v: v.flatten().tolist()}
-
-
 class ExtendedConfigDict(ConfigDict, total=False):
-    serialize_default_excludes: Set
-    """Add items to exclude from serialization"""
-
     serialize_skip_defaults: bool
     """When serializing, ignore default values (i.e. those not set by user)"""
 
     force_skip_defaults: bool
     """Manually force defaults to not be included in output dictionary"""
-
-    canonical_repr: bool
-    """Use canonical representation of the molecules"""
-
-    repr_style: Union[List[str], Callable]
-    """Representation styles"""
 
 
 class ProtoModel(BaseModel):
@@ -41,14 +29,12 @@ class ProtoModel(BaseModel):
         frozen=True,
         extra="forbid",
         populate_by_name=True,  # Allows using alias to populate
-        serialize_default_excludes=set(),
         serialize_skip_defaults=False,
         force_skip_defaults=False,
     )
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
-        cls.__base_doc__ = ""  # remove when QCFractal merges `next`
 
         if "pydantic" in cls.__repr__.__module__:
             cls.__repr__ = _repr
@@ -155,14 +141,13 @@ class ProtoModel(BaseModel):
 
         # Get the default return, let the model_dump handle kwarg
         default_result = handler(self)
-        exclusion_set = self.model_config["serialize_default_excludes"]
         force_skip_default = self.model_config["force_skip_defaults"]
         output_dict = {}
         # Could handle this with a comprehension, easier this way
         for key, value in default_result.items():
             # Skip defaults on config level (skip default must be on and k has to be unset)
             # Also check against exclusion set on a model_config level
-            if (force_skip_default and key not in self.model_fields_set) or key in exclusion_set:
+            if force_skip_default and key not in self.model_fields_set:
                 continue
             output_dict[key] = value
         return output_dict
@@ -170,9 +155,6 @@ class ProtoModel(BaseModel):
     def model_dump(self, **kwargs) -> Dict[str, Any]:
         encoding = kwargs.pop("encoding", None)
 
-        # kwargs["exclude"] = (
-        #     kwargs.get("exclude", None) or set()
-        # ) | self.model_config["serialize_default_excludes"]  # type: ignore
         # kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
         # if self.model_config["force_skip_defaults"]:  # type: ignore
         #     kwargs["exclude_unset"] = True

@@ -1,8 +1,7 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple, Union
 
-import numpy as np
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from .basemodels import ProtoModel, qcschema_draft
 from .basis_set import BasisSet
@@ -26,9 +25,7 @@ class Provenance(ProtoModel):
     )
     routine: str = Field("", description="The name of the routine or function within the creator, blank otherwise.")
 
-    model_config = ProtoModel._merge_config_with(
-        canonical_repr=True, json_schema_extra=provenance_json_schema_extra, extra="allow"
-    )
+    model_config = ProtoModel._merge_config_with(json_schema_extra=provenance_json_schema_extra, extra="allow")
 
 
 class Model(ProtoModel):
@@ -46,7 +43,7 @@ class Model(ProtoModel):
     )
 
     # basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted
-    model_config = ProtoModel._merge_config_with(canonical_repr=True, extra="allow")
+    model_config = ProtoModel._merge_config_with(extra="allow")
 
 
 class DriverEnum(str, Enum):

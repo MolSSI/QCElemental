@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version
@@ -28,8 +28,6 @@ class ComputeError(ProtoModel):
         None,
         description="Additional information to bundle with the error.",
     )
-
-    model_config = ProtoModel._merge_config_with(repr_style=["error_type", "error_message"])
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error_type", self.error_type), ("error_message", self.error_message)]

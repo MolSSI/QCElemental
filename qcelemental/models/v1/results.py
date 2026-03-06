@@ -300,6 +300,23 @@ class AtomicResultProperties(ProtoModel):
         # kwargs["encoding"] = "json"
         return super().dict(*args, **kwargs)
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProperties", "qcelemental.models.v2.AtomicProperties"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicResultProperties") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version == 2:
+            self_vN = qcel.models.v2.AtomicProperties(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 class WavefunctionProperties(ProtoModel):
     r"""Wavefunction properties resulting from a computation. Matrix quantities are stored in column-major order. Presence and contents configurable by protocol."""
@@ -574,6 +591,23 @@ class AtomicResultProtocols(ProtoModel):
     class Config:
         force_skip_defaults = True
 
+    def convert_v(
+        self, target_version: int, /
+    ) -> Union["qcelemental.models.v1.AtomicResultProtocols", "qcelemental.models.v2.AtomicProtocols"]:
+        """Convert to instance of particular QCSchema version."""
+        import qcelemental as qcel
+
+        if check_convertible_version(target_version, error="AtomicResultProtocols") == "self":
+            return self
+
+        dself = self.model_dump()
+        if target_version == 2:
+            self_vN = qcel.models.v2.AtomicProtocols(**dself)
+        else:
+            assert False, target_version
+
+        return self_vN
+
 
 ### Primary models
 
@@ -643,7 +677,10 @@ class AtomicInput(ProtoModel):
             spec["driver"] = dself.pop("driver")
             spec["model"] = model
             spec["keywords"] = dself.pop("keywords", None)
-            spec["protocols"] = dself.pop("protocols", None)
+
+            spec["protocols"] = self.protocols.convert_v(target_version)
+            dself.pop("protocols", None)
+
             spec["extras"] = dself.pop("extras", None)
             dself["specification"] = spec
             self_vN = qcel.models.v2.AtomicInput(**dself)
@@ -856,11 +893,13 @@ class AtomicResult(AtomicInput):
                 dself.pop("error")
 
             input_data = {
-                "specification": {
-                    k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model", "protocols"]
-                },
+                "specification": {k: dself.pop(k) for k in list(dself.keys()) if k in ["driver", "keywords", "model"]},
                 "molecule": molecule,  # duplicate since input mol has been overwritten
             }
+
+            input_data["specification"]["protocols"] = self.protocols.convert_v(target_version)
+            dself.pop("protocols", None)
+
             in_extras = {
                 k: dself["extras"].pop(k) for k in list(dself["extras"].keys()) if k in []
             }  # sep any merged extras known to belong to input
@@ -892,6 +931,8 @@ class AtomicResult(AtomicInput):
             dself["molecule"] = molecule
             if self.wavefunction is not None:
                 dself["wavefunction"] = self.wavefunction.convert_v(target_version).model_dump()
+
+            dself["properties"] = self.properties.convert_v(target_version)
 
             self_vN = qcel.models.v2.AtomicResult(**dself)
         else:

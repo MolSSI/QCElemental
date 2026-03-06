@@ -96,8 +96,6 @@ class Identifiers(ProtoModel):
     pubchem_sid: Optional[str] = Field(None, description="PubChem Substance ID")
     pubchem_conformerid: Optional[str] = Field(None, description="PubChem Conformer ID")
 
-    model_config = ProtoModel._merge_config_with(serialize_skip_defaults=True)
-
 
 def molecule_json_schema_extras(schema, model):
     # below addresses the draft-04 issue until https://github.com/samuelcolvin/pydantic/issues/1478 .
@@ -341,11 +339,6 @@ class Molecule(ProtoModel):
     model_config = ProtoModel._merge_config_with(
         serialize_skip_defaults=True,
         json_schema_extra=molecule_json_schema_extras,
-        repr_style=lambda self: [
-            ("name", self.name),
-            ("formula", self.get_molecular_formula(chgmult=True)),
-            ("hash", self.get_hash()[:7]),
-        ],
     )
     # Alias fields are handled with the Field objects above
 
@@ -392,10 +385,7 @@ class Molecule(ProtoModel):
 
         if validate:
             # Title case for consistency
-            if np.lib.NumpyVersion(np.__version__) >= "2.0.0b1":
-                values["symbols"] = np.char.chararray.title(self.symbols)
-            else:
-                values["symbols"] = np.core.defchararray.title(self.symbols)
+            values["symbols"] = np.char.title(self.symbols)
 
         if orient:
             values["geometry"] = float_prep(self._orient_molecule_internal(), geometry_noise)
@@ -415,6 +405,8 @@ class Molecule(ProtoModel):
     @field_validator("masses_", "real_")
     @classmethod
     def _must_be_n(cls, v, info):
+        if v is None:
+            return None
         n = len(info.data["symbols"])
         if len(v) != n:
             raise ValueError("Masses and Real must be same number of entries as Symbols")
@@ -424,6 +416,8 @@ class Molecule(ProtoModel):
     @classmethod
     def _populate_real(cls, v, info):
         # Can't use geometry here since its already been validated and not in values
+        if v is None:
+            return None
         n = len(info.data["symbols"])
         if len(v) == 0:
             v = np.array([True for _ in range(n)])
@@ -432,6 +426,8 @@ class Molecule(ProtoModel):
     @field_validator("fragment_charges_")
     @classmethod
     def _must_be_n_frag(cls, v, info):
+        if v is None:
+            return None
         if "fragments_" in info.data and info.data["fragments_"] is not None:
             n = len(info.data["fragments_"])
             if len(v) != n:
@@ -439,7 +435,10 @@ class Molecule(ProtoModel):
         return v
 
     @field_validator("fragment_multiplicities_")
+    @classmethod
     def _must_be_n_frag_mult(cls, v, info):
+        if v is None:
+            return None
         if "fragments_" in info.data and info.data["fragments_"] is not None:
             n = len(info.data["fragments_"])
             if len(v) != n:
@@ -450,7 +449,8 @@ class Molecule(ProtoModel):
         return v
 
     @field_validator("molecular_multiplicity")
-    def _int_if_possible(cls, v, info):
+    @classmethod
+    def _int_if_possible(cls, v):
         if v.is_integer():
             # preserve existing hashes
             v = int(v)

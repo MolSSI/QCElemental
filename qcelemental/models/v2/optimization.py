@@ -59,6 +59,8 @@ class OptimizationProtocols(ProtoModel):
 
         dself = self.model_dump()
         if target_version == 1:
+            dself.pop("schema_name", None)
+
             # serialization is compact, so use model to assure value
             dself.pop("trajectory_results", None)
             dself["trajectory"] = self.trajectory_results.value
