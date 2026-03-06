@@ -13,7 +13,7 @@ from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
 from .common_models import DriverEnum, Model, Provenance
 from .molecule import Molecule
-from .types import Array
+from .types import Array, NestedData
 
 if TYPE_CHECKING:
     import qcelemental
@@ -863,7 +863,7 @@ class AtomicResult(ProtoModel):
     properties: AtomicProperties = Field(..., description=str(AtomicProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
-    return_result: Union[float, Array[float], Dict[str, Any]] = Field(
+    return_result: NestedData = Field(
         ...,
         description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
@@ -879,7 +879,7 @@ class AtomicResult(ProtoModel):
         True, description="The success of program execution. If False, other fields may be blank."
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-    extras: Dict[str, Any] = Field(
+    extras: NestedData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )

@@ -1,5 +1,5 @@
 import json
-from typing import Any, Union
+from typing import Any, Mapping, Sequence, Union
 
 import numpy as np
 import pydantic
@@ -14,10 +14,6 @@ except ModuleNotFoundError:
     pass
 
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
-
-
-# Might need to do a BaseModel.model_dump because the deprecated docs have both that and to_jsonable_python
-# from pydantic import BaseModel
 
 
 ## MSGPackExt
