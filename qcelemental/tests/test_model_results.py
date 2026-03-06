@@ -779,6 +779,10 @@ def test_result_derivatives_array(request, schema_versions):
 def every_model_fixture(request):
     datas = {}
 
+    smodel = "Provenance"
+    data = {"creator": "postg", "processor": "Itanium 2", "version": "1.2.3"}
+    datas[smodel] = data
+
     smodel = "Molecule-A"
     data = request.getfixturevalue("result_data_fixture")
     data = data["molecule"].model_dump()
@@ -956,6 +960,7 @@ def every_model_fixture(request):
 # fmt: off
 _model_classes_struct = [
     # v1_class, v2_class, test ID
+    pytest.param("Provenance",                  "Provenance",                   id="Prov"),
     pytest.param("Molecule-A",                  "Molecule-A",                   id="Mol-A"),
     pytest.param("Molecule-B",                  "Molecule-B",                   id="Mol-B"),
     pytest.param("BasisSet",                    "BasisSet",                     id="BasisSet"),
@@ -995,6 +1000,7 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
+        "v1-Prov"     : None,  "v2-Prov"     : None,
         "v1-Mol-A"    : None,  "v2-Mol-A"    : None,
         "v1-Mol-B"    : None,  "v2-Mol-B"    : None,
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
@@ -1085,6 +1091,7 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
     # fmt: off
     ans = {
         # v2: In/Res + Mol/BasisSet/FailedOp, yes! Kw/Ptcl, no. Prop/Spec uncertain.
+        "v1-Prov"     : None, "v2-Prov"     : None,
         "v1-Mol-A"    : 2,    "v2-Mol-A"    : 3,
         "v1-Mol-B"    : 2,    "v2-Mol-B"    : 3,
         "v1-BasisSet" : 1,    "v2-BasisSet" : 2,
@@ -1167,6 +1174,7 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
     # fmt: off
     ans = {
         # v2: In/Ptcl/Prop/Kw + BasisSet, no! others (Spec/Res + Mol), yes. <In> is questionable.
+        "v1-Prov"     : None,  "v2-Prov"     : None,
         "v1-Mol-A"    : {},    "v2-Mol-A"    : {},
         "v1-Mol-B"    : {},    "v2-Mol-B"    : {},
         "v1-BasisSet" : None,  "v2-BasisSet" : None,
@@ -1271,6 +1279,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
     # fmt: off
     ans = {
         # convert_v() for user-facing fns. uncomment lines if this expands
+        # "v1-Prov"     , "v2-Prov"     ,
         "v1-Mol-A"    ,  "v2-Mol-A"   ,
         "v1-Mol-B"    ,  "v2-Mol-B"   ,
         "v1-BasisSet" ,  "v2-BasisSet",
@@ -1339,6 +1348,7 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
     ans = {
         # v2: In/Res + Mol/BasisSet/FailedOp, yes! Kw/Ptcl, no. Prop/Spec uncertain.
         # note output not result
+        "v1-Prov"     : None,                                   "v2-Prov"     : None,
         "v1-Mol-A"    : "qcschema_molecule",                    "v2-Mol-A"    : "qcschema_molecule",
         "v1-Mol-B"    : "qcschema_molecule",                    "v2-Mol-B"    : "qcschema_molecule",
         "v1-BasisSet" : "qcschema_basis",                       "v2-BasisSet" : "qcschema_basis_set",
@@ -1402,6 +1412,63 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         else:
             with pytest.raises((pydantic.ValidationError, pydantic.v1.ValidationError)) as e:
                 instance = model(**data)
+
+
+@pytest.mark.parametrize("smodel1,smodel2", _model_classes_struct)
+def test_model_survey_extra_config(smodel1, smodel2, request, schema_versions):
+    anskey = request.node.callspec.id.replace("None", "v1")
+    # fmt: off
+    ans = {
+        "v1-Prov"     : "allow",  "v2-Prov"     : "allow",
+        "v1-Mol-A"    : "forbid", "v2-Mol-A"    : "forbid",
+        "v1-Mol-B"    : "forbid", "v2-Mol-B"    : "forbid",
+        "v1-BasisSet" : "forbid", "v2-BasisSet" : "forbid",
+        "v1-FailedOp" : "forbid", "v2-FailedOp" : "forbid",
+        "v1-AtIn-A"   : "forbid", "v2-AtIn-A"   : "forbid",
+        "v1-AtIn-B"   : "forbid", "v2-AtIn-B"   : "forbid",
+        "v1-AtSpec"   : "forbid", "v2-AtSpec"   : "forbid",
+        "v1-AtPtcl"   : "forbid", "v2-AtPtcl"   : "forbid",
+        "v1-AtRes-A"  : "forbid", "v2-AtRes-A"  : "forbid",
+        "v1-AtRes-B"  : "forbid", "v2-AtRes-B"  : "forbid",
+        "v1-AtRes-C"  : "forbid", "v2-AtRes-C"  : "forbid",
+        "v1-AtProp"   : "forbid", "v2-AtProp"   : "forbid",
+        "v1-WfnProp"  : "forbid", "v2-WfnProp"  : "forbid",
+        "v1-OptIn"    : "forbid", "v2-OptIn"    : "forbid",
+        "v1-OptSpec"  : "forbid", "v2-OptSpec"  : "forbid",
+        "v1-OptPtcl"  : "forbid", "v2-OptPtcl"  : "forbid",
+        "v1-OptRes"   : "forbid", "v2-OptRes"   : "forbid",
+        "v1-OptProp"  : "forbid", "v2-OptProp"  : "forbid",
+        "v1-TDIn"     : "forbid", "v2-TDIn"     : "forbid",
+        "v1-TDSpec"   : "forbid", "v2-TDSpec"   : "forbid",
+        "v1-TDKw"     : "forbid", "v2-TDKw"     : "forbid",
+        "v1-TDPtcl"   : "forbid", "v2-TDPtcl"   : "forbid",
+        "v1-TDRes"    : "forbid", "v2-TDRes"    : "forbid",
+        "v1-TDProp"   : "forbid", "v2-TDProp"   : "forbid",
+        "v1-MBIn"     : "forbid", "v2-MBIn"     : "forbid",
+        "v1-MBSpec"   : "forbid", "v2-MBSpec"   : "forbid",
+        "v1-MBKw"     : "forbid", "v2-MBKw"     : "forbid",
+        "v1-MBPtcl"   : "forbid", "v2-MBPtcl"   : "forbid",
+        "v1-MBRes"    : "forbid", "v2-MBRes"    : "forbid",
+        "v1-MBProp"   : "forbid", "v2-MBProp"   : "forbid",
+    }[anskey]
+    # fmt: on
+
+    smodel = smodel2 if "v2" in anskey else smodel1
+    if smodel is None:
+        pytest.skip("model not available for this schema version")
+
+    if "ManyBody" in smodel:
+        model = getattr(qcmb_import(schema_versions), smodel.split("-")[0])
+    else:
+        model = getattr(schema_versions, smodel.split("-")[0])
+
+    if "v2" in anskey:
+        got = model.model_config.get("extra")
+    else:
+        got = model.__config__.extra
+        got = getattr(got, "value", got)  # handle Extra.forbid -> "forbid"
+
+    assert got == ans, f"{anskey}: extra config = {got!r} != expected {ans!r}"
 
 
 def test_result_model_deprecations(result_data_fixture, optimization_data_fixture, request):
