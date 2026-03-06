@@ -109,7 +109,7 @@ _merged_desc = {
     "opt_subres": "An ordered list of single-geometry result objects for each step in the optimization. Either an ordinary atomic/single-point or a many-body result.",
 }
 
-if which_import("qcmanybody", return_bool=True):
+if which_import("qcmanybody.models.v2", return_bool=True):
     OptSubSpecs = Annotated[
         Union[
             Annotated[AtomicSpecification, Tag("atomic")],
