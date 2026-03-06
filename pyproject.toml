@@ -37,7 +37,8 @@ dependencies = [
     "numpy; python_version <'3.14'",
     "numpy >=2.3.3; python_version >='3.14'",
     "pint >=0.24",
-    "pydantic >=2.12",
+    "pydantic >=2.11; python_version <'3.14'",
+    "pydantic >=2.12; python_version >='3.14'",
 ]
 
 [project.optional-dependencies]
