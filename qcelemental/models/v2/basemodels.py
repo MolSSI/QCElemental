@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, model_serializer
 
 from qcelemental.models import QCEL_V1V2_SHIM_CODE
+
 from ...util import deserialize, serialize
 
 
