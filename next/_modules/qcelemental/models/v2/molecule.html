@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.molecule &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
+  <title>qcelemental.models.v2.molecule &mdash; QCElemental 0.1.dev1+gc2487a8d2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=96671694"></script>
+      <script src="../../../../_static/documentation_options.js?v=90d507e5"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -205,8 +205,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">pubchem_cid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PubChem Compound ID&quot;</span><span class="p">)</span>
     <span class="n">pubchem_sid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PubChem Substance ID&quot;</span><span class="p">)</span>
     <span class="n">pubchem_conformerid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;PubChem Conformer ID&quot;</span><span class="p">)</span>
-
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">serialize_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">molecule_json_schema_extras</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
@@ -453,11 +451,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span>
         <span class="n">serialize_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">json_schema_extra</span><span class="o">=</span><span class="n">molecule_json_schema_extras</span><span class="p">,</span>
-        <span class="n">repr_style</span><span class="o">=</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_molecular_formula</span><span class="p">(</span><span class="n">chgmult</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
-            <span class="p">(</span><span class="s2">&quot;hash&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()[:</span><span class="mi">7</span><span class="p">]),</span>
-        <span class="p">],</span>
     <span class="p">)</span>
     <span class="c1"># Alias fields are handled with the Field objects above</span>
 
@@ -504,10 +497,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
             <span class="c1"># Title case for consistency</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">NumpyVersion</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="s2">&quot;2.0.0b1&quot;</span><span class="p">:</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">chararray</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">defchararray</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">orient</span><span class="p">:</span>
             <span class="n">values</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">float_prep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_orient_molecule_internal</span><span class="p">(),</span> <span class="n">geometry_noise</span><span class="p">)</span>
@@ -527,6 +517,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;masses_&quot;</span><span class="p">,</span> <span class="s2">&quot;real_&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Masses and Real must be same number of entries as Symbols&quot;</span><span class="p">)</span>
@@ -536,6 +528,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_populate_real</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="c1"># Can&#39;t use geometry here since its already been validated and not in values</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
@@ -544,6 +538,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;fragment_charges_&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n_frag</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s2">&quot;fragments_&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
@@ -551,7 +547,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;fragment_multiplicities_&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_must_be_n_frag_mult</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s2">&quot;fragments_&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;fragments_&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
@@ -562,7 +561,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_int_if_possible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_int_if_possible</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
             <span class="c1"># preserve existing hashes</span>
             <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>

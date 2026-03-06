@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.common_models &mdash; QCElemental 0.1.dev1+ga18461d0e documentation</title>
+  <title>qcelemental.models.v2.common_models &mdash; QCElemental 0.1.dev1+gc2487a8d2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=96671694"></script>
+      <script src="../../../../_static/documentation_options.js?v=90d507e5"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -109,10 +109,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
              
   <h1>Source code for qcelemental.models.v2.common_models</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">qcschema_draft</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.basis_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasisSet</span>
@@ -138,9 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
     <span class="n">routine</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name of the routine or function within the creator, blank otherwise.&quot;</span><span class="p">)</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span>
-        <span class="n">canonical_repr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="n">provenance_json_schema_extra</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span>
-    <span class="p">)</span></div>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">json_schema_extra</span><span class="o">=</span><span class="n">provenance_json_schema_extra</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span></div>
 
 
 
@@ -161,7 +158,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
 
     <span class="c1"># basis_spec: BasisSpec = None  # This should be exclusive with basis, but for now will be omitted</span>
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">canonical_repr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span></div>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span></div>
 
 
 
