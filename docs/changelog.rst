@@ -41,8 +41,8 @@ New Features
 
 Enhancements
 ++++++++++++
-- (:pr:`391`) Make Molecule` and `WavefunctionProperties` tolerant of None being
-  passed in durping construction (important for relying more in future on pydantic
+- (:pr:`391`) Make `Molecule` and `WavefunctionProperties` tolerant of None being
+  passed in during construction (important for relying more in future on pydantic
   rather than custom serialization).
 - (:pr:`392`) Update model survey tests to include ManyBody v2 classes and
   Provenance and to test extra fields mostly forbidden.

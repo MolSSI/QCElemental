@@ -30,7 +30,7 @@ del vanderwaals_radii
 # Finalize models that optionally include MB fields. Import and build deferred here to avoid circularity.
 try:
     from qcmanybody.models.v2 import ManyBodyProperties, ManyBodyResult, ManyBodySpecification
-except ModuleNotFoundError:
+except ImportError:
     pass
 else:
     models.v2.OptimizationSpecification.model_rebuild()

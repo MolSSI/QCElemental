@@ -367,7 +367,7 @@ def manybody_data_fixture(request, result_data_fixture):
 
 
 @pytest.fixture(scope="function")
-def manybody_opt_data_fixture(request, result_data_fixture, manybody_data_fixture):
+def manybody_opt_data_fixture(request, manybody_data_fixture):
     mbres = manybody_data_fixture.copy()
 
     if "v2" in request.node.name:

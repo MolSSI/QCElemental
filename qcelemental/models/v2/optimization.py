@@ -209,14 +209,22 @@ class OptimizationInput(ProtoModel):
 
     def __repr_args__(self) -> "ReprArgs":
         try:
-            model = self.specification.specification.model.model_dump()
-        except AttributeError:
             try:
-                model = self.specification.specification.specification.model.model_dump()
+                model = self.specification.specification.model.model_dump()
             except AttributeError:
-                model = "-".join(
-                    [str(v.model.model_dump()) for v in self.specification.specification.specification.values()]
-                )
+                try:
+                    model = self.specification.specification.specification.model.model_dump()
+                except AttributeError:
+                    model = "-".join(
+                        [
+                            str(v.model.model_dump())
+                            for v in self.specification.specification.specification.values()
+                        ]
+                    )
+        except Exception:
+            # Best-effort: avoid raising from __repr__ if specification has an unexpected structure
+            spec = getattr(self, "specification", None)
+            model = getattr(spec, "schema_name", str(type(spec)))
 
         return [
             ("model", model),
