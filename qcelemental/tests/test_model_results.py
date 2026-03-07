@@ -366,6 +366,45 @@ def manybody_data_fixture(request, result_data_fixture):
     return ret
 
 
+@pytest.fixture(scope="function")
+def manybody_opt_data_fixture(request, result_data_fixture, manybody_data_fixture):
+    mbres = manybody_data_fixture.copy()
+
+    if "v2" in request.node.name:
+        mbmol = copy.deepcopy(mbres["input_data"]["molecule"])
+        mbspec = copy.deepcopy(mbres["input_data"]["specification"])
+
+        traj_results = []
+        traj_props = []
+        for x in range(3):
+            step = copy.deepcopy(mbres)
+            step["return_result"] = -22.0 - x
+            step["properties"]["return_energy"] = -22.0 - x
+            traj_results.append(step)
+            traj_props.append(copy.deepcopy(step["properties"]))
+
+        data = {
+            "final_molecule": mbmol,
+            "trajectory_results": traj_results,
+            "trajectory_properties": traj_props,
+            "success": True,
+            "provenance": {"creator": "qcel"},
+            "input_data": {
+                "initial_molecule": mbmol,
+                "specification": {
+                    "program": "an opt program",
+                    "protocols": {"trajectory_results": "all"},
+                    "specification": mbspec,
+                },
+            },
+            "properties": {"optimization_iterations": 3},
+        }
+    else:
+        data = {}  # no sensible v1 analogue
+
+    return data
+
+
 @pytest.mark.parametrize("center_name", center_data.keys())
 def test_basis_shell_centers(center_name, schema_versions):
     BasisCenter = schema_versions.BasisCenter
@@ -859,7 +898,7 @@ def every_model_fixture(request):
     data = data["wavefunction"]
     datas[smodel] = data
 
-    smodel = "OptimizationInput"
+    smodel = "OptimizationInput-A"
     data = request.getfixturevalue("optimization_data_fixture")
     if "v2" in request.node.name:
         data = data["input_data"]
@@ -867,12 +906,28 @@ def every_model_fixture(request):
         data = {k: data[k] for k in ["initial_molecule", "input_specification", "keywords"]}
     datas[smodel] = data
 
-    smodel = "OptimizationSpecification"
+    smodel = "OptimizationInput-B"
+    data = request.getfixturevalue("manybody_opt_data_fixture")
+    if "v2" in request.node.name:
+        data = data["input_data"]
+    else:
+        data = {}
+    datas[smodel] = data
+
+    smodel = "OptimizationSpecification-A"
     if "v2" in request.node.name:
         data = request.getfixturevalue("optimization_data_fixture")
         data = data["input_data"]["specification"]
     else:
         data = {"procedure": "pyberny"}
+    datas[smodel] = data
+
+    smodel = "OptimizationSpecification-B"
+    if "v2" in request.node.name:
+        data = request.getfixturevalue("manybody_opt_data_fixture")
+        data = data["input_data"]["specification"]
+    else:
+        data = {}
     datas[smodel] = data
 
     smodel = "OptimizationProtocols"
@@ -882,12 +937,24 @@ def every_model_fixture(request):
         data = {"trajectory": "initial_and_final"}
     datas[smodel] = data
 
-    smodel = "OptimizationResult"
+    smodel = "OptimizationResult-A"
     data = request.getfixturevalue("optimization_data_fixture")
     datas[smodel] = data
 
-    smodel = "OptimizationProperties"  # TODO actually collect
+    smodel = "OptimizationResult-B"
+    data = request.getfixturevalue("manybody_opt_data_fixture")
+    datas[smodel] = data
+
+    smodel = "OptimizationProperties-A"  # TODO actually collect
     data = {"optimization_iterations": 14}
+    datas[smodel] = data
+
+    smodel = "OptimizationProperties-B"
+    if "v2" in request.node.name:
+        data = request.getfixturevalue("manybody_opt_data_fixture")
+        data = data["properties"]
+    else:
+        data = {}
     datas[smodel] = data
 
     smodel = "TorsionDriveInput"
@@ -974,11 +1041,15 @@ _model_classes_struct = [
     pytest.param("AtomicResult-C",              "AtomicResult-C",               id="AtRes-C"),  # wfn
     pytest.param("AtomicResultProperties",      "AtomicProperties",             id="AtProp"),
     pytest.param("WavefunctionProperties",      "WavefunctionProperties",       id="WfnProp"),
-    pytest.param("OptimizationInput",           "OptimizationInput",            id="OptIn"),
-    pytest.param("OptimizationSpecification",   "OptimizationSpecification",    id="OptSpec"),
+    pytest.param("OptimizationInput-A",         "OptimizationInput-A",          id="OptIn-A"),
+    pytest.param(None,                          "OptimizationInput-B",          id="OptIn-B", marks=using_qcmb),  # many-body opt, v2-only
+    pytest.param("OptimizationSpecification-A", "OptimizationSpecification-A",  id="OptSpec-A"),
+    pytest.param(None,                          "OptimizationSpecification-B",  id="OptSpec-B", marks=using_qcmb),  # many-body opt, v2-only
     pytest.param("OptimizationProtocols",       "OptimizationProtocols",        id="OptPtcl"),
-    pytest.param("OptimizationResult",          "OptimizationResult",           id="OptRes"),
-    pytest.param(None,                          "OptimizationProperties",       id="OptProp"),
+    pytest.param("OptimizationResult-A",        "OptimizationResult-A",         id="OptRes-A"),
+    pytest.param(None,                          "OptimizationResult-B",         id="OptRes-B", marks=using_qcmb),  # many-body opt, v2-only
+    pytest.param(None,                          "OptimizationProperties-A",     id="OptProp-A"),
+    pytest.param(None,                          "OptimizationProperties-B",     id="OptProp-B", marks=using_qcmb),  # many-body opt, v2-only
     pytest.param("TorsionDriveInput",           "TorsionDriveInput",            id="TDIn"),
     pytest.param(None,                          "TorsionDriveSpecification",    id="TDSpec"),
     pytest.param("TDKeywords",                  "TorsionDriveKeywords",         id="TDKw"),
@@ -1014,11 +1085,15 @@ def test_model_survey_success(smodel1, smodel2, every_model_fixture, request, sc
         "v1-AtRes-C"  : True,  "v2-AtRes-C"  : True,
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
-        "v1-OptIn"    : None,  "v2-OptIn"    : None,
-        "v1-OptSpec"  : None,  "v2-OptSpec"  : None,
+        "v1-OptIn-A"  : None,  "v2-OptIn-A"  : None,
+        "v1-OptIn-B"  : None,  "v2-OptIn-B"  : None,  # v1 DNE
+        "v1-OptSpec-A": None,  "v2-OptSpec-A": None,
+        "v1-OptSpec-B": None,  "v2-OptSpec-B": None,  # v1 DNE
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
-        "v1-OptRes"   : True,  "v2-OptRes"   : True,
-        "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
+        "v1-OptRes-A" : True,  "v2-OptRes-A" : True,
+        "v1-OptRes-B" : None,  "v2-OptRes-B" : True,  # v1 DNE
+        "v1-OptProp-A": None,  "v2-OptProp-A": None,  # v1 DNE
+        "v1-OptProp-B": None,  "v2-OptProp-B": None,  # v1 DNE
         "v1-TDIn"     : None,  "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : None,  # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
@@ -1105,11 +1180,15 @@ def test_model_survey_schema_version(smodel1, smodel2, every_model_fixture, requ
         "v1-AtRes-C"  : 1,    "v2-AtRes-C"  : 2,
         "v1-AtProp"   : None, "v2-AtProp"   : None,
         "v1-WfnProp"  : None, "v2-WfnProp"  : None,
-        "v1-OptIn"    : 1,    "v2-OptIn"    : 2,
-        "v1-OptSpec"  : 1,    "v2-OptSpec"  : None,
+        "v1-OptIn-A"  : 1,    "v2-OptIn-A"  : 2,
+        "v1-OptIn-B"  : None, "v2-OptIn-B"  : 2,  # v1 DNE
+        "v1-OptSpec-A": 1,    "v2-OptSpec-A": None,
+        "v1-OptSpec-B": None, "v2-OptSpec-B": None,  # v1 DNE
         "v1-OptPtcl"  : None, "v2-OptPtcl"  : None,
-        "v1-OptRes"   : 1,    "v2-OptRes"   : 2,
-        "v1-OptProp"  : None, "v2-OptProp"  : None,  # v1 DNE
+        "v1-OptRes-A" : 1,    "v2-OptRes-A" : 2,
+        "v1-OptRes-B" : None, "v2-OptRes-B" : 2,  # v1 DNE
+        "v1-OptProp-A": None, "v2-OptProp-A": None,  # v1 DNE
+        "v1-OptProp-B": None, "v2-OptProp-B": None,  # v1 DNE
         "v1-TDIn"     : 1,    "v2-TDIn"     : 2,
         "v1-TDSpec"   : None, "v2-TDSpec"   : None,  # v1 DNE
         "v1-TDKw"     : None, "v2-TDKw"     : None,
@@ -1188,11 +1267,15 @@ def test_model_survey_extras(smodel1, smodel2, every_model_fixture, request, sch
         "v1-AtRes-C"  : {},    "v2-AtRes-C"  : {},
         "v1-AtProp"   : None,  "v2-AtProp"   : None,
         "v1-WfnProp"  : None,  "v2-WfnProp"  : None,
-        "v1-OptIn"    : {},    "v2-OptIn"    : None,
-        "v1-OptSpec"  : None,  "v2-OptSpec"  : {},
+        "v1-OptIn-A"  : {},    "v2-OptIn-A"  : None,
+        "v1-OptIn-B"  : None,  "v2-OptIn-B"  : None,  # v1 DNE
+        "v1-OptSpec-A": None,  "v2-OptSpec-A": {},
+        "v1-OptSpec-B": None,  "v2-OptSpec-B": {},  # v1 DNE
         "v1-OptPtcl"  : None,  "v2-OptPtcl"  : None,
-        "v1-OptRes"   : {},    "v2-OptRes"   : {},
-        "v1-OptProp"  : None,  "v2-OptProp"  : None,  # v1 DNE
+        "v1-OptRes-A" : {},    "v2-OptRes-A" : {},
+        "v1-OptRes-B" : None,  "v2-OptRes-B" : {},  # v1 DNE
+        "v1-OptProp-A": None,  "v2-OptProp-A": None,  # v1 DNE
+        "v1-OptProp-B": None,  "v2-OptProp-B": None,  # v1 DNE
         "v1-TDIn"     : {},    "v2-TDIn"     : None,
         "v1-TDSpec"   : None,  "v2-TDSpec"   : {},    # v1 DNE
         "v1-TDKw"     : None,  "v2-TDKw"     : None,
@@ -1292,12 +1375,16 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         "v1-AtRes-B"  ,  "v2-AtRes-B" ,
         "v1-AtRes-C"  ,  "v2-AtRes-C" ,
         "v1-AtProp"   ,  "v2-AtProp"  ,
-        "v1-WfnProp"  ,  "v2-WfnProp" , 
-        "v1-OptIn"    ,  "v2-OptIn"   , 
-        "v1-OptSpec"  ,  "v2-OptSpec" , 
-        "v1-OptPtcl"  ,  "v2-OptPtcl" ,
-        "v1-OptRes"   ,  "v2-OptRes"  ,
-        "v1-OptProp"  ,  "v2-OptProp" ,
+        "v1-WfnProp"  ,  "v2-WfnProp" ,
+        "v1-OptIn-A"   ,  "v2-OptIn-A"  ,
+        "v1-OptIn-B"   ,  "v2-OptIn-B"  ,  # v1 DNE
+        "v1-OptSpec-A" ,  "v2-OptSpec-A",
+        "v1-OptSpec-B" ,  "v2-OptSpec-B",  # v1 DNE
+        "v1-OptPtcl"   ,  "v2-OptPtcl"  ,
+        "v1-OptRes-A"  ,  "v2-OptRes-A" ,
+        "v1-OptRes-B"  ,  "v2-OptRes-B" ,  # v1 DNE
+        "v1-OptProp-A" ,  "v2-OptProp-A",  # v1 DNE
+        "v1-OptProp-B" ,  "v2-OptProp-B",  # v1 DNE
         "v1-TDIn"     ,  "v2-TDIn"    ,
         "v1-TDSpec"   ,  "v2-TDSpec"  ,
         # "v1-TDKw"     ,  "v2-TDKw"    ,
@@ -1330,7 +1417,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
     data = every_model_fixture[smodel_fro]
 
     # check converts and converts to expected class
-    if anskey == "v1-OptSpec":
+    if anskey.startswith("v1-OptSpec"):
         # v1 OptSpec has no convert_v
         instance_fro = model_fro(**data)
         with pytest.raises(AttributeError):
@@ -1362,11 +1449,15 @@ def test_model_survey_schema_name(smodel1, smodel2, every_model_fixture, request
         "v1-AtRes-C"  : "qcschema_output",                      "v2-AtRes-C"  : "qcschema_atomic_result",
         "v1-AtProp"   : None,                                   "v2-AtProp"   : "qcschema_atomic_properties",
         "v1-WfnProp"  : None,                                   "v2-WfnProp"  : "qcschema_wavefunction_properties",
-        "v1-OptIn"    : "qcschema_optimization_input",          "v2-OptIn"    : "qcschema_optimization_input",
-        "v1-OptSpec"  : "qcschema_optimization_specification",  "v2-OptSpec"  : "qcschema_optimization_specification",
+        "v1-OptIn-A"  : "qcschema_optimization_input",          "v2-OptIn-A"  : "qcschema_optimization_input",
+        "v1-OptIn-B"  : None,                                   "v2-OptIn-B"  : "qcschema_optimization_input",  # v1 DNE
+        "v1-OptSpec-A": "qcschema_optimization_specification",  "v2-OptSpec-A": "qcschema_optimization_specification",
+        "v1-OptSpec-B": None,                                   "v2-OptSpec-B": "qcschema_optimization_specification",  # v1 DNE
         "v1-OptPtcl"  : None,                                   "v2-OptPtcl"  : "qcschema_optimization_protocols",
-        "v1-OptRes"   : "qcschema_optimization_output",         "v2-OptRes"   : "qcschema_optimization_result",
-        "v1-OptProp"  : None,                                   "v2-OptProp"  : "qcschema_optimization_properties",  # v1 DNE
+        "v1-OptRes-A" : "qcschema_optimization_output",         "v2-OptRes-A" : "qcschema_optimization_result",
+        "v1-OptRes-B" : None,                                   "v2-OptRes-B" : "qcschema_optimization_result",  # v1 DNE
+        "v1-OptProp-A": None,                                   "v2-OptProp-A": "qcschema_optimization_properties",  # v1 DNE
+        "v1-OptProp-B": None,                                   "v2-OptProp-B": "qcschema_optimization_properties",  # v1 DNE
         "v1-TDIn"     : "qcschema_torsion_drive_input",         "v2-TDIn"     : "qcschema_torsion_drive_input",
         "v1-TDSpec"   : None,                                   "v2-TDSpec"   : "qcschema_torsion_drive_specification",  # v1 DNE
         "v1-TDKw"     : None,                                   "v2-TDKw"     : "qcschema_torsion_drive_keywords",
@@ -1419,37 +1510,41 @@ def test_model_survey_extra_config(smodel1, smodel2, request, schema_versions):
     anskey = request.node.callspec.id.replace("None", "v1")
     # fmt: off
     ans = {
-        "v1-Prov"     : "allow",  "v2-Prov"     : "allow",
-        "v1-Mol-A"    : "forbid", "v2-Mol-A"    : "forbid",
-        "v1-Mol-B"    : "forbid", "v2-Mol-B"    : "forbid",
-        "v1-BasisSet" : "forbid", "v2-BasisSet" : "forbid",
-        "v1-FailedOp" : "forbid", "v2-FailedOp" : "forbid",
-        "v1-AtIn-A"   : "forbid", "v2-AtIn-A"   : "forbid",
-        "v1-AtIn-B"   : "forbid", "v2-AtIn-B"   : "forbid",
-        "v1-AtSpec"   : "forbid", "v2-AtSpec"   : "forbid",
-        "v1-AtPtcl"   : "forbid", "v2-AtPtcl"   : "forbid",
-        "v1-AtRes-A"  : "forbid", "v2-AtRes-A"  : "forbid",
-        "v1-AtRes-B"  : "forbid", "v2-AtRes-B"  : "forbid",
-        "v1-AtRes-C"  : "forbid", "v2-AtRes-C"  : "forbid",
-        "v1-AtProp"   : "forbid", "v2-AtProp"   : "forbid",
-        "v1-WfnProp"  : "forbid", "v2-WfnProp"  : "forbid",
-        "v1-OptIn"    : "forbid", "v2-OptIn"    : "forbid",
-        "v1-OptSpec"  : "forbid", "v2-OptSpec"  : "forbid",
-        "v1-OptPtcl"  : "forbid", "v2-OptPtcl"  : "forbid",
-        "v1-OptRes"   : "forbid", "v2-OptRes"   : "forbid",
-        "v1-OptProp"  : "forbid", "v2-OptProp"  : "forbid",
-        "v1-TDIn"     : "forbid", "v2-TDIn"     : "forbid",
-        "v1-TDSpec"   : "forbid", "v2-TDSpec"   : "forbid",
-        "v1-TDKw"     : "forbid", "v2-TDKw"     : "forbid",
-        "v1-TDPtcl"   : "forbid", "v2-TDPtcl"   : "forbid",
-        "v1-TDRes"    : "forbid", "v2-TDRes"    : "forbid",
-        "v1-TDProp"   : "forbid", "v2-TDProp"   : "forbid",
-        "v1-MBIn"     : "forbid", "v2-MBIn"     : "forbid",
-        "v1-MBSpec"   : "forbid", "v2-MBSpec"   : "forbid",
-        "v1-MBKw"     : "forbid", "v2-MBKw"     : "forbid",
-        "v1-MBPtcl"   : "forbid", "v2-MBPtcl"   : "forbid",
-        "v1-MBRes"    : "forbid", "v2-MBRes"    : "forbid",
-        "v1-MBProp"   : "forbid", "v2-MBProp"   : "forbid",
+        "v1-Prov"      : "allow",  "v2-Prov"      : "allow",
+        "v1-Mol-A"     : "forbid", "v2-Mol-A"     : "forbid",
+        "v1-Mol-B"     : "forbid", "v2-Mol-B"     : "forbid",
+        "v1-BasisSet"  : "forbid", "v2-BasisSet"  : "forbid",
+        "v1-FailedOp"  : "forbid", "v2-FailedOp"  : "forbid",
+        "v1-AtIn-A"    : "forbid", "v2-AtIn-A"    : "forbid",
+        "v1-AtIn-B"    : "forbid", "v2-AtIn-B"    : "forbid",
+        "v1-AtSpec"    : "forbid", "v2-AtSpec"    : "forbid",
+        "v1-AtPtcl"    : "forbid", "v2-AtPtcl"    : "forbid",
+        "v1-AtRes-A"   : "forbid", "v2-AtRes-A"   : "forbid",
+        "v1-AtRes-B"   : "forbid", "v2-AtRes-B"   : "forbid",
+        "v1-AtRes-C"   : "forbid", "v2-AtRes-C"   : "forbid",
+        "v1-AtProp"    : "forbid", "v2-AtProp"    : "forbid",
+        "v1-WfnProp"   : "forbid", "v2-WfnProp"   : "forbid",
+        "v1-OptIn-A"   : "forbid", "v2-OptIn-A"   : "forbid",
+        "v1-OptIn-B"   : None,     "v2-OptIn-B"   : "forbid",  # v1 DNE
+        "v1-OptSpec-A" : "forbid", "v2-OptSpec-A" : "forbid",
+        "v1-OptSpec-B" : None,     "v2-OptSpec-B" : "forbid",  # v1 DNE
+        "v1-OptPtcl"   : "forbid", "v2-OptPtcl"   : "forbid",
+        "v1-OptRes-A"  : "forbid", "v2-OptRes-A"  : "forbid",
+        "v1-OptRes-B"  : None,     "v2-OptRes-B"  : "forbid",  # v1 DNE
+        "v1-OptProp-A" : None,     "v2-OptProp-A" : "forbid",  # v1 DNE
+        "v1-OptProp-B" : None,     "v2-OptProp-B" : "forbid",  # v1 DNE
+        "v1-TDIn"      : "forbid", "v2-TDIn"      : "forbid",
+        "v1-TDSpec"    : None,     "v2-TDSpec"    : "forbid",  # v1 DNE
+        "v1-TDKw"      : "forbid", "v2-TDKw"      : "forbid",
+        "v1-TDPtcl"    : None,     "v2-TDPtcl"    : "forbid",  # v1 DNE
+        "v1-TDRes"     : "forbid", "v2-TDRes"     : "forbid",
+        "v1-TDProp"    : None,     "v2-TDProp"    : "forbid",  # v1 DNE
+        "v1-MBIn"      : "forbid", "v2-MBIn"      : "forbid",
+        "v1-MBSpec"    : "forbid", "v2-MBSpec"    : "forbid",
+        "v1-MBKw"      : "forbid", "v2-MBKw"      : "forbid",
+        "v1-MBPtcl"    : "forbid", "v2-MBPtcl"    : "forbid",
+        "v1-MBRes"     : "forbid", "v2-MBRes"     : "forbid",
+        "v1-MBProp"    : "allow",  "v2-MBProp"    : "allow",  # allows arbitrary MB levels (but prop. are regex-tested)
     }[anskey]
     # fmt: on
 
@@ -1545,7 +1640,7 @@ def test_return_result_types(result_data_fixture, retres, atprop, rettyp, jsntyp
         assert isinstance(jatres["return_result"], jsntyp)
 
 
-@pytest.mark.parametrize("smodel", ["AtomicResult-A", "OptimizationResult", "TorsionDriveResult"])
+@pytest.mark.parametrize("smodel", ["AtomicResult-A", "OptimizationResult-A", "TorsionDriveResult"])
 def test_error_field_passthrough_v1(request, schema_versions, every_model_fixture, smodel):
     if "v2" in request.node.name:
         pytest.skip("test not appropriate for v2")
