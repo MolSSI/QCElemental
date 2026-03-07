@@ -6,6 +6,7 @@ from decimal import Decimal
 from typing import Any, Dict, Optional, Union
 
 import numpy as np
+from numpy.typing import NDArray
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -26,9 +27,7 @@ def reduce_complex(data):
     return data
 
 
-def keep_decimal_cast_ndarray_complex(
-    v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo
-) -> Union[list, Decimal, float]:
+def keep_decimal_cast_ndarray_complex(v: Any, nxt: SerializerFunctionWrapHandler, info: SerializationInfo) -> Any:
     """
     Ensure Decimal types are preserved on the way out
 
