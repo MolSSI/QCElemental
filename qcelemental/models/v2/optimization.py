@@ -216,10 +216,7 @@ class OptimizationInput(ProtoModel):
                     model = self.specification.specification.specification.model.model_dump()
                 except AttributeError:
                     model = "-".join(
-                        [
-                            str(v.model.model_dump())
-                            for v in self.specification.specification.specification.values()
-                        ]
+                        [str(v.model.model_dump()) for v in self.specification.specification.specification.values()]
                     )
         except Exception:
             # Best-effort: avoid raising from __repr__ if specification has an unexpected structure
