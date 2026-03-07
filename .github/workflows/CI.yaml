@@ -39,15 +39,17 @@ jobs:
         if: false
         # if: matrix.python-version == '3.14.0-rc.3'
         run: pip install pydantic==2.12.0b1
+      - name: Install QCManyBody (3.12)
+        if: matrix.python-version == '3.12'
+        run: |
+          pip install qcmanybody
+          pip uninstall qcelemental -y
       - name: Install QCElemental (full deps)
         if: matrix.python-version != '3.10' && matrix.python-version != '3.12' && matrix.python-version != '3.14'
         run: pip install '.[test,viz,align,standard]'
       - name: Install QCElemental (min deps)
         if: matrix.python-version == '3.10' || matrix.python-version == '3.12' || matrix.python-version == '3.14'
         run: pip install '.[test]'
-      - name: Install QCManyBody (3.12)
-        if: matrix.python-version == '3.12'
-        run: pip install qcmanybody
       - name: Run tests
         run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
       - name: Upload coverage to Codecov
