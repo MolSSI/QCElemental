@@ -323,7 +323,7 @@ class AtomicProperties(ProtoModel):
             if target_version == 1:
                 self_vN = qcel.models.v1.AtomicResultProperties(**dself)
             elif target_version == QCEL_V1V2_SHIM_CODE:
-                self_vN = qcel.models._v1v2.AtomicProperties(**dself)
+                self_vN = qcel.models._v1v2.AtomicResultProperties(**dself)
         else:
             assert False, target_version
 
@@ -720,7 +720,7 @@ class AtomicProtocols(ProtoModel):
             if target_version == 1:
                 self_vN = qcel.models.v1.AtomicResultProtocols(**dself)
             elif target_version == QCEL_V1V2_SHIM_CODE:
-                self_vN = qcel.models._v1v2.AtomicProtocols(**dself)
+                self_vN = qcel.models._v1v2.AtomicResultProtocols(**dself)
         else:
             assert False, target_version
 

@@ -7,6 +7,7 @@
 from .atomic import (
     AtomicInput,
     AtomicResult,
+    AtomicResultProperties,
     AtomicResultProtocols,
     WavefunctionProperties,
 )
