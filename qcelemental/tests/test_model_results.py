@@ -1,5 +1,6 @@
 import copy
 import json
+import sys
 import warnings
 
 import numpy as np
@@ -1661,14 +1662,33 @@ def test_error_manybody_opt_convert_v(request, schema_versions, every_model_fixt
     if "OptimizationSpecification" in smodel:
         # convert_v(1) passes, when you think it shouldn't for a many-body optimization,
         #   but that's b/c v1 OptSpec is a light model for TD with no how-to-gradient info
-        v1 = instance.convert_v(1)
-        assert list(sorted(v1.dict().keys())) == ["keywords", "procedure", "protocols", "schema_name", "schema_version"]
+        if sys.version_info >= (3, 14):
+            with pytest.raises(RuntimeError) as e:
+                instance.convert_v(1)
+
+            assert "Reason: pydantic.v1" in str(e.value)
+
+        else:
+            v1 = instance.convert_v(1)
+            assert list(sorted(v1.dict().keys())) == [
+                "keywords",
+                "procedure",
+                "protocols",
+                "schema_name",
+                "schema_version",
+            ]
 
     else:
-        with pytest.raises(pydantic.v1.ValidationError) as e:
-            instance.convert_v(1)
+        if sys.version_info >= (3, 14):
+            with pytest.raises(RuntimeError) as e:
+                instance.convert_v(1)
 
-        assert "given=qcschema_manybodyspecification; permitted=('qcschema_input',))" in str(e.value)
+            assert "Reason: pydantic.v1" in str(e.value)
+        else:
+            with pytest.raises(pydantic.v1.ValidationError) as e:
+                instance.convert_v(1)
+
+            assert "given=qcschema_manybodyspecification; permitted=('qcschema_input',))" in str(e.value)
 
 
 def qcmb_import(sch_ver):

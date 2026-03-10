@@ -26,8 +26,8 @@ Changelog
 
 .. _`sec:cl0500rc3`:
 
-0.50.0rc3 / 2026-MM-DD (Unreleased)
------------------------------------
+0.50.0rc3 / 2026-03-10
+----------------------
 
 :docs:`v0.50.0rc3` for current. :docs:`v0.30.2` for QCSchema v1.
 
