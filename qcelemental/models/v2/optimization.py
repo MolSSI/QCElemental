@@ -7,9 +7,9 @@ except ImportError:
     # remove when minimum py39
     from typing_extensions import Annotated
 
-from pydantic import Field, field_validator
+from pydantic import Discriminator, Field, Tag, field_validator
 
-from ...util import provenance_stamp
+from ...util import provenance_stamp, which_import
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
 from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
 from .common_models import Provenance
@@ -17,6 +17,8 @@ from .molecule import Molecule
 from .types import Array
 
 if TYPE_CHECKING:
+    from qcmanybody.models.v2 import ManyBodyProperties, ManyBodyResult, ManyBodySpecification
+
     import qcelemental
 
     from .common_models import ReprArgs
@@ -74,29 +76,69 @@ class OptimizationProtocols(ProtoModel):
 
 # ====  Inputs (Kw/Spec/In)  ====================================================
 
-OptSubSpecs = Annotated[
-    Union[AtomicSpecification],  # , ManyBodySpecification],
-    Field(
-        discriminator="schema_name",
-        description="A directive to compute a gradient. Either an ordinary atomic/single-point or a many-body spec.",
-    ),
-]
 
-OptSubProps = Annotated[
-    Union[AtomicProperties],  # , ManyBodyProperties],
-    Field(
-        discriminator="schema_name",
-        description="An abridged single-geometry property set. Either an ordinary atomic/single-point or a many-body properties.",
-    ),
-]
+def _opt_subspec_tag(v: Any) -> str:
+    # handle model w/o importing ManyBodySpecification to avoid circular imports
+    sn = getattr(v, "schema_name", None)
+    if sn == "qcschema_many_body_specification":
+        return "manybody"
+    if sn == "qcschema_atomic_specification":
+        return "atomic"
 
-OptSubRes = Annotated[
-    Union[AtomicResult],  # ManyBodyResult],
-    Field(
-        discriminator="schema_name",
-        description="A single-geometry result. Either an ordinary atomic/single-point or a many-body result.",
-    ),
-]
+    if isinstance(v, dict):
+        # priority: schema_name, otherwise: judge specification vs. model, any doubt: error for atomic
+        sn = v.get("schema_name")
+        if sn == "qcschema_many_body_specification":
+            return "manybody"
+        if sn == "qcschema_atomic_specification":
+            return "atomic"
+
+        spec = v.get("specification", None)
+        if isinstance(spec, dict) and "model" not in v:
+            return "manybody"
+    return "atomic"
+
+
+# A simple v1-era Union also works. But the discriminator channels validation to one model for performance and clearer error messages
+#   Also, this isn't managing qcmanybody as optional or deferring import to avoid circularity
+# OptSubSpecs = Annotated[Union[AtomicSpecification, ManyBodySpecification], Field(union_mode="left_to_right")]
+
+_merged_desc = {
+    "opt_subspec": "A directive for how to compute a gradient for the optimization. Either an ordinary atomic/single-point or a many-body spec.",
+    "opt_subprop": "An ordered list of abridged single-geometry property sets (energy and other properties) for each step in the optimization. Either an ordinary atomic/single-point or a many-body properties.",
+    "opt_subres": "An ordered list of single-geometry result objects for each step in the optimization. Either an ordinary atomic/single-point or a many-body result.",
+}
+
+if which_import("qcmanybody", return_bool=True):
+    OptSubSpecs = Annotated[
+        Union[
+            Annotated[AtomicSpecification, Tag("atomic")],
+            Annotated["ManyBodySpecification", Tag("manybody")],
+        ],
+        Field(
+            discriminator=Discriminator(_opt_subspec_tag),
+            description=_merged_desc["opt_subspec"],
+        ),
+    ]
+    OptSubProps = Annotated[
+        Union[
+            Annotated[List[AtomicProperties], Tag("atomic")],
+            Annotated[List["ManyBodyProperties"], Tag("manybody")],
+        ],
+        Field(union_mode="left_to_right", description=_merged_desc["opt_subprop"]),
+    ]
+    OptSubRes = Annotated[
+        Union[
+            Annotated[List[AtomicResult], Tag("atomic")],
+            Annotated[List["ManyBodyResult"], Tag("manybody")],
+        ],
+        Field(union_mode="left_to_right", description=_merged_desc["opt_subres"]),
+    ]
+
+else:
+    OptSubSpecs = Annotated[AtomicSpecification, Field(description=_merged_desc["opt_subspec"])]
+    OptSubProps = Annotated[List[AtomicProperties], Field(description=_merged_desc["opt_subprop"])]
+    OptSubRes = Annotated[List[AtomicResult], Field(description=_merged_desc["opt_subres"])]
 
 
 class OptimizationSpecification(ProtoModel):
@@ -114,9 +156,7 @@ class OptimizationSpecification(ProtoModel):
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
-    specification: AtomicSpecification = Field(
-        ..., description="The specification for how to run gradients for the optimization."
-    )
+    specification: OptSubSpecs
 
     @field_validator("program")
     @classmethod
@@ -168,8 +208,23 @@ class OptimizationInput(ProtoModel):
     provenance: Provenance = Field(Provenance(**provenance_stamp(__name__)), description=str(Provenance.__doc__))
 
     def __repr_args__(self) -> "ReprArgs":
+        try:
+            try:
+                model = self.specification.specification.model.model_dump()
+            except AttributeError:
+                try:
+                    model = self.specification.specification.specification.model.model_dump()
+                except AttributeError:
+                    model = "-".join(
+                        [str(v.model.model_dump()) for v in self.specification.specification.specification.values()]
+                    )
+        except Exception:
+            # Best-effort: avoid raising from __repr__ if specification has an unexpected structure
+            spec = getattr(self, "specification", None)
+            model = getattr(spec, "schema_name", str(type(spec)))
+
         return [
-            ("model", self.specification.specification.model.model_dump()),
+            ("model", model),
             ("molecule_hash", self.initial_molecule.get_hash()[:7]),
         ]
 
@@ -263,12 +318,8 @@ class OptimizationResult(ProtoModel):
     input_data: OptimizationInput = Field(..., description=str(OptimizationInput.__doc__))
 
     final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
-    trajectory_results: List[AtomicResult] = Field(
-        ..., description="A list of ordered Result objects for each step in the optimization."
-    )
-    trajectory_properties: List[AtomicProperties] = Field(
-        ..., description="A list of ordered energies and other properties for each step in the optimization."
-    )
+    trajectory_results: OptSubRes
+    trajectory_properties: OptSubProps
 
     stdout: Optional[str] = Field(None, description="The standard output of the program.")
     stderr: Optional[str] = Field(None, description="The standard error of the program.")

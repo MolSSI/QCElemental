@@ -26,3 +26,13 @@ del periodic_table
 del physical_constants
 del covalent_radii
 del vanderwaals_radii
+
+# Finalize models that optionally include MB fields. Import and build deferred here to avoid circularity.
+try:
+    from qcmanybody.models.v2 import ManyBodyProperties, ManyBodyResult, ManyBodySpecification
+except ImportError:
+    pass
+else:
+    models.v2.OptimizationSpecification.model_rebuild()
+    models.v2.OptimizationProperties.model_rebuild()
+    models.v2.OptimizationResult.model_rebuild()

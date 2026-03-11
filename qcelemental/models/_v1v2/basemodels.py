@@ -1,3 +1,6 @@
+from ...models import QCEL_V1V2_SHIM_CODE
+
+
 def check_convertible_version(ver: int, error: str):
     """Standardize version/error handling for v1 QCSchema."""
 
