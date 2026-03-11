@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+gc2487a8d2 documentation</title>
+  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+g997989000 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=90d507e5"></script>
+      <script src="../../../../_static/documentation_options.js?v=27629864"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -117,9 +117,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1"># remove when minimum py39</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discriminator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">field_validator</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">which_import</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.atomic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicProperties</span><span class="p">,</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">AtomicSpecification</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedConfigDict</span><span class="p">,</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provenance</span>
@@ -127,6 +127,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qcmanybody.models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">ManyBodyProperties</span><span class="p">,</span> <span class="n">ManyBodyResult</span><span class="p">,</span> <span class="n">ManyBodySpecification</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
@@ -190,29 +192,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="c1"># ====  Inputs (Kw/Spec/In)  ====================================================</span>
 
-<span class="n">OptSubSpecs</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicSpecification</span><span class="p">],</span>  <span class="c1"># , ManyBodySpecification],</span>
-    <span class="n">Field</span><span class="p">(</span>
-        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A directive to compute a gradient. Either an ordinary atomic/single-point or a many-body spec.&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
 
-<span class="n">OptSubProps</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">],</span>  <span class="c1"># , ManyBodyProperties],</span>
-    <span class="n">Field</span><span class="p">(</span>
-        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An abridged single-geometry property set. Either an ordinary atomic/single-point or a many-body properties.&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_opt_subspec_tag</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># handle model w/o importing ManyBodySpecification to avoid circular imports</span>
+    <span class="n">sn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sn</span> <span class="o">==</span> <span class="s2">&quot;qcschema_many_body_specification&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;manybody&quot;</span>
+    <span class="k">if</span> <span class="n">sn</span> <span class="o">==</span> <span class="s2">&quot;qcschema_atomic_specification&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;atomic&quot;</span>
 
-<span class="n">OptSubRes</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
-    <span class="n">Union</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">],</span>  <span class="c1"># ManyBodyResult],</span>
-    <span class="n">Field</span><span class="p">(</span>
-        <span class="n">discriminator</span><span class="o">=</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A single-geometry result. Either an ordinary atomic/single-point or a many-body result.&quot;</span><span class="p">,</span>
-    <span class="p">),</span>
-<span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># priority: schema_name, otherwise: judge specification vs. model, any doubt: error for atomic</span>
+        <span class="n">sn</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sn</span> <span class="o">==</span> <span class="s2">&quot;qcschema_many_body_specification&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;manybody&quot;</span>
+        <span class="k">if</span> <span class="n">sn</span> <span class="o">==</span> <span class="s2">&quot;qcschema_atomic_specification&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;atomic&quot;</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;model&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;manybody&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;atomic&quot;</span>
+
+
+<span class="c1"># A simple v1-era Union also works. But the discriminator channels validation to one model for performance and clearer error messages</span>
+<span class="c1">#   Also, this isn&#39;t managing qcmanybody as optional or deferring import to avoid circularity</span>
+<span class="c1"># OptSubSpecs = Annotated[Union[AtomicSpecification, ManyBodySpecification], Field(union_mode=&quot;left_to_right&quot;)]</span>
+
+<span class="n">_merged_desc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;opt_subspec&quot;</span><span class="p">:</span> <span class="s2">&quot;A directive for how to compute a gradient for the optimization. Either an ordinary atomic/single-point or a many-body spec.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;opt_subprop&quot;</span><span class="p">:</span> <span class="s2">&quot;An ordered list of abridged single-geometry property sets (energy and other properties) for each step in the optimization. Either an ordinary atomic/single-point or a many-body properties.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;opt_subres&quot;</span><span class="p">:</span> <span class="s2">&quot;An ordered list of single-geometry result objects for each step in the optimization. Either an ordinary atomic/single-point or a many-body result.&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">which_import</span><span class="p">(</span><span class="s2">&quot;qcmanybody&quot;</span><span class="p">,</span> <span class="n">return_bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">OptSubSpecs</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="n">AtomicSpecification</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;atomic&quot;</span><span class="p">)],</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="s2">&quot;ManyBodySpecification&quot;</span><span class="p">,</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;manybody&quot;</span><span class="p">)],</span>
+        <span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">discriminator</span><span class="o">=</span><span class="n">Discriminator</span><span class="p">(</span><span class="n">_opt_subspec_tag</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subspec&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">OptSubProps</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">],</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;atomic&quot;</span><span class="p">)],</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;ManyBodyProperties&quot;</span><span class="p">],</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;manybody&quot;</span><span class="p">)],</span>
+        <span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subprop&quot;</span><span class="p">]),</span>
+    <span class="p">]</span>
+    <span class="n">OptSubRes</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="n">Union</span><span class="p">[</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">],</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;atomic&quot;</span><span class="p">)],</span>
+            <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="s2">&quot;ManyBodyResult&quot;</span><span class="p">],</span> <span class="n">Tag</span><span class="p">(</span><span class="s2">&quot;manybody&quot;</span><span class="p">)],</span>
+        <span class="p">],</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subres&quot;</span><span class="p">]),</span>
+    <span class="p">]</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">OptSubSpecs</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AtomicSpecification</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subspec&quot;</span><span class="p">])]</span>
+    <span class="n">OptSubProps</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subprop&quot;</span><span class="p">])]</span>
+    <span class="n">OptSubRes</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">_merged_desc</span><span class="p">[</span><span class="s2">&quot;opt_subres&quot;</span><span class="p">])]</span>
 
 
 <div class="viewcode-block" id="OptimizationSpecification">
@@ -232,9 +274,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">specification</span><span class="p">:</span> <span class="n">AtomicSpecification</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The specification for how to run gradients for the optimization.&quot;</span>
-    <span class="p">)</span>
+    <span class="n">specification</span><span class="p">:</span> <span class="n">OptSubSpecs</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
@@ -292,8 +332,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Provenance</span><span class="p">(</span><span class="o">**</span><span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+                    <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># Best-effort: avoid raising from __repr__ if specification has an unexpected structure</span>
+            <span class="n">spec</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;specification&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="p">)))</span>
+
         <span class="k">return</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()),</span>
+            <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">&quot;molecule_hash&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="o">.</span><span class="n">get_hash</span><span class="p">()[:</span><span class="mi">7</span><span class="p">]),</span>
         <span class="p">]</span>
 
@@ -396,12 +451,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">input_data</span><span class="p">:</span> <span class="n">OptimizationInput</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationInput</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
 
     <span class="n">final_molecule</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final molecule of the geometry optimization.&quot;</span><span class="p">)</span>
-    <span class="n">trajectory_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AtomicResult</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of ordered Result objects for each step in the optimization.&quot;</span>
-    <span class="p">)</span>
-    <span class="n">trajectory_properties</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AtomicProperties</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of ordered energies and other properties for each step in the optimization.&quot;</span>
-    <span class="p">)</span>
+    <span class="n">trajectory_results</span><span class="p">:</span> <span class="n">OptSubRes</span>
+    <span class="n">trajectory_properties</span><span class="p">:</span> <span class="n">OptSubProps</span>
 
     <span class="n">stdout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard output of the program.&quot;</span><span class="p">)</span>
     <span class="n">stderr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard error of the program.&quot;</span><span class="p">)</span>

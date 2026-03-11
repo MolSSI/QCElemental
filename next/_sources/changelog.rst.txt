@@ -1,8 +1,12 @@
 Changelog
 =========
 
+.. .. _`sec:clxy0`:
+..
 .. X.Y.0 / 2026-MM-DD (Unreleased)
 .. -------------------
+..
+.. :docs:`vx.y.0` for current. :docs:`v0.30.2` for QCSchema v1.
 ..
 .. Breaking Changes
 .. ++++++++++++++++
@@ -18,6 +22,40 @@ Changelog
 ..
 .. Misc.
 .. +++++
+
+
+.. _`sec:cl0500rc3`:
+
+0.50.0rc3 / 2026-03-10
+----------------------
+
+:docs:`v0.50.0rc3` for current. :docs:`v0.30.2` for QCSchema v1.
+
+New Features
+++++++++++++
+- (:pr:`391`) Add `convert_v` support to `AtomicProperties` and `AtomicProtocols`.
+- (:pr:`392`) Extend `qcelemental.models.v2.optimization` to accept ManyBody
+  specifications/results/properties (when qcmanybody is available). Replaces
+  `GeneralizedOptimizationInput` etc. that worked for QCManyBody and optking
+  for v1 counterpoise-corrected optimizations.
+
+Enhancements
+++++++++++++
+- (:pr:`391`) Make `Molecule` and `WavefunctionProperties` tolerant of None being
+  passed in during construction (important for relying more in future on pydantic
+  rather than custom serialization).
+- (:pr:`392`) Update model survey tests to include ManyBody v2 classes and
+  Provenance and to test extra fields mostly forbidden.
+
+Bug Fixes
++++++++++
+- (:pr:`392`) More precise Pydantic version constraints: v2.11, unless py314+
+
+Misc.
++++++
+- (:pr:`391`) Remove unused config options (`canonical_repr` and `repr_style`) and
+  `serialize_default_excludes` functionality.
+
 
 .. _`sec:cl0500rc2`:
 
