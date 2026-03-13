@@ -11,7 +11,7 @@ repos:
     rev: v1.4.0
     hooks:
       - id: detect-secrets
-        stages: [commit]
+        stages: [pre-commit]
   # TODO: Update to 5.12.x once we drop Python3.7 support
   # https://levelup.gitconnected.com/fix-runtimeerror-poetry-isort-5db7c67b60ff
   - repo: https://github.com/PyCQA/isort
@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: tests
         name: tests
-        stages: [push]
+        stages: [pre-push]
         language: system
         entry: bash scripts/test.sh
         types: [python]
