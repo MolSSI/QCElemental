@@ -5,16 +5,17 @@ import collections
 import hashlib
 import json
 import warnings
+from annotated_types import Ge, Le
 from functools import partial
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
+from typing import TYPE_CHECKING, Annotated, Any, Dict, Iterable, List, Optional, Tuple, Union, cast
 
 import numpy as np
 
 try:
-    from pydantic.v1 import ConstrainedFloat, ConstrainedInt, Field, constr, validator
+    from pydantic.v1 import Field, NonNegativeInt, constr, validator
 except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import ConstrainedFloat, ConstrainedInt, Field, constr, validator
+    from pydantic import Field, NonNegativeInt, constr, validator
 
 try:
     import nglview
@@ -77,13 +78,7 @@ def float_prep(array, around):
     return array
 
 
-class NonnegativeInt(ConstrainedInt):
-    ge = 0
-
-
-class BondOrderFloat(ConstrainedFloat):
-    ge = 0
-    le = 5
+BondOrderFloat = Annotated[float, Ge(0), Le(5)]
 
 
 class Identifiers(ProtoModel):
@@ -232,7 +227,7 @@ class Molecule(ProtoModel):
     )
 
     # Fragment and connection data
-    connectivity_: Optional[List[Tuple[NonnegativeInt, NonnegativeInt, BondOrderFloat]]] = Field(  # type: ignore
+    connectivity_: Optional[List[Tuple[NonNegativeInt, NonNegativeInt, BondOrderFloat]]] = Field(  # type: ignore
         None,
         description="A list of bonds within the molecule. Each entry is a tuple "
         "of ``(atom_index_A, atom_index_B, bond_order)`` where the ``atom_index`` "

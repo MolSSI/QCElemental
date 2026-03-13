@@ -2,16 +2,12 @@ from enum import Enum
 from typing import Dict, List, Optional
 
 try:
-    from pydantic.v1 import ConstrainedInt, Field, constr, validator
+    from pydantic.v1 import NonNegativeInt, Field, constr, validator
 except ImportError:  # Will also trap ModuleNotFoundError
-    from pydantic import ConstrainedInt, Field, constr, validator
+    from pydantic import NonNegativeInt, Field, constr, validator
 
 from ..exceptions import ValidationError
 from .basemodels import ProtoModel, qcschema_draft
-
-
-class NonnegativeInt(ConstrainedInt):
-    ge = 0
 
 
 class HarmonicType(str, Enum):
@@ -24,7 +20,7 @@ class HarmonicType(str, Enum):
 class ElectronShell(ProtoModel):
     """Information for a single electronic shell."""
 
-    angular_momentum: List[NonnegativeInt] = Field(
+    angular_momentum: List[NonNegativeInt] = Field(
         ..., description="Angular momentum for the shell as an array of integers.", min_items=1
     )
     harmonic_type: HarmonicType = Field(..., description=str(HarmonicType.__doc__))
