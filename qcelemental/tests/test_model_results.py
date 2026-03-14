@@ -605,7 +605,9 @@ def test_wavefunction_protocols(
         assert wfn.wavefunction is None
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
-        assert wfn.wavefunction.model_dump(exclude_unset=True).keys() == expected_keys
+        if "v2" in request.node.name:
+            expected_keys.add("schema_name")
+        assert wfn.wavefunction.model_dump().keys() == expected_keys
 
 
 @pytest.mark.parametrize(
@@ -816,7 +818,11 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.calcinfo_natom == 4
     assert obj.return_gradient.shape == (4, 3)
     assert obj.scf_total_hessian.shape == (12, 12)
-    assert obj.model_dump(exclude_unset=True).keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+
+    expected_keys = {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+    if "v2" in request.node.name:
+        expected_keys.add("schema_name")
+    assert obj.model_dump().keys() == expected_keys
 
 
 @pytest.fixture(scope="function")
@@ -1339,11 +1345,7 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     instance = model(**data)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-
-        if "v2" in anskey:
-            instance = model(**instance.model_dump())
-        else:
-            instance = model(**instance.dict())
+        instance = model(**instance.dict())
 
     assert instance
 

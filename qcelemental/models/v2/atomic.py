@@ -5,7 +5,8 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 
 import numpy as np
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_serializer
+from pydantic_core.core_schema import SerializerFunctionWrapHandler
 
 from ...models import QCEL_V1V2_SHIM_CODE
 from ...util import provenance_stamp
@@ -299,6 +300,12 @@ class AtomicProperties(ProtoModel):
         except (ValueError, AttributeError):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
     def convert_v(
         self, target_version: int, /
@@ -606,6 +613,12 @@ class WavefunctionProperties(ProtoModel):
         if info.data.get(v, None) is None:
             raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
     def convert_v(
         self, target_version: int, /

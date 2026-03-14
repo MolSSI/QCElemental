@@ -205,10 +205,12 @@ def test_molecule_repr_chgmult(Molecule, water_molecule_data, water_dimer_minima
 def test_water_minima_data(Molecule, water_dimer_minima_data):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
-    # Give it a name
+    # Keep as dict() for testing backwards compatibility
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        mol_dict = water_dimer_minima.model_dump()
+        mol_dict = water_dimer_minima.dict()
+
+    # Give it a name
     mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
 

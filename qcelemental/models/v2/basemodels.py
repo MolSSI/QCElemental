@@ -1,6 +1,6 @@
 import warnings
 from pathlib import Path
-from typing import Optional, Set, Union
+from typing import Any, Dict, Optional, Set, Union
 
 from pydantic import BaseModel, ConfigDict
 
@@ -106,6 +106,14 @@ class ProtoModel(BaseModel):
                 raise TypeError("Could not infer `encoding`, please provide a `encoding` for this file.")
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
+
+    def dict(self, **kwargs) -> Dict[str, Any]:
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+
+        if "encoding" in kwargs:
+            kwargs["mode"] = kwargs.pop("encoding")
+
+        return self.model_dump(**kwargs)
 
     def serialize(
         self,
