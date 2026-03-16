@@ -1209,7 +1209,7 @@ class Molecule(ProtoModel):
             for at2 in atoms[:iat1]:
                 dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
                 nre += Zeff[at1] * Zeff[at2] / dist
-        return nre
+        return float(nre)
 
     def nelectrons(self, ifr: int = None, real_only: bool = True) -> int:
         r"""Number of electrons.
