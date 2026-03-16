@@ -808,10 +808,10 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
 
 def test_sparse_molecule_connectivity(Molecule):
     """
-    A bit of a weird test, but because we set connectivity it should carry through.
+    A bit of a weird test, but because we set connectivity should be excluded if it's None
     """
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
-    assert "connectivity" in mol.model_dump()
+    assert "connectivity" not in mol.model_dump()
     assert mol.model_dump()["connectivity"] is None
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])

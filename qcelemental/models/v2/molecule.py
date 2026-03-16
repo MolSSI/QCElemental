@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, 
 
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import Field, field_validator
+from pydantic import Field, SerializerFunctionWrapHandler, field_validator, model_serializer
 from typing_extensions import Annotated
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
@@ -459,6 +459,12 @@ class Molecule(ProtoModel):
         if v < 1.0:
             raise ValueError("Molecular Multiplicity must be positive")
         return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
     @property
     def hash_fields(self):
