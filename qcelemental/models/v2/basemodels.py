@@ -108,7 +108,7 @@ class ProtoModel(BaseModel):
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
     def dict(self, **kwargs) -> Dict[str, Any]:
-        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning, stacklevel=2)
 
         if "encoding" in kwargs:
             kwargs["mode"] = kwargs.pop("encoding")
@@ -167,7 +167,9 @@ class ProtoModel(BaseModel):
     # UNCOMMENT IF NEEDED FOR UPGRADE REDO!!!
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
-        warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
+        warnings.warn(
+            "The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning, stacklevel=2
+        )
         return self.model_dump_json(**kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
