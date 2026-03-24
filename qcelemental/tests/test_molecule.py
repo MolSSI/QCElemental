@@ -804,13 +804,16 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
     assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
 
 
-def test_sparse_molecule_connectivity(Molecule):
+def test_sparse_molecule_connectivity(Molecule, request):
     """
     A bit of a weird test, but because we set connectivity should be excluded if it's None
     """
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
-    assert "connectivity" not in mol.model_dump()
-    assert mol.model_dump()["connectivity"] is None
+    assert mol.connectivity is None
+    if "v2" in request.node.name:
+        assert "connectivity" not in mol.model_dump()
+    else:
+        assert "connectivity" in mol.model_dump()
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
     assert mol.connectivity is None
