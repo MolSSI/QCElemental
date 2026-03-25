@@ -785,17 +785,16 @@ def test_result_properties_array(request, schema_versions):
     obj = AtomicResultProperties(
         scf_one_electron_energy="-5.0", scf_dipole_moment=[1, 2, 3], scf_quadrupole_moment=lquad
     )
+    nominal_keys = {"scf_dipole_moment", "scf_one_electron_energy", "scf_quadrupole_moment"}
     drop_qcsk(obj, request.node.name)
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
     assert obj.scf_dipole_moment.shape == (3,)
     assert obj.scf_quadrupole_moment.shape == (3, 3)
 
-    assert obj.model_dump(exclude_unset=True).keys() == {
-        "scf_one_electron_energy",
-        "scf_dipole_moment",
-        "scf_quadrupole_moment",
-    }
+    assert obj.model_dump(exclude_unset=True).keys() == nominal_keys
+    assert obj.model_dump().keys() == {*nominal_keys, "schema_name"} if ("v2" in request.node.name) else nominal_keys
+
     assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
     # assert obj.dict()["scf_quadrupole_moment"] == lquad  # when properties.dict() was forced json
     assert np.array_equal(
@@ -1395,7 +1394,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         # "v1-MBKw"     ,  "v2-MBKw"    ,  # TODO
         "v1-MBPtcl"   ,  "v2-MBPtcl"  ,
         "v1-MBRes"    ,  "v2-MBRes"   ,
-        # "v1-MBProp"   ,  "v2-MBProp"  ,  # TODO
+        "v1-MBProp"   ,  "v2-MBProp"  ,
     }
     # fmt: on
 

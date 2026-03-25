@@ -13,10 +13,11 @@ def test_result_properties_default_skip(request, schema_versions):
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
 
-    if "v2" in request.node.name:
-        assert obj.model_dump().keys() == {"schema_name", "scf_one_electron_energy"}
-    else:
-        assert obj.dict().keys() == {"scf_one_electron_energy"}
+    assert (
+        obj.model_dump().keys() == {"schema_name", "scf_one_electron_energy"}
+        if ("v2" in request.node.name)
+        else {"scf_one_electron_energy"}
+    )
 
 
 def test_result_properties_default_repr(request, schema_versions):
