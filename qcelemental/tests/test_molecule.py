@@ -831,6 +831,25 @@ def test_good_isotope_spec(Molecule):
     )
 
 
+def test_serialization_preserves_mass_numbers():
+    water2 = qcel.models.v2.Molecule(
+        symbols=["O", "H", "H"],
+        mass_numbers=[18, 2, None],
+        geometry=[0, 0, 0, 1, 0, 0, 0, 1, 0],
+    )
+
+    data = water2.model_dump()
+
+    assert "masses" in data
+    assert "mass_numbers" in data
+
+    expected_mass_numbers = water2.mass_numbers.tolist()
+    serialized_mass_numbers = data["mass_numbers"].tolist()
+
+    assert serialized_mass_numbers == expected_mass_numbers
+    assert serialized_mass_numbers == [18, 2, 1]
+
+
 def test_nonphysical_spec(Molecule):
     mol = Molecule(symbols=["He"], masses=[100], geometry=[0, 0, 0], nonphysical=True)
     assert compare_values([100.0], mol.masses, "nonphysical mass")
