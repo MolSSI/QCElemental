@@ -34,6 +34,10 @@ Changelog
 Breaking Changes
 ++++++++++++++++
 
+- (:pr:`393`) Reworks serialization and model dumping for v2 models. Many models will now include
+  unset and default fields by default. Also removes buggy custom serialization logic, leaning more on standard
+  pydantic recommendations. Also makes more models tolerant of `None` values being passed in for certain fields.
+
 New Features
 ++++++++++++
 

@@ -10,6 +10,7 @@ This project ships two QCSchema families:
   - Make subschema more re-useable and composible
   - Standardize naming and field availability to be more predictable
   - Bring visible change to accompany the Pydantic v2 transition
+  - Make models more compatible with standard Pydantic v2 paradigms and workflows
 
 - This guide is AI generated and edited with some care. But a better guide is the [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf).
 
@@ -27,6 +28,11 @@ This project ships two QCSchema families:
   qcelemental.models.v1 import SomeQCSchemaClass`. Never use `somefile`-style imports again.
 - Change your `SomeQCSchemaClass.dict()`, `.json()`, and `.copy()` to `.model_dump()`, `.model_dump_json()`, and `.model_copy()`.
   Both v1 and v2 classes define both sets, but the latter set is the Pydantic v2 way and will quench a lot of warnings.
+  - Replace `SomeQCSchemaClass.dict(encoding="json")` with `SomeQCSchemaClass.model_dump(mode="json")`
+- Models will dump all fields by default (except some models will exclude fields with a value of `None`). If you want to
+  exclude fields with default or unset values, use `.model_dump(exclude_unset=True)` and/or `.model_dump_json(exclude_unset=True)`.
+  - Note that this will cause `schema_name` and `schema_version` to be excluded, which may cause problems with
+    validation later on.
 
 ## Migrating to v2
 
@@ -72,6 +78,13 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - The package provides visible, non-destructive warnings and placeholder behavior such that importing `qcelemental.models.v1` succeeds, but
     instantiating v1 models raises a clear `RuntimeError` on Python versions >=3.14.
 
+- Serialization is handled in a more standard pydantic way. This makes the typical pydantic functions like `model_dump()`
+  `model_dump_json()` behave as expected, removing the custom serialize functions we previously had.
+  - Numpy serialization is handled by using a custom type annotation (`Array`) which will serialize to a list of floats
+    in "json" mode, and as a numpy array in "python" mode. Validation is handled here as well.
+  - `model_dump(mode="python")` will return a dict in Python format, where numpy arrays are kept as numpy arrays.
+  - `model_dump(mode="json")` will return a dict in JSON format, where numpy arrays are converted to lists.
+  - The above will make features like `model_dump_json()` work without any other custom code.
 
 ---
 
