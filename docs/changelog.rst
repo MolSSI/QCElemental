@@ -24,6 +24,29 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0500rc4`:
+
+0.50.0rc4 / 2026-MM-DD (Unreleased)
+-----------------------------------
+
+:docs:`v0.50.0rc4` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+
+
 .. _`sec:cl0500rc3`:
 
 0.50.0rc3 / 2026-03-10

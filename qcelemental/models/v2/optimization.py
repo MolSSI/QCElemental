@@ -296,7 +296,14 @@ class OptimizationProperties(ProtoModel):
         None, description="The number of geometry iterations taken before convergence."
     )
 
-    final_rms_force: Optional[float] = Field(None, description="The final RMS gradient of the molecule in Eh/Bohr.")
+    final_max_force: Optional[float] = Field(None)
+    final_rms_force: Optional[float] = Field(
+        None,
+        description="The final RMS gradient of the molecule in Hartrees/Bohr.",
+        json_schema_extra={"units": "E_h/a0"},
+    )
+    final_max_displacement: Optional[float] = Field(None)
+    final_rms_displacement: Optional[float] = Field(None)
 
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
