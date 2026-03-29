@@ -10,7 +10,7 @@ from ...util import provenance_stamp
 #   from v1, they'll need redefining here
 from ..v2.atomic import AtomicProperties as AtomicProperties_v2
 from ..v2.atomic import WavefunctionProperties as WavefunctionProperties_v2
-from ..v2.basemodels import ExtendedConfigDict, ProtoModel
+from ..v2.basemodels import ProtoModel
 from ..v2.common_models import DriverEnum, Model, Provenance
 from ..v2.failed_operation import ComputeError
 from ..v2.types import Array
@@ -82,8 +82,6 @@ class AtomicResultProtocols(ProtoModel):
     stdout: bool = Field(True)
     error_correction: ErrorCorrectionProtocol = Field(default_factory=ErrorCorrectionProtocol)
     native_files: NativeFilesProtocolEnum = Field(NativeFilesProtocolEnum.none)
-
-    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
 # ====  Inputs (Kw/Spec/In)  ====================================================

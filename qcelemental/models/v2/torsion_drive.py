@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Uni
 from pydantic import Field, conlist, field_validator
 
 from ...util import provenance_stamp
-from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
+from .basemodels import ProtoModel, check_convertible_version
 from .common_models import DriverEnum, Provenance
 from .molecule import Molecule
 from .optimization import OptimizationProperties, OptimizationResult, OptimizationSpecification
@@ -38,8 +38,6 @@ class TorsionDriveProtocols(ProtoModel):
     scan_results: ScanResultsProtocolEnum = Field(
         ScanResultsProtocolEnum.none, description=str(ScanResultsProtocolEnum.__doc__)
     )
-
-    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
 
 # ====  Inputs (Kw/Spec/In)  ====================================================

@@ -605,6 +605,8 @@ def test_wavefunction_protocols(
         assert wfn.wavefunction is None
     else:
         expected_keys = set(expected) | {"scf_" + x for x in expected} | {"basis", "restricted"}
+        if "v2" in request.node.name:
+            expected_keys.add("schema_name")
         assert wfn.wavefunction.model_dump().keys() == expected_keys
 
 
@@ -783,13 +785,16 @@ def test_result_properties_array(request, schema_versions):
     obj = AtomicResultProperties(
         scf_one_electron_energy="-5.0", scf_dipole_moment=[1, 2, 3], scf_quadrupole_moment=lquad
     )
+    nominal_keys = {"scf_dipole_moment", "scf_one_electron_energy", "scf_quadrupole_moment"}
     drop_qcsk(obj, request.node.name)
 
     assert pytest.approx(obj.scf_one_electron_energy) == -5.0
     assert obj.scf_dipole_moment.shape == (3,)
     assert obj.scf_quadrupole_moment.shape == (3, 3)
 
-    assert obj.model_dump().keys() == {"scf_one_electron_energy", "scf_dipole_moment", "scf_quadrupole_moment"}
+    assert obj.model_dump(exclude_unset=True).keys() == nominal_keys
+    assert obj.model_dump().keys() == {*nominal_keys, "schema_name"} if ("v2" in request.node.name) else nominal_keys
+
     assert np.array_equal(obj.scf_quadrupole_moment, np.array(lquad).reshape(3, 3))
     # assert obj.dict()["scf_quadrupole_moment"] == lquad  # when properties.dict() was forced json
     assert np.array_equal(
@@ -812,7 +817,11 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.calcinfo_natom == 4
     assert obj.return_gradient.shape == (4, 3)
     assert obj.scf_total_hessian.shape == (12, 12)
-    assert obj.model_dump().keys() == {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+
+    expected_keys = {"calcinfo_natom", "return_gradient", "scf_total_hessian"}
+    if "v2" in request.node.name:
+        expected_keys.add("schema_name")
+    assert obj.model_dump().keys() == expected_keys
 
 
 @pytest.fixture(scope="function")
@@ -1336,6 +1345,7 @@ def test_model_survey_dictable(smodel1, smodel2, every_model_fixture, request, s
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         instance = model(**instance.dict())
+
     assert instance
 
     # check model_dump-ability
@@ -1384,7 +1394,7 @@ def test_model_survey_convertible(smodel1, smodel2, every_model_fixture, request
         # "v1-MBKw"     ,  "v2-MBKw"    ,  # TODO
         "v1-MBPtcl"   ,  "v2-MBPtcl"  ,
         "v1-MBRes"    ,  "v2-MBRes"   ,
-        # "v1-MBProp"   ,  "v2-MBProp"  ,  # TODO
+        "v1-MBProp"   ,  "v2-MBProp"  ,
     }
     # fmt: on
 

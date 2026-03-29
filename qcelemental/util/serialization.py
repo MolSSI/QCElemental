@@ -1,10 +1,10 @@
 import json
-from typing import Any, Union
+from typing import Any, Mapping, Sequence, Union
 
 import numpy as np
 import pydantic
 from pydantic.v1.json import pydantic_encoder
-from pydantic_core import PydanticSerializationError, to_jsonable_python
+from pydantic_core import to_jsonable_python
 
 from .importing import which_import
 
@@ -14,10 +14,6 @@ except ModuleNotFoundError:
     pass
 
 _msgpack_which_msg = "Please install via `conda install msgpack-python`."
-
-
-# Might need to do a BaseModel.model_dump because the deprecated docs have both that and to_jsonable_python
-# from pydantic import BaseModel
 
 
 ## MSGPackExt
@@ -216,18 +212,11 @@ class JSONArrayEncoder(json.JSONEncoder):
         try:
             return to_jsonable_python(obj)
         except ValueError:
-            if isinstance(obj, pydantic.BaseModel):
-                # this block bypasses the else below for pyd v2 models to supress a warning
-                pass
-            else:
+            if not isinstance(obj, pydantic.BaseModel):
                 try:
                     return pydantic_encoder(obj)
                 except TypeError:
                     pass
-
-        # See if pydantic model can be just serialized if the above couldn't be dumped
-        if isinstance(obj, pydantic.BaseModel):
-            return obj.model_dump_json()
 
         if isinstance(obj, np.ndarray):
             if obj.shape:

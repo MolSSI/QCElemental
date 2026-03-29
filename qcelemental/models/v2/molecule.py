@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Literal, Optional, 
 
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import Field, field_validator, model_serializer
+from pydantic import Field, SerializerFunctionWrapHandler, field_validator, model_serializer
 from typing_extensions import Annotated
 
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
@@ -337,8 +337,10 @@ class Molecule(ProtoModel):
     )
 
     model_config = ProtoModel._merge_config_with(
-        serialize_skip_defaults=True,
         json_schema_extra=molecule_json_schema_extras,
+        serialize_by_alias=True,
+        validate_by_alias=True,
+        validate_by_name=True,
     )
     # Alias fields are handled with the Field objects above
 
@@ -457,6 +459,12 @@ class Molecule(ProtoModel):
         if v < 1.0:
             raise ValueError("Molecular Multiplicity must be positive")
         return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
     @property
     def hash_fields(self):
@@ -613,27 +621,6 @@ class Molecule(ProtoModel):
             raise TypeError("Comparison molecule not understood of type '{}'.".format(type(other)))
 
         return self.get_hash() == other.get_hash()
-
-    # UNCOMMENT IF NEEDED FOR UPGRADE REDO??
-    def dict(self, **kwargs):
-        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
-        return self.model_dump(**kwargs)
-        # TODO maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
-
-    @model_serializer(mode="wrap")
-    def _serialize_molecule(self, handler) -> Dict[str, Any]:
-        default_result = handler(self)
-        output_dict = {}
-        for key, value in default_result.items():
-            # Could do this as a single comprehension dict, but this is easier to read
-            # Handle exclude unset is always true
-            if key not in self.model_fields_set:
-                continue
-            # Handle "by_alias" is always true
-            alias = self.__class__.model_fields[key].alias
-            output_key = alias if alias is not None else key
-            output_dict[output_key] = value
-        return output_dict
 
     def pretty_print(self):
         r"""Print the molecule in Angstroms. Same as :py:func:`print_out` only always in Angstroms.
@@ -1228,7 +1215,7 @@ class Molecule(ProtoModel):
             for at2 in atoms[:iat1]:
                 dist = np.linalg.norm(self.geometry[at1] - self.geometry[at2])
                 nre += Zeff[at1] * Zeff[at2] / dist
-        return nre
+        return float(nre)
 
     def nelectrons(self, ifr: int = None, real_only: bool = True) -> int:
         r"""Number of electrons.
@@ -1611,7 +1598,7 @@ class Molecule(ProtoModel):
         if check_convertible_version(target_version, error="Molecule") == "self":
             return self
 
-        dself = self.model_dump()
+        dself = self.model_dump(exclude_unset=True, exclude_none=True)
         if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             # below is assignment rather than popping so Mol() records as set and future Mol.model_dump() includes the field.
             #   needed for QCEngine Psi4.

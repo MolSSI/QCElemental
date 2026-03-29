@@ -1,17 +1,20 @@
+from __future__ import annotations
+
 from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
 
 import numpy as np
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_serializer
+from pydantic_core.core_schema import SerializerFunctionWrapHandler
 
 from ...models import QCEL_V1V2_SHIM_CODE
 from ...util import provenance_stamp
-from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version, qcschema_draft
+from .basemodels import ProtoModel, check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
 from .common_models import DriverEnum, Model, Provenance
 from .molecule import Molecule
-from .types import Array
+from .types import Array, NestedData
 
 if TYPE_CHECKING:
     import qcelemental
@@ -249,10 +252,8 @@ class AtomicProperties(ProtoModel):
         None, description="The number of CCSDTQ iterations taken before convergence."
     )
 
-    model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
-
     def __repr_args__(self) -> "ReprArgs":
-        return [(k, v) for k, v in self.dict().items()]
+        return [(k, v) for k, v in self.model_dump(exclude_unset=True).items()]
 
     @field_validator(
         "scf_dipole_moment",
@@ -300,12 +301,11 @@ class AtomicProperties(ProtoModel):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
 
-    def dict(self, *args, **kwargs):
-        # pure-json dict repr for QCFractal compliance, see https://github.com/MolSSI/QCFractal/issues/579
-        # Sep 2021: commenting below for now to allow recomposing AtomicResult.properties for qcdb.
-        #   This will break QCFractal tests for now, but future qcf will be ok with it.
-        # kwargs["encoding"] = "json"
-        return super().model_dump(*args, **kwargs)
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
     def convert_v(
         self, target_version: int, /
@@ -536,11 +536,6 @@ class WavefunctionProperties(ProtoModel):
         None, description="Index to the beta-spin orbital occupations of the primary return."
     )
 
-    # Note that serializing WfnProp skips unset fields (and indeed the validator will error upon None values)
-    #   while including all fields for the submodel BasisSet. This is the right behavior, imo, but note that
-    #   v1 skips unset fields in BasisSet as well as the top-level model.
-    model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
-
     @field_validator("scf_eigenvalues_a", "scf_eigenvalues_b", "scf_occupations_a", "scf_occupations_b")
     @classmethod
     def _assert1d(cls, v):
@@ -619,6 +614,12 @@ class WavefunctionProperties(ProtoModel):
             raise ValueError(f"Return quantity {v} does not exist in the values.")
         return v
 
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
+
     def convert_v(
         self, target_version: int, /
     ) -> Union["qcelemental.models.v1.WavefunctionProperties", "qcelemental.models.v2.WavefunctionProperties"]:
@@ -628,9 +629,9 @@ class WavefunctionProperties(ProtoModel):
         if check_convertible_version(target_version, error="WavefunctionProperties") == "self":
             return self
 
-        dself = self.model_dump()
+        dself = self.model_dump(exclude_unset=True, exclude_none=True)  # v1 models don't handle None
         if target_version in [1, QCEL_V1V2_SHIM_CODE]:
-            dself["basis"] = self.basis.convert_v(target_version).dict()
+            dself["basis"] = self.basis.convert_v(target_version).model_dump()
 
             if target_version == 1:
                 self_vN = qcel.models.v1.WavefunctionProperties(**dself)
@@ -701,8 +702,6 @@ class AtomicProtocols(ProtoModel):
         NativeFilesProtocolEnum.none,
         description="Policies for keeping processed files from the computation",
     )
-
-    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
     def convert_v(
         self, target_version: int, /
@@ -877,7 +876,7 @@ class AtomicResult(ProtoModel):
     properties: AtomicProperties = Field(..., description=str(AtomicProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
-    return_result: Union[float, Array[float], Dict[str, Any]] = Field(
+    return_result: NestedData = Field(
         ...,
         description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
     )  # type: ignore
@@ -893,7 +892,7 @@ class AtomicResult(ProtoModel):
         True, description="The success of program execution. If False, other fields may be blank."
     )
     provenance: Provenance = Field(..., description=str(Provenance.__doc__))
-    extras: Dict[str, Any] = Field(
+    extras: NestedData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )

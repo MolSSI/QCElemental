@@ -1,9 +1,8 @@
-import json
 import warnings
 from pathlib import Path
 from typing import Any, Dict, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, model_serializer
+from pydantic import BaseModel, ConfigDict
 
 from qcelemental.models import QCEL_V1V2_SHIM_CODE
 
@@ -14,23 +13,12 @@ def _repr(self) -> str:
     return f'{self.__repr_name__()}({self.__repr_str__(", ")})'
 
 
-class ExtendedConfigDict(ConfigDict, total=False):
-    serialize_skip_defaults: bool
-    """When serializing, ignore default values (i.e. those not set by user)"""
-
-    force_skip_defaults: bool
-    """Manually force defaults to not be included in output dictionary"""
-
-
 class ProtoModel(BaseModel):
     """QCSchema extension of pydantic.BaseModel."""
 
-    model_config = ExtendedConfigDict(
+    model_config = ConfigDict(
         frozen=True,
         extra="forbid",
-        populate_by_name=True,  # Allows using alias to populate
-        serialize_skip_defaults=False,
-        force_skip_defaults=False,
     )
 
     def __init_subclass__(cls, **kwargs) -> None:
@@ -119,56 +107,13 @@ class ProtoModel(BaseModel):
 
         return cls.parse_raw(path.read_bytes(), encoding=encoding)
 
-    # UNCOMMENT IF NEEDED FOR UPGRADE
-    #   defining this is maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested
-    # def dict(self, **kwargs) -> Dict[str, Any]:
-    #    warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning)
-    #    return self.model_dump(**kwargs)
+    def dict(self, **kwargs) -> Dict[str, Any]:
+        warnings.warn("The `dict` method is deprecated; use `model_dump` instead.", DeprecationWarning, stacklevel=2)
 
-    @model_serializer(mode="wrap")
-    def _serialize_model(self, handler) -> Dict[str, Any]:
-        """
-        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested
-        models and any model config options.
+        if "encoding" in kwargs:
+            kwargs["mode"] = kwargs.pop("encoding")
 
-        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been
-        dumped/de-pydantic-ized.
-
-        DEVELOPER WARNING: If default values for nested ProtoModels are not validated and are also not the expected
-        model (e.g. Provenance fields are dicts by default), then this function will throw an error because the self
-        field becomes the current value, not the model.
-        """
-
-        # Get the default return, let the model_dump handle kwarg
-        default_result = handler(self)
-        force_skip_default = self.model_config["force_skip_defaults"]
-        output_dict = {}
-        # Could handle this with a comprehension, easier this way
-        for key, value in default_result.items():
-            # Skip defaults on config level (skip default must be on and k has to be unset)
-            # Also check against exclusion set on a model_config level
-            if force_skip_default and key not in self.model_fields_set:
-                continue
-            output_dict[key] = value
-        return output_dict
-
-    def model_dump(self, **kwargs) -> Dict[str, Any]:
-        encoding = kwargs.pop("encoding", None)
-
-        # kwargs.setdefault("exclude_unset", self.model_config["serialize_skip_defaults"])  # type: ignore
-        # if self.model_config["force_skip_defaults"]:  # type: ignore
-        #     kwargs["exclude_unset"] = True
-
-        # Model config defaults will be handled in the @model_serializer function
-        # The @model_serializer function will be called AFTER this is called
-        data = super().model_dump(**kwargs)
-
-        if encoding is None:
-            return data
-        elif encoding == "json":
-            return json.loads(serialize(data, encoding="json"))
-        else:
-            raise KeyError(f"Unknown encoding type '{encoding}', valid encoding types: 'json'.")
+        return self.model_dump(**kwargs)
 
     def serialize(
         self,
@@ -222,11 +167,10 @@ class ProtoModel(BaseModel):
     # UNCOMMENT IF NEEDED FOR UPGRADE REDO!!!
     def json(self, **kwargs):
         # Alias JSON here from BaseModel to reflect dict changes
-        warnings.warn("The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning)
+        warnings.warn(
+            "The `json` method is deprecated; use `model_dump_json` instead.", DeprecationWarning, stacklevel=2
+        )
         return self.model_dump_json(**kwargs)
-
-    def model_dump_json(self, **kwargs):
-        return self.serialize("json", **kwargs)
 
     def compare(self, other: Union["ProtoModel", BaseModel], **kwargs) -> bool:
         r"""Compares the current object to the provided object recursively.
@@ -252,7 +196,7 @@ class ProtoModel(BaseModel):
         """
         Helper function to merge protomodel's config with other args
 
-        args: other ExtendedConfigDict instances or equivalent dicts
+        args: other ConfigDict instances or equivalent dicts
         kwargs: Keys to add into the dictionary raw
         """
         output_dict = {**cls.model_config}
@@ -261,7 +205,7 @@ class ProtoModel(BaseModel):
         # Update any specific keywords
         output_dict.update(kwargs)
         # Finally, check against the Extended Config Dict
-        return ExtendedConfigDict(**output_dict)
+        return ConfigDict(**output_dict)
 
 
 def check_convertible_version(ver: int, error: str):

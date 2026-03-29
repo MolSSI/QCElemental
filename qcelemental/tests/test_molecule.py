@@ -205,10 +205,12 @@ def test_molecule_repr_chgmult(Molecule, water_molecule_data, water_dimer_minima
 def test_water_minima_data(Molecule, water_dimer_minima_data):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
-    # Give it a name
+    # Keep as dict() for testing backwards compatibility
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         mol_dict = water_dimer_minima.dict()
+
+    # Give it a name
     mol_dict["name"] = "water dimer"
     mol = Molecule(orient=True, **mol_dict)
 
@@ -480,6 +482,7 @@ def test_molecule_json_serialization(Molecule, water_dimer_minima_data):
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
+        # keep dict() around to check
         assert isinstance(water_dimer_minima.dict(encoding="json")["geometry"], list)
 
     assert water_dimer_minima == Molecule.from_data(water_dimer_minima.model_dump_json(), dtype="json")
@@ -801,15 +804,19 @@ def test_sparse_molecule_fields(mol_string, extra_keys, Molecule):
     assert len(diff_keys) == 0, f"Diff Keys {diff_keys}"
 
 
-def test_sparse_molecule_connectivity(Molecule):
+def test_sparse_molecule_connectivity(Molecule, request):
     """
-    A bit of a weird test, but because we set connectivity it should carry through.
+    A bit of a weird test, but because we set connectivity should be excluded if it's None
     """
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2], connectivity=None)
-    assert "connectivity" in mol.model_dump()
-    assert mol.model_dump()["connectivity"] is None
+    assert mol.connectivity is None
+    if "v2" in request.node.name:
+        assert "connectivity" not in mol.model_dump()
+    else:
+        assert "connectivity" in mol.model_dump()
 
     mol = Molecule(symbols=["He", "He"], geometry=[0, 0, -2, 0, 0, 2])
+    assert mol.connectivity is None
     assert "connectivity" not in mol.model_dump()
 
 
@@ -822,6 +829,25 @@ def test_good_isotope_spec(Molecule):
     assert compare_values(
         [3.01602932], Molecule(symbols=["He"], mass_numbers=[3], geometry=[0, 0, 0]).masses, "nonstd mass"
     )
+
+
+def test_serialization_preserves_mass_numbers():
+    water2 = qcel.models.v2.Molecule(
+        symbols=["O", "H", "H"],
+        mass_numbers=[18, 2, None],
+        geometry=[0, 0, 0, 1, 0, 0, 0, 1, 0],
+    )
+
+    data = water2.model_dump()
+
+    assert "masses" in data
+    assert "mass_numbers" in data
+
+    expected_mass_numbers = water2.mass_numbers.tolist()
+    serialized_mass_numbers = data["mass_numbers"].tolist()
+
+    assert serialized_mass_numbers == expected_mass_numbers
+    assert serialized_mass_numbers == [18, 2, 1]
 
 
 def test_nonphysical_spec(Molecule):

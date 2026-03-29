@@ -11,10 +11,10 @@ from pydantic import Discriminator, Field, Tag, field_validator
 
 from ...util import provenance_stamp, which_import
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
-from .basemodels import ExtendedConfigDict, ProtoModel, check_convertible_version
+from .basemodels import ProtoModel, check_convertible_version
 from .common_models import Provenance
 from .molecule import Molecule
-from .types import Array
+from .types import Array, NestedData
 
 if TYPE_CHECKING:
     from qcmanybody.models.v2 import ManyBodyProperties, ManyBodyResult, ManyBodySpecification
@@ -47,8 +47,6 @@ class OptimizationProtocols(ProtoModel):
     trajectory_results: TrajectoryProtocolEnum = Field(
         TrajectoryProtocolEnum.none, description=str(TrajectoryProtocolEnum.__doc__)
     )
-
-    model_config = ExtendedConfigDict(force_skip_defaults=True)
 
     def convert_v(
         self, target_version: int, /
@@ -152,7 +150,7 @@ class OptimizationSpecification(ProtoModel):
     )
     keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
-    extras: Dict[str, Any] = Field(
+    extras: NestedData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
@@ -298,7 +296,14 @@ class OptimizationProperties(ProtoModel):
         None, description="The number of geometry iterations taken before convergence."
     )
 
-    final_rms_force: Optional[float] = Field(None, description="The final RMS gradient of the molecule in Eh/Bohr.")
+    final_max_force: Optional[float] = Field(None)
+    final_rms_force: Optional[float] = Field(
+        None,
+        description="The final RMS gradient of the molecule in Hartrees/Bohr.",
+        json_schema_extra={"units": "E_h/a0"},
+    )
+    final_max_displacement: Optional[float] = Field(None)
+    final_rms_displacement: Optional[float] = Field(None)
 
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
