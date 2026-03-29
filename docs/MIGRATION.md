@@ -21,6 +21,7 @@ This project ships two QCSchema families:
 - Accept that any QCSchema v1 won't work with Python 3.14 . But QCElemental >=0.50 will work fine with Python 3.14 *until* you try to instantiate a
   v1 model; that is, imports, periodic table, physical constants, QCSchema v2 are all fine.
 - At Python <3.14, QCElemental v0.50 should work perfectly well with your codes without changes. If it doesn't, please file an issue.
+- Any `model_dump(encoding="json")` should be replaced by `model_dump(mode="json")`.
 
 ## Soonish
 
@@ -85,6 +86,11 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - `model_dump(mode="python")` will return a dict in Python format, where numpy arrays are kept as numpy arrays.
   - `model_dump(mode="json")` will return a dict in JSON format, where numpy arrays are converted to lists.
   - The above will make features like `model_dump_json()` work without any other custom code.
+  - Unlike v1, serialization will include all fields. The exceptions are `Molecule`, `AtomicProperties`,
+    `WavefunctionProperties`, `OptimizationProperties`, and `ManyBodyProperties` that exclude None. The greatest
+    change is that `schema_name` will be present in `model_dump`.
+  - Note that `.copy()` is not shadowed (as `.dict()` is), so you’ll need to use `.model_copy()`.
+    Also, the `exclude` argument doesn’t exist for `.model_copy()`.
 
 ---
 
@@ -358,6 +364,7 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - `schema_name: "qcschema_optimization_properties"`
   - Canonical summary values including:
     - `return_energy`, `return_gradient`, `optimization_iterations`, `final_rms_force`, plus `nuclear_repulsion_energy`
+    - `final_max_force`, `final_max_displacement`, `final_rms_displacement`
 - v1 had no dedicated `OptimizationProperties` model; those summary values were often derivable from `energies` and last trajectory point.
 
 ## Migration tips
