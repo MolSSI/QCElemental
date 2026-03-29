@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AtomicResult &mdash; QCElemental 0.1.dev1+g997989000 documentation</title>
+  <title>AtomicResult &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=27629864"></script>
+      <script src="../_static/documentation_options.js?v=d2de906f"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -216,21 +216,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wavefunction properties resulting from a computation.\n    Matrix quantities are stored in column-major order. Presence and contents configurable by protocol.&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;return_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
-<span class="w">               </span><span class="p">},</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Return Result&quot;</span>
 <span class="w">      </span><span class="p">},</span>
@@ -278,11 +263,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">         </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/Provenance&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">   </span><span class="p">},</span>
 <span class="w">   </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1101,7 +1084,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;protocols&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#/$defs/AtomicProtocols&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;schema_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qcschema_atomic_protocols&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;wavefunction&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;stdout&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;error_correction&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                     </span><span class="nt">&quot;default_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                     </span><span class="nt">&quot;policies&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="nt">&quot;native_files&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span>
+<span class="w">               </span><span class="p">}</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
@@ -2637,14 +2629,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </details></p><dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.extras" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.extras" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Any)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.id" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.input_data" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_data</span> <span class="pre">(qcelemental.models.v2.atomic.AtomicInput)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.molecule" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule</span> <span class="pre">(qcelemental.models.v2.molecule.Molecule)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.native_files" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">native_files</span> <span class="pre">(Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.properties" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">properties</span> <span class="pre">(qcelemental.models.v2.atomic.AtomicProperties)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.provenance" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenance</span> <span class="pre">(qcelemental.models.v2.common_models.Provenance)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.return_result" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_result</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">numpy.ndarray[tuple[int,</span> <span class="pre">...],</span> <span class="pre">numpy.dtype[float]]</span> <span class="pre">|</span> <span class="pre">Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.return_result" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_result</span> <span class="pre">(Any)</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.schema_name" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_atomic_result'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.schema_version" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_version</span> <span class="pre">(Literal[2])</span></code></a></p></li>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.AtomicResult.stderr" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
@@ -2664,8 +2656,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.extras">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.extras" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NestedData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.extras" title="Link to this definition"></a></dt>
 <dd><p>Additional information to bundle with the computation. Use for schema development and scratch space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_core_schema__ at 0x7f55f1ef60e0&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_json_schema__ at 0x7f55f1ef6170&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
@@ -2676,19 +2679,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.input_data">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.AtomicInput.html#qcelemental.models.v2.AtomicInput" title="qcelemental.models.v2.atomic.AtomicInput"><span class="pre">AtomicInput</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.input_data" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.AtomicInput.html#qcelemental.models.v2.AtomicInput" title="qcelemental.models.v2.AtomicInput"><span class="pre">AtomicInput</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.input_data" title="Link to this definition"></a></dt>
 <dd><p>The MolSSI Quantum Chemistry Schema</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.molecule">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">molecule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.Molecule.html#qcelemental.models.v2.Molecule" title="qcelemental.models.v2.molecule.Molecule"><span class="pre">Molecule</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.molecule" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">molecule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.Molecule.html#qcelemental.models.v2.Molecule" title="qcelemental.models.v2.Molecule"><span class="pre">Molecule</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.molecule" title="Link to this definition"></a></dt>
 <dd><p>The molecule with frame and orientation of the results.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.native_files">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.native_files" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.native_files" title="Link to this definition"></a></dt>
 <dd><p>DSL files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Validated by<span class="colon">:</span></dt>
@@ -2701,7 +2704,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.properties">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">properties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.AtomicProperties.html#qcelemental.models.v2.AtomicProperties" title="qcelemental.models.v2.atomic.AtomicProperties"><span class="pre">AtomicProperties</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.properties" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">properties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.AtomicProperties.html#qcelemental.models.v2.AtomicProperties" title="qcelemental.models.v2.AtomicProperties"><span class="pre">AtomicProperties</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.properties" title="Link to this definition"></a></dt>
 <dd><p>Named properties of quantum chemistry computations following the MolSSI QCSchema.</p>
 <p>All arrays are stored flat but must be reshapable into the dimensions in attribute <code class="docutils literal notranslate"><span class="pre">shape</span></code>, with abbreviations as follows:</p>
 <ul class="simple">
@@ -2712,17 +2715,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.provenance">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">provenance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.Provenance.html#qcelemental.models.v2.Provenance" title="qcelemental.models.v2.common_models.Provenance"><span class="pre">Provenance</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.provenance" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">provenance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.Provenance.html#qcelemental.models.v2.Provenance" title="qcelemental.models.v2.Provenance"><span class="pre">Provenance</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.provenance" title="Link to this definition"></a></dt>
 <dd><p>Provenance information.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.return_result">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#tuple" title="(in Python v3.10)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ValidatableArrayAnnotation</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.return_result" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NestedData</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.return_result" title="Link to this definition"></a></dt>
 <dd><p>The primary return specified by the <code class="xref py py-attr docutils literal notranslate"><span class="pre">driver</span></code> field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_core_schema__ at 0x7f55f1ef60e0&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_json_schema__ at 0x7f55f1ef6170&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;</p></li>
+</ul>
+</dd>
+<dt class="field-even">Validated by<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_return_result</span></code></p></li>
 </ul>
 </dd>
@@ -2731,13 +2743,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.schema_name">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'qcschema_atomic_result'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_atomic_result'</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.schema_name" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'qcschema_atomic_result'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_atomic_result'</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.schema_name" title="Link to this definition"></a></dt>
 <dd><p>The QCSchema specification to which this model conforms.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.schema_version">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.schema_version" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.schema_version" title="Link to this definition"></a></dt>
 <dd><p>The version number of <code class="xref py py-attr docutils literal notranslate"><span class="pre">schema_name</span></code> to which this model conforms.</p>
 </dd></dl>
 
@@ -2762,13 +2774,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.success">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.success" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.success" title="Link to this definition"></a></dt>
 <dd><p>The success of program execution. If False, other fields may be blank.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.AtomicResult.wavefunction">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavefunction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.WavefunctionProperties.html#qcelemental.models.v2.WavefunctionProperties" title="qcelemental.models.v2.atomic.WavefunctionProperties"><span class="pre">WavefunctionProperties</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.wavefunction" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wavefunction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="qcelemental.models.v2.WavefunctionProperties.html#qcelemental.models.v2.WavefunctionProperties" title="qcelemental.models.v2.WavefunctionProperties"><span class="pre">WavefunctionProperties</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.AtomicResult.wavefunction" title="Link to this definition"></a></dt>
 <dd><p>Wavefunction properties resulting from a computation.
 Matrix quantities are stored in column-major order. Presence and contents configurable by protocol.</p>
 <dl class="field-list simple">
@@ -2789,7 +2801,7 @@ Matrix quantities are stored in column-major order. Presence and contents config
 <dd class="field-odd"><p><strong>target_version</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>qcelemental.models.v1.AtomicResult | <a class="reference internal" href="#qcelemental.models.v2.AtomicResult" title="qcelemental.models.v2.AtomicResult">qcelemental.models.v2.AtomicResult</a></p>
+<dd class="field-even"><p>Union[‘qcelemental.models.v1.AtomicResult’, ‘qcelemental.models.v2.AtomicResult’]</p>
 </dd>
 </dl>
 </dd></dl>

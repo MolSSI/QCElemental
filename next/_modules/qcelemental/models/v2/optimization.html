@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+g997989000 documentation</title>
+  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=27629864"></script>
+      <script src="../../../../_static/documentation_options.js?v=d2de906f"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -121,10 +121,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">which_import</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.atomic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicProperties</span><span class="p">,</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">AtomicSpecification</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedConfigDict</span><span class="p">,</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Provenance</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">NestedData</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">qcmanybody.models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">ManyBodyProperties</span><span class="p">,</span> <span class="n">ManyBodyResult</span><span class="p">,</span> <span class="n">ManyBodySpecification</span>
@@ -159,8 +159,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">trajectory_results</span><span class="p">:</span> <span class="n">TrajectoryProtocolEnum</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="n">none</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TrajectoryProtocolEnum</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
     <span class="p">)</span>
-
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ExtendedConfigDict</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="OptimizationProtocols.convert_v">
 <a class="viewcode-back" href="../../../../model_opt.html#qcelemental.models.v2.OptimizationProtocols.convert_v">[docs]</a>
@@ -270,7 +268,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="p">)</span>
     <span class="n">keywords</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">({},</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The optimization specific keywords to be used.&quot;</span><span class="p">)</span>
     <span class="n">protocols</span><span class="p">:</span> <span class="n">OptimizationProtocols</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">OptimizationProtocols</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
-    <span class="n">extras</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">extras</span><span class="p">:</span> <span class="n">NestedData</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -428,7 +426,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of geometry iterations taken before convergence.&quot;</span>
     <span class="p">)</span>
 
-    <span class="n">final_rms_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final RMS gradient of the molecule in Eh/Bohr.&quot;</span><span class="p">)</span>
+    <span class="n">final_max_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">final_rms_force</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final RMS gradient of the molecule in Hartrees/Bohr.&quot;</span><span class="p">,</span>
+        <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;E_h/a0&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">final_max_displacement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">final_rms_displacement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 

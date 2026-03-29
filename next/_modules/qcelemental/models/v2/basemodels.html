@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.basemodels &mdash; QCElemental 0.1.dev1+g997989000 documentation</title>
+  <title>qcelemental.models.v2.basemodels &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=27629864"></script>
+      <script src="../../../../_static/documentation_options.js?v=d2de906f"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -108,12 +108,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.models.v2.basemodels</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">model_serializer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCEL_V1V2_SHIM_CODE</span>
 
@@ -124,25 +123,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__repr_name__</span><span class="p">()</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__repr_str__</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">ExtendedConfigDict</span><span class="p">(</span><span class="n">ConfigDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">serialize_skip_defaults</span><span class="p">:</span> <span class="nb">bool</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;When serializing, ignore default values (i.e. those not set by user)&quot;&quot;&quot;</span>
-
-    <span class="n">force_skip_defaults</span><span class="p">:</span> <span class="nb">bool</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Manually force defaults to not be included in output dictionary&quot;&quot;&quot;</span>
-
-
 <div class="viewcode-block" id="ProtoModel">
 <a class="viewcode-back" href="../../../../api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ProtoModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;QCSchema extension of pydantic.BaseModel.&quot;&quot;&quot;</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ExtendedConfigDict</span><span class="p">(</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
         <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span>
-        <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Allows using alias to populate</span>
-        <span class="n">serialize_skip_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -237,58 +225,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_raw</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">(),</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span></div>
 
 
-    <span class="c1"># UNCOMMENT IF NEEDED FOR UPGRADE</span>
-    <span class="c1">#   defining this is maybe bad idea as dict(v2) does non-recursive dictionary, whereas model_dump does nested</span>
-    <span class="c1"># def dict(self, **kwargs) -&gt; Dict[str, Any]:</span>
-    <span class="c1">#    warnings.warn(&quot;The `dict` method is deprecated; use `model_dump` instead.&quot;, DeprecationWarning)</span>
-    <span class="c1">#    return self.model_dump(**kwargs)</span>
+<div class="viewcode-block" id="ProtoModel.dict">
+<a class="viewcode-back" href="../../../../api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel.dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The `dict` method is deprecated; use `model_dump` instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-    <span class="nd">@model_serializer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wrap&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_serialize_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Customize the serialization output. Does duplicate with some code in model_dump, but handles the case of nested</span>
-<span class="sd">        models and any model config options.</span>
+        <span class="k">if</span> <span class="s2">&quot;encoding&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">)</span>
 
-<span class="sd">        Encoding is handled at the `model_dump` level and not here as that should happen only after EVERYTHING has been</span>
-<span class="sd">        dumped/de-pydantic-ized.</span>
-
-<span class="sd">        DEVELOPER WARNING: If default values for nested ProtoModels are not validated and are also not the expected</span>
-<span class="sd">        model (e.g. Provenance fields are dicts by default), then this function will throw an error because the self</span>
-<span class="sd">        field becomes the current value, not the model.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Get the default return, let the model_dump handle kwarg</span>
-        <span class="n">default_result</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">force_skip_default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_config</span><span class="p">[</span><span class="s2">&quot;force_skip_defaults&quot;</span><span class="p">]</span>
-        <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># Could handle this with a comprehension, easier this way</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">default_result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Skip defaults on config level (skip default must be on and k has to be unset)</span>
-            <span class="c1"># Also check against exclusion set on a model_config level</span>
-            <span class="k">if</span> <span class="n">force_skip_default</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">output_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">output_dict</span>
-
-<div class="viewcode-block" id="ProtoModel.model_dump">
-<a class="viewcode-back" href="../../../../api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel.model_dump">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">model_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="n">encoding</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="c1"># kwargs.setdefault(&quot;exclude_unset&quot;, self.model_config[&quot;serialize_skip_defaults&quot;])  # type: ignore</span>
-        <span class="c1"># if self.model_config[&quot;force_skip_defaults&quot;]:  # type: ignore</span>
-        <span class="c1">#     kwargs[&quot;exclude_unset&quot;] = True</span>
-
-        <span class="c1"># Model config defaults will be handled in the @model_serializer function</span>
-        <span class="c1"># The @model_serializer function will be called AFTER this is called</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">data</span>
-        <span class="k">elif</span> <span class="n">encoding</span> <span class="o">==</span> <span class="s2">&quot;json&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">serialize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown encoding type &#39;</span><span class="si">{</span><span class="n">encoding</span><span class="si">}</span><span class="s2">&#39;, valid encoding types: &#39;json&#39;.&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ProtoModel.serialize">
@@ -348,14 +293,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="viewcode-back" href="../../../../api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel.json">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Alias JSON here from BaseModel to reflect dict changes</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The `json` method is deprecated; use `model_dump_json` instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The `json` method is deprecated; use `model_dump_json` instead.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ProtoModel.model_dump_json">
-<a class="viewcode-back" href="../../../../api/qcelemental.models.v2.ProtoModel.html#qcelemental.models.v2.ProtoModel.model_dump_json">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">model_dump_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ProtoModel.compare">
@@ -385,7 +326,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper function to merge protomodel&#39;s config with other args</span>
 
-<span class="sd">        args: other ExtendedConfigDict instances or equivalent dicts</span>
+<span class="sd">        args: other ConfigDict instances or equivalent dicts</span>
 <span class="sd">        kwargs: Keys to add into the dictionary raw</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_config</span><span class="p">}</span>
@@ -394,7 +335,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="c1"># Update any specific keywords</span>
         <span class="n">output_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Finally, check against the Extended Config Dict</span>
-        <span class="k">return</span> <span class="n">ExtendedConfigDict</span><span class="p">(</span><span class="o">**</span><span class="n">output_dict</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="o">**</span><span class="n">output_dict</span><span class="p">)</span></div>
 
 
 
