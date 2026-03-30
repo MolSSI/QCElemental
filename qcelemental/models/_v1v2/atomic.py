@@ -1,8 +1,8 @@
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
+from typing import Any, Dict, Literal, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from ...util import provenance_stamp
 
@@ -22,10 +22,13 @@ from .molecule import Molecule
 
 
 class AtomicResultProperties(AtomicProperties_v2):
-    pass
+    # v1 does not define schema_name on AtomicResultProperties
+    schema_name: Literal["qcschema_atomic_properties"] = Field("qcschema_atomic_properties", exclude=True)
 
 
 class WavefunctionProperties(WavefunctionProperties_v2):
+    schema_name: Literal["qcschema_wavefunction_properties"] = Field("qcschema_wavefunction_properties", exclude=True)
+
     basis: BasisSet = Field(...)
 
     def convert_v(
@@ -37,7 +40,7 @@ class WavefunctionProperties(WavefunctionProperties_v2):
         if check_convertible_version(target_version, error="WavefunctionProperties") == "self":
             return self
 
-        dself = self.dict()
+        dself = self.model_dump()
         if target_version == 2:
             dself["basis"] = self.basis.convert_v(target_version).model_dump()
 

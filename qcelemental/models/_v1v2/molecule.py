@@ -2,6 +2,7 @@ from typing import Literal, Union
 
 from pydantic import Field, field_validator
 
+from ..v2.molecule import Identifiers
 from ..v2.molecule import Molecule as Molecule_v2
 from .basemodels import check_convertible_version
 
