@@ -88,35 +88,35 @@ class NestedDataAnnotation:
           * Numpy arrays will be flattened
         """
 
-        def _recursive_flatten(a):
-            """Recursively flattens numpy arrays that are part of lists, dicts, and other sequences/mappings"""
+        def _recursive_tolist(a):
+            """Recursively converts numpy arrays to lists, even if they are part of lists, dicts, and other sequences/mappings"""
 
             if isinstance(a, str):
                 return a
+            if isinstance(a, (float, int, np.float64)):
+                return a
             if isinstance(a, np.ndarray):
-                return a.flatten().tolist()
+                return a.tolist()
             if isinstance(a, Mapping):
-                return {k: _recursive_flatten(v) for k, v in a.items()}
+                return {k: _recursive_tolist(v) for k, v in a.items()}
             if isinstance(a, Sequence):
-                return [_recursive_flatten(x) for x in a]
+                return [_recursive_tolist(x) for x in a]
 
             return a
 
-        def _from_input(v, convert_list=True):
-            if isinstance(v, (float, str, np.ndarray)):
+        def _from_input(v):
+            if isinstance(v, (float, str, np.ndarray, np.float64)):
                 return v
             if isinstance(v, int):
                 return float(v)
-            elif isinstance(v, Sequence) and convert_list:
-                return np.asarray(v)
             elif isinstance(v, Mapping):
-                return {k: _from_input(v, False) for k, v in v.items()}
+                return {k: _from_input(v) for k, v in v.items()}
             else:
                 return v
 
         return core_schema.no_info_plain_validator_function(
             _from_input,
-            serialization=core_schema.plain_serializer_function_ser_schema(_recursive_flatten, when_used="json"),
+            serialization=core_schema.plain_serializer_function_ser_schema(_recursive_tolist, when_used="json"),
         )
 
     @classmethod

@@ -734,7 +734,7 @@ class AtomicSpecification(ProtoModel):
 
     schema_name: Literal["qcschema_atomic_specification"] = "qcschema_atomic_specification"
 
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    keywords: NestedData = Field({}, description="The program specific keywords to be used.")
     program: str = Field(
         "", description="The program for which the Specification is intended."
     )  # TODO interaction with cmdline
@@ -744,7 +744,7 @@ class AtomicSpecification(ProtoModel):
         AtomicProtocols(),
         description=AtomicProtocols.__doc__,
     )
-    extras: Dict[str, Any] = Field(
+    extras: NestedData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
@@ -876,9 +876,10 @@ class AtomicResult(ProtoModel):
     properties: AtomicProperties = Field(..., description=str(AtomicProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
-    return_result: NestedData = Field(
+    return_result: float | Array[float] | NestedData = Field(
         ...,
         description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
+        union_mode="left_to_right",
     )  # type: ignore
 
     stdout: Optional[str] = Field(

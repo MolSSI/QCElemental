@@ -148,7 +148,7 @@ class OptimizationSpecification(ProtoModel):
     program: str = Field(
         "", description="Optimizer CMS code / QCEngine procedure to run the geometry optimization with."
     )
-    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
+    keywords: NestedData = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
     extras: NestedData = Field(
         {},
@@ -339,7 +339,7 @@ class OptimizationResult(ProtoModel):
 
     properties: OptimizationProperties = Field(..., description=str(OptimizationProperties.__doc__))
 
-    extras: Dict[str, Any] = Field(
+    extras: NestedData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
