@@ -876,7 +876,7 @@ class AtomicResult(ProtoModel):
     properties: AtomicProperties = Field(..., description=str(AtomicProperties.__doc__))
     wavefunction: Optional[WavefunctionProperties] = Field(None, description=str(WavefunctionProperties.__doc__))
 
-    return_result: float | Array[float] | NestedData = Field(
+    return_result: Union[float, Array[float], NestedData] = Field(
         ...,
         description="The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.",
         union_mode="left_to_right",
