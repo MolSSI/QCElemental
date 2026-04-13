@@ -7,10 +7,10 @@ from pydantic import Field, field_validator
 from ...util import provenance_stamp
 from ..v2.basemodels import ProtoModel
 from ..v2.common_models import DriverEnum, Model, Provenance
-from ..v2.failed_operation import ComputeError
 from .atomic import AtomicResult
 from .basemodels import check_convertible_version
 from .basis_set import BasisSet
+from .failed_operation import ComputeError
 from .molecule import Molecule
 
 if TYPE_CHECKING:
@@ -36,13 +36,13 @@ class OptimizationProtocols(ProtoModel):
     Protocols regarding the manipulation of a Optimization output data.
     """
 
-    trajectory: TrajectoryProtocolEnum = Field(
-        TrajectoryProtocolEnum.all, description=str(TrajectoryProtocolEnum.__doc__)
-    )
+    trajectory: TrajectoryProtocolEnum = Field(TrajectoryProtocolEnum.all)
 
-    def convert_v(
-        self, target_version: int, /
-    ) -> Union["qcelemental.models.v1.OptimizationProtocols", "qcelemental.models.v2.OptimizationProtocols"]:
+    def convert_v(self, target_version: int, /) -> Union[
+        "qcelemental.models.v1.OptimizationProtocols",
+        "qcelemental.models.v2.OptimizationProtocols",
+        "qcelemental.models._v1v2.OptimizationProtocols",
+    ]:
         """Convert to instance of particular QCSchema version."""
         import qcelemental as qcel
 
@@ -74,14 +74,11 @@ class QCInputSpecification(ProtoModel):
     schema_name: Literal["qcschema_input"] = Field("qcschema_input")
     schema_version: Literal[1] = Field(1)
 
-    driver: DriverEnum = Field(DriverEnum.gradient, description=str(DriverEnum.__doc__))
-    model: Model = Field(..., description=str(Model.__doc__))
-    keywords: Dict[str, Any] = Field({}, description="The program specific keywords to be used.")
+    driver: DriverEnum = Field(DriverEnum.gradient)
+    model: Model = Field(...)
+    keywords: Dict[str, Any] = Field({})
 
-    extras: Dict[str, Any] = Field(
-        {},
-        description="Additional information to bundle with the computation. Use for schema development and scratch space.",
-    )
+    extras: Dict[str, Any] = Field({})
 
     def convert_v(
         self, target_version: int, /
@@ -117,12 +114,12 @@ class OptimizationInput(ProtoModel):
     schema_name: Literal["qcschema_optimization_input"] = "qcschema_optimization_input"
     schema_version: Literal[1] = 1
 
-    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
-    extras: Dict[str, Any] = Field({}, description="Extra fields that are not part of the schema.")
-    protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
+    keywords: Dict[str, Any] = Field({})
+    extras: Dict[str, Any] = Field({})
+    protocols: OptimizationProtocols = Field(OptimizationProtocols())
 
-    input_specification: QCInputSpecification = Field(..., description=str(QCInputSpecification.__doc__))
-    initial_molecule: Molecule = Field(..., description="The starting molecule for the geometry optimization.")
+    input_specification: QCInputSpecification = Field(...)
+    initial_molecule: Molecule = Field(...)
 
     provenance: Provenance = Field(default_factory=partial(provenance_stamp, __name__), validate_default=True)
 
@@ -175,20 +172,16 @@ class OptimizationResult(OptimizationInput):
 
     schema_name: Literal["qcschema_optimization_output"] = "qcschema_optimization_output"
 
-    final_molecule: Optional[Molecule] = Field(..., description="The final molecule of the geometry optimization.")
-    trajectory: List[AtomicResult] = Field(
-        ..., description="A list of ordered Result objects for each step in the optimization."
-    )
-    energies: List[float] = Field(..., description="A list of ordered energies for each step in the optimization.")
+    final_molecule: Optional[Molecule] = Field(...)
+    trajectory: List[AtomicResult] = Field(...)
+    energies: List[float] = Field(...)
 
-    stdout: Optional[str] = Field(None, description="The standard output of the program.")
-    stderr: Optional[str] = Field(None, description="The standard error of the program.")
+    stdout: Optional[str] = Field(None)
+    stderr: Optional[str] = Field(None)
 
-    success: bool = Field(
-        ..., description="The success of a given programs execution. If False, other fields may be blank."
-    )
-    error: Optional[ComputeError] = Field(None, description=str(ComputeError.__doc__))
-    provenance: Provenance = Field(..., description=str(Provenance.__doc__))
+    success: bool = Field(...)
+    error: Optional[ComputeError] = Field(None)
+    provenance: Provenance = Field(...)
 
     @field_validator("trajectory")
     @classmethod
