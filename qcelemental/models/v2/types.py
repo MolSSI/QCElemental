@@ -76,7 +76,7 @@ class NestedDataAnnotation:
         _handler: GetCoreSchemaHandler,
     ) -> core_schema.CoreSchema:
         """
-        An annotation for generic, nested data
+        An annotation for generic, nested data, with numpy array flattening
 
         This will handle nested dictionaries and lists on both validation and serialization
 
@@ -96,7 +96,7 @@ class NestedDataAnnotation:
             if isinstance(a, (float, int, np.float64)):
                 return a
             if isinstance(a, np.ndarray):
-                return a.tolist()
+                return a.flatten().tolist()
             if isinstance(a, Mapping):
                 return {k: _recursive_tolist(v) for k, v in a.items()}
             if isinstance(a, Sequence):
@@ -124,5 +124,47 @@ class NestedDataAnnotation:
         return {}
 
 
+class GenericDataAnnotation:
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls,
+        _source_type: Any,
+        _handler: GetCoreSchemaHandler,
+    ) -> core_schema.CoreSchema:
+        """
+        An annotation for generic, nested data
+
+        This will handle nested dictionaries and lists on both validation and serialization. On validation,
+        numpy arrays are kept as is. On serialization, they are NOT flattened, but converted to nested lists.
+        """
+
+        def _recursive_tolist(a):
+            """Recursively converts numpy arrays to lists, even if they are part of lists, dicts, and other sequences/mappings"""
+
+            # Strings are sequences
+            if isinstance(a, str):
+                return a
+            if isinstance(a, np.float64):
+                return a
+            if isinstance(a, np.ndarray):
+                return a.tolist()
+            if isinstance(a, Mapping):
+                return {k: _recursive_tolist(v) for k, v in a.items()}
+            if isinstance(a, Sequence):
+                return [_recursive_tolist(x) for x in a]
+
+            return a
+
+        return core_schema.no_info_plain_validator_function(
+            lambda x: x,
+            serialization=core_schema.plain_serializer_function_ser_schema(_recursive_tolist, when_used="json"),
+        )
+
+    @classmethod
+    def __get_pydantic_json_schema__(cls, _core_schema, handler) -> Dict[str, Any]:
+        return {}
+
+
 Array = Annotated[NDArray, ValidatableArrayAnnotation]
-NestedData = Annotated[Any, NestedDataAnnotation]
+ReturnResultData = Annotated[Any, NestedDataAnnotation]
+GenericData = Annotated[Dict[str, Any], GenericDataAnnotation]
