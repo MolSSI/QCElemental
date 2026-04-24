@@ -542,4 +542,7 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
 
 
 
+- (:pr:`499`) DFTD3, DFTD4 - Allow running in QCSchema v2 mode for WIP upstream versions.
+  Note that QCEngine-added input extras appear in `AtomicResult.input_data.specification.extras`,
+  formerly `AtomicResult.extras`, even routing through older (pre-v1.3, v4.1) programs.
 

@@ -7,6 +7,7 @@ except ImportError:
     # remove when minimum py39
     from typing_extensions import Annotated
 
+import numpy as np
 from pydantic import Discriminator, Field, Tag, field_validator
 
 from ...util import provenance_stamp, which_import
@@ -306,6 +307,28 @@ class OptimizationProperties(ProtoModel):
     final_rms_displacement: Optional[float] = Field(None)
 
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
+
+    @field_validator(
+        "return_gradient",
+        # "return_hessian",
+    )
+    @classmethod
+    def _validate_derivs(cls, v, info):
+        if v is None:
+            return v
+
+        if info.field_name.endswith("_gradient"):
+            shape = (-1, 3)
+        elif info.field_name.endswith("_hessian"):
+            v = np.asarray(v)
+            nsq = int(v.size**0.5)
+            shape = (nsq, nsq)
+
+        try:
+            v = np.asarray(v).reshape(shape)
+        except (ValueError, AttributeError):
+            raise ValueError(f"Derivative must be castable to shape {shape}!")
+        return v
 
 
 # ====  Results  ================================================================
