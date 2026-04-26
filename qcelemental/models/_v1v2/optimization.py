@@ -7,6 +7,7 @@ from pydantic import Field, field_validator
 from ...util import provenance_stamp
 from ..v2.basemodels import ProtoModel
 from ..v2.common_models import DriverEnum, Model, Provenance
+from ..v2.types import GenericData
 from .atomic import AtomicResult
 from .basemodels import check_convertible_version
 from .basis_set import BasisSet
@@ -76,9 +77,9 @@ class QCInputSpecification(ProtoModel):
 
     driver: DriverEnum = Field(DriverEnum.gradient)
     model: Model = Field(...)
-    keywords: Dict[str, Any] = Field({})
+    keywords: GenericData = Field({})
 
-    extras: Dict[str, Any] = Field({})
+    extras: GenericData = Field({})
 
     def convert_v(
         self, target_version: int, /
@@ -114,8 +115,8 @@ class OptimizationInput(ProtoModel):
     schema_name: Literal["qcschema_optimization_input"] = "qcschema_optimization_input"
     schema_version: Literal[1] = 1
 
-    keywords: Dict[str, Any] = Field({})
-    extras: Dict[str, Any] = Field({})
+    keywords: GenericData = Field({})
+    extras: GenericData = Field({})
     protocols: OptimizationProtocols = Field(OptimizationProtocols())
 
     input_specification: QCInputSpecification = Field(...)

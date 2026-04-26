@@ -13,7 +13,7 @@ from ..v2.atomic import WavefunctionProperties as WavefunctionProperties_v2
 from ..v2.basemodels import ProtoModel
 from ..v2.common_models import DriverEnum, Model, Provenance
 from ..v2.failed_operation import ComputeError
-from ..v2.types import Array
+from ..v2.types import Array, GenericData
 from .basemodels import check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
 from .molecule import Molecule
@@ -104,7 +104,7 @@ class AtomicInput(ProtoModel):
     model: Model = Field(...)
     keywords: Dict[str, Any] = Field({})
     protocols: AtomicResultProtocols = Field(AtomicResultProtocols())
-    extras: Dict[str, Any] = Field({})
+    extras: GenericData = Field({})
     provenance: Provenance = Field(default_factory=partial(provenance_stamp, __name__), validate_default=True)
 
     model_config = ProtoModel._merge_config_with(json_schema_extra=atomic_input_json_schema_extra)

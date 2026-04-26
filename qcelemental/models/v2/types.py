@@ -1,10 +1,10 @@
 import os
 import warnings
-from typing import Any, Dict, Mapping, Sequence
+from typing import Any, Dict, Mapping, Sequence, Union
 
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import GetCoreSchemaHandler
+from pydantic import GetCoreSchemaHandler, BaseModel
 from pydantic_core import core_schema
 from typing_extensions import Annotated, get_args
 
@@ -148,6 +148,8 @@ class GenericDataAnnotation:
                 return a
             if isinstance(a, np.ndarray):
                 return a.tolist()
+            if isinstance(a, BaseModel):
+                return a.model_dump(mode="json")
             if isinstance(a, Mapping):
                 return {k: _recursive_tolist(v) for k, v in a.items()}
             if isinstance(a, Sequence):
@@ -167,4 +169,4 @@ class GenericDataAnnotation:
 
 Array = Annotated[NDArray, ValidatableArrayAnnotation]
 ReturnResultData = Annotated[Any, NestedDataAnnotation]
-GenericData = Annotated[Dict[str, Any], GenericDataAnnotation]
+GenericData = Annotated[Union[Dict[str, Any], Any], GenericDataAnnotation]
