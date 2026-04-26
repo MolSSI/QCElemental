@@ -2,10 +2,10 @@ from typing import Any, Optional, Union
 
 from pydantic import Field
 
-from .basemodels import check_convertible_version
 from ..v2.basemodels import ProtoModel
 from ..v2.failed_operation import ComputeError
 from ..v2.types import GenericData
+from .basemodels import check_convertible_version
 
 
 class FailedOperation(ProtoModel):

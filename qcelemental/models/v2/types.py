@@ -4,7 +4,7 @@ from typing import Any, Dict, Mapping, Sequence, Union
 
 import numpy as np
 from numpy.typing import NDArray
-from pydantic import GetCoreSchemaHandler, BaseModel
+from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import core_schema
 from typing_extensions import Annotated, get_args
 

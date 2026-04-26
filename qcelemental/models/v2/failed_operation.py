@@ -2,9 +2,9 @@ from typing import TYPE_CHECKING, Any, Literal, Optional, Sequence, Tuple, Union
 
 from pydantic import Field
 
+from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version
 from .types import GenericData
-from ...models import QCEL_V1V2_SHIM_CODE
 
 if TYPE_CHECKING:
     import qcelemental
