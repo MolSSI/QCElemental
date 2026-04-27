@@ -62,6 +62,7 @@ jobs:
               - qcmanybody
               - qcfractal
               - psi4=1.10
+              - libint=2.9.0=*_4
               - optking
               - geometric
               - dftd3-python

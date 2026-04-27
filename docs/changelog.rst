@@ -24,6 +24,38 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0500rc5`:
+
+0.50.0rc5 / 2026-04-DD (Unreleased)
+----------------------
+
+:docs:`v0.50.0rc5` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+- (:pr:`397`) Rework v2 serialization a bit from rc4, which was a reset to Pydantic conventions, to
+  handle serialization of numpy arrays in non-QCSchema-constrained portions of instances (e.g., extras
+  or keywords). In particular, now handles nested dictionaries and lists on both validation and
+  serialization. On validation, numpy arrays are kept as is. On serialization, they are NOT flattened,
+  but converted to nested lists. In practice where numpy arrays in QCSchema are involved, this makes
+  v2 serialization based on Pydantic utilities behave more like v1 serialization based on custom code.
+  We'd like to ease away from managing numpy arrays in future, but for now this will help the transition.
+- (:pr:`397`) Add _v1v2 shim classes (QCSchema v1 layout expressed in Pydantic V2 API) for Optimization schema.
+
+Enhancements
+++++++++++++
+- (:pr:`xxx`) Return v2 OptimizationProperties.return_gradient as a shaped array.
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+
+
 .. _`sec:cl0500rc4`:
 
 0.50.0rc4 / 2026-03-29
