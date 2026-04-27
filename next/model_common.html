@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Common &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
+  <title>Common &mdash; QCElemental 0.1.dev1+g161e29ea7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d2de906f"></script>
+      <script src="_static/documentation_options.js?v=ee351736"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -1171,10 +1171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{},</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
 <span class="w">            </span><span class="p">}</span>
@@ -1197,7 +1194,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError.error_message" title="qcelemental.models.v2.failed_operation.ComputeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_message</span> <span class="pre">(str)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError.error_type" title="qcelemental.models.v2.failed_operation.ComputeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_type</span> <span class="pre">(str)</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError.extras" title="qcelemental.models.v2.failed_operation.ComputeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Dict[str,</span> <span class="pre">Any]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError.extras" title="qcelemental.models.v2.failed_operation.ComputeError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Annotated[Dict[str,</span> <span class="pre">Any]</span> <span class="pre">|</span> <span class="pre">Any,</span> <span class="pre">qcelemental.models.v2.types.GenericDataAnnotation]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -1215,7 +1212,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Annotated" title="(in Python v3.10)"><span class="pre">Annotated</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">GenericDataAnnotation</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
 <dd><p>Additional information to bundle with the error.</p>
 </dd></dl>
 
@@ -1280,10 +1277,7 @@ and containing the reason and input data which generated the failure.</p>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{},</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
 <span class="w">            </span><span class="p">}</span>
@@ -1310,10 +1304,7 @@ and containing the reason and input data which generated the failure.</p>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                  </span><span class="p">{</span>
-<span class="w">                     </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
-<span class="w">                  </span><span class="p">},</span>
+<span class="w">                  </span><span class="p">{},</span>
 <span class="w">                  </span><span class="p">{</span>
 <span class="w">                     </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
 <span class="w">                  </span><span class="p">}</span>
@@ -1342,9 +1333,9 @@ and containing the reason and input data which generated the failure.</p>
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.error" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span> <span class="pre">(qcelemental.models.v2.failed_operation.ComputeError)</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.extras" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Dict[str,</span> <span class="pre">Any]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.extras" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Annotated[Dict[str,</span> <span class="pre">Any]</span> <span class="pre">|</span> <span class="pre">Any,</span> <span class="pre">qcelemental.models.v2.types.GenericDataAnnotation]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.id" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(str</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.input_data" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_data</span> <span class="pre">(Any)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.input_data" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_data</span> <span class="pre">(Annotated[Dict[str,</span> <span class="pre">Any]</span> <span class="pre">|</span> <span class="pre">Any,</span> <span class="pre">qcelemental.models.v2.types.GenericDataAnnotation])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.schema_name" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_failed_operation'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.schema_version" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_version</span> <span class="pre">(Literal[2])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.FailedOperation.html#qcelemental.models.v2.FailedOperation.success" title="qcelemental.models.v2.failed_operation.FailedOperation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">success</span> <span class="pre">(Literal[False])</span></code></a></p></li>
@@ -1359,7 +1350,7 @@ and containing the reason and input data which generated the failure.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Annotated" title="(in Python v3.10)"><span class="pre">Annotated</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">GenericDataAnnotation</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
 <dd><p>Additional information to bundle with the failed operation. Details which pertain specifically to a thrown error should be contained in the <cite>error</cite> field. See <a class="reference internal" href="api/qcelemental.models.v2.ComputeError.html#qcelemental.models.v2.ComputeError" title="qcelemental.models.v2.ComputeError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComputeError</span></code></a> for details.</p>
 </dd></dl>
 
@@ -1371,8 +1362,19 @@ and containing the reason and input data which generated the failure.</p>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Annotated" title="(in Python v3.10)"><span class="pre">Annotated</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">GenericDataAnnotation</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em></dt>
 <dd><p>The input data which was passed in that generated this failure. This should be the complete input which when attempted to be run, caused the operation to fail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_core_schema__ at 0x7f529614e680&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_json_schema__ at 0x7f529614e710&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.failed_operation &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
+  <title>qcelemental.models.v2.failed_operation &mdash; QCElemental 0.1.dev1+g161e29ea7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=d2de906f"></script>
+      <script src="../../../../_static/documentation_options.js?v=ee351736"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -108,12 +108,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <h1>Source code for qcelemental.models.v2.failed_operation</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">...models</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCEL_V1V2_SHIM_CODE</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericData</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
@@ -136,7 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Text associated with the thrown error. This is often the backtrace, but it can contain additional &quot;</span>
         <span class="s2">&quot;information as well.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenericData</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the error.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -170,7 +171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="s2">&quot;should it have been successful. This will often be set programmatically by a database such as &quot;</span>
         <span class="s2">&quot;Fractal.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">input_data</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+    <span class="n">input_data</span><span class="p">:</span> <span class="n">GenericData</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The input data which was passed in that generated this failure. This should be the complete &quot;</span>
         <span class="s2">&quot;input which when attempted to be run, caused the operation to fail.&quot;</span><span class="p">,</span>
@@ -186,7 +187,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A container which has details of the error that failed this operation. See the &quot;</span>
         <span class="s2">&quot;:class:`ComputeError` for more details.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenericData</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the failed operation. Details which pertain specifically &quot;</span>
         <span class="s2">&quot;to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.&quot;</span><span class="p">,</span>

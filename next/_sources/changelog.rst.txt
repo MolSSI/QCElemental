@@ -26,29 +26,28 @@ Changelog
 
 .. _`sec:cl0500rc4`:
 
-0.50.0rc4 / 2026-MM-DD (Unreleased)
------------------------------------
+0.50.0rc4 / 2026-03-29
+----------------------
 
 :docs:`v0.50.0rc4` for current. :docs:`v0.30.2` for QCSchema v1.
 
 Breaking Changes
 ++++++++++++++++
-
 - (:pr:`393`) Reworks serialization and model dumping for v2 models. Many models will now include
   unset and default fields by default. Also removes buggy custom serialization logic, leaning more on standard
   pydantic recommendations. Also makes more models tolerant of `None` values being passed in for certain fields.
 
 New Features
 ++++++++++++
+- (:pr:`393`) Extend `OptimizationProperties` to include fields `final_rms_force`,
+  `final_max_displacement`, and `final_rms_displacement`.
 
 Enhancements
 ++++++++++++
-
-Bug Fixes
-+++++++++
-
-Misc.
-+++++
+- (:pr:`393`) Note that models will now dump all fields by default (except
+  `SomeProperties` and `Molecule` that exclude `None` fields). Fields `schema_name`
+  and `schema_version` will be newly present in serialization.
+- (:pr:`393`) Replace `dict(encoding="json")` or `model_dump(encoding="json")` by `model_dump(mode="json")`.
 
 
 .. _`sec:cl0500rc3`:

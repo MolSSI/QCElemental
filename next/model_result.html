@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Atomic (Single-Point) &mdash; QCElemental 0.1.dev1+gd0fd46580 documentation</title>
+  <title>Atomic (Single-Point) &mdash; QCElemental 0.1.dev1+g161e29ea7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d2de906f"></script>
+      <script src="_static/documentation_options.js?v=ee351736"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -220,11 +220,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The program specific keywords to be used.&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;program&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -252,11 +250,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">               </span><span class="p">}</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">},</span>
 <span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -1328,6 +1324,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wavefunction properties resulting from a computation.\n    Matrix quantities are stored in column-major order. Presence and contents configurable by protocol.&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;return_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{}</span>
+<span class="w">         </span><span class="p">],</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The primary return specified by the :attr:`~qcelemental.models.AtomicInput.driver` field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Return Result&quot;</span>
 <span class="w">      </span><span class="p">},</span>
@@ -2176,11 +2184,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The program specific keywords to be used.&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;program&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -2208,11 +2214,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="w">               </span><span class="p">}</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">               </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">               </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">               </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span><span class="p">,</span>
-<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">               </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">         </span><span class="p">},</span>
 <span class="w">         </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -3741,14 +3745,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </details></p><dl class="field-list simple">
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.extras" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(NestedData)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.extras" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(GenericData)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.id" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">id</span> <span class="pre">(Optional[str])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.input_data" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input_data</span> <span class="pre">(AtomicInput)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.molecule" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">molecule</span> <span class="pre">(Molecule)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.native_files" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">native_files</span> <span class="pre">(Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.properties" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">properties</span> <span class="pre">(AtomicProperties)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.provenance" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">provenance</span> <span class="pre">(Provenance)</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.return_result" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_result</span> <span class="pre">(NestedData)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.return_result" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_result</span> <span class="pre">(Union[float,</span> <span class="pre">Array[float],</span> <span class="pre">ReturnResultData])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.schema_name" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_atomic_result'])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.schema_version" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_version</span> <span class="pre">(Literal[2])</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicResult.html#qcelemental.models.v2.AtomicResult.stderr" title="qcelemental.models.v2.atomic.AtomicResult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stderr</span> <span class="pre">(Optional[str])</span></code></a></p></li>
@@ -3768,16 +3772,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NestedData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">GenericData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
 <dd><p>Additional information to bundle with the computation. Use for schema development and scratch space.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
-<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
-<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
-<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_core_schema__ at 0x7f55f1ef60e0&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_json_schema__ at 0x7f55f1ef6170&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
-<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_core_schema__ at 0x7f529614e680&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_json_schema__ at 0x7f529614e710&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;</p></li>
 </ul>
 </dd>
 </dl>
@@ -3833,16 +3837,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NestedData</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Array</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ReturnResultData</span></em><em class="property"> <span class="pre">[Required]</span></em></dt>
 <dd><p>The primary return specified by the <code class="xref py py-attr docutils literal notranslate"><span class="pre">driver</span></code> field. Scalar if energy; array if gradient or hessian; dictionary with property keys if properties.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Constraints<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
-<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
-<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method NestedDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.NestedDataAnnotation’&gt;&gt;</p></li>
-<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_core_schema__ at 0x7f55f1ef60e0&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function NestedDataAnnotation.__get_pydantic_json_schema__ at 0x7f55f1ef6170&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
-<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘NestedDataAnnotation’ objects&gt;</p></li>
+<li><p><strong>union_mode</strong> = left_to_right</p></li>
 </ul>
 </dd>
 <dt class="field-even">Validated by<span class="colon">:</span></dt>
@@ -3956,11 +3956,9 @@ Matrix quantities are stored in column-major order. Presence and contents config
 <span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The program specific keywords to be used.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Keywords&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;program&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -3988,11 +3986,9 @@ Matrix quantities are stored in column-major order. Presence and contents config
 <span class="w">         </span><span class="p">}</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;extras&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">         </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
 <span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span><span class="p">,</span>
-<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Extras&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">   </span><span class="p">},</span>
 <span class="w">   </span><span class="nt">&quot;$defs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -4411,8 +4407,8 @@ Matrix quantities are stored in column-major order. Presence and contents config
 <dt class="field-odd">Fields<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.driver" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">driver</span> <span class="pre">(DriverEnum)</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.extras" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
-<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.keywords" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keywords</span> <span class="pre">(Dict[str,</span> <span class="pre">Any])</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.extras" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extras</span> <span class="pre">(GenericData)</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.keywords" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keywords</span> <span class="pre">(GenericData)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.model" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span> <span class="pre">(Model)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.program" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">program</span> <span class="pre">(str)</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/qcelemental.models.v2.AtomicSpecification.html#qcelemental.models.v2.AtomicSpecification.protocols" title="qcelemental.models.v2.atomic.AtomicSpecification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">protocols</span> <span class="pre">(AtomicProtocols)</span></code></a></p></li>
@@ -4428,14 +4424,36 @@ Matrix quantities are stored in column-major order. Presence and contents config
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extras</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">GenericData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
 <dd><p>Additional information to bundle with the computation. Use for schema development and scratch space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_core_schema__ at 0x7f529614e680&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_json_schema__ at 0x7f529614e710&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">GenericData</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em></dt>
 <dd><p>The program specific keywords to be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>__module__</strong> = qcelemental.models.v2.types</p></li>
+<li><p><strong>__get_pydantic_core_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_core_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__get_pydantic_json_schema__</strong> = &lt;bound method GenericDataAnnotation.__get_pydantic_json_schema__ of &lt;class ‘qcelemental.models.v2.types.GenericDataAnnotation’&gt;&gt;</p></li>
+<li><p><strong>__dict__</strong> = {‘__module__’: ‘qcelemental.models.v2.types’, ‘__get_pydantic_core_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_core_schema__ at 0x7f529614e680&gt;)&gt;, ‘__get_pydantic_json_schema__’: &lt;classmethod(&lt;function GenericDataAnnotation.__get_pydantic_json_schema__ at 0x7f529614e710&gt;)&gt;, ‘__dict__’: &lt;attribute ‘__dict__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__weakref__’: &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;, ‘__doc__’: None}</p></li>
+<li><p><strong>__weakref__</strong> = &lt;attribute ‘__weakref__’ of ‘GenericDataAnnotation’ objects&gt;</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
@@ -7131,7 +7149,7 @@ Matrix quantities are stored in column-major order. Presence and contents config
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">model_post_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>This function is meant to behave like a BaseModel method to initialise private attributes.</p>
+<dd><p>This function is meant to behave like a BaseModel method to initialize private attributes.</p>
 <p>It takes context as an argument since that’s what pydantic-core passes when calling it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
