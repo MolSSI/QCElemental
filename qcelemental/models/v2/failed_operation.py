@@ -1,9 +1,10 @@
-from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Sequence, Tuple, Union
+from typing import TYPE_CHECKING, Any, Literal, Optional, Sequence, Tuple, Union
 
 from pydantic import Field
 
 from ...models import QCEL_V1V2_SHIM_CODE
 from .basemodels import ProtoModel, check_convertible_version
+from .types import GenericData
 
 if TYPE_CHECKING:
     import qcelemental
@@ -24,7 +25,7 @@ class ComputeError(ProtoModel):
         description="Text associated with the thrown error. This is often the backtrace, but it can contain additional "
         "information as well.",
     )
-    extras: Optional[Dict[str, Any]] = Field(  # type: ignore
+    extras: Optional[GenericData] = Field(  # type: ignore
         None,
         description="Additional information to bundle with the error.",
     )
@@ -55,7 +56,7 @@ class FailedOperation(ProtoModel):
         "should it have been successful. This will often be set programmatically by a database such as "
         "Fractal.",
     )
-    input_data: Any = Field(  # type: ignore
+    input_data: GenericData = Field(  # type: ignore
         None,
         description="The input data which was passed in that generated this failure. This should be the complete "
         "input which when attempted to be run, caused the operation to fail.",
@@ -71,7 +72,7 @@ class FailedOperation(ProtoModel):
         description="A container which has details of the error that failed this operation. See the "
         ":class:`ComputeError` for more details.",
     )
-    extras: Optional[Dict[str, Any]] = Field(  # type: ignore
+    extras: Optional[GenericData] = Field(  # type: ignore
         {},
         description="Additional information to bundle with the failed operation. Details which pertain specifically "
         "to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.",

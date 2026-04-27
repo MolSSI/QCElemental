@@ -9,8 +9,15 @@ from .atomic import (
     AtomicResult,
     AtomicResultProperties,
     AtomicResultProtocols,
+    Provenance,
     WavefunctionProperties,
 )
 from .basis_set import BasisSet
-from .failed_operation import FailedOperation
-from .molecule import Molecule
+from .failed_operation import ComputeError, FailedOperation
+from .molecule import Identifiers, Molecule
+from .optimization import (
+    OptimizationInput,
+    OptimizationProtocols,
+    OptimizationResult,
+    QCInputSpecification,
+)

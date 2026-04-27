@@ -14,7 +14,7 @@ from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
 from .basemodels import ProtoModel, check_convertible_version
 from .common_models import Provenance
 from .molecule import Molecule
-from .types import Array, NestedData
+from .types import Array, GenericData
 
 if TYPE_CHECKING:
     from qcmanybody.models.v2 import ManyBodyProperties, ManyBodyResult, ManyBodySpecification
@@ -148,9 +148,9 @@ class OptimizationSpecification(ProtoModel):
     program: str = Field(
         "", description="Optimizer CMS code / QCEngine procedure to run the geometry optimization with."
     )
-    keywords: Dict[str, Any] = Field({}, description="The optimization specific keywords to be used.")
+    keywords: GenericData = Field({}, description="The optimization specific keywords to be used.")
     protocols: OptimizationProtocols = Field(OptimizationProtocols(), description=str(OptimizationProtocols.__doc__))
-    extras: NestedData = Field(
+    extras: GenericData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )
@@ -339,7 +339,7 @@ class OptimizationResult(ProtoModel):
 
     properties: OptimizationProperties = Field(..., description=str(OptimizationProperties.__doc__))
 
-    extras: Dict[str, Any] = Field(
+    extras: GenericData = Field(
         {},
         description="Additional information to bundle with the computation. Use for schema development and scratch space.",
     )

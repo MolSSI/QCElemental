@@ -1,8 +1,8 @@
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Any, Dict, Literal, Optional, Set, Union
+from typing import Any, Dict, Literal, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from ...util import provenance_stamp
 
@@ -13,7 +13,7 @@ from ..v2.atomic import WavefunctionProperties as WavefunctionProperties_v2
 from ..v2.basemodels import ProtoModel
 from ..v2.common_models import DriverEnum, Model, Provenance
 from ..v2.failed_operation import ComputeError
-from ..v2.types import Array
+from ..v2.types import Array, GenericData
 from .basemodels import check_convertible_version, qcschema_draft
 from .basis_set import BasisSet
 from .molecule import Molecule
@@ -22,10 +22,13 @@ from .molecule import Molecule
 
 
 class AtomicResultProperties(AtomicProperties_v2):
-    pass
+    # v1 does not define schema_name on AtomicResultProperties
+    schema_name: Literal["qcschema_atomic_properties"] = Field("qcschema_atomic_properties", exclude=True)
 
 
 class WavefunctionProperties(WavefunctionProperties_v2):
+    schema_name: Literal["qcschema_wavefunction_properties"] = Field("qcschema_wavefunction_properties", exclude=True)
+
     basis: BasisSet = Field(...)
 
     def convert_v(
@@ -37,7 +40,7 @@ class WavefunctionProperties(WavefunctionProperties_v2):
         if check_convertible_version(target_version, error="WavefunctionProperties") == "self":
             return self
 
-        dself = self.dict()
+        dself = self.model_dump()
         if target_version == 2:
             dself["basis"] = self.basis.convert_v(target_version).model_dump()
 
@@ -101,7 +104,7 @@ class AtomicInput(ProtoModel):
     model: Model = Field(...)
     keywords: Dict[str, Any] = Field({})
     protocols: AtomicResultProtocols = Field(AtomicResultProtocols())
-    extras: Dict[str, Any] = Field({})
+    extras: GenericData = Field({})
     provenance: Provenance = Field(default_factory=partial(provenance_stamp, __name__), validate_default=True)
 
     model_config = ProtoModel._merge_config_with(json_schema_extra=atomic_input_json_schema_extra)

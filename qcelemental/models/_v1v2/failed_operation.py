@@ -1,9 +1,10 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from ..v2.basemodels import ProtoModel
 from ..v2.failed_operation import ComputeError
+from ..v2.types import GenericData
 from .basemodels import check_convertible_version
 
 
@@ -12,7 +13,7 @@ class FailedOperation(ProtoModel):
     input_data: Any = Field(None)
     success: bool = Field(False)
     error: ComputeError = Field(...)
-    extras: Optional[Dict[str, Any]] = Field({})
+    extras: Optional[GenericData] = Field({})
 
     def __repr_args__(self) -> "ReprArgs":
         return [("error", self.error)]
