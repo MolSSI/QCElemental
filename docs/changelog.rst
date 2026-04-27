@@ -26,15 +26,12 @@ Changelog
 
 .. _`sec:cl0500rc5`:
 
-0.50.0rc5 / 2026-04-DD (Unreleased)
+0.50.0rc5 / 2026-04-27
 ----------------------
 
 :docs:`v0.50.0rc5` for current. :docs:`v0.30.2` for QCSchema v1.
 
-Breaking Changes
-++++++++++++++++
-
-New Features
+Enhancements
 ++++++++++++
 - (:pr:`397`) Rework v2 serialization a bit from rc4, which was a reset to Pydantic conventions, to
   handle serialization of numpy arrays in non-QCSchema-constrained portions of instances (e.g., extras
@@ -44,16 +41,10 @@ New Features
   v2 serialization based on Pydantic utilities behave more like v1 serialization based on custom code.
   We'd like to ease away from managing numpy arrays in future, but for now this will help the transition.
 - (:pr:`397`) Add _v1v2 shim classes (QCSchema v1 layout expressed in Pydantic V2 API) for Optimization schema.
-
-Enhancements
-++++++++++++
-- (:pr:`xxx`) Return v2 OptimizationProperties.return_gradient as a shaped array.
-
-Bug Fixes
-+++++++++
-
-Misc.
-+++++
+- (:pr:`398`) Return v2 OptimizationProperties.return_gradient as a shaped array.
+- (:pr:`398`) Turn off visible warnings about `qcelemental.models.v1` not available for Py314+
+  because cluttering `import qcelemental`. There are still helpful errors upon instantiating a v1
+  model when impossible.
 
 
 .. _`sec:cl0500rc4`:
