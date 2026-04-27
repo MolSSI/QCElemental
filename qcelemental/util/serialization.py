@@ -4,9 +4,11 @@ from typing import Any, Mapping, Sequence, Union
 
 import numpy as np
 import pydantic
+
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     from pydantic.v1.json import pydantic_encoder
+
 from pydantic_core import to_jsonable_python
 
 from .importing import which_import
