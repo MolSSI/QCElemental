@@ -8,7 +8,8 @@ except ImportError:
     from typing_extensions import Annotated
 
 import numpy as np
-from pydantic import Discriminator, Field, Tag, field_validator
+from pydantic import Discriminator, Field, Tag, field_validator, model_serializer
+from pydantic_core.core_schema import SerializerFunctionWrapHandler
 
 from ...util import provenance_stamp, which_import
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
@@ -308,6 +309,9 @@ class OptimizationProperties(ProtoModel):
 
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
 
+    def __repr_args__(self) -> "ReprArgs":
+        return [(k, v) for k, v in self.model_dump(exclude_unset=True).items()]
+
     @field_validator(
         "return_gradient",
         # "return_hessian",
@@ -329,6 +333,12 @@ class OptimizationProperties(ProtoModel):
         except (ValueError, AttributeError):
             raise ValueError(f"Derivative must be castable to shape {shape}!")
         return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
 
 # ====  Results  ================================================================

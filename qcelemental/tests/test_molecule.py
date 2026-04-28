@@ -857,6 +857,13 @@ def test_nonphysical_spec(Molecule):
     print(mol.to_string(dtype="psi4"))
 
 
+def test_nonphysical_spec_from_data(Molecule):
+    mol = Molecule.from_data("""He@100.0 0.0 0.0 0.0""", nonphysical=True)
+    assert compare_values([100.0], mol.masses, "nonphysical mass")
+
+    print(mol.to_string(dtype="psi4"))
+
+
 def test_extras(Molecule):
     mol = Molecule(symbols=["He"], geometry=[0, 0, 0])
     assert mol.extras is not None

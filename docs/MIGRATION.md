@@ -54,6 +54,8 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - Layout: no structural/layout change at v0.50
   - Behavior: v2 normalizes `symbols` to title case; `extras` defaults to `{}`; `provenance` default is validated into a dict.
   - `convert_v()` available
+  - Note that with serialization changes for v2 (`None` skipped rather than "unset" skipped), if you're doing sequences
+    of serialize, hack, recreate (e.g., create new ionized mol from existing mol), these may start to fail or give different results.
 
 - `BasisSet` / `basis` (module name changes)
   - v2 makes `schema_name`/`schema_version` explicit and stricter, and conversion utilities handle `basis` supplied as a `BasisSet` object (not only a string)
@@ -213,6 +215,8 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - Be aware of extras merge on down-conversion: if you convert v2 results to v1, result extras override input extras on key collisions.
   - Be aware of potential loss on up-conversion: if you convert v1 results to v2, molecule and extras separation between Input and Result
     aren't available. Molecule will be duplicated and extras assigned to Result unless `convert_v(2, external_input_data=...)` used.
+- Note that for DFTD3 & DFTD4 run through QCEngine: the QCEngine-added input extras appear in `AtomicResult.input_data.specification.extras`,
+  formerly `AtomicResult.extras`, even routing through older (pre-v1.3, v4.1) programs.
 
 
 ---
@@ -536,13 +540,4 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
 - Update access to input context:
   - v1: `td_res.keywords`, `td_res.optimization_spec`, `td_res.input_specification`
   - v2: go through `td_res.input_data.specification...` (and then down the nested spec chain)
-
-
-
-
-
-
-- (:pr:`499`) DFTD3, DFTD4 - Allow running in QCSchema v2 mode for WIP upstream versions.
-  Note that QCEngine-added input extras appear in `AtomicResult.input_data.specification.extras`,
-  formerly `AtomicResult.extras`, even routing through older (pre-v1.3, v4.1) programs.
 

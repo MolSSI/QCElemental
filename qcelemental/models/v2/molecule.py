@@ -971,7 +971,7 @@ class Molecule(ProtoModel):
 
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
             subkwargs = {}
-            for key in ["verbose"]:
+            for key in ["verbose", "nonphysical"]:
                 if key in kwargs:
                     subkwargs[key] = kwargs.pop(key)
             mol_dict = from_string(data, dtype if dtype != "string" else None, **subkwargs)

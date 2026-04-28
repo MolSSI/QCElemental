@@ -19,6 +19,7 @@ def from_string(
     fix_com: bool = None,
     fix_orientation: bool = None,
     fix_symmetry: str = None,
+    nonphysical: bool = False,
     return_processed: bool = False,
     enable_qm: bool = True,
     enable_efp: bool = True,
@@ -279,6 +280,7 @@ def from_string(
         enable_efp=enable_efp,
         missing_enabled_return_qm=missing_enabled_return_qm,
         missing_enabled_return_efp=missing_enabled_return_efp,
+        nonphysical=nonphysical,
         verbose=verbose,
         **molinit,
     )
