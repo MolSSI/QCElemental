@@ -6,7 +6,9 @@ import numpy as np
 import pydantic
 
 with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=UserWarning, module=r"qcelemental\.util\.serialization", message=r".*Pydantic V1")
+    warnings.filterwarnings(
+        "ignore", category=UserWarning, module=r"qcelemental\.util\.serialization", message=r".*Pydantic V1"
+    )
     from pydantic.v1.json import pydantic_encoder
 
 from pydantic_core import to_jsonable_python
