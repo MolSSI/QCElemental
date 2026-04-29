@@ -26,10 +26,10 @@ _MSG = (
     "or migrate to qcelemental.models.v2. See docs/MIGRATION.md"
 )
 
-# Warn on import so users see the incompatibility when they explicitly import v1
-# Use FutureWarning (visible by default) so users notice the issue during import
-if sys.version_info >= (3, 14):
-    warnings.warn(_MSG, FutureWarning, stacklevel=2)
+# For a while, we used a FutureWarning (visible by default) so users notice the issue during import.
+# Below works, but it interferes with clean `import qcelemental`. So we'll rely on the instantiation errors.
+# if sys.version_info >= (3, 14):
+#    warnings.warn(_MSG, FutureWarning, stacklevel=2)
 
 
 def _make_placeholder(name: str):

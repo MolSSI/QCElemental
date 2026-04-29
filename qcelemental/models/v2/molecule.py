@@ -971,7 +971,7 @@ class Molecule(ProtoModel):
 
         if dtype in ["string", "psi4", "xyz", "xyz+"]:
             subkwargs = {}
-            for key in ["verbose"]:
+            for key in ["verbose", "nonphysical"]:
                 if key in kwargs:
                     subkwargs[key] = kwargs.pop(key)
             mol_dict = from_string(data, dtype if dtype != "string" else None, **subkwargs)
@@ -980,6 +980,8 @@ class Molecule(ProtoModel):
             input_dict = _filter_defaults(input_dict)
             input_dict["validated"] = True
             input_dict["_geometry_prep"] = True
+            if validate is True and subkwargs.get("nonphysical", False):
+                input_dict["nonphysical"] = subkwargs["nonphysical"]
         elif dtype == "numpy":
             data = np.asarray(data)
             data = {

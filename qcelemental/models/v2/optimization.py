@@ -7,8 +7,11 @@ except ImportError:
     # remove when minimum py39
     from typing_extensions import Annotated
 
-from pydantic import Discriminator, Field, Tag, field_validator
+import numpy as np
+from pydantic import Discriminator, Field, Tag, field_validator, model_serializer
+from pydantic_core.core_schema import SerializerFunctionWrapHandler
 
+from ...models import QCEL_V1V2_SHIM_CODE
 from ...util import provenance_stamp, which_import
 from .atomic import AtomicProperties, AtomicResult, AtomicSpecification
 from .basemodels import ProtoModel, check_convertible_version
@@ -58,14 +61,17 @@ class OptimizationProtocols(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_name", None)
 
             # serialization is compact, so use model to assure value
             dself.pop("trajectory_results", None)
             dself["trajectory"] = self.trajectory_results.value
 
-            self_vN = qcel.models.v1.OptimizationProtocols(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.OptimizationProtocols(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.OptimizationProtocols(**dself)
         else:
             assert False, target_version
 
@@ -172,7 +178,7 @@ class OptimizationSpecification(ProtoModel):
 
         loss_store = {}
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself["procedure"] = dself.pop("program")
             dself["keywords"]["program"] = dself["specification"].pop("program")
             dself["protocols"] = self.protocols.convert_v(target_version)
@@ -183,7 +189,10 @@ class OptimizationSpecification(ProtoModel):
             # if loss_store:
             #     dself["extras"]["_qcsk_conversion_loss"] = loss_store
 
-            self_vN = qcel.models.v1.OptimizationSpecification(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.OptimizationSpecification(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.OptimizationSpecification(**dself)
         else:
             assert False, target_version
 
@@ -236,7 +245,7 @@ class OptimizationInput(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_version")
 
             dself["initial_molecule"] = self.initial_molecule.convert_v(target_version)
@@ -255,7 +264,10 @@ class OptimizationInput(ProtoModel):
             assert not dself["specification"], dself["specification"]
             dself.pop("specification")  # now empty
 
-            self_vN = qcel.models.v1.OptimizationInput(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.OptimizationInput(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.OptimizationInput(**dself)
         else:
             assert False, target_version
 
@@ -306,6 +318,37 @@ class OptimizationProperties(ProtoModel):
     final_rms_displacement: Optional[float] = Field(None)
 
     model_config = ProtoModel._merge_config_with(force_skip_defaults=True)
+
+    def __repr_args__(self) -> "ReprArgs":
+        return [(k, v) for k, v in self.model_dump(exclude_unset=True).items()]
+
+    @field_validator(
+        "return_gradient",
+        # "return_hessian",
+    )
+    @classmethod
+    def _validate_derivs(cls, v, info):
+        if v is None:
+            return v
+
+        if info.field_name.endswith("_gradient"):
+            shape = (-1, 3)
+        elif info.field_name.endswith("_hessian"):
+            v = np.asarray(v)
+            nsq = int(v.size**0.5)
+            shape = (nsq, nsq)
+
+        try:
+            v = np.asarray(v).reshape(shape)
+        except (ValueError, AttributeError):
+            raise ValueError(f"Derivative must be castable to shape {shape}!")
+        return v
+
+    @model_serializer(mode="wrap")
+    def _remove_none(self, handler: SerializerFunctionWrapHandler) -> Dict[str, Any]:
+        # Removes fields with a value of None from the serialized output
+        serialized = handler(self)
+        return {k: v for k, v in serialized.items() if v is not None}
 
 
 # ====  Results  ================================================================
@@ -377,7 +420,7 @@ class OptimizationResult(ProtoModel):
             return self
 
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             try:
                 trajectory_class = self.trajectory_results[0].__class__
             except IndexError:
@@ -405,7 +448,10 @@ class OptimizationResult(ProtoModel):
             dself.pop("schema_name")  # changed in v1
             dself.pop("schema_version")  # changed in v1
 
-            self_vN = qcel.models.v1.OptimizationResult(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.OptimizationResult(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.OptimizationResult(**dself)
         else:
             assert False, target_version
 

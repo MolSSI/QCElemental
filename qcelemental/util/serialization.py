@@ -1,9 +1,16 @@
 import json
+import warnings
 from typing import Any, Mapping, Sequence, Union
 
 import numpy as np
 import pydantic
-from pydantic.v1.json import pydantic_encoder
+
+with warnings.catch_warnings():
+    warnings.filterwarnings(
+        "ignore", category=UserWarning, module=r"qcelemental\.util\.serialization", message=r".*Pydantic V1"
+    )
+    from pydantic.v1.json import pydantic_encoder
+
 from pydantic_core import to_jsonable_python
 
 from .importing import which_import

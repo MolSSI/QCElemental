@@ -148,10 +148,12 @@ jobs:
               {"label": "dev", "path": "dev/"},
               {"label": "next", "path": "next/"},
               {"label": "v0.30.2", "path": "v0.30.2/"},
+              {"label": "v0.50.0rc2", "path": "v0.50.0rc2/"},
+              {"label": "v0.50.0rc3", "path": "v0.50.0rc3/"},
           ]
           lbl = os.environ.get("VERSION_LABEL", "")
           tgt = os.environ.get("TARGET_FOLDER", "")
-          if lbl and lbl not in ("dev",) and tgt:
+          if lbl and lbl not in ("dev", "next") and tgt:
               pinned.insert(1, {"label": lbl, "path": tgt.rstrip("/") + "/"})
           p.write_text(json.dumps(pinned, indent=2) + "\n")
           PY

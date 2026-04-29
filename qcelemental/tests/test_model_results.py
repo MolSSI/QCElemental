@@ -824,6 +824,22 @@ def test_result_derivatives_array(request, schema_versions):
     assert obj.model_dump().keys() == expected_keys
 
 
+def test_opt_result_derivatives_array(request):
+    # OptProp new in v2
+    OptimizationProperties = qcel.models.v2.OptimizationProperties
+
+    nat = 4
+    lgrad = list(range(nat * 3))
+
+    obj = OptimizationProperties(final_rms_force=0.004, return_gradient=lgrad)
+
+    assert obj.final_rms_force == 0.004
+    assert obj.return_gradient.shape == (4, 3)
+
+    expected_keys = {"final_rms_force", "return_gradient", "schema_name"}
+    assert obj.model_dump().keys() == expected_keys
+
+
 @pytest.fixture(scope="function")
 def every_model_fixture(request):
     datas = {}
