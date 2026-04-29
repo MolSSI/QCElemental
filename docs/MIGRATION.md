@@ -541,3 +541,19 @@ v2, return control to the schema wrapper, call `convert_v(return_version)`, and 
   - v1: `td_res.keywords`, `td_res.optimization_spec`, `td_res.input_specification`
   - v2: go through `td_res.input_data.specification...` (and then down the nested spec chain)
 
+# Software Status, including First-Class QCSchema Interfaces
+
+- QCElemental: as of v0.50.0 offers QCSchema v1 and v2 Pydantic models
+- QCEngine: as of v0.50.0 runs with v2 internally but accepts and returns either v1 or v2 (`return_version=1|2` else version-in-is-version-out)
+- QCManyBody: as of v0.6.0 offers ManyBody QCSchema in v1 and v2 Pydantic models. Core interface is indifferent, but high-level interface is
+  version-in-is-version-out by working from either `qcmanybody.v1.ManyBodyComputer` or `qcmanybody.v2.ManyBodyComputer`.
+- simple-dftd3/s-dftd3: as of v1.3.0 runs with QCSchema v1 or v2 as passed in (version-in-is-version-out through
+  `dftd3.qcschema.run_qcschema(qcsk_atomicinput_v1_or_v2)`)
+- dftd4: as of v4.1.0 runs with QCSchema v1 or v2 as passed in (version-in-is-version-out through `dftd4.qcschema.run_qcschema(qcsk_atomicinput_v1_or_v2)`)
+- optking: as of v0.5.0 runs QCSchema v1 or v2 (version-in-is-version-out)
+- geomeTRIC: NYI, still internal v1
+- psi4: as of v1.11.0 (not yet released) runs with v2 internally but accepts and returns either v1 or v2 (`return_version=1|2` else version-in-is-version-out)
+- xtb: as of v26.1? (not yet released) runs with QCSchema v1 or v2 as passed in (version-in-is-version-out through `xtb.qcschema.harness.run_qcschema(qcsk_atomicinput_v1_or_v2)`)
+- tblite: as of v0.6.0? (not yet released) runs with QCSchema v1 or v2 as passed in (version-in-is-version-out through `tblite.qcschema.run_schema(qcsk_atomicinput_v1_or_v2)`)
+
+

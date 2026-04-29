@@ -26,7 +26,7 @@ Changelog
 
 .. _`sec:cl0500rc5`:
 
-0.50.0rc5 / 2026-04-28
+0.50.0rc5 / 2026-04-29
 ----------------------
 
 :docs:`v0.50.0rc5` for current. :docs:`v0.30.2` for QCSchema v1.
