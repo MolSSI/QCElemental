@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+g161e29ea7 documentation</title>
+  <title>qcelemental.models.v2.optimization &mdash; QCElemental 0.1.dev1+g99005facc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=ee351736"></script>
+      <script src="../../../../_static/documentation_options.js?v=009cc195"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -117,8 +117,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1"># remove when minimum py39</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discriminator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">field_validator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discriminator</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">model_serializer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic_core.core_schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerializerFunctionWrapHandler</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">...models</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCEL_V1V2_SHIM_CODE</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span><span class="p">,</span> <span class="n">which_import</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.atomic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicProperties</span><span class="p">,</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">AtomicSpecification</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
@@ -172,14 +175,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">return</span> <span class="bp">self</span>
 
         <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">]:</span>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
             <span class="c1"># serialization is compact, so use model to assure value</span>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;trajectory_results&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;trajectory&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_results</span><span class="o">.</span><span class="n">value</span>
 
-            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationProtocols</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationProtocols</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target_version</span> <span class="o">==</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">_v1v2</span><span class="o">.</span><span class="n">OptimizationProtocols</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
 
@@ -292,7 +298,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <span class="n">loss_store</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">]:</span>
             <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;procedure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
             <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">][</span><span class="s2">&quot;program&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
             <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;protocols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocols</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
@@ -303,7 +309,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="c1"># if loss_store:</span>
             <span class="c1">#     dself[&quot;extras&quot;][&quot;_qcsk_conversion_loss&quot;] = loss_store</span>
 
-            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationSpecification</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationSpecification</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target_version</span> <span class="o">==</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">_v1v2</span><span class="o">.</span><span class="n">OptimizationSpecification</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
 
@@ -362,7 +371,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">return</span> <span class="bp">self</span>
 
         <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">]:</span>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>
 
             <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;initial_molecule&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
@@ -381,7 +390,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">assert</span> <span class="ow">not</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">],</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>  <span class="c1"># now empty</span>
 
-            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationInput</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationInput</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target_version</span> <span class="o">==</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">_v1v2</span><span class="o">.</span><span class="n">OptimizationInput</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
 
@@ -435,7 +447,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">final_max_displacement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">final_rms_displacement</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_unset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span>
+        <span class="s2">&quot;return_gradient&quot;</span><span class="p">,</span>
+        <span class="c1"># &quot;return_hessian&quot;,</span>
+    <span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_derivs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">v</span>
+
+        <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">field_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_gradient&quot;</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">info</span><span class="o">.</span><span class="n">field_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_hessian&quot;</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">nsq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">size</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">nsq</span><span class="p">,</span> <span class="n">nsq</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Derivative must be castable to shape </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@model_serializer</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wrap&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">SerializerFunctionWrapHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="c1"># Removes fields with a value of None from the serialized output</span>
+        <span class="n">serialized</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">serialized</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span></div>
 
 
 
@@ -512,7 +555,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">return</span> <span class="bp">self</span>
 
         <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">]:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">trajectory_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajectory_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
@@ -540,7 +583,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>  <span class="c1"># changed in v1</span>
             <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>  <span class="c1"># changed in v1</span>
 
-            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationResult</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">OptimizationResult</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">target_version</span> <span class="o">==</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">:</span>
+                <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">_v1v2</span><span class="o">.</span><span class="n">OptimizationResult</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
 

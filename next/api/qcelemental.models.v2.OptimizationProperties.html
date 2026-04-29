@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OptimizationProperties &mdash; QCElemental 0.1.dev1+g161e29ea7 documentation</title>
+  <title>OptimizationProperties &mdash; QCElemental 0.1.dev1+g99005facc documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=ee351736"></script>
+      <script src="../_static/documentation_options.js?v=009cc195"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -302,6 +302,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><p><a class="reference internal" href="#qcelemental.models.v2.OptimizationProperties.schema_name" title="qcelemental.models.v2.optimization.OptimizationProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_optimization_properties'])</span></code></a></p></li>
 </ul>
 </dd>
+<dt class="field-even">Validators<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_derivs</span></code> » <a class="reference internal" href="#qcelemental.models.v2.OptimizationProperties.return_gradient" title="qcelemental.models.v2.optimization.OptimizationProperties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_gradient</span></code></a></p></li>
+</ul>
+</dd>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="qcelemental.models.v2.OptimizationProperties.final_max_displacement">
@@ -346,6 +351,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dt class="sig sig-object py" id="qcelemental.models.v2.OptimizationProperties.return_gradient">
 <em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_gradient</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#tuple" title="(in Python v3.10)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ValidatableArrayAnnotation</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.OptimizationProperties.return_gradient" title="Link to this definition"></a></dt>
 <dd><p>The gradient of the final optimized molecule. Always available. Identical to <code class="xref py py-attr docutils literal notranslate"><span class="pre">return_gradient</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_derivs</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
