@@ -760,7 +760,7 @@ class AtomicSpecification(ProtoModel):
 
         loss_store = {}
         dself = self.model_dump()
-        if target_version == 1:
+        if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself.pop("schema_name")
 
             loss_store["protocols"] = dself.pop("protocols")
@@ -770,7 +770,10 @@ class AtomicSpecification(ProtoModel):
                 pass
                 # TODO dself["extras"]["_qcsk_conversion_loss"] = loss_store
 
-            self_vN = qcel.models.v1.QCInputSpecification(**dself)
+            if target_version == 1:
+                self_vN = qcel.models.v1.QCInputSpecification(**dself)
+            elif target_version == QCEL_V1V2_SHIM_CODE:
+                self_vN = qcel.models._v1v2.QCInputSpecification(**dself)
         else:
             assert False, target_version
 
