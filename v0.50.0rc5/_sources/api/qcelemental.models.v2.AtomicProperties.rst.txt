@@ -1,0 +1,6 @@
+AtomicProperties
+================
+
+.. currentmodule:: qcelemental.models.v2
+
+.. autopydantic_model:: AtomicProperties
