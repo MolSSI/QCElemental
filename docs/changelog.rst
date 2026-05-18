@@ -24,6 +24,30 @@ Changelog
 .. +++++
 
 
+.. _`sec:clxy0`:
+
+0.50.0 / 2026-MM-DD (Unreleased)
+-------------------
+
+:docs:`vx.y.0` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+
+Enhancements
+++++++++++++
+
+Bug Fixes
++++++++++
+- (:pr:`401`, :pr:`400`) Fix circular import when importing submodules.
+
+Misc.
++++++
+
+
 .. _`sec:cl0500rc5`:
 
 0.50.0rc5 / 2026-04-29

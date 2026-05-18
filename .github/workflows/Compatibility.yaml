@@ -52,6 +52,7 @@ jobs:
               # Build
               - setuptools
               - setuptools-scm
+              - pip
               # Core
               - python
               - pydantic
