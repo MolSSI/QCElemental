@@ -40,12 +40,12 @@ class PeriodicTable:
     """
 
     def __init__(self):
-        from . import data
+        from .data import nist_2011_atomic_weights
 
         # Of length number of elements
-        self.Z = data.nist_2011_atomic_weights["Z"]
-        self.E = data.nist_2011_atomic_weights["E"]
-        self.name = data.nist_2011_atomic_weights["name"]
+        self.Z = nist_2011_atomic_weights["Z"]
+        self.E = nist_2011_atomic_weights["E"]
+        self.name = nist_2011_atomic_weights["name"]
 
         self._el2z = dict(zip(self.E, self.Z))
         self._z2el = collections.OrderedDict(zip(self.Z, self.E))
@@ -53,10 +53,10 @@ class PeriodicTable:
         self._el2element = dict(zip(self.E, self.name))
 
         # Of length number of isotopes
-        self._EE = data.nist_2011_atomic_weights["_EE"]
-        self.EA = data.nist_2011_atomic_weights["EA"]
-        self.A = data.nist_2011_atomic_weights["A"]
-        self.mass = data.nist_2011_atomic_weights["mass"]
+        self._EE = nist_2011_atomic_weights["_EE"]
+        self.EA = nist_2011_atomic_weights["EA"]
+        self.A = nist_2011_atomic_weights["A"]
+        self.mass = nist_2011_atomic_weights["mass"]
 
         self._eliso2mass = dict(zip(self.EA, self.mass))
         self._eliso2el = dict(zip(self.EA, self._EE))
