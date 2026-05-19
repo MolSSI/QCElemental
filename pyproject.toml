@@ -11,7 +11,7 @@ issues = "https://github.com/MolSSI/QCElemental/issues"
 [project]
 name = "qcelemental"
 dynamic = ["version"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 description = "Core data structures for Quantum Chemistry."
 authors = [
   { name="The QCArchive Development Team", email="qcarchive@molssi.org" },
@@ -23,7 +23,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -48,7 +47,8 @@ standard = [
 viz = [
     "nglview",  # !py38  # insufficient on pypi as also need `dot`. python-graphviz sufficient in conda. !py314
     "setuptools >=68.0.0; python_version>='3.12'",  # nglview needs pkg_resources
-                # setuptools is needed temporarily to avoid pkg_resources error with ngl_view. remove from here after next nglview release beyond v1.3.4
+                # setuptools is needed temporarily to avoid pkg_resources error with ngl_view. remove
+                #   from here after next nglview release beyond v1.3.4 (v4.0 for py>=311 on c-f)
     "ipykernel <6.0",
 ]
 align = [
@@ -77,16 +77,6 @@ docs = [
     "autodoc-pydantic >2.0",
     "sphinx-automodapi",
 ]
-
-#[tool.poetry.dependencies]
-#packaging = ">=24.1"
-#pytest = { version = "^7.2.2", optional = true }
-
-#[tool.poetry.group.dev.dependencies]
-#msgpack = "^1.0.8"
-#    { version = "^1.22", python = "<3.10" },
-#    { version = "^2.3", python = ">=3.10,<4.0.0" }
-#]
 
 [tool.black]
 line-length = 120

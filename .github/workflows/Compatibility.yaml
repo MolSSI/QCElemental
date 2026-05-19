@@ -29,6 +29,11 @@ jobs:
             python-version: "3.13"
             pytest:
 
+          - label: Py-314
+            runs-on: "ubuntu-latest"
+            python-version: "3.14"
+            pytest:
+
     name: "🐍 ${{ matrix.cfg.python-version }} • ${{ matrix.cfg.label }} • ${{ matrix.runs-on }}"
     runs-on: "ubuntu-latest"
 
@@ -77,6 +82,7 @@ jobs:
             EOF
             if [[ "${{ matrix.cfg.label }}" == "Py-314" ]]; then
                 sed -i "s;- psi4;#- psi4;g" compat.yaml
+                sed -i "s;- optking;#- optking;g" compat.yaml  # needs psi4
             fi
             # model sed for L/W
             #   sed -i "s;;;g" compat.yaml
@@ -130,7 +136,8 @@ jobs:
         continue-on-error: true
         run: |
           qcengine info
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcengine
+          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcengine -k "not dftd3_task"
+          # dftd3_task until qcng 0.50 since I didn't patch the simple-dftd3 default change in master
 
       - name: Test QCFractal
         if: true

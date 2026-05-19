@@ -4,7 +4,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/MolSSI/QCElemental.svg?logo=Codecov&logoColor=white)](https://codecov.io/gh/MolSSI/QCElemental)
 [![Documentation Status](https://img.shields.io/github/actions/workflow/status/MolSSI/QCElemental/CI.yaml?label=docs&logo=readthedocs&logoColor=white)](https://molssi.github.io/QCElemental/)
 [![Chat on Slack](https://img.shields.io/badge/chat-on_slack-green.svg?longCache=true&style=flat&logo=slack)](https://join.slack.com/t/qcarchive/shared_invite/zt-3calopudd-2rtUC~XN1tj1Zn9MHkV6GQ)
-![python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![python](https://img.shields.io/badge/python-3.10+-blue.svg)
 
 **Documentation:** [GitHub Pages](https://molssi.github.io/QCElemental/)
 
@@ -20,6 +20,10 @@ This project also contains a generator, validator, and translator for [Molecule 
 
   ```sh
   python -m pip install qcelemental
+  ```
+
+  ```sh
+  conda install qcelemental -c conda-forge
   ```
 
 - To install QCElemental with molecule visualization capabilities (useful in iPython or Jupyter notebook environments):

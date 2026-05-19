@@ -282,6 +282,27 @@ Misc.
 - (:pr:`377`) no longer testing/ensuring np.array([single-float]) are coerced into float property results
 
 
+.. _`sec:cl0302`:
+
+0.30.2 / 2026-02-14
+-------------------
+
+:docs:`v0.30.2` for QCSchema v1.
+
+Enhancements
+++++++++++++
+- (:pr:`386`) Set up documentation build to store versions of documentation for each tag plus dev.
+
+
+0.30.1 / 2026-02-10
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`384`) Update nglview optional dep to accommodate setuptools 82.0 w/o pkg_resources.
+  Either use the new version of nglview or an older version of both nglview and setuptools.
+
+
 0.30.0 / 2026-01-07
 -------------------
 
