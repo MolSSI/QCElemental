@@ -29,16 +29,29 @@ Changelog
 0.50.0 / 2026-05-19
 -------------------
 
-:docs:`vx.y.0` for current. :docs:`v0.30.2` for QCSchema v1.
+:docs:`v0.50.0` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Please review release notes from the 0.50.0 release candidates below.
+Highlights from those are repeated here. There is also:
+
+* a graphical [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf) comparing QCSchema v1 and v2
+* a [migration guide](docs/MIGRATION.md)
 
 Breaking Changes
 ++++++++++++++++
+- No uses of QCSchema v1 should break.
 
 New Features
 ++++++++++++
-
-Enhancements
-++++++++++++
+- Introduces QCSchema v2 models written in Pydantic v2 API. New models available as
+  ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
+- Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure
+  medium-term availability of existing models.
+- Note that Pydantic doesn't offer its v1 API within version v2 for Python >=3.14. For 314, while
+  all imports will work, attempting to instantiate a QCSchema v1 model will raise a ``RuntimeError``.
+- QCSchema v1 and v2 models learned a ``.convert_v(ver)`` function that returns self or the other
+  version. This is available for all top-level models (e.g., Molecule, FailedOp, Inputs, and Outputs)
+  and many component models. This is by far the cleanest way of converting.
 
 Bug Fixes
 +++++++++
@@ -46,6 +59,9 @@ Bug Fixes
 
 Misc.
 +++++
+- Require minimum Pydantic v2.11 (v2.12 for Py v3.14)
+- (:pr:`402`) Requires minimum Python v3.10.
+- (:pr:`402`) CI updates for v0.50.0 release.
 
 
 .. _`sec:cl0500rc5`:
