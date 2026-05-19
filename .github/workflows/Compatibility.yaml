@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - master
-      - next2025
-      - next2026
   pull_request:
     branches:
       - master
-      - next2025
-      - next2026
   schedule:
     - cron: "9 16 * * 1"
 

@@ -24,9 +24,9 @@ Changelog
 .. +++++
 
 
-.. _`sec:clxy0`:
+.. _`sec:cl0500`:
 
-0.50.0 / 2026-MM-DD (Unreleased)
+0.50.0 / 2026-05-19
 -------------------
 
 :docs:`vx.y.0` for current. :docs:`v0.30.2` for QCSchema v1.

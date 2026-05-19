@@ -10,7 +10,6 @@ issues = "https://github.com/MolSSI/QCElemental/issues"
 
 [project]
 name = "qcelemental"
-#version = "0.30.0"
 dynamic = ["version"]
 requires-python = ">=3.9"
 description = "Core data structures for Quantum Chemistry."

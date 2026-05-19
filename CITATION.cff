@@ -25,6 +25,9 @@ authors:
   - given-names: Matthew
     family-names: Welborn
     affiliation: The Molecular Sciences Software Institute
+  - given-names: Benjamin P.
+    family-names: Pritchard
+    affiliation: The Molecular Sciences Software Institute
 identifiers:
   - type: doi
     value: 10.1002/wcms.1491
@@ -46,5 +49,5 @@ keywords:
   - physical-constant
   - schema
 license: BSD-3-Clause
-version: 0.30.2
-date-released: '2026-02-14'
+version: 0.50.0
+date-released: '2026-05-19'
