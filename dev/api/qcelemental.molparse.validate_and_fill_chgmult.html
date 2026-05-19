@@ -1,25 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>validate_and_fill_chgmult &mdash; QCElemental 0.30.2 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autodoc_pydantic.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>validate_and_fill_chgmult &mdash; QCElemental 0.1.dev1+g274e9c352 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-        <script src="../_static/version-switcher.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=136729b0"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/version-switcher.js?v=313414bb"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -53,9 +52,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="../index.html" class="icon icon-home">
             QCElemental
           </a>
-              <div class="version">
-                0.30.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -68,19 +64,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../model_result.html">AtomicResult</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
 <ul class="current">
@@ -104,7 +102,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models">qcelemental.models Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models.v2">qcelemental.models.v2 Package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -136,31 +134,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <div itemprop="articleBody">
              
   <section id="validate-and-fill-chgmult">
-<h1>validate_and_fill_chgmult<a class="headerlink" href="#validate-and-fill-chgmult" title="Permalink to this heading"></a></h1>
+<h1>validate_and_fill_chgmult<a class="headerlink" href="#validate-and-fill-chgmult" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="qcelemental.molparse.validate_and_fill_chgmult">
-<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">validate_and_fill_chgmult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_separators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_multiplicity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_multiplicities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_ghost_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/chgmult.html#validate_and_fill_chgmult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.validate_and_fill_chgmult" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">validate_and_fill_chgmult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zeff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_separators</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_multiplicity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragment_multiplicities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_ghost_fragments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/chgmult.html#validate_and_fill_chgmult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.validate_and_fill_chgmult" title="Link to this definition"></a></dt>
 <dd><p>Forms molecular and fragment charge and multiplicity specification
 by completing and reconciling information from argument, supplemented
 by physical constraints and sensible defaults.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>zeff</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nat,) electron counts (float) for neutral atoms, generally Z nuclear charge.
+<li><p><strong>zeff</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nat,) electron counts (float) for neutral atoms, generally Z nuclear charge.
 0 indicates ghosts such that a full fragment of 0s will be constained
 to <cite>0 1</cite> charge &amp; multiplicity.</p></li>
-<li><p><strong>fragment_separators</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – (nfr - 1, ) indices splitting <cite>zeff</cite> into nfr fragments.</p></li>
-<li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – Total charge for molecular system.</p></li>
-<li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]]) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
+<li><p><strong>fragment_separators</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – (nfr - 1, ) indices splitting <cite>zeff</cite> into nfr fragments.</p></li>
+<li><p><strong>molecular_charge</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> | </em><em>None</em>) – Total charge for molecular system.</p></li>
+<li><p><strong>fragment_charges</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em>] </em><em>| </em><em>None</em>) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
 unknown. Expected pre-defaulted so even if nothing known, if
 <cite>fragment_separators</cite> breaks <cite>zeff</cite> into <cite>nfr=2</cite> fragments, input
 value should be <code class="docutils literal notranslate"><span class="pre">fragment_charges=[None,</span> <span class="pre">None]</span></code>.</p></li>
-<li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Total multiplicity for molecular system.</p></li>
-<li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]]) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
+<li><p><strong>molecular_multiplicity</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em> | </em><em>None</em>) – Total multiplicity for molecular system.</p></li>
+<li><p><strong>fragment_multiplicities</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>] </em><em>| </em><em>None</em>) – (nfr,) known fragment charges with <cite>None</cite> as placeholder for
 unknown. Expected pre-defaulted so even if nothing known, if
 <cite>fragment_separators</cite> breaks <cite>zeff</cite> into <cite>nfr=2</cite> fragments, input
 value should be <code class="docutils literal notranslate"><span class="pre">fragment_multiplicities=[None,</span> <span class="pre">None]</span></code>.</p></li>
-<li><p><strong>zero_ghost_fragments</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Fragments composed entirely of ghost atoms (Zeff=0) are required to have
+<li><p><strong>zero_ghost_fragments</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Fragments composed entirely of ghost atoms (Zeff=0) are required to have
 chgmult <cite>0 1</cite>. When <cite>False</cite>, violations of this will cause a
 ValidationError. When <cite>True</cite>, treat ghost fragments indicated by <cite>zeff</cite> to
 contain superior information over chgmult arguments that might still
@@ -168,14 +166,11 @@ correspond to full-real molecule. Clears information from
 <cite>molecular_charge</cite> and <cite>molecular_multiplicity</cite> and sets ghost fragments
 to <cite>0 1</cite>, leaving other positions free to readjust. Unused (prefer to set
 up such manipulations outside function call) but works.</p></li>
-<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Amount of printing.</p></li>
+<li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – Amount of printing.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>molecular_charge</strong> (<em>float</em>) – Total charge for molecular system.</p></li>
 <li><p><strong>fragment_charges</strong> (<em>list of float</em>) – (nfr,) Charge on each fragment.</p></li>
 <li><p><strong>molecular_multiplicity</strong> (<em>int</em>) – Total multiplicity for molecular system.</p></li>
@@ -183,8 +178,11 @@ up such manipulations outside function call) but works.</p></li>
 </ul>
 </p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – When no solution to input arguments subject to the constraints below can be found.</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – When no solution to input arguments subject to the constraints below can be found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Dict" title="(in Python v3.10)"><em>Dict</em></a>[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a>, <a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Any" title="(in Python v3.10)"><em>Any</em></a>]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

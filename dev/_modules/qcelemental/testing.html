@@ -1,24 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.testing &mdash; QCElemental 0.30.2 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/autodoc_pydantic.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>qcelemental.testing &mdash; QCElemental 0.1.dev1+g274e9c352 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script src="../../_static/version-switcher.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=136729b0"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/version-switcher.js?v=313414bb"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,9 +49,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="../../index.html" class="icon icon-home">
             QCElemental
           </a>
-              <div class="version">
-                0.30.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -65,19 +61,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Install QCElemental</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../model_common.html">Common</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../physconst.html">Physical Constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../periodic_table.html">Periodic Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../covalent_radii.html">Covalent Radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vanderwaals_radii.html">van der Waals Radii</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../models.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../model_molecule.html">Molecule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../model_result.html">AtomicResult</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../model_common.html">Common</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
 <ul>
@@ -114,16 +112,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pydantic</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Will also trap ModuleNotFoundError</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span>  <span class="c1"># TODO: recheck if .v1 needed</span>
 
 <span class="n">pp</span> <span class="o">=</span> <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
 
@@ -150,7 +145,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_back</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span>
 
 
-<div class="viewcode-block" id="compare_values"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_values.html#qcelemental.compare_values">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_values</span><span class="p">(</span>
+<div class="viewcode-block" id="compare_values">
+<a class="viewcode-back" href="../../api/qcelemental.testing.compare_values.html#qcelemental.compare_values">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_values</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -296,11 +293,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_rms</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
 
 
-<div class="viewcode-block" id="compare"><a class="viewcode-back" href="../../api/qcelemental.testing.compare.html#qcelemental.compare">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span>
+<div class="viewcode-block" id="compare">
+<a class="viewcode-back" href="../../api/qcelemental.testing.compare.html#qcelemental.compare">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -418,16 +418,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="n">allclose</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_compare_recursive</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">computed</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">equal_phase</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">_prefix</span> <span class="ow">or</span> <span class="s2">&quot;root&quot;</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
 
     <span class="c1"># Initial conversions if required</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">):</span>
+        <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">computed</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">):</span>
+        <span class="n">computed</span> <span class="o">=</span> <span class="n">computed</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">):</span>
         <span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">computed</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">computed</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">):</span>
         <span class="n">computed</span> <span class="o">=</span> <span class="n">computed</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)):</span>
@@ -491,9 +498,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">errors</span>
 
 
-<div class="viewcode-block" id="compare_recursive"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_recursive.html#qcelemental.compare_recursive">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_recursive</span><span class="p">(</span>
-    <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
-    <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+<div class="viewcode-block" id="compare_recursive">
+<a class="viewcode-back" href="../../api/qcelemental.testing.compare_recursive.html#qcelemental.compare_recursive">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_recursive</span><span class="p">(</span>
+    <span class="n">expected</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+    <span class="n">computed</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="s2">&quot;ProtoModel&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">,</span>
@@ -603,7 +612,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">return_handler</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret_msg_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">ret_msg_str</span><span class="p">,</span> <span class="n">return_message</span><span class="p">,</span> <span class="n">quiet</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="compare_molrecs"><a class="viewcode-back" href="../../api/qcelemental.testing.compare_molrecs.html#qcelemental.compare_molrecs">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compare_molrecs</span><span class="p">(</span>
+
+<div class="viewcode-block" id="compare_molrecs">
+<a class="viewcode-back" href="../../api/qcelemental.testing.compare_molrecs.html#qcelemental.compare_molrecs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_molrecs</span><span class="p">(</span>
     <span class="n">expected</span><span class="p">,</span>
     <span class="n">computed</span><span class="p">,</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -703,6 +715,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">return_message</span><span class="o">=</span><span class="n">return_message</span><span class="p">,</span>
         <span class="n">return_handler</span><span class="o">=</span><span class="n">return_handler</span><span class="p">,</span>
     <span class="p">)</span></div>
+
 </pre></div>
 
            </div>

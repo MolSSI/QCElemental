@@ -1,24 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molutil.align &mdash; QCElemental 0.30.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/autodoc_pydantic.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>qcelemental.molutil.align &mdash; QCElemental 0.1.dev1+g274e9c352 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/version-switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=136729b0"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/version-switcher.js?v=313414bb"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -50,9 +49,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="../../../index.html" class="icon icon-home">
             QCElemental
           </a>
-              <div class="version">
-                0.30.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -65,19 +61,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
 <ul>
@@ -113,15 +111,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidationError</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AlignmentMill</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..physical_constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..testing</span><span class="w"> </span><span class="kn">import</span> <span class="n">compare_values</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">distance_matrix</span><span class="p">,</span> <span class="n">linear_sum_assignment</span><span class="p">,</span> <span class="n">random_rotation_matrix</span><span class="p">,</span> <span class="n">uno</span><span class="p">,</span> <span class="n">which_import</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">AlignmentMill</span>  <span class="c1"># v2 so accessible to all Python versions</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_nre</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">geom</span><span class="p">):</span>
@@ -143,7 +143,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">_nre</span><span class="p">(</span><span class="n">pZ</span><span class="p">,</span> <span class="n">geom</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="B787"><a class="viewcode-back" href="../../../api/qcelemental.molutil.B787.html#qcelemental.molutil.B787">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">B787</span><span class="p">(</span>
+<div class="viewcode-block" id="B787">
+<a class="viewcode-back" href="../../../api/qcelemental.molutil.B787.html#qcelemental.molutil.B787">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">B787</span><span class="p">(</span>
     <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">cuniq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -179,7 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">        See `runiq` for more details. Strings and count in `cuniq` must match</span>
 <span class="sd">        `runiq`. That is, `sorted(cuniq) == sorted(runiq)`.</span>
 <span class="sd">    do_plot</span>
-<span class="sd">        Pops up a mpl plot showing before, after, and ref geometries.</span>
+<span class="sd">        Pops up a mpl plot showing before, after, and ref geometries. NOT AVAILABLE</span>
 <span class="sd">    verbose</span>
 <span class="sd">        Quantity of printing. 0 to silence.</span>
 <span class="sd">    atoms_map</span>
@@ -212,11 +214,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">    float, AlignmentMill</span>
 <span class="sd">        First item is RMSD [A] between `rgeom` and the optimally aligned</span>
 <span class="sd">        geometry computed.</span>
-<span class="sd">        Second item is a AlignmentMill with fields</span>
+<span class="sd">        Second item is an AlignmentMill with fields</span>
 <span class="sd">        (shift, rotation, atommap, mirror) that prescribe the transformation</span>
 <span class="sd">        from `cgeom` and the optimally aligned geometry.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">AlignmentMill</span>
+
     <span class="c1"># validation</span>
     <span class="k">if</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">cgeom</span><span class="o">.</span><span class="n">shape</span> <span class="ow">or</span> <span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;natom doesn&#39;t match: </span><span class="si">{}</span><span class="s2"> != </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">cgeom</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
@@ -378,7 +382,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="k">if</span> <span class="n">do_plot</span><span class="p">:</span>
         <span class="c1"># TODO Missing import</span>
-        <span class="n">plot_coord</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">rgeom</span><span class="p">,</span> <span class="n">cand</span><span class="o">=</span><span class="n">ageom</span><span class="p">,</span> <span class="n">orig</span><span class="o">=</span><span class="n">cgeom</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;Final RMSD = </span><span class="si">{:8.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final_rmsd</span><span class="p">))</span>
+        <span class="c1"># plot_coord(ref=rgeom, cand=ageom, orig=cgeom, comment=&quot;Final RMSD = {:8.4f}&quot;.format(final_rmsd))</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;do_plot not implemented&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
 
     <span class="c1"># sanity checks</span>
     <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span>
@@ -403,6 +408,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">assert</span> <span class="n">compare_values</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_rmsd</span><span class="p">,</span> <span class="s2">&quot;D: null RMSD&quot;</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-4</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="p">(</span><span class="n">verbose</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">final_rmsd</span><span class="p">,</span> <span class="n">hold_solution</span></div>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_plausible_atom_orderings</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">rgeom</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;hungarian_uno&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">uno_cutoff</span><span class="o">=</span><span class="mf">1.0e-3</span><span class="p">):</span>
@@ -543,7 +549,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">yield</span> <span class="n">atpat</span>
 
 
-<div class="viewcode-block" id="kabsch_align"><a class="viewcode-back" href="../../../api/qcelemental.molutil.kabsch_align.html#qcelemental.molutil.kabsch_align">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="kabsch_align">
+<a class="viewcode-back" href="../../../api/qcelemental.molutil.kabsch_align.html#qcelemental.molutil.kabsch_align">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kabsch_align</span><span class="p">(</span><span class="n">rgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">cgeom</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Finds optimal translation and rotation to align `cgeom` onto `rgeom` via</span>
 <span class="sd">    Kabsch algorithm by minimizing the norm of the residual, :math:`|| R - U * C ||`.</span>
 
@@ -613,6 +621,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">return</span> <span class="n">rmsd</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">TT</span></div>
 
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">kabsch_quaternion</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the optimal rotation matrix U which mapping a set of points P</span>
 <span class="sd">    onto the set of points Q according to the minimization of || Q - U * P ||,</span>
@@ -669,14 +678,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="c1"># TODO: consider `numpy.typing.ArrayLike` in compute_scramble</span>
 
 
-<div class="viewcode-block" id="compute_scramble"><a class="viewcode-back" href="../../../api/qcelemental.molutil.compute_scramble.html#qcelemental.molutil.compute_scramble">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">compute_scramble</span><span class="p">(</span>
+<div class="viewcode-block" id="compute_scramble">
+<a class="viewcode-back" href="../../../api/qcelemental.molutil.compute_scramble.html#qcelemental.molutil.compute_scramble">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_scramble</span><span class="p">(</span>
     <span class="n">nat</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">do_resort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">do_shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">do_rotate</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">deflection</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">do_mirror</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AlignmentMill</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AlignmentMill&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate a random or directed translation, rotation, and atom shuffling.</span>
 
 <span class="sd">    Parameters</span>
@@ -707,6 +718,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">        as requested: identity, random, or specified.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">AlignmentMill</span>
+
     <span class="n">rand_elord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nat</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">do_resort</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">rand_elord</span><span class="p">)</span>
@@ -734,6 +747,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="n">perturbation</span> <span class="o">=</span> <span class="n">AlignmentMill</span><span class="p">(</span><span class="n">shift</span><span class="o">=</span><span class="n">rand_shift</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">rand_rot3d</span><span class="p">,</span> <span class="n">atommap</span><span class="o">=</span><span class="n">rand_elord</span><span class="p">,</span> <span class="n">mirror</span><span class="o">=</span><span class="n">do_mirror</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">perturbation</span></div>
+
 </pre></div>
 
            </div>

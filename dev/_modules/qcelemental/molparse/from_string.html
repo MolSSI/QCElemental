@@ -1,24 +1,23 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.from_string &mdash; QCElemental 0.30.2 documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/autodoc_pydantic.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>qcelemental.molparse.from_string &mdash; QCElemental 0.1.dev1+g274e9c352 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
-        <script src="../../../_static/version-switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=136729b0"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/version-switcher.js?v=313414bb"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -50,9 +49,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="../../../index.html" class="icon icon-home">
             QCElemental
           </a>
-              <div class="version">
-                0.30.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -65,19 +61,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">AtomicResult</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
 <ul>
@@ -123,7 +121,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;from_string&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="from_string"><a class="viewcode-back" href="../../../api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span>
+<div class="viewcode-block" id="from_string">
+<a class="viewcode-back" href="../../../api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span>
     <span class="n">molstr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -131,6 +131,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">fix_com</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fix_orientation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">fix_symmetry</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">return_processed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">enable_qm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">enable_efp</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -391,6 +392,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="n">enable_efp</span><span class="o">=</span><span class="n">enable_efp</span><span class="p">,</span>
         <span class="n">missing_enabled_return_qm</span><span class="o">=</span><span class="n">missing_enabled_return_qm</span><span class="p">,</span>
         <span class="n">missing_enabled_return_efp</span><span class="o">=</span><span class="n">missing_enabled_return_efp</span><span class="p">,</span>
+        <span class="n">nonphysical</span><span class="o">=</span><span class="n">nonphysical</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="o">**</span><span class="n">molinit</span><span class="p">,</span>
     <span class="p">)</span>
@@ -408,6 +410,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">return</span> <span class="n">molrec</span><span class="p">,</span> <span class="n">molinit</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">molrec</span></div>
+
 
 
 <span class="c1"># TODO maybe molrec needs a &quot;fix_loose&quot; flag to signal the reciever can symmetrize</span>
