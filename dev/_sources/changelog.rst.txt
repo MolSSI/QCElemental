@@ -24,6 +24,46 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0500`:
+
+0.50.0 / 2026-05-20
+-------------------
+
+:docs:`v0.50.0` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Please review release notes from the 0.50.0 release candidates below.
+Highlights from those are repeated here. There is also:
+
+* a graphical [cheat sheet](docs/qcschema_cheatsheet_20May2026.pdf) comparing QCSchema v1 and v2
+* a [migration guide](docs/MIGRATION.md)
+
+Breaking Changes
+++++++++++++++++
+- No uses of QCSchema v1 should break.
+
+New Features
+++++++++++++
+- Introduces QCSchema v2 models written in Pydantic v2 API. New models available as
+  ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
+- Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure
+  medium-term availability of existing models.
+- Note that Pydantic doesn't offer its v1 API within version v2 for Python >=3.14. For 314, while
+  all imports will work, attempting to instantiate a QCSchema v1 model will raise a ``RuntimeError``.
+- QCSchema v1 and v2 models learned a ``.convert_v(ver)`` function that returns self or the other
+  version. This is available for all top-level models (e.g., Molecule, FailedOp, Inputs, and Outputs)
+  and many component models. This is by far the cleanest way of converting.
+
+Bug Fixes
++++++++++
+- (:pr:`401`, :pr:`400`) Fix circular import when importing submodules.
+
+Misc.
++++++
+- Require minimum Pydantic v2.11 (v2.12 for Py v3.14)
+- (:pr:`402`) Requires minimum Python v3.10.
+- (:pr:`402`) CI updates for v0.50.0 release.
+
+
 .. _`sec:cl0500rc5`:
 
 0.50.0rc5 / 2026-04-29
@@ -160,7 +200,7 @@ New Features
 - (:pr:`361`) Switch from poetry to setuptools build backend.
 - (:pr:`346`) Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
 - (:pr:`347`) Introduces QCSchema v2 models written in Pydantic v2 API. New models available as ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
-- There is a graphical [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf) comparing QCSchema v1 and v2. There is also a [migration guide](docs/MIGRATION.md)
+- There is a graphical [cheat sheet](docs/qcschema_cheatsheet_20May2026.pdf) [UPDATED] comparing QCSchema v1 and v2. There is also a [migration guide](docs/MIGRATION.md)
 - (:pr:`352`)  ``AtomicInput`` and ``AtomicResult`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``FailedOperation`` (both versions) learned a ``.convert_v(ver)`` function that returns self or the other version.
 - (:pr:`354`) Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality. v2.Molecule retains its dict for now
 
@@ -256,6 +296,27 @@ Misc.
 - (:pr:`354`) Fix a lot of warnings originating in this project.
 - (:pr:`348`) All of ``Datum``, ``DFTFunctional``, and ``CPUInfo`` models, none of which are mixed with QCSchema models, are translated to Pydantic v2 API syntax.
 - (:pr:`377`) no longer testing/ensuring np.array([single-float]) are coerced into float property results
+
+
+.. _`sec:cl0302`:
+
+0.30.2 / 2026-02-14
+-------------------
+
+:docs:`v0.30.2` for QCSchema v1.
+
+Enhancements
+++++++++++++
+- (:pr:`386`) Set up documentation build to store versions of documentation for each tag plus dev.
+
+
+0.30.1 / 2026-02-10
+-------------------
+
+Bug Fixes
++++++++++
+- (:pr:`384`) Update nglview optional dep to accommodate setuptools 82.0 w/o pkg_resources.
+  Either use the new version of nglview or an older version of both nglview and setuptools.
 
 
 0.30.0 / 2026-01-07
