@@ -12,7 +12,7 @@ This project ships two QCSchema families:
   - Bring visible change to accompany the Pydantic v2 transition
   - Make models more compatible with standard Pydantic v2 paradigms and workflows
 
-- This guide is AI generated and edited with some care. But a better guide is the [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf).
+- This guide is AI generated and edited with some care. But a better guide is the [cheat sheet](docs/qcschema_cheatsheet_20May2026.pdf).
 
 ---
 

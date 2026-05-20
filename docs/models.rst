@@ -129,7 +129,7 @@ Also see https://github.com/MolSSI/QCElemental/issues/323 for details and progre
 The :ref:`Changelog <sec:cl0500rc1>` and
 a `Migration Guide <https://github.com/MolSSI/QCElemental/blob/next2026/docs/MIGRATION.md>`_ contain details.
 
-.. figure:: qcschema_cheatsheet_9Jan2026.*
+.. figure:: qcschema_cheatsheet_20May2026.*
    :alt: map to QCSchema
    :width: 240px
 

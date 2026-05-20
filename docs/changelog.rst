@@ -34,7 +34,7 @@ Changelog
 Please review release notes from the 0.50.0 release candidates below.
 Highlights from those are repeated here. There is also:
 
-* a graphical [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf) comparing QCSchema v1 and v2
+* a graphical [cheat sheet](docs/qcschema_cheatsheet_20May2026.pdf) comparing QCSchema v1 and v2
 * a [migration guide](docs/MIGRATION.md)
 
 Breaking Changes
@@ -200,7 +200,7 @@ New Features
 - (:pr:`361`) Switch from poetry to setuptools build backend.
 - (:pr:`346`) Downstream code should ``from qcelemental.models.v1 import Molecule, AtomicResult`` etc. to assure medium-term availability of existing models.
 - (:pr:`347`) Introduces QCSchema v2 models written in Pydantic v2 API. New models available as ``from qcelemental.models.v2 import Molecule, AtomicResult`` etc.
-- There is a graphical [cheat sheet](docs/qcschema_cheatsheet_9Jan2026.pdf) comparing QCSchema v1 and v2. There is also a [migration guide](docs/MIGRATION.md)
+- There is a graphical [cheat sheet](docs/qcschema_cheatsheet_20May2026.pdf) [UPDATED] comparing QCSchema v1 and v2. There is also a [migration guide](docs/MIGRATION.md)
 - (:pr:`352`)  ``AtomicInput`` and ``AtomicResult`` ``OptimizationInput``, ``OptimizationResult``, ``TorsionDriveInput``, ``TorsionDriveResult``, ``FailedOperation`` (both versions) learned a ``.convert_v(ver)`` function that returns self or the other version.
 - (:pr:`354`) Unlike Levi's pyd v2, this doesn't forward define dict, copy, json to v2 models. Instead it backwards-defines model_dump, model_dump_json, model_copy to v1. This will impede upgrading but be cleaner in the long run. See commented-out functions to temporarily restore this functionality. v2.Molecule retains its dict for now
 
