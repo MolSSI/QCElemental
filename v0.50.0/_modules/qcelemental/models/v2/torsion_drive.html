@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qcelemental.models.v2.torsion_drive &mdash; QCElemental 0.50.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=c97ed52b"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.models.v2.torsion_drive</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qcelemental.models.v2.torsion_drive</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">conlist</span><span class="p">,</span> <span class="n">field_validator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">...util</span><span class="w"> </span><span class="kn">import</span> <span class="n">provenance_stamp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basemodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProtoModel</span><span class="p">,</span> <span class="n">check_convertible_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">DriverEnum</span><span class="p">,</span> <span class="n">Provenance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.optimization</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimizationProperties</span><span class="p">,</span> <span class="n">OptimizationResult</span><span class="p">,</span> <span class="n">OptimizationSpecification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReprArgs</span>
+
+
+<span class="c1"># ====  Protocols  ==============================================================</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ScanResultsProtocolEnum</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Which gradient evaluations to keep in an optimization trajectory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">all</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>  <span class="c1"># use this if instance might be converted to v1</span>
+    <span class="n">lowest</span> <span class="o">=</span> <span class="s2">&quot;lowest&quot;</span>  <span class="c1"># discard any optimizations at each scan point that did not find the lowest energy</span>
+    <span class="n">none</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+
+
+<div class="viewcode-block" id="TorsionDriveProtocols">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveProtocols">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveProtocols</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Protocols regarding the manipulation of a Torsion Drive subcalculation history.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_protocols&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_torsion_drive_protocols&quot;</span>
+    <span class="n">scan_results</span><span class="p">:</span> <span class="n">ScanResultsProtocolEnum</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">ScanResultsProtocolEnum</span><span class="o">.</span><span class="n">none</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ScanResultsProtocolEnum</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ====  Inputs (Kw/Spec/In)  ====================================================</span>
+
+
+<div class="viewcode-block" id="TorsionDriveKeywords">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveKeywords">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveKeywords</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TorsionDriveRecord options</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * This class is still provisional and may be subject to removal and re-design.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;qcschema_torsion_drive_keywords&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The QCSchema specification to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">dihedrals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The list of dihedrals to select for the TorsionDrive operation. Each entry is a tuple of integers &quot;</span>
+        <span class="s2">&quot;of for particle indices.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">grid_spacing</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of grid spacing for dihedral scan in degrees. Multiple values will be mapped to each &quot;</span>
+        <span class="s2">&quot;dihedral angle.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">dihedral_ranges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of dihedral range limits as a pair (lower, upper). &quot;</span>
+        <span class="s2">&quot;Each range corresponds to the dihedrals in input.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">energy_decrease_thresh</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The threshold of the smallest energy decrease amount to trigger activating optimizations from &quot;</span>
+        <span class="s2">&quot;grid point.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">energy_upper_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The threshold if the energy of a grid point that is higher than the current global minimum, to &quot;</span>
+        <span class="s2">&quot;start new optimizations, in unit of a.u. I.e. if energy_upper_limit = 0.05, current global &quot;</span>
+        <span class="s2">&quot;minimum energy is -9.9 , then a new task starting with energy -9.8 will be skipped.&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="TorsionDriveSpecification">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveSpecification">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveSpecification</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Specification for how to run a torsion drive scan.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_specification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_torsion_drive_specification&quot;</span>
+
+    <span class="n">program</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Torsion Drive CMS code / QCEngine procedure with which to run the torsion scan.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">keywords</span><span class="p">:</span> <span class="n">TorsionDriveKeywords</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The torsion drive specific keywords to be used.&quot;</span><span class="p">)</span>
+    <span class="n">protocols</span><span class="p">:</span> <span class="n">TorsionDriveProtocols</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">TorsionDriveProtocols</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TorsionDriveProtocols</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">specification</span><span class="p">:</span> <span class="n">OptimizationSpecification</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The specification for how to run optimizations for the torsion scan (within this is spec for gradients for the optimization.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_procedure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+
+    <span class="c1"># Note: no convert_v() method as TDSpec doesn&#39;t have a v1 equivalent</span>
+
+
+<div class="viewcode-block" id="TorsionDriveInput">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveInput">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveInput</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inputs for running a torsion drive.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_input&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_torsion_drive_input&quot;</span>
+    <span class="n">schema_version</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of ``schema_name`` to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">initial_molecule</span><span class="p">:</span> <span class="n">conlist</span><span class="p">(</span><span class="n">item_type</span><span class="o">=</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The starting molecule(s) for the torsion drive.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">specification</span><span class="p">:</span> <span class="n">TorsionDriveSpecification</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TorsionDriveSpecification</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Provenance</span><span class="p">(</span><span class="o">**</span><span class="n">provenance_stamp</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)),</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_input_specification</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="n">driver</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">driver</span>
+
+        <span class="k">assert</span> <span class="n">driver</span> <span class="o">==</span> <span class="n">DriverEnum</span><span class="o">.</span><span class="n">gradient</span><span class="p">,</span> <span class="s2">&quot;driver must be set to gradient&quot;</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="TorsionDriveInput.convert_v">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveInput.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.TorsionDriveInput&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.TorsionDriveInput&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;TorsionDriveInput&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>  <span class="c1"># changed in v1</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>  <span class="c1"># unused in v1</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;initial_molecule&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_molecule</span><span class="p">]</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;keywords&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>  <span class="c1"># unused in v1</span>
+
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;optimization_spec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;input_specification&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>
+
+            <span class="n">td_program</span> <span class="o">=</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;program&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;protocols&quot;</span><span class="p">)</span>  <span class="c1"># lost</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">],</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;specification&quot;</span><span class="p">]</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;specification&quot;</span><span class="p">)</span>  <span class="c1"># now empty</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">TorsionDriveInput</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+
+
+<span class="c1"># ====  Properties  =============================================================</span>
+
+<span class="c1"># This is mostly a placeholder class until properties developed</span>
+
+
+<div class="viewcode-block" id="TorsionDriveProperties">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveProperties">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveProperties</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Named properties of torsion drive computations following the MolSSI QCSchema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">&quot;qcschema_torsion_drive_properties&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;The QCSchema specification to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ========  Calcinfo  =======================================================</span>
+
+    <span class="n">calcinfo_ngrid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of dihedral constraints optimized.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ========  Canonical  ======================================================</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">_merge_config_with</span><span class="p">(</span><span class="n">force_skip_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ====  Results  ================================================================</span>
+
+
+<div class="viewcode-block" id="TorsionDriveResult">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TorsionDriveResult</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Results from running a torsion drive.&quot;&quot;&quot;</span>
+
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_torsion_drive_result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;qcschema_torsion_drive_result&quot;</span>
+    <span class="n">schema_version</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of ``schema_name`` to which this model conforms.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The optional ID for the computation.&quot;</span><span class="p">)</span>
+    <span class="n">input_data</span><span class="p">:</span> <span class="n">TorsionDriveInput</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TorsionDriveInput</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="n">final_molecules</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The final molecule at each angle of the TorsionDrive scan.&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># Note: scan_results includes all opts at each point (best and intermediate), while</span>
+    <span class="c1">#   scan_properties and final_molecules include only the best opt. other choices could be made.</span>
+    <span class="n">scan_properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimizationProperties</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The map of energies and other properties for each angle of the TorsionDrive scan.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">scan_results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimizationResult</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="o">...</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The map of each angle of the TorsionDrive scan to each optimization computations.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">stdout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard output of the program.&quot;</span><span class="p">)</span>
+    <span class="n">stderr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The standard error of the program.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># native_files placeholder for when any td programs supply extra files or need an input file. no protocol at present</span>
+    <span class="n">native_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">({},</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;DSL files.&quot;</span><span class="p">)</span>
+
+    <span class="n">properties</span><span class="p">:</span> <span class="n">TorsionDriveProperties</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">TorsionDriveProperties</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="n">extras</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="p">{},</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the computation. Use for schema development and scratch space.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">success</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="kc">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The success of a given programs execution. If False, other fields may be blank.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">provenance</span><span class="p">:</span> <span class="n">Provenance</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Provenance</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;scan_results&quot;</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_scan_protocol</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+        <span class="c1"># Do not propogate validation errors</span>
+        <span class="k">if</span> <span class="s2">&quot;input_data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input_data was not properly formed.&quot;</span><span class="p">)</span>
+
+        <span class="n">keep_enum</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;input_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">specification</span><span class="o">.</span><span class="n">protocols</span><span class="o">.</span><span class="n">scan_results</span>
+        <span class="k">if</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;lowest&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="n">v_trunc</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">scan_pt</span><span class="p">,</span> <span class="n">optres_list</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">final_energies</span> <span class="o">=</span> <span class="p">[</span><span class="n">optres</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">return_energy</span> <span class="k">for</span> <span class="n">optres</span> <span class="ow">in</span> <span class="n">optres_list</span><span class="p">]</span>
+                    <span class="n">lowest_energy_idx</span> <span class="o">=</span> <span class="n">final_energies</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">final_energies</span><span class="p">))</span>
+                    <span class="n">v_trunc</span><span class="p">[</span><span class="n">scan_pt</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">optres_list</span><span class="p">[</span><span class="n">lowest_energy_idx</span><span class="p">]]</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v_trunc</span>
+        <span class="k">elif</span> <span class="n">keep_enum</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Protocol `scan_results:</span><span class="si">{</span><span class="n">keep_enum</span><span class="si">}</span><span class="s2">` is not understood.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">v</span>
+
+<div class="viewcode-block" id="TorsionDriveResult.convert_v">
+<a class="viewcode-back" href="../../../../model_td.html#qcelemental.models.v2.TorsionDriveResult.convert_v">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.TorsionDriveResult&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.TorsionDriveResult&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        * Use TorsionDriveProtocols.scan_results=all for full conversion to v1.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
+
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;TorsionDriveResult&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">opthist_class</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scan_results</span><span class="o">.</span><span class="n">values</span><span class="p">()))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span>
+            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+                <span class="n">opthist_class</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">dtop</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># for input_data, work from model, not dict, to use convert_v</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;input_data&quot;</span><span class="p">)</span>
+            <span class="n">input_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+            <span class="n">input_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>  <span class="c1"># prevent inheriting</span>
+
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;final_energies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">prop</span><span class="p">[</span><span class="s2">&quot;return_energy&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;scan_properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scan_properties&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;final_molecules&quot;</span><span class="p">)</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;final_molecules&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_molecules</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;optimization_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="p">[</span><span class="n">opthist_class</span><span class="p">(</span><span class="o">**</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">dself</span><span class="p">[</span><span class="s2">&quot;scan_results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scan_results&quot;</span><span class="p">)</span>
+
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>  <span class="c1"># unused in v1</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">)</span>  <span class="c1"># new in v2</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;native_files&quot;</span><span class="p">)</span>  <span class="c1"># new in v2</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;provenance&quot;</span><span class="p">)</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;stdout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;stdout&quot;</span><span class="p">)</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;stderr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;stderr&quot;</span><span class="p">)</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">)</span>
+            <span class="n">dtop</span><span class="p">[</span><span class="s2">&quot;extras&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="o">**</span><span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;extras&quot;</span><span class="p">,</span> <span class="p">{})}</span>  <span class="c1"># merge</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>  <span class="c1"># otherwise merge below uses TDIn schema_name</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">dself</span><span class="p">,</span> <span class="n">dself</span>
+
+            <span class="n">dtop</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">input_data</span><span class="p">,</span> <span class="o">**</span><span class="n">dtop</span><span class="p">}</span>
+
+            <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">TorsionDriveResult</span><span class="p">(</span><span class="o">**</span><span class="n">dtop</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="n">target_version</span>
+
+        <span class="k">return</span> <span class="n">self_vN</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
