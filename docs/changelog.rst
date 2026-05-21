@@ -24,6 +24,20 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0501`:
+
+0.50.1 / 2026-05-21
+-------------------
+
+:docs:`v0.50.1` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Bug Fixes
++++++++++
+- (:pr:`403`) Switch the FutureWarnings (visible) about not importing from files directory (e.g.,
+  `from models.molecule import Molecule`) to DeprecationWarnings (hidden). This can result in extra
+  printing which could be interfering, and above all QCElemental v0.50.0 shouldn't break v1 usage.
+
+
 .. _`sec:cl0500`:
 
 0.50.0 / 2026-05-20
