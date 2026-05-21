@@ -9,7 +9,7 @@ _nonapi_file = "results"
 warn(
     f"qcelemental.models.{_nonapi_file} should be accessed through qcelemental.models (or qcelemental.models.v1 or .v2 for fixed QCSchema version). The 'models.{_nonapi_file}' route will be removed as soon as v{_qcsk_v2_default_v1_importpathschange}.",
     DeprecationWarning,
-    stacklevel=2
+    stacklevel=2,
 )
 
 AtomicInput = qcelemental.models.v1.AtomicInput
