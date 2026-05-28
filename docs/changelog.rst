@@ -24,6 +24,19 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0502`:
+
+0.50.2 / 2026-05-28
+-------------------
+
+:docs:`v0.50.2` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Bug Fixes
++++++++++
+- (:pr:`404`) Fix the typing for the behind-the-scenes _v1v2.FailedOperation class so that numpy
+  in inputs can serialize cleanly when called from QCFractalCompute
+
+
 .. _`sec:cl0501`:
 
 0.50.1 / 2026-05-21
