@@ -10,7 +10,7 @@ from .basemodels import check_convertible_version
 
 class FailedOperation(ProtoModel):
     id: Optional[str] = Field(None)
-    input_data: Any = Field(None)
+    input_data: Optional[Union[ProtoModel, GenericData]] = Field(None)
     success: bool = Field(False)
     error: ComputeError = Field(...)
     extras: Optional[GenericData] = Field({})
