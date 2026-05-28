@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TorsionDriveKeywords &mdash; QCElemental 0.50.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5afedb58"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TorsionDriveProperties" href="qcelemental.models.v2.TorsionDriveProperties.html" />
+    <link rel="prev" title="TorsionDriveInput" href="qcelemental.models.v2.TorsionDriveInput.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.models.v2">qcelemental.models.v2 Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id4">Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AlignmentMill.html">AlignmentMill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AtomicInput.html">AtomicInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AtomicProperties.html">AtomicProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AtomicProtocols.html">AtomicProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AtomicResult.html">AtomicResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.AtomicSpecification.html">AtomicSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.BasisCenter.html">BasisCenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.BasisSet.html">BasisSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.ComputeError.html">ComputeError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.DriverEnum.html">DriverEnum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.ECPPotential.html">ECPPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.ElectronShell.html">ElectronShell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.FailedOperation.html">FailedOperation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.Model.html">Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.Molecule.html">Molecule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.OptimizationInput.html">OptimizationInput</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.OptimizationProperties.html">OptimizationProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.OptimizationProtocols.html">OptimizationProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.OptimizationResult.html">OptimizationResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.OptimizationSpecification.html">OptimizationSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.ProtoModel.html">ProtoModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.Provenance.html">Provenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.TorsionDriveInput.html">TorsionDriveInput</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TorsionDriveKeywords</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.TorsionDriveProperties.html">TorsionDriveProperties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.TorsionDriveProtocols.html">TorsionDriveProtocols</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.TorsionDriveResult.html">TorsionDriveResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.TorsionDriveSpecification.html">TorsionDriveSpecification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.models.v2.WavefunctionProperties.html">WavefunctionProperties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#id5">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
+      <li class="breadcrumb-item active">TorsionDriveKeywords</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/qcelemental.models.v2.TorsionDriveKeywords.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="torsiondrivekeywords">
+<h1>TorsionDriveKeywords<a class="headerlink" href="#torsiondrivekeywords" title="Link to this heading"></a></h1>
+<dl class="py class pydantic_model">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords">
+<em class="property"><span class="pre">pydantic</span> <span class="pre">model</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qcelemental.models.v2.</span></span><span class="sig-name descname"><span class="pre">TorsionDriveKeywords</span></span><a class="reference internal" href="../_modules/qcelemental/models/v2/torsion_drive.html#TorsionDriveKeywords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords" title="Link to this definition"></a></dt>
+<dd><p>TorsionDriveRecord options</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This class is still provisional and may be subject to removal and re-design.</p></li>
+</ul>
+<p><details  class="autodoc_pydantic_collapsable_json">
+<summary>Show JSON schema</summary><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">   </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TorsionDriveKeywords&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TorsionDriveRecord options\n\nNotes\n-----\n* This class is still provisional and may be subject to removal and re-design.&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;schema_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;const&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qcschema_torsion_drive_keywords&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qcschema_torsion_drive_keywords&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The QCSchema specification to which this model conforms.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schema Name&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;dihedrals&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The list of dihedrals to select for the TorsionDrive operation. Each entry is a tuple of integers of for particle indices.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;maxItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;minItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;prefixItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">               </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">               </span><span class="p">}</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dihedrals&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;grid_spacing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of grid spacing for dihedral scan in degrees. Multiple values will be mapped to each dihedral angle.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Grid Spacing&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;dihedral_ranges&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;maxItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;minItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;prefixItems&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                     </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">                     </span><span class="p">},</span>
+<span class="w">                     </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">                     </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">],</span>
+<span class="w">                  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">               </span><span class="p">},</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A list of dihedral range limits as a pair (lower, upper). Each range corresponds to the dihedrals in input.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dihedral Ranges&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;energy_decrease_thresh&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The threshold of the smallest energy decrease amount to trigger activating optimizations from grid point.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Energy Decrease Thresh&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;energy_upper_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;anyOf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">               </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;null&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="w">         </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The threshold if the energy of a grid point that is higher than the current global minimum, to start new optimizations, in unit of a.u. I.e. if energy_upper_limit = 0.05, current global minimum energy is -9.9 , then a new task starting with energy -9.8 will be skipped.&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Energy Upper Limit&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="nt">&quot;additionalProperties&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">   </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;dihedrals&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;grid_spacing&quot;</span>
+<span class="w">   </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</details></p><dl class="field-list simple">
+<dt class="field-odd">Fields<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.dihedral_ranges" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dihedral_ranges</span> <span class="pre">(List[Tuple[int,</span> <span class="pre">int]]</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.dihedrals" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dihedrals</span> <span class="pre">(List[Tuple[int,</span> <span class="pre">int,</span> <span class="pre">int,</span> <span class="pre">int]])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.energy_decrease_thresh" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_decrease_thresh</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.energy_upper_limit" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">energy_upper_limit</span> <span class="pre">(float</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.grid_spacing" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_spacing</span> <span class="pre">(List[int])</span></code></a></p></li>
+<li><p><a class="reference internal" href="#qcelemental.models.v2.TorsionDriveKeywords.schema_name" title="qcelemental.models.v2.torsion_drive.TorsionDriveKeywords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_name</span> <span class="pre">(Literal['qcschema_torsion_drive_keywords'])</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.dihedral_ranges">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dihedral_ranges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Tuple" title="(in Python v3.10)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.dihedral_ranges" title="Link to this definition"></a></dt>
+<dd><p>A list of dihedral range limits as a pair (lower, upper). Each range corresponds to the dihedrals in input.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.dihedrals">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dihedrals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Tuple" title="(in Python v3.10)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.dihedrals" title="Link to this definition"></a></dt>
+<dd><p>The list of dihedrals to select for the TorsionDrive operation. Each entry is a tuple of integers of for particle indices.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.energy_decrease_thresh">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">energy_decrease_thresh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.energy_decrease_thresh" title="Link to this definition"></a></dt>
+<dd><p>The threshold of the smallest energy decrease amount to trigger activating optimizations from grid point.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.energy_upper_limit">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">energy_upper_limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.energy_upper_limit" title="Link to this definition"></a></dt>
+<dd><p>The threshold if the energy of a grid point that is higher than the current global minimum, to start new optimizations, in unit of a.u. I.e. if energy_upper_limit = 0.05, current global minimum energy is -9.9 , then a new task starting with energy -9.8 will be skipped.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.grid_spacing">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.grid_spacing" title="Link to this definition"></a></dt>
+<dd><p>List of grid spacing for dihedral scan in degrees. Multiple values will be mapped to each dihedral angle.</p>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="qcelemental.models.v2.TorsionDriveKeywords.schema_name">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.Literal" title="(in Python v3.10)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'qcschema_torsion_drive_keywords'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'qcschema_torsion_drive_keywords'</span></em><a class="headerlink" href="#qcelemental.models.v2.TorsionDriveKeywords.schema_name" title="Link to this definition"></a></dt>
+<dd><p>The QCSchema specification to which this model conforms.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qcelemental.models.v2.TorsionDriveInput.html" class="btn btn-neutral float-left" title="TorsionDriveInput" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.models.v2.TorsionDriveProperties.html" class="btn btn-neutral float-right" title="TorsionDriveProperties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
