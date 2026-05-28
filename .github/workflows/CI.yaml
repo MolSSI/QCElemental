@@ -148,8 +148,8 @@ jobs:
               {"label": "dev", "path": "dev/"},
               {"label": "v1", "path": "v1/"},
               {"label": "v0.30.2", "path": "v0.30.2/"},
-              {"label": "v0.50.0rc2", "path": "v0.50.0rc2/"},
-              {"label": "v0.50.0rc3", "path": "v0.50.0rc3/"},
+              {"label": "v0.50.0", "path": "v0.50.0/"},
+              {"label": "v0.50.1", "path": "v0.50.1/"},
           ]
           lbl = os.environ.get("VERSION_LABEL", "")
           tgt = os.environ.get("TARGET_FOLDER", "")
