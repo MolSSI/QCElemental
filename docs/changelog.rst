@@ -31,22 +31,13 @@ Changelog
 
 :docs:`v0.50.3` for current. :docs:`v0.30.2` for QCSchema v1.
 
-Breaking Changes
-++++++++++++++++
-
-New Features
-++++++++++++
-
-Enhancements
-++++++++++++
-
 Bug Fixes
 +++++++++
-- () Fix a `WavefunctionProperties.convert_v(1)` error.
+- (:pr:`405`) Fix a `WavefunctionProperties.convert_v(1)` error.
 
 Misc.
 +++++
-- () Fix a compatibility error with NumPy v2.5.
+- (:pr:`405`) Fix a compatibility error with NumPy v2.5.
 
 
 .. _`sec:cl0502`:

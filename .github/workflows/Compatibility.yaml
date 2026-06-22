@@ -58,8 +58,7 @@ jobs:
               - qcengine
               - qcmanybody
               - qcfractal
-              - psi4=1.10
-              - libint=2.9.0=*_4
+              - psi4
               - optking
               - geometric
               - dftd3-python
@@ -131,8 +130,7 @@ jobs:
         continue-on-error: true
         run: |
           qcengine info
-          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcengine -k "not dftd3_task"
-          # dftd3_task until qcng 0.50 since I didn't patch the simple-dftd3 default change in master
+          pytest -rws -v --color=yes -n auto --durations 15 --pyargs qcengine
 
       - name: Test QCFractal
         if: true
