@@ -630,6 +630,8 @@ class WavefunctionProperties(ProtoModel):
             return self
 
         dself = self.model_dump(exclude_unset=True, exclude_none=True)  # v1 models don't handle None
+        dself.pop("schema_name", None)
+
         if target_version in [1, QCEL_V1V2_SHIM_CODE]:
             dself["basis"] = self.basis.convert_v(target_version).model_dump()
 
