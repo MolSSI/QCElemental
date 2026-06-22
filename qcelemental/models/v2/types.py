@@ -34,8 +34,15 @@ class ValidatableArrayAnnotation:
         * Data will be cast to ndarrays with the correct dtype
         * `ndarrays` instances will be parsed as `ndarrays` and cast to the correct dtype
         """
-        shape, dtype_alias = get_args(source)
-        dtype = get_args(dtype_alias)[0]
+        source_args = get_args(source)
+        if len(source_args) == 1:
+            dtype = source_args[0]
+        elif len(source_args) >= 2:
+            dtype_alias = source_args[1]
+            dtype = get_args(dtype_alias)[0] if get_args(dtype_alias) else dtype_alias
+        else:
+            warnings.warn(f"Unable to determine ndarray dtype from {source!r}; defaulting to float.")
+            dtype = float
         validator = generate_caster(dtype)
         # When serializing to JSON, flatten and to list it
         serializer = core_schema.plain_serializer_function_ser_schema(lambda v: v.flatten().tolist(), when_used="json")
