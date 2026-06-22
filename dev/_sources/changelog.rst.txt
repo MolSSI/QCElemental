@@ -24,6 +24,22 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0503`:
+
+0.50.3 / 2026-06-22
+-------------------
+
+:docs:`v0.50.3` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Bug Fixes
++++++++++
+- (:pr:`405`) Fix a `WavefunctionProperties.convert_v(1)` error.
+
+Misc.
++++++
+- (:pr:`405`) Fix a compatibility error with NumPy v2.5.
+
+
 .. _`sec:cl0502`:
 
 0.50.2 / 2026-05-28
