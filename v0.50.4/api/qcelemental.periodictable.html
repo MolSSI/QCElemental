@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>periodictable &mdash; QCElemental 0.50.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=350fcf8c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="vdwradii" href="qcelemental.vdwradii.html" />
+    <link rel="prev" title="covalentradii" href="qcelemental.covalentradii.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#classes">Classes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#variables">Variables</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.constants.html">constants</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.covalentradii.html">covalentradii</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">periodictable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.vdwradii.html">vdwradii</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#class-inheritance-diagram">Class Inheritance Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models.v2">qcelemental.models.v2 Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
+      <li class="breadcrumb-item active">periodictable</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/qcelemental.periodictable.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="periodictable">
+<h1>periodictable<a class="headerlink" href="#periodictable" title="Link to this heading"></a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="qcelemental.periodictable">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">periodictable</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;qcelemental.periodic_table.PeriodicTable</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#qcelemental.periodictable" title="Link to this definition"></a></dt>
+<dd><p>Nuclear and mass data about chemical elements from NIST.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong></p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.A">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">A</span></span><a class="headerlink" href="#qcelemental.A" title="Link to this definition"></a></dt>
+<dd><p>Mass number, number of protons and neutrons, starting with 0 for dummies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.Z">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">Z</span></span><a class="headerlink" href="#qcelemental.Z" title="Link to this definition"></a></dt>
+<dd><p>Atomic number, number of protons, starting with 0 for dummies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.E">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">E</span></span><a class="headerlink" href="#qcelemental.E" title="Link to this definition"></a></dt>
+<dd><p>Element symbol from periodic table, starting with “X” for dummies. “Fe” capitalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.EA">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">EA</span></span><a class="headerlink" href="#qcelemental.EA" title="Link to this definition"></a></dt>
+<dd><p>Nuclide symbol in E + A form, e.g., “Li6”.
+List <cite>EA</cite> is a superset of <cite>E</cite>; that is, both “Li6” and “Li” present.
+For hydrogen, “D” and “T” also included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.mass">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">mass</span></span><a class="headerlink" href="#qcelemental.mass" title="Link to this definition"></a></dt>
+<dd><p>Atomic mass [u].</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For nuclides (e.g., “Li6”), the reported mass.</p></li>
+<li><p>For stable elements (e.g., “Li”), the mass of the most abundant isotope (“Li7”).</p></li>
+<li><p>For unstable elements (e.g., “Pu”), the mass of the longest-lived isotope (“Pu244”).</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/decimal.html#decimal.Decimal" title="(in Python v3.10)">decimal.Decimal</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qcelemental.name">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.</span></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#qcelemental.name" title="Link to this definition"></a></dt>
+<dd><p>Element name from periodic table, starting with “Dummy”. “Iron” capitalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qcelemental.covalentradii.html" class="btn btn-neutral float-left" title="covalentradii" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.vdwradii.html" class="btn btn-neutral float-right" title="vdwradii" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
