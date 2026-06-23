@@ -111,7 +111,7 @@ def compare_values(
             return return_handler(True, label, pass_message, return_message, quiet)
 
     if np.iscomplexobj(expected):
-        dtype = np.complex
+        dtype = complex
     else:
         dtype = float
 

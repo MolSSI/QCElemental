@@ -95,7 +95,9 @@ jobs:
       - name: Install QCElemental test deps
         run: pip install '.[test]'
       - name: Show installed packages
-        run: pip list
+        run: |
+          pip list
+          python -c "import numpy as np; print(np.__version__)"
       - name: Verify pinned NumPy version
         if: matrix.numpy-spec != 'latest'
         run: |
@@ -114,9 +116,6 @@ jobs:
                   f"NumPy version mismatch: expected {expected_spec}, got {actual}"
               )
           PY
-      - name: Show current NumPy version
-        if: matrix.numpy-spec == 'latest'
-        run: python -c "import numpy as np; print(np.__version__)"
       - name: Run tests
         if: matrix.strict-warnings == false
         run: pytest -rws -v --color=yes
