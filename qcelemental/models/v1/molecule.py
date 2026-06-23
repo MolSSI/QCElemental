@@ -369,9 +369,9 @@ class Molecule(ProtoModel):
 
         if validate:
             # Title case for consistency
-            if np.lib.NumpyVersion(np.__version__) >= "2.0.0b1":
-                values["symbols"] = np.char.chararray.title(self.symbols)
-            else:
+            try:
+                values["symbols"] = np.char.title(self.symbols)
+            except AttributeError:
                 values["symbols"] = np.core.defchararray.title(self.symbols)
 
         if orient:
