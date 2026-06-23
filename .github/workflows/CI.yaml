@@ -62,8 +62,69 @@ jobs:
           branch: qcschema-examples
           folder: qcelemental/tests/qcschema_instances
 
+  test_numpy_matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python-version: "3.12"
+            numpy-spec: "1.26.*"
+            strict-warnings: false
+          - python-version: "3.12"
+            numpy-spec: "2.3.*"
+            strict-warnings: false
+          - python-version: "3.12"
+            numpy-spec: "latest"
+            strict-warnings: true
+    name: "🐍 ${{ matrix.python-version }} • numpy ${{ matrix.numpy-spec }} • strict-warnings=${{ matrix.strict-warnings }} • ubuntu-latest"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install pinned NumPy
+        if: matrix.numpy-spec != 'latest'
+        run: pip install "numpy==${{ matrix.numpy-spec }}"
+      - name: Install current NumPy
+        if: matrix.numpy-spec == 'latest'
+        run: pip install -U numpy
+      - name: Install QCElemental test deps
+        run: pip install '.[test]'
+      - name: Show installed packages
+        run: |
+          pip list
+          python -c "import numpy as np; print(np.__version__)"
+      - name: Verify pinned NumPy version
+        if: matrix.numpy-spec != 'latest'
+        run: |
+          python - <<'PY'
+          import numpy as np
+
+          expected_spec = "${{ matrix.numpy-spec }}"
+          expected_prefix = expected_spec.removesuffix(".*") + "."
+          actual = np.__version__
+
+          print(f"Expected NumPy spec: {expected_spec}")
+          print(f"Installed NumPy: {actual}")
+
+          if not actual.startswith(expected_prefix):
+              raise SystemExit(
+                  f"NumPy version mismatch: expected {expected_spec}, got {actual}"
+              )
+          PY
+      - name: Run tests
+        if: matrix.strict-warnings == false
+        run: pytest -rws -v --color=yes
+      - name: Run tests with warnings as errors
+        if: matrix.strict-warnings == true
+        run: pytest -rws -v --color=yes -k 'not ins_mol_var_models_models_molecule' -W error::FutureWarning -W error::DeprecationWarning
+
   build_documentation:
-    needs: [test]
+    needs: [test, test_numpy_matrix]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -164,4 +225,3 @@ jobs:
             git commit -m "docs: update versions.json (${GITHUB_REF})"
             git push origin gh-pages
           fi
-

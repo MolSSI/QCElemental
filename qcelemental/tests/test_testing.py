@@ -143,6 +143,7 @@ _pass_message = "\t{:.<66}PASSED"
             (None, """test_compare_values: computed shape ((4,)) does not match ((2, 2))."""),
         ),
         (None, None, 1.0e-4, {"passnone": True}, True, (None, _pass_message.format("test_compare_values"))),
+        ((1.0 + 2.0j), (1.0 + 2.0000001j), 1.0e-6, {}, True, (None, _pass_message.format("test_compare_values"))),
         (
             None,
             None,
