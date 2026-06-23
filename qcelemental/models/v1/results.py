@@ -739,7 +739,10 @@ class AtomicResult(AtomicInput):
         elif values["driver"] == "hessian":
             v = np.asarray(v)
             nsq = int(v.size**0.5)
-            v.shape = (nsq, nsq)
+            try:
+                v = np.reshape(v, (nsq, nsq), copy=False)
+            except TypeError:
+                v.shape = (nsq, nsq)
 
         return v
 

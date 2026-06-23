@@ -89,7 +89,10 @@ def msgpackext_decode(obj: Any) -> Any:
     if b"_nd_" in obj:
         arr = np.frombuffer(obj[b"data"], dtype=obj[b"dtype"])
         if b"shape" in obj:
-            arr.shape = obj[b"shape"]
+            try:
+                arr = np.reshape(arr, obj[b"shape"], copy=False)
+            except TypeError:
+                arr.shape = obj[b"shape"]
 
         return arr
 
@@ -167,7 +170,10 @@ def jsonext_decode(obj: Any) -> Any:
     if "_nd_" in obj:
         arr = np.frombuffer(bytes.fromhex(obj["data"]), dtype=obj["dtype"])
         if "shape" in obj:
-            arr.shape = obj["shape"]
+            try:
+                arr = np.reshape(arr, obj["shape"], copy=False)
+            except TypeError:
+                arr.shape = obj["shape"]
 
         return arr
 
