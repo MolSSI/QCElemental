@@ -24,6 +24,19 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0504`:
+
+0.50.4 / 2026-06-23
+-------------------
+
+:docs:`v0.50.4` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Misc.
++++++
+- (:pr:`406`) Fix a further compatibility error with NumPy v2.5, ``np.complex``.
+- (:pr:`406`) CI - Add testing against a range of NumPy versions from 1.26 to FutureWarnings of current.
+
+
 .. _`sec:cl0503`:
 
 0.50.3 / 2026-06-22
@@ -37,7 +50,7 @@ Bug Fixes
 
 Misc.
 +++++
-- (:pr:`405`) Fix a compatibility error with NumPy v2.5.
+- (:pr:`405`) Fix a compatibility error with NumPy v2.5 visible at ``import qcelemental``.
 
 
 .. _`sec:cl0502`:

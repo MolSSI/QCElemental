@@ -121,7 +121,7 @@ jobs:
         run: pytest -rws -v --color=yes
       - name: Run tests with warnings as errors
         if: matrix.strict-warnings == true
-        run: pytest -rws -v --color=yes -W error::FutureWarning -W error::DeprecationWarning
+        run: pytest -rws -v --color=yes -k 'not v1_incompat' -W error::FutureWarning -W error::DeprecationWarning
 
   build_documentation:
     needs: [test, test_numpy_matrix]
