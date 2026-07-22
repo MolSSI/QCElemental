@@ -37,7 +37,9 @@ def _validate_json_schema(instance, model, version):
 
 
 @pytest.mark.parametrize("fl", params, ids=lambda fl: str(fl.relative_to(_data_path)) if fl else None)
-def test_qcschema_example(fl):
+def test_qcschema_example(fl, request):
+    if not request.config.getoption("--validate-qcschema-examples", default=False):
+        pytest.skip("QCSchema examples are checked only with --validate-qcschema-examples")
     if fl is None:
         pytest.fail("No generated QCSchema examples found; run pytest --qcschema-examples first")
 
