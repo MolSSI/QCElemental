@@ -9,6 +9,7 @@ on:
       - 'v[0-9]*.[0-9]*.[0-9]*rc[0-9]*'
     branches:
       - master
+      - testci
       - QCSchema_v1
   pull_request:
     branches:
@@ -50,17 +51,54 @@ jobs:
       - name: Install QCElemental (min deps)
         if: matrix.python-version == '3.10' || matrix.python-version == '3.12' || matrix.python-version == '3.14'
         run: pip install '.[test]'
+      - name: Run tests and collect QCSchema examples
+        if: matrix.python-version == '3.13' && matrix.runs-on == 'ubuntu-latest'
+        run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml --qcschema-examples
+      - name: Validate QCSchema examples
+        if: matrix.python-version == '3.13' && matrix.runs-on == 'ubuntu-latest'
+        run: pytest -rws -v --color=yes --validate-qcschema-examples
+      - name: Upload QCSchema examples
+        if: matrix.python-version == '3.13' && matrix.runs-on == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: qcschema-examples
+          path: qcelemental/tests/qcschema_instances
+          retention-days: 14
+          if-no-files-found: error
       - name: Run tests
+        if: matrix.python-version != '3.13' || matrix.runs-on != 'ubuntu-latest'
         run: pytest -rws -v --cov=qcelemental --color=yes --cov-report=xml  #-k "not pubchem_multiout_g"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
-      - name: QCSchema Examples Deploy
+
+  qcschema_examples_deploy:
+    name: Deploy QCSchema examples
+    needs: test
+    if: >-
+      github.event_name == 'push' &&
+      github.repository == 'MolSSI/QCElemental' &&
+      (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/testci')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: qcschema-examples
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Download validated QCSchema examples
+        uses: actions/download-artifact@v4
+        with:
+          name: qcschema-examples
+          path: _qcschema_examples
+      - name: Deploy QCSchema examples
         uses: JamesIves/github-pages-deploy-action@v4
-        #if: github.event_name == 'push' && github.repository == 'MolSSI/QCElemental' && ( startsWith( github.ref, 'refs/tags/' ) || github.ref == 'refs/heads/master' )
-        if: false
         with:
           branch: qcschema-examples
-          folder: qcelemental/tests/qcschema_instances
+          folder: _qcschema_examples
+          clean: true
 
   test_numpy_matrix:
     strategy:

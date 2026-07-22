@@ -136,7 +136,7 @@ def test_from_schema_1p5_14e():
 def test_from_schema_2_14e(request):
     schema = copy.deepcopy(schema14_1)
     schema.update({"schema_name": "qcschema_molecule", "schema_version": 2})
-    drop_qcsk(schema, request.node.name, "Molecule")
+    drop_qcsk(schema, request.node.name, "Molecule", qcschema_version=1)
 
     ans = qcel.molparse.from_schema(schema)
     assert compare_molrecs(schema14_psi4_np, ans, 4)
