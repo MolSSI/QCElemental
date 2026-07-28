@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "v1": {
+      "AtomicInput": 1,
+      "AtomicResult": 22,
+      "AtomicResultProperties": 3,
+      "BasisSet": 1,
+      "Molecule": 16,
+      "Provenance": 1
+    },
+    "v2": {
+      "AtomicInput": 1,
+      "AtomicProperties": 3,
+      "AtomicResult": 22,
+      "BasisSet": 1,
+      "Molecule": 7,
+      "Provenance": 1
+    }
+  },
+  "example_count": 79,
+  "format_version": 1,
+  "generated_at": "2026-07-28T08:02:42.241649+00:00",
+  "origin": "qcelemental",
+  "pytest_exitstatus": 0,
+  "qcelemental_version": "0.1.dev1+g9ebc4608a",
+  "source_branch": "testci",
+  "source_commit": "9ebc4608a35a5aa06429b7c75c2bce9e303e8ac6"
+}

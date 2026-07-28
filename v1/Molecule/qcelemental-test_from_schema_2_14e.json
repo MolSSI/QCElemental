@@ -1,0 +1,45 @@
+{
+  "fix_com": false,
+  "fix_orientation": false,
+  "fragment_charges": [
+    0.0,
+    0.0
+  ],
+  "fragment_multiplicities": [
+    3,
+    1
+  ],
+  "fragments": [
+    [
+      0
+    ],
+    [
+      1
+    ]
+  ],
+  "geometry": [
+    0.0,
+    0.0,
+    -5.0,
+    0.0,
+    0.0,
+    5.0
+  ],
+  "masses": [
+    4.00260325413,
+    4.00260325413
+  ],
+  "molecular_charge": 0.0,
+  "molecular_multiplicity": 3,
+  "name": "He2",
+  "real": [
+    true,
+    false
+  ],
+  "schema_name": "qcschema_molecule",
+  "schema_version": 2,
+  "symbols": [
+    "He",
+    "He"
+  ]
+}
