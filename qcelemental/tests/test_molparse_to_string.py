@@ -234,6 +234,14 @@ QCElemental
  H_other 1           -1.058354421340     0.000000000000     0.000000000000
  $end
 """,
+    "ans2_chronusq_ang": """[Molecule]
+charge = 0
+mult = 3
+geom:
+Co                    0.000000000000     0.000000000000     0.000000000000
+GH                    1.058354421340     0.000000000000     0.000000000000
+H                    -1.058354421340     0.000000000000     0.000000000000
+"""
 }
 
 
@@ -267,6 +275,7 @@ QCElemental
         (("subject2", {"dtype": "nglview-sdf"}), "ans2_ngslviewsdf"),
         (("subject2", {"dtype": "qchem", "units": "bohr"}), "ans2_qchem_au"),
         (("subject2", {"dtype": "gamess", "units": "angstrom"}), "ans2_gamess_ang"),
+        (("subject2", {"dtype": "chronusq", "units": "angstrom"}), "ans2_chronusq_ang"),
     ],
 )
 def test_to_string_xyz(inp, expected):

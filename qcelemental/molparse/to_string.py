@@ -87,6 +87,7 @@ def to_string(
         "turbomole": "Bohr",
         "madness": "Bohr",  # madness by default reads au and optionally can read angs/angstrom
         "mrchem": "Bohr",  # MRChem by default reads au and optionally can read angs/angstrom
+        "chronusq": "Angstrom",
     }
     if dtype not in default_units:
         raise KeyError(f"dtype '{dtype}' not understood.")
@@ -178,6 +179,27 @@ def to_string(
             "units": umap.get(units.lower()),
             "coordinates": "cartesian",
         }
+
+    elif dtype == "chronusq":
+        atom_format = "{elem}"
+        ghost_format = "GH"
+        umap = {"bohr": "bohr", "angstrom": "Angstrom"}
+
+        atoms = _atoms_formatter(molrec, geom, atom_format, ghost_format, width, prec, 2)
+
+        smol = ["[Molecule]"]
+        smol.append(f"charge = {int(molrec['molecular_charge'])}")
+        smol.append(f"mult = {molrec['molecular_multiplicity']}")
+        smol.append(f"geom:")
+        smol.extend(atoms)
+
+        data.fields.extend(["molecular_charge", "molecular_multiplicity", "real"])
+        # data.keywords = {
+        #     "charge": int(molrec["molecular_charge"]),
+        #     "multiplicity": molrec["molecular_multiplicity"],
+        #     "units": umap.get(units.lower()),
+        #     "coordinates": "cartesian",
+        # }
 
     elif dtype == "molpro":
         atom_format = "{elem}"
