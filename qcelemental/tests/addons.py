@@ -48,6 +48,11 @@ using_qcmb = pytest.mark.skipif(
     reason="Not detecting module QCManyBody. Install package if necessary and add to envvar PYTHONPATH",
 )
 
+using_schrodinger = pytest.mark.skipif(
+    which_import("schrodinger.structure", return_bool=True) is False,
+    reason="Not detecting the Schrodinger Python API. Run tests from a Schrodinger Python environment.",
+)
+
 py37_skip = pytest.mark.skipif(sys.version_info.minor < 8, reason="Needs Python 3.8 features")
 
 using_pydv1 = pytest.mark.skipif(sys.version_info.minor > 13, reason="QCSchema v1 models (Pyd v1 API) need Py <=3.14")
