@@ -55,8 +55,7 @@ def _validate_mae_path(filename: str | PathLike[str]) -> Path:
     Parameters
     ----------
     filename
-        Path whose filename must end in ``.mae``, ``.maegz``, or
-        ``.mae.gz``, case-insensitively.
+        Path whose filename must end in ``.mae`` or ``.maegz``, case-insensitively.
 
     Returns
     -------
@@ -70,8 +69,8 @@ def _validate_mae_path(filename: str | PathLike[str]) -> Path:
     """
     path = Path(filename)
     lower_name = path.name.lower()
-    if not lower_name.endswith((".mae", ".maegz", ".mae.gz")):
-        raise ValueError(f"Maestro filename must end in .mae, .maegz, or .mae.gz: {filename}")
+    if not lower_name.endswith((".mae", ".maegz")):
+        raise ValueError(f"Maestro filename must end in .mae or .maegz: {filename}")
     return path
 
 
@@ -130,7 +129,7 @@ def from_mae(filename: str | PathLike[str]) -> list[Molecule]:
     Parameters
     ----------
     filename
-        Maestro file in ``.mae``, ``.maegz``, or ``.mae.gz`` format.
+        Maestro file in ``.mae`` or ``.maegz`` format.
 
     Returns
     -------
@@ -199,7 +198,7 @@ def to_mae(
         A QCSchema Molecule model or mapping. Coordinates are interpreted as
         bohr.
     filename
-        Maestro file in ``.mae``, ``.maegz``, or ``.mae.gz`` format.
+        Maestro file in ``.mae`` or ``.maegz`` format.
     overwrite
         Overwrite an existing file. When ``False``, append the structure.
     permissive

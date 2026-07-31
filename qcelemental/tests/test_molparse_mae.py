@@ -111,3 +111,23 @@ def test_mae_multiple_structures(tmp_path):
     assert results[0].symbols.tolist() == ["He"]
     assert results[1].symbols.tolist() == ["H"]
     assert np.allclose(results[1].geometry, second.geometry)
+
+    from_file = qcel.models.v2.Molecule.from_file(mae_file)
+    assert from_file.name == "first"
+
+
+@using_schrodinger
+@pytest.mark.parametrize("suffix", [".mae", ".maegz"])
+def test_mae_molecule_from_file_extensions(tmp_path, suffix):
+    molecule = qcel.models.v2.Molecule(
+        symbols=["He"],
+        geometry=[[0.0, 0.0, 0.0]],
+        name="extension inference",
+    )
+    mae_file = tmp_path / f"molecule{suffix}"
+    molecule.to_file(mae_file)
+
+    result = qcel.models.v2.Molecule.from_file(mae_file)
+    assert result.name == molecule.name
+    assert result.symbols.tolist() == molecule.symbols.tolist()
+    assert np.allclose(result.geometry, molecule.geometry)
