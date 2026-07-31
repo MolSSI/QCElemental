@@ -1,6 +1,5 @@
 import re
 from functools import lru_cache
-from typing import List, Tuple
 
 from ..exceptions import NotAnElementError, ValidationError
 from ..periodic_table import periodictable
@@ -11,17 +10,17 @@ _nucleus = re.compile(r"\A" + NUCLEUS + r"\Z", re.IGNORECASE | re.VERBOSE)
 
 @lru_cache(maxsize=512)
 def reconcile_nucleus(
-    A: int = None,
-    Z: int = None,
-    E: str = None,
-    mass: float = None,
-    real: bool = None,
-    label: str = None,
+    A: int | None = None,
+    Z: int | None = None,
+    E: str | None = None,
+    mass: float | None = None,
+    real: bool | None = None,
+    label: str | None = None,
     speclabel: bool = True,
     nonphysical: bool = False,
     mtol: float = 1.0e-3,
     verbose: int = 1,
-) -> Tuple[int, int, str, float, bool, str]:
+) -> tuple[int, int, str, float, bool, str]:
     r"""Forms consistent set of nucleus descriptors from all information
     from arguments, supplemented by the periodic table. At the least,
     must provide element identity somehow. Defaults to most-abundant
@@ -188,9 +187,15 @@ def reconcile_nucleus(
 
         A_exact.append(z_a)
         if nonphysical:
-            A_range.append(lambda x: x == -1 or x >= 1)
+            if z == 0:
+                A_range.append(lambda x: x == 0)
+            else:
+                A_range.append(lambda x: x == -1 or x >= 1)
             if log_text:
-                text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
+                if z == 0:
+                    text.append("""For A, input Z: 0 requires A == 0, nonphysical""")
+                else:
+                    text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
         else:
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
             if log_text:
@@ -202,9 +207,15 @@ def reconcile_nucleus(
 
         m_exact.append(z_mass)
         if nonphysical:
-            m_range.append(lambda x: x > 0.5)
+            if z == 0:
+                m_range.append(lambda x: x == 0.0)
+            else:
+                m_range.append(lambda x: x > 0.5)
             if log_text:
-                text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
+                if z == 0:
+                    text.append("""For mass, input Z: 0 requires mass == 0, nonphysical""")
+                else:
+                    text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
         else:
             m_range.append(lambda x, mmin=z_mass2a_min, mmax=z_mass2a_max: x >= mmin - mmtol and x <= mmax + mmtol)
             if log_text:
@@ -272,17 +283,17 @@ def reconcile_nucleus(
 
     text = ["", """--> Inp: A={}, Z={}, E={}, mass={}, real={}, label={}""".format(A, Z, E, mass, real, label)]
 
-    Z_exact: List = []  # *_exact are candidates for the final value
-    Z_range: List = []  # *_range are tests that the final value must pass to be valid
-    A_exact: List = []
-    A_range: List = []
-    m_exact: List = []
-    m_range: List = []
+    Z_exact: list = []  # *_exact are candidates for the final value
+    Z_range: list = []  # *_range are tests that the final value must pass to be valid
+    A_exact: list = []
+    A_range: list = []
+    m_exact: list = []
+    m_range: list = []
 
     r_exact = [True]  # default real/ghost is real
-    r_range: List = []
+    r_range: list = []
     l_exact = [""]  # default user label is empty string
-    l_range: List = []
+    l_range: list = []
     mmtol = 0.5  # tolerance for mass outside known masses for element
 
     # <<< collect evidence for Z/A/m, then reconcile Z

@@ -350,3 +350,45 @@ def test_to_string_value_error(inp):
 
     with pytest.raises(ValueError):
         qcel.molparse.to_string(molrec["qm"], **inp[1])
+
+
+def test_to_string_jaguar(Molecule):
+    molecule = Molecule(
+        symbols=["H", "He", "X"],
+        geometry=[[0.0, 0.0, 0.0], [0.0, 0.0, 2.0], [0.0, 3.0, 0.0]],
+        real=[True, False, False],
+        molecular_charge=0,
+        molecular_multiplicity=2,
+    )
+
+    result, data = molecule.to_string(dtype="jaguar", return_data=True)
+
+    two_bohr = 2.0 * qcel.constants.bohr2angstroms
+    three_bohr = 3.0 * qcel.constants.bohr2angstroms
+    expected = f"""&zmat
+H1                    0.000000000000     0.000000000000     0.000000000000
+He2@                  0.000000000000     0.000000000000     {two_bohr:.12f}
+X3                    0.000000000000     {three_bohr:.12f}     0.000000000000
+&
+"""
+
+    assert compare(expected, result)
+    assert data["keywords"] == {"molchg": 0, "multip": 2}
+    assert {
+        "geometry",
+        "molecular_charge",
+        "molecular_multiplicity",
+        "real",
+        "symbols",
+        "units",
+    }.issubset(data["fields"])
+
+
+def test_to_string_jaguar_rejects_non_angstrom(Molecule):
+    molecule = Molecule(
+        symbols=["He"],
+        geometry=[[0.0, 0.0, 0.0]],
+    )
+
+    with pytest.raises(ValueError, match="Angstroms"):
+        molecule.to_string(dtype="jaguar", units="Bohr")
