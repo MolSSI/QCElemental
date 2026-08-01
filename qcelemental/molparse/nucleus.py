@@ -187,15 +187,9 @@ def reconcile_nucleus(
 
         A_exact.append(z_a)
         if nonphysical:
-            if z == 0:
-                A_range.append(lambda x: x == 0)
-            else:
-                A_range.append(lambda x: x == -1 or x >= 1)
+            A_range.append(lambda x: x == -1 or x >= 1)
             if log_text:
-                if z == 0:
-                    text.append("""For A, input Z: 0 requires A == 0, nonphysical""")
-                else:
-                    text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
+                text.append("""For A, input Z: {}, requires 1 < A or -1, nonphysical""".format(z))
         else:
             A_range.append(lambda x, amin=z_a2mass_min, amax=z_a2mass_max: x == -1 or (x >= amin and x <= amax))
             if log_text:
@@ -207,15 +201,9 @@ def reconcile_nucleus(
 
         m_exact.append(z_mass)
         if nonphysical:
-            if z == 0:
-                m_range.append(lambda x: x == 0.0)
-            else:
-                m_range.append(lambda x: x > 0.5)
+            m_range.append(lambda x: x > 0.5)
             if log_text:
-                if z == 0:
-                    text.append("""For mass, input Z: 0 requires mass == 0, nonphysical""")
-                else:
-                    text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
+                text.append("""For mass, input Z: {}, requires 0.5 < mass, nonphysical""".format(z))
         else:
             m_range.append(lambda x, mmin=z_mass2a_min, mmax=z_mass2a_max: x >= mmin - mmtol and x <= mmax + mmtol)
             if log_text:

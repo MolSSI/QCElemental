@@ -369,7 +369,7 @@ def to_string(
         for atom_index, (symbol, real, xyz) in enumerate(zip(molrec["elem"], molrec["real"], geom), start=1):
             symbol = str(symbol)
             label = f"{symbol}{atom_index}"
-            if not real and symbol.lower() != "x":
+            if not real:
                 label += "@"
 
             atom = [f"{label:<{width}}"]

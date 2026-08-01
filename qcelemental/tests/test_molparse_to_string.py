@@ -354,9 +354,9 @@ def test_to_string_value_error(inp):
 
 def test_to_string_jaguar(Molecule):
     molecule = Molecule(
-        symbols=["H", "He", "X"],
-        geometry=[[0.0, 0.0, 0.0], [0.0, 0.0, 2.0], [0.0, 3.0, 0.0]],
-        real=[True, False, False],
+        symbols=["H", "He"],
+        geometry=[[0.0, 0.0, 0.0], [0.0, 0.0, 2.0]],
+        real=[True, False],
         molecular_charge=0,
         molecular_multiplicity=2,
     )
@@ -364,11 +364,9 @@ def test_to_string_jaguar(Molecule):
     result, data = molecule.to_string(dtype="jaguar", return_data=True)
 
     two_bohr = 2.0 * qcel.constants.bohr2angstroms
-    three_bohr = 3.0 * qcel.constants.bohr2angstroms
     expected = f"""&zmat
 H1                    0.000000000000     0.000000000000     0.000000000000
 He2@                  0.000000000000     0.000000000000     {two_bohr:.12f}
-X3                    0.000000000000     {three_bohr:.12f}     0.000000000000
 &
 """
 

@@ -9,7 +9,6 @@ co60 = (60, 27, "Co", 59.93381630, True, "")
 co60_mine = (60, 27, "Co", 59.93381630, True, "_mine")
 co60ghost = (60, 27, "Co", 59.93381630, False, "")
 co_unspecified = (-1, 27, "Co", 60.6, True, "")
-dummy = (0, 0, "X", 0.0, False, "")
 
 
 @pytest.mark.parametrize(
@@ -52,7 +51,6 @@ dummy = (0, 0, "X", 0.0, False, "")
         ({"A": 60, "label": "Gh(Co)"}, co60ghost),
         ({"label": "60co_miNe"}, co60_mine),
         ({"label": "_miNe", "A": 59, "E": "Co", "speclabel": False}, co_dominant_mine),
-        ({"E": "X", "real": False, "nonphysical": True}, dummy),
     ],
 )
 def test_reconcile_nucleus(inp, expected):
