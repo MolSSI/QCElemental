@@ -118,10 +118,10 @@ def _coerce_bond_order(order: float, permissive: bool) -> tuple[int, bool]:
 def from_mae(filename: str | PathLike[str]) -> list[Molecule]:
     r"""Read Maestro structures as QCSchema v2 Molecules.
 
-    Coordinates are converted from angstrom to bohr. Maestro dummy atoms
-    (atomic number zero) become QCSchema ``X`` centers with ``real=False``,
-    and non-dummy atoms carrying Maestro's counterpoise property become
-    QCSchema ghost atoms (also ``real=False``).
+    Coordinates are converted from angstrom to bohr. Elemental atoms carrying
+    Maestro's counterpoise property become QCSchema ghost atoms with
+    ``real=False``. Unsupported non-counterpoise dummy atoms are omitted with
+    a warning.
 
     Atom- and bond-level properties without QCSchema Molecule equivalents
     are intentionally ignored.
@@ -147,22 +147,39 @@ def from_mae(filename: str | PathLike[str]) -> list[Molecule]:
             symbols = []
             geometry = []
             real = []
+            atomic_numbers = []
+            atom_index_map = {}
+            dummy_indices = []
             for atom in mae_structure.atom:
-                is_dummy = atom.atomic_number <= 0
-                symbols.append("X" if is_dummy else atom.element)
+                is_counterpoise = bool(atom.property.get(mm.M2IO_DATA_ATOM_COUNTERPOISE, 0))
+                if atom.atomic_number <= 0 and not is_counterpoise:
+                    dummy_indices.append(atom.index)
+                    continue
+
+                atom_index_map[atom.index] = len(symbols)
+                symbols.append(atom.element)
                 geometry.append(atom.xyz)
-                real.append(is_dummy is False and not bool(atom.property.get(mm.M2IO_DATA_ATOM_COUNTERPOISE, 0)))
+                real.append(not is_counterpoise)
+                atomic_numbers.append(atom.atomic_number)
+
+            if dummy_indices:
+                warnings.warn(
+                    "Maestro dummy atoms are not supported and were omitted at indices "
+                    + ", ".join(map(str, dummy_indices)),
+                    UserWarning,
+                    stacklevel=2,
+                )
 
             connectivity = [
-                (bond.atom1.index - 1, bond.atom2.index - 1, bond.order)
+                (atom_index_map[bond.atom1.index], atom_index_map[bond.atom2.index], bond.order)
                 for bond in mae_structure.bond
-                if bond.order is not None
+                if bond.order is not None and bond.atom1.index in atom_index_map and bond.atom2.index in atom_index_map
             ]
 
             molecular_charge = mae_structure.property.get(_MAE_CHARGE_PROPERTY, mae_structure.formal_charge)
             molecular_multiplicity = mae_structure.property.get(_MAE_MULTIPLICITY_PROPERTY)
             if molecular_multiplicity is None:
-                electron_count = sum(atom.atomic_number for atom, is_real in zip(mae_structure.atom, real) if is_real)
+                electron_count = sum(number for number, is_real in zip(atomic_numbers, real) if is_real)
                 electron_count -= molecular_charge
                 molecular_multiplicity = int(round(electron_count)) % 2 + 1
 
@@ -208,10 +225,9 @@ def to_mae(
 
     Notes
     -----
-    QCSchema ``X`` centers are written as Maestro ``Du`` atoms without a
-    counterpoise property. Non-dummy QCSchema ghost atoms retain their element
-    and receive Maestro's ``i_m_counterpoise`` property. Arbitrary QCSchema
-    extras and Maestro visualization properties are not written.
+    QCSchema counterpoise atoms retain their element and receive Maestro's
+    ``i_m_counterpoise`` property. Arbitrary QCSchema extras and Maestro
+    visualization properties are not written.
     """
     from ..models.v2 import Molecule
 
@@ -243,10 +259,8 @@ def to_mae(
     mae_structure = structure.create_new_structure()
     geometry = np.asarray(molecule.geometry) * constants.bohr2angstroms
     for symbol, xyz, is_real in zip(molecule.symbols, geometry, molecule.real):
-        is_dummy = str(symbol).title() == "X"
-        mae_symbol = "Du" if is_dummy else str(symbol)
-        atom = mae_structure.addAtom(mae_symbol, *map(float, xyz))
-        if not is_dummy and not is_real:
+        atom = mae_structure.addAtom(str(symbol), *map(float, xyz))
+        if not is_real:
             atom.property[mm.M2IO_DATA_ATOM_COUNTERPOISE] = 1
 
     lossy_bonds = []

@@ -35,18 +35,17 @@ def test_mae_strict_bond_order_error():
 @using_schrodinger
 def test_mae_round_trip(tmp_path):
     molecule = qcel.models.v2.Molecule(
-        symbols=["C", "H", "X", "O"],
+        symbols=["C", "H", "O"],
         geometry=[
             [0.0, 0.0, 0.0],
             [2.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
             [0.0, 0.0, 2.0],
         ],
         name="MAE round trip",
         molecular_charge=1,
         molecular_multiplicity=1,
-        real=[True, True, False, False],
-        connectivity=[(0, 1, 1), (0, 2, 0), (0, 3, 2)],
+        real=[True, True, False],
+        connectivity=[(0, 1, 1), (0, 2, 2)],
     )
     mae_file = tmp_path / "round_trip.mae"
 
@@ -55,8 +54,7 @@ def test_mae_round_trip(tmp_path):
     structure, mm = _import_schrodinger()
     with structure.StructureReader(mae_file) as reader:
         [mae_structure] = list(reader)
-    assert not bool(mae_structure.atom[3].property.get(mm.M2IO_DATA_ATOM_COUNTERPOISE, 0))
-    assert bool(mae_structure.atom[4].property.get(mm.M2IO_DATA_ATOM_COUNTERPOISE, 0))
+    assert bool(mae_structure.atom[3].property.get(mm.M2IO_DATA_ATOM_COUNTERPOISE, 0))
 
     results = qcel.molparse.from_mae(mae_file)
 
@@ -69,6 +67,34 @@ def test_mae_round_trip(tmp_path):
     assert result.molecular_multiplicity == molecule.molecular_multiplicity
     assert result.connectivity == molecule.connectivity
     assert np.allclose(result.geometry, molecule.geometry)
+
+
+@using_schrodinger
+def test_from_mae_omits_dummy_atoms(tmp_path):
+    structure, _ = _import_schrodinger()
+    mae_structure = structure.create_new_structure()
+    mae_structure.title = "dummy removal"
+    carbon = mae_structure.addAtom("C", 0.0, 0.0, 0.0)
+    dummy = mae_structure.addAtom("Du", 1.0, 0.0, 0.0)
+    hydrogen = mae_structure.addAtom("H", 2.0, 0.0, 0.0)
+    mae_structure.addBond(carbon.index, dummy.index, 1)
+    mae_structure.addBond(carbon.index, hydrogen.index, 1)
+
+    mae_file = tmp_path / "dummy.mae"
+    with structure.StructureWriter(mae_file) as writer:
+        writer.append(mae_structure)
+
+    with pytest.warns(UserWarning, match="dummy atoms are not supported"):
+        [result] = qcel.molparse.from_mae(mae_file)
+
+    assert result.name == mae_structure.title
+    assert result.symbols.tolist() == ["C", "H"]
+    assert result.real.tolist() == [True, True]
+    assert result.connectivity == [(0, 1, 1.0)]
+    assert np.allclose(
+        result.geometry,
+        np.asarray([[0.0, 0.0, 0.0], [2.0, 0.0, 0.0]]) / qcel.constants.bohr2angstroms,
+    )
 
 
 @using_schrodinger
