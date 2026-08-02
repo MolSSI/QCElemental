@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.nucleus &mdash; QCElemental 0.1.dev1+g46034a058 documentation</title>
+  <title>qcelemental.molparse.nucleus &mdash; QCElemental 0.1.dev1+g4e3c3b0c6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=a0cea5d4"></script>
+      <script src="../../../_static/documentation_options.js?v=0dc2c803"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/version-switcher.js?v=313414bb"></script>
@@ -110,7 +110,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h1>Source code for qcelemental.molparse.nucleus</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotAnElementError</span><span class="p">,</span> <span class="n">ValidationError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..periodic_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">periodictable</span>
@@ -123,17 +122,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="viewcode-back" href="../../../api/qcelemental.molparse.reconcile_nucleus.html#qcelemental.molparse.reconcile_nucleus">[docs]</a>
 <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">reconcile_nucleus</span><span class="p">(</span>
-    <span class="n">A</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">Z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">E</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">mass</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">A</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">Z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">E</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">mass</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">speclabel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">nonphysical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">mtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-3</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Forms consistent set of nucleus descriptors from all information</span>
 <span class="sd">    from arguments, supplemented by the periodic table. At the least,</span>
 <span class="sd">    must provide element identity somehow. Defaults to most-abundant</span>
@@ -384,17 +383,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;--&gt; Inp: A=</span><span class="si">{}</span><span class="s2">, Z=</span><span class="si">{}</span><span class="s2">, E=</span><span class="si">{}</span><span class="s2">, mass=</span><span class="si">{}</span><span class="s2">, real=</span><span class="si">{}</span><span class="s2">, label=</span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">real</span><span class="p">,</span> <span class="n">label</span><span class="p">)]</span>
 
-    <span class="n">Z_exact</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># *_exact are candidates for the final value</span>
-    <span class="n">Z_range</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># *_range are tests that the final value must pass to be valid</span>
-    <span class="n">A_exact</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">A_range</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">m_exact</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">m_range</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Z_exact</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># *_exact are candidates for the final value</span>
+    <span class="n">Z_range</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># *_range are tests that the final value must pass to be valid</span>
+    <span class="n">A_exact</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">A_range</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">m_exact</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">m_range</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">r_exact</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span>  <span class="c1"># default real/ghost is real</span>
-    <span class="n">r_range</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">r_range</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">l_exact</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span>  <span class="c1"># default user label is empty string</span>
-    <span class="n">l_range</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">l_range</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">mmtol</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># tolerance for mass outside known masses for element</span>
 
     <span class="c1"># &lt;&lt;&lt; collect evidence for Z/A/m, then reconcile Z</span>

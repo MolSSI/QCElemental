@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>compare_values &mdash; QCElemental 0.1.dev1+g46034a058 documentation</title>
+  <title>compare_values &mdash; QCElemental 0.1.dev1+g4e3c3b0c6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=a0cea5d4"></script>
+      <script src="../_static/documentation_options.js?v=0dc2c803"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -136,14 +136,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>expected</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em> | </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – float or float array-like
+<li><p><strong>expected</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em> | </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – float or float array-like
 Reference value against which <cite>computed</cite> is compared.</p></li>
-<li><p><strong>computed</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em> | </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – float or float array-like
+<li><p><strong>computed</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3.10/library/typing.html#typing.List" title="(in Python v3.10)"><em>List</em></a><em> | </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – float or float array-like
 Input value to compare against <cite>expected</cite>.</p></li>
 <li><p><strong>atol</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Absolute tolerance (see formula below).</p></li>
 <li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> | </em><em>None</em>) – Label for passed and error messages. Defaults to calling function name.</p></li>
 <li><p><strong>rtol</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Relative tolerance (see formula below). By default set to zero so <cite>atol</cite> dominates.</p></li>
-<li><p><strong>equal_nan</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Passed to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="(in NumPy v2.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.isclose()</span></code></a>. Compare NaN’s as equal.</p></li>
+<li><p><strong>equal_nan</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Passed to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.isclose.html#numpy.isclose" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.isclose()</span></code></a>. Compare NaN’s as equal.</p></li>
 <li><p><strong>equal_phase</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Compare computed <em>or its opposite</em> as equal.</p></li>
 <li><p><strong>passnone</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Return True when both expected and computed are None.</p></li>
 <li><p><strong>quiet</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – Whether to log the return message.</p></li>
@@ -165,7 +165,7 @@ Specialized interception for interfacing testing systems.</p></li>
 </dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>Akin to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="(in NumPy v2.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.allclose()</span></code></a>.</p></li>
+<li><p>Akin to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.allclose.html#numpy.allclose" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.allclose()</span></code></a>.</p></li>
 <li><p>For scalar float-comparable types and for arbitrary-dimension, np.ndarray-castable, uniform-type,
 float-comparable types. For mixed types, use <a class="reference internal" href="qcelemental.testing.compare_recursive.html#qcelemental.testing.compare_recursive" title="qcelemental.testing.compare_recursive"><code class="xref py py-func docutils literal notranslate"><span class="pre">compare_recursive()</span></code></a>.</p></li>
 <li><p>Sets rtol to zero to match expected Psi4 behaviour, otherwise measured as:</p></li>
