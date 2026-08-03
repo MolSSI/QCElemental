@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>parse_nucleus_label &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>from_mae &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="reconcile_nucleus" href="qcelemental.molparse.reconcile_nucleus.html" />
-    <link rel="prev" title="from_string" href="qcelemental.molparse.from_string.html" />
+    <link rel="next" title="from_schema" href="qcelemental.molparse.from_schema.html" />
+    <link rel="prev" title="from_input_arrays" href="qcelemental.molparse.from_input_arrays.html" />
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -89,10 +89,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_arrays.html">from_arrays</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
-<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_mae.html">from_mae</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">from_mae</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_schema.html">from_schema</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_string.html">from_string</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">parse_nucleus_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_mae.html">to_mae</a></li>
 <li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_schema.html">to_schema</a></li>
@@ -125,9 +125,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
-      <li class="breadcrumb-item active">parse_nucleus_label</li>
+      <li class="breadcrumb-item active">from_mae</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/qcelemental.molparse.parse_nucleus_label.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/qcelemental.molparse.from_mae.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -135,76 +135,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="parse-nucleus-label">
-<h1>parse_nucleus_label<a class="headerlink" href="#parse-nucleus-label" title="Link to this heading"></a></h1>
+  <section id="from-mae">
+<h1>from_mae<a class="headerlink" href="#from-mae" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="qcelemental.molparse.parse_nucleus_label">
-<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">parse_nucleus_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/nucleus.html#parse_nucleus_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.parse_nucleus_label" title="Link to this definition"></a></dt>
-<dd><p>Separate molecule nucleus string into fields.</p>
+<dt class="sig sig-object py" id="qcelemental.molparse.from_mae">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">from_mae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/mae.html#from_mae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.from_mae" title="Link to this definition"></a></dt>
+<dd><p>Read Maestro structures as QCSchema v2 Molecules.</p>
+<p>Coordinates are converted from angstrom to bohr. Elemental atoms carrying
+Maestro’s counterpoise property become QCSchema ghost atoms with
+<code class="docutils literal notranslate"><span class="pre">real=False</span></code>. Unsupported non-counterpoise dummy atoms are omitted with
+a warning.</p>
+<p>Atom- and bond-level properties without QCSchema Molecule equivalents
+are intentionally ignored.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Conveys at least element and ghostedness and possibly isotope, mass, and
-user info in accordance with <code class="xref py py-data docutils literal notranslate"><span class="pre">qcelemental.molparse.regex.NUCLEUS</span></code>.</p>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> | </em><em>PathLike</em><em>[</em><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>]</em>) – Maestro file in <code class="docutils literal notranslate"><span class="pre">.mae</span></code> or <code class="docutils literal notranslate"><span class="pre">.maegz</span></code> format.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>A, Z, E, mass, real, user</strong> – Field breakdown of <cite>label</cite>.</p>
+<dd class="field-even"><p>One QCSchema v2 Molecule for each structure in the Maestro file.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)">bool</a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or None</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – If <cite>label</cite> does not match NUCLEUS.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#list" title="(in Python v3.10)">list</a>[<a class="reference internal" href="qcelemental.models.v2.Molecule.html#qcelemental.models.v2.Molecule" title="qcelemental.models.v2.Molecule">Molecule</a>]</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@ca_miNe&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;ca&#39;, None False, &#39;_miNe&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(Ca_mine)&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;Ca&#39;, None &#39;_mine&#39;, False</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@Ca_mine@1.07&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(cA_MINE@1.07)&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;cA&#39;, 1.07 False, &#39;_MINE&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@40Ca_mine@1.07&#39;</span><span class="p">)</span>
-<span class="go">40, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(40Ca_mine@1.07)&#39;</span><span class="p">)</span>
-<span class="go">40, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;444lu333@4.0&#39;</span><span class="p">)</span>
-<span class="go">444, None, &#39;lu&#39;, 4.0 True, &#39;333&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@444lu333@4.4&#39;</span><span class="p">)</span>
-<span class="go">444, None, &#39;lu&#39;, 4.4 False, &#39;333&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;8i&#39;</span><span class="p">)</span>
-<span class="go">8, None, &#39;i&#39;, None True, None</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;53_mI4&#39;</span><span class="p">)</span>
-<span class="go">None, 53, None, None True, &#39;_mI4&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@5_MINEs3@4.4&#39;</span><span class="p">)</span>
-<span class="go">None, 5, None, 4.4 False, &#39;_MINEs3&#39;</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(555_mines3@0.1)&#39;</span><span class="p">)</span>
-<span class="go">None, 555, None, 0.1 False, &#39;_mines3&#39;</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -213,8 +166,8 @@ user info in accordance with <code class="xref py py-data docutils literal notra
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="qcelemental.molparse.from_string.html" class="btn btn-neutral float-left" title="from_string" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="qcelemental.molparse.reconcile_nucleus.html" class="btn btn-neutral float-right" title="reconcile_nucleus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qcelemental.molparse.from_input_arrays.html" class="btn btn-neutral float-left" title="from_input_arrays" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.molparse.from_schema.html" class="btn btn-neutral float-right" title="from_schema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

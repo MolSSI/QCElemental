@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCElemental API &mdash; QCElemental 0.1.dev1+g4e3c3b0c6 documentation</title>
+  <title>QCElemental API &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=0dc2c803"></script>
+      <script src="_static/documentation_options.js?v=df598981"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -118,10 +118,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_arrays.html">from_arrays</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_mae.html">from_mae</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_schema.html">from_schema</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.from_string.html">from_string</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.parse_nucleus_label.html">parse_nucleus_label</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.to_mae.html">to_mae</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.to_schema.html">to_schema</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.to_string.html">to_string</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/qcelemental.molparse.validate_and_fill_chgmult.html">validate_and_fill_chgmult</a></li>
@@ -319,17 +321,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_input_arrays.html#qcelemental.molparse.from_input_arrays" title="qcelemental.molparse.from_input_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_input_arrays</span></code></a>(*[, enable_qm, ...])</p></td>
 <td><p>Compose a Molecule dict from unvalidated arrays and variables in multiple domains.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema" title="qcelemental.molparse.from_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_schema</span></code></a>(molschema, *[, nonphysical, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_mae.html#qcelemental.molparse.from_mae" title="qcelemental.molparse.from_mae"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mae</span></code></a>(filename)</p></td>
+<td><p>Read Maestro structures as QCSchema v2 Molecules.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_schema.html#qcelemental.molparse.from_schema" title="qcelemental.molparse.from_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_schema</span></code></a>(molschema, *[, nonphysical, verbose])</p></td>
 <td><p>Construct molecule dictionary representation from non-Psi4 schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string" title="qcelemental.molparse.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(molstr[, dtype, name, fix_com, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.from_string.html#qcelemental.molparse.from_string" title="qcelemental.molparse.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(molstr[, dtype, name, fix_com, ...])</p></td>
 <td><p>Construct a molecule dictionary from any recognized string format.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.parse_nucleus_label.html#qcelemental.molparse.parse_nucleus_label" title="qcelemental.molparse.parse_nucleus_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_nucleus_label</span></code></a>(label)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.parse_nucleus_label.html#qcelemental.molparse.parse_nucleus_label" title="qcelemental.molparse.parse_nucleus_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_nucleus_label</span></code></a>(label)</p></td>
 <td><p>Separate molecule nucleus string into fields.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.reconcile_nucleus.html#qcelemental.molparse.reconcile_nucleus" title="qcelemental.molparse.reconcile_nucleus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconcile_nucleus</span></code></a>([A, Z, E, mass, real, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.reconcile_nucleus.html#qcelemental.molparse.reconcile_nucleus" title="qcelemental.molparse.reconcile_nucleus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconcile_nucleus</span></code></a>([A, Z, E, mass, real, ...])</p></td>
 <td><p>Forms consistent set of nucleus descriptors from all information from arguments, supplemented by the periodic table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/qcelemental.molparse.to_mae.html#qcelemental.molparse.to_mae" title="qcelemental.molparse.to_mae"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_mae</span></code></a>(molecule, filename, *[, overwrite, ...])</p></td>
+<td><p>Write a QCSchema Molecule to a Maestro structure file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="api/qcelemental.molparse.to_schema.html#qcelemental.molparse.to_schema" title="qcelemental.molparse.to_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_schema</span></code></a>(molrec, dtype[, units, np_out, copy])</p></td>
 <td><p>Translate molparse internal Molecule spec into dictionary from other schemas.</p></td>

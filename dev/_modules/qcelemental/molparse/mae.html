@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qcelemental.molparse.mae &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=df598981"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qcelemental.molparse.mae</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qcelemental.molparse.mae</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os</span><span class="w"> </span><span class="kn">import</span> <span class="n">PathLike</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">MoleculeFormatError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..physical_constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..util</span><span class="w"> </span><span class="kn">import</span> <span class="n">which_import</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;from_mae&quot;</span><span class="p">,</span> <span class="s2">&quot;to_mae&quot;</span><span class="p">]</span>
+
+
+<span class="n">_MAE_CHARGE_PROPERTY</span> <span class="o">=</span> <span class="s2">&quot;i_m_Molecular_charge&quot;</span>
+<span class="n">_MAE_MULTIPLICITY_PROPERTY</span> <span class="o">=</span> <span class="s2">&quot;i_m_Spin_multiplicity&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_import_schrodinger</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Import the optional Schrodinger modules needed for Maestro I/O.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[module, module]</span>
+<span class="sd">        The :mod:`schrodinger.structure` and :mod:`schrodinger.infra.mm`</span>
+<span class="sd">        modules, respectively.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ModuleNotFoundError</span>
+<span class="sd">        If the Schrodinger Python modules are unavailable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">which_import</span><span class="p">(</span>
+        <span class="s2">&quot;schrodinger.structure&quot;</span><span class="p">,</span>
+        <span class="n">raise_error</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">raise_msg</span><span class="o">=</span><span class="s2">&quot;Maestro support requires a Schrodinger Python environment.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">schrodinger</span><span class="w"> </span><span class="kn">import</span> <span class="n">structure</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">schrodinger.infra</span><span class="w"> </span><span class="kn">import</span> <span class="n">mm</span>
+
+    <span class="k">return</span> <span class="n">structure</span><span class="p">,</span> <span class="n">mm</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_mae_path</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Validate and normalize a Maestro file path.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename</span>
+<span class="sd">        Path whose filename must end in ``.mae`` or ``.maegz``, case-insensitively.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Path</span>
+<span class="sd">        The normalized path object.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the filename does not have a supported Maestro extension.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">lower_name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lower_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.mae&quot;</span><span class="p">,</span> <span class="s2">&quot;.maegz&quot;</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maestro filename must end in .mae or .maegz: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_coerce_bond_order</span><span class="p">(</span><span class="n">order</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">permissive</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a QCSchema bond order to an order supported by Maestro.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    order</span>
+<span class="sd">        QCSchema bond order to convert.</span>
+<span class="sd">    permissive</span>
+<span class="sd">        If ``True``, round half up and clamp unsupported orders to Maestro&#39;s</span>
+<span class="sd">        inclusive range from zero through three. If ``False``, reject</span>
+<span class="sd">        unsupported orders.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[int, bool]</span>
+<span class="sd">        The Maestro bond order and whether the input required a lossy</span>
+<span class="sd">        conversion.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If ``order`` is non-finite, or if it is unsupported and</span>
+<span class="sd">        ``permissive`` is ``False``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">math</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bond order must be finite, not </span><span class="si">{</span><span class="n">order</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="n">rounded</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">rounded</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">rounded</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rounded</span><span class="p">,</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">permissive</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Maestro supports integer bond orders from 0 through 3, not </span><span class="si">{</span><span class="n">order</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Pass permissive=True to round to the nearest supported order.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">rounded</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">3</span><span class="p">),</span> <span class="kc">True</span>
+
+
+<div class="viewcode-block" id="from_mae">
+<a class="viewcode-back" href="../../../api/qcelemental.molparse.from_mae.html#qcelemental.molparse.from_mae">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_mae</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Molecule</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read Maestro structures as QCSchema v2 Molecules.</span>
+
+<span class="sd">    Coordinates are converted from angstrom to bohr. Elemental atoms carrying</span>
+<span class="sd">    Maestro&#39;s counterpoise property become QCSchema ghost atoms with</span>
+<span class="sd">    ``real=False``. Unsupported non-counterpoise dummy atoms are omitted with</span>
+<span class="sd">    a warning.</span>
+
+<span class="sd">    Atom- and bond-level properties without QCSchema Molecule equivalents</span>
+<span class="sd">    are intentionally ignored.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename</span>
+<span class="sd">        Maestro file in ``.mae`` or ``.maegz`` format.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[Molecule]</span>
+<span class="sd">        One QCSchema v2 Molecule for each structure in the Maestro file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_validate_mae_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">structure</span><span class="p">,</span> <span class="n">mm</span> <span class="o">=</span> <span class="n">_import_schrodinger</span><span class="p">()</span>
+
+    <span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="n">structure</span><span class="o">.</span><span class="n">StructureReader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">mae_structure</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">symbols</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">geometry</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">real</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">atomic_numbers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">atom_index_map</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">dummy_indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">atom</span><span class="p">:</span>
+                <span class="n">is_counterpoise</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">mm</span><span class="o">.</span><span class="n">M2IO_DATA_ATOM_COUNTERPOISE</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">atom</span><span class="o">.</span><span class="n">atomic_number</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_counterpoise</span><span class="p">:</span>
+                    <span class="n">dummy_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">atom_index_map</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span>
+                <span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="p">)</span>
+                <span class="n">geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
+                <span class="n">real</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="ow">not</span> <span class="n">is_counterpoise</span><span class="p">)</span>
+                <span class="n">atomic_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">atomic_number</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">dummy_indices</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Maestro dummy atoms are not supported and were omitted at indices &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">dummy_indices</span><span class="p">)),</span>
+                    <span class="ne">UserWarning</span><span class="p">,</span>
+                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">connectivity</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">atom_index_map</span><span class="p">[</span><span class="n">bond</span><span class="o">.</span><span class="n">atom1</span><span class="o">.</span><span class="n">index</span><span class="p">],</span> <span class="n">atom_index_map</span><span class="p">[</span><span class="n">bond</span><span class="o">.</span><span class="n">atom2</span><span class="o">.</span><span class="n">index</span><span class="p">],</span> <span class="n">bond</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">bond</span>
+                <span class="k">if</span> <span class="n">bond</span><span class="o">.</span><span class="n">order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">bond</span><span class="o">.</span><span class="n">atom1</span><span class="o">.</span><span class="n">index</span> <span class="ow">in</span> <span class="n">atom_index_map</span> <span class="ow">and</span> <span class="n">bond</span><span class="o">.</span><span class="n">atom2</span><span class="o">.</span><span class="n">index</span> <span class="ow">in</span> <span class="n">atom_index_map</span>
+            <span class="p">]</span>
+
+            <span class="n">molecular_charge</span> <span class="o">=</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_MAE_CHARGE_PROPERTY</span><span class="p">,</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">formal_charge</span><span class="p">)</span>
+            <span class="n">molecular_multiplicity</span> <span class="o">=</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_MAE_MULTIPLICITY_PROPERTY</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">molecular_multiplicity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">electron_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">number</span> <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">is_real</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atomic_numbers</span><span class="p">,</span> <span class="n">real</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_real</span><span class="p">)</span>
+                <span class="n">electron_count</span> <span class="o">-=</span> <span class="n">molecular_charge</span>
+                <span class="n">molecular_multiplicity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">electron_count</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Molecule</span><span class="p">(</span>
+                    <span class="n">symbols</span><span class="o">=</span><span class="n">symbols</span><span class="p">,</span>
+                    <span class="n">geometry</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span> <span class="o">/</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">mae_structure</span><span class="o">.</span><span class="n">title</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">molecular_charge</span><span class="o">=</span><span class="n">molecular_charge</span><span class="p">,</span>
+                    <span class="n">molecular_multiplicity</span><span class="o">=</span><span class="n">molecular_multiplicity</span><span class="p">,</span>
+                    <span class="n">real</span><span class="o">=</span><span class="n">real</span><span class="p">,</span>
+                    <span class="n">connectivity</span><span class="o">=</span><span class="n">connectivity</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">molecules</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">MoleculeFormatError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maestro file contains no structures: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">molecules</span></div>
+
+
+
+<div class="viewcode-block" id="to_mae">
+<a class="viewcode-back" href="../../../api/qcelemental.molparse.to_mae.html#qcelemental.molparse.to_mae">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_mae</span><span class="p">(</span>
+    <span class="n">molecule</span><span class="p">:</span> <span class="n">Molecule</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">permissive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Write a QCSchema Molecule to a Maestro structure file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molecule</span>
+<span class="sd">        A QCSchema Molecule model or mapping. Coordinates are interpreted as</span>
+<span class="sd">        bohr.</span>
+<span class="sd">    filename</span>
+<span class="sd">        Maestro file in ``.mae`` or ``.maegz`` format.</span>
+<span class="sd">    overwrite</span>
+<span class="sd">        Overwrite an existing file. When ``False``, append the structure.</span>
+<span class="sd">    permissive</span>
+<span class="sd">        Round unsupported QCSchema bond orders to the nearest Maestro order</span>
+<span class="sd">        from 0 through 3. A warning describes every lossy conversion. By</span>
+<span class="sd">        default, unsupported bond orders raise ``ValueError``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    QCSchema counterpoise atoms retain their element and receive Maestro&#39;s</span>
+<span class="sd">    ``i_m_counterpoise`` property. Arbitrary QCSchema extras and Maestro</span>
+<span class="sd">    visualization properties are not written.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">_validate_mae_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">structure</span><span class="p">,</span> <span class="n">mm</span> <span class="o">=</span> <span class="n">_import_schrodinger</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="o">**</span><span class="n">molecule</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;symbols&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;geometry&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;real&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;molecular_charge&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;connectivity&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;molecule must be a QCSchema Molecule model or mapping.&quot;</span><span class="p">)</span>
+
+    <span class="n">molecular_charge</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">molecular_charge</span><span class="p">)</span>
+    <span class="n">molecular_multiplicity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">molecular_multiplicity</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">molecular_charge</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maestro requires an integer molecular charge, not </span><span class="si">{</span><span class="n">molecular_charge</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">molecular_multiplicity</span><span class="o">.</span><span class="n">is_integer</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maestro requires an integer molecular multiplicity, not </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="n">mae_structure</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">create_new_structure</span><span class="p">()</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span> <span class="o">*</span> <span class="n">constants</span><span class="o">.</span><span class="n">bohr2angstroms</span>
+    <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">is_real</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">molecule</span><span class="o">.</span><span class="n">real</span><span class="p">):</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">mae_structure</span><span class="o">.</span><span class="n">addAtom</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">symbol</span><span class="p">),</span> <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">xyz</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_real</span><span class="p">:</span>
+            <span class="n">atom</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">mm</span><span class="o">.</span><span class="n">M2IO_DATA_ATOM_COUNTERPOISE</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">lossy_bonds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">atom1</span><span class="p">,</span> <span class="n">atom2</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">molecule</span><span class="o">.</span><span class="n">connectivity</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">mae_order</span><span class="p">,</span> <span class="n">was_rounded</span> <span class="o">=</span> <span class="n">_coerce_bond_order</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">permissive</span><span class="p">)</span>
+        <span class="n">mae_structure</span><span class="o">.</span><span class="n">addBond</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">atom1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mae_order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">was_rounded</span><span class="p">:</span>
+            <span class="n">lossy_bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">atom1</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">atom2</span><span class="si">}</span><span class="s2">) </span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">mae_order</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">lossy_bonds</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Rounded unsupported bond orders for Maestro output: &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lossy_bonds</span><span class="p">),</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="n">mae_structure</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">mae_structure</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">_MAE_CHARGE_PROPERTY</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">molecular_charge</span><span class="p">)</span>
+    <span class="n">mae_structure</span><span class="o">.</span><span class="n">property</span><span class="p">[</span><span class="n">_MAE_MULTIPLICITY_PROPERTY</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">molecular_multiplicity</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">structure</span><span class="o">.</span><span class="n">StructureWriter</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mae_structure</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
