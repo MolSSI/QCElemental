@@ -18,6 +18,8 @@ from numpy.typing import NDArray
 from pydantic import Field, SerializerFunctionWrapHandler, field_validator, model_serializer
 from typing_extensions import Annotated
 
+from qcelemental.molparse import mae
+
 # molparse imports separated b/c https://github.com/python/mypy/issues/7203
 from ...models import QCEL_V1V2_SHIM_CODE
 from ...molparse.from_arrays import from_arrays
@@ -52,6 +54,8 @@ _extension_map = {
     ".psimol": "psi4",
     ".psi4": "psi4",
     ".msgpack": "msgpack-ext",
+    ".mae": "mae",
+    ".maegz": "mae",
 }
 
 
@@ -928,20 +932,20 @@ class Molecule(ProtoModel):
     @classmethod
     def from_data(
         cls,
-        data: Union[str, Dict[str, Any], np.ndarray, bytes],
-        dtype: Optional[str] = None,
+        data: str | dict[str, Any] | np.ndarray | bytes,
+        dtype: str | None = None,
         *,
         orient: bool = False,
-        validate: bool = None,
-        **kwargs: Dict[str, Any],
-    ) -> "Molecule":
+        validate: bool | None = None,
+        **kwargs: Any,
+    ) -> Molecule:
         r"""
         Constructs a molecule object from a data structure.
 
         Parameters
         ----------
         data
-            Data to construct Molecule from
+            Data from which to construct a Molecule.
         dtype
             How to interpret the data, if not passed attempts to discover this based on input type.
         orient
@@ -1019,7 +1023,14 @@ class Molecule(ProtoModel):
         return cls(orient=orient, validate=validate, **input_dict)
 
     @classmethod
-    def from_file(cls, filename: str, dtype: Optional[str] = None, *, orient: bool = False, **kwargs):
+    def from_file(
+        cls,
+        filename: str | Path,
+        dtype: str | None = None,
+        *,
+        orient: bool = False,
+        **kwargs: Any,
+    ) -> Molecule:
         r"""
         Constructs a molecule object from a file.
 
@@ -1041,14 +1052,15 @@ class Molecule(ProtoModel):
 
         """
 
-        ext = Path(filename).suffix
-
         if dtype is None:
-            if ext in _extension_map:
-                dtype = _extension_map[ext]
-            else:
-                # Let `from_string` try to sort it
-                dtype = "string"
+            dtype = _extension_map.get(Path(filename).suffix.lower(), "string")
+        if dtype == "mae":
+            molecule = mae.from_mae(filename)[0]
+            if not orient and not kwargs:
+                return molecule
+            return cls.from_data(
+                molecule.model_dump(exclude={"schema_name", "schema_version"}), dtype="dict", orient=orient, **kwargs
+            )
 
         # Raw string type, read and pass through
         if dtype in ["string", "xyz", "xyz+", "psi4"]:
@@ -1069,7 +1081,7 @@ class Molecule(ProtoModel):
 
         return cls.from_data(data, dtype, orient=orient, **kwargs)
 
-    def to_file(self, filename: str, dtype: Optional[str] = None) -> None:
+    def to_file(self, filename: str | Path, dtype: str | None = None) -> None:
         r"""Writes the Molecule to a file.
 
         Parameters
@@ -1080,15 +1092,15 @@ class Molecule(ProtoModel):
             The type of file to write, attempts to infer dtype from the filename if not provided.
 
         """
-        ext = Path(filename).suffix
-
         if dtype is None:
-            if ext in _extension_map:
-                dtype = _extension_map[ext]
-            else:
+            dtype = _extension_map.get(Path(filename).suffix.lower())
+            if dtype is None:
                 raise KeyError(f"Could not infer dtype from filename: `{filename}`")
 
-        if dtype in ["xyz", "xyz+", "psi4"]:
+        if dtype == "mae":
+            mae.to_mae(self, filename)
+            return
+        elif dtype in ["xyz", "xyz+", "psi4"]:
             stringified = self.to_string(dtype)
         elif dtype in ["json", "json-ext", "msgpack", "msgpack-ext"]:
             stringified = self.serialize(dtype)
