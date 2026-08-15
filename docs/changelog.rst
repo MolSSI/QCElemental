@@ -24,6 +24,32 @@ Changelog
 .. +++++
 
 
+.. _`sec:cl0510`:
+
+0.51.0 / 2026-MM-DD (Unreleased)
+-------------------
+
+:docs:`v0.51.0` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Breaking Changes
+++++++++++++++++
+
+New Features
+++++++++++++
+- (:pr:`410`) Add converters between Schrodinger MAE and QCSchema Molecule. @TyBalduf
+- (:pr:`411`) Add a Molecule.to_string path for Jaguar. @TyBalduf
+
+Enhancements
+++++++++++++
+- ??? Maint -- Add automatic publishing to PyPI and GitHub release from tag.
+
+Bug Fixes
++++++++++
+
+Misc.
++++++
+
+
 .. _`sec:cl0504`:
 
 0.50.4 / 2026-06-23
