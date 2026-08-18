@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>parse_nucleus_label &mdash; QCElemental 0.51.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=b8ab9f72"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/version-switcher.js?v=313414bb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="reconcile_nucleus" href="qcelemental.molparse.reconcile_nucleus.html" />
+    <link rel="prev" title="from_string" href="qcelemental.molparse.from_string.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">QCElemental API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental">qcelemental Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#module-qcelemental.molparse">qcelemental.molparse Package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#id1">Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.contiguize_from_fragment_pattern.html">contiguize_from_fragment_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_arrays.html">from_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_input_arrays.html">from_input_arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_mae.html">from_mae</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_schema.html">from_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.from_string.html">from_string</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">parse_nucleus_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.reconcile_nucleus.html">reconcile_nucleus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_mae.html">to_mae</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_schema.html">to_schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.to_string.html">to_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="qcelemental.molparse.validate_and_fill_chgmult.html">validate_and_fill_chgmult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.molutil">qcelemental.molutil Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.testing">qcelemental.testing Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-qcelemental.models.v2">qcelemental.models.v2 Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">QCElemental API</a></li>
+      <li class="breadcrumb-item active">parse_nucleus_label</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/qcelemental.molparse.parse_nucleus_label.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="parse-nucleus-label">
+<h1>parse_nucleus_label<a class="headerlink" href="#parse-nucleus-label" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qcelemental.molparse.parse_nucleus_label">
+<span class="sig-prename descclassname"><span class="pre">qcelemental.molparse.</span></span><span class="sig-name descname"><span class="pre">parse_nucleus_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qcelemental/molparse/nucleus.html#parse_nucleus_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qcelemental.molparse.parse_nucleus_label" title="Link to this definition"></a></dt>
+<dd><p>Separate molecule nucleus string into fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Conveys at least element and ghostedness and possibly isotope, mass, and
+user info in accordance with <code class="xref py py-data docutils literal notranslate"><span class="pre">qcelemental.molparse.regex.NUCLEUS</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A, Z, E, mass, real, user</strong> – Field breakdown of <cite>label</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#int" title="(in Python v3.10)">int</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#float" title="(in Python v3.10)">float</a> or None, <a class="reference external" href="https://docs.python.org/3.10/library/functions.html#bool" title="(in Python v3.10)">bool</a>, <a class="reference external" href="https://docs.python.org/3.10/library/stdtypes.html#str" title="(in Python v3.10)">str</a> or None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="qcelemental.ValidationError.html#qcelemental.ValidationError" title="qcelemental.ValidationError"><strong>qcelemental.ValidationError</strong></a> – If <cite>label</cite> does not match NUCLEUS.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@ca_miNe'</span><span class="p">)</span>
+<span class="go">None, None, 'ca', None False, '_miNe'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(Ca_mine)'</span><span class="p">)</span>
+<span class="go">None, None, 'Ca', None '_mine', False</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@Ca_mine@1.07'</span><span class="p">)</span>
+<span class="go">None, None, 'Ca', 1.07 False, '_mine'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(cA_MINE@1.07)'</span><span class="p">)</span>
+<span class="go">None, None, 'cA', 1.07 False, '_MINE'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@40Ca_mine@1.07'</span><span class="p">)</span>
+<span class="go">40, None, 'Ca', 1.07 False, '_mine'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(40Ca_mine@1.07)'</span><span class="p">)</span>
+<span class="go">40, None, 'Ca', 1.07 False, '_mine'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'444lu333@4.0'</span><span class="p">)</span>
+<span class="go">444, None, 'lu', 4.0 True, '333'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@444lu333@4.4'</span><span class="p">)</span>
+<span class="go">444, None, 'lu', 4.4 False, '333'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'8i'</span><span class="p">)</span>
+<span class="go">8, None, 'i', None True, None</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'53_mI4'</span><span class="p">)</span>
+<span class="go">None, 53, None, None True, '_mI4'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@5_MINEs3@4.4'</span><span class="p">)</span>
+<span class="go">None, 5, None, 4.4 False, '_MINEs3'</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(555_mines3@0.1)'</span><span class="p">)</span>
+<span class="go">None, 555, None, 0.1 False, '_mines3'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qcelemental.molparse.from_string.html" class="btn btn-neutral float-left" title="from_string" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="qcelemental.molparse.reconcile_nucleus.html" class="btn btn-neutral float-right" title="reconcile_nucleus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

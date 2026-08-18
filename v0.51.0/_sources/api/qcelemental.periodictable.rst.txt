@@ -1,0 +1,6 @@
+periodictable
+=============
+
+.. currentmodule:: qcelemental
+
+.. autodata:: periodictable

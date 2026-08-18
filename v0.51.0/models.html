@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; QCElemental 0.51.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=b8ab9f72"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/version-switcher.js?v=313414bb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Molecule" href="model_molecule.html" />
+    <link rel="prev" title="Install QCElemental" href="install.html" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MZ67SSL');</script>
+<!-- End Google Tag Manager -->
+ 
+
+</head>
+
+<body class="wy-body-for-nav">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZ67SSL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+ 
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            QCElemental
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install QCElemental</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">QCSchema Models</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basics">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#serialization">Serialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qcschema-v2">QCSchema v2</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model_molecule.html">Molecule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_result.html">Atomic (Single-Point)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_opt.html">Optimization (Geometry Opt)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_td.html">Torsion Drive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_common.html">Common</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Quantities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="physconst.html">Physical Constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="periodic_table.html">Periodic Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covalent_radii.html">Covalent Radii</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vanderwaals_radii.html">van der Waals Radii</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">QCElemental API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QCElemental</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<p>Python implementations of the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a>
+are available within QCElemental.
+Note that the QCElemental reference implementation here is more up-to-date than the QCSchema repository.
+These models use <a class="reference external" href="https://pydantic-docs.helpmanual.io">Pydantic</a>
+as their base to provide serialization, validation, and manipulation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>QCSchema v2 is documented here. Docs for QCSchema v1 at <a class="extlink-docs reference external" href="https://MolSSI.github.io/QCElemental/v0.30.2">Docs v0.30.2</a> .</p>
+</div>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Link to this heading"></a></h2>
+<p>Model creation occurs with a <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> constructor as shown by equivalent operations below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="p">[</span><span class="s2">"He"</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s2">"symbols"</span><span class="p">:[</span><span class="s2">"He"</span><span class="p">],</span> <span class="s2">"geometry"</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+</pre></div>
+</div>
+<p>Certain models (Molecule in particular) have additional convenience instantiation functions, like
+the below for hydroxide ion:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="s2">"""</span>
+<span class="go">          -1 1</span>
+<span class="go">           O 0 0 0</span>
+<span class="go">           H 0 0 1.2</span>
+<span class="go">    """)</span>
+</pre></div>
+</div>
+<p>A list of all available fields can be found by querying for fields:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># QCSchema v1 / Pydantic v1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mol</span><span class="o">.</span><span class="n">__fields__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">dict_keys</span><span class="p">([</span><span class="s1">'symbols'</span><span class="p">,</span> <span class="s1">'geometry'</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'extras'</span><span class="p">])</span>
+
+<span class="c1"># QCSchema v2 / Pydantic v2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mol</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">dict_keys</span><span class="p">([</span><span class="s1">'symbols'</span><span class="p">,</span> <span class="s1">'geometry'</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="s1">'id'</span><span class="p">,</span> <span class="s1">'extras'</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>These attributes can be accessed as shown:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">symbols</span>
+<span class="go">['He']</span>
+</pre></div>
+</div>
+<p>Note that these models are typically immutable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Ne"</span><span class="p">]</span>
+<span class="go">TypeError: "Molecule" is immutable and does not support item assignment</span>
+</pre></div>
+</div>
+<p>To update or alter a model the <code class="docutils literal notranslate"><span class="pre">model_copy</span></code> command can be used with the <code class="docutils literal notranslate"><span class="pre">update</span></code> kwargs.
+Note that <code class="docutils literal notranslate"><span class="pre">model_copy</span></code> is Pydantic v2 syntax, but it will work on QCSchema v1 and v2 models.
+The older Pydantic v1 syntax, <code class="docutils literal notranslate"><span class="pre">copy</span></code>, will only work on QCSchema v1 models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">model_copy</span><span class="p">(</span><span class="n">update</span><span class="o">=</span><span class="p">{</span><span class="s2">"symbols"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"Ne"</span><span class="p">]})</span>
+<span class="go">&lt;    Geometry (in Angstrom), charge = 0.0, multiplicity = 1:</span>
+
+<span class="go">       Center              X                  Y                   Z</span>
+<span class="go">    ------------   -----------------  -----------------  -----------------</span>
+<span class="go">    Ne                0.000000000000     0.000000000000     0.000000000000</span>
+
+<span class="go">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="serialization">
+<h2>Serialization<a class="headerlink" href="#serialization" title="Link to this heading"></a></h2>
+<p>All models can be serialized back to their dictionary counterparts through the <code class="docutils literal notranslate"><span class="pre">model_dump</span></code> function:
+Note that <code class="docutils literal notranslate"><span class="pre">model_dump</span></code> is Pydantic v2 syntax, but it will work on QCSchema v1 and v2 models.
+The older Pydantic v1 syntax, <code class="docutils literal notranslate"><span class="pre">dict</span></code>, will only work on QCSchema v1 models. It has a different effect on v2 models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+<span class="go">{'symbols': ['He'], 'geometry': array([[0., 0., 0.]])}</span>
+</pre></div>
+</div>
+<p>JSON representations are supported out of the box for all models:
+Note that <code class="docutils literal notranslate"><span class="pre">model_dump_json</span></code> is Pydantic v2 syntax, but it will work on QCSchema v1 and v2 models.
+The older Pydantic v1 syntax, <code class="docutils literal notranslate"><span class="pre">json</span></code>, will only work on QCSchema v1 models.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>
+<span class="go">'{"symbols": ["He"], "geometry": [0.0, 0.0, 0.0]}'</span>
+</pre></div>
+</div>
+<p>Raw JSON can also be parsed back into a model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">parse_raw</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">())</span>
+<span class="go">&lt;    Geometry (in Angstrom), charge = 0.0, multiplicity = 1:</span>
+
+<span class="go">       Center              X                  Y                   Z</span>
+<span class="go">    ------------   -----------------  -----------------  -----------------</span>
+<span class="go">    He                0.000000000000     0.000000000000     0.000000000000</span>
+
+<span class="go">&gt;</span>
+</pre></div>
+</div>
+<p>The standard <code class="docutils literal notranslate"><span class="pre">dict</span></code> operation returns all internal representations which may be classes or other complex structures.
+To return a JSON-like dictionary the <code class="docutils literal notranslate"><span class="pre">model_dump</span></code> function can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">'json'</span><span class="p">)</span>
+<span class="go">{'symbols': ['He'], 'geometry': [0.0, 0.0, 0.0]}</span>
+</pre></div>
+</div>
+</section>
+<section id="qcschema-v2">
+<h2>QCSchema v2<a class="headerlink" href="#qcschema-v2" title="Link to this heading"></a></h2>
+<p>Starting with QCElemental v0.50.0, a new “v2” version of QCSchema is accessible. In particular:</p>
+<ul class="simple">
+<li><p>QCSchema v2 is written in Pydantic v2 syntax. (Note that a model with submodels may not mix Pydantic v1 and v2 models.)</p></li>
+<li><p>Major QCSchema v2 models have field <code class="docutils literal notranslate"><span class="pre">schema_version=2</span></code>. Note that Molecule has long had <code class="docutils literal notranslate"><span class="pre">schema_version=2</span></code>, but this belongs to QCSchema v1. The QCSchema v2 Molecule has <code class="docutils literal notranslate"><span class="pre">schema_version=3</span></code>.</p></li>
+<li><p>QCSchema v2 has certain field rearrangements that make procedure models more composable. They also make v1 and v2 distinguishable in dictionary form.</p></li>
+<li><p>QCSchema v2 does not include new features. It is purely a technical upgrade.</p></li>
+</ul>
+<p>Also see <a class="reference external" href="https://github.com/MolSSI/QCElemental/issues/323">https://github.com/MolSSI/QCElemental/issues/323</a> for details and progress.
+The <a class="reference internal" href="changelog.html#sec-cl0500rc1"><span class="std std-ref">Changelog</span></a> and
+a <a class="reference external" href="https://github.com/MolSSI/QCElemental/blob/next2026/docs/MIGRATION.md">Migration Guide</a> contain details.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/qcschema_cheatsheet_20May2026.png"><img alt="map to QCSchema" src="_images/qcschema_cheatsheet_20May2026.png" style="width: 240px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Migration guide in visual form.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The anticipated timeline is:</p>
+<ul class="simple">
+<li><p>v0.50 — QCSchema v2 available. QCSchema v1 unchanged (files moved but imports will work w/o change). There will be prereleases. This has been accelerated by the need for v2 for Python 3.14+ compatibility. Schema layout to be finalized by v0.60</p></li>
+<li><p>v0.60 — QCSchema v2 layout finalized.</p></li>
+<li><p>v0.70 — QCSchema v2 will become the default. QCSchema v1 will remain available, but it will require specific import paths (available as soon as v0.50).</p></li>
+<li><p>v1.0 — QCSchema v2 unchanged. QCSchema v1 dropped. Earliest 1 Jan 2027.</p></li>
+</ul>
+<p>Both QCSchema v1 and v2 will be available for quite a while to allow downstream projects time to adjust.</p>
+<p>To make sure you’re using QCSchema v1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">OptimizationInput</span>
+<span class="c1"># by</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">OptimizationInput</span>
+</pre></div>
+</div>
+<p>To try out QCSchema v2:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">OptimizationInput</span>
+<span class="c1"># by</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">qcelemental.models.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicResult</span><span class="p">,</span> <span class="n">OptimizationInput</span>
+</pre></div>
+</div>
+<p>To figure out what model you’re working with, you can look at its Pydantic base or its QCElemental base:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make molecules</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mol1</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="p">[</span><span class="s2">"O"</span><span class="p">,</span> <span class="s2">"H"</span><span class="p">],</span> <span class="n">molecular_charge</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">mol2</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v2</span><span class="o">.</span><span class="n">Molecule</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="p">[</span><span class="s2">"O"</span><span class="p">,</span> <span class="s2">"H"</span><span class="p">],</span> <span class="n">molecular_charge</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">mol2</span><span class="p">)</span>
+<span class="n">Molecule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="nb">hash</span><span class="o">=</span><span class="s1">'6b7a42f'</span><span class="p">)</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="nb">hash</span><span class="o">=</span><span class="s1">'6b7a42f'</span><span class="p">)</span>
+
+<span class="c1"># query v1 molecule</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">ProtoModel</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol1</span><span class="p">,</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v2</span><span class="o">.</span><span class="n">ProtoModel</span><span class="p">)</span>
+<span class="kc">False</span>
+
+<span class="c1"># query v2 molecule</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol2</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol2</span><span class="p">,</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol2</span><span class="p">,</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">ProtoModel</span><span class="p">)</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol2</span><span class="p">,</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v2</span><span class="o">.</span><span class="n">ProtoModel</span><span class="p">)</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+<p>Most high-level models (e.g., <code class="docutils literal notranslate"><span class="pre">AtomicInput</span></code>, not <code class="docutils literal notranslate"><span class="pre">Provenance</span></code>) have a <code class="docutils literal notranslate"><span class="pre">convert_v</span></code> function to convert between QCSchema versions. It returns the input object if called with the current version.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">inp1</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">AtomicInput</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="s1">'energy'</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s1">'method'</span><span class="p">:</span> <span class="s1">'pbe'</span><span class="p">,</span> <span class="s1">'basis'</span><span class="p">:</span> <span class="s1">'pvdz'</span><span class="p">},</span> <span class="n">molecule</span><span class="o">=</span><span class="n">mol1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">inp1</span><span class="p">)</span>
+<span class="go">AtomicInput(driver='energy', model={'method': 'pbe', 'basis': 'pvdz'}, molecule_hash='6b7a42f')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inp1</span><span class="o">.</span><span class="n">schema_version</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inp2</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v2</span><span class="o">.</span><span class="n">AtomicInput</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="s1">'energy'</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s1">'method'</span><span class="p">:</span> <span class="s1">'pbe'</span><span class="p">,</span> <span class="s1">'basis'</span><span class="p">:</span> <span class="s1">'pvdz'</span><span class="p">},</span> <span class="n">molecule</span><span class="o">=</span><span class="n">mol2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">inp2</span><span class="p">)</span>
+<span class="go">AtomicInput(driver='energy', model={'method': 'pbe', 'basis': 'pvdz'}, molecule_hash='6b7a42f')</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inp2</span><span class="o">.</span><span class="n">schema_version</span>
+<span class="go">2</span>
+
+<span class="go"># now convert</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inp1_now2</span> <span class="o">=</span> <span class="n">inp1</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">inp1_now2</span><span class="o">.</span><span class="n">schema_version</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inp2_now1</span> <span class="o">=</span> <span class="n">inp1</span><span class="o">.</span><span class="n">convert_v</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">inp2_now1</span><span class="o">.</span><span class="n">schema_version</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>Error messages aren’t necessarily helpful in the upgrade process.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This usually means you're calling Pydantic v1 functions (dict, json, copy) on a Pydantic v2 model.</span>
+<span class="c1"># There are dict and copy functions commented out in qcelemental/models/v2/basemodels.py that you</span>
+<span class="c1">#   can uncomment and use temporarily to ease the upgrade, but the preferred route is to switch to</span>
+<span class="c1">#   model_dump, model_dump_json, model_copy that work on QCSchema v1 and v2 models.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="ne">TypeError</span><span class="p">:</span> <span class="n">ProtoModel</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span> <span class="n">got</span> <span class="n">an</span> <span class="n">unexpected</span> <span class="n">keyword</span> <span class="n">argument</span> <span class="s1">'by_alias'</span>
+
+<span class="c1"># This usually means you're mixing a v1 model into a v2 model. Check all the imports from</span>
+<span class="c1">#   qcelemental.models for version specificity. If the import can't be updated, run `convert_v`</span>
+<span class="c1">#   on the model.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pydantic_core</span><span class="o">.</span><span class="n">_pydantic_core</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">:</span> <span class="mi">1</span> <span class="n">validation</span> <span class="n">error</span> <span class="k">for</span> <span class="n">AtomicInput</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">molecule</span>
+<span class="o">&gt;&gt;&gt;</span>   <span class="n">Input</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">dictionary</span> <span class="ow">or</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">Molecule</span> <span class="p">[</span><span class="nb">type</span><span class="o">=</span><span class="n">model_type</span><span class="p">,</span> <span class="n">input_value</span><span class="o">=</span><span class="n">Molecule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="n">formula</span><span class="o">=</span><span class="s1">'HO'</span><span class="p">,</span> <span class="nb">hash</span><span class="o">=</span><span class="s1">'6b7a42f'</span><span class="p">),</span> <span class="n">input_type</span><span class="o">=</span><span class="n">Molecule</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">For</span> <span class="n">further</span> <span class="n">information</span> <span class="n">visit</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">errors</span><span class="o">.</span><span class="n">pydantic</span><span class="o">.</span><span class="n">dev</span><span class="o">/</span><span class="mf">2.5</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="n">model_type</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Install QCElemental" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model_molecule.html" class="btn btn-neutral float-right" title="Molecule" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018-2026, The Molecular Sciences Software Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

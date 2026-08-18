@@ -1,0 +1,6 @@
+from_mae
+========
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: from_mae
