@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QCElemental &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>QCElemental &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=df598981"></script>
+      <script src="_static/documentation_options.js?v=b7aec637"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -119,13 +119,13 @@ as QCSchema.</em></p>
 <section id="physical-constants">
 <h2>Physical Constants<a class="headerlink" href="#physical-constants" title="Link to this heading"></a></h2>
 <p>Physical constants can be acquired directly from the NIST CODATA:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hartree energy in ev&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"hartree energy in ev"</span><span class="p">)</span>
 <span class="go">27.21138602</span>
 </pre></div>
 </div>
 <p>Alternatively, with the use of the Pint unit conversion package, arbitrary
 conversion factors can be obtained:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">&quot;bohr&quot;</span><span class="p">,</span> <span class="s2">&quot;miles&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">conversion_factor</span><span class="p">(</span><span class="s2">"bohr"</span><span class="p">,</span> <span class="s2">"miles"</span><span class="p">)</span>
 <span class="go">3.2881547429884475e-14</span>
 </pre></div>
 </div>
@@ -133,7 +133,7 @@ conversion factors can be obtained:</p>
 <section id="periodic-table-data">
 <h2>Periodic Table Data<a class="headerlink" href="#periodic-table-data" title="Link to this heading"></a></h2>
 <p>A variety of periodic table quantities are available using virtually any alias:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="s2">&quot;Ne&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="s2">"Ne"</span><span class="p">)</span>
 <span class="go">19.9924401762</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_mass</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -146,10 +146,10 @@ conversion factors can be obtained:</p>
 <p>Molecules can be translated to/from the <a class="reference external" href="https://github.com/MolSSI/QCSchema">MolSSI QCSchema</a> format or quantum chemistry
 program specific input specifications such as NWChem, Psi4, and CFour. In
 addition, databases such as PubChem can be searched:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;pubchem:benzene&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">molparse</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"pubchem:benzene"</span><span class="p">)</span>
 <span class="go">    Searching PubChem database for benzene (single best match returned)</span>
 <span class="go">    Found 1 result(s)</span>
-<span class="go">    {&quot;geometry&quot;: ...}</span>
+<span class="go">    {"geometry": ...}</span>
 </pre></div>
 </div>
 </section>

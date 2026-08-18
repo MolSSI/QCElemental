@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.models.v2.failed_operation &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>qcelemental.models.v2.failed_operation &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=df598981"></script>
+      <script src="../../../../_static/documentation_options.js?v=b7aec637"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../../_static/version-switcher.js?v=313414bb"></script>
@@ -125,92 +125,92 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="viewcode-block" id="ComputeError">
 <a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.ComputeError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ComputeError</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Complete description of the error from an unsuccessful program execution.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Complete description of the error from an unsuccessful program execution."""</span>
 
     <span class="n">error_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="o">...</span><span class="p">,</span>  <span class="c1"># Error enumeration not yet strict</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of error which was thrown. Restrict this field to short classifiers e.g. &#39;input_error&#39;. &quot;</span>
-        <span class="s2">&quot;Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The type of error which was thrown. Restrict this field to short classifiers e.g. 'input_error'. "</span>
+        <span class="s2">"Suggested classifiers: https://github.com/MolSSI/QCEngine/blob/master/qcengine/exceptions.py"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">error_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Text associated with the thrown error. This is often the backtrace, but it can contain additional &quot;</span>
-        <span class="s2">&quot;information as well.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"Text associated with the thrown error. This is often the backtrace, but it can contain additional "</span>
+        <span class="s2">"information as well."</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenericData</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the error.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"Additional information to bundle with the error."</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="s2">&quot;error_type&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;error_message&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span><span class="p">)]</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ReprArgs"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="s2">"error_type"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_type</span><span class="p">),</span> <span class="p">(</span><span class="s2">"error_message"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_message</span><span class="p">)]</span></div>
 
 
 
 <div class="viewcode-block" id="FailedOperation">
 <a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.FailedOperation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FailedOperation</span><span class="p">(</span><span class="n">ProtoModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Record indicating that a given operation (program, procedure, etc.) has failed</span>
 <span class="sd">    and containing the reason and input data which generated the failure.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;qcschema_failed_operation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="s2">&quot;qcschema_failed_operation&quot;</span><span class="p">,</span>
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"qcschema_failed_operation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="s2">"qcschema_failed_operation"</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;The QCSchema specification this model conforms to. Explicitly fixed as qcschema_failed_operation.&quot;</span>
+            <span class="sa">f</span><span class="s2">"The QCSchema specification this model conforms to. Explicitly fixed as qcschema_failed_operation."</span>
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">schema_version</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mi">2</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The version number of :attr:`~qcelemental.models.FailedOperation.schema_name` to which this model conforms.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The version number of :attr:`~qcelemental.models.FailedOperation.schema_name` to which this model conforms."</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A unique identifier which links this FailedOperation, often of the same Id of the operation &quot;</span>
-        <span class="s2">&quot;should it have been successful. This will often be set programmatically by a database such as &quot;</span>
-        <span class="s2">&quot;Fractal.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"A unique identifier which links this FailedOperation, often of the same Id of the operation "</span>
+        <span class="s2">"should it have been successful. This will often be set programmatically by a database such as "</span>
+        <span class="s2">"Fractal."</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">input_data</span><span class="p">:</span> <span class="n">GenericData</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The input data which was passed in that generated this failure. This should be the complete &quot;</span>
-        <span class="s2">&quot;input which when attempted to be run, caused the operation to fail.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"The input data which was passed in that generated this failure. This should be the complete "</span>
+        <span class="s2">"input which when attempted to be run, caused the operation to fail."</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">success</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="kc">False</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A boolean indicator that the operation failed consistent with the model of successful operations. &quot;</span>
-        <span class="s2">&quot;Should always be False. Allows programmatic assessment of all operations regardless of if they failed or &quot;</span>
-        <span class="s2">&quot;succeeded&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"A boolean indicator that the operation failed consistent with the model of successful operations. "</span>
+        <span class="s2">"Should always be False. Allows programmatic assessment of all operations regardless of if they failed or "</span>
+        <span class="s2">"succeeded"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">error</span><span class="p">:</span> <span class="n">ComputeError</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A container which has details of the error that failed this operation. See the &quot;</span>
-        <span class="s2">&quot;:class:`ComputeError` for more details.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"A container which has details of the error that failed this operation. See the "</span>
+        <span class="s2">":class:`ComputeError` for more details."</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">extras</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenericData</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
         <span class="p">{},</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Additional information to bundle with the failed operation. Details which pertain specifically &quot;</span>
-        <span class="s2">&quot;to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details.&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"Additional information to bundle with the failed operation. Details which pertain specifically "</span>
+        <span class="s2">"to a thrown error should be contained in the `error` field. See :class:`ComputeError` for details."</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ReprArgs&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__repr_args__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ReprArgs"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="s2">"error"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">)]</span>
 
 <div class="viewcode-block" id="FailedOperation.convert_v">
 <a class="viewcode-back" href="../../../../model_common.html#qcelemental.models.v2.FailedOperation.convert_v">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">convert_v</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">target_version</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">/</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;qcelemental.models.v1.FailedOperation&quot;</span><span class="p">,</span> <span class="s2">&quot;qcelemental.models.v2.FailedOperation&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to instance of particular QCSchema version.&quot;&quot;&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">"qcelemental.models.v1.FailedOperation"</span><span class="p">,</span> <span class="s2">"qcelemental.models.v2.FailedOperation"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Convert to instance of particular QCSchema version."""</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">qcelemental</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qcel</span>
 
-        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">&quot;FailedOperation&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">check_convertible_version</span><span class="p">(</span><span class="n">target_version</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="s2">"FailedOperation"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"self"</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
         <span class="n">dself</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">target_version</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">QCEL_V1V2_SHIM_CODE</span><span class="p">]:</span>
-            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">)</span>
-            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;schema_version&quot;</span><span class="p">)</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"schema_name"</span><span class="p">)</span>
+            <span class="n">dself</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"schema_version"</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">target_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">self_vN</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">FailedOperation</span><span class="p">(</span><span class="o">**</span><span class="n">dself</span><span class="p">)</span>

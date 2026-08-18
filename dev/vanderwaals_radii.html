@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>van der Waals Radii &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>van der Waals Radii &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=df598981"></script>
+      <script src="_static/documentation_options.js?v=b7aec637"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/version-switcher.js?v=313414bb"></script>
@@ -120,11 +120,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>Access van der Waals Radii information within QCElemental.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">3.212534413278308</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"C"</span><span class="p">)</span>
 <span class="go">3.212534413278308</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;C12&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"C12"</span><span class="p">)</span>
 <span class="go">3.212534413278308</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Carbon&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Carbon"</span><span class="p">)</span>
 <span class="go">3.212534413278308</span>
 </pre></div>
 </div>
@@ -134,7 +134,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 are contained in contexts. The <code class="docutils literal notranslate"><span class="pre">qcel.vdwradii</span></code> context will be
 updated over time to the latest data. To “pin” a context version, a
 specific context can be created like so:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">context</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">VanderWaalsRadii</span><span class="p">(</span><span class="s2">&quot;MANTINA2009&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">context</span> <span class="o">=</span> <span class="n">qcel</span><span class="o">.</span><span class="n">VanderWaalsRadii</span><span class="p">(</span><span class="s2">"MANTINA2009"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">qcel</span><span class="o">.</span><span class="n">vdwradii</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">3.212534413278308</span>
 </pre></div>

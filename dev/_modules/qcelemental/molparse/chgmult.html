@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molparse.chgmult &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>qcelemental.molparse.chgmult &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=df598981"></script>
+      <script src="../../../_static/documentation_options.js?v=b7aec637"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/version-switcher.js?v=313414bb"></script>
@@ -133,12 +133,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_sufficient_electrons_for_mult</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Require sufficient electrons in total: total mult ({}) - 1 &gt; raw electrons ({}) - total chg ({})&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Require sufficient electrons in total: total mult ({}) - 1 &gt; raw electrons ({}) - total chg ({})"""</span>
     <span class="k">return</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">c</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parity_ok</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check total electrons (neutral protons `z` and charge `c`) is (un)paired-compatible with multiplicity `m`&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check total electrons (neutral protons `z` and charge `c`) is (un)paired-compatible with multiplicity `m`"""</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">m</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="p">((</span><span class="n">z</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
 
 
@@ -160,7 +160,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">zero_ghost_fragments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Forms molecular and fragment charge and multiplicity specification</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Forms molecular and fragment charge and multiplicity specification</span>
 <span class="sd">    by completing and reconciling information from argument, supplemented</span>
 <span class="sd">    by physical constraints and sensible defaults.</span>
 
@@ -243,171 +243,171 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <span class="sd">    * Implications</span>
 
-<span class="sd">      * I1 won&#39;t form an ion just to be closed shell (would require choosing +1 vs. -1)</span>
+<span class="sd">      * I1 won't form an ion just to be closed shell (would require choosing +1 vs. -1)</span>
 <span class="sd">      * I2 unallocated chg or mult lands on the first unspecified fragment able to bear it (enforced by returning first match encountered; subsequent matches distribute charge to later frags)</span>
 <span class="sd">      * I3 missing chg or mult from tot - frags will always be allocated as a block, not distributed</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), 0, [0], 1, [1])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), 0, [0], 1, [1])</span>
 <span class="sd">    0, [0], 1, [1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], None, [None])</span>
 <span class="sd">    0, [0], 1, [1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], None, [None, None])</span>
 <span class="sd">    0, [0, 0], 1, [1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), 2, [None, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), 2, [None, None], None, [None, None])</span>
 <span class="sd">    2, [2, 0], 1, [1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [2, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [2, None], None, [None, None])</span>
 <span class="sd">    2, [2, 0], 1, [1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), 0, [2, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), 0, [2, None], None, [None, None])</span>
 <span class="sd">    0, [2, -2], 1, [1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Ne/He/He&#39;), -2, [None, 2, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Ne/He/He'), -2, [None, 2, None], None, [None, None, None])</span>
 <span class="sd">    -2, [-4, 2, 0], 1, [1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Ne/He/He&#39;), 2, [None, -2, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Ne/He/He'), 2, [None, -2, None], None, [None, None, None])</span>
 <span class="sd">    2, [4, -2, 0], 1, [1, 1, 1]</span>
 <span class="sd">    #  9 - residual +4 distributes to first fragment able to wholly accept it (He+4 is no-go)</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He/Ne&#39;), 2, [None, -2, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He/Ne'), 2, [None, -2, None], None, [None, None, None])</span>
 <span class="sd">    2, [0, -2, 4], 1, [1, 1, 1]</span>
 <span class="sd">    # 10 - residual +4 unsuited for only open fragment, He, so irreconcilable</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He/Ne&#39;), 2, [None, -2, 0], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He/Ne'), 2, [None, -2, 0], None, [None, None, None])</span>
 <span class="sd">    ValidationError</span>
 <span class="sd">    # 11 - non-positive multiplicity</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He/Ne&#39;), 2, [2, -2, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He/Ne'), 2, [2, -2, None], None, [None, None, None])</span>
 <span class="sd">    2, [2, -2, 2], 1, [1, 1, 1])</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [-2, 2], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [-2, 2], None, [None, None])</span>
 <span class="sd">    0, [-2, 2], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, -2], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, -2], None, [None, None])</span>
 <span class="sd">    -2, [0, -2], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Ne/Ne&#39;), 0, [None, 4], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Ne/Ne'), 0, [None, 4], None, [None, None])</span>
 <span class="sd">    0, [-4, 4], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He/He&#39;), 4, [2, None, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He/He'), 4, [2, None, None], None, [None, None, None])</span>
 <span class="sd">    4, [2, 2, 0], 1, [1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), 0, [-2, 2], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), 0, [-2, 2], None, [None, None])</span>
 <span class="sd">    0, [-2, 2], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), 0, [-2, -2], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), 0, [-2, -2], None, [None, None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], 0, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], 0, [None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], None, [1])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], None, [1])</span>
 <span class="sd">    0, [0], 1, [1]</span>
 <span class="sd">    # 20 - doublet non consistent with closed-shell, neutral default charge</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], None, [2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], None, [2])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], None, [3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], None, [3])</span>
 <span class="sd">    0, [0], 3, [3]</span>
 <span class="sd">    # 22 - insufficient electrons for pentuplet</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [None], None, [5])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [None], None, [5])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [-1], None, [2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [-1], None, [2])</span>
 <span class="sd">    -1, [-1], 2, [2]</span>
 <span class="sd">    # 24 - doublet not consistent with even charge</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He&#39;), None, [-2], None, [2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He'), None, [-2], None, [2])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], None, [1, 1])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], None, [1, 1])</span>
 <span class="sd">    0, [0, 0], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], None, [3, 1])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], None, [3, 1])</span>
 <span class="sd">    0, [0, 0], 3, [3, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], None, [1, 3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], None, [1, 3])</span>
 <span class="sd">    0, [0, 0], 3, [1, 3]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], None, [3, 3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], None, [3, 3])</span>
 <span class="sd">    0, [0, 0], 5, [3, 3]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], 3, [3, 3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], 3, [3, 3])</span>
 <span class="sd">    0, [0, 0], 3, [3, 3]</span>
 <span class="sd">    # 30 - bad parity btwn mult and total # electrons</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [None, None], 2, [3, 3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [None, None], 2, [3, 3])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H&#39;), None, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H'), None, [None], None, [None])</span>
 <span class="sd">    0, [0], 2, [2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H&#39;), 1, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H'), 1, [None], None, [None])</span>
 <span class="sd">    1, [1], 1, [1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H&#39;), None, [-1], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H'), None, [-1], None, [None])</span>
 <span class="sd">    -1, [-1], 1, [1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;funnyH&#39;), None, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('funnyH'), None, [None], None, [None])</span>
 <span class="sd">    0, [0], 1, [1]</span>
 <span class="sd">    # 35 - insufficient electrons</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;funnierH&#39;), None, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('funnierH'), None, [None], None, [None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/H&#39;), None, [None, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/H'), None, [None, None], None, [None, None])</span>
 <span class="sd">    0, [0, 0], 3, [2, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), None, [None, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), None, [None, None], None, [None, None])</span>
 <span class="sd">    0, [0, 0], 2, [2, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), None, [1, 1], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), None, [1, 1], None, [None, None])</span>
 <span class="sd">    2, [1, 1], 2, [1, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), -2, [-1, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), -2, [-1, None], None, [None, None])</span>
 <span class="sd">    -2, [-1, -1], 2, [1, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), None, [1, None, 1, None], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), None, [1, None, 1, None], None, [None, None, None, None])</span>
 <span class="sd">    2, [1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), None, [-1, None, 1, None], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), None, [-1, None, 1, None], None, [None, None, None, None])</span>
 <span class="sd">    0, [-1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), 2, [None, None, 1, None], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), 2, [None, None, 1, None], None, [None, None, None, None])</span>
 <span class="sd">    2, [1, 0, 1, 0], 1, [1, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), 3, [None, None, 1, None], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), 3, [None, None, 1, None], None, [None, None, None, None])</span>
 <span class="sd">    3, [0, 2, 1, 0], 2, [2, 1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), None, [1, None], None, [2, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), None, [1, None], None, [2, None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), None, [None, 0], None, [None, 2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), None, [None, 0], None, [None, 2])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He&#39;), None, [None, -1], None, [None, 3])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He'), None, [None, -1], None, [None, 3])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), None, [None, 1, 0, 1], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), None, [None, 1, 0, 1], None, [None, None, None, None])</span>
 <span class="sd">    2, [0, 1, 0, 1], 5, [2, 2, 2, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), None, [None, 1, 0, None], None, [None, None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), None, [None, 1, 0, None], None, [None, None, None, None])</span>
 <span class="sd">    1, [0, 1, 0, 0], 4, [2, 2, 2, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;H/He/Na/Ne&#39;), None, [None, 1, 0, None], None, [None, None, 4, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('H/He/Na/Ne'), None, [None, 1, 0, None], None, [None, None, 4, None])</span>
 <span class="sd">    1, [0, 1, 0, 0], 6, [2, 2, 4, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He/He&#39;), 0, [None, None, 1], None, [1, None, 2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He/He'), 0, [None, None, 1], None, [1, None, 2])</span>
 <span class="sd">    0, [0, -1, 1], 3, [1, 2, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/N/N&#39;), None, [1, 1, 1], 3, [None, 3, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/N/N'), None, [1, 1, 1], 3, [None, 3, None])</span>
 <span class="sd">    3, [1, 1, 1], 3, [1, 3, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/N/N&#39;), None, [1, 1, 1], 3, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/N/N'), None, [1, 1, 1], 3, [None, None, None])</span>
 <span class="sd">    3, [1, 1, 1], 3, [3, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/N/N&#39;), None, [None, None, None], 3, [None, None, 2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/N/N'), None, [None, None, None], 3, [None, None, 2])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/N/N&#39;), 1, [None, -1, None], 3, [None, None, 2])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/N/N'), 1, [None, -1, None], 3, [None, None, 2])</span>
 <span class="sd">    1, [2, -1, 0], 3, [2, 1, 2]</span>
 <span class="sd">    # 55 - both (1, (1, 0.0, 0.0), 4, (1, 3, 2)) and (1, (0.0, 0.0, 1), 4, (2, 3, 1)) plausible</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/Ne/N&#39;), 1, [None, None, None], 4, [None, 3, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/Ne/N'), 1, [None, None, None], 4, [None, 3, None])</span>
 <span class="sd">    1, [1, 0, 0], 4, [1, 3, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;N/Ne/N&#39;), None, [None, None, 1], 4, [None, 3, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('N/Ne/N'), None, [None, None, 1], 4, [None, 3, None])</span>
 <span class="sd">    1, [0, 0, 1], 4, [2, 3, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/He&#39;), None, [-1, 1], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/He'), None, [-1, 1], None, [None, None])</span>
 <span class="sd">    0, [-1, 1], 3, [2, 2]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh&#39;), 1, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh'), 1, [None], None, [None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh&#39;), -1, [None], None, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh'), -1, [None], None, [None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh&#39;), None, [None], 3, [None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh'), None, [None], 3, [None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;He/Gh&#39;), None, [2, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('He/Gh'), None, [2, None], None, [None, None])</span>
 <span class="sd">    2, [2, 0], 1, [1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh/He&#39;), None, [2, None], None, [None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh/He'), None, [2, None], None, [None, None])</span>
 <span class="sd">    ValidationError</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh/He/Ne&#39;), 2, [None, -2, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh/He/Ne'), 2, [None, -2, None], None, [None, None, None])</span>
 <span class="sd">    2, [0, -2, 4], 1, [1, 1, 1]</span>
-<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys(&#39;Gh/He/Gh&#39;), 1, [None, None, None], None, [None, None, None])</span>
+<span class="sd">    &gt;&gt;&gt; validate_and_fill_chgmult(*sys('Gh/He/Gh'), 1, [None, None, None], None, [None, None, None])</span>
 <span class="sd">    1, [0, 1, 0], 2, [1, 2, 1]</span>
 <span class="sd">    &gt;&gt;&gt; sys = {</span>
-<span class="sd">        &#39;He&#39;: (np.array([2]), np.array([])),</span>
-<span class="sd">        &#39;He/He&#39;: (np.array([2, 2]), np.array([1])),</span>
-<span class="sd">        &#39;Ne/He/He&#39;: (np.array([10, 2, 2]), np.array([1, 2])),</span>
-<span class="sd">        &#39;He/He/Ne&#39;: (np.array([2, 2, 10]), np.array([1, 2])),</span>
-<span class="sd">        &#39;Ne/Ne&#39;: (np.array([10, 10]), np.array([1])),</span>
-<span class="sd">        &#39;He/He/He&#39;: (np.array([2, 2, 2]), np.array([1, 2])),</span>
-<span class="sd">        &#39;H&#39;: (np.array([1]), np.array([])),</span>
-<span class="sd">        &#39;funnyH&#39;: (np.array([0]), np.array([])),  # has no electrons</span>
-<span class="sd">        &#39;funnierH&#39;: (np.array([-1]), np.array([])),  # has positron</span>
-<span class="sd">        &#39;H/H&#39;: (np.array([1, 1]), np.array([1])),</span>
-<span class="sd">        &#39;H/He&#39;: (np.array([1, 2]), np.array([1])),</span>
-<span class="sd">        &#39;H/He/Na/Ne&#39;: (np.array([1, 2, 11, 10]), np.array([1, 2, 3])),</span>
-<span class="sd">        &#39;N/N/N&#39;: (np.array([7, 7, 7]), np.array([1, 2])),</span>
-<span class="sd">        &#39;N/Ne/N&#39;: (np.array([7, 10, 7]), np.array([1, 2])),</span>
-<span class="sd">        &#39;He/Gh&#39;: (np.array([2, 0]), np.array([1])),</span>
-<span class="sd">        &#39;Gh/He&#39;: (np.array([0, 2]), np.array([1])),</span>
-<span class="sd">        &#39;Gh&#39;: (np.array([0, 0]), np.array([])),</span>
-<span class="sd">        &#39;Gh/He/Ne&#39;: (np.array([0, 0, 2, 10]), np.array([2, 3])),</span>
-<span class="sd">        &#39;Gh/He/Gh&#39;: (np.array([0, 2, 0]), np.array([1, 2]))}</span>
+<span class="sd">        'He': (np.array([2]), np.array([])),</span>
+<span class="sd">        'He/He': (np.array([2, 2]), np.array([1])),</span>
+<span class="sd">        'Ne/He/He': (np.array([10, 2, 2]), np.array([1, 2])),</span>
+<span class="sd">        'He/He/Ne': (np.array([2, 2, 10]), np.array([1, 2])),</span>
+<span class="sd">        'Ne/Ne': (np.array([10, 10]), np.array([1])),</span>
+<span class="sd">        'He/He/He': (np.array([2, 2, 2]), np.array([1, 2])),</span>
+<span class="sd">        'H': (np.array([1]), np.array([])),</span>
+<span class="sd">        'funnyH': (np.array([0]), np.array([])),  # has no electrons</span>
+<span class="sd">        'funnierH': (np.array([-1]), np.array([])),  # has positron</span>
+<span class="sd">        'H/H': (np.array([1, 1]), np.array([1])),</span>
+<span class="sd">        'H/He': (np.array([1, 2]), np.array([1])),</span>
+<span class="sd">        'H/He/Na/Ne': (np.array([1, 2, 11, 10]), np.array([1, 2, 3])),</span>
+<span class="sd">        'N/N/N': (np.array([7, 7, 7]), np.array([1, 2])),</span>
+<span class="sd">        'N/Ne/N': (np.array([7, 10, 7]), np.array([1, 2])),</span>
+<span class="sd">        'He/Gh': (np.array([2, 0]), np.array([1])),</span>
+<span class="sd">        'Gh/He': (np.array([0, 2]), np.array([1])),</span>
+<span class="sd">        'Gh': (np.array([0, 0]), np.array([])),</span>
+<span class="sd">        'Gh/He/Ne': (np.array([0, 0, 2, 10]), np.array([2, 3])),</span>
+<span class="sd">        'Gh/He/Gh': (np.array([0, 2, 0]), np.array([1, 2]))}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">log_full</span> <span class="o">=</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span>
     <span class="n">log_brief</span> <span class="o">=</span> <span class="n">verbose</span> <span class="o">&gt;=</span> <span class="mi">2</span>  <span class="c1"># TODO: Move back to 1</span>
     <span class="n">text</span> <span class="o">=</span> <span class="p">[]</span>
@@ -422,13 +422,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">fragment_multiplicities</span> <span class="o">=</span> <span class="p">[</span><span class="n">int_if_possible</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span><span class="p">]</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">molecular_multiplicity</span> <span class="ow">and</span> <span class="n">molecular_multiplicity</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span> <span class="k">if</span> <span class="n">m</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;validate_and_fill_chgmult(): Multiplicity must be positive. m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2">, fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"validate_and_fill_chgmult(): Multiplicity must be positive. m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2">, fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="n">felez</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">zeff</span><span class="p">,</span> <span class="n">fragment_separators</span><span class="p">)</span>
     <span class="n">nfr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">felez</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;felez: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">felez</span><span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"felez: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">felez</span><span class="p">))</span>
 
     <span class="n">cgmp_exact_c</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># exact_* are candidates for the final value</span>
     <span class="n">cgmp_exact_fc</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfr</span><span class="p">)]</span>
@@ -442,12 +442,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">all_fc_known</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragment_charges</span><span class="p">)</span>
     <span class="n">all_fm_known</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;all_fc_known: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">all_fc_known</span><span class="p">))</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;all_fm_known: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">all_fm_known</span><span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"all_fc_known: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">all_fc_known</span><span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"all_fm_known: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">all_fm_known</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">zero_ghost_fragments</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">real_fragments</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">log_brief</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;possibly adjusting charges&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"possibly adjusting charges"</span><span class="p">)</span>
         <span class="n">molecular_charge</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">fragment_charges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">fr</span> <span class="k">if</span> <span class="n">real_fragments</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">ifr</span><span class="p">,</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fragment_charges</span><span class="p">)]</span>
         <span class="n">molecular_multiplicity</span> <span class="o">=</span> <span class="kc">None</span>
@@ -462,62 +462,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="ow">and</span> <span class="n">m</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fm</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span>
+    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"1"</span><span class="p">)</span>
 
     <span class="c1">#   * (R2) require total charge to be the sum of fragment charges</span>
     <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">c</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">fc</span><span class="p">))</span>
-    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
+    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"2"</span><span class="p">)</span>
 
     <span class="c1">#   * (R3) require mult is positive int</span>
     <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">_mult_ok</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">_mult_ok</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fm</span><span class="p">))</span>
-    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">)</span>
+    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"3"</span><span class="p">)</span>
 
     <span class="c1"># &lt;&lt;&lt; assert electron count requirements</span>
 
     <span class="n">zel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">zeff</span><span class="p">)</span>  <span class="c1"># note: number electrons in neutral species, not number total electrons</span>
     <span class="n">fzel</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">felez</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;zel: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zel</span><span class="p">))</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;fzel: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fzel</span><span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"zel: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zel</span><span class="p">))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"fzel: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fzel</span><span class="p">))</span>
 
     <span class="c1">#   * (R4) require sufficient electrons for mult: mult - 1 &lt;= neutral_electrons - chg</span>
     <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">_sufficient_electrons_for_mult</span><span class="p">(</span><span class="n">zel</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
-    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;4&quot;</span><span class="p">)</span>
+    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"4"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ifr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfr</span><span class="p">):</span>
         <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">ifr</span><span class="o">=</span><span class="n">ifr</span><span class="p">:</span> <span class="n">_sufficient_electrons_for_mult</span><span class="p">(</span><span class="n">fzel</span><span class="p">[</span><span class="n">ifr</span><span class="p">],</span> <span class="n">fc</span><span class="p">[</span><span class="n">ifr</span><span class="p">],</span> <span class="n">fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
         <span class="p">)</span>
-        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;4-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
+        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"4-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
 
     <span class="c1">#   * (R5) require total parity consistent among neutral_electrons, chg, and mult</span>
     <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">_parity_ok</span><span class="p">(</span><span class="n">zel</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
-    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;5&quot;</span><span class="p">)</span>
+    <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"5"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ifr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfr</span><span class="p">):</span>
         <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">ifr</span><span class="o">=</span><span class="n">ifr</span><span class="p">:</span> <span class="n">_parity_ok</span><span class="p">(</span><span class="n">fzel</span><span class="p">[</span><span class="n">ifr</span><span class="p">],</span> <span class="n">fc</span><span class="p">[</span><span class="n">ifr</span><span class="p">],</span> <span class="n">fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">]))</span>  <span class="c1"># type: ignore</span>
-        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;5-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
+        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"5-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
 
     <span class="c1"># &lt;&lt;&lt; (R6, R7, S1) assert &amp; suggest input values</span>
 
     <span class="k">if</span> <span class="n">molecular_charge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cgmp_exact_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecular_charge</span><span class="p">)</span>
         <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">c</span> <span class="o">==</span> <span class="n">molecular_charge</span><span class="p">)</span>
-        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;6&quot;</span><span class="p">)</span>
+        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"6"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ifr</span><span class="p">,</span> <span class="n">chg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fragment_charges</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">chg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cgmp_exact_fc</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chg</span><span class="p">)</span>
             <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">ifr</span><span class="o">=</span><span class="n">ifr</span><span class="p">,</span> <span class="n">chg</span><span class="o">=</span><span class="n">chg</span><span class="p">:</span> <span class="n">fc</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span> <span class="o">==</span> <span class="n">chg</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;6-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
+            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"6-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">molecular_multiplicity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cgmp_exact_m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecular_multiplicity</span><span class="p">)</span>
         <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">m</span> <span class="o">==</span> <span class="n">molecular_multiplicity</span><span class="p">)</span>
-        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;7&quot;</span><span class="p">)</span>
+        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"7"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ifr</span><span class="p">,</span> <span class="n">mult</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fragment_multiplicities</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mult</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cgmp_exact_fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mult</span><span class="p">)</span>
             <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">ifr</span><span class="o">=</span><span class="n">ifr</span><span class="p">,</span> <span class="n">mult</span><span class="o">=</span><span class="n">mult</span><span class="p">:</span> <span class="n">fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span> <span class="o">==</span> <span class="n">mult</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;7-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
+            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"7-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
 
-    <span class="c1"># &lt;&lt;&lt; assert high-spin-rule and suggest &quot;missing quantity&quot; and default values</span>
+    <span class="c1"># &lt;&lt;&lt; assert high-spin-rule and suggest "missing quantity" and default values</span>
 
     <span class="c1">#   * (S2) suggest net frag charge for total charge, allowing for indiv frag defaulting to 0</span>
     <span class="n">cgmp_exact_c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="p">)))</span>
@@ -535,7 +535,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">#   * (R8) require that frag mult follow high spin addition unless fully specified</span>
     <span class="k">if</span> <span class="n">molecular_multiplicity</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span><span class="p">):</span>
         <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">:</span> <span class="n">m</span> <span class="o">==</span> <span class="n">_high_spin_sum</span><span class="p">(</span><span class="n">fm</span><span class="p">))</span>
-        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;8&quot;</span><span class="p">)</span>
+        <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"8"</span><span class="p">)</span>
 
     <span class="c1">#   * (S5) suggest range of net frag mult for total mult, allowing for indiv frag defaulting to 1 or 2.</span>
     <span class="c1">#          many in range may be unphysical, but those will be caught by physical rules.</span>
@@ -549,7 +549,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="n">mult_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">frag_mult_hi</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Cannot process: please fully specify float multiplicity: m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2"> fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Cannot process: please fully specify float multiplicity: m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2"> fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mult_range</span><span class="p">:</span>
             <span class="n">cgmp_exact_m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -560,7 +560,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="c1">#   * (S7) suggest 1 or 2 default multiplicity for fragment</span>
     <span class="k">if</span> <span class="n">molecular_multiplicity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fragment_multiplicities</span><span class="p">):</span>
         <span class="n">frag_mult_less_one_none</span> <span class="o">=</span> <span class="n">fragment_multiplicities</span><span class="p">[:]</span>
-        <span class="n">frag_mult_less_one_none</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># &quot;missing&quot; slot to solve for</span>
+        <span class="n">frag_mult_less_one_none</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># "missing" slot to solve for</span>
         <span class="n">frag_mult_hi</span> <span class="o">=</span> <span class="n">_high_spin_sum</span><span class="p">(</span><span class="n">_apply_default</span><span class="p">(</span><span class="n">frag_mult_less_one_none</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="n">frag_mult_lo</span> <span class="o">=</span> <span class="n">_high_spin_sum</span><span class="p">(</span><span class="n">_apply_default</span><span class="p">(</span><span class="n">frag_mult_less_one_none</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="n">missing_mult_hi</span> <span class="o">=</span> <span class="n">molecular_multiplicity</span> <span class="o">-</span> <span class="n">frag_mult_lo</span> <span class="o">+</span> <span class="mi">1</span>
@@ -578,7 +578,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <span class="n">mult_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">missing_mult_hi</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Cannot process: please fully specify float multiplicity: m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2"> fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Cannot process: please fully specify float multiplicity: m: </span><span class="si">{</span><span class="n">molecular_multiplicity</span><span class="si">}</span><span class="s2"> fm: </span><span class="si">{</span><span class="n">fragment_multiplicities</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mult_range</span><span class="p">:</span>
                 <span class="n">cgmp_exact_fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -589,24 +589,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="k">for</span> <span class="n">ifr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfr</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">felez</span><span class="p">[</span><span class="n">ifr</span><span class="p">]):</span>
             <span class="n">cgmp_range</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">ifr</span><span class="o">=</span><span class="n">ifr</span><span class="p">:</span> <span class="n">fc</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fm</span><span class="p">[</span><span class="n">ifr</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;9-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
+            <span class="n">cgmp_rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"9-"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ifr</span><span class="p">))</span>
 
     <span class="c1"># &lt;&lt;&lt; reconcile and report</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">reconcile</span><span class="p">(</span><span class="n">exact_c</span><span class="p">,</span> <span class="n">exact_fc</span><span class="p">,</span> <span class="n">exact_m</span><span class="p">,</span> <span class="n">exact_fm</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a member from all combinations of `exact` that passes all tests in cgmp_range, else raises error.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns a member from all combinations of `exact` that passes all tests in cgmp_range, else raises error."""</span>
 
         <span class="c1"># remove duplicates</span>
         <span class="n">uniq_c</span> <span class="o">=</span> <span class="n">unique_everseen</span><span class="p">(</span><span class="n">exact_c</span><span class="p">)</span>
         <span class="n">uniq_fc</span> <span class="o">=</span> <span class="p">[</span><span class="n">unique_everseen</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">exact_fc</span><span class="p">]</span>
         <span class="n">uniq_m</span> <span class="o">=</span> <span class="n">unique_everseen</span><span class="p">(</span><span class="n">exact_m</span><span class="p">)</span>
         <span class="n">uniq_fm</span> <span class="o">=</span> <span class="p">[</span><span class="n">unique_everseen</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">exact_fm</span><span class="p">]</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;c: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">exact_c</span><span class="p">)))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"c: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">exact_c</span><span class="p">)))</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">exact_fc</span><span class="p">:</span>
-            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;fc: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;m: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">exact_m</span><span class="p">)))</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"fc: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"m: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">exact_m</span><span class="p">)))</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">exact_fm</span><span class="p">:</span>
-            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;fm: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"fm: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
 
         <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">uniq_c</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">uniq_fc</span><span class="p">),</span> <span class="n">uniq_m</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">uniq_fm</span><span class="p">)]):</span>
@@ -614,29 +614,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <span class="k">if</span> <span class="n">header</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
                     <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-<span class="w">                        </span><span class="sd">&quot;&quot;&quot;Assess candidate {}: {}&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">candidate</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">{:3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cgmp_rules</span><span class="p">))</span>
+<span class="w">                        </span><span class="sd">"""Assess candidate {}: {}"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">candidate</span><span class="p">,</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">"</span><span class="si">{:3}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cgmp_rules</span><span class="p">))</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
                 <span class="n">header</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">assessment</span> <span class="o">=</span> <span class="p">[</span><span class="n">fn</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">cfc</span><span class="p">,</span> <span class="n">cm</span><span class="p">,</span> <span class="n">cfm</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">cgmp_range</span><span class="p">]</span>
-            <span class="n">sass</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">{:3}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">assessment</span><span class="p">]</span>
+            <span class="n">sass</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{:3}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"T"</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">assessment</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
-                <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Assess candidate </span><span class="si">{:}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> --&gt; </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sass</span><span class="p">),</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">)))</span>
+                <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"""Assess candidate </span><span class="si">{:}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> --&gt; </span><span class="si">{}</span><span class="s2">"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sass</span><span class="p">),</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">)))</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">candidate</span>
 
-        <span class="n">err</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Inconsistent or unspecified chg/mult: sys chg: </span><span class="si">{}</span><span class="s2">, frag chg: </span><span class="si">{}</span><span class="s2">, sys mult: </span><span class="si">{}</span><span class="s2">, frag mult: </span><span class="si">{}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s2">"""Inconsistent or unspecified chg/mult: sys chg: </span><span class="si">{}</span><span class="s2">, frag chg: </span><span class="si">{}</span><span class="s2">, sys mult: </span><span class="si">{}</span><span class="s2">, frag mult: </span><span class="si">{}</span><span class="s2">"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">molecular_charge</span><span class="p">,</span> <span class="n">fragment_charges</span><span class="p">,</span> <span class="n">molecular_multiplicity</span><span class="p">,</span> <span class="n">fragment_multiplicities</span>
         <span class="p">)</span>
-        <span class="n">extra_err</span> <span class="o">=</span> <span class="p">[</span><span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="s2">&quot;candidate&quot;</span> <span class="ow">in</span> <span class="n">ln</span><span class="p">]</span>
+        <span class="n">extra_err</span> <span class="o">=</span> <span class="p">[</span><span class="n">ln</span> <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="s2">"candidate"</span> <span class="ow">in</span> <span class="n">ln</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">extra_err</span><span class="p">:</span>
-            <span class="n">err</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extra_err</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">+=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">extra_err</span><span class="p">)</span>
         <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">stringify</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">final</span><span class="p">):</span>
-        <span class="n">fcgmp</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:^4}</span><span class="s2">&quot;</span>
-        <span class="k">return</span> <span class="n">fcgmp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final</span><span class="p">)</span> <span class="k">if</span> <span class="n">final</span> <span class="o">==</span> <span class="n">start</span> <span class="k">else</span> <span class="n">fcgmp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;(&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">final</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="n">fcgmp</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{:^4}</span><span class="s2">"</span>
+        <span class="k">return</span> <span class="n">fcgmp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">final</span><span class="p">)</span> <span class="k">if</span> <span class="n">final</span> <span class="o">==</span> <span class="n">start</span> <span class="k">else</span> <span class="n">fcgmp</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"("</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">final</span><span class="p">))</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">)</span>
 
     <span class="c1"># TODO could winnow down the exact_* lists a bit by ruling out</span>
     <span class="c1">#      independent values. do this if many-frag molecular systems take too</span>
@@ -645,45 +645,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="n">c_final</span><span class="p">,</span> <span class="n">fc_final</span><span class="p">,</span> <span class="n">m_final</span><span class="p">,</span> <span class="n">fm_final</span> <span class="o">=</span> <span class="n">reconcile</span><span class="p">(</span><span class="n">cgmp_exact_c</span><span class="p">,</span> <span class="n">cgmp_exact_fc</span><span class="p">,</span> <span class="n">cgmp_exact_m</span><span class="p">,</span> <span class="n">cgmp_exact_fm</span><span class="p">)</span>
 
     <span class="n">c_text</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="n">molecular_charge</span><span class="p">,</span> <span class="n">c_final</span><span class="p">)</span>
-    <span class="n">fc_text</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">stringify</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ff</span><span class="p">)</span> <span class="k">for</span> <span class="n">fs</span><span class="p">,</span> <span class="n">ff</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fragment_charges</span><span class="p">,</span> <span class="n">fc_final</span><span class="p">)))</span>
+    <span class="n">fc_text</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">stringify</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ff</span><span class="p">)</span> <span class="k">for</span> <span class="n">fs</span><span class="p">,</span> <span class="n">ff</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fragment_charges</span><span class="p">,</span> <span class="n">fc_final</span><span class="p">)))</span>
     <span class="n">m_text</span> <span class="o">=</span> <span class="n">stringify</span><span class="p">(</span><span class="n">molecular_multiplicity</span><span class="p">,</span> <span class="n">m_final</span><span class="p">)</span>
-    <span class="n">fm_text</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">stringify</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ff</span><span class="p">)</span> <span class="k">for</span> <span class="n">fs</span><span class="p">,</span> <span class="n">ff</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fragment_multiplicities</span><span class="p">,</span> <span class="n">fm_final</span><span class="p">)))</span>
+    <span class="n">fm_text</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">stringify</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">ff</span><span class="p">)</span> <span class="k">for</span> <span class="n">fs</span><span class="p">,</span> <span class="n">ff</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">fragment_multiplicities</span><span class="p">,</span> <span class="n">fm_final</span><span class="p">)))</span>
 
     <span class="n">brief</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">log_brief</span><span class="p">:</span>
-        <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">{:26}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;      charge = &quot;</span> <span class="o">+</span> <span class="n">c_text</span><span class="p">,</span> <span class="s2">&quot;fragments = &quot;</span> <span class="o">+</span> <span class="n">fc_text</span><span class="p">))</span>
-        <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    </span><span class="si">{:26}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;multiplicity = &quot;</span> <span class="o">+</span> <span class="n">m_text</span><span class="p">,</span> <span class="s2">&quot;fragments = &quot;</span> <span class="o">+</span> <span class="n">fm_text</span><span class="p">))</span>
+        <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"    </span><span class="si">{:26}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"      charge = "</span> <span class="o">+</span> <span class="n">c_text</span><span class="p">,</span> <span class="s2">"fragments = "</span> <span class="o">+</span> <span class="n">fc_text</span><span class="p">))</span>
+        <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"    </span><span class="si">{:26}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">"multiplicity = "</span> <span class="o">+</span> <span class="n">m_text</span><span class="p">,</span> <span class="s2">"fragments = "</span> <span class="o">+</span> <span class="n">fm_text</span><span class="p">))</span>
 
     <span class="n">been_defaulted</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">c_text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">fc_text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">been_defaulted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;charge&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="n">m_text</span> <span class="ow">or</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="n">fm_text</span><span class="p">:</span>
-        <span class="n">been_defaulted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;multiplicity&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">c_text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"("</span><span class="p">)</span> <span class="o">+</span> <span class="n">fc_text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"("</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">been_defaulted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"charge"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"("</span> <span class="ow">in</span> <span class="n">m_text</span> <span class="ow">or</span> <span class="s2">"("</span> <span class="ow">in</span> <span class="n">fm_text</span><span class="p">:</span>
+        <span class="n">been_defaulted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"multiplicity"</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">been_defaulted</span> <span class="ow">and</span> <span class="n">log_brief</span><span class="p">:</span>
         <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s2">&quot;    Note: Default values have been applied for </span><span class="si">{}</span><span class="s2">. Specify intentions in molecule input block&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="s2">&quot; and &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">been_defaulted</span><span class="p">)</span>
+            <span class="s2">"    Note: Default values have been applied for </span><span class="si">{}</span><span class="s2">. Specify intentions in molecule input block"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">" and "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">been_defaulted</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">m_final</span> <span class="o">!=</span> <span class="n">_high_spin_sum</span><span class="p">(</span><span class="n">fm_final</span><span class="p">))</span> <span class="ow">and</span> <span class="n">log_brief</span><span class="p">:</span>
         <span class="n">brief</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s2">&quot;    Warning: Total multiplicity is not high-spin sum of fragments; may be clobbered by psi4.core.Molecule.update_geometry().&quot;</span>
+            <span class="s2">"    Warning: Total multiplicity is not high-spin sum of fragments; may be clobbered by psi4.core.Molecule.update_geometry()."</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">log_full</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">log_brief</span><span class="p">:</span>
         <span class="c1"># TODO add back when printing worked out</span>
-        <span class="c1"># print(&#39;\n&#39;.join(brief))</span>
+        <span class="c1"># print('\n'.join(brief))</span>
         <span class="k">pass</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;molecular_charge&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">c_final</span><span class="p">),</span>
-        <span class="s2">&quot;fragment_charges&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fc_final</span><span class="p">],</span>
-        <span class="s2">&quot;molecular_multiplicity&quot;</span><span class="p">:</span> <span class="n">m_final</span><span class="p">,</span>
-        <span class="s2">&quot;fragment_multiplicities&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">fm_final</span><span class="p">),</span>
+        <span class="s2">"molecular_charge"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">c_final</span><span class="p">),</span>
+        <span class="s2">"fragment_charges"</span><span class="p">:</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fc_final</span><span class="p">],</span>
+        <span class="s2">"molecular_multiplicity"</span><span class="p">:</span> <span class="n">m_final</span><span class="p">,</span>
+        <span class="s2">"fragment_multiplicities"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">fm_final</span><span class="p">),</span>
     <span class="p">}</span></div>
 
 </pre></div>

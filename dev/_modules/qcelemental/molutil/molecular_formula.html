@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>qcelemental.molutil.molecular_formula &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>qcelemental.molutil.molecular_formula &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=df598981"></script>
+      <script src="../../../_static/documentation_options.js?v=b7aec637"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../../_static/version-switcher.js?v=313414bb"></script>
@@ -115,8 +115,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="viewcode-block" id="order_molecular_formula">
 <a class="viewcode-back" href="../../../api/qcelemental.molutil.order_molecular_formula.html#qcelemental.molutil.order_molecular_formula">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">order_molecular_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">order_molecular_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"alphabetical"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Reorders a molecular formula.</span>
 
 <span class="sd">    Parameters</span>
@@ -124,22 +124,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">    formula</span>
 <span class="sd">        A molecular formula</span>
 <span class="sd">    order</span>
-<span class="sd">        Sorting order of the formula. Valid choices are &quot;alphabetical&quot; and &quot;hill&quot;.</span>
+<span class="sd">        Sorting order of the formula. Valid choices are "alphabetical" and "hill".</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        The molecular formula.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[A-Z][^A-Z]*&quot;</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="n">formula</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2"> is not a valid molecular formula.&quot;</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[A-Z][^A-Z]*"</span><span class="p">,</span> <span class="n">formula</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="n">formula</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2"> is not a valid molecular formula."</span><span class="p">)</span>
     <span class="n">count</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
-        <span class="n">match_n</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\D+)(\d*)&quot;</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
+        <span class="n">match_n</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(\D+)(\d*)"</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">match_n</span>
-        <span class="k">if</span> <span class="n">match_n</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match_n</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match_n</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
@@ -151,8 +151,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="viewcode-block" id="molecular_formula_from_symbols">
 <a class="viewcode-back" href="../../../api/qcelemental.molutil.molecular_formula_from_symbols.html#qcelemental.molutil.molecular_formula_from_symbols">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">molecular_formula_from_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;alphabetical&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecular_formula_from_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"alphabetical"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Returns the molecular formula for a list of symbols.</span>
 
 <span class="sd">    Parameters</span>
@@ -160,25 +160,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <span class="sd">    symbols</span>
 <span class="sd">        List of chemical symbols</span>
 <span class="sd">    order</span>
-<span class="sd">        Sorting order of the formula. Valid choices are &quot;alphabetical&quot; and &quot;hill&quot;.</span>
+<span class="sd">        Sorting order of the formula. Valid choices are "alphabetical" and "hill".</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        The molecular formula.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">supported_orders</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;alphabetical&quot;</span><span class="p">,</span> <span class="s2">&quot;hill&quot;</span><span class="p">]</span>
+    <span class="n">supported_orders</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"alphabetical"</span><span class="p">,</span> <span class="s2">"hill"</span><span class="p">]</span>
     <span class="n">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_orders</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported molecular formula order: </span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2">. Supported orders are f</span><span class="si">{</span><span class="n">supported_orders</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported molecular formula order: </span><span class="si">{</span><span class="n">order</span><span class="si">}</span><span class="s2">. Supported orders are f</span><span class="si">{</span><span class="n">supported_orders</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
     <span class="n">count</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">)</span>
     <span class="n">element_order</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">count</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">&quot;hill&quot;</span> <span class="ow">and</span> <span class="s2">&quot;C&quot;</span> <span class="ow">in</span> <span class="n">element_order</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;H&quot;</span> <span class="ow">in</span> <span class="n">element_order</span><span class="p">:</span>
-            <span class="n">element_order</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">element_order</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)))</span>
-        <span class="n">element_order</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">element_order</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s2">"hill"</span> <span class="ow">and</span> <span class="s2">"C"</span> <span class="ow">in</span> <span class="n">element_order</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"H"</span> <span class="ow">in</span> <span class="n">element_order</span><span class="p">:</span>
+            <span class="n">element_order</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">element_order</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"H"</span><span class="p">)))</span>
+        <span class="n">element_order</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">element_order</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">element_order</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"C"</span><span class="p">)))</span>
 
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">element_order</span><span class="p">:</span>
@@ -187,7 +187,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
 
 </pre></div>
 

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>parse_nucleus_label &mdash; QCElemental 0.1.dev1+g269420111 documentation</title>
+  <title>parse_nucleus_label &mdash; QCElemental 0.1.dev1+g28c74b413 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=df598981"></script>
+      <script src="../_static/documentation_options.js?v=b7aec637"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/version-switcher.js?v=313414bb"></script>
@@ -157,52 +157,52 @@ user info in accordance with <code class="xref py py-data docutils literal notra
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@ca_miNe&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;ca&#39;, None False, &#39;_miNe&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@ca_miNe'</span><span class="p">)</span>
+<span class="go">None, None, 'ca', None False, '_miNe'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(Ca_mine)&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;Ca&#39;, None &#39;_mine&#39;, False</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(Ca_mine)'</span><span class="p">)</span>
+<span class="go">None, None, 'Ca', None '_mine', False</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@Ca_mine@1.07&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@Ca_mine@1.07'</span><span class="p">)</span>
+<span class="go">None, None, 'Ca', 1.07 False, '_mine'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(cA_MINE@1.07)&#39;</span><span class="p">)</span>
-<span class="go">None, None, &#39;cA&#39;, 1.07 False, &#39;_MINE&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(cA_MINE@1.07)'</span><span class="p">)</span>
+<span class="go">None, None, 'cA', 1.07 False, '_MINE'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@40Ca_mine@1.07&#39;</span><span class="p">)</span>
-<span class="go">40, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@40Ca_mine@1.07'</span><span class="p">)</span>
+<span class="go">40, None, 'Ca', 1.07 False, '_mine'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(40Ca_mine@1.07)&#39;</span><span class="p">)</span>
-<span class="go">40, None, &#39;Ca&#39;, 1.07 False, &#39;_mine&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(40Ca_mine@1.07)'</span><span class="p">)</span>
+<span class="go">40, None, 'Ca', 1.07 False, '_mine'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;444lu333@4.0&#39;</span><span class="p">)</span>
-<span class="go">444, None, &#39;lu&#39;, 4.0 True, &#39;333&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'444lu333@4.0'</span><span class="p">)</span>
+<span class="go">444, None, 'lu', 4.0 True, '333'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@444lu333@4.4&#39;</span><span class="p">)</span>
-<span class="go">444, None, &#39;lu&#39;, 4.4 False, &#39;333&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@444lu333@4.4'</span><span class="p">)</span>
+<span class="go">444, None, 'lu', 4.4 False, '333'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;8i&#39;</span><span class="p">)</span>
-<span class="go">8, None, &#39;i&#39;, None True, None</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'8i'</span><span class="p">)</span>
+<span class="go">8, None, 'i', None True, None</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;53_mI4&#39;</span><span class="p">)</span>
-<span class="go">None, 53, None, None True, &#39;_mI4&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'53_mI4'</span><span class="p">)</span>
+<span class="go">None, 53, None, None True, '_mI4'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;@5_MINEs3@4.4&#39;</span><span class="p">)</span>
-<span class="go">None, 5, None, 4.4 False, &#39;_MINEs3&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'@5_MINEs3@4.4'</span><span class="p">)</span>
+<span class="go">None, 5, None, 4.4 False, '_MINEs3'</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">&#39;Gh(555_mines3@0.1)&#39;</span><span class="p">)</span>
-<span class="go">None, 555, None, 0.1 False, &#39;_mines3&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parse_nucleus_label</span><span class="p">(</span><span class="s1">'Gh(555_mines3@0.1)'</span><span class="p">)</span>
+<span class="go">None, 555, None, 0.1 False, '_mines3'</span>
 </pre></div>
 </div>
 </dd></dl>
