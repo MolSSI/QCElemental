@@ -23,16 +23,19 @@ Changelog
 .. Misc.
 .. +++++
 
+.. RELEASE PROCEDURE
+.. * check changelog below is up to date and that the release number and date are in place and that (Unreleased) is removed
+.. * check CITATION.cff release version and date is up to date
+.. * once master is in shape for release, `git tag -a v0.51.0 -m "v0.51.0"`
+.. * `git push upstream --atomic v0.51.0 master`
+
 
 .. _`sec:cl0510`:
 
-0.51.0 / 2026-MM-DD (Unreleased)
+0.51.0 / 2026-08-18
 -------------------
 
 :docs:`v0.51.0` for current. :docs:`v0.30.2` for QCSchema v1.
-
-Breaking Changes
-++++++++++++++++
 
 New Features
 ++++++++++++
@@ -41,13 +44,7 @@ New Features
 
 Enhancements
 ++++++++++++
-- ??? Maint -- Add automatic publishing to PyPI and GitHub release from tag.
-
-Bug Fixes
-+++++++++
-
-Misc.
-+++++
+- (:pr:`412`) Maint -- Add automatic publishing to PyPI and GitHub release from tag.
 
 
 .. _`sec:cl0504`:
