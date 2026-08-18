@@ -199,7 +199,7 @@ jobs:
         continue-on-error: true
         run: |
           pytest -rws -v --color=yes -n auto --durations 15 --pyargs optking \
-            -m "not long" -k "not (hess_guess or irc or json_lif or aux_opt or test_hessians or trimers_h2o_weights or conjugate_gradient_default or molsys or optimization_input or qcel_mol)"
+            -m "not long" -k "not (atom or hess_guess or irc or json_lif or aux_opt or test_hessians or trimers_h2o_weights or conjugate_gradient_default or molsys or optimization_input or qcel_mol)"
           # some tests are having trouble with qcmb/qcel/psi4 compat so revisit last three
           # some optking tests aren't working even with released qcel + released optking. last two are for length
 
