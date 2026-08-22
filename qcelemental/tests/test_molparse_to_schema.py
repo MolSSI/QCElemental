@@ -66,7 +66,7 @@ def test_1_14a(request):
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=1)
-    drop_qcsk(kmol["molecule"], request.node.name, "Molecule")
+    drop_qcsk(kmol["molecule"], request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans["molecule"], kmol["molecule"])
 
     fullans = copy.deepcopy(schema14_psi4)
@@ -83,7 +83,7 @@ def test_2_14b(request):
 
     final = qcelemental.molparse.from_string(subject14)
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=2)
-    drop_qcsk(kmol, request.node.name, "Molecule")
+    drop_qcsk(kmol, request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans, kmol)
 
     fullans = copy.deepcopy(schema14_psi4)
@@ -190,7 +190,7 @@ def test_1_15a(request):
     final = qcelemental.molparse.from_string(subject15)
     final["qm"]["comment"] = "I has a comment"
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=1)
-    drop_qcsk(kmol["molecule"], request.node.name, "Molecule")
+    drop_qcsk(kmol["molecule"], request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans["molecule"], kmol["molecule"])
 
     fullans = copy.deepcopy(schema15_psi4)
@@ -210,7 +210,7 @@ def test_2_15b(request):
     final = qcelemental.molparse.from_string(subject15)
     final["qm"]["comment"] = "I has a comment"
     kmol = qcelemental.molparse.to_schema(final["qm"], dtype=2)
-    drop_qcsk(kmol, request.node.name, "Molecule")
+    drop_qcsk(kmol, request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans, kmol)
 
     fullans = copy.deepcopy(schema15_psi4)
@@ -299,7 +299,7 @@ def test_froto_1_16a(request):
     fullans["molecule"]["provenance"] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=1)
-    drop_qcsk(roundtrip["molecule"], request.node.name, "Molecule")
+    drop_qcsk(roundtrip["molecule"], request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans["molecule"], roundtrip["molecule"])
 
 
@@ -317,7 +317,7 @@ def test_froto_2_16a(request):
     fullans["provenance"] = _schema_prov_stamp
 
     roundtrip = qcelemental.molparse.to_schema(qcelemental.molparse.from_schema(basic), dtype=2)
-    drop_qcsk(roundtrip, request.node.name, "Molecule")
+    drop_qcsk(roundtrip, request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans, roundtrip)
 
 
@@ -329,5 +329,5 @@ def test_tofro_16b(dtype, request):
     roundtrip = qcelemental.molparse.from_schema(qcelemental.molparse.to_schema(schema16_psi4, dtype=dtype))
     qcsk = qcelemental.molparse.to_schema(schema16_psi4, dtype=dtype)
     qcsk = qcsk["molecule"] if dtype == 1 else qcsk
-    drop_qcsk(qcsk, request.node.name, "Molecule")
+    drop_qcsk(qcsk, request.node.name, "Molecule", qcschema_version=1)
     assert compare_molrecs(fullans, roundtrip)

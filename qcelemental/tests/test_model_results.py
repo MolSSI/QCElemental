@@ -133,7 +133,7 @@ def wavefunction_data_fixture(result_data_fixture, schema_versions, request):
     BasisSet = schema_versions.basis_set.BasisSet if "v2" in request.node.name else schema_versions.basis.BasisSet
 
     bas = BasisSet(name="custom_basis", center_data=center_data, atom_map=["bs_sto3g_o", "bs_sto3g_h", "bs_sto3g_h"])
-    c_matrix = np.random.rand(bas.nbf, bas.nbf)
+    c_matrix = np.random.default_rng(0).random((bas.nbf, bas.nbf))
     if "v2" in request.node.name:
         result_data_fixture["input_data"]["specification"]["protocols"] = {"wavefunction": "all"}
     else:
@@ -590,13 +590,14 @@ def test_wavefunction_protocols(
     wfn_data["restricted"] = restricted
     bas = wfn_data["basis"]
 
+    rng = np.random.default_rng(0)
     for name in provided:
         scf_name = "scf_" + name
         wfn_data[name] = scf_name
         if "eigen" in name:
-            wfn_data[scf_name] = np.random.rand(bas.nbf)
+            wfn_data[scf_name] = rng.random(bas.nbf)
         else:
-            wfn_data[scf_name] = np.random.rand(bas.nbf, bas.nbf)
+            wfn_data[scf_name] = rng.random((bas.nbf, bas.nbf))
 
     wfn = AtomicResult(**wavefunction_data_fixture)
     drop_qcsk(wfn, request.node.name)

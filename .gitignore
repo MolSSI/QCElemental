@@ -121,5 +121,6 @@ raw_data/**/*_blob.py
 
 # QCElemental Specific ignores
 qcschema/*.schema
-qcelemental/tests/qcschema_instances/*/*.json
+qcelemental/tests/qcschema_instances/v*/*/*.json
+qcelemental/tests/qcschema_instances/manifest.json
 poetry.lock

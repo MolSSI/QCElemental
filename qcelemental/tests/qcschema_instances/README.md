@@ -1,4 +1,20 @@
-These subdirectories are populated by running the QCElemental test suite, ``pytest``.
-Files are JSON representations of QCSchema instances stored or created in the course of testing.
-These in turn are checked for compliance against the exported QCSchema models in test case ``test_qcschema``
-by running ``pytest --validate qcelemental/``.
+# QCElemental QCSchema examples
+
+These directories contain JSON representations of QCSchema instances created
+by the QCElemental test suite. The model family is encoded in the path:
+
+```
+v1/<Model>/qcelemental-<test>.json
+v2/<Model>/qcelemental-<test>.json
+```
+
+Generate and then validate the corpus with two separate commands:
+
+```
+pytest --qcschema-examples
+pytest --validate-qcschema-examples
+```
+
+Generation removes stale JSON first. Ordinary test runs do not write example
+files. ``manifest.json`` records the source revision and counts for the most
+recent generated corpus.

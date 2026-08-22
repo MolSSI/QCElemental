@@ -1,4 +1,6 @@
 import json
+import os
+import re
 import socket
 import sys
 from contextlib import contextmanager
@@ -81,27 +83,58 @@ def xfail_on_pubchem_busy():
 _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
-def drop_qcsk(instance, tnm: str, schema_name: str = None):
+def _qcschema_example_name(test_name: str) -> str:
+    """Remove the model-family parameter from a pytest node name."""
+
+    name = re.sub(r"\[(?:None|v1|v2)(?:-|(?=\]))", "[", test_name, count=1)
+    name = name.replace("[]", "")
+    return f"qcelemental-{name.replace('/', '_')}"
+
+
+def drop_qcsk(instance, tnm: str, schema_name: str = None, *, qcschema_version: int = None):
+    """Write a QCSchema example when ``--qcschema-examples`` is active.
+
+    The model family is inferred for Pydantic models. Raw dictionaries must
+    supply ``qcschema_version`` explicitly because their Python type carries
+    no model-family information.
+    """
+
+    if os.environ.get("QCELEMENTAL_GENERATE_QCSCHEMA_EXAMPLES") != "1":
+        return
+
     import qcelemental
 
-    # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.
-    if sys.version_info >= (3, 14):
-        is_model = isinstance(instance, qcelemental.models.v2.ProtoModel)
+    if isinstance(instance, qcelemental.models.v2.ProtoModel):
+        inferred_version = 2
+        is_model = True
+    elif sys.version_info < (3, 14) and isinstance(instance, qcelemental.models.v1.ProtoModel):
+        inferred_version = 1
+        is_model = True
+    elif isinstance(instance, dict):
+        if qcschema_version not in (1, 2):
+            raise ValueError("Raw dictionary QCSchema examples require qcschema_version=1 or 2")
+        inferred_version = qcschema_version
+        is_model = False
     else:
-        is_model = isinstance(instance, (qcelemental.models.v2.ProtoModel, qcelemental.models.v1.ProtoModel))
+        raise TypeError(f"QCSchema example must be a model or dictionary, not {type(instance)!r}")
+
+    if qcschema_version is not None and qcschema_version != inferred_version:
+        raise ValueError(
+            f"Explicit QCSchema version {qcschema_version} does not match inferred version {inferred_version}"
+        )
     if is_model and schema_name is None:
         schema_name = type(instance).__name__
-    drop = (_data_path / schema_name / tnm).with_suffix(".json")
+    if schema_name is None:
+        raise ValueError("Raw dictionary QCSchema examples require schema_name")
+
+    drop = (_data_path / f"v{inferred_version}" / schema_name / _qcschema_example_name(tnm)).with_suffix(".json")
+    drop.parent.mkdir(parents=True, exist_ok=True)
 
     with open(drop, "w") as fp:
         if is_model:
-            # fp.write(instance.json(exclude_unset=True, exclude_none=True))  # works but file is one-line
             instance = json.loads(instance.model_dump_json(exclude_unset=True, exclude_none=True))
-        elif isinstance(instance, dict):
-            pass
-        else:
-            raise TypeError
         json.dump(instance, fp, sort_keys=True, indent=2)
+        fp.write("\n")
 
 
 @pytest.fixture(scope="function", params=[None, "v1", "v2"])

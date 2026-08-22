@@ -58,7 +58,7 @@ class ValidatableArrayAnnotation:
         if os.environ.get("SPHINX_BUILD") == "1":
             dt = float
         else:
-            dt = _core_schema["metadata"]["dtype"]
+            dt = cls._find_dtype(_core_schema)
         output_schema = {}
         if dt is int or np.issubdtype(dt, np.integer):
             items = {"type": "number", "multipleOf": 1.0}
@@ -73,6 +73,27 @@ class ValidatableArrayAnnotation:
             warnings.warn(f"Unknown dtype to handle type [{dt}] for array. May result in weird serialization or typing")
         output_schema.update(type="array", items=items)
         return output_schema
+
+    @classmethod
+    def _find_dtype(cls, schema):
+        """Find array metadata beneath Pydantic validator wrapper schemas."""
+
+        if isinstance(schema, dict):
+            metadata = schema.get("metadata", {})
+            if "dtype" in metadata:
+                return metadata["dtype"]
+            for value in schema.values():
+                try:
+                    return cls._find_dtype(value)
+                except KeyError:
+                    pass
+        elif isinstance(schema, (list, tuple)):
+            for value in schema:
+                try:
+                    return cls._find_dtype(value)
+                except KeyError:
+                    pass
+        raise KeyError("dtype")
 
 
 class NestedDataAnnotation:
