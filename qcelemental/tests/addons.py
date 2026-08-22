@@ -82,6 +82,9 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
+    if os.environ.get("QCELEMENTAL_GENERATE_QCSCHEMA_EXAMPLES") != "1":
+        return
+
     import qcelemental
 
     # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.
