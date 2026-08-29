@@ -1,5 +1,5 @@
 import json
-import socket
+import os
 import sys
 from contextlib import contextmanager
 from pathlib import Path
@@ -11,14 +11,17 @@ from qcelemental.util import which_import
 
 
 def internet_connection():
-    try:
-        scc = socket.create_connection(("www.google.com", 80))
-    except OSError:
-        scc.close()
+    if os.environ.get("QCELEMENTAL_SKIP_NETWORK_TESTS"):
         return False
-    else:
-        scc.close()
-        return True
+
+    from urllib.request import urlopen
+
+    url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/241/property/IUPACName/JSON"
+    try:
+        with urlopen(url, timeout=5):
+            return True
+    except OSError:
+        return False
 
 
 using_web = pytest.mark.skipif(internet_connection() is False, reason="Could not connect to the internet")
@@ -82,6 +85,9 @@ _data_path = Path(__file__).parent.resolve() / "qcschema_instances"
 
 
 def drop_qcsk(instance, tnm: str, schema_name: str = None):
+    if os.environ.get("QCELEMENTAL_GENERATE_QCSCHEMA_EXAMPLES") != "1":
+        return
+
     import qcelemental
 
     # order matters for isinstance. a __fields__ warning is thrown if v1 before v2.

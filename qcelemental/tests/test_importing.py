@@ -1,6 +1,4 @@
 import os
-import sys
-from pathlib import Path
 
 import pytest
 
@@ -71,33 +69,32 @@ def test_which_import_f_bool_submodule():
     assert ans is False
 
 
-def test_which_import_t_namespacemodule():
-    testdir = Path(__file__).parent
-    sys.path.append(str(testdir))  # brings to Py's notice a non-Py dir that qualifies as a namespace package
+@pytest.fixture
+def namespace_module(tmp_path, monkeypatch):
+    namespace_module = tmp_path / "namespacemodule"
+    namespace_module.mkdir()
+    monkeypatch.syspath_prepend(str(tmp_path))
+    return namespace_module
+
+
+def test_which_import_t_namespacemodule(namespace_module):
     ans = qcel.util.which_import("namespacemodule", namespace_ok=True)
-    sys.path.pop()
     assert len(ans) == 1
-    assert str(next(iter(ans))) == str(testdir / "namespacemodule")
+    assert str(next(iter(ans))) == str(namespace_module)
 
 
-def test_which_import_t_bool_namespacemodule():
-    sys.path.append(str(Path(__file__).parent))
+def test_which_import_t_bool_namespacemodule(namespace_module):
     ans = qcel.util.which_import("namespacemodule", return_bool=True, namespace_ok=True)
-    sys.path.pop()
     assert ans is True
 
 
-def test_which_import_f_namespacemodule():
-    sys.path.append(str(Path(__file__).parent))
+def test_which_import_f_namespacemodule(namespace_module):
     ans = qcel.util.which_import("namespacemodule", namespace_ok=False)
-    sys.path.pop()
     assert ans is None
 
 
-def test_which_import_f_bool_namespacemodule():
-    sys.path.append(str(Path(__file__).parent))
+def test_which_import_f_bool_namespacemodule(namespace_module):
     ans = qcel.util.which_import("namespacemodule", return_bool=True, namespace_ok=False)
-    sys.path.pop()
     assert ans is False
 
 

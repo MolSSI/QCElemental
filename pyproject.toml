@@ -100,10 +100,8 @@ init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
-[tool.setuptools]
-packages = ["qcelemental"]
-
-[tool.setuptools.package-data]
+[tool.setuptools.packages.find]
+include = ["qcelemental*"]
 
 [tool.setuptools_scm]
 
