@@ -30,6 +30,21 @@ Changelog
 .. * `git push upstream --atomic v0.51.0 master`
 
 
+.. _`sec:cl0511`:
+
+0.51.1 / 2026-08-29
+-------------------
+
+:docs:`v0.51.1` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Misc.
++++++
+- (:pr:`414`) Switch samples generation to opt-in through envvar ``QCELEMENTAL_GENERATE_QCSCHEMA_EXAMPLES``.
+- (:pr:`414`) Tidy ``which_import(..., namespace)`` testing to work better for packaging.
+- (:pr:`414`) Fix subpackage detecting to avoid "No module named 'qcelemental.data'".
+- (:pr:`414`) Focus internet probe (for pubchem) and allow out-out through envvar ``QCELEMENTAL_SKIP_NETWORK_TESTS``.
+
+
 .. _`sec:cl0510`:
 
 0.51.0 / 2026-08-18
