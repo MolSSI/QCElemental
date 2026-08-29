@@ -1,0 +1,6 @@
+B787
+====
+
+.. currentmodule:: qcelemental.molutil
+
+.. autofunction:: B787
