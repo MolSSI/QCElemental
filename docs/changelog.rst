@@ -30,6 +30,18 @@ Changelog
 .. * `git push upstream --atomic v0.51.0 master`
 
 
+.. _`sec:clxy0`:
+
+0.51.2 / 2026-09-15
+-------------------
+
+:docs:`v0.51.2` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Bug Fixes
++++++++++
+- (:pr:`415`) Fix serialization error for NumPy arrays when using v1v2 models with the "properties" driver.
+
+
 .. _`sec:cl0511`:
 
 0.51.1 / 2026-08-29
