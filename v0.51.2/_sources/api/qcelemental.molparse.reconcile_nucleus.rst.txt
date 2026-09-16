@@ -1,0 +1,6 @@
+reconcile_nucleus
+=================
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: reconcile_nucleus

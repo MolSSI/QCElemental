@@ -1,0 +1,6 @@
+NotAnElementError
+=================
+
+.. currentmodule:: qcelemental
+
+.. autoexception:: NotAnElementError

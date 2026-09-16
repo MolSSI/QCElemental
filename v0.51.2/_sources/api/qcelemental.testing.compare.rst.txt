@@ -1,0 +1,6 @@
+compare
+=======
+
+.. currentmodule:: qcelemental.testing
+
+.. autofunction:: compare

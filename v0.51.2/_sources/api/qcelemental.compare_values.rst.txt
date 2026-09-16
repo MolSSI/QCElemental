@@ -1,0 +1,6 @@
+compare_values
+==============
+
+.. currentmodule:: qcelemental
+
+.. autofunction:: compare_values

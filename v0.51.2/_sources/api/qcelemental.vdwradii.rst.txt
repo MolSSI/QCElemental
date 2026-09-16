@@ -1,0 +1,6 @@
+vdwradii
+========
+
+.. currentmodule:: qcelemental
+
+.. autodata:: vdwradii

@@ -1,0 +1,6 @@
+compute_scramble
+================
+
+.. currentmodule:: qcelemental.molutil
+
+.. autofunction:: compute_scramble

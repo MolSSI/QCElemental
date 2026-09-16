@@ -1,0 +1,6 @@
+ChoicesError
+============
+
+.. currentmodule:: qcelemental
+
+.. autoexception:: ChoicesError

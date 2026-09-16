@@ -1,0 +1,6 @@
+ValidationError
+===============
+
+.. currentmodule:: qcelemental
+
+.. autoexception:: ValidationError
