@@ -159,7 +159,7 @@ class AtomicResult(AtomicInput):
     schema_version: Literal[1] = Field(1)
     properties: AtomicResultProperties = Field(...)
     wavefunction: Optional[WavefunctionProperties] = Field(None)
-    return_result: Union[float, Array[float], Dict[str, Any]] = Field(...)
+    return_result: Union[float, Array[float], Dict[str, Any], Dict[str, Array[float]]] = Field(...)
     stdout: Optional[str] = Field(None)
     stderr: Optional[str] = Field(None)
     native_files: Dict[str, Any] = Field({})
