@@ -677,6 +677,9 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
 @pytest.mark.parametrize("schema_versions", ["v2"], indirect=True)
 def test_optimization_convert_v2_to_v1v2shim(optimization_data_fixture, schema_versions, request):
     # shim conversion must not route any nested model through QCSchema v1 (unavailable for py314+)
+    # qcel.models only imports _v1v2 itself for py314+; callers (e.g., QCEngine) import it explicitly
+    import qcelemental.models._v1v2
+
     optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory_results": "all"}
     opt = schema_versions.OptimizationResult(**optimization_data_fixture)
 
