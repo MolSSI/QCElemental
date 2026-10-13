@@ -8,6 +8,7 @@ import pydantic
 import pytest
 
 import qcelemental as qcel
+from qcelemental.models import QCEL_V1V2_SHIM_CODE
 
 from .addons import drop_qcsk, schema_versions, using_pydv1, using_qcmb
 
@@ -671,6 +672,21 @@ def test_optimization_trajectory_protocol(keep, indices, optimization_data_fixtu
     assert len(trajs_target) == len(indices)
     for result, index in zip(trajs_target, indices):
         assert result.return_result == index
+
+
+@pytest.mark.parametrize("schema_versions", ["v2"], indirect=True)
+def test_optimization_convert_v2_to_v1v2shim(optimization_data_fixture, schema_versions, request):
+    # shim conversion must not route any nested model through QCSchema v1 (unavailable for py314+)
+    optimization_data_fixture["input_data"]["specification"]["protocols"] = {"trajectory_results": "all"}
+    opt = schema_versions.OptimizationResult(**optimization_data_fixture)
+
+    opt_shim = opt.convert_v(QCEL_V1V2_SHIM_CODE)
+
+    assert isinstance(opt_shim, qcel.models._v1v2.OptimizationResult)
+    assert isinstance(opt_shim.initial_molecule, qcel.models._v1v2.Molecule)
+    assert opt_shim.input_specification.model.method == "UFF"
+    assert len(opt_shim.trajectory) == 5
+    assert opt_shim.model_dump(mode="json")["schema_version"] == 1
 
 
 @pytest.mark.parametrize(
