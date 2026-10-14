@@ -1,0 +1,33 @@
+PhysicalConstantsContext
+========================
+
+.. currentmodule:: qcelemental
+
+.. autoclass:: PhysicalConstantsContext
+   :show-inheritance:
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+
+      ~PhysicalConstantsContext.ureg
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+
+      ~PhysicalConstantsContext.Quantity
+      ~PhysicalConstantsContext.conversion_factor
+      ~PhysicalConstantsContext.get
+      ~PhysicalConstantsContext.string_representation
+
+   .. rubric:: Attributes Documentation
+
+   .. autoattribute:: ureg
+
+   .. rubric:: Methods Documentation
+
+   .. automethod:: Quantity
+   .. automethod:: conversion_factor
+   .. automethod:: get
+   .. automethod:: string_representation
