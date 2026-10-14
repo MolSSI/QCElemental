@@ -428,7 +428,7 @@ class OptimizationResult(ProtoModel):
 
             # for input_data, work from model, not dict, to use convert_v
             dself.pop("input_data")
-            input_data = self.input_data.convert_v(1).model_dump()  # exclude_unset=True, exclude_none=True
+            input_data = self.input_data.convert_v(target_version).model_dump()  # exclude_unset=True, exclude_none=True
 
             dself.pop("properties")  # new in v2
             dself.pop("native_files")  # new in v2

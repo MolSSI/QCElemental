@@ -21,7 +21,7 @@ jobs:
         cfg:
           - label: Py-min
             runs-on: "ubuntu-latest"
-            python-version: "3.10"
+            python-version: "3.11"
             pytest:
 
           - label: Py-313
@@ -74,10 +74,10 @@ jobs:
               #- dummy1
               #- dummy2
             EOF
-            if [[ "${{ matrix.cfg.label }}" == "Py-314" ]]; then
-                sed -i "s;- psi4;#- psi4;g" compat.yaml
-                sed -i "s;- optking;#- optking;g" compat.yaml  # needs psi4
-            fi
+            #if [[ "${{ matrix.cfg.label }}" == "Py-314" ]]; then
+            #    sed -i "s;- psi4;#- psi4;g" compat.yaml
+            #    sed -i "s;- optking;#- optking;g" compat.yaml  # needs psi4
+            #fi
             # model sed for L/W
             #   sed -i "s;;;g" compat.yaml
             # model sed for M

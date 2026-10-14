@@ -30,7 +30,26 @@ Changelog
 .. * `git push upstream --atomic v0.51.0 master`
 
 
-.. _`sec:clxy0`:
+Changelog
+=========
+
+.. _`sec:cl0513`:
+
+0.51.3 / 2026-10-13
+-------------------
+
+:docs:`v0.51.3` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Enhancements
+++++++++++++
+- (:pr:`416`) Enable `_v1v2.OptimizationResult` conversion for QCFractal
+
+Misc.
++++++
+- (:pr:`416`) Bump Py-min compatibility lane to match conda min Py.
+
+
+.. _`sec:cl0512`:
 
 0.51.2 / 2026-09-15
 -------------------
