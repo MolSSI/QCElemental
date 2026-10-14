@@ -24,9 +24,9 @@ jobs:
             python-version: "3.11"
             pytest:
 
-          - label: Py-314
+          - label: Py-313
             runs-on: "ubuntu-latest"
-            python-version: "3.14"
+            python-version: "3.13"
             pytest:
 
     name: "🐍 ${{ matrix.cfg.python-version }} • ${{ matrix.cfg.label }} • ${{ matrix.runs-on }}"
