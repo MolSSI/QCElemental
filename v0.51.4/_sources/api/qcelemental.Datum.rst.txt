@@ -1,0 +1,6 @@
+Datum
+=====
+
+.. currentmodule:: qcelemental
+
+.. autopydantic_model:: Datum

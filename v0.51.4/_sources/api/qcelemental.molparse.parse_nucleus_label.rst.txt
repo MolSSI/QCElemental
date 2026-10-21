@@ -1,0 +1,6 @@
+parse_nucleus_label
+===================
+
+.. currentmodule:: qcelemental.molparse
+
+.. autofunction:: parse_nucleus_label
