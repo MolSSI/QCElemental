@@ -82,7 +82,10 @@ def build_units_registry(context):
         phys_const_map["au_momentum"] = "atomic unit of momentum"
 
     for k, v in phys_const_map.items():
-        ureg.define(f"{k} = {phys_const[v]['value']} * {phys_const[v]['unit']}")
+        # CODATA writes exponents LaTeX-style (e.g., "J^{-2}"). pint >=0.26.2 rejects
+        #   braces as unknown operators, so convert to parentheses (e.g., "J^(-2)").
+        unit = phys_const[v]["unit"].replace("{", "(").replace("}", ")")
+        ureg.define(f"{k} = {phys_const[v]['value']} * {unit}")
 
     ureg.define(f"au_pressure = au_energy / au_length**3")  # not in CODATA
 
