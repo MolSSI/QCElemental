@@ -33,6 +33,19 @@ Changelog
 Changelog
 =========
 
+.. _`sec:cl0514`:
+
+0.51.4 / 2026-10-21
+-------------------
+
+:docs:`v0.51.4` for current. :docs:`v0.30.2` for QCSchema v1.
+
+Bug Fixes
++++++++++
+- (:pr:`418`, :issue:`417`) Fix building the units registry with pint >=0.26.2, which rejects the
+  LaTeX-style braces in CODATA unit strings (e.g., ``J^{-2}``). Compatible with older pint.
+
+
 .. _`sec:cl0513`:
 
 0.51.3 / 2026-10-13
