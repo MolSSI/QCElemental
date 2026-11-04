@@ -463,6 +463,29 @@ def test_basis_electron_center_raises(schema_versions, request):
     assert "fused shell" in str(e.value)
 
 
+def test_basis_electron_shell_exponent_validation(schema_versions, request):
+    # exponents validation is a v2-only behavior (issue #421)
+    if "v2" not in request.node.name:
+        pytest.skip("v2-only validation")
+    ElectronShell = schema_versions.ElectronShell
+
+    data = center_data["bs_sto3g_h"]["electron_shells"][0].copy()
+
+    # nonphysical exponents must be rejected
+    for bad_exponent in [0.0, -1.0, float("nan"), float("inf")]:
+        bad_data = data.copy()
+        bad_data["exponents"] = [bad_exponent]
+        bad_data["coefficients"] = [[1.0]]
+        with pytest.raises(ValueError) as e:
+            ElectronShell(**bad_data)
+        assert "finite and positive" in str(e.value)
+
+    # valid exponents still pass, including BSE-style numeric strings
+    good_data = data.copy()
+    good_data["exponents"] = [str(e) for e in data["exponents"]]
+    assert ElectronShell(**good_data).exponents == data["exponents"]
+
+
 def test_basis_ecp_center_raises(schema_versions, request):
     basis = schema_versions.basis_set if "v2" in request.node.name else schema_versions.basis
 

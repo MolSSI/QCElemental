@@ -1,3 +1,4 @@
+import math
 from enum import Enum
 from typing import TYPE_CHECKING, Dict, List, Literal, Optional, Union
 
@@ -46,10 +47,21 @@ class ElectronShell(ProtoModel):
 
     model_config = ProtoModel._merge_config_with(json_schema_extra=electron_shell_json_schema_extra)
 
+    @field_validator("exponents")
+    @classmethod
+    def _check_exponents(cls, v):
+        for exp in v:
+            if not math.isfinite(exp) or exp <= 0:
+                raise ValueError("Exponents must be finite and positive.")
+        return v
+
     @field_validator("coefficients")
     @classmethod
     def _check_coefficient_length(cls, v, info):
-        len_exp = len(info.data["exponents"])
+        exponents = info.data.get("exponents")
+        if exponents is None:
+            return v  # exponents failed its own validation; its error is reported instead
+        len_exp = len(exponents)
         for row in v:
             if len(row) != len_exp:
                 raise ValueError("The length of coefficients does not match the length of exponents.")
