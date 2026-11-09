@@ -386,6 +386,8 @@ class Molecule(ProtoModel):
             v = v.reshape(n, 3)
         except (ValueError, AttributeError):
             raise ValueError("Geometry must be castable to shape (N,3)!")
+        if not np.isfinite(v).all():
+            raise ValueError("Geometry must contain only finite values.")
         return v
 
     @validator("masses_", "real_")
