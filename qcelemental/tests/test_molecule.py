@@ -475,6 +475,18 @@ def test_molecule_errors_shape(Molecule, water_molecule_data):
         Molecule(**data)
 
 
+@pytest.mark.parametrize("bad_value", [float("nan"), float("inf"), float("-inf")])
+def test_molecule_errors_nonfinite_geometry(Molecule, water_molecule_data, bad_value):
+    # non-finite geometry must be rejected in both v1 and v2 (issue #419)
+    water_molecule = Molecule.from_data(water_molecule_data)
+
+    data = water_molecule.model_dump()
+    data["geometry"][0][0] = bad_value
+    with pytest.raises(Exception) as e:
+        Molecule(**data)
+    assert "finite" in str(e.value)
+
+
 def test_molecule_json_serialization(Molecule, water_dimer_minima_data):
     water_dimer_minima = Molecule.from_data(**water_dimer_minima_data)
 
